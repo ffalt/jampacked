@@ -76,7 +76,9 @@ module.exports = {
 			// enable the rule specifically for TypeScript files
 			"files": ["*.ts", "*.tsx"],
 			"rules": {
-				"@typescript-eslint/explicit-function-return-type": ["error"]
+				"@typescript-eslint/explicit-function-return-type": ["error"],
+				"no-await-in-loop": 0,
+				"no-restricted-syntax": 0
 			}
 		}
 	]

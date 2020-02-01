@@ -42,6 +42,7 @@
     "react-native-tab-view": "2.12.0",
     "react-native-track-player": "^1.2.2",
     "react-native-vector-icons": "6.6.0",
+    "rxjs": "^6.5.4",
     "waveform-data": "^3.1.0"
   },
   "devDependencies": {

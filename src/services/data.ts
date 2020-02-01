@@ -1,4 +1,5 @@
 import {SectionListData} from 'react-native';
+import {Observable, Subject} from 'rxjs';
 import {Database} from './db';
 import {AlbumType, Jam, JamService} from './jam';
 import {formatDuration} from '../utils/duration.utils';
@@ -88,11 +89,22 @@ export type HomeStatData = { text: string, link: Navig, value: number };
 export type HomeStatsData = Array<HomeStatData>;
 export type AutoCompleteData = Array<SectionListData<AutoCompleteEntryData>>;
 
+export interface CachingState {
+	running: boolean;
+	current: string;
+}
+
 class DataService {
 	db?: Database;
 	version = 1;
 	lastLyrics?: { id: string, data: Jam.TrackLyrics };
 	lastWaveform?: { id: string, data: Jam.WaveFormData };
+	private subjectCaching = new Subject<CachingState>();
+	cachingChange: Observable<CachingState> = this.subjectCaching.asObservable();
+	caching = {
+		running: false,
+		current: 'Caching 1/10'
+	};
 
 	constructor(public jam: JamService) {
 		this.open();
@@ -137,21 +149,23 @@ class DataService {
 		}
 	}
 
-	async get<T>(id: string, build: () => Promise<T>): Promise<T> {
-		const doc = await this.getDoc<T>(id);
-		if (doc) {
-			return doc.data;
+	async get<T>(forceRefresh: boolean, id: string, build: () => Promise<T>): Promise<T> {
+		if (!forceRefresh) {
+			const doc = await this.getDoc<T>(id);
+			if (doc) {
+				return doc.data;
+			}
 		}
 		const result = await build();
 		if (!this.db) {
 			return result;
 		}
-		await this.db.insert('jam', ['data', 'key', 'date'], [JSON.stringify(result), id, Date.now()]);
+		await this.db.insert('jam', ['data', 'key', 'date', 'version'], [JSON.stringify(result), id, Date.now(), this.version]);
 		return result;
 	}
 
-	async albumIndex(albumType: Jam.AlbumType): Promise<Index> {
-		return this.get<Index>(`${this.jam.auth.auth?.server}/albumIndex/${albumType}`, async () => {
+	async albumIndex(albumType: Jam.AlbumType, forceRefresh: boolean = false): Promise<Index> {
+		return this.get<Index>(forceRefresh, `${this.jam.auth.auth?.server}/albumIndex/${albumType}`, async () => {
 			const data = await this.jam.album.index({albumType});
 			const result: Index = [];
 			data.groups.forEach(group => {
@@ -172,8 +186,8 @@ class DataService {
 		});
 	}
 
-	async artistIndex(albumType: Jam.AlbumType): Promise<Index> {
-		return this.get<Index>(`${this.jam.auth.auth?.server}/artistIndex/${albumType}`, async () => {
+	async artistIndex(albumType: Jam.AlbumType, forceRefresh: boolean = false): Promise<Index> {
+		return this.get<Index>(forceRefresh, `${this.jam.auth.auth?.server}/artistIndex/${albumType}`, async () => {
 			const data = await this.jam.artist.index({albumType});
 			const result: Index = [];
 			data.groups.forEach(group => {
@@ -194,8 +208,8 @@ class DataService {
 		});
 	}
 
-	async folderIndex(): Promise<Index> {
-		return this.get<Index>(`${this.jam.auth.auth?.server}/folderIndex`, async () => {
+	async folderIndex(forceRefresh: boolean = false): Promise<Index> {
+		return this.get<Index>(forceRefresh, `${this.jam.auth.auth?.server}/folderIndex`, async () => {
 			const data = await this.jam.folder.index({level: 1});
 			const result: Index = [];
 			data.groups.forEach(group => {
@@ -216,8 +230,8 @@ class DataService {
 		});
 	}
 
-	async seriesIndex(): Promise<Index> {
-		return this.get<Index>(`${this.jam.auth.auth?.server}/seriesIndex`, async () => {
+	async seriesIndex(forceRefresh: boolean = false): Promise<Index> {
+		return this.get<Index>(forceRefresh, `${this.jam.auth.auth?.server}/seriesIndex`, async () => {
 			const data = await this.jam.series.index({});
 			const result: Index = [];
 			data.groups.forEach(group => {
@@ -238,8 +252,8 @@ class DataService {
 		});
 	}
 
-	async stats(): Promise<HomeStatsData> {
-		return this.get<HomeStatsData>(`${this.jam.auth.auth?.server}/stats`, async () => {
+	async stats(forceRefresh: boolean = false): Promise<HomeStatsData> {
+		return this.get<HomeStatsData>(forceRefresh, `${this.jam.auth.auth?.server}/stats`, async () => {
 			const stat = await this.jam.various.stats({});
 			const result: HomeStatsData = [
 				{
@@ -287,8 +301,8 @@ class DataService {
 		});
 	}
 
-	async album(id: string): Promise<AlbumData> {
-		return this.get<AlbumData>(`${this.jam.auth.auth?.server}/album/${id}`, async () => {
+	async album(id: string, forceRefresh: boolean = false): Promise<AlbumData> {
+		return this.get<AlbumData>(forceRefresh, `${this.jam.auth.auth?.server}/album/${id}`, async () => {
 			const result: AlbumData = {
 				album: await this.jam.album.id({id, albumTracks: true, trackTag: true}),
 				tracks: []
@@ -305,8 +319,8 @@ class DataService {
 		});
 	}
 
-	async artist(id: string): Promise<ArtistData> {
-		return this.get<ArtistData>(`${this.jam.auth.auth?.server}/artist/${id}`, async () => {
+	async artist(id: string, forceRefresh: boolean = false): Promise<ArtistData> {
+		return this.get<ArtistData>(forceRefresh, `${this.jam.auth.auth?.server}/artist/${id}`, async () => {
 			const artist = await this.jam.artist.id({id, artistAlbums: true});
 			const sections: Array<SectionListData<ItemData<Jam.Album>>> = [];
 			(artist.albums || []).forEach(album => {
@@ -334,8 +348,8 @@ class DataService {
 		});
 	}
 
-	async folder(id: string): Promise<FolderData> {
-		return this.get<FolderData>(`${this.jam.auth.auth?.server}/folder/${id}`, async () => {
+	async folder(id: string, forceRefresh: boolean = false): Promise<FolderData> {
+		return this.get<FolderData>(forceRefresh, `${this.jam.auth.auth?.server}/folder/${id}`, async () => {
 			const result: FolderData = {
 				folder: await this.jam.folder.id({id, folderTag: true, folderChildren: true, trackTag: true}),
 				tracks: []
@@ -352,8 +366,8 @@ class DataService {
 		});
 	}
 
-	async series(id: string): Promise<SeriesData> {
-		return this.get<SeriesData>(`${this.jam.auth.auth?.server}/series/${id}`, async () => {
+	async series(id: string, forceRefresh: boolean = false): Promise<SeriesData> {
+		return this.get<SeriesData>(forceRefresh, `${this.jam.auth.auth?.server}/series/${id}`, async () => {
 			const series = await this.jam.series.id({id, seriesAlbums: true});
 			const sections: Array<SectionListData<ItemData<Jam.Album>>> = [];
 			(series.albums || []).forEach((album: Jam.Album) => {
@@ -478,6 +492,94 @@ class DataService {
 		return sections;
 	}
 
+	startCaching(): void {
+		if (!this.caching.running) {
+			this.fillCache().catch(e => {
+				console.error(e);
+				this.stopCaching();
+			});
+		}
+		this.caching.running = true;
+		this.subjectCaching.next(this.caching);
+	}
+
+	async fillCache(): Promise<void> {
+		let artistIDs: Array<string> = [];
+		let albumIDs: Array<string> = [];
+		let seriesIDs: Array<string> = [];
+		const forceRefesh = false;
+		const tasks: Array<() => Promise<void>> = [
+			async (): Promise<void> => {
+				await this.stats(forceRefesh);
+			},
+			async (): Promise<void> => {
+				const index = await this.artistIndex(AlbumType.album, forceRefesh);
+				artistIDs = artistIDs.concat(index.map(o => o.id));
+			},
+			...[
+				AlbumType.album, AlbumType.live, AlbumType.compilation, AlbumType.soundtrack, AlbumType.audiobook,
+				AlbumType.series, AlbumType.bootleg, AlbumType.ep, AlbumType.single
+			].map(albumType => {
+				return async (): Promise<void> => {
+					const index = await this.albumIndex(albumType, forceRefesh);
+					albumIDs = albumIDs.concat(index.map(o => o.id));
+				};
+			}),
+			async (): Promise<void> => {
+				await this.folderIndex(forceRefesh);
+			},
+			async (): Promise<void> => {
+				const index = await this.seriesIndex(forceRefesh);
+				seriesIDs = seriesIDs.concat(index.map(o => o.id));
+			}
+		];
+		let i = 0;
+		for (const task of tasks) {
+			i += 1;
+			this.caching.current = `1/4 Caching Index ${i}/${tasks.length}`;
+			this.subjectCaching.next(this.caching);
+			await task();
+			if (!this.caching.running) {
+				break;
+			}
+		}
+		i = 0;
+		for (const id of seriesIDs) {
+			i += 1;
+			this.caching.current = `2/4 Caching Series ${i}/${seriesIDs.length}`;
+			this.subjectCaching.next(this.caching);
+			await this.series(id, forceRefesh);
+			if (!this.caching.running) {
+				break;
+			}
+		}
+		i = 0;
+		for (const id of artistIDs) {
+			i += 1;
+			this.caching.current = `3/4 Caching Artist ${i}/${artistIDs.length}`;
+			this.subjectCaching.next(this.caching);
+			await this.artist(id, forceRefesh);
+			if (!this.caching.running) {
+				break;
+			}
+		}
+		i = 0;
+		for (const id of albumIDs) {
+			i += 1;
+			this.caching.current = `4/4 Caching Albums ${i}/${albumIDs.length}`;
+			this.subjectCaching.next(this.caching);
+			await this.album(id, forceRefesh);
+			if (!this.caching.running) {
+				break;
+			}
+		}
+		this.stopCaching();
+	}
+
+	stopCaching(): void {
+		this.caching.running = false;
+		this.subjectCaching.next(this.caching);
+	}
 }
 
 const configuration = new JamConfigurationService();
