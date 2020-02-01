@@ -20,10 +20,10 @@ export class AppNavigator extends React.PureComponent {
 		try {
 			await jam.auth.check();
 			this.setState({hasUser: jam.auth.isLoggedIn(), isLoading: false});
-			SplashScreen.hide();
 		} catch (e) {
 			this.setState({hasUser: false, isLoading: false});
 		}
+		SplashScreen.hide();
 	}
 
 	private loginHandler = async (server: string, name: string, password: string): Promise<void> => {
