@@ -1,5 +1,5 @@
 import React from 'react';
-import {PanResponder, StyleProp, StyleSheet, Text, TouchableWithoutFeedback, View, ViewStyle} from 'react-native';
+import {PanResponder, StyleSheet, Text, TouchableWithoutFeedback, View} from 'react-native';
 import {AtoZLetter} from './AtoZLetter';
 
 const styles = StyleSheet.create({
@@ -54,7 +54,6 @@ interface SectionItem {
 
 interface AtoZPickerProps<T> {
 	data: ReadonlyArray<T> | null | undefined;
-	style: StyleProp<ViewStyle>;
 	onTouchStart?: () => void;
 	onTouchEnd?: () => void;
 	onTouchLetter?: (letter: string) => void;

@@ -28,7 +28,8 @@ export const staticTheme = {
 	margin: 10,
 	marginSmall: 5,
 
-	statusBarOffset: 25
+	statusBarOffset: 25,
+	a2zWidth: 40,
 };
 
 // export type ITheme = ReturnType<typeof useTheme>;

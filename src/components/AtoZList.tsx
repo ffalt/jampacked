@@ -14,7 +14,6 @@ export function commonItemLayout(itemHeight: number = 60): commonItemLayoutFunc 
 
 interface AtoZListProps<T> extends FlatListProps<T> {
 	itemHeight: number;
-	pickerStyle?: StyleProp<ViewProps>;
 }
 
 interface SectionItem {
@@ -49,7 +48,6 @@ export default class AtoZList<T extends SectionItem> extends PureComponent<AtoZL
 				/>
 				<AtoZPicker
 					data={this.props.data}
-					style={this.props.pickerStyle}
 					onTouchLetter={this.onTouchLetter}
 				/>
 			</View>
