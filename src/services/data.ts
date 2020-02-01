@@ -61,6 +61,11 @@ export interface AlbumData {
 	tracks: Array<TrackEntry>;
 }
 
+export interface FolderData {
+	folder: Jam.Folder;
+	tracks: Array<TrackEntry>;
+}
+
 export interface IndexEntry {
 	id: string;
 	title: string;
@@ -86,6 +91,7 @@ export type AutoCompleteData = Array<SectionListData<AutoCompleteEntryData>>;
 class DataService {
 	db?: Database;
 	version = 1;
+	lastLyrics?: { id: string, data: Jam.TrackLyrics };
 	lastWaveform?: { id: string, data: Jam.WaveFormData };
 
 	constructor(public jam: JamService) {
@@ -180,6 +186,28 @@ class DataService {
 						link: {
 							route: HomeRoute.ARTIST,
 							params: {id: entry.artistID, name: entry.name}
+						}
+					});
+				});
+			});
+			return result;
+		});
+	}
+
+	async folderIndex(): Promise<Index> {
+		return this.get<Index>(`${this.jam.auth.auth?.server}/folderIndex`, async () => {
+			const data = await this.jam.folder.index({level: 1});
+			const result: Index = [];
+			data.groups.forEach(group => {
+				group.entries.forEach(entry => {
+					result.push({
+						id: entry.folderID,
+						desc: `Tracks: ${entry.trackCount}`,
+						title: entry.name,
+						letter: group.name,
+						link: {
+							route: HomeRoute.FOLDER,
+							params: {id: entry.folderID, name: entry.name}
 						}
 					});
 				});
@@ -306,6 +334,50 @@ class DataService {
 		});
 	}
 
+	async folder(id: string): Promise<FolderData> {
+		return this.get<FolderData>(`${this.jam.auth.auth?.server}/folder/${id}`, async () => {
+			const result: FolderData = {
+				folder: await this.jam.folder.id({id, folderTag: true, folderChildren: true, trackTag: true}),
+				tracks: []
+			};
+			if (result.folder && result.folder.tracks) {
+				result.tracks = result.folder.tracks.map(track => ({
+					entry: track,
+					title: track.tag?.title || track.name,
+					trackNr: (track.tag?.disc ? `${track.tag?.disc}-` : '') + (track.tag?.trackNr || ''),
+					duration: formatDuration(track.duration)
+				}));
+			}
+			return result;
+		});
+	}
+
+	async series(id: string): Promise<SeriesData> {
+		return this.get<SeriesData>(`${this.jam.auth.auth?.server}/series/${id}`, async () => {
+			const series = await this.jam.series.id({id, seriesAlbums: true});
+			const sections: Array<SectionListData<ItemData<Jam.Album>>> = [];
+			(series.albums || []).forEach((album: Jam.Album) => {
+				let section = sections.find(s => s.key === album.albumType);
+				if (!section) {
+					section = {
+						key: album.albumType,
+						title: album.albumType,
+						data: []
+					};
+					sections.push(section);
+				}
+				section.data = section.data.concat([{
+					obj: album,
+					id: album.id,
+					title: album.name,
+					desc: `Episode ${album.seriesNr}`,
+					link: {route: HomeRoute.ALBUM, params: {id: album.id, name: album.name}}
+				}]);
+			});
+			return {series, sections};
+		});
+	}
+
 	get currentUserName(): string {
 		return (this.jam.auth?.user?.name || '');
 	}
@@ -319,7 +391,12 @@ class DataService {
 	}
 
 	async lyrics(id: string): Promise<Jam.TrackLyrics> {
-		return this.jam.track.lyrics({id});
+		if (this.lastLyrics && this.lastLyrics.id === id) {
+			return this.lastLyrics.data;
+		}
+		const data = await this.jam.track.lyrics({id});
+		this.lastLyrics = {id, data};
+		return data;
 	}
 
 	async waveform(id: string): Promise<Jam.WaveFormData> {
@@ -344,7 +421,9 @@ class DataService {
 	}
 
 	async autocomplete(query: string): Promise<AutoCompleteData> {
-		const result = await this.jam.various.autocomplete({query, album: 5, artist: 5, playlist: 5, podcast: 5, track: 5, episode: 5});
+		const result = await this.jam.various.autocomplete(
+			{query, album: 5, artist: 5, playlist: 5, podcast: 5, track: 5, episode: 5, series: 5}
+		);
 		const sections: AutoCompleteData = [];
 		if (result) {
 			if (result.albums && result.albums.length > 0) {
@@ -389,33 +468,16 @@ class DataService {
 					data: result.playlists.map(entry => ({...entry, route: HomeRoute.PLAYLIST}))
 				});
 			}
+			if (result.series && result.series.length > 0) {
+				sections.push({
+					key: 'Series',
+					data: result.series.map(entry => ({...entry, route: HomeRoute.SERIESITEM}))
+				});
+			}
 		}
 		return sections;
 	}
 
-	public async series(id: string): Promise<SeriesData> {
-		const series = await this.jam.series.id({id, seriesAlbums: true});
-		const sections: Array<SectionListData<ItemData<Jam.Album>>> = [];
-		(series.albums || []).forEach((album: Jam.Album) => {
-			let section = sections.find(s => s.key === album.albumType);
-			if (!section) {
-				section = {
-					key: album.albumType,
-					title: album.albumType,
-					data: []
-				};
-				sections.push(section);
-			}
-			section.data = section.data.concat([{
-				obj: album,
-				id: album.id,
-				title: album.name,
-				desc: `Episode ${album.seriesNr}`,
-				link: {route: HomeRoute.ALBUM, params: {id: album.id, name: album.name}}
-			}]);
-		});
-		return {series, sections};
-	}
 }
 
 const configuration = new JamConfigurationService();
