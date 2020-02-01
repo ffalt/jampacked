@@ -3,15 +3,8 @@ import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import JamImage from './JamImage';
 import ThemedText from './ThemedText';
 import {staticTheme} from '../style/theming';
-
-export interface IndexEntry {
-	id: string;
-	title: string;
-	desc: string;
-	letter: string;
-
-	click(): void;
-}
+import {IndexEntry} from '../services/data';
+import NavigationService from '../services/navigation';
 
 const styles = StyleSheet.create({
 	SectionHeader: {
@@ -48,7 +41,7 @@ const styles = StyleSheet.create({
 export class IndexListItem extends React.PureComponent<{ item: IndexEntry }> {
 
 	private click = (): void => {
-		this.props.item.click();
+		NavigationService.navigateLink(this.props.item.link);
 	};
 
 	render(): JSX.Element {

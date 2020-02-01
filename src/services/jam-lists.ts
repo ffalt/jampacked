@@ -90,7 +90,10 @@ export function getTypeByAlbumType(albumType: string): JamType | undefined {
 	return JamUrlTypes.find(part => part.albumType === albumType);
 }
 
-export function getUrlTypeByID(val: string): JamType | undefined {
+export function getUrlTypeByID(val?: string): JamType | undefined {
+	if (!val) {
+		return;
+	}
 	return JamUrlTypes.find(part => part.id === val);
 }
 

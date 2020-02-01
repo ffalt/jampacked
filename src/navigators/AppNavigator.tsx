@@ -4,8 +4,8 @@ import SplashScreen from 'react-native-splash-screen';
 import LoadingScreen from '../screens/LoadingScreen';
 import {AppStackNavigatorParamList, AuthContext, Routing} from './Routing';
 import LoginScreen from '../screens/LoginScreen';
-import jam from '../services/jamapi';
 import {ModalNavigator} from './ModalNavigator';
+import dataService from '../services/data';
 
 const Stack = createStackNavigator<AppStackNavigatorParamList>();
 
@@ -16,10 +16,10 @@ export class AppNavigator extends React.PureComponent {
 	};
 
 	async componentDidMount(): Promise<void> {
-		await jam.auth.load();
+		await dataService.jam.auth.load();
 		try {
-			await jam.auth.check();
-			this.setState({hasUser: jam.auth.isLoggedIn(), isLoading: false});
+			await dataService.jam.auth.check();
+			this.setState({hasUser: dataService.jam.auth.isLoggedIn(), isLoading: false});
 		} catch (e) {
 			this.setState({hasUser: false, isLoading: false});
 		}
@@ -27,13 +27,13 @@ export class AppNavigator extends React.PureComponent {
 	}
 
 	private loginHandler = async (server: string, name: string, password: string): Promise<void> => {
-		await jam.auth.login(server, name, password);
-		this.setState({hasUser: jam.auth.isLoggedIn()});
+		await dataService.jam.auth.login(server, name, password);
+		this.setState({hasUser: dataService.jam.auth.isLoggedIn()});
 	};
 
 	private logoutHandler = async (): Promise<void> => {
 		try {
-			await jam.auth.logout();
+			await dataService.jam.auth.logout();
 		} catch (e) {
 			console.error(e);
 		}

@@ -48,7 +48,7 @@ export interface ITheme {
 	sliderHandle: string;
 	activeTintColor: string;
 	inactiveTintColor: string;
-	barStyle: string;
+	barStyle: 'default' | 'light-content' | 'dark-content';
 	navigation: NavigationTheme;
 	waveform: {
 		active: string;

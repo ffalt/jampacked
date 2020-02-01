@@ -6,8 +6,8 @@ import {ProgressComponent, useTrackPlayerProgress} from '../services/player-api'
 import {JamPlayer, useCurrentTrackID} from '../services/player';
 import {ITheme, staticTheme, useTheme, withTheme} from '../style/theming';
 import {SoundCloudWave} from './Waveform';
-import jam from '../services/jamapi';
 import {Jam} from '../services/jam';
+import dataService from '../services/data';
 
 const dimensionsWidth = Dimensions.get('window').width;
 
@@ -71,7 +71,7 @@ class PlayerProgressWaveformLoader extends PureComponent<{ id?: string; style?: 
 		if (!id) {
 			return;
 		}
-		const waveform = await jam.media.waveform_json({id});
+		const waveform = await dataService.waveform(id);
 		this.setState({waveform});
 	}
 }

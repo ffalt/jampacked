@@ -86,8 +86,15 @@ export enum HomeRoute {
 	ALBUMS = 'Albums',
 	ARTISTS = 'Artists',
 	ARTIST = 'Artist',
+	FOLDER = 'Folder',
+	PODCAST = 'Podcast',
+	EPISODE = 'Episode',
+	PLAYLIST = 'Playlist',
+	TRACK = 'Track',
 	ALBUM = 'Album',
 	START = 'Start',
+	TRACKS= 'Tracks',
+	FOLDERS= 'Folder'
 }
 
 export type HomeStackNavigatorParamList = {

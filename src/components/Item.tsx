@@ -3,15 +3,8 @@ import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import ThemedText from './ThemedText';
 import {staticTheme} from '../style/theming';
 import JamImage from './JamImage';
-
-export interface ItemData<T> {
-	id: string;
-	title: string;
-	desc: string;
-	obj: T;
-
-	click(): void;
-}
+import {ItemData} from '../services/data';
+import NavigationService from '../services/navigation';
 
 const styles = StyleSheet.create({
 	item: {
@@ -37,7 +30,7 @@ const styles = StyleSheet.create({
 export default class Item extends PureComponent<{ item: ItemData<any> }> {
 
 	private click = (): void => {
-		this.props.item.click();
+		NavigationService.navigateLink(this.props.item.link);
 	};
 
 	render(): JSX.Element {

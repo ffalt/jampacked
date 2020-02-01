@@ -2,13 +2,14 @@ import React from 'react';
 import {SectionList, SectionListData, StyleSheet, TextInput, TouchableOpacity, View} from 'react-native';
 import debounce from 'lodash.debounce';
 import ThemedText from '../components/ThemedText';
-import {BottomTabRoute, BottomTabWithThemeProps, HomeRoute} from '../navigators/Routing';
+import {BottomTabRoute, BottomTabWithThemeProps} from '../navigators/Routing';
 import {staticTheme, withTheme} from '../style/theming';
 import ThemedIcon from '../components/ThemedIcon';
 import {Jam} from '../services/jam';
-import jam from '../services/jamapi';
 import Separator from '../components/Separator';
 import JamImage from '../components/JamImage';
+import dataService, {AutoCompleteData, AutoCompleteEntryData} from '../services/data';
+import NavigationService from '../services/navigation';
 
 const styles = StyleSheet.create({
 	container: {
@@ -71,98 +72,15 @@ const styles = StyleSheet.create({
 	}
 });
 
-interface AutoCompleteEntryData extends Jam.AutoCompleteEntry {
-	click: () => void;
-}
 
-function AutoCompleteResult({result, navigation}: { result: Jam.AutoComplete | undefined, navigation: any /* TODO: type */ }): JSX.Element {
-	const sections: Array<SectionListData<AutoCompleteEntryData>> = [];
-	if (result) {
-		if (result.albums && result.albums.length > 0) {
-			sections.push({
-				key: 'Albums',
-				data: result.albums.map(entry => ({
-					...entry,
-					click: (): void => {
-						navigation.navigate(HomeRoute.ALBUM, {id: entry.id, name: entry.name});
-					}
-				}))
-			});
-		}
-		if (result.artists && result.artists.length > 0) {
-			sections.push({
-				key: 'Artists',
-				data: result.artists.map(entry => ({
-					...entry,
-					click: (): void => {
-						navigation.navigate(HomeRoute.ARTIST, {id: entry.id, name: entry.name});
-					}
-				}))
-			});
-		}
-		if (result.tracks && result.tracks.length > 0) {
-			sections.push({
-				key: 'Tracks',
-				data: result.tracks.map(entry => ({
-					...entry,
-					click: (): void => {
-						// navigation.navigate(HomeRoute.TRACK, {id: entry.id, name: entry.name});
-					}
-				}))
-			});
-		}
-		if (result.folders && result.folders.length > 0) {
-			sections.push({
-				key: 'Folders',
-				data: result.folders.map(entry => ({
-					...entry,
-					click: (): void => {
-						// navigation.navigate(HomeRoute.FOLDER, {id: entry.id, name: entry.name});
-					}
-				}))
-			});
-		}
-		if (result.podcasts && result.podcasts.length > 0) {
-			sections.push({
-				key: 'Podcasts',
-				data: result.podcasts.map(entry => ({
-					...entry,
-					click: (): void => {
-						// navigation.navigate(HomeRoute.PODCAST, {id: entry.id, name: entry.name});
-					}
-				}))
-			});
-		}
-		if (result.episodes && result.episodes.length > 0) {
-			sections.push({
-				key: 'Podcast Episodes',
-				data: result.episodes.map(entry => ({
-					...entry,
-					click: (): void => {
-						// navigation.navigate(HomeRoute.EPISODE, {id: entry.id, name: entry.name});
-					}
-				}))
-			});
-		}
-		if (result.playlists && result.playlists.length > 0) {
-			sections.push({
-				key: 'Playlists',
-				data: result.playlists.map(entry => ({
-					...entry,
-					click: (): void => {
-						// navigation.navigate(HomeRoute.PLAYLIST, {id: entry.id, name: entry.name});
-					}
-				}))
-			});
-		}
-	}
+function AutoCompleteResult({result}: { result: AutoCompleteData | undefined }): JSX.Element {
 
 	const renderSection = ({section}: { section: SectionListData<AutoCompleteEntryData> }): JSX.Element => <ThemedText style={styles.section}>{section.key}</ThemedText>;
 
 	const renderItem = ({item}: { item: AutoCompleteEntryData }): JSX.Element => {
 
 		const click = (): void => {
-			item.click();
+			NavigationService.navigate(item.route, {id: item.id, name: item.name});
 		};
 
 		return (
@@ -175,12 +93,12 @@ function AutoCompleteResult({result, navigation}: { result: Jam.AutoComplete | u
 		);
 	};
 
-	const keyExtractor = (item: { id: string; name: string; }): string => item.id;
+	const keyExtractor = (item: AutoCompleteEntryData): string => item.id;
 
 	return (
 		<SectionList
 			style={styles.list}
-			sections={sections}
+			sections={result || []}
 			ItemSeparatorComponent={Separator}
 			SectionSeparatorComponent={Separator}
 			keyExtractor={keyExtractor}
@@ -193,7 +111,7 @@ function AutoCompleteResult({result, navigation}: { result: Jam.AutoComplete | u
 class SearchScreen extends React.PureComponent<BottomTabWithThemeProps<BottomTabRoute.SEARCH>> {
 	state: {
 		search: string | undefined;
-		result: Jam.AutoComplete | undefined;
+		result: AutoCompleteData| undefined;
 	} = {
 		search: undefined,
 		result: undefined
@@ -201,7 +119,7 @@ class SearchScreen extends React.PureComponent<BottomTabWithThemeProps<BottomTab
 
 	private handleInput = (query?: string): void => {
 		if (query && query.length) {
-			jam.various.autocomplete({query, album: 5, artist: 5, playlist: 5, podcast: 5, track: 5, episode: 5})
+			dataService.autocomplete(query)
 				.then(result => {
 					if (this.state.search === query) {
 						this.setState({result});
@@ -254,7 +172,7 @@ class SearchScreen extends React.PureComponent<BottomTabWithThemeProps<BottomTab
 					/>
 					{cancel}
 				</View>
-				<AutoCompleteResult result={this.state.result} navigation={this.props.navigation}/>
+				<AutoCompleteResult result={this.state.result}/>
 			</View>
 		);
 	}

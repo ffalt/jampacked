@@ -1,8 +1,6 @@
 import React from 'react';
 import {FlatList, StyleSheet, TouchableOpacity} from 'react-native';
 import ThemedText from '../components/ThemedText';
-import {Jam} from '../services/jam';
-import jam from '../services/jamapi';
 import {withTheme} from '../style/theming';
 import TrackItem from '../components/TrackItem';
 import {HomeRoute, HomeStackWithThemeProps} from '../navigators/Routing';
@@ -11,6 +9,7 @@ import ThemedIcon from '../components/ThemedIcon';
 import ObjHeader, {objHeaderStyles} from '../components/ObjHeader';
 import {genreDisplay} from '../utils/genre.utils';
 import Separator from '../components/Separator';
+import dataService, {AlbumData, TrackEntry} from '../services/data';
 
 const styles = StyleSheet.create({
 	playButton: {
@@ -28,11 +27,9 @@ const styles = StyleSheet.create({
 
 class AlbumScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute.ALBUM>> {
 	state: {
-		album: Jam.Album | undefined;
-		tracks: Array<Jam.Track>;
+		data?: AlbumData;
 	} = {
-		album: undefined,
-		tracks: []
+		data: undefined
 	};
 
 	componentDidMount(): void {
@@ -48,22 +45,25 @@ class AlbumScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute.
 	}
 
 	private async load(id: string): Promise<void> {
+		this.setState({data: undefined});
 		if (!id) {
 			return;
 		}
-		const album = await jam.album.id({id, albumTracks: true, trackTag: true});
-		this.setState({album, tracks: album.tracks});
+		const data = await dataService.album(id);
+		this.setState({data});
 	}
 
 	private toArtist = (): void => {
-		if (this.state.album && this.state.album.artistID) {
-			this.props.navigation.navigate(HomeRoute.ARTIST, {id: this.state.album.artistID, name: this.state.album.artist || ''});
+		if (this.state.data && this.state.data.album.artistID) {
+			this.props.navigation.navigate(HomeRoute.ARTIST, {id: this.state.data.album.artistID, name: this.state.data.album.artist || ''});
 		}
 	};
 
 	private playTracks = (): void => {
-		JamPlayer.playTracks(this.state.tracks)
-			.catch(e => console.error(e));
+		if (this.state.data?.album.tracks) {
+			JamPlayer.playTracks(this.state.data.album.tracks)
+				.catch(e => console.error(e));
+		}
 	};
 
 	private renderHeader = (): JSX.Element => {
@@ -84,24 +84,24 @@ class AlbumScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute.
 			>
 				<ThemedText style={objHeaderStyles.ListHeaderUpperLabel}>Artist</ThemedText>
 				<TouchableOpacity onPress={this.toArtist}>
-					<ThemedText style={objHeaderStyles.ListHeaderUpperTitle}>{this.state.album?.artist}</ThemedText>
+					<ThemedText style={objHeaderStyles.ListHeaderUpperTitle}>{this.state.data?.album.artist}</ThemedText>
 				</TouchableOpacity>
 				<ThemedText style={objHeaderStyles.ListHeaderUpperLabel}>Tracks</ThemedText>
-				<ThemedText style={objHeaderStyles.ListHeaderUpperTitle}>{this.state.album?.trackCount}</ThemedText>
+				<ThemedText style={objHeaderStyles.ListHeaderUpperTitle}>{this.state.data?.album.trackCount}</ThemedText>
 				<ThemedText style={objHeaderStyles.ListHeaderUpperLabel}>Genre</ThemedText>
-				<ThemedText style={objHeaderStyles.ListHeaderUpperTitle}>{genreDisplay(this.state.album?.genres)}</ThemedText>
+				<ThemedText style={objHeaderStyles.ListHeaderUpperTitle}>{genreDisplay(this.state.data?.album.genres)}</ThemedText>
 			</ObjHeader>
 		);
 	};
 
-	private keyExtractor = (item: Jam.Track): string => item.id;
+	private keyExtractor = (item: TrackEntry): string => item.entry.id;
 
-	private renderItem = ({item}: { item: Jam.Track }): JSX.Element => (<TrackItem track={item}/>);
+	private renderItem = ({item}: { item: TrackEntry }): JSX.Element => (<TrackItem track={item}/>);
 
 	render(): JSX.Element {
 		return (
 			<FlatList
-				data={this.state.tracks}
+				data={this.state.data?.tracks}
 				renderItem={this.renderItem}
 				keyExtractor={this.keyExtractor}
 				ItemSeparatorComponent={Separator}

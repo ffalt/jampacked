@@ -2,11 +2,11 @@ import React from 'react';
 import {SectionList, SectionListData, StyleSheet, TouchableOpacity} from 'react-native';
 import ThemedText from '../components/ThemedText';
 import {Jam} from '../services/jam';
-import jam from '../services/jamapi';
 import {staticTheme, withTheme} from '../style/theming';
 import {HomeRoute, HomeStackWithThemeProps} from '../navigators/Routing';
-import Item, {ItemData} from '../components/Item';
+import Item from '../components/Item';
 import ObjHeader, {objHeaderStyles} from '../components/ObjHeader';
+import dataService, {ItemData, SeriesData} from '../services/data';
 
 const styles = StyleSheet.create({
 	ListHeaderTitle: {
@@ -32,11 +32,9 @@ const styles = StyleSheet.create({
 
 class SeriesItemScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute.SERIESITEM>> {
 	state: {
-		series?: Jam.Series,
-		sections: Array<SectionListData<ItemData<Jam.Album>>>;
+		data?: SeriesData;
 	} = {
-		series: undefined,
-		sections: []
+		data: undefined
 	};
 
 	componentDidMount(): void {
@@ -52,37 +50,18 @@ class SeriesItemScreen extends React.PureComponent<HomeStackWithThemeProps<HomeR
 	}
 
 	private async load(id: string): Promise<void> {
+		this.setState({data: undefined});
 		if (!id) {
 			return;
 		}
-		const series = await jam.series.id({id, seriesAlbums: true});
-		const sections: Array<SectionListData<ItemData<Jam.Album>>> = [];
-		(series.albums || []).forEach(album => {
-			let section = sections.find(s => s.key === album.albumType);
-			if (!section) {
-				section = {
-					key: album.albumType,
-					title: album.albumType,
-					data: []
-				};
-				sections.push(section);
-			}
-			section.data = section.data.concat([{
-				obj: album,
-				id: album.id,
-				title: album.name,
-				desc: `Episode ${album.seriesNr}`,
-				click: (): void => {
-					this.props.navigation.navigate(HomeRoute.ALBUM, {id: album.id, name: album.name});
-				}
-			}]);
-		});
-		this.setState({series, sections});
+		const data = await dataService.series(id);
+		this.setState({data});
 	}
 
 	private toArtist = (): void => {
-		if (this.state.series && this.state.series.artistID) {
-			this.props.navigation.navigate(HomeRoute.ARTIST, {id: this.state.series.artistID, name: this.state.series.artist || ''});
+		if (this.state.data?.series && this.state.data?.series.artistID) {
+			this.props.navigation.navigate(HomeRoute.ARTIST,
+				{id: this.state.data.series.artistID, name: this.state.data.series.artist || ''});
 		}
 	};
 
@@ -90,10 +69,10 @@ class SeriesItemScreen extends React.PureComponent<HomeStackWithThemeProps<HomeR
 		<ObjHeader id={this.props.route?.params?.id} title={this.props.route?.params?.name}>
 			<ThemedText style={objHeaderStyles.ListHeaderUpperLabel}>Artist</ThemedText>
 			<TouchableOpacity onPress={this.toArtist}>
-				<ThemedText style={objHeaderStyles.ListHeaderUpperTitle}>{this.state.series?.artist}</ThemedText>
+				<ThemedText style={objHeaderStyles.ListHeaderUpperTitle}>{this.state.data?.series.artist}</ThemedText>
 			</TouchableOpacity>
 			<ThemedText style={objHeaderStyles.ListHeaderUpperLabel}>Tracks</ThemedText>
-			<ThemedText style={objHeaderStyles.ListHeaderUpperTitle}>{this.state.series?.trackCount}</ThemedText>
+			<ThemedText style={objHeaderStyles.ListHeaderUpperTitle}>{this.state.data?.series.trackCount}</ThemedText>
 			<ThemedText style={objHeaderStyles.ListHeaderUpperLabel}>Genre</ThemedText>
 			<ThemedText style={objHeaderStyles.ListHeaderUpperTitle}>Audio Series</ThemedText>
 		</ObjHeader>
@@ -108,9 +87,10 @@ class SeriesItemScreen extends React.PureComponent<HomeStackWithThemeProps<HomeR
 	private keyExtractor = (item: ItemData<Jam.Album>): string => item.id;
 
 	render(): JSX.Element {
+		const sections = this.state.data?.sections || [];
 		return (
 			<SectionList
-				sections={this.state.sections}
+				sections={sections}
 				ListHeaderComponent={this.renderHeader}
 				keyExtractor={this.keyExtractor}
 				renderSectionHeader={this.renderSection}

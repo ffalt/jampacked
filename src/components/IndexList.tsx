@@ -1,17 +1,12 @@
 import React from 'react';
-import {SectionListData} from 'react-native';
-import {ITheme} from '../style/theming';
+import {ITheme, withTheme} from '../style/theming';
 import PageHeader from './PageHeader';
 import Separator from './Separator';
 import AtoZList from './AtoZList';
-import {IndexEntry, IndexListItem} from './IndexListItem';
+import {IndexListItem} from './IndexListItem';
+import {Index, IndexEntry} from '../services/data';
 
-export interface Index {
-	sections: Array<SectionListData<IndexEntry>>;
-	all: Array<IndexEntry>;
-}
-
-export default class IndexList extends React.PureComponent<{ index: Index; title: string; theme: ITheme }> {
+class IndexList extends React.PureComponent<{ index: Index; title: string; theme: ITheme }> {
 
 	private renderHeader = (): JSX.Element => <PageHeader title={this.props.title}/>;
 
@@ -22,7 +17,7 @@ export default class IndexList extends React.PureComponent<{ index: Index; title
 	render(): JSX.Element {
 		return (
 			<AtoZList
-				data={this.props.index.all}
+				data={this.props.index || []}
 				renderItem={this.renderItem}
 				keyExtractor={this.keyExtractor}
 				ItemSeparatorComponent={Separator}
@@ -33,3 +28,5 @@ export default class IndexList extends React.PureComponent<{ index: Index; title
 	}
 
 }
+
+export default withTheme(IndexList);

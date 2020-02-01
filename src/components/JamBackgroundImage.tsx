@@ -2,8 +2,8 @@ import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import LinearGradient from 'react-native-linear-gradient';
-import jam from '../services/jamapi';
 import {ITheme, withTheme} from '../style/theming';
+import dataService from '../services/data';
 
 const styles = StyleSheet.create({
 	linearGradient: {
@@ -27,9 +27,9 @@ class FastImageBackground extends React.PureComponent<{ id: string, style?: any,
 			},
 			imageStyle
 		];
-		const headers = jam.auth.auth?.token ? {Authorization: `Bearer ${jam.auth.auth.token}`} : undefined;
+		const headers = dataService.currentUserToken ? {Authorization: `Bearer ${dataService.currentUserToken}`} : undefined;
 		const source = {
-			uri: jam.image.url(id, 300, undefined, !headers),
+			uri: dataService.jam.image.url(id, 300, undefined, !headers),
 			headers,
 			priority: FastImage.priority.normal
 		};

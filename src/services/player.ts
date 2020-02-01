@@ -1,7 +1,7 @@
 import {useEffect, useState} from 'react';
 import {AudioFormatType, Jam} from './jam';
-import jam from './jamapi';
 import {TrackPlayer, TrackPlayerEvents, useTrackPlayerEvents} from './player-api';
+import dataService from './data';
 
 export class JamPlayer {
 
@@ -19,13 +19,13 @@ export class JamPlayer {
 		await TrackPlayer.add(tracks.map(t => {
 			const track: TrackPlayer.Track = {
 				id: t.id,
-				url: jam.media.stream_url(t.id, AudioFormatType.mp3),
+				url: dataService.jam.media.stream_url(t.id, AudioFormatType.mp3),
 				title: t.tag?.title || t.name,
 				artist: t.tag?.artist || '?',
 				album: t.tag?.album,
 				genre: t.tag?.genre,
 				duration: t.duration,
-				artwork: jam.image.url(t.id, 300)
+				artwork: dataService.jam.image.url(t.id, 300)
 				// type: TrackType.default;
 				// date: t.tag?.year,
 				// description?: string;

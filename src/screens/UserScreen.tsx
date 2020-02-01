@@ -5,7 +5,7 @@ import {ThemesView} from '../components/ThemesView';
 import ThemedText from '../components/ThemedText';
 import {staticTheme} from '../style/theming';
 import JamImage from '../components/JamImage';
-import jam from '../services/jamapi';
+import dataService from '../services/data';
 
 const styles = StyleSheet.create({
 	container: {
@@ -53,9 +53,9 @@ class UserScreen extends React.PureComponent<BottomTabProps<BottomTabRoute.SETTI
 				<ThemesView/>
 				<ThemedText style={styles.section}>Account</ThemedText>
 				<View style={styles.userSection}>
-					<JamImage id={jam.auth?.user?.id || ''} size={80} style={styles.userImage}/>
+					<JamImage id={dataService.currentUserID} size={80} style={styles.userImage}/>
 					<View style={styles.userName}>
-						<ThemedText>{jam.auth?.user?.name}</ThemedText>
+						<ThemedText>{dataService.currentUserName}</ThemedText>
 						<Button title="Logout" onPress={this.logout}/>
 					</View>
 				</View>

@@ -6,6 +6,7 @@ import {StatusBar} from 'react-native';
 import {AppNavigator} from './src/navigators/AppNavigator';
 import {ThemeContext, ThemeProvider, themes, ThemeSettings} from './src/style/theming';
 import {setAppAvailable} from './service';
+import NavigationService from './src/services/navigation';
 
 enableScreens();
 
@@ -33,8 +34,11 @@ export default class App extends React.Component {
 		return (
 			<ThemeContext.Provider value={this.state}>
 				<ThemeProvider theme={this.state.theme}>
-					<StatusBar translucent={true} backgroundColor="rgba(0,0,0,0.5)" barStyle={this.state.theme.barStyle} />
-					<NavigationNativeContainer theme={this.state.theme.navigation}>
+					<StatusBar translucent={true} backgroundColor="rgba(0,0,0,0.5)" barStyle={this.state.theme.barStyle}/>
+					<NavigationNativeContainer
+						theme={this.state.theme.navigation}
+						ref={NavigationService.setTopLevelNavigator}
+					>
 						<AppNavigator/>
 					</NavigationNativeContainer>
 				</ThemeProvider>

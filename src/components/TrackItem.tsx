@@ -1,10 +1,9 @@
 import React, {PureComponent} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {staticTheme} from '../style/theming';
-import {Jam} from '../services/jam';
-import DurationText from './DurationText';
 import {JamPlayer} from '../services/player';
 import ThemedText from './ThemedText';
+import {TrackEntry} from '../services/data';
 
 const styles = StyleSheet.create({
 	trackListContainer: {
@@ -39,10 +38,10 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default class TrackItem extends PureComponent<{ track: Jam.Track }> {
+export default class TrackItem extends PureComponent<{ track: TrackEntry }> {
 
 	private playTrack = (): void => {
-		JamPlayer.playTrack(this.props.track)
+		JamPlayer.playTrack(this.props.track.entry)
 			.catch(e => console.error(e));
 	};
 
@@ -50,15 +49,15 @@ export default class TrackItem extends PureComponent<{ track: Jam.Track }> {
 		return (
 			<TouchableOpacity onPress={this.playTrack} style={styles.trackListContainer}>
 				<View style={styles.trackListNumber}>
-					<ThemedText style={styles.trackNumberStyle}>{this.props.track.tag?.trackNr}</ThemedText>
+					<ThemedText style={styles.trackNumberStyle}>{this.props.track.trackNr}</ThemedText>
 				</View>
 
 				<View style={styles.trackListTitle}>
-					<ThemedText style={styles.trackTitleStyle}>{this.props.track.tag?.title}</ThemedText>
+					<ThemedText style={styles.trackTitleStyle}>{this.props.track.title}</ThemedText>
 				</View>
 
 				<View style={styles.trackListRuntime}>
-					<DurationText style={styles.trackRuntimeStyle} duration={this.props.track.duration}/>
+					<ThemedText style={styles.trackRuntimeStyle}>{this.props.track.duration}</ThemedText>
 				</View>
 			</TouchableOpacity>
 		);

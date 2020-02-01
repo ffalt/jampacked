@@ -1,9 +1,9 @@
 import {ScrollView, StyleSheet} from 'react-native';
 import React, {PureComponent} from 'react';
 import {useCurrentTrackID} from '../services/player';
-import jam from '../services/jamapi';
 import ThemedText from './ThemedText';
 import {staticTheme} from '../style/theming';
+import dataService from '../services/data';
 
 interface LyricsProps {
 	id?: string | null;
@@ -44,17 +44,20 @@ class Lyrics extends PureComponent<LyricsProps> {
 				this.setState({lyrics: ''});
 				return;
 			}
-			jam.track.lyrics({id: newProps.id})
-				.then(lyrics => {
-					if (lyrics && lyrics.lyrics) {
-						this.setState({lyrics: lyrics.lyrics});
-					} else {
-						this.setState({lyrics: '[No lyrics found]'});
-					}
-				})
+
+			this.load(newProps.id)
 				.catch(e => {
 					console.error(e);
 				});
+		}
+	}
+
+	async load(id: string): Promise<void> {
+		const lyrics = await dataService.lyrics(id);
+		if (lyrics && lyrics.lyrics) {
+			this.setState({lyrics: lyrics.lyrics});
+		} else {
+			this.setState({lyrics: '[No lyrics found]'});
 		}
 	}
 

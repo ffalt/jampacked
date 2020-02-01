@@ -1,19 +1,12 @@
 import React from 'react';
 import {ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {HomeRoute, HomeStackProps} from '../navigators/Routing';
-import jam from '../services/jamapi';
-import {AlbumType, Jam} from '../services/jam';
 import ThemedText from '../components/ThemedText';
-import {getTypeByAlbumType} from '../services/jam-lists';
 import JamImage from '../components/JamImage';
 import {staticTheme, useTheme} from '../style/theming';
 import Logo from '../components/Logo';
-
-export interface HomeEntry {
-	obj: Jam.Base;
-
-	click(): void;
-}
+import dataService, {HomeData, HomeEntry, HomeStatData, HomeStatsData} from '../services/data';
+import NavigationService from '../services/navigation';
 
 const styles = StyleSheet.create({
 	container: {
@@ -75,14 +68,14 @@ const styles = StyleSheet.create({
 });
 
 interface HomeStatProps {
-	stat: { text: string, click: () => void, value: number }
+	stat: HomeStatData
 }
 
 const HomeStat: React.FC<HomeStatProps> = (props: HomeStatProps): JSX.Element => {
 	const theme = useTheme();
 
 	const click = (): void => {
-		props.stat.click();
+		NavigationService.navigateLink(props.stat.link);
 	};
 
 	return (
@@ -96,7 +89,7 @@ const HomeStat: React.FC<HomeStatProps> = (props: HomeStatProps): JSX.Element =>
 };
 
 interface HomeStatsProps {
-	stats: Array<{ text: string, click: () => void, value: number }>;
+	stats: Array<HomeStatData>;
 }
 
 const HomeStats: React.FC<HomeStatsProps> = (props: HomeStatsProps): JSX.Element => {
@@ -119,7 +112,7 @@ const HomeSectionEntry: React.FC<HomeSectionEntryProps> = (props: HomeSectionEnt
 	const theme = useTheme();
 
 	const click = (): void => {
-		props.entry.click();
+		NavigationService.navigate(props.entry.route, {id: props.entry.obj.id, name: props.entry.obj.name});
 	};
 
 	return (
@@ -153,140 +146,43 @@ const HomeSection: React.FC<HomeSectionProps> = (props: HomeSectionProps): JSX.E
 };
 
 const WelcomeSection: React.FC = (): JSX.Element => {
-	const name = `Welcome, ${jam.auth?.user?.name}`;
+	const name = `Welcome, ${dataService.currentUserName}`;
+	const id = dataService.currentUserID;
 	return (
 		<View style={styles.userHeader}>
 			<Logo size={40}/>
 			<ThemedText style={styles.userHeaderText}>{name}</ThemedText>
-			<JamImage id={jam.auth?.user?.id || ''} size={40} style={styles.userImage}/>
+			<JamImage id={id} size={40} style={styles.userImage}/>
 		</View>
 	);
 };
 
 class HomeScreen extends React.PureComponent<HomeStackProps<HomeRoute.START>> {
 	state: {
-		artist_recent?: Array<HomeEntry>;
-		artist_faved?: Array<HomeEntry>;
-		album_faved?: Array<HomeEntry>;
-		album_recent?: Array<HomeEntry>;
-		stats: Array<{ text: string, click: () => void, value: number }>;
+		data?: HomeData;
+		stats: HomeStatsData;
 	} = {
+		data: undefined,
 		stats: []
 	};
 
+	async loadHome(): Promise<void> {
+		const data = await dataService.home();
+		this.setState({data});
+	}
+
+	async loadStats(): Promise<void> {
+		const stats = await dataService.stats();
+		this.setState({stats});
+	}
+
 	componentDidMount(): void {
-		jam.artist.list({list: 'recent', amount: 5})
-			.then(data => {
-				const artist_recent = data.items.map(obj => ({
-					obj,
-					click: (): void => {
-						this.goToArtist(obj.id, obj.name);
-					}
-				}));
-				this.setState({artist_recent});
-			})
-			.catch(e => {
-				console.error(e);
-			});
-		jam.artist.list({list: 'faved', amount: 5})
-			.then(data => {
-				const artist_faved = data.items.map(obj => ({
-					obj,
-					click: (): void => this.goToArtist(obj.id, obj.name)
-				}));
-				this.setState({artist_faved});
-			})
-			.catch(e => {
-				console.error(e);
-			});
-		jam.album.list({list: 'faved', amount: 5})
-			.then(data => {
-				const album_faved = data.items.map(obj => ({
-					obj,
-					click: (): void => this.goToAlbum(obj.id, obj.name)
-				}));
-				this.setState({album_faved});
-			})
-			.catch(e => {
-				console.error(e);
-			});
-		jam.album.list({list: 'recent', amount: 5})
-			.then(data => {
-				const album_recent = data.items.map(obj => ({
-					obj,
-					click: (): void => this.goToAlbum(obj.id, obj.name)
-				}));
-				this.setState({album_recent});
-			})
-			.catch(e => {
-				console.error(e);
-			});
-
-		jam.various.stats({})
-			.then(stat => {
-				const stats = [
-					{text: 'Artists', click: (): void => this.goToArtists(), value: stat.artistTypes.album},
-					...[
-						{type: getTypeByAlbumType(AlbumType.album), value: stat.albumTypes.album},
-						{type: getTypeByAlbumType(AlbumType.compilation), value: stat.albumTypes.compilation}
-					].map(t => ({
-						text: t.type?.text, click: (): void => this.goToAlbums(t.type?.id || ''), value: t.value
-					})),
-					{text: 'Series', click: (): void => this.goToSeries(), value: stat.series},
-					...[
-						{type: getTypeByAlbumType(AlbumType.audiobook), value: stat.albumTypes.audiobook},
-						{type: getTypeByAlbumType(AlbumType.soundtrack), value: stat.albumTypes.soundtrack},
-						{type: getTypeByAlbumType(AlbumType.live), value: stat.albumTypes.live},
-						{type: getTypeByAlbumType(AlbumType.bootleg), value: stat.albumTypes.bootleg},
-						{type: getTypeByAlbumType(AlbumType.ep), value: stat.albumTypes.ep},
-						{type: getTypeByAlbumType(AlbumType.single), value: stat.albumTypes.single}
-					].map(t => ({
-						text: t.type?.text, click: (): void => this.goToAlbums(t.type?.id || ''), value: t.value
-					})),
-					{
-						text: 'Folders',
-						click: (): void => this.goToFolders(),
-						value: stat.folder
-					},
-					{
-						text: 'Tracks',
-						click: (): void => this.goToTracks(),
-						value: stat.track
-					}
-				].filter(t => t.value > 0);
-				this.setState({stats});
-			})
-			.catch(e => {
-				console.error(e);
-			});
-	}
-
-	goToArtist(id: string, name: string): void {
-		this.props.navigation.navigate(HomeRoute.ARTIST, {id, name});
-	}
-
-	goToAlbums(albumTypeID: string): void {
-		this.props.navigation.navigate(HomeRoute.ALBUMS, {albumTypeID});
-	}
-
-	goToAlbum(id: string, name: string): void {
-		this.props.navigation.navigate(HomeRoute.ALBUM, {id, name});
-	}
-
-	goToFolders(): void {
-		// this.props.navigation.navigate(HomeRoute.FOLDERS);
-	}
-
-	goToTracks(): void {
-		// this.props.navigation.navigate(HomeRoute.TRACK);
-	}
-
-	goToArtists(): void {
-		this.props.navigation.navigate(HomeRoute.ARTISTS);
-	}
-
-	goToSeries(): void {
-		this.props.navigation.navigate(HomeRoute.SERIES);
+		this.loadStats().catch(e => {
+			console.error(e);
+		});
+		this.loadHome().catch(e => {
+			console.error(e);
+		});
 	}
 
 	render(): JSX.Element {
@@ -295,10 +191,10 @@ class HomeScreen extends React.PureComponent<HomeStackProps<HomeRoute.START>> {
 				<View style={styles.container}>
 					<WelcomeSection/>
 					<HomeStats stats={this.state.stats}/>
-					<HomeSection title="Recently Played Albums" section={this.state.album_recent}/>
-					<HomeSection title="Recently Played Artists" section={this.state.artist_recent}/>
-					<HomeSection title="Favourite Albums" section={this.state.album_faved}/>
-					<HomeSection title="Favourite Artists" section={this.state.artist_faved}/>
+					<HomeSection title="Recently Played Albums" section={this.state.data?.albumsRecent}/>
+					<HomeSection title="Recently Played Artists" section={this.state.data?.artistsRecent}/>
+					<HomeSection title="Favourite Albums" section={this.state.data?.albumsFaved}/>
+					<HomeSection title="Favourite Artists" section={this.state.data?.artistsFaved}/>
 				</View>
 			</ScrollView>
 		);

@@ -2,13 +2,13 @@ import React from 'react';
 import {SectionList, SectionListData, StyleSheet} from 'react-native';
 import ThemedText from '../components/ThemedText';
 import {Jam} from '../services/jam';
-import jam from '../services/jamapi';
 import {staticTheme} from '../style/theming';
 import {HomeRoute, HomeStackWithThemeProps} from '../navigators/Routing';
-import Item, {ItemData} from '../components/Item';
+import Item from '../components/Item';
 import ObjHeader, {objHeaderStyles} from '../components/ObjHeader';
 import {genreDisplay} from '../utils/genre.utils';
 import Separator from '../components/Separator';
+import dataService, {ArtistData, ItemData} from '../services/data';
 
 const styles = StyleSheet.create({
 	SectionHeader: {
@@ -21,11 +21,9 @@ const styles = StyleSheet.create({
 
 export default class ArtistScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute.ARTIST>> {
 	state: {
-		artist?: Jam.Artist;
-		sections: Array<SectionListData<ItemData<Jam.Album>>>;
+		data?: ArtistData;
 	} = {
-		artist: undefined,
-		sections: []
+		data: undefined
 	};
 
 	componentDidMount(): void {
@@ -41,42 +39,22 @@ export default class ArtistScreen extends React.PureComponent<HomeStackWithTheme
 	}
 
 	private async load(id: string): Promise<void> {
+		this.setState({data: undefined});
 		if (!id) {
 			return;
 		}
-		const artist = await jam.artist.id({id, artistAlbums: true});
-		const sections: Array<SectionListData<ItemData<Jam.Album>>> = [];
-		(artist.albums || []).forEach(album => {
-			let section = sections.find(s => s.key === album.albumType);
-			if (!section) {
-				section = {
-					key: album.albumType,
-					title: album.albumType,
-					data: []
-				};
-				sections.push(section);
-			}
-			section.data = section.data.concat([{
-				obj: album,
-				id: album.id,
-				title: album.name,
-				desc: `${album.year}`,
-				click: (): void => {
-					this.props.navigation.navigate(HomeRoute.ALBUM, {id: album.id, name: album.name});
-				}
-			}]);
-		});
-		this.setState({artist, sections});
+		const data = await dataService.artist(id);
+		this.setState({data});
 	}
 
 	private renderHeader = (): JSX.Element => (
 		<ObjHeader id={this.props.route?.params?.id} title={this.props.route?.params?.name}>
 			<ThemedText style={objHeaderStyles.ListHeaderUpperLabel}>Albums</ThemedText>
-			<ThemedText style={objHeaderStyles.ListHeaderUpperTitle}>{this.state.artist?.albumCount}</ThemedText>
+			<ThemedText style={objHeaderStyles.ListHeaderUpperTitle}>{this.state.data?.artist.albumCount}</ThemedText>
 			<ThemedText style={objHeaderStyles.ListHeaderUpperLabel}>Tracks</ThemedText>
-			<ThemedText style={objHeaderStyles.ListHeaderUpperTitle}>{this.state.artist?.trackCount}</ThemedText>
+			<ThemedText style={objHeaderStyles.ListHeaderUpperTitle}>{this.state.data?.artist.trackCount}</ThemedText>
 			<ThemedText style={objHeaderStyles.ListHeaderUpperLabel}>Genre</ThemedText>
-			<ThemedText style={objHeaderStyles.ListHeaderUpperTitle}>{genreDisplay(this.state.artist?.genres)}</ThemedText>
+			<ThemedText style={objHeaderStyles.ListHeaderUpperTitle}>{genreDisplay(this.state.data?.artist.genres)}</ThemedText>
 		</ObjHeader>
 	);
 
@@ -89,9 +67,10 @@ export default class ArtistScreen extends React.PureComponent<HomeStackWithTheme
 	private keyExtractor = (item: ItemData<Jam.Album>): string => item.id;
 
 	render(): JSX.Element {
+		const sections = this.state.data?.sections || [];
 		return (
 			<SectionList
-				sections={this.state.sections}
+				sections={sections}
 				ListHeaderComponent={this.renderHeader}
 				ItemSeparatorComponent={Separator}
 				SectionSeparatorComponent={Separator}

@@ -18,7 +18,7 @@ export class ThemesView extends React.PureComponent {
 	static contextType = ThemeContext;
 	state: { dark: boolean } = {dark: true};
 
-	public componentDidMount(): void {
+	componentDidMount(): void {
 		const {theme} = this.context;
 		this.setState({dark: theme.name === 'dark'});
 	}
