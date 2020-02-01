@@ -53,7 +53,7 @@ export default class TrackItem extends PureComponent<{ track: TrackEntry }> {
 				</View>
 
 				<View style={styles.trackListTitle}>
-					<ThemedText style={styles.trackTitleStyle}>{this.props.track.title}</ThemedText>
+					<ThemedText style={styles.trackTitleStyle} numberOfLines={2}>{this.props.track.title}</ThemedText>
 				</View>
 
 				<View style={styles.trackListRuntime}>

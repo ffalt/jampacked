@@ -51,7 +51,7 @@ export class IndexListItem extends React.PureComponent<{ item: IndexEntry }> {
 			<TouchableOpacity style={styles.item} onPress={this.click}>
 				<JamImage id={this.props.item.id} size={46}/>
 				<View style={styles.itemContent}>
-					<ThemedText style={styles.itemText} numberOfLines={2} >{this.props.item.title}</ThemedText>
+					<ThemedText style={styles.itemText} numberOfLines={2}>{this.props.item.title}</ThemedText>
 					<ThemedText style={styles.itemFooter} numberOfLines={1}>{this.props.item.desc}</ThemedText>
 				</View>
 			</TouchableOpacity>
