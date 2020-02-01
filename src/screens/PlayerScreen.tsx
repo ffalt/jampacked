@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
 	player: {
 		flex: 1,
 		paddingTop: Platform.OS === 'ios' ? staticTheme.paddingLarge : 0,
-		paddingBottom: Platform.OS === 'ios' ? staticTheme.paddingLarge * 2 : staticTheme.paddingLarge,
+		paddingBottom: Platform.OS === 'ios' ? staticTheme.paddingLarge * 2 : staticTheme.paddingLarge
 	}
 });
 

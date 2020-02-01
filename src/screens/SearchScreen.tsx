@@ -5,7 +5,6 @@ import ThemedText from '../components/ThemedText';
 import {BottomTabRoute, BottomTabWithThemeProps} from '../navigators/Routing';
 import {staticTheme, withTheme} from '../style/theming';
 import ThemedIcon from '../components/ThemedIcon';
-import {Jam} from '../services/jam';
 import Separator from '../components/Separator';
 import JamImage from '../components/JamImage';
 import dataService, {AutoCompleteData, AutoCompleteEntryData} from '../services/data';

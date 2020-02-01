@@ -115,7 +115,7 @@ class LoginScreen extends React.PureComponent<AppStackProps<Routing.AUTH>> {
 		if (this.checkEmpty(this.state.server)
 			|| this.checkEmpty(this.state.server)
 			|| this.checkEmpty(this.state.server)) {
-			this.setState({error: `Please provide all fields to login.`});
+			this.setState({error: 'Please provide all fields to login.'});
 			return;
 		}
 		this.setState({loading: true, error: undefined});

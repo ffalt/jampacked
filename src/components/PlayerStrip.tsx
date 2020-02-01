@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
 	playerStripTrack: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		flex: 1,
+		flex: 1
 	},
 	playerStripContent: {
 		flexDirection: 'row',
@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
 	playerStripControls: {
 		flexDirection: 'row',
 		justifyContent: 'space-between',
-		alignItems: 'center',
+		alignItems: 'center'
 	},
 	title: {
 		fontSize: staticTheme.fontSize
