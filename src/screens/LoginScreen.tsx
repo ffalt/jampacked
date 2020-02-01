@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
 		minHeight: 200
 	},
 	error: {
-		marginTop: 20,
+		marginVertical: staticTheme.marginLarge,
 		justifyContent: 'center',
 		alignItems: 'center'
 	},
@@ -88,13 +88,21 @@ class LoginScreen extends React.PureComponent<AppStackProps<Routing.AUTH>> {
 		password: string;
 		loading: boolean;
 		error?: string;
-	} = {
-		server: '',
-		name: '',
-		password: '',
-		loading: false,
-		error: undefined
-	};
+	} = (__DEV__)
+		? {
+			server: 'http://10.0.2.2:4040',
+			name: 'admin',
+			password: 'admin',
+			loading: false,
+			error: undefined
+		}
+		: {
+			server: '',
+			name: '',
+			password: '',
+			loading: false,
+			error: undefined
+		};
 	static contextType = AuthContext;
 	userNameRef: RefObject<TextInput> = React.createRef();
 	passwordRef: RefObject<TextInput> = React.createRef();
