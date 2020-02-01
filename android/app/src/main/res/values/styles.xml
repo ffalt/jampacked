@@ -1,0 +1,12 @@
+<resources>
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:textColor">@color/app_text</item>
+        <item name="android:windowBackground">@color/app_bg</item>
+    </style>
+
+    <style name="SplashTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:background">@drawable/background_splash</item>
+    </style>
+
+</resources>

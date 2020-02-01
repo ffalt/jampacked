@@ -1,0 +1,17 @@
+{
+  "extends": "./tsconfig.json",
+  "include": [
+    "./App.tsx",
+    "./index.js",
+    "./babel.config.js",
+    "./metro.config.js",
+    "./src/**/*.js",
+    "./src/**/*.ts",
+    "./src/**/*.tsx",
+    "./__tests__/**/*.ts",
+    "./__tests__/**/*.tsx"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
