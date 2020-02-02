@@ -1,3 +1,9 @@
+/**
+
+	based on https://github.com/pritishvaidya/react-native-soundcloud-waveform
+ 	LICENSE: MIT
+
+ */
 import React from 'react';
 import {StyleProp, StyleSheet, TouchableOpacity, View, ViewStyle} from 'react-native';
 import {scaleLinear} from 'd3-scale';

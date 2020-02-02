@@ -1,3 +1,8 @@
+/**
+
+	based on https://github.com/rgovindji/react-native-atoz-list
+
+ */
 import React, {PureComponent, RefObject} from 'react';
 import {FlatList, FlatListProps, StyleSheet, View} from 'react-native';
 import AtoZPicker from './AtoZPicker';
