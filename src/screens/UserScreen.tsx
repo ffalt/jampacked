@@ -6,7 +6,7 @@ import ThemedText from '../components/ThemedText';
 import {staticTheme} from '../style/theming';
 import JamImage from '../components/JamImage';
 import dataService from '../services/data';
-import CachingView from '../components/Cache';
+import DataCachingView from '../components/DataCachingView';
 
 const styles = StyleSheet.create({
 	container: {
@@ -53,7 +53,7 @@ class UserScreen extends React.PureComponent<BottomTabProps<BottomTabRoute.SETTI
 				<ThemedText style={styles.section}>Theme</ThemedText>
 				<ThemesView/>
 				<ThemedText style={styles.section}>Cache</ThemedText>
-				<CachingView />
+				<DataCachingView />
 				<ThemedText style={styles.section}>Account</ThemedText>
 				<View style={styles.userSection}>
 					<JamImage id={dataService.currentUserID} size={80} style={styles.userImage}/>

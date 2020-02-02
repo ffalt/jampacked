@@ -6,6 +6,7 @@ import {formatDuration} from '../utils/duration.utils';
 import {JamConfigurationService} from './jam-configuration';
 import {getTypeByAlbumType} from './jam-lists';
 import {HomeRoute} from '../navigators/Routing';
+import FastImage from 'react-native-fast-image';
 
 const createTableScript = 'CREATE TABLE if not exists jam(_id INTEGER PRIMARY KEY AUTOINCREMENT, key TEXT, data TEXT, date integer, version integer)';
 
@@ -94,17 +95,49 @@ export interface CachingState {
 	current: string;
 }
 
+export class Caching {
+	private subjectCaching = new Subject<CachingState>();
+	cachingChange: Observable<CachingState> = this.subjectCaching.asObservable();
+	cachingData = {
+		running: false,
+		current: ''
+	};
+
+	constructor(private fillCacheFunc: (caller: Caching) => Promise<void>) {
+	}
+
+	startCaching(): void {
+		if (!this.cachingData.running) {
+			this.fillCacheFunc(this)
+				.then(() => {
+					this.stopCaching();
+				})
+				.catch(e => {
+					console.error(e);
+					this.stopCaching();
+				});
+		}
+		this.cachingData.running = true;
+		this.subjectCaching.next(this.cachingData);
+	}
+
+	stopCaching(): void {
+		this.cachingData.running = false;
+		this.subjectCaching.next(this.cachingData);
+	}
+
+	updateText(s: string): void {
+		this.cachingData.current = s;
+		this.subjectCaching.next(this.cachingData);
+	}
+}
+
 class DataService {
 	db?: Database;
 	version = 1;
 	lastLyrics?: { id: string, data: Jam.TrackLyrics };
 	lastWaveform?: { id: string, data: Jam.WaveFormData };
-	private subjectCaching = new Subject<CachingState>();
-	cachingChange: Observable<CachingState> = this.subjectCaching.asObservable();
-	caching = {
-		running: false,
-		current: 'Caching 1/10'
-	};
+	dataCaching = new Caching((caller) => this.fillCache(caller));
 
 	constructor(public jam: JamService) {
 		this.open();
@@ -492,18 +525,25 @@ class DataService {
 		return sections;
 	}
 
-	startCaching(): void {
-		if (!this.caching.running) {
-			this.fillCache().catch(e => {
-				console.error(e);
-				this.stopCaching();
-			});
-		}
-		this.caching.running = true;
-		this.subjectCaching.next(this.caching);
+	fillImageCache(ids: Array<string>): void {
+		const headers = this.currentUserToken ? {Authorization: `Bearer ${this.currentUserToken}`} : undefined;
+		const images = ids.map(id => (
+			{
+				uri: this.jam.image.url(id, 80, undefined, !headers),
+				headers
+			}
+		)).concat(
+			ids.map(id => (
+				{
+					uri: this.jam.image.url(id, 300, undefined, !headers),
+					headers
+				}
+			))
+		);
+		FastImage.preload(images);
 	}
 
-	async fillCache(): Promise<void> {
+	async fillCache(caller: Caching): Promise<void> {
 		let artistIDs: Array<string> = [];
 		let albumIDs: Array<string> = [];
 		let seriesIDs: Array<string> = [];
@@ -536,50 +576,42 @@ class DataService {
 		let i = 0;
 		for (const task of tasks) {
 			i += 1;
-			this.caching.current = `1/4 Caching Index ${i}/${tasks.length}`;
-			this.subjectCaching.next(this.caching);
+			caller.updateText(`1/4 Caching Index ${i}/${tasks.length}`);
 			await task();
-			if (!this.caching.running) {
+			if (!caller.cachingData.running) {
 				break;
 			}
 		}
 		i = 0;
 		for (const id of seriesIDs) {
 			i += 1;
-			this.caching.current = `2/4 Caching Series ${i}/${seriesIDs.length}`;
-			this.subjectCaching.next(this.caching);
+			caller.updateText(`2/4 Caching Series ${i}/${seriesIDs.length}`);
 			await this.series(id, forceRefesh);
-			if (!this.caching.running) {
+			if (!caller.cachingData.running) {
 				break;
 			}
 		}
 		i = 0;
 		for (const id of artistIDs) {
 			i += 1;
-			this.caching.current = `3/4 Caching Artist ${i}/${artistIDs.length}`;
-			this.subjectCaching.next(this.caching);
+			caller.updateText(`3/4 Caching Artist ${i}/${artistIDs.length}`);
 			await this.artist(id, forceRefesh);
-			if (!this.caching.running) {
+			if (!caller.cachingData.running) {
 				break;
 			}
 		}
 		i = 0;
 		for (const id of albumIDs) {
 			i += 1;
-			this.caching.current = `4/4 Caching Albums ${i}/${albumIDs.length}`;
-			this.subjectCaching.next(this.caching);
+			caller.updateText(`4/4 Caching Albums ${i}/${albumIDs.length}`);
 			await this.album(id, forceRefesh);
-			if (!this.caching.running) {
+			if (!caller.cachingData.running) {
 				break;
 			}
 		}
-		this.stopCaching();
+		this.fillImageCache(seriesIDs.concat(artistIDs).concat(albumIDs));
 	}
 
-	stopCaching(): void {
-		this.caching.running = false;
-		this.subjectCaching.next(this.caching);
-	}
 }
 
 const configuration = new JamConfigurationService();

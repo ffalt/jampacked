@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {Button, StyleSheet, View} from 'react-native';
 import ThemedText from './ThemedText';
-import dataService, {CachingState} from '../services/data';
+import {Caching, CachingState} from '../services/data';
 
 const styles = StyleSheet.create({
 	container: {
@@ -13,28 +13,28 @@ const styles = StyleSheet.create({
 	}
 });
 
-const CachingView: React.FC = () => {
-	const [status, setStatus] = useState<CachingState>(dataService.caching);
+const CachingView: React.FC<{ cache: Caching, title: string }> = ({cache, title}: { cache: Caching, title: string }) => {
+	const [status, setStatus] = useState<CachingState>(cache.cachingData);
 
 	useEffect(() => {
-		const subscription = dataService.cachingChange.subscribe(data => {
+		const subscription = cache.cachingChange.subscribe(data => {
 			setStatus({running: data.running, current: data.current});
 		});
 		return (): void => subscription.unsubscribe();
-	}, [status]);
+	}, [status, cache.cachingChange]);
 
 	const start = (): void => {
-		dataService.startCaching();
+		cache.startCaching();
 	};
 
 	const stop = (): void => {
-		dataService.stopCaching();
+		cache.stopCaching();
 	};
 
 	if (!status.running) {
 		return (
 			<View style={styles.container}>
-				<ThemedText style={styles.text}>Data Cache</ThemedText>
+				<ThemedText style={styles.text}>{title}</ThemedText>
 				<Button title="Optimize" onPress={start}/>
 			</View>
 		);
