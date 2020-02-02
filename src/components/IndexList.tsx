@@ -3,14 +3,14 @@ import {ITheme, withTheme} from '../style/theming';
 import PageHeader from './PageHeader';
 import Separator from './Separator';
 import AtoZList from './AtoZList';
-import {IndexListItem} from './IndexListItem';
 import {Index, IndexEntry} from '../services/data';
+import Item from './Item';
 
 class IndexList extends React.PureComponent<{ index: Index; title: string; theme: ITheme }> {
 
 	private renderHeader = (): JSX.Element => <PageHeader title={this.props.title}/>;
 
-	private renderItem = ({item}: { item: IndexEntry }): JSX.Element => <IndexListItem item={item}/>;
+	private renderItem = ({item}: { item: IndexEntry }): JSX.Element => <Item item={item}/>;
 
 	private keyExtractor = (item: IndexEntry): string => item.id;
 

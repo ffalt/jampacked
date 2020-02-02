@@ -1,7 +1,7 @@
 import {SectionListData} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {Database} from './db';
-import {AlbumType, Jam, JamService} from './jam';
+import {AlbumType, Jam, JamObjectType, JamService} from './jam';
 import {formatDuration} from '../utils/duration.utils';
 import {JamConfigurationService} from './jam-configuration';
 import {getTypeByAlbumType} from './jam-lists';
@@ -38,12 +38,20 @@ export interface Doc<T> {
 	data: T;
 }
 
-export interface ItemData<T> {
+export interface BaseEntry {
 	id: string;
 	title: string;
 	desc: string;
-	obj: T;
+	objType: string;
 	link: Navig;
+}
+
+export interface IndexEntry extends BaseEntry {
+	letter: string;
+}
+
+export interface ItemData<T> extends BaseEntry {
+	obj: T;
 }
 
 export interface TrackEntry {
@@ -68,14 +76,6 @@ export interface FolderData {
 	tracks: Array<TrackEntry>;
 }
 
-export interface IndexEntry {
-	id: string;
-	title: string;
-	desc: string;
-	letter: string;
-	link: Navig;
-}
-
 export interface SeriesData {
 	series: Jam.Series,
 	sections: Array<SectionListData<ItemData<Jam.Album>>>;
@@ -92,7 +92,7 @@ export type AutoCompleteData = Array<SectionListData<AutoCompleteEntryData>>;
 
 class DataService {
 	db?: Database;
-	version = 1;
+	version = 3;
 	lastLyrics?: { id: string, data: Jam.TrackLyrics };
 	lastWaveform?: { id: string, data: Jam.WaveFormData };
 	dataCaching = new Caching((caller) => this.fillCache(caller));
@@ -163,6 +163,7 @@ class DataService {
 				group.entries.forEach(entry => {
 					result.push({
 						id: entry.id,
+						objType: JamObjectType.album,
 						desc: entry.artist,
 						title: entry.name,
 						letter: group.name,
@@ -186,6 +187,7 @@ class DataService {
 					result.push({
 						id: entry.artistID,
 						desc: `Albums: ${entry.albumCount}`,
+						objType: JamObjectType.artist,
 						title: entry.name,
 						letter: group.name,
 						link: {
@@ -207,6 +209,7 @@ class DataService {
 				group.entries.forEach(entry => {
 					result.push({
 						id: entry.folderID,
+						objType: JamObjectType.folder,
 						desc: `Tracks: ${entry.trackCount}`,
 						title: entry.name,
 						letter: group.name,
@@ -230,6 +233,7 @@ class DataService {
 					result.push({
 						id: entry.seriesID,
 						desc: `Episodes: ${entry.albumCount}`,
+						objType: JamObjectType.series,
 						title: entry.name,
 						letter: group.name,
 						link: {
@@ -326,6 +330,7 @@ class DataService {
 				}
 				section.data = section.data.concat([{
 					obj: album,
+					objType: JamObjectType.album,
 					id: album.id,
 					title: album.name,
 					desc: `${album.year}`,
@@ -373,6 +378,7 @@ class DataService {
 				}
 				section.data = section.data.concat([{
 					obj: album,
+					objType: JamObjectType.album,
 					id: album.id,
 					title: album.name,
 					desc: `Episode ${album.seriesNr}`,

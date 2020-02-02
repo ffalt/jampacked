@@ -3,6 +3,7 @@
 import {JamAuthService} from './jam.auth.service';
 import {JamHttpService} from './jam.http.service';
 import {JamParameters} from './model/jam-rest-params';
+import {Jam} from './model/jam-rest-data';
 
 export class JamBaseService {
 
@@ -116,12 +117,16 @@ export class JamBaseService {
 		return this.http.postObserve<T>(url, formData, options, onUploadProgress);
 	}
 
-	async fav(type: string, params: JamParameters.Fav): Promise<void> {
-		await this.requestPostDataOK(`${type}/fav/update`, params);
+	async state(type: string, params: JamParameters.ID): Promise<Jam.State> {
+		return this.requestData<Jam.State>(`${type}/state`, params);
 	}
 
-	async rate(type: string, params: JamParameters.Rate): Promise<void> {
-		await this.requestPostDataOK(`${type}/rate/update`, params);
+	async fav(type: string, params: JamParameters.Fav): Promise<Jam.State> {
+		return this.requestPostData<Jam.State>(`${type}/fav/update`, params);
+	}
+
+	async rate(type: string, params: JamParameters.Rate): Promise<Jam.State> {
+		return this.requestPostData<Jam.State>(`${type}/rate/update`, params);
 	}
 
 	image_url(id: string, size?: number, format?: JamParameters.ImageFormatType): string {
