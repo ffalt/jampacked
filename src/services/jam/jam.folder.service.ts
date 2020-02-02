@@ -201,15 +201,15 @@ export class JamFolderService {
 	/**
 	 * fav/unfav a folder
 	 */
-	async fav_update(params: JamParameters.Fav): Promise<void> {
-		return this.base.requestPostDataOK('folder/fav/update', params);
+	async fav_update(params: JamParameters.Fav): Promise<Jam.State> {
+		return this.base.requestPostData<Jam.State>('folder/fav/update', params);
 	}
 
 	/**
 	 * rate a folder
 	 */
-	async rate_update(params: JamParameters.Rate): Promise<void> {
-		return this.base.requestPostDataOK('folder/rate/update', params);
+	async rate_update(params: JamParameters.Rate): Promise<Jam.State> {
+		return this.base.requestPostData<Jam.State>('folder/rate/update', params);
 	}
 
 	/**

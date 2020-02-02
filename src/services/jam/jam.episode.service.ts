@@ -110,15 +110,15 @@ export class JamEpisodeService {
 	/**
 	 * fav/unfav an episode
 	 */
-	async fav_update(params: JamParameters.Fav): Promise<void> {
-		return this.base.requestPostDataOK('episode/fav/update', params);
+	async fav_update(params: JamParameters.Fav): Promise<Jam.State> {
+		return this.base.requestPostData<Jam.State>('episode/fav/update', params);
 	}
 
 	/**
 	 * rate an episode
 	 */
-	async rate_update(params: JamParameters.Rate): Promise<void> {
-		return this.base.requestPostDataOK('episode/rate/update', params);
+	async rate_update(params: JamParameters.Rate): Promise<Jam.State> {
+		return this.base.requestPostData<Jam.State>('episode/rate/update', params);
 	}
 
 }

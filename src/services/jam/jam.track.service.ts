@@ -131,15 +131,15 @@ export class JamTrackService {
 	/**
 	 * fav/unfav a track
 	 */
-	async fav_update(params: JamParameters.Fav): Promise<void> {
-		return this.base.requestPostDataOK('track/fav/update', params);
+	async fav_update(params: JamParameters.Fav): Promise<Jam.State> {
+		return this.base.requestPostData<Jam.State>('track/fav/update', params);
 	}
 
 	/**
 	 * rate a track
 	 */
-	async rate_update(params: JamParameters.Rate): Promise<void> {
-		return this.base.requestPostDataOK('track/rate/update', params);
+	async rate_update(params: JamParameters.Rate): Promise<Jam.State> {
+		return this.base.requestPostData<Jam.State>('track/rate/update', params);
 	}
 
 	/**

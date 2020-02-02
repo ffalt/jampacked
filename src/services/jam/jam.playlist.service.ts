@@ -103,15 +103,15 @@ export class JamPlaylistService {
 	/**
 	 * fav/unfav a playlist
 	 */
-	async fav_update(params: JamParameters.Fav): Promise<void> {
-		return this.base.requestPostDataOK('playlist/fav/update', params);
+	async fav_update(params: JamParameters.Fav): Promise<Jam.State> {
+		return this.base.requestPostData<Jam.State>('playlist/fav/update', params);
 	}
 
 	/**
 	 * rate a playlist
 	 */
-	async rate_update(params: JamParameters.Rate): Promise<void> {
-		return this.base.requestPostDataOK('playlist/rate/update', params);
+	async rate_update(params: JamParameters.Rate): Promise<Jam.State> {
+		return this.base.requestPostData<Jam.State>('playlist/rate/update', params);
 	}
 
 	/**

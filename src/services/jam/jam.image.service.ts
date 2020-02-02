@@ -12,11 +12,7 @@ export class JamImageService {
 	 * download image for object as binary by id
 	 */
 	url(id: string, size?: number, format?: JamParameters.ImageFormatType, forDom: boolean = true): string {
-		return this.base.buildRequestUrl(
-			`image/${id}${size !== undefined ? `-${size}` : ''}${format !== undefined ? `.${format}` : ''}`,
-			undefined,
-			forDom
-		);
+		return this.base.buildRequestUrl(`image/${id}${size !== undefined ? `-${size}` : ''}${format !== undefined ? `.${format}` : ''}`, undefined, forDom);
 	}
 
 	/**

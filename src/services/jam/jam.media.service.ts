@@ -12,8 +12,8 @@ export class JamMediaService {
 	/**
 	 * stream a media file in a format // Rights needed: stream
 	 */
-	stream_url(id: string, format?: JamParameters.AudioFormatType): string {
-		return this.base.buildRequestUrl(`stream/${id}${format !== undefined ? `.${format}` : ''}`);
+	stream_url(id: string, format?: JamParameters.AudioFormatType, forDom: boolean = true): string {
+		return this.base.buildRequestUrl(`stream/${id}${format !== undefined ? `.${format}` : ''}`, undefined, forDom);
 	}
 
 	/**
@@ -26,8 +26,8 @@ export class JamMediaService {
 	/**
 	 * get peaks waveform data as svg | json | binary // Rights needed: stream
 	 */
-	waveform_url(id: string, format?: JamParameters.WaveformFormatType): string {
-		return this.base.buildRequestUrl(`waveform/${id}${format !== undefined ? `.${format}` : ''}`);
+	waveform_url(id: string, format?: JamParameters.WaveformFormatType, forDom: boolean = true): string {
+		return this.base.buildRequestUrl(`waveform/${id}${format !== undefined ? `.${format}` : ''}`, undefined, forDom);
 	}
 
 	/**
@@ -40,8 +40,8 @@ export class JamMediaService {
 	/**
 	 * get peaks waveform data as svg with a width // Rights needed: stream
 	 */
-	waveform_svg_url(id: string, width: number): string {
-		return this.base.buildRequestUrl(`waveform_svg/${id}-${width}.svg`);
+	waveform_svg_url(id: string, width: number, forDom: boolean = true): string {
+		return this.base.buildRequestUrl(`waveform_svg/${id}-${width}.svg`, undefined, forDom);
 	}
 
 	/**
@@ -61,8 +61,8 @@ export class JamMediaService {
 	/**
 	 * download object as binary archive by id // Rights needed: stream
 	 */
-	download_url(id: string, format?: JamParameters.DownloadFormatType): string {
-		return this.base.buildRequestUrl(`download/${id}${format !== undefined ? `.${format}` : ''}`);
+	download_url(id: string, format?: JamParameters.DownloadFormatType, forDom: boolean = true): string {
+		return this.base.buildRequestUrl(`download/${id}${format !== undefined ? `.${format}` : ''}`, undefined, forDom);
 	}
 
 	/**
