@@ -1,12 +1,12 @@
 import {SectionListData} from 'react-native';
-import {Observable, Subject} from 'rxjs';
+import FastImage from 'react-native-fast-image';
 import {Database} from './db';
 import {AlbumType, Jam, JamService} from './jam';
 import {formatDuration} from '../utils/duration.utils';
 import {JamConfigurationService} from './jam-configuration';
 import {getTypeByAlbumType} from './jam-lists';
 import {HomeRoute} from '../navigators/Routing';
-import FastImage from 'react-native-fast-image';
+import {Caching} from './caching';
 
 const createTableScript = 'CREATE TABLE if not exists jam(_id INTEGER PRIMARY KEY AUTOINCREMENT, key TEXT, data TEXT, date integer, version integer)';
 
@@ -89,48 +89,6 @@ export type Index = Array<IndexEntry>;
 export type HomeStatData = { text: string, link: Navig, value: number };
 export type HomeStatsData = Array<HomeStatData>;
 export type AutoCompleteData = Array<SectionListData<AutoCompleteEntryData>>;
-
-export interface CachingState {
-	running: boolean;
-	current: string;
-}
-
-export class Caching {
-	private subjectCaching = new Subject<CachingState>();
-	cachingChange: Observable<CachingState> = this.subjectCaching.asObservable();
-	cachingData = {
-		running: false,
-		current: ''
-	};
-
-	constructor(private fillCacheFunc: (caller: Caching) => Promise<void>) {
-	}
-
-	startCaching(): void {
-		if (!this.cachingData.running) {
-			this.fillCacheFunc(this)
-				.then(() => {
-					this.stopCaching();
-				})
-				.catch(e => {
-					console.error(e);
-					this.stopCaching();
-				});
-		}
-		this.cachingData.running = true;
-		this.subjectCaching.next(this.cachingData);
-	}
-
-	stopCaching(): void {
-		this.cachingData.running = false;
-		this.subjectCaching.next(this.cachingData);
-	}
-
-	updateText(s: string): void {
-		this.cachingData.current = s;
-		this.subjectCaching.next(this.cachingData);
-	}
-}
 
 class DataService {
 	db?: Database;
@@ -559,11 +517,9 @@ class DataService {
 			...[
 				AlbumType.album, AlbumType.live, AlbumType.compilation, AlbumType.soundtrack, AlbumType.audiobook,
 				AlbumType.series, AlbumType.bootleg, AlbumType.ep, AlbumType.single
-			].map(albumType => {
-				return async (): Promise<void> => {
-					const index = await this.albumIndex(albumType, forceRefesh);
-					albumIDs = albumIDs.concat(index.map(o => o.id));
-				};
+			].map(albumType => async (): Promise<void> => {
+				const index = await this.albumIndex(albumType, forceRefesh);
+				albumIDs = albumIDs.concat(index.map(o => o.id));
 			}),
 			async (): Promise<void> => {
 				await this.folderIndex(forceRefesh);

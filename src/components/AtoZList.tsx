@@ -1,5 +1,5 @@
 import React, {PureComponent, RefObject} from 'react';
-import {FlatList, FlatListProps, StyleProp, StyleSheet, View, ViewProps} from 'react-native';
+import {FlatList, FlatListProps, StyleSheet, View} from 'react-native';
 import AtoZPicker from './AtoZPicker';
 
 type commonItemLayoutFunc = (data: any, index: number) => { length: number, offset: number, index: number };

@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {Button, StyleSheet, View} from 'react-native';
 import ThemedText from './ThemedText';
-import {Caching, CachingState} from '../services/data';
+import {Caching, CachingState} from '../services/caching';
 
 const styles = StyleSheet.create({
 	container: {
