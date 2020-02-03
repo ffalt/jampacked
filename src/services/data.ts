@@ -8,8 +8,6 @@ import {getTypeByAlbumType} from './jam-lists';
 import {HomeRoute} from '../navigators/Routing';
 import {Caching} from './caching';
 
-const createTableScript = 'CREATE TABLE if not exists jam(_id INTEGER PRIMARY KEY AUTOINCREMENT, key TEXT, data TEXT, date integer, version integer)';
-
 export interface Navig {
 	route: string;
 	params?: {
@@ -110,7 +108,19 @@ class DataService {
 		if (!this.db) {
 			return;
 		}
+		const createTableScript = 'CREATE TABLE if not exists jam(_id INTEGER PRIMARY KEY AUTOINCREMENT, key TEXT, data TEXT, date integer, version integer)';
 		await this.db.query(createTableScript);
+	}
+
+	async clearCache(): Promise<void> {
+		if (!this.db) {
+			return;
+		}
+		FastImage.clearDiskCache();
+		FastImage.clearMemoryCache();
+		const dropTableScript = 'DROP TABLE IF EXISTS jam';
+		await this.db.query(dropTableScript);
+		await this.check();
 	}
 
 	async close(): Promise<void> {
@@ -489,7 +499,7 @@ class DataService {
 		return sections;
 	}
 
-	fillImageCache(ids: Array<string>): void {
+	async fillImageCache(ids: Array<string>, caller: Caching, totalStepPos: number, totalSteps: number): Promise<void> {
 		const headers = this.currentUserToken ? {Authorization: `Bearer ${this.currentUserToken}`} : undefined;
 		const images = ids.map(id => (
 			{
@@ -504,7 +514,18 @@ class DataService {
 				}
 			))
 		);
-		FastImage.preload(images);
+
+		return new Promise<void>((resolve, reject) => {
+			try {
+				FastImage.preload(images, (loaded, total) => {
+					caller.updateText(`${totalStepPos}/${totalSteps} Caching Image ${loaded}/${total}`);
+				}, (loaded, failed) => {
+					resolve();
+				});
+			} catch (e) {
+				reject(e);
+			}
+		});
 	}
 
 	async fillCache(caller: Caching): Promise<void> {
@@ -535,10 +556,11 @@ class DataService {
 				seriesIDs = seriesIDs.concat(index.map(o => o.id));
 			}
 		];
+		const total = 5;
 		let i = 0;
 		for (const task of tasks) {
 			i += 1;
-			caller.updateText(`1/4 Caching Index ${i}/${tasks.length}`);
+			caller.updateText(`1/${total} Caching Index ${i}/${tasks.length}`);
 			await task();
 			if (!caller.cachingData.running) {
 				break;
@@ -547,7 +569,7 @@ class DataService {
 		i = 0;
 		for (const id of seriesIDs) {
 			i += 1;
-			caller.updateText(`2/4 Caching Series ${i}/${seriesIDs.length}`);
+			caller.updateText(`2/${total} Caching Series ${i}/${seriesIDs.length}`);
 			await this.series(id, forceRefesh);
 			if (!caller.cachingData.running) {
 				break;
@@ -556,7 +578,7 @@ class DataService {
 		i = 0;
 		for (const id of artistIDs) {
 			i += 1;
-			caller.updateText(`3/4 Caching Artist ${i}/${artistIDs.length}`);
+			caller.updateText(`3/${total} Caching Artist ${i}/${artistIDs.length}`);
 			await this.artist(id, forceRefesh);
 			if (!caller.cachingData.running) {
 				break;
@@ -565,13 +587,13 @@ class DataService {
 		i = 0;
 		for (const id of albumIDs) {
 			i += 1;
-			caller.updateText(`4/4 Caching Albums ${i}/${albumIDs.length}`);
+			caller.updateText(`4/${total} Caching Albums ${i}/${albumIDs.length}`);
 			await this.album(id, forceRefesh);
 			if (!caller.cachingData.running) {
 				break;
 			}
 		}
-		this.fillImageCache(seriesIDs.concat(artistIDs).concat(albumIDs));
+		await this.fillImageCache(seriesIDs.concat(artistIDs).concat(albumIDs), caller, 5, 5);
 	}
 
 }
