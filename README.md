@@ -1,2 +1,3 @@
 # jampacked
-react native mobile app for jam
+
+react native mobile app for [jamserve](https://github.com/ffalt/jamserve)
