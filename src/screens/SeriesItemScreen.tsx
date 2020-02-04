@@ -1,12 +1,11 @@
 import React from 'react';
 import {SectionList, SectionListData, StyleSheet, TouchableOpacity} from 'react-native';
 import ThemedText from '../components/ThemedText';
-import {Jam} from '../services/jam';
 import {staticTheme, withTheme} from '../style/theming';
 import {HomeRoute, HomeStackWithThemeProps} from '../navigators/Routing';
 import Item from '../components/Item';
 import ObjHeader, {objHeaderStyles} from '../components/ObjHeader';
-import dataService, {ItemData, SeriesData} from '../services/data';
+import dataService, {BaseEntry, SeriesData} from '../services/data';
 
 const styles = StyleSheet.create({
 	ListHeaderTitle: {
@@ -91,16 +90,16 @@ class SeriesItemScreen extends React.PureComponent<HomeStackWithThemeProps<HomeR
 		</ObjHeader>
 	);
 
-	private renderSection = ({section}: { section: SectionListData<ItemData<Jam.Album>> }): JSX.Element => (
+	private renderSection = ({section}: { section: SectionListData<BaseEntry> }): JSX.Element => (
 		<ThemedText style={[styles.SectionHeader, {borderBottomColor: this.props.theme.separator}]}>{section.title}</ThemedText>
 	);
 
-	private renderItem = ({item}: { item: ItemData<Jam.Album> }): JSX.Element => (<Item item={item}/>);
+	private renderItem = ({item}: { item: BaseEntry }): JSX.Element => (<Item item={item}/>);
 
-	private keyExtractor = (item: ItemData<Jam.Album>): string => item.id;
+	private keyExtractor = (item: BaseEntry): string => item.id;
 
 	render(): React.ReactElement {
-		const sections = this.state.data?.sections || [];
+		const sections = this.state.data?.albums || [];
 		return (
 			<SectionList
 				sections={sections}

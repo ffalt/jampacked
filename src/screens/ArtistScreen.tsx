@@ -8,7 +8,7 @@ import Item from '../components/Item';
 import ObjHeader, {objHeaderStyles} from '../components/ObjHeader';
 import {genreDisplay} from '../utils/genre.utils';
 import Separator from '../components/Separator';
-import dataService, {ArtistData, ItemData} from '../services/data';
+import dataService, {ArtistData, BaseEntry} from '../services/data';
 
 const styles = StyleSheet.create({
 	SectionHeader: {
@@ -67,20 +67,20 @@ export default class ArtistScreen extends React.PureComponent<HomeStackWithTheme
 		</ObjHeader>
 	);
 
-	private renderSection = ({section}: { section: SectionListData<ItemData<Jam.Album>> }): JSX.Element => (
+	private renderSection = ({section}: { section: SectionListData<BaseEntry> }): JSX.Element => (
 		<ThemedText style={styles.SectionHeader}>{section.title}</ThemedText>
 	);
 
-	private renderItem = ({item}: { item: ItemData<Jam.Album> }): JSX.Element => (<Item item={item}/>);
+	private renderItem = ({item}: { item: BaseEntry }): JSX.Element => (<Item item={item}/>);
 
-	private keyExtractor = (item: ItemData<Jam.Album>): string => item.id;
+	private keyExtractor = (item: BaseEntry): string => item.id;
 
 	private reload = (): void => {
 		this.load(true);
 	};
 
 	render(): React.ReactElement {
-		const sections = this.state.data?.sections || [];
+		const sections = this.state.data?.albums || [];
 		return (
 			<SectionList
 				sections={sections}

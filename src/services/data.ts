@@ -49,10 +49,6 @@ export interface IndexEntry extends BaseEntry {
 	letter: string;
 }
 
-export interface ItemData<T> extends BaseEntry {
-	obj: T;
-}
-
 export interface TrackEntry {
 	entry: Jam.Track;
 	duration: string;
@@ -62,7 +58,7 @@ export interface TrackEntry {
 
 export interface ArtistData {
 	artist: Jam.Artist;
-	sections: Array<SectionListData<ItemData<Jam.Album>>>;
+	albums: Array<SectionListData<BaseEntry>>;
 }
 
 export interface AlbumData {
@@ -77,7 +73,7 @@ export interface FolderData {
 
 export interface SeriesData {
 	series: Jam.Series,
-	sections: Array<SectionListData<ItemData<Jam.Album>>>;
+	albums: Array<SectionListData<BaseEntry>>;
 }
 
 export interface AutoCompleteEntryData extends Jam.AutoCompleteEntry {
@@ -91,7 +87,7 @@ export type AutoCompleteData = Array<SectionListData<AutoCompleteEntryData>>;
 
 class DataService {
 	db?: Database;
-	version = 4;
+	version = 5;
 	lastLyrics?: { id: string, data: Jam.TrackLyrics };
 	lastWaveform?: { id: string, data: Jam.WaveFormData };
 	dataCaching = new Caching((caller) => this.fillCache(caller));
@@ -317,26 +313,25 @@ class DataService {
 	async artist(id: string, forceRefresh: boolean = false): Promise<ArtistData> {
 		return this.get<ArtistData>(forceRefresh, `${this.jam.auth.auth?.server}/artist/${id}`, async () => {
 			const artist = await this.jam.artist.id({id, artistAlbums: true});
-			const sections: Array<SectionListData<ItemData<Jam.Album>>> = [];
+			const albums: Array<SectionListData<BaseEntry>> = [];
 			(artist.albums || []).forEach(album => {
-				let section = sections.find(s => s.key === album.albumType);
+				let section = albums.find(s => s.key === album.albumType);
 				if (!section) {
 					section = {
 						key: album.albumType,
 						title: album.albumType,
 						data: []
 					};
-					sections.push(section);
+					albums.push(section);
 				}
 				section.data = section.data.concat([{
-					obj: album,
 					objType: JamObjectType.album,
 					id: album.id,
 					title: album.name,
 					desc: `${album.year}`
 				}]);
 			});
-			return {artist, sections};
+			return {artist, albums};
 		});
 	}
 
@@ -361,26 +356,26 @@ class DataService {
 	async series(id: string, forceRefresh: boolean = false): Promise<SeriesData> {
 		return this.get<SeriesData>(forceRefresh, `${this.jam.auth.auth?.server}/series/${id}`, async () => {
 			const series = await this.jam.series.id({id, seriesAlbums: true});
-			const sections: Array<SectionListData<ItemData<Jam.Album>>> = [];
+			const albums: Array<SectionListData<BaseEntry>> = [];
 			(series.albums || []).forEach((album: Jam.Album) => {
-				let section = sections.find(s => s.key === album.albumType);
+				let section = albums.find(s => s.key === album.albumType);
 				if (!section) {
 					section = {
 						key: album.albumType,
 						title: album.albumType,
 						data: []
 					};
-					sections.push(section);
+					albums.push(section);
 				}
 				section.data = section.data.concat([{
-					obj: album,
+					// obj: album,
 					objType: JamObjectType.album,
 					id: album.id,
 					title: album.name,
 					desc: `Episode ${album.seriesNr}`
 				}]);
 			});
-			return {series, sections};
+			return {series, albums};
 		});
 	}
 
