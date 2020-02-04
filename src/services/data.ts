@@ -118,8 +118,8 @@ class DataService {
 		if (!this.db) {
 			return;
 		}
-		FastImage.clearDiskCache();
-		FastImage.clearMemoryCache();
+		// FastImage.clearDiskCache();
+		// FastImage.clearMemoryCache();
 		const dropTableScript = 'DROP TABLE IF EXISTS jam';
 		await this.db.query(dropTableScript);
 		await this.check();
@@ -503,8 +503,73 @@ class DataService {
 		return sections;
 	}
 
-	async fillImageCache(ids: Array<string>, caller: Caching, totalStepPos: number, totalSteps: number): Promise<void> {
+	async fillCache(caller: Caching): Promise<void> {
+		let artistIDs: Array<string> = [];
+		let albumIDs: Array<string> = [];
+		let seriesIDs: Array<string> = [];
+		const forceRefresh = false;
+		const tasks: Array<() => Promise<void>> = [
+			async (): Promise<void> => {
+				await this.stats(forceRefresh);
+			},
+			async (): Promise<void> => {
+				const index = await this.artistIndex(AlbumType.album, forceRefresh);
+				artistIDs = artistIDs.concat(index.map(o => o.id));
+			},
+			...[
+				AlbumType.album, AlbumType.live, AlbumType.compilation, AlbumType.soundtrack, AlbumType.audiobook,
+				AlbumType.series, AlbumType.bootleg, AlbumType.ep, AlbumType.single
+			].map(albumType => async (): Promise<void> => {
+				const index = await this.albumIndex(albumType, forceRefresh);
+				albumIDs = albumIDs.concat(index.map(o => o.id));
+			}),
+			async (): Promise<void> => {
+				await this.folderIndex(forceRefresh);
+			},
+			async (): Promise<void> => {
+				const index = await this.seriesIndex(forceRefresh);
+				seriesIDs = seriesIDs.concat(index.map(o => o.id));
+			}
+		];
+		const total = 5;
+		let i = 0;
+		for (const task of tasks) {
+			i += 1;
+			caller.updateText(`1/${total} Caching Index ${i}/${tasks.length}`);
+			await task();
+			if (!caller.cachingData.running) {
+				return;
+			}
+		}
+		i = 0;
+		for (const id of seriesIDs) {
+			i += 1;
+			caller.updateText(`2/${total} Caching Series ${i}/${seriesIDs.length}`);
+			await this.series(id, forceRefresh);
+			if (!caller.cachingData.running) {
+				return;
+			}
+		}
+		i = 0;
+		for (const id of artistIDs) {
+			i += 1;
+			caller.updateText(`3/${total} Caching Artist ${i}/${artistIDs.length}`);
+			await this.artist(id, forceRefresh);
+			if (!caller.cachingData.running) {
+				return;
+			}
+		}
+		i = 0;
+		for (const id of albumIDs) {
+			i += 1;
+			caller.updateText(`4/${total} Caching Albums ${i}/${albumIDs.length}`);
+			await this.album(id, forceRefresh);
+			if (!caller.cachingData.running) {
+				return;
+			}
+		}
 		const headers = this.currentUserToken ? {Authorization: `Bearer ${this.currentUserToken}`} : undefined;
+		const ids = seriesIDs.concat(artistIDs).concat(albumIDs);
 		const images = ids.map(id => (
 			{
 				uri: this.jam.image.url(id, 80, undefined, !headers),
@@ -518,86 +583,22 @@ class DataService {
 				}
 			))
 		);
-
-		return new Promise<void>((resolve, reject) => {
-			try {
-				FastImage.preload(images, (loaded, total) => {
-					caller.updateText(`${totalStepPos}/${totalSteps} Caching Image ${loaded}/${total}`);
-				}, (loaded, failed) => {
-					resolve();
-				});
-			} catch (e) {
-				reject(e);
-			}
-		});
-	}
-
-	async fillCache(caller: Caching): Promise<void> {
-		let artistIDs: Array<string> = [];
-		let albumIDs: Array<string> = [];
-		let seriesIDs: Array<string> = [];
-		const forceRefesh = false;
-		const tasks: Array<() => Promise<void>> = [
-			async (): Promise<void> => {
-				await this.stats(forceRefesh);
-			},
-			async (): Promise<void> => {
-				const index = await this.artistIndex(AlbumType.album, forceRefesh);
-				artistIDs = artistIDs.concat(index.map(o => o.id));
-			},
-			...[
-				AlbumType.album, AlbumType.live, AlbumType.compilation, AlbumType.soundtrack, AlbumType.audiobook,
-				AlbumType.series, AlbumType.bootleg, AlbumType.ep, AlbumType.single
-			].map(albumType => async (): Promise<void> => {
-				const index = await this.albumIndex(albumType, forceRefesh);
-				albumIDs = albumIDs.concat(index.map(o => o.id));
-			}),
-			async (): Promise<void> => {
-				await this.folderIndex(forceRefesh);
-			},
-			async (): Promise<void> => {
-				const index = await this.seriesIndex(forceRefesh);
-				seriesIDs = seriesIDs.concat(index.map(o => o.id));
-			}
-		];
-		const total = 5;
-		let i = 0;
-		for (const task of tasks) {
-			i += 1;
-			caller.updateText(`1/${total} Caching Index ${i}/${tasks.length}`);
-			await task();
-			if (!caller.cachingData.running) {
-				break;
-			}
-		}
 		i = 0;
-		for (const id of seriesIDs) {
-			i += 1;
-			caller.updateText(`2/${total} Caching Series ${i}/${seriesIDs.length}`);
-			await this.series(id, forceRefesh);
+		for (const image of images) {
 			if (!caller.cachingData.running) {
-				break;
+				return;
 			}
-		}
-		i = 0;
-		for (const id of artistIDs) {
 			i += 1;
-			caller.updateText(`3/${total} Caching Artist ${i}/${artistIDs.length}`);
-			await this.artist(id, forceRefesh);
-			if (!caller.cachingData.running) {
-				break;
-			}
+			caller.updateText(`5/${total} Caching Image ${i}/${images.length}`);
+			await new Promise<void>(resolve => {
+				FastImage.preload([image],
+					(loaded, total) => {
+					},
+					(loaded, failed) => {
+						resolve();
+					});
+			});
 		}
-		i = 0;
-		for (const id of albumIDs) {
-			i += 1;
-			caller.updateText(`4/${total} Caching Albums ${i}/${albumIDs.length}`);
-			await this.album(id, forceRefesh);
-			if (!caller.cachingData.running) {
-				break;
-			}
-		}
-		await this.fillImageCache(seriesIDs.concat(artistIDs).concat(albumIDs), caller, 5, 5);
 	}
 
 	async toggleFav(objType: string, id: string, jamState: Jam.State): Promise<Jam.State> {
