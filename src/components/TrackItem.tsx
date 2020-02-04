@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
 export default class TrackItem extends PureComponent<{ track: TrackEntry }> {
 
 	private playTrack = (): void => {
-		JamPlayer.playTrack(this.props.track.entry)
+		JamPlayer.playTrack(this.props.track)
 			.catch(e => console.error(e));
 	};
 

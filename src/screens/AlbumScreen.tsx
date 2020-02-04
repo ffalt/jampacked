@@ -69,8 +69,8 @@ class AlbumScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute.
 	};
 
 	private playTracks = (): void => {
-		if (this.state.data?.album.tracks) {
-			JamPlayer.playTracks(this.state.data.album.tracks)
+		if (this.state.data?.tracks) {
+			JamPlayer.playTracks(this.state.data?.tracks)
 				.catch(e => console.error(e));
 		}
 	};
@@ -103,7 +103,7 @@ class AlbumScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute.
 		);
 	};
 
-	private keyExtractor = (item: TrackEntry): string => item.entry.id;
+	private keyExtractor = (item: TrackEntry): string => item.id;
 
 	private renderItem = ({item}: { item: TrackEntry }): JSX.Element => (<TrackItem track={item}/>);
 

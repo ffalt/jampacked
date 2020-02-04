@@ -53,7 +53,6 @@ class FolderScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute
 		this.setState({refreshing: true});
 		dataService.folder(id, forceRefresh)
 			.then(data => {
-
 				this.setState({data, refreshing: false});
 			})
 			.catch(e => {
@@ -63,8 +62,8 @@ class FolderScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute
 	}
 
 	private playTracks = (): void => {
-		if (this.state.data?.folder.tracks) {
-			JamPlayer.playTracks(this.state.data.folder.tracks)
+		if (this.state.data?.tracks) {
+			JamPlayer.playTracks(this.state.data.tracks)
 				.catch(e => console.error(e));
 		}
 	};
@@ -95,7 +94,7 @@ class FolderScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute
 		);
 	};
 
-	private keyExtractor = (item: TrackEntry): string => item.entry.id;
+	private keyExtractor = (item: TrackEntry): string => item.id;
 
 	private renderItem = ({item}: { item: TrackEntry }): JSX.Element => (<TrackItem track={item}/>);
 

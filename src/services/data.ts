@@ -50,10 +50,14 @@ export interface IndexEntry extends BaseEntry {
 }
 
 export interface TrackEntry {
-	entry: Jam.Track;
+	id: string;
 	duration: string;
+	durationMS: number;
 	trackNr: string;
 	title: string;
+	artist: string;
+	album: string;
+	genre?: string;
 }
 
 export interface ArtistData {
@@ -87,7 +91,7 @@ export type AutoCompleteData = Array<SectionListData<AutoCompleteEntryData>>;
 
 class DataService {
 	db?: Database;
-	version = 5;
+	version = 6;
 	lastLyrics?: { id: string, data: Jam.TrackLyrics };
 	lastWaveform?: { id: string, data: Jam.WaveFormData };
 	dataCaching = new Caching((caller) => this.fillCache(caller));
@@ -157,8 +161,6 @@ class DataService {
 			}
 		}
 		const result = await build();
-		console.log('id', id);
-		console.log('data', JSON.stringify(result));
 		if (!this.db) {
 			return result;
 		}
@@ -292,24 +294,6 @@ class DataService {
 		});
 	}
 
-	async album(id: string, forceRefresh: boolean = false): Promise<AlbumData> {
-		return this.get<AlbumData>(forceRefresh, `${this.jam.auth.auth?.server}/album/${id}`, async () => {
-			const result: AlbumData = {
-				album: await this.jam.album.id({id, albumTracks: true, trackTag: true}),
-				tracks: []
-			};
-			if (result.album && result.album.tracks) {
-				result.tracks = result.album.tracks.map(track => ({
-					entry: track,
-					title: track.tag?.title || track.name,
-					trackNr: (track.tag?.disc ? `${track.tag?.disc}-` : '') + (track.tag?.trackNr || ''),
-					duration: formatDuration(track.duration)
-				}));
-			}
-			return result;
-		});
-	}
-
 	async artist(id: string, forceRefresh: boolean = false): Promise<ArtistData> {
 		return this.get<ArtistData>(forceRefresh, `${this.jam.auth.auth?.server}/artist/${id}`, async () => {
 			const artist = await this.jam.artist.id({id, artistAlbums: true});
@@ -335,6 +319,33 @@ class DataService {
 		});
 	}
 
+	private buildTrackEntry(track: Jam.Track): TrackEntry {
+		return {
+			// entry: track,
+			id: track.id,
+			title: track.tag?.title || track.name,
+			artist: track.tag?.artist || '?',
+			genre: track.tag?.genre,
+			album: track.tag?.album || '?',
+			trackNr: (track.tag?.disc ? `${track.tag?.disc}-` : '') + (track.tag?.trackNr || ''),
+			durationMS: track.duration,
+			duration: formatDuration(track.duration)
+		};
+	}
+
+	async album(id: string, forceRefresh: boolean = false): Promise<AlbumData> {
+		return this.get<AlbumData>(forceRefresh, `${this.jam.auth.auth?.server}/album/${id}`, async () => {
+			const result: AlbumData = {
+				album: await this.jam.album.id({id, albumTracks: true, trackTag: true}),
+				tracks: []
+			};
+			if (result.album && result.album.tracks) {
+				result.tracks = result.album.tracks.map(track => this.buildTrackEntry(track));
+			}
+			return result;
+		});
+	}
+
 	async folder(id: string, forceRefresh: boolean = false): Promise<FolderData> {
 		return this.get<FolderData>(forceRefresh, `${this.jam.auth.auth?.server}/folder/${id}`, async () => {
 			const result: FolderData = {
@@ -342,12 +353,7 @@ class DataService {
 				tracks: []
 			};
 			if (result.folder && result.folder.tracks) {
-				result.tracks = result.folder.tracks.map(track => ({
-					entry: track,
-					title: track.tag?.title || track.name,
-					trackNr: (track.tag?.disc ? `${track.tag?.disc}-` : '') + (track.tag?.trackNr || ''),
-					duration: formatDuration(track.duration)
-				}));
+				result.tracks = result.folder.tracks.map(track => this.buildTrackEntry(track));
 			}
 			return result;
 		});

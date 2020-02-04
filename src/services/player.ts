@@ -1,11 +1,11 @@
 import {useEffect, useState} from 'react';
-import {AudioFormatType, Jam} from './jam';
+import {AudioFormatType} from './jam';
 import {TrackPlayer, TrackPlayerEvents, useTrackPlayerEvents} from './player-api';
-import dataService from './data';
+import dataService, {TrackEntry} from './data';
 
 export class JamPlayer {
 
-	static async playTrack(track: Jam.Track): Promise<void> {
+	static async playTrack(track: TrackEntry): Promise<void> {
 		const queueItem = (await TrackPlayer.getQueue()).find(t => t.id === track.id);
 		if (queueItem) {
 			await TrackPlayer.skip(track.id);
@@ -14,17 +14,17 @@ export class JamPlayer {
 		}
 	}
 
-	static async playTracks(tracks: Array<Jam.Track>): Promise<void> {
+	static async playTracks(tracks: Array<TrackEntry>): Promise<void> {
 		await TrackPlayer.reset();
 		await TrackPlayer.add(tracks.map(t => {
 			const track: TrackPlayer.Track = {
 				id: t.id,
 				url: dataService.jam.media.stream_url(t.id, AudioFormatType.mp3),
-				title: t.tag?.title || t.name,
-				artist: t.tag?.artist || '?',
-				album: t.tag?.album,
-				genre: t.tag?.genre,
-				duration: t.duration,
+				title: t.title,
+				artist: t.artist,
+				album: t.album,
+				genre: t.genre,
+				duration: t.durationMS,
 				artwork: dataService.jam.image.url(t.id, 300)
 				// type: TrackType.default;
 				// date: t.tag?.year,
