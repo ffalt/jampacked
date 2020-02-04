@@ -4,7 +4,7 @@ import {StyleProp} from 'react-native';
 import dataService from '../services/data';
 
 export default class JamImage extends React.PureComponent<{ id: string, size: number, requestSize?: number, style?: StyleProp<ImageStyle> }> {
-	render(): JSX.Element {
+	render(): React.ReactElement {
 		const headers = dataService.currentUserToken ? {Authorization: `Bearer ${dataService.currentUserToken}`} : undefined;
 		const source = {
 			uri: dataService.jam.image.url(this.props.id, this.props.requestSize || 80, undefined, !headers),

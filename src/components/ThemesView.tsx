@@ -29,7 +29,7 @@ export class ThemesView extends React.PureComponent {
 		this.setState({dark});
 	};
 
-	render(): JSX.Element {
+	render(): React.ReactElement {
 		return (
 			<View style={styles.container}>
 				<ThemedText style={styles.text}>Dark Theme</ThemedText>

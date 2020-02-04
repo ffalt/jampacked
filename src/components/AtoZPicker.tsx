@@ -173,7 +173,7 @@ export default class AtoZPicker<T extends SectionItem> extends React.PureCompone
 		// nop
 	};
 
-	render(): JSX.Element {
+	render(): React.ReactElement {
 		const {letters, currentLetter} = this.state;
 		if (letters.length === 0) {
 			return <></>;

@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
 });
 
 export class AtoZLetter extends React.PureComponent<{ letter: string }> {
-	render(): JSX.Element {
+	render(): React.ReactElement {
 		return <ThemedText style={styles.letter}>{this.props.letter}</ThemedText>;
 	}
 }

@@ -4,7 +4,7 @@ import {HomeRoute, HomeStackWithThemeProps} from '../navigators/Routing';
 
 export default class PodcastScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute.PODCAST>> {
 
-	render(): JSX.Element {
+	render(): React.ReactElement {
 		return (
 			<ThemedText>Podcast Screen</ThemedText>
 		);

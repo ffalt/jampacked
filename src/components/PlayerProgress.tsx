@@ -60,7 +60,7 @@ class PlayerProgressWaveformLoader extends PureComponent<{ id?: string; style?: 
 		}
 	}
 
-	render(): JSX.Element {
+	render(): React.ReactElement {
 		return (
 			<WaveformProgress style={this.props.style} waveform={this.state.waveform}/>
 		);
@@ -90,7 +90,7 @@ class PlayerProgress extends ProgressComponent<{ theme: ITheme }> {
 			.catch(e => console.error(e));
 	};
 
-	render(): JSX.Element {
+	render(): React.ReactElement {
 		return (
 			<Slider
 				thumbTintColor={this.props.theme.sliderHandle}

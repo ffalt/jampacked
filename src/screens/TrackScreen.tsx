@@ -4,7 +4,7 @@ import {HomeRoute, HomeStackWithThemeProps} from '../navigators/Routing';
 
 export default class TrackScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute.TRACK>> {
 
-	render(): JSX.Element {
+	render(): React.ReactElement {
 		return (
 			<ThemedText>Track Screen</ThemedText>
 		);

@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
 });
 
 class LoadingScreen extends React.PureComponent<AppStackProps<Routing.LOAD>> {
-	render(): JSX.Element {
+	render(): React.ReactElement {
 		return (
 			<View style={styles.container}>
 				<Logo size={94}/>

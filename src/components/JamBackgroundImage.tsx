@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
 });
 
 class FastImageBackground extends React.PureComponent<{ id: string, style?: any, imageStyle?: any, theme: ITheme }> {
-	render(): JSX.Element {
+	render(): React.ReactElement {
 		const {id, children, style, imageStyle, ...props} = this.props;
 		const imgStyle = [
 			StyleSheet.absoluteFill,

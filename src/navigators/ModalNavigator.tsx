@@ -27,7 +27,7 @@ export class ModalNavigator extends React.PureComponent {
 		}
 	}
 
-	render(): JSX.Element {
+	render(): React.ReactElement {
 		return (
 			<ModalStack.Navigator mode="modal" headerMode="none">
 				<ModalStack.Screen name="Main" component={BottomTabNavigator} />

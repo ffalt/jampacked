@@ -61,7 +61,7 @@ class Lyrics extends PureComponent<LyricsProps> {
 		}
 	}
 
-	render(): JSX.Element {
+	render(): React.ReactElement {
 		return (
 			<ScrollView>
 				<ThemedText style={styles.lyrics}>{this.state.lyrics}</ThemedText>

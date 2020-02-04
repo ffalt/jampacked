@@ -328,7 +328,7 @@ export default class SwipeableListItem extends React.PureComponent<SwipeableList
 		);
 	};
 
-	render(): JSX.Element {
+	render(): React.ReactElement {
 		const {children, height} = this.props;
 		const {swipeValueLeft, swipeValueRight} = this.state;
 		return (

@@ -26,7 +26,7 @@ export default class LoginButton extends React.PureComponent<{
 		this.props.onPress();
 	};
 
-	render(): JSX.Element {
+	render(): React.ReactElement {
 
 		const content = this.props.children ? this.props.children : <Text>{this.props.label}</Text>;
 

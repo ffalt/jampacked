@@ -30,7 +30,7 @@ export default class App extends React.Component {
 		setAppAvailable(false);
 	}
 
-	render(): JSX.Element {
+	render(): React.ReactElement {
 		return (
 			<ThemeContext.Provider value={this.state}>
 				<ThemeProvider theme={this.state.theme}>

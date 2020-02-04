@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
 });
 
 export default class PlayerControl extends React.PureComponent {
-	render(): JSX.Element {
+	render(): React.ReactElement {
 		const forwardDisabled = false;
 		return (
 			<View style={styles.playerControl}>

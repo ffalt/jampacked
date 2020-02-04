@@ -4,7 +4,7 @@ import {HomeRoute, HomeStackWithThemeProps} from '../navigators/Routing';
 
 export default class PlaylistScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute.TRACKS>> {
 
-	render(): JSX.Element {
+	render(): React.ReactElement {
 		return (
 			<ThemedText>Playlist Screen</ThemedText>
 		);

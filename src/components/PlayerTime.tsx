@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
 });
 
 export default class PlayerTime extends ProgressComponent {
-	render(): JSX.Element {
+	render(): React.ReactElement {
 		return (
 			<View style={styles.times}>
 				<DurationText style={styles.time} duration={this.state.position}/>

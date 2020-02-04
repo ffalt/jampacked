@@ -20,7 +20,7 @@ class PageHeader extends PureComponent<{
 	title: string;
 	theme: ITheme;
 }> {
-	render(): JSX.Element {
+	render(): React.ReactElement {
 		return (
 			<LinearGradient
 				colors={this.props.theme.gradient}

@@ -43,7 +43,7 @@ export default class AtoZList<T extends SectionItem> extends PureComponent<AtoZL
 		}
 	};
 
-	render(): JSX.Element {
+	render(): React.ReactElement {
 		return (
 			<View style={styles.container}>
 				<FlatList

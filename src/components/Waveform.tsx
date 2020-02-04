@@ -109,7 +109,7 @@ const WaveformView: React.FC<WaveFormViewProps> = (props: WaveFormViewProps) => 
 
 export class SoundCloudWave extends React.PureComponent<WaveFormProps> {
 
-	render(): JSX.Element {
+	render(): React.ReactElement {
 		const {
 			height,
 			width,

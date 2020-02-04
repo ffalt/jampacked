@@ -145,7 +145,7 @@ class SearchScreen extends React.PureComponent<BottomTabWithThemeProps<BottomTab
 		this.setState({search: undefined});
 	};
 
-	render(): JSX.Element {
+	render(): React.ReactElement {
 		const isEmpty = (!this.state.search || this.state.search.length === 0);
 		const cancel = !isEmpty
 			? (

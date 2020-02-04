@@ -147,7 +147,7 @@ class LoginScreen extends React.PureComponent<AppStackProps<Routing.AUTH>> {
 		this.setState({password: text});
 	};
 
-	render(): JSX.Element {
+	render(): React.ReactElement {
 		const content = this.state.loading
 			? (<ActivityIndicator size="large" color={styles.buttonIndicator.color}/>)
 			: (<Text style={styles.buttonText}>Login</Text>);

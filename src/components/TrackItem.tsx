@@ -45,7 +45,7 @@ export default class TrackItem extends PureComponent<{ track: TrackEntry }> {
 			.catch(e => console.error(e));
 	};
 
-	render(): JSX.Element {
+	render(): React.ReactElement {
 		return (
 			<TouchableOpacity onPress={this.playTrack} style={styles.trackListContainer}>
 				<View style={styles.trackListNumber}>

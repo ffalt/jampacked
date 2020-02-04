@@ -47,7 +47,7 @@ class UserScreen extends React.PureComponent<BottomTabProps<BottomTabRoute.SETTI
 			});
 	};
 
-	render(): JSX.Element {
+	render(): React.ReactElement {
 		return (
 			<View style={styles.container}>
 				<ThemedText style={styles.section}>Theme</ThemedText>
