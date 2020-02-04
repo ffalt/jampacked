@@ -10,6 +10,9 @@ const styles = StyleSheet.create({
 		padding: 0,
 		alignItems: 'center',
 		justifyContent: 'center'
+	},
+	image: {
+		borderRadius: 4
 	}
 });
 
@@ -20,7 +23,7 @@ const PlayerCover: React.FC = () => {
 	}
 	return (
 		<View style={styles.cover}>
-			<JamImage id={id} size={300} requestSize={300}/>
+			<JamImage id={id} size={300} requestSize={300} style={styles.image}/>
 		</View>
 	);
 };
