@@ -18,6 +18,9 @@ export class Caching {
 
 	startCaching(): void {
 		if (!this.cachingData.running) {
+			this.cachingData.current = 'Starting...';
+			this.cachingData.running = true;
+			this.subjectCaching.next(this.cachingData);
 			this.fillCacheFunc(this)
 				.then(() => {
 					this.stopCaching();
@@ -27,11 +30,10 @@ export class Caching {
 					this.stopCaching();
 				});
 		}
-		this.cachingData.running = true;
-		this.subjectCaching.next(this.cachingData);
 	}
 
 	stopCaching(): void {
+		this.cachingData.current = '';
 		this.cachingData.running = false;
 		this.subjectCaching.next(this.cachingData);
 	}
