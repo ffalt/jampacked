@@ -1,6 +1,7 @@
 import {SectionListData} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import Snackbar from 'react-native-snackbar';
+import {BehaviorSubject, Observable} from 'rxjs';
 import {Database} from './db';
 import {AlbumType, Jam, JamObjectType, JamService} from './jam';
 import {formatDuration} from '../utils/duration.utils';
@@ -42,7 +43,6 @@ export interface BaseEntry {
 	title: string;
 	desc: string;
 	objType: string;
-	link: Navig;
 }
 
 export interface IndexEntry extends BaseEntry {
@@ -91,11 +91,12 @@ export type AutoCompleteData = Array<SectionListData<AutoCompleteEntryData>>;
 
 class DataService {
 	db?: Database;
-	version = 3;
+	version = 4;
 	lastLyrics?: { id: string, data: Jam.TrackLyrics };
 	lastWaveform?: { id: string, data: Jam.WaveFormData };
-	lastHomeData?: HomeData;
 	dataCaching = new Caching((caller) => this.fillCache(caller));
+	private homeDataCaching = new BehaviorSubject<HomeData | undefined>(undefined);
+	homeData: Observable<HomeData | undefined> = this.homeDataCaching.asObservable();
 
 	constructor(public jam: JamService) {
 		this.open();
@@ -118,8 +119,8 @@ class DataService {
 		if (!this.db) {
 			return;
 		}
-		// FastImage.clearDiskCache();
-		// FastImage.clearMemoryCache();
+		FastImage.clearDiskCache();
+		FastImage.clearMemoryCache();
 		const dropTableScript = 'DROP TABLE IF EXISTS jam';
 		await this.db.query(dropTableScript);
 		await this.check();
@@ -160,9 +161,12 @@ class DataService {
 			}
 		}
 		const result = await build();
+		console.log('id', id);
+		console.log('data', JSON.stringify(result));
 		if (!this.db) {
 			return result;
 		}
+		await this.db.delete('jam', {key: id});
 		await this.db.insert('jam', ['data', 'key', 'date', 'version'], [JSON.stringify(result), id, Date.now(), this.version]);
 		return result;
 	}
@@ -178,11 +182,7 @@ class DataService {
 						objType: JamObjectType.album,
 						desc: entry.artist,
 						title: entry.name,
-						letter: group.name,
-						link: {
-							route: HomeRoute.ALBUM,
-							params: {id: entry.id, name: entry.name}
-						}
+						letter: group.name
 					});
 				});
 			});
@@ -201,11 +201,7 @@ class DataService {
 						desc: `Albums: ${entry.albumCount}`,
 						objType: JamObjectType.artist,
 						title: entry.name,
-						letter: group.name,
-						link: {
-							route: HomeRoute.ARTIST,
-							params: {id: entry.artistID, name: entry.name}
-						}
+						letter: group.name
 					});
 				});
 			});
@@ -224,11 +220,7 @@ class DataService {
 						objType: JamObjectType.folder,
 						desc: `Tracks: ${entry.trackCount}`,
 						title: entry.name,
-						letter: group.name,
-						link: {
-							route: HomeRoute.FOLDER,
-							params: {id: entry.folderID, name: entry.name}
-						}
+						letter: group.name
 					});
 				});
 			});
@@ -247,11 +239,7 @@ class DataService {
 						desc: `Episodes: ${entry.albumCount}`,
 						objType: JamObjectType.series,
 						title: entry.name,
-						letter: group.name,
-						link: {
-							route: HomeRoute.SERIESITEM,
-							params: {id: entry.seriesID, name: entry.name}
-						}
+						letter: group.name
 					});
 				});
 			});
@@ -345,11 +333,7 @@ class DataService {
 					objType: JamObjectType.album,
 					id: album.id,
 					title: album.name,
-					desc: `${album.year}`,
-					link: {
-						route: HomeRoute.ALBUM,
-						params: {id: album.id, name: album.name}
-					}
+					desc: `${album.year}`
 				}]);
 			});
 			return {artist, sections};
@@ -393,8 +377,7 @@ class DataService {
 					objType: JamObjectType.album,
 					id: album.id,
 					title: album.name,
-					desc: `Episode ${album.seriesNr}`,
-					link: {route: HomeRoute.ALBUM, params: {id: album.id, name: album.name}}
+					desc: `Episode ${album.seriesNr}`
 				}]);
 			});
 			return {series, sections};
@@ -431,18 +414,14 @@ class DataService {
 		return data;
 	}
 
-	async home(forceRefresh: boolean = false): Promise<HomeData> {
-		if (this.lastHomeData && !forceRefresh) {
-			return this.lastHomeData;
-		}
+	async refreshHomeData(): Promise<void> {
 		const result: HomeData = {};
 		const pack = (objs: Array<Jam.Base>, route: string): Array<HomeEntry> => objs.map(obj => ({obj, route}));
-		result.artistsRecent = pack((await this.jam.artist.list({list: 'recent', amount: 5})).items, HomeRoute.ARTIST);
 		result.artistsFaved = pack((await this.jam.artist.list({list: 'faved', amount: 5})).items, HomeRoute.ARTIST);
 		result.albumsFaved = pack((await this.jam.album.list({list: 'faved', amount: 5})).items, HomeRoute.ALBUM);
+		result.artistsRecent = pack((await this.jam.artist.list({list: 'recent', amount: 5})).items, HomeRoute.ARTIST);
 		result.albumsRecent = pack((await this.jam.album.list({list: 'recent', amount: 5})).items, HomeRoute.ALBUM);
-		this.lastHomeData = result;
-		return result;
+		this.homeDataCaching.next(result);
 	}
 
 	async autocomplete(query: string): Promise<AutoCompleteData> {
@@ -592,9 +571,9 @@ class DataService {
 			caller.updateText(`5/${total} Caching Image ${i}/${images.length}`);
 			await new Promise<void>(resolve => {
 				FastImage.preload([image],
-					(loaded, total) => {
+					(/* loaded, total */) => {
 					},
-					(loaded, failed) => {
+					(/* loaded, failed */) => {
 						resolve();
 					});
 			});
@@ -610,6 +589,7 @@ class DataService {
 			backgroundColor: 'green',
 			textColor: 'white'
 		});
+		this.refreshHomeData().catch(e => console.error(e));
 		return result;
 	}
 }

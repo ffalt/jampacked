@@ -7,6 +7,7 @@ import {staticTheme, useTheme} from '../style/theming';
 import Logo from '../components/Logo';
 import dataService, {HomeData, HomeEntry, HomeStatData, HomeStatsData} from '../services/data';
 import NavigationService from '../services/navigation';
+import {Subscription} from 'rxjs';
 
 const styles = StyleSheet.create({
 	container: {
@@ -167,9 +168,19 @@ class HomeScreen extends React.PureComponent<HomeStackProps<HomeRoute.START>> {
 		refreshing: false,
 		stats: []
 	};
+	homeDataSubscription?: Subscription;
 
 	componentDidMount(): void {
+		this.homeDataSubscription = dataService.homeData.subscribe(data => {
+			this.setState({data});
+		});
 		this.load();
+	}
+
+	componentWillUnmount(): void {
+		if (this.homeDataSubscription) {
+			this.homeDataSubscription.unsubscribe();
+		}
 	}
 
 	private load(forceRefresh: boolean = false): void {
@@ -185,14 +196,18 @@ class HomeScreen extends React.PureComponent<HomeStackProps<HomeRoute.START>> {
 			.catch(e => {
 				console.error(e);
 			});
-		dataService.home(forceRefresh)
-			.then(data => {
+
+		if (forceRefresh || !this.state.data) {
+			dataService.refreshHomeData().then(() => {
 				homeLoading = false;
-				this.setState({data, refreshing: statsLoading || homeLoading});
-			})
-			.catch(e => {
+				this.setState({refreshing: statsLoading || homeLoading});
+			}).catch(e => {
 				console.error(e);
 			});
+		} else {
+			homeLoading = false;
+			this.setState({refreshing: statsLoading});
+		}
 	}
 
 	private reload = (): void => {

@@ -127,7 +127,7 @@ export class Database {
 	 */
 	async delete<T>(table: string, statement?: WhereStatement<T>): Promise<any> {
 		const {sql, params} = this.buildWhere(statement);
-		const query = `DELETE ${table} ${sql}`;
+		const query = `DELETE FROM ${table} ${sql}`;
 		return this.query(query, params);
 	}
 

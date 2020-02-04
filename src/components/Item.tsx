@@ -8,6 +8,7 @@ import NavigationService from '../services/navigation';
 import SwipeableListItem from './SwipeItem';
 import ThemedIcon from './ThemedIcon';
 import {Jam} from '../services/jam';
+import {HomeRoute} from '../navigators/Routing';
 
 const styles = StyleSheet.create({
 	item: {
@@ -51,7 +52,8 @@ class Item extends PureComponent<{ item: BaseEntry, theme: ITheme }> {
 	};
 
 	private click = (): void => {
-		NavigationService.navigateLink(this.props.item.link);
+		const {id, title, objType} = this.props.item;
+		NavigationService.navigateObj(objType, id, title);
 	};
 
 	private left = (): JSX.Element => {
