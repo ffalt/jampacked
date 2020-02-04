@@ -1,7 +1,7 @@
 import {StyleSheet, View} from 'react-native';
-import FastImage from 'react-native-fast-image';
 import React from 'react';
-import {useCurrentTrack} from '../services/player';
+import {useCurrentTrackID} from '../services/player';
+import JamImage from './JamImage';
 
 const styles = StyleSheet.create({
 	cover: {
@@ -12,19 +12,13 @@ const styles = StyleSheet.create({
 });
 
 const PlayerCover: React.FC = () => {
-	const currentTrack = useCurrentTrack() || {artwork: undefined, title: undefined, artist: undefined};
-	const source = {
-		uri: currentTrack.artwork,
-		// headers: { Authorization: 'someAuthToken' },
-		priority: FastImage.priority.normal
-	};
+	const id = useCurrentTrackID();
+	if (!id) {
+		return <></>;
+	}
 	return (
 		<View style={styles.cover}>
-			<FastImage
-				style={StyleSheet.absoluteFill}
-				source={source}
-				resizeMode={FastImage.resizeMode.contain}
-			/>
+			<JamImage id={id} size={300} requestSize={300}/>
 		</View>
 	);
 };
