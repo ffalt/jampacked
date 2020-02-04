@@ -1,5 +1,5 @@
 import React from 'react';
-import {ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {RefreshControl, ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {HomeRoute, HomeStackProps} from '../navigators/Routing';
 import ThemedText from '../components/ThemedText';
 import JamImage from '../components/JamImage';
@@ -161,33 +161,56 @@ class HomeScreen extends React.PureComponent<HomeStackProps<HomeRoute.START>> {
 	state: {
 		data?: HomeData;
 		stats: HomeStatsData;
+		refreshing: boolean;
 	} = {
 		data: undefined,
+		refreshing: false,
 		stats: []
 	};
 
-	async loadHome(): Promise<void> {
-		const data = await dataService.home();
-		this.setState({data});
-	}
-
-	async loadStats(): Promise<void> {
-		const stats = await dataService.stats();
-		this.setState({stats});
-	}
-
 	componentDidMount(): void {
-		this.loadStats().catch(e => {
-			console.error(e);
-		});
-		this.loadHome().catch(e => {
-			console.error(e);
-		});
+		this.load();
 	}
 
-	render(): JSX.Element {
+	private load(forceRefresh: boolean = false): void {
+		this.setState({refreshing: true});
+		let statsLoading: boolean = true;
+		let homeLoading: boolean = true;
+
+		dataService.stats(forceRefresh)
+			.then((stats) => {
+				statsLoading = false;
+				this.setState({stats, refreshing: statsLoading || homeLoading});
+			})
+			.catch(e => {
+				console.error(e);
+			});
+		dataService.home(forceRefresh)
+			.then(data => {
+				homeLoading = false;
+				this.setState({data, refreshing: statsLoading || homeLoading});
+			})
+			.catch(e => {
+				console.error(e);
+			});
+	}
+
+	private reload = (): void => {
+		this.load(true);
+	};
+
+	render(): React.ReactElement {
 		return (
-			<ScrollView>
+			<ScrollView
+				refreshControl={
+					(
+						<RefreshControl
+							refreshing={this.state.refreshing}
+							onRefresh={this.reload}
+						/>
+					)
+				}
+			>
 				<View style={styles.container}>
 					<WelcomeSection/>
 					<HomeStats stats={this.state.stats}/>

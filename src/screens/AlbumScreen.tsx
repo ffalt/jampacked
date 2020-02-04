@@ -1,7 +1,7 @@
 import React from 'react';
 import {FlatList, StyleSheet, TouchableOpacity} from 'react-native';
 import ThemedText from '../components/ThemedText';
-import {withTheme} from '../style/theming';
+import {staticTheme, withTheme} from '../style/theming';
 import TrackItem from '../components/TrackItem';
 import {HomeRoute, HomeStackWithThemeProps} from '../navigators/Routing';
 import {JamPlayer} from '../services/player';
@@ -10,48 +10,57 @@ import ObjHeader, {objHeaderStyles} from '../components/ObjHeader';
 import {genreDisplay} from '../utils/genre.utils';
 import Separator from '../components/Separator';
 import dataService, {AlbumData, TrackEntry} from '../services/data';
+import {JamObjectType} from '../services/jam';
+import FavIcon from '../components/FavIcon';
 
 const styles = StyleSheet.create({
-	playButton: {
-		height: 24,
-		width: 24,
-		borderWidth: 1,
-		borderRadius: 30 / 2,
-		alignItems: 'center',
-		justifyContent: 'center'
+	button: {
+		marginLeft: staticTheme.margin
 	},
-	playButtonIcon: {
-		fontSize: 10
+	buttonIcon: {
+		fontSize: 26
 	}
 });
 
 class AlbumScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute.ALBUM>> {
 	state: {
 		data?: AlbumData;
+		refreshing: boolean;
 	} = {
+		refreshing: false,
 		data: undefined
 	};
 
 	componentDidMount(): void {
-		this.load(this.props.route.params.id)
-			.catch(e => console.error(e));
+		this.load();
 	}
 
 	componentDidUpdate(prevProps: { route: { params: { id?: string } } }): void {
 		if (prevProps.route.params?.id !== this.props.route.params?.id) {
-			this.load(this.props.route.params.id)
-				.catch(e => console.error(e));
+			this.setState({data: undefined});
+			this.load();
 		}
 	}
 
-	private async load(id: string): Promise<void> {
-		this.setState({data: undefined});
+	private load(forceRefresh: boolean = false): void {
+		const {id} = this.props.route.params;
 		if (!id) {
 			return;
 		}
-		const data = await dataService.album(id);
-		this.setState({data});
+		this.setState({refreshing: true});
+		dataService.album(id, forceRefresh)
+			.then(data => {
+				this.setState({data, refreshing: false});
+			})
+			.catch(e => {
+				this.setState({refreshing: false});
+				console.error(e);
+			});
 	}
+
+	private reload = (): void => {
+		this.load(true);
+	};
 
 	private toArtist = (): void => {
 		if (this.state.data && this.state.data.album.artistID) {
@@ -68,12 +77,12 @@ class AlbumScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute.
 
 	private renderHeader = (): JSX.Element => {
 		const headerTitleCmds = (
-			<TouchableOpacity
-				style={[styles.playButton, {borderColor: this.props.theme.textColor}]}
-				onPress={this.playTracks}
-			>
-				<ThemedIcon name="play" style={styles.playButtonIcon}/>
-			</TouchableOpacity>
+			<>
+				<TouchableOpacity style={styles.button} onPress={this.playTracks}>
+					<ThemedIcon name="play" style={styles.buttonIcon}/>
+				</TouchableOpacity>
+				<FavIcon objType={JamObjectType.album} id={this.props.route.params?.id}/>
+			</>
 		);
 
 		return (
@@ -98,14 +107,16 @@ class AlbumScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute.
 
 	private renderItem = ({item}: { item: TrackEntry }): JSX.Element => (<TrackItem track={item}/>);
 
-	render(): JSX.Element {
+	render(): React.ReactElement {
 		return (
 			<FlatList
 				data={this.state.data?.tracks}
 				renderItem={this.renderItem}
+				refreshing={this.state.refreshing}
 				keyExtractor={this.keyExtractor}
 				ItemSeparatorComponent={Separator}
 				ListHeaderComponent={this.renderHeader}
+				onRefresh={this.reload}
 			/>
 		);
 	}

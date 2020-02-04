@@ -8,7 +8,7 @@ import FastImageBackground from './JamBackgroundImage';
 export const objHeaderStyles = StyleSheet.create({
 	ListHeaderUpperTitle: {
 		fontSize: staticTheme.fontSize,
-		marginBottom: staticTheme.margin
+		marginBottom: staticTheme.marginSmall
 	},
 	ListHeaderUpperLabel: {
 		fontSize: staticTheme.fontSizeSmall
@@ -23,21 +23,25 @@ const styles = StyleSheet.create({
 	headerTop: {
 		flexDirection: 'row',
 		justifyContent: 'space-between',
-		paddingLeft: staticTheme.padding,
-		paddingRight: staticTheme.padding
+		paddingHorizontal: staticTheme.padding,
 	},
 	headerBottom: {
 		flex: 1,
 		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'space-between',
-		paddingLeft: staticTheme.padding,
-		paddingRight: staticTheme.padding
+		paddingHorizontal: staticTheme.padding,
 	},
 	headerBottomCmds: {
+		flexDirection: 'row',
 		alignItems: 'center',
-		alignContent: 'center',
-		justifyContent: 'center'
+		// alignContent: 'center',
+		// justifyContent: 'center',
+		justifyContent: 'space-around',
+		height: 40,
+		width: '100%',
+		borderRadius: 6,
+		backgroundColor: 'rgba(0,0,0,0.3)'
 	},
 	headerTitle: {
 		flex: 1,
@@ -57,19 +61,19 @@ class ObjHeader extends PureComponent<{
 	children?: ReactNode | Array<ReactNode>;
 	headerTitleCmds?: ReactNode | Array<ReactNode>;
 }> {
-	render(): JSX.Element {
+	render(): React.ReactElement {
 		return (
 			<FastImageBackground id={this.props.id} style={styles.header}>
 				<View style={styles.headerTop}>
 					<JamImage id={this.props.id} size={160} requestSize={300}/>
 					<View style={styles.headerExtra}>
 						{this.props.children}
+						<View style={styles.headerBottomCmds}>
+							{this.props.headerTitleCmds}
+						</View>
 					</View>
 				</View>
 				<View style={styles.headerBottom}>
-					<View style={styles.headerBottomCmds}>
-						{this.props.headerTitleCmds}
-					</View>
 					<ThemedText numberOfLines={1} style={styles.headerTitle}>{this.props.title}</ThemedText>
 				</View>
 			</FastImageBackground>

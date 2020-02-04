@@ -1,6 +1,5 @@
 import React, {PureComponent} from 'react';
 import {ActivityIndicator, StyleSheet, TouchableOpacity, View} from 'react-native';
-import Snackbar from 'react-native-snackbar';
 import ThemedText from './ThemedText';
 import {ITheme, staticTheme, withTheme} from '../style/theming';
 import JamImage from './JamImage';
@@ -71,17 +70,18 @@ class Item extends PureComponent<{ item: BaseEntry, theme: ITheme }> {
 
 	private leftPress = (): void => {
 		const {item} = this.props;
-		this.setState({loading: true});
-		dataService.jam.base.fav(item.objType, {id: item.id}).then(jamState => {
-			this.setState({loading: false, jamState});
-			Snackbar.show({
-				text: jamState.faved ? 'Added to Favorites' : 'Removed from Favorites',
-				duration: Snackbar.LENGTH_SHORT
-			});
-		}).catch(e => console.error(e));
+		const {jamState} = this.state;
+		if (item && jamState) {
+			this.setState({loading: true});
+			dataService.toggleFav(item.objType, item.id, jamState)
+				.then(result => {
+					this.setState({loading: false, jamState: result});
+				})
+				.catch(e => console.error(e));
+		}
 	};
 
-	render(): JSX.Element {
+	render(): React.ReactElement {
 		const {item, theme} = this.props;
 		return (
 			<SwipeableListItem

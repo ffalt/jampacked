@@ -1,5 +1,6 @@
 import {SectionListData} from 'react-native';
 import FastImage from 'react-native-fast-image';
+import Snackbar from 'react-native-snackbar';
 import {Database} from './db';
 import {AlbumType, Jam, JamObjectType, JamService} from './jam';
 import {formatDuration} from '../utils/duration.utils';
@@ -93,6 +94,7 @@ class DataService {
 	version = 3;
 	lastLyrics?: { id: string, data: Jam.TrackLyrics };
 	lastWaveform?: { id: string, data: Jam.WaveFormData };
+	lastHomeData?: HomeData;
 	dataCaching = new Caching((caller) => this.fillCache(caller));
 
 	constructor(public jam: JamService) {
@@ -429,15 +431,17 @@ class DataService {
 		return data;
 	}
 
-	async home(): Promise<HomeData> {
+	async home(forceRefresh: boolean = false): Promise<HomeData> {
+		if (this.lastHomeData && !forceRefresh) {
+			return this.lastHomeData;
+		}
 		const result: HomeData = {};
-
 		const pack = (objs: Array<Jam.Base>, route: string): Array<HomeEntry> => objs.map(obj => ({obj, route}));
-
 		result.artistsRecent = pack((await this.jam.artist.list({list: 'recent', amount: 5})).items, HomeRoute.ARTIST);
 		result.artistsFaved = pack((await this.jam.artist.list({list: 'faved', amount: 5})).items, HomeRoute.ARTIST);
 		result.albumsFaved = pack((await this.jam.album.list({list: 'faved', amount: 5})).items, HomeRoute.ALBUM);
 		result.albumsRecent = pack((await this.jam.album.list({list: 'recent', amount: 5})).items, HomeRoute.ALBUM);
+		this.lastHomeData = result;
 		return result;
 	}
 
@@ -596,6 +600,17 @@ class DataService {
 		await this.fillImageCache(seriesIDs.concat(artistIDs).concat(albumIDs), caller, 5, 5);
 	}
 
+	async toggleFav(objType: string, id: string, jamState: Jam.State): Promise<Jam.State> {
+		const remove = jamState.faved ? true : undefined;
+		const result = await this.jam.base.fav(objType, {id, remove});
+		Snackbar.show({
+			text: result.faved ? 'Added to Favorites' : 'Removed from Favorites',
+			duration: Snackbar.LENGTH_SHORT,
+			backgroundColor: 'green',
+			textColor: 'white'
+		});
+		return result;
+	}
 }
 
 const configuration = new JamConfigurationService();

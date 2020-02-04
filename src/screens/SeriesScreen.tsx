@@ -7,18 +7,40 @@ import dataService, {Index} from '../services/data';
 class SeriesScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute.SERIES>> {
 	state: {
 		index: Index;
+		refreshing: boolean;
 	} = {
-		index: []
+		index: [],
+		refreshing: false
 	};
 
-	async componentDidMount(): Promise<void> {
-		const index = await dataService.seriesIndex();
-		this.setState({index});
+	componentDidMount(): void {
+		this.load();
 	}
 
-	render(): JSX.Element {
+	private load(forceRefresh: boolean = false): void {
+		this.setState({refreshing: true});
+		dataService.seriesIndex(forceRefresh)
+			.then(index => {
+				this.setState({index, refreshing: false});
+			})
+			.catch(e => {
+				this.setState({refreshing: false});
+				console.error(e);
+			});
+	}
+
+	private reload = (): void => {
+		this.load(true);
+	};
+
+	render(): React.ReactElement {
 		return (
-			<IndexList title="Series" index={this.state.index} theme={this.props.theme}/>
+			<IndexList
+				title="Series"
+				index={this.state.index}
+				refreshing={this.state.refreshing}
+				onRefresh={this.reload}
+			/>
 		);
 	}
 }

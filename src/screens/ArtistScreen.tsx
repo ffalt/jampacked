@@ -21,30 +21,39 @@ const styles = StyleSheet.create({
 
 export default class ArtistScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute.ARTIST>> {
 	state: {
+		refreshing: boolean;
 		data?: ArtistData;
 	} = {
+		refreshing: false,
 		data: undefined
 	};
 
 	componentDidMount(): void {
-		this.load(this.props.route.params.id)
-			.catch(e => console.error(e));
+		this.load();
 	}
 
 	componentDidUpdate(prevProps: { route: { params: { id?: string } } }): void {
 		if (prevProps.route.params?.id !== this.props.route.params?.id) {
-			this.load(this.props.route.params.id)
-				.catch(e => console.error(e));
+			this.setState({data: undefined});
+			this.load();
 		}
 	}
 
-	private async load(id: string): Promise<void> {
-		this.setState({data: undefined});
+	private load(forceRefresh: boolean = false): void {
+		const {id} = this.props.route.params;
 		if (!id) {
 			return;
 		}
-		const data = await dataService.artist(id);
-		this.setState({data});
+		this.setState({refreshing: true});
+		dataService.artist(id, forceRefresh)
+			.then(data => {
+				this.setState({data, refreshing: false});
+
+			})
+			.catch(e => {
+				this.setState({refreshing: false});
+				console.error(e);
+			});
 	}
 
 	private renderHeader = (): JSX.Element => (
@@ -66,7 +75,11 @@ export default class ArtistScreen extends React.PureComponent<HomeStackWithTheme
 
 	private keyExtractor = (item: ItemData<Jam.Album>): string => item.id;
 
-	render(): JSX.Element {
+	private reload = (): void => {
+		this.load(true);
+	};
+
+	render(): React.ReactElement {
 		const sections = this.state.data?.sections || [];
 		return (
 			<SectionList
@@ -77,6 +90,8 @@ export default class ArtistScreen extends React.PureComponent<HomeStackWithTheme
 				keyExtractor={this.keyExtractor}
 				renderSectionHeader={this.renderSection}
 				renderItem={this.renderItem}
+				refreshing={this.state.refreshing}
+				onRefresh={this.reload}
 			/>
 		);
 	}

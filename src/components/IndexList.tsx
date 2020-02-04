@@ -6,7 +6,13 @@ import AtoZList from './AtoZList';
 import {Index, IndexEntry} from '../services/data';
 import Item from './Item';
 
-class IndexList extends React.PureComponent<{ index: Index; title: string; theme: ITheme }> {
+class IndexList extends React.PureComponent<{
+	index: Index;
+	title: string;
+	refreshing: boolean;
+	theme: ITheme;
+	onRefresh: () => void;
+}> {
 
 	private renderHeader = (): JSX.Element => <PageHeader title={this.props.title}/>;
 
@@ -14,7 +20,7 @@ class IndexList extends React.PureComponent<{ index: Index; title: string; theme
 
 	private keyExtractor = (item: IndexEntry): string => item.id;
 
-	render(): JSX.Element {
+	render(): React.ReactElement {
 		return (
 			<AtoZList
 				data={this.props.index || []}
@@ -22,6 +28,8 @@ class IndexList extends React.PureComponent<{ index: Index; title: string; theme
 				keyExtractor={this.keyExtractor}
 				ItemSeparatorComponent={Separator}
 				ListHeaderComponent={this.renderHeader}
+				refreshing={this.props.refreshing}
+				onRefresh={this.props.onRefresh}
 				itemHeight={65}
 			/>
 		);

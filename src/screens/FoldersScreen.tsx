@@ -5,19 +5,41 @@ import dataService, {Index} from '../services/data';
 
 export default class FoldersScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute.FOLDERS>> {
 	state: {
-		index: Index
+		index: Index;
+		refreshing: boolean;
 	} = {
-		index: []
+		index: [],
+		refreshing: false
 	};
 
-	async componentDidMount(): Promise<void> {
-		const index = await dataService.folderIndex();
-		this.setState({index});
+	componentDidMount(): void {
+		this.load();
 	}
 
-	render(): JSX.Element {
+	private load(forceRefresh: boolean = false): void {
+		this.setState({refreshing: true});
+		dataService.folderIndex(forceRefresh)
+			.then(index => {
+				this.setState({index, refreshing: false});
+			})
+			.catch(e => {
+				this.setState({refreshing: false});
+				console.error(e);
+			});
+	}
+
+	private reload = (): void => {
+		this.load(true);
+	};
+
+	render(): React.ReactElement {
 		return (
-			<IndexList index={this.state.index} title="Folders"/>
+			<IndexList
+				index={this.state.index}
+				title="Folders"
+				refreshing={this.state.refreshing}
+				onRefresh={this.reload}
+			/>
 		);
 	}
 }

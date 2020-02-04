@@ -6,19 +6,41 @@ import dataService, {Index} from '../services/data';
 
 export default class ArtistsScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute.ARTISTS>> {
 	state: {
-		index: Index
+		index: Index;
+		refreshing: boolean;
 	} = {
-		index: []
+		index: [],
+		refreshing: false
 	};
 
-	async componentDidMount(): Promise<void> {
-		const index = await dataService.artistIndex(AlbumType.album);
-		this.setState({index});
+	componentDidMount(): void {
+		this.load();
 	}
 
-	render(): JSX.Element {
+	private load(forceRefresh: boolean = false): void {
+		this.setState({refreshing: true});
+		dataService.artistIndex(AlbumType.album, forceRefresh)
+			.then(index => {
+				this.setState({index, refreshing: false});
+			})
+			.catch(e => {
+				this.setState({refreshing: false});
+				console.error(e);
+			});
+	}
+
+	private reload = (): void => {
+		this.load(true);
+	};
+
+	render(): React.ReactElement {
 		return (
-			<IndexList index={this.state.index} title="Artists"/>
+			<IndexList
+				index={this.state.index}
+				title="Artists"
+				refreshing={this.state.refreshing}
+				onRefresh={this.reload}
+			/>
 		);
 	}
 }

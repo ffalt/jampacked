@@ -19,10 +19,10 @@ export class AppNavigator extends React.PureComponent {
 		await dataService.jam.auth.load();
 		try {
 			await dataService.jam.auth.check();
-			this.setState({hasUser: dataService.jam.auth.isLoggedIn(), isLoading: false});
 		} catch (e) {
-			this.setState({hasUser: false, isLoading: false});
+			console.error(e);
 		}
+		this.setState({hasUser: dataService.jam.auth.isLoggedIn(), isLoading: false});
 		SplashScreen.hide();
 	}
 
@@ -40,7 +40,7 @@ export class AppNavigator extends React.PureComponent {
 		this.setState({hasUser: false});
 	};
 
-	render(): JSX.Element {
+	render(): React.ReactElement {
 		const value = {
 			hasUser: this.state.hasUser,
 			isLoading: this.state.isLoading,

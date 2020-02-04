@@ -28,29 +28,38 @@ const styles = StyleSheet.create({
 class FolderScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute.FOLDER>> {
 	state: {
 		data?: FolderData;
+		refreshing: boolean;
 	} = {
-		data: undefined
+		data: undefined,
+		refreshing: false
 	};
 
 	componentDidMount(): void {
-		this.load(this.props.route.params.id)
-			.catch(e => console.error(e));
+		this.load();
 	}
 
 	componentDidUpdate(prevProps: { route: { params: { id?: string } } }): void {
 		if (prevProps.route.params?.id !== this.props.route.params?.id) {
-			this.load(this.props.route.params.id)
-				.catch(e => console.error(e));
+			this.setState({data: undefined});
+			this.load();
 		}
 	}
 
-	private async load(id: string): Promise<void> {
-		this.setState({data: undefined});
+	private load(forceRefresh: boolean = false): void {
+		const {id} = this.props.route.params;
 		if (!id) {
 			return;
 		}
-		const data = await dataService.folder(id);
-		this.setState({data});
+		this.setState({refreshing: true});
+		dataService.folder(id, forceRefresh)
+			.then(data => {
+
+				this.setState({data, refreshing: false});
+			})
+			.catch(e => {
+				this.setState({refreshing: false});
+				console.error(e);
+			});
 	}
 
 	private playTracks = (): void => {
@@ -90,7 +99,11 @@ class FolderScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute
 
 	private renderItem = ({item}: { item: TrackEntry }): JSX.Element => (<TrackItem track={item}/>);
 
-	render(): JSX.Element {
+	private reload = (): void => {
+		this.load(true);
+	};
+
+	render(): React.ReactElement {
 		return (
 			<FlatList
 				data={this.state.data?.tracks}
@@ -98,6 +111,8 @@ class FolderScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute
 				keyExtractor={this.keyExtractor}
 				ItemSeparatorComponent={Separator}
 				ListHeaderComponent={this.renderHeader}
+				refreshing={this.state.refreshing}
+				onRefresh={this.reload}
 			/>
 		);
 	}
