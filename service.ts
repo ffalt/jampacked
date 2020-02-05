@@ -1,5 +1,6 @@
 import {JamPlayer} from './src/services/player';
 import {TrackPlayer} from './src/services/player-api';
+import {snackError} from './src/services/snack';
 
 let hasApp: boolean = false;
 
@@ -37,8 +38,10 @@ export default async function service(): Promise<void> {
 		// if (data.paused || data.permanent)
 		TrackPlayer.setVolume(data.ducking ? 0.5 : 1);
 	});
-	TrackPlayer.addEventListener('playback-error', data => {
-		console.error('playback-error', data);
+	TrackPlayer.addEventListener('playback-error', error => {
+		if (hasApp) {
+			snackError(error);
+		}
 	});
 	TrackPlayer.addEventListener('remote-seek', (data) => {
 		TrackPlayer.seekTo(data.position);

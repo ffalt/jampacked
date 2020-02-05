@@ -6,6 +6,7 @@ import {HomeRoute, HomeStackWithThemeProps} from '../navigators/Routing';
 import Item from '../components/Item';
 import ObjHeader, {objHeaderStyles} from '../components/ObjHeader';
 import dataService, {BaseEntry, SeriesData} from '../services/data';
+import {snackError} from '../services/snack';
 
 const styles = StyleSheet.create({
 	ListHeaderTitle: {
@@ -58,11 +59,10 @@ class SeriesItemScreen extends React.PureComponent<HomeStackWithThemeProps<HomeR
 		dataService.series(id, forceRefresh)
 			.then(data => {
 				this.setState({data, refreshing: false});
-
 			})
 			.catch(e => {
 				this.setState({refreshing: false});
-				console.error(e);
+				snackError(e);
 			});
 	}
 

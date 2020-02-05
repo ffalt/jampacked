@@ -3,6 +3,7 @@ import {withTheme} from '../style/theming';
 import {HomeRoute, HomeStackWithThemeProps} from '../navigators/Routing';
 import IndexList from '../components/IndexList';
 import dataService, {Index} from '../services/data';
+import {snackError} from '../services/snack';
 
 class SeriesScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute.SERIES>> {
 	state: {
@@ -25,7 +26,7 @@ class SeriesScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute
 			})
 			.catch(e => {
 				this.setState({refreshing: false});
-				console.error(e);
+				snackError(e);
 			});
 	}
 

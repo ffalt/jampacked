@@ -12,6 +12,7 @@ import Separator from '../components/Separator';
 import dataService, {AlbumData, TrackEntry} from '../services/data';
 import {JamObjectType} from '../services/jam';
 import FavIcon from '../components/FavIcon';
+import {snackError} from '../services/snack';
 
 const styles = StyleSheet.create({
 	button: {
@@ -54,7 +55,7 @@ class AlbumScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute.
 			})
 			.catch(e => {
 				this.setState({refreshing: false});
-				console.error(e);
+				snackError(e);
 			});
 	}
 
@@ -71,7 +72,9 @@ class AlbumScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute.
 	private playTracks = (): void => {
 		if (this.state.data?.tracks) {
 			JamPlayer.playTracks(this.state.data?.tracks)
-				.catch(e => console.error(e));
+				.catch(e => {
+					snackError(e);
+				});
 		}
 	};
 

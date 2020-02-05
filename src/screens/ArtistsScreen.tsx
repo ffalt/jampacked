@@ -3,6 +3,7 @@ import {AlbumType} from '../services/jam';
 import {HomeRoute, HomeStackWithThemeProps} from '../navigators/Routing';
 import IndexList from '../components/IndexList';
 import dataService, {Index} from '../services/data';
+import {snackError} from '../services/snack';
 
 export default class ArtistsScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute.ARTISTS>> {
 	state: {
@@ -25,7 +26,7 @@ export default class ArtistsScreen extends React.PureComponent<HomeStackWithThem
 			})
 			.catch(e => {
 				this.setState({refreshing: false});
-				console.error(e);
+				snackError(e);
 			});
 	}
 

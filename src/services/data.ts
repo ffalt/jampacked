@@ -1,6 +1,5 @@
 import {SectionListData} from 'react-native';
 import FastImage from 'react-native-fast-image';
-import Snackbar from 'react-native-snackbar';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {Database} from './db';
 import {AlbumType, Jam, JamObjectType, JamService} from './jam';
@@ -9,6 +8,7 @@ import {JamConfigurationService} from './jam-configuration';
 import {getTypeByAlbumType} from './jam-lists';
 import {HomeRoute} from '../navigators/Routing';
 import {Caching} from './caching';
+import {snackSuccess} from './snack';
 
 export interface Navig {
 	route: string;
@@ -57,6 +57,9 @@ export interface TrackEntry {
 	title: string;
 	artist: string;
 	album: string;
+	seriesID?: string;
+	albumID?: string;
+	artistID?: string;
 	genre?: string;
 }
 
@@ -91,7 +94,7 @@ export type AutoCompleteData = Array<SectionListData<AutoCompleteEntryData>>;
 
 class DataService {
 	db?: Database;
-	version = 6;
+	version = 8;
 	lastLyrics?: { id: string, data: Jam.TrackLyrics };
 	lastWaveform?: { id: string, data: Jam.WaveFormData };
 	dataCaching = new Caching((caller) => this.fillCache(caller));
@@ -101,6 +104,8 @@ class DataService {
 	constructor(public jam: JamService) {
 		this.open();
 	}
+
+	// db
 
 	async open(): Promise<void> {
 		this.db = await Database.getInstance();
@@ -113,17 +118,6 @@ class DataService {
 		}
 		const createTableScript = 'CREATE TABLE if not exists jam(_id INTEGER PRIMARY KEY AUTOINCREMENT, key TEXT, data TEXT, date integer, version integer)';
 		await this.db.query(createTableScript);
-	}
-
-	async clearCache(): Promise<void> {
-		if (!this.db) {
-			return;
-		}
-		FastImage.clearDiskCache();
-		FastImage.clearMemoryCache();
-		const dropTableScript = 'DROP TABLE IF EXISTS jam';
-		await this.db.query(dropTableScript);
-		await this.check();
 	}
 
 	async close(): Promise<void> {
@@ -167,6 +161,49 @@ class DataService {
 		await this.db.delete('jam', {key: id});
 		await this.db.insert('jam', ['data', 'key', 'date', 'version'], [JSON.stringify(result), id, Date.now(), this.version]);
 		return result;
+	}
+
+	// auth
+
+	get currentUserName(): string {
+		return (this.jam.auth?.user?.name || '');
+	}
+
+	get currentUserID(): string {
+		return (this.jam.auth?.user?.id || '');
+	}
+
+	get currentUserToken(): string | undefined {
+		return this.jam.auth?.auth?.token;
+	}
+
+	// data
+
+	private buildTrackEntry(track: Jam.Track): TrackEntry {
+		return {
+			// entry: track,
+			id: track.id,
+			title: track.tag?.title || track.name,
+			artist: track.tag?.artist || '?',
+			genre: track.tag?.genre,
+			album: track.tag?.album || '?',
+			albumID: track.albumID,
+			artistID: track.albumID,
+			seriesID: track.seriesID,
+			trackNr: (track.tag?.disc ? `${track.tag?.disc}-` : '') + (track.tag?.trackNr || ''),
+			durationMS: track.duration,
+			duration: formatDuration(track.duration)
+		};
+	}
+
+	async refreshHomeData(): Promise<void> {
+		const result: HomeData = {};
+		const pack = (objs: Array<Jam.Base>, route: string): Array<HomeEntry> => objs.map(obj => ({obj, route}));
+		result.artistsFaved = pack((await this.jam.artist.list({list: 'faved', amount: 5})).items, HomeRoute.ARTIST);
+		result.albumsFaved = pack((await this.jam.album.list({list: 'faved', amount: 5})).items, HomeRoute.ALBUM);
+		result.artistsRecent = pack((await this.jam.artist.list({list: 'recent', amount: 5})).items, HomeRoute.ARTIST);
+		result.albumsRecent = pack((await this.jam.album.list({list: 'recent', amount: 5})).items, HomeRoute.ALBUM);
+		this.homeDataCaching.next(result);
 	}
 
 	async albumIndex(albumType: Jam.AlbumType, forceRefresh: boolean = false): Promise<Index> {
@@ -319,20 +356,6 @@ class DataService {
 		});
 	}
 
-	private buildTrackEntry(track: Jam.Track): TrackEntry {
-		return {
-			// entry: track,
-			id: track.id,
-			title: track.tag?.title || track.name,
-			artist: track.tag?.artist || '?',
-			genre: track.tag?.genre,
-			album: track.tag?.album || '?',
-			trackNr: (track.tag?.disc ? `${track.tag?.disc}-` : '') + (track.tag?.trackNr || ''),
-			durationMS: track.duration,
-			duration: formatDuration(track.duration)
-		};
-	}
-
 	async album(id: string, forceRefresh: boolean = false): Promise<AlbumData> {
 		return this.get<AlbumData>(forceRefresh, `${this.jam.auth.auth?.server}/album/${id}`, async () => {
 			const result: AlbumData = {
@@ -385,18 +408,6 @@ class DataService {
 		});
 	}
 
-	get currentUserName(): string {
-		return (this.jam.auth?.user?.name || '');
-	}
-
-	get currentUserID(): string {
-		return (this.jam.auth?.user?.id || '');
-	}
-
-	get currentUserToken(): string | undefined {
-		return this.jam.auth?.auth?.token;
-	}
-
 	async lyrics(id: string): Promise<Jam.TrackLyrics> {
 		if (this.lastLyrics && this.lastLyrics.id === id) {
 			return this.lastLyrics.data;
@@ -413,16 +424,6 @@ class DataService {
 		const data = await this.jam.media.waveform_json({id});
 		this.lastWaveform = {id, data};
 		return data;
-	}
-
-	async refreshHomeData(): Promise<void> {
-		const result: HomeData = {};
-		const pack = (objs: Array<Jam.Base>, route: string): Array<HomeEntry> => objs.map(obj => ({obj, route}));
-		result.artistsFaved = pack((await this.jam.artist.list({list: 'faved', amount: 5})).items, HomeRoute.ARTIST);
-		result.albumsFaved = pack((await this.jam.album.list({list: 'faved', amount: 5})).items, HomeRoute.ALBUM);
-		result.artistsRecent = pack((await this.jam.artist.list({list: 'recent', amount: 5})).items, HomeRoute.ARTIST);
-		result.albumsRecent = pack((await this.jam.album.list({list: 'recent', amount: 5})).items, HomeRoute.ALBUM);
-		this.homeDataCaching.next(result);
 	}
 
 	async autocomplete(query: string): Promise<AutoCompleteData> {
@@ -481,6 +482,30 @@ class DataService {
 			}
 		}
 		return sections;
+	}
+
+	// action
+
+	async toggleFav(objType: string, id: string, jamState: Jam.State): Promise<Jam.State> {
+		const remove = jamState.faved ? true : undefined;
+		const result = await this.jam.base.fav(objType, {id, remove});
+		snackSuccess(result.faved ? 'Added to Favorites' : 'Removed from Favorites');
+		this.refreshHomeData().catch(e => console.error(e));
+		return result;
+	}
+
+	// caching
+
+	async clearCache(): Promise<void> {
+		if (!this.db) {
+			return;
+		}
+		FastImage.clearDiskCache();
+		FastImage.clearMemoryCache();
+		const dropTableScript = 'DROP TABLE IF EXISTS jam';
+		await this.db.query(dropTableScript);
+		await this.check();
+		snackSuccess('Cache cleared');
 	}
 
 	async fillCache(caller: Caching): Promise<void> {
@@ -579,20 +604,9 @@ class DataService {
 					});
 			});
 		}
+		snackSuccess('Cache optimized');
 	}
 
-	async toggleFav(objType: string, id: string, jamState: Jam.State): Promise<Jam.State> {
-		const remove = jamState.faved ? true : undefined;
-		const result = await this.jam.base.fav(objType, {id, remove});
-		Snackbar.show({
-			text: result.faved ? 'Added to Favorites' : 'Removed from Favorites',
-			duration: Snackbar.LENGTH_SHORT,
-			backgroundColor: 'green',
-			textColor: 'white'
-		});
-		this.refreshHomeData().catch(e => console.error(e));
-		return result;
-	}
 }
 
 const configuration = new JamConfigurationService();

@@ -4,6 +4,8 @@ import App from './App';
 import {name as appName} from './app.json';
 import service from './service';
 
+console.reportErrorsAsExceptions = false;
+
 AppRegistry.registerComponent(appName, () => App);
 TrackPlayer.registerPlaybackService(() => service);
 initPlayer().catch(e => {

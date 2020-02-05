@@ -8,6 +8,7 @@ import Logo from '../components/Logo';
 import dataService, {HomeData, HomeEntry, HomeStatData, HomeStatsData} from '../services/data';
 import NavigationService from '../services/navigation';
 import {Subscription} from 'rxjs';
+import {snackError} from '../services/snack';
 
 const styles = StyleSheet.create({
 	container: {
@@ -190,23 +191,29 @@ class HomeScreen extends React.PureComponent<HomeStackProps<HomeRoute.START>> {
 
 		dataService.stats(forceRefresh)
 			.then((stats) => {
-				statsLoading = false;
-				this.setState({stats, refreshing: statsLoading || homeLoading});
+				this.setState({stats});
 			})
 			.catch(e => {
-				console.error(e);
+				snackError(e);
+			})
+			.finally(() => {
+				statsLoading = false;
+				this.setState({refreshing: statsLoading || homeLoading});
 			});
 
+
 		if (forceRefresh || !this.state.data) {
-			dataService.refreshHomeData().then(() => {
-				homeLoading = false;
-				this.setState({refreshing: statsLoading || homeLoading});
-			}).catch(e => {
-				console.error(e);
-			});
+			dataService.refreshHomeData()
+				.catch(e => {
+					snackError(e);
+				})
+				.finally(() => {
+					homeLoading = false;
+					this.setState({refreshing: statsLoading || homeLoading});
+				});
 		} else {
 			homeLoading = false;
-			this.setState({refreshing: statsLoading});
+			this.setState({refreshing: statsLoading || homeLoading});
 		}
 	}
 

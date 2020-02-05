@@ -16,16 +16,19 @@ export class JamPlayer {
 
 	static async playTracks(tracks: Array<TrackEntry>): Promise<void> {
 		await TrackPlayer.reset();
+		const headers = dataService.currentUserToken ? {Authorization: `Bearer ${dataService.currentUserToken}`} : undefined;
 		await TrackPlayer.add(tracks.map(t => {
+			const imageID = t.seriesID ? t.id : (t.albumID || t.id);
 			const track: TrackPlayer.Track = {
 				id: t.id,
-				url: dataService.jam.media.stream_url(t.id, AudioFormatType.mp3),
+				url: dataService.jam.media.stream_url(t.id, AudioFormatType.mp3, !headers),
 				title: t.title,
 				artist: t.artist,
 				album: t.album,
 				genre: t.genre,
 				duration: t.durationMS,
-				artwork: dataService.jam.image.url(t.id, 300)
+				artwork: dataService.jam.image.url(imageID, 300, undefined, !headers),
+				headers
 				// type: TrackType.default;
 				// date: t.tag?.year,
 				// description?: string;

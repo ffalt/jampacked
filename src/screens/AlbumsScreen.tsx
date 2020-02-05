@@ -4,6 +4,7 @@ import {HomeRoute, HomeStackWithThemeProps} from '../navigators/Routing';
 import IndexList from '../components/IndexList';
 import {getUrlTypeByID} from '../services/jam-lists';
 import dataService, {Index} from '../services/data';
+import {snackError} from '../services/snack';
 
 class AlbumsScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute.ALBUMS>> {
 	state: {
@@ -40,7 +41,7 @@ class AlbumsScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute
 			})
 			.catch(e => {
 				this.setState({refreshing: false});
-				console.error(e);
+				snackError(e);
 			});
 	}
 

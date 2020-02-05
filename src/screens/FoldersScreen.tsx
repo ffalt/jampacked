@@ -2,6 +2,7 @@ import React from 'react';
 import {HomeRoute, HomeStackWithThemeProps} from '../navigators/Routing';
 import IndexList from '../components/IndexList';
 import dataService, {Index} from '../services/data';
+import {snackError} from '../services/snack';
 
 export default class FoldersScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute.FOLDERS>> {
 	state: {
@@ -24,7 +25,7 @@ export default class FoldersScreen extends React.PureComponent<HomeStackWithThem
 			})
 			.catch(e => {
 				this.setState({refreshing: false});
-				console.error(e);
+				snackError(e);
 			});
 	}
 

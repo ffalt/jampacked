@@ -9,6 +9,7 @@ import ObjHeader, {objHeaderStyles} from '../components/ObjHeader';
 import {genreDisplay} from '../utils/genre.utils';
 import Separator from '../components/Separator';
 import dataService, {ArtistData, BaseEntry} from '../services/data';
+import {snackError} from '../services/snack';
 
 const styles = StyleSheet.create({
 	SectionHeader: {
@@ -52,7 +53,7 @@ export default class ArtistScreen extends React.PureComponent<HomeStackWithTheme
 			})
 			.catch(e => {
 				this.setState({refreshing: false});
-				console.error(e);
+				snackError(e);
 			});
 	}
 

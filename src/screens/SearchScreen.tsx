@@ -9,6 +9,7 @@ import Separator from '../components/Separator';
 import JamImage from '../components/JamImage';
 import dataService, {AutoCompleteData, AutoCompleteEntryData} from '../services/data';
 import NavigationService from '../services/navigation';
+import {snackError} from '../services/snack';
 
 const styles = StyleSheet.create({
 	container: {
@@ -110,7 +111,7 @@ function AutoCompleteResult({result}: { result: AutoCompleteData | undefined }):
 class SearchScreen extends React.PureComponent<BottomTabWithThemeProps<BottomTabRoute.SEARCH>> {
 	state: {
 		search: string | undefined;
-		result: AutoCompleteData| undefined;
+		result: AutoCompleteData | undefined;
 	} = {
 		search: undefined,
 		result: undefined
@@ -124,7 +125,9 @@ class SearchScreen extends React.PureComponent<BottomTabWithThemeProps<BottomTab
 						this.setState({result});
 					}
 				})
-				.catch(e => console.error(e));
+				.catch(e => {
+					snackError(e);
+				});
 		} else {
 			this.setState({result: undefined});
 		}
