@@ -1,7 +1,6 @@
 import React from 'react';
 import {SectionList, SectionListData, StyleSheet} from 'react-native';
 import ThemedText from '../components/ThemedText';
-import {Jam} from '../services/jam';
 import {staticTheme} from '../style/theming';
 import {HomeRoute, HomeStackWithThemeProps} from '../navigators/Routing';
 import Item from '../components/Item';

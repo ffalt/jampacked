@@ -8,7 +8,6 @@ import NavigationService from '../services/navigation';
 import SwipeableListItem from './SwipeItem';
 import ThemedIcon from './ThemedIcon';
 import {Jam} from '../services/jam';
-import {HomeRoute} from '../navigators/Routing';
 
 const styles = StyleSheet.create({
 	item: {

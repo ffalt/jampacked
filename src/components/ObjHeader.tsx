@@ -23,20 +23,19 @@ const styles = StyleSheet.create({
 	headerTop: {
 		flexDirection: 'row',
 		justifyContent: 'space-between',
-		paddingHorizontal: staticTheme.padding,
+		paddingHorizontal: staticTheme.padding
 	},
 	headerBottom: {
 		flex: 1,
 		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'space-between',
-		paddingHorizontal: staticTheme.padding,
+		paddingHorizontal: staticTheme.padding
 	},
 	headerBottomCmds: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		// alignContent: 'center',
-		// justifyContent: 'center',
+		marginLeft: staticTheme.margin,
 		justifyContent: 'space-around',
 		height: 40,
 		width: '100%',

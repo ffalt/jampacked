@@ -4,6 +4,7 @@ import App from './App';
 import {name as appName} from './app.json';
 import service from './service';
 
+// eslint-disable-next-line no-console
 console.reportErrorsAsExceptions = false;
 
 AppRegistry.registerComponent(appName, () => App);

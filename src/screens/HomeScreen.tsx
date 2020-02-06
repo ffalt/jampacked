@@ -1,5 +1,6 @@
 import React from 'react';
 import {RefreshControl, ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {Subscription} from 'rxjs';
 import {HomeRoute, HomeStackProps} from '../navigators/Routing';
 import ThemedText from '../components/ThemedText';
 import JamImage from '../components/JamImage';
@@ -7,7 +8,6 @@ import {staticTheme, useTheme} from '../style/theming';
 import Logo from '../components/Logo';
 import dataService, {HomeData, HomeEntry, HomeStatData, HomeStatsData} from '../services/data';
 import NavigationService from '../services/navigation';
-import {Subscription} from 'rxjs';
 import {snackError} from '../services/snack';
 
 const styles = StyleSheet.create({

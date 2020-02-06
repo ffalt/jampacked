@@ -1,6 +1,6 @@
-import {ITheme, staticTheme, withTheme} from '../style/theming';
 import {ScrollView, StyleSheet} from 'react-native';
 import React, {PureComponent} from 'react';
+import {ITheme, staticTheme, withTheme} from '../style/theming';
 import dataService from '../services/data';
 import ThemedText from './ThemedText';
 

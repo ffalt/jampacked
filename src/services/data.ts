@@ -94,7 +94,7 @@ export type AutoCompleteData = Array<SectionListData<AutoCompleteEntryData>>;
 
 class DataService {
 	db?: Database;
-	version = 8;
+	version = 9;
 	lastLyrics?: { id: string, data: Jam.TrackLyrics };
 	lastWaveform?: { id: string, data: Jam.WaveFormData };
 	dataCaching = new Caching((caller) => this.fillCache(caller));
@@ -345,11 +345,17 @@ class DataService {
 					};
 					albums.push(section);
 				}
+				let desc = '';
+				if (album.seriesNr) {
+					desc = `Episode ${album.seriesNr}`;
+				} else if (album.year) {
+					desc = `${album.year}`;
+				}
 				section.data = section.data.concat([{
 					objType: JamObjectType.album,
 					id: album.id,
 					title: album.name,
-					desc: `${album.year}`
+					desc
 				}]);
 			});
 			return {artist, albums};
