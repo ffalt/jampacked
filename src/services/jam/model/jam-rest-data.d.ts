@@ -18,7 +18,7 @@ export declare namespace Jam {
 		'front' | 'back' | 'booklet' | 'medium' | 'tray' | 'obi' | 'spine' |
 		'track' | 'liner' | 'sticker' | 'poster' | 'watermark' | 'raw' | 'unedited' | 'other' | 'artist';
 	export type RootScanStrategy = 'auto' | 'artistalbum' | 'compilation' | 'audiobook';
-	export type SessionMode = 'browser' | 'jwt' | 'subsonic';
+	export type SessionMode = 'browser' | 'jwt';
 
 	/*
 	 * Base Data
@@ -107,10 +107,6 @@ export declare namespace Jam {
 		platform?: string;
 		agent?: string;
 		os?: string;
-	}
-
-	export interface SubsonicToken {
-		token?: string;
 	}
 
 	/*
@@ -553,7 +549,10 @@ export declare namespace Jam {
 		admin?: boolean;
 	}
 
-	export interface SessionUser extends Base {
+	export interface SessionUser {
+		id: string;
+		name: string;
+		created: number;
 		roles: Roles;
 	}
 
@@ -561,7 +560,10 @@ export declare namespace Jam {
 	 * User Data
 	 */
 
-	export interface User extends Base {
+	export interface User {
+		id: string;
+		name: string;
+		created: number;
 		email: string;
 		roles: Roles;
 	}

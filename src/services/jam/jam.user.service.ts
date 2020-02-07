@@ -107,18 +107,4 @@ export class JamUserService {
 		return this.base.requestPostDataOK('user/sessions/delete', params);
 	}
 
-	/**
-	 * get infos about the user subsonic token
-	 */
-	async sessions_subsonic_view(params: JamParameters.SubsonicToken): Promise<Jam.SubsonicToken> {
-		return this.base.requestPostData<Jam.SubsonicToken>('user/sessions/subsonic/view', params);
-	}
-
-	/**
-	 * generate a user subsonic token
-	 */
-	async sessions_subsonic_generate(params: JamParameters.SubsonicToken): Promise<Jam.SubsonicToken> {
-		return this.base.requestPostData<Jam.SubsonicToken>('user/sessions/subsonic/generate', params);
-	}
-
 }
