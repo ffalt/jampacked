@@ -1,5 +1,5 @@
 import React from 'react';
-import {FlatList, StyleSheet, TouchableOpacity} from 'react-native';
+import {FlatList, RefreshControl, StyleSheet, TouchableOpacity} from 'react-native';
 import ThemedText from '../components/ThemedText';
 import {withTheme} from '../style/theming';
 import TrackItem from '../components/TrackItem';
@@ -106,6 +106,7 @@ class FolderScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute
 	};
 
 	render(): React.ReactElement {
+		const {theme} = this.props;
 		return (
 			<FlatList
 				data={this.state.data?.tracks}
@@ -113,8 +114,15 @@ class FolderScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute
 				keyExtractor={this.keyExtractor}
 				ItemSeparatorComponent={Separator}
 				ListHeaderComponent={this.renderHeader}
-				refreshing={this.state.refreshing}
-				onRefresh={this.reload}
+				refreshControl={(
+					<RefreshControl
+						refreshing={this.state.refreshing}
+						onRefresh={this.reload}
+						progressViewOffset={90}
+						progressBackgroundColor={theme.refreshCtrlBackground}
+						colors={theme.refreshCtrlColors}
+					/>
+				)}
 			/>
 		);
 	}

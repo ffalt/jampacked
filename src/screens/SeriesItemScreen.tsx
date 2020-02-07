@@ -1,5 +1,5 @@
 import React from 'react';
-import {SectionList, SectionListData, StyleSheet, TouchableOpacity} from 'react-native';
+import {RefreshControl, SectionList, SectionListData, StyleSheet, TouchableOpacity} from 'react-native';
 import ThemedText from '../components/ThemedText';
 import {staticTheme, withTheme} from '../style/theming';
 import {HomeRoute, HomeStackWithThemeProps} from '../navigators/Routing';
@@ -100,6 +100,7 @@ class SeriesItemScreen extends React.PureComponent<HomeStackWithThemeProps<HomeR
 
 	render(): React.ReactElement {
 		const sections = this.state.data?.albums || [];
+		const {theme} = this.props;
 		return (
 			<SectionList
 				sections={sections}
@@ -107,8 +108,15 @@ class SeriesItemScreen extends React.PureComponent<HomeStackWithThemeProps<HomeR
 				keyExtractor={this.keyExtractor}
 				renderSectionHeader={this.renderSection}
 				renderItem={this.renderItem}
-				refreshing={this.state.refreshing}
-				onRefresh={this.reload}
+				refreshControl={(
+					<RefreshControl
+						refreshing={this.state.refreshing}
+						onRefresh={this.reload}
+						progressViewOffset={90}
+						progressBackgroundColor={theme.refreshCtrlBackground}
+						colors={theme.refreshCtrlColors}
+					/>
+				)}
 			/>
 		);
 	}

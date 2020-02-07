@@ -1,5 +1,5 @@
 import React from 'react';
-import {FlatList, StyleSheet, TouchableOpacity} from 'react-native';
+import {FlatList, RefreshControl, StyleSheet, TouchableOpacity} from 'react-native';
 import ThemedText from '../components/ThemedText';
 import {staticTheme, withTheme} from '../style/theming';
 import TrackItem from '../components/TrackItem';
@@ -111,15 +111,23 @@ class AlbumScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute.
 	private renderItem = ({item}: { item: TrackEntry }): JSX.Element => (<TrackItem track={item}/>);
 
 	render(): React.ReactElement {
+		const {theme} = this.props;
 		return (
 			<FlatList
 				data={this.state.data?.tracks}
 				renderItem={this.renderItem}
-				refreshing={this.state.refreshing}
 				keyExtractor={this.keyExtractor}
 				ItemSeparatorComponent={Separator}
 				ListHeaderComponent={this.renderHeader}
-				onRefresh={this.reload}
+				refreshControl={(
+					<RefreshControl
+						refreshing={this.state.refreshing}
+						onRefresh={this.reload}
+						progressViewOffset={80}
+						progressBackgroundColor={theme.refreshCtrlBackground}
+						colors={theme.refreshCtrlColors}
+					/>
+				)}
 			/>
 		);
 	}

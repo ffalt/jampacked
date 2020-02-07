@@ -1,10 +1,10 @@
 import React from 'react';
 import {RefreshControl, ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Subscription} from 'rxjs';
-import {HomeRoute, HomeStackProps} from '../navigators/Routing';
+import {HomeRoute, HomeStackProps, HomeStackWithThemeProps} from '../navigators/Routing';
 import ThemedText from '../components/ThemedText';
 import JamImage from '../components/JamImage';
-import {staticTheme, useTheme} from '../style/theming';
+import {staticTheme, useTheme, withTheme} from '../style/theming';
 import Logo from '../components/Logo';
 import dataService, {HomeData, HomeEntry, HomeStatData, HomeStatsData} from '../services/data';
 import NavigationService from '../services/navigation';
@@ -159,7 +159,7 @@ const WelcomeSection: React.FC = (): JSX.Element => {
 	);
 };
 
-class HomeScreen extends React.PureComponent<HomeStackProps<HomeRoute.START>> {
+class HomeScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute.START>> {
 	state: {
 		data?: HomeData;
 		stats: HomeStatsData;
@@ -222,16 +222,18 @@ class HomeScreen extends React.PureComponent<HomeStackProps<HomeRoute.START>> {
 	};
 
 	render(): React.ReactElement {
+		const {theme} = this.props;
 		return (
 			<ScrollView
-				refreshControl={
-					(
-						<RefreshControl
-							refreshing={this.state.refreshing}
-							onRefresh={this.reload}
-						/>
-					)
-				}
+				refreshControl={(
+					<RefreshControl
+						refreshing={this.state.refreshing}
+						onRefresh={this.reload}
+						progressViewOffset={70}
+						progressBackgroundColor={theme.refreshCtrlBackground}
+						colors={theme.refreshCtrlColors}
+					/>
+				)}
 			>
 				<View style={styles.container}>
 					<WelcomeSection/>
@@ -246,4 +248,4 @@ class HomeScreen extends React.PureComponent<HomeStackProps<HomeRoute.START>> {
 	}
 }
 
-export default HomeScreen;
+export default withTheme(HomeScreen);

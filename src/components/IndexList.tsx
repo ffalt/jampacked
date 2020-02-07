@@ -1,4 +1,5 @@
 import React from 'react';
+import {RefreshControl} from 'react-native';
 import {ITheme, withTheme} from '../style/theming';
 import PageHeader from './PageHeader';
 import Separator from './Separator';
@@ -21,6 +22,7 @@ class IndexList extends React.PureComponent<{
 	private keyExtractor = (item: IndexEntry): string => item.id;
 
 	render(): React.ReactElement {
+		const {theme} = this.props;
 		return (
 			<AtoZList
 				data={this.props.index || []}
@@ -28,8 +30,15 @@ class IndexList extends React.PureComponent<{
 				keyExtractor={this.keyExtractor}
 				ItemSeparatorComponent={Separator}
 				ListHeaderComponent={this.renderHeader}
-				refreshing={this.props.refreshing}
-				onRefresh={this.props.onRefresh}
+				refreshControl={(
+					<RefreshControl
+						refreshing={this.props.refreshing}
+						onRefresh={this.props.onRefresh}
+						progressViewOffset={90}
+						progressBackgroundColor={theme.refreshCtrlBackground}
+						colors={theme.refreshCtrlColors}
+					/>
+				)}
 				itemHeight={65}
 			/>
 		);

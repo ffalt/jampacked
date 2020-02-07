@@ -1,7 +1,7 @@
 import React from 'react';
-import {SectionList, SectionListData, StyleSheet} from 'react-native';
+import {RefreshControl, SectionList, SectionListData, StyleSheet} from 'react-native';
 import ThemedText from '../components/ThemedText';
-import {staticTheme} from '../style/theming';
+import {staticTheme, withTheme} from '../style/theming';
 import {HomeRoute, HomeStackWithThemeProps} from '../navigators/Routing';
 import Item from '../components/Item';
 import ObjHeader, {objHeaderStyles} from '../components/ObjHeader';
@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default class ArtistScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute.ARTIST>> {
+class ArtistScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute.ARTIST>> {
 	state: {
 		refreshing: boolean;
 		data?: ArtistData;
@@ -81,6 +81,7 @@ export default class ArtistScreen extends React.PureComponent<HomeStackWithTheme
 
 	render(): React.ReactElement {
 		const sections = this.state.data?.albums || [];
+		const {theme} = this.props;
 		return (
 			<SectionList
 				sections={sections}
@@ -90,9 +91,18 @@ export default class ArtistScreen extends React.PureComponent<HomeStackWithTheme
 				keyExtractor={this.keyExtractor}
 				renderSectionHeader={this.renderSection}
 				renderItem={this.renderItem}
-				refreshing={this.state.refreshing}
-				onRefresh={this.reload}
+				refreshControl={(
+					<RefreshControl
+						refreshing={this.state.refreshing}
+						onRefresh={this.reload}
+						progressViewOffset={80}
+						progressBackgroundColor={theme.refreshCtrlBackground}
+						colors={theme.refreshCtrlColors}
+					/>
+				)}
 			/>
 		);
 	}
 }
+
+export default withTheme(ArtistScreen);

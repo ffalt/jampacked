@@ -59,6 +59,8 @@ export interface ITheme {
 		inactive: string;
 		inactiveInverse: string;
 	}
+	refreshCtrlBackground: string;
+	refreshCtrlColors: Array<string>;
 }
 
 const light: ITheme = {
@@ -78,6 +80,9 @@ const light: ITheme = {
 	activeTintColor: '#5bbcd3',
 	inactiveTintColor: '#90948b',
 	warning: '#db3334',
+	refreshCtrlBackground: 'rgba(0,0,0,0.2)',
+	refreshCtrlColors: ['#00a9e0', '#309712'],
+
 	navigation: {
 		dark: false,
 		colors: {
@@ -114,6 +119,8 @@ const dark: ITheme = {
 	activeTintColor: '#5bbcd3',
 	inactiveTintColor: '#a2a69d',
 	warning: '#e60010',
+	refreshCtrlBackground: 'rgba(0,0,0,0.2)',
+	refreshCtrlColors: ['#00a9e0', '#309712'],
 	navigation: {
 		dark: true,
 		colors: {
