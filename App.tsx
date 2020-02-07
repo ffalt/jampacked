@@ -1,5 +1,5 @@
 import React from 'react';
-import {NavigationNativeContainer} from '@react-navigation/native';
+import {NavigationContainer} from '@react-navigation/native';
 import 'react-native-gesture-handler';
 import {enableScreens} from 'react-native-screens';
 import {StatusBar} from 'react-native';
@@ -35,12 +35,12 @@ export default class App extends React.Component {
 			<ThemeContext.Provider value={this.state}>
 				<ThemeProvider theme={this.state.theme}>
 					<StatusBar translucent={true} backgroundColor="rgba(0,0,0,0.5)" barStyle={this.state.theme.barStyle}/>
-					<NavigationNativeContainer
+					<NavigationContainer
 						theme={this.state.theme.navigation}
 						ref={NavigationService.setTopLevelNavigator}
 					>
 						<AppNavigator/>
-					</NavigationNativeContainer>
+					</NavigationContainer>
 				</ThemeProvider>
 			</ThemeContext.Provider>
 		);
