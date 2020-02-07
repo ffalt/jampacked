@@ -1,8 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import {Button, StyleSheet, View} from 'react-native';
+import {ActivityIndicator, Button, StyleSheet, View} from 'react-native';
 import ThemedText from './ThemedText';
 import {Caching, CachingState} from '../services/caching';
-import dataService from '../services/data';
 import {staticTheme} from '../style/theming';
 
 const styles = StyleSheet.create({
@@ -14,6 +13,7 @@ const styles = StyleSheet.create({
 		marginLeft: staticTheme.marginSmall
 	},
 	text: {
+		paddingLeft: staticTheme.paddingSmall,
 		flex: 1
 	}
 });
@@ -28,17 +28,16 @@ const CachingView: React.FC<{ cache: Caching, title: string }> = ({cache, title}
 		return (): void => subscription.unsubscribe();
 	}, [status, cache.cachingChange]);
 
-	const start = (): void => {
+	const startCaching = (): void => {
 		cache.startCaching();
 	};
 
 	const stop = (): void => {
-		cache.stopCaching();
+		cache.stop();
 	};
 
-	const clear = (): void => {
-		dataService.clearCache()
-			.catch(e => console.error(e));
+	const startClearingCache = (): void => {
+		cache.startClearing();
 	};
 
 	if (!status.running) {
@@ -46,16 +45,17 @@ const CachingView: React.FC<{ cache: Caching, title: string }> = ({cache, title}
 			<View style={styles.container}>
 				<ThemedText style={styles.text}>{title}</ThemedText>
 				<View style={styles.button}>
-					<Button title="Optimize" onPress={start}/>
+					<Button title="Optimize" onPress={startCaching}/>
 				</View>
 				<View style={styles.button}>
-					<Button title="Clear" onPress={clear}/>
+					<Button title="Clear" onPress={startClearingCache}/>
 				</View>
 			</View>
 		);
 	}
 	return (
 		<View style={styles.container}>
+			<ActivityIndicator size="small"/>
 			<ThemedText style={styles.text}>{status.current}</ThemedText>
 			<View style={styles.button}>
 				<Button title="Stop" onPress={stop}/>

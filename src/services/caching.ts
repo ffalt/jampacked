@@ -13,7 +13,26 @@ export class Caching {
 		current: ''
 	};
 
-	constructor(private fillCacheFunc: (caller: Caching) => Promise<void>) {
+	constructor(
+		private fillCacheFunc: (caller: Caching) => Promise<void>,
+		private clearCacheFunc: (caller: Caching) => Promise<void>
+	) {
+	}
+
+	startClearing(): void {
+		if (!this.cachingData.running) {
+			this.cachingData.current = 'Clearing...';
+			this.cachingData.running = true;
+			this.subjectCaching.next(this.cachingData);
+			this.clearCacheFunc(this)
+				.then(() => {
+					this.stop();
+				})
+				.catch(e => {
+					console.error(e);
+					this.stop();
+				});
+		}
 	}
 
 	startCaching(): void {
@@ -23,16 +42,16 @@ export class Caching {
 			this.subjectCaching.next(this.cachingData);
 			this.fillCacheFunc(this)
 				.then(() => {
-					this.stopCaching();
+					this.stop();
 				})
 				.catch(e => {
 					console.error(e);
-					this.stopCaching();
+					this.stop();
 				});
 		}
 	}
 
-	stopCaching(): void {
+	stop(): void {
 		this.cachingData.current = '';
 		this.cachingData.running = false;
 		this.subjectCaching.next(this.cachingData);

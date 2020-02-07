@@ -97,7 +97,10 @@ class DataService {
 	version = 9;
 	lastLyrics?: { id: string, data: Jam.TrackLyrics };
 	lastWaveform?: { id: string, data: Jam.WaveFormData };
-	dataCaching = new Caching((caller) => this.fillCache(caller));
+	dataCaching = new Caching(
+		(caller) => this.fillCache(caller),
+		(caller) => this.clearCache(caller)
+	);
 	private homeDataCaching = new BehaviorSubject<HomeData | undefined>(undefined);
 	homeData: Observable<HomeData | undefined> = this.homeDataCaching.asObservable();
 
@@ -502,19 +505,21 @@ class DataService {
 
 	// caching
 
-	async clearCache(): Promise<void> {
+	private async clearCache(caller: Caching): Promise<void> {
 		if (!this.db) {
 			return;
 		}
+		caller.updateText('1/2 Clearing Image Cache');
 		FastImage.clearDiskCache();
 		FastImage.clearMemoryCache();
+		caller.updateText('2/2 Clearing Data Cache');
 		const dropTableScript = 'DROP TABLE IF EXISTS jam';
 		await this.db.query(dropTableScript);
 		await this.check();
 		snackSuccess('Cache cleared');
 	}
 
-	async fillCache(caller: Caching): Promise<void> {
+	private async fillCache(caller: Caching): Promise<void> {
 		let artistIDs: Array<string> = [];
 		let albumIDs: Array<string> = [];
 		let seriesIDs: Array<string> = [];
