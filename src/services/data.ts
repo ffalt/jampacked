@@ -49,6 +49,9 @@ export interface IndexEntry extends BaseEntry {
 	letter: string;
 }
 
+export interface FolderEntry extends BaseEntry {
+}
+
 export interface TrackEntry {
 	id: string;
 	duration: string;
@@ -75,6 +78,7 @@ export interface AlbumData {
 
 export interface FolderData {
 	folder: Jam.Folder;
+	folders: Array<FolderEntry>;
 	tracks: Array<TrackEntry>;
 }
 
@@ -181,6 +185,15 @@ class DataService {
 	}
 
 	// data
+
+	private buildFolderEntry(folder: Jam.Folder): FolderEntry {
+		return {
+			id: folder.id,
+			title: folder.name,
+			desc: folder.type,
+			objType: JamObjectType.folder
+		};
+	}
 
 	private buildTrackEntry(track: Jam.Track): TrackEntry {
 		return {
@@ -382,10 +395,14 @@ class DataService {
 		return this.get<FolderData>(forceRefresh, `${this.jam.auth.auth?.server}/folder/${id}`, async () => {
 			const result: FolderData = {
 				folder: await this.jam.folder.id({id, folderTag: true, folderChildren: true, trackTag: true}),
-				tracks: []
+				tracks: [],
+				folders: []
 			};
 			if (result.folder && result.folder.tracks) {
 				result.tracks = result.folder.tracks.map(track => this.buildTrackEntry(track));
+			}
+			if (result.folder && result.folder.folders) {
+				result.folders = result.folder.folders.map(folder => this.buildFolderEntry(folder));
 			}
 			return result;
 		});

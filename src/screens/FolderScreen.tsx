@@ -1,5 +1,5 @@
 import React from 'react';
-import {FlatList, RefreshControl, StyleSheet, TouchableOpacity} from 'react-native';
+import {FlatList, RefreshControl, StyleSheet, TouchableOpacity, View} from 'react-native';
 import ThemedText from '../components/ThemedText';
 import {withTheme} from '../style/theming';
 import TrackItem from '../components/TrackItem';
@@ -9,8 +9,9 @@ import ThemedIcon from '../components/ThemedIcon';
 import ObjHeader, {objHeaderStyles} from '../components/ObjHeader';
 import {genreDisplay} from '../utils/genre.utils';
 import Separator from '../components/Separator';
-import dataService, {FolderData, TrackEntry} from '../services/data';
+import dataService, {FolderData, FolderEntry, TrackEntry} from '../services/data';
 import {snackError} from '../services/snack';
+import Item from '../components/Item';
 
 const styles = StyleSheet.create({
 	playButton: {
@@ -26,12 +27,20 @@ const styles = StyleSheet.create({
 	}
 });
 
+interface FolderItem {
+	id: string;
+	folder?: FolderEntry;
+	track?: TrackEntry;
+}
+
 class FolderScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute.FOLDER>> {
 	state: {
 		data?: FolderData;
+		list: Array<FolderItem>;
 		refreshing: boolean;
 	} = {
 		data: undefined,
+		list: [],
 		refreshing: false
 	};
 
@@ -41,7 +50,7 @@ class FolderScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute
 
 	componentDidUpdate(prevProps: { route: { params: { id?: string } } }): void {
 		if (prevProps.route.params?.id !== this.props.route.params?.id) {
-			this.setState({data: undefined});
+			this.setState({list: [], data: undefined});
 			this.load();
 		}
 	}
@@ -54,7 +63,10 @@ class FolderScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute
 		this.setState({refreshing: true});
 		dataService.folder(id, forceRefresh)
 			.then(data => {
-				this.setState({data, refreshing: false});
+				const folders: Array<FolderItem> = (data.folders || []).map(folder => ({folder, id: folder.id}));
+				const tracks: Array<FolderItem> = (data.tracks || []).map(track => ({track, id: track.id}));
+				const list: Array<FolderItem> = folders.concat(tracks);
+				this.setState({data, list, refreshing: false});
 			})
 			.catch(e => {
 				this.setState({refreshing: false});
@@ -72,14 +84,14 @@ class FolderScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute
 	};
 
 	private renderHeader = (): JSX.Element => {
-		const headerTitleCmds = (
+		const headerTitleCmds = this.state.data?.tracks?.length ? (
 			<TouchableOpacity
 				style={[styles.playButton, {borderColor: this.props.theme.textColor}]}
 				onPress={this.playTracks}
 			>
 				<ThemedIcon name="play" style={styles.playButtonIcon}/>
 			</TouchableOpacity>
-		);
+		) : undefined;
 
 		return (
 			<ObjHeader
@@ -97,9 +109,17 @@ class FolderScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute
 		);
 	};
 
-	private keyExtractor = (item: TrackEntry): string => item.id;
+	private keyExtractor = (item: FolderItem): string => item.id;
 
-	private renderItem = ({item}: { item: TrackEntry }): JSX.Element => (<TrackItem track={item}/>);
+	private renderItem = ({item}: { item: FolderItem }): JSX.Element => {
+		if (item.track) {
+			return <TrackItem track={item.track}/>;
+		}
+		if (item.folder) {
+			return <Item item={item.folder}/>;
+		}
+		return <View/>;
+	};
 
 	private reload = (): void => {
 		this.load(true);
@@ -109,7 +129,7 @@ class FolderScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute
 		const {theme} = this.props;
 		return (
 			<FlatList
-				data={this.state.data?.tracks}
+				data={this.state.list}
 				renderItem={this.renderItem}
 				keyExtractor={this.keyExtractor}
 				ItemSeparatorComponent={Separator}
