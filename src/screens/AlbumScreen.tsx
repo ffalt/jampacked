@@ -16,7 +16,8 @@ import {snackError} from '../services/snack';
 
 const styles = StyleSheet.create({
 	button: {
-		marginLeft: staticTheme.margin
+		paddingHorizontal: staticTheme.paddingSmall,
+		marginHorizontal: staticTheme.marginLarge
 	},
 	buttonIcon: {
 		fontSize: 26
@@ -84,7 +85,7 @@ class AlbumScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute.
 				<TouchableOpacity style={styles.button} onPress={this.playTracks}>
 					<ThemedIcon name="play" style={styles.buttonIcon}/>
 				</TouchableOpacity>
-				<FavIcon objType={JamObjectType.album} id={this.props.route.params?.id}/>
+				<FavIcon style={styles.button} objType={JamObjectType.album} id={this.props.route.params?.id}/>
 			</>
 		);
 

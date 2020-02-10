@@ -29,7 +29,8 @@ const styles = StyleSheet.create({
 		fontWeight: 'bold',
 		marginTop: staticTheme.margin,
 		borderBottomColor: 'rgba(0,0,0,0.7)',
-		borderBottomWidth: 1
+		borderBottomWidth: 1,
+		marginBottom: staticTheme.marginSmall
 	},
 	userName: {
 		flex: 1

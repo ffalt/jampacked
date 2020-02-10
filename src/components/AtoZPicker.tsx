@@ -1,15 +1,15 @@
 import React from 'react';
 import {PanResponder, StyleSheet, Text, TouchableWithoutFeedback, View} from 'react-native';
-import {AtoZLetter} from './AtoZLetter';
+import AtoZLetter from './AtoZLetter';
+import {ITheme, withTheme} from '../style/theming';
 
 const styles = StyleSheet.create({
 	outerContainer: {
 		position: 'absolute',
-		top: 0,
+		top: 24,
 		bottom: 0,
 		right: 0,
 		justifyContent: 'center',
-		backgroundColor: 'rgba(0,0,0,0.5)',
 		alignItems: 'center'
 	},
 	letters: {
@@ -57,9 +57,10 @@ interface AtoZPickerProps<T> {
 	onTouchStart?: () => void;
 	onTouchEnd?: () => void;
 	onTouchLetter?: (letter: string) => void;
+	theme: ITheme;
 }
 
-export default class AtoZPicker<T extends SectionItem> extends React.PureComponent<AtoZPickerProps<T>> {
+class AtoZPicker<T extends SectionItem> extends React.PureComponent<AtoZPickerProps<T>> {
 	panResponder = PanResponder.create({
 		onStartShouldSetPanResponder: () => true,
 		onMoveShouldSetPanResponder: () => true,
@@ -178,10 +179,11 @@ export default class AtoZPicker<T extends SectionItem> extends React.PureCompone
 		if (letters.length === 0) {
 			return <></>;
 		}
+		const {theme} = this.props;
 		const letterPicks = letters.map(letter => <AtoZLetter letter={letter} key={letter}/>);
 		return (
 			<TouchableWithoutFeedback onPress={this.nopPress}>
-				<View style={styles.outerContainer}>
+				<View style={[styles.outerContainer, {backgroundColor: theme.overlay}]}>
 					<View
 						ref={this.containerRef}
 						{...this.panResponder.panHandlers}
@@ -196,3 +198,5 @@ export default class AtoZPicker<T extends SectionItem> extends React.PureCompone
 		);
 	}
 }
+
+export default withTheme(AtoZPicker);

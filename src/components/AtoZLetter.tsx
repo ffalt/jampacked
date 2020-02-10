@@ -1,16 +1,20 @@
 import React from 'react';
-import {StyleSheet} from 'react-native';
-import ThemedText from './ThemedText';
+import {StyleSheet, Text} from 'react-native';
+import {ITheme, withTheme} from '../style/theming';
 
 const styles = StyleSheet.create({
 	letter: {
 		fontSize: 12,
-		fontWeight: 'bold'
+		fontWeight: 'bold',
+		textAlign: 'center'
 	}
 });
 
-export class AtoZLetter extends React.PureComponent<{ letter: string }> {
+class AtoZLetter extends React.PureComponent<{ letter: string; theme: ITheme }> {
 	render(): React.ReactElement {
-		return <ThemedText style={styles.letter}>{this.props.letter}</ThemedText>;
+		const {letter, theme} = this.props;
+		return <Text style={[styles.letter, {color: theme.overlayText}]}>{letter}</Text>;
 	}
 }
+
+export default withTheme(AtoZLetter);

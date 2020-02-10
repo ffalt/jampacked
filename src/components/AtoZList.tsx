@@ -9,7 +9,10 @@ import AtoZPicker from './AtoZPicker';
 
 type commonItemLayoutFunc = (data: any, index: number) => { length: number, offset: number, index: number };
 
-export function commonItemLayout(itemHeight: number = 60): commonItemLayoutFunc {
+export function commonItemLayout(itemHeight?: number): commonItemLayoutFunc | undefined {
+	if (!itemHeight) {
+		return;
+	}
 	return (data: any, index: number): { length: number, offset: number, index: number } => ({
 		length: itemHeight,
 		offset: itemHeight * index,
@@ -18,7 +21,7 @@ export function commonItemLayout(itemHeight: number = 60): commonItemLayoutFunc 
 }
 
 interface AtoZListProps<T> extends FlatListProps<T> {
-	itemHeight: number;
+	itemHeight?: number;
 }
 
 interface SectionItem {
@@ -36,9 +39,10 @@ export default class AtoZList<T extends SectionItem> extends PureComponent<AtoZL
 
 	private onTouchLetter = (letter: string): void => {
 		if (this.containerRef.current) {
-			const index = (this.props.data || []).findIndex(d => d.letter === letter);
+			const {data, numColumns} = this.props;
+			const index = (data || []).findIndex(d => d.letter === letter);
 			if (index >= 0) {
-				this.containerRef.current.scrollToIndex({index});
+				this.containerRef.current.scrollToIndex({index: Math.floor(index / (numColumns || 1))});
 			}
 		}
 	};

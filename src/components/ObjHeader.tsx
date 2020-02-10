@@ -12,6 +12,9 @@ export const objHeaderStyles = StyleSheet.create({
 	},
 	ListHeaderUpperLabel: {
 		fontSize: staticTheme.fontSizeSmall
+	},
+	ListHeaderCmdButton: {
+		paddingHorizontal: staticTheme.padding
 	}
 });
 
@@ -35,12 +38,11 @@ const styles = StyleSheet.create({
 	headerBottomCmds: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		marginLeft: staticTheme.margin,
-		justifyContent: 'space-around',
+		justifyContent: 'space-between',
 		height: 40,
-		width: '100%',
+		// width: '100%',
 		borderRadius: 6,
-		backgroundColor: 'rgba(0,0,0,0.3)'
+		backgroundColor: 'rgba(0,0,0,0.1)'
 	},
 	headerTitle: {
 		flex: 1,
@@ -64,7 +66,7 @@ class ObjHeader extends PureComponent<{
 		return (
 			<FastImageBackground id={this.props.id} style={styles.header}>
 				<View style={styles.headerTop}>
-					<JamImage id={this.props.id} size={160} requestSize={300}/>
+					<JamImage id={this.props.id} size={173} requestSize={300}/>
 					<View style={styles.headerExtra}>
 						{this.props.children}
 						<View style={styles.headerBottomCmds}>

@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import {StyleProp, StyleSheet, TouchableOpacity, View, ViewStyle} from 'react-native';
 import {ITheme, staticTheme, withTheme} from '../style/theming';
 import {Jam} from '../services/jam';
 import dataService from '../services/data';
@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-class FavIcon extends React.PureComponent<{ id?: string; objType: string; theme: ITheme }> {
+class FavIcon extends React.PureComponent<{ id?: string; objType: string; theme: ITheme, style?: StyleProp<ViewStyle> }> {
 	state: {
 		jamState?: Jam.State;
 	} = {
@@ -61,18 +61,18 @@ class FavIcon extends React.PureComponent<{ id?: string; objType: string; theme:
 	};
 
 	render(): React.ReactElement {
-		const {theme} = this.props;
+		const {theme, style} = this.props;
 		const {jamState} = this.state;
 		if (jamState) {
 			const iconName = jamState.faved !== undefined ? 'heart-full' : 'heart-empty';
 			return (
-				<TouchableOpacity style={styles.button} onPress={this.toggleFav}>
+				<TouchableOpacity style={[styles.button, style]} onPress={this.toggleFav}>
 					<ThemedIcon name={iconName} style={styles.buttonIcon}/>
 				</TouchableOpacity>
 			);
 		}
 		return (
-			<View style={styles.button}>
+			<View style={[styles.button, style]}>
 				<ThemedIcon name="heart-empty" style={[styles.buttonIcon, {color: theme.muted}]}/>
 			</View>
 		);

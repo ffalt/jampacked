@@ -50,6 +50,8 @@ export interface ITheme {
 	activeTintColor: string;
 	inactiveTintColor: string;
 	barStyle: 'default' | 'light-content' | 'dark-content';
+	overlay: string;
+	overlayText: string;
 	navigation: NavigationTheme;
 	waveform: {
 		active: string;
@@ -71,7 +73,7 @@ const light: ITheme = {
 	background: '#ffffff',
 	itemBackground: '#f3f3f3',
 	overlayGradient: ['rgba(255, 255, 255, 0.8)', '#ffffff'],
-	gradient: ['#dadada', '#ffffff'],
+	gradient: ['#cfcfcf', '#ffffff'],
 	separator: '#a3a3a3',
 	activeBackgroundColor: '#dff8ff',
 	control: '#f3f3f3',
@@ -82,6 +84,8 @@ const light: ITheme = {
 	warning: '#db3334',
 	refreshCtrlBackground: 'rgba(0,0,0,0.2)',
 	refreshCtrlColors: ['#00a9e0', '#309712'],
+	overlay: 'rgba(255,255,255,0.3)',
+	overlayText: '#000000',
 
 	navigation: {
 		dark: false,
@@ -121,6 +125,8 @@ const dark: ITheme = {
 	warning: '#e60010',
 	refreshCtrlBackground: 'rgba(0,0,0,0.2)',
 	refreshCtrlColors: ['#00a9e0', '#309712'],
+	overlay: 'rgba(0,0,0,0.5)',
+	overlayText: '#ffffff',
 	navigation: {
 		dark: true,
 		colors: {
