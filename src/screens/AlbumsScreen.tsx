@@ -11,10 +11,12 @@ class AlbumsScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute
 		index: Index;
 		refreshing: boolean;
 		title: string;
+		titleIcon: string;
 	} = {
 		index: [],
 		refreshing: false,
-		title: ''
+		title: '',
+		titleIcon: 'album'
 	};
 
 	componentDidMount(): void {
@@ -23,7 +25,7 @@ class AlbumsScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute
 
 	componentDidUpdate(prevProps: { route: { params: { albumTypeID?: string } } }): void {
 		if (prevProps.route?.params?.albumTypeID !== this.props.route?.params?.albumTypeID) {
-			this.setState({title: '', index: []});
+			this.setState({title: '', titleIcon: '', index: []});
 			this.load();
 		}
 	}
@@ -34,7 +36,7 @@ class AlbumsScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute
 		if (!type || !type.albumType) {
 			return;
 		}
-		this.setState({title: type?.text, refreshing: true});
+		this.setState({title: type?.text, titleIcon: type?.icon, refreshing: true});
 		dataService.albumIndex(type.albumType, forceRefresh)
 			.then(index => {
 				this.setState({index, refreshing: false});
@@ -50,11 +52,13 @@ class AlbumsScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute
 	};
 
 	render(): React.ReactElement {
+		const {index, title, refreshing, titleIcon} = this.state;
 		return (
 			<IndexList
-				index={this.state.index}
-				title={this.state.title}
-				refreshing={this.state.refreshing}
+				index={index}
+				title={title}
+				titleIcon={titleIcon}
+				refreshing={refreshing}
 				onRefresh={this.reload}
 			/>
 		);

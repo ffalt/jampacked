@@ -38,6 +38,7 @@ export default class FoldersScreen extends React.PureComponent<HomeStackWithThem
 			<IndexList
 				index={this.state.index}
 				title="Folders"
+				titleIcon="folder"
 				refreshing={this.state.refreshing}
 				onRefresh={this.reload}
 			/>

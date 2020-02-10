@@ -38,6 +38,7 @@ class SeriesScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute
 		return (
 			<IndexList
 				title="Series"
+				titleIcon="series"
 				index={this.state.index}
 				refreshing={this.state.refreshing}
 				onRefresh={this.reload}

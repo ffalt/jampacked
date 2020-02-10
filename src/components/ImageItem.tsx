@@ -20,7 +20,7 @@ class ImageItem extends PureComponent<{ item: BaseEntry; theme: ITheme; numColum
 		const {item, theme, numColumns} = this.props;
 		const headers = dataService.currentUserToken ? {Authorization: `Bearer ${dataService.currentUserToken}`} : undefined;
 		const source = {
-			uri: dataService.jam.image.url(item.id, 180, undefined, !headers),
+			uri: dataService.jam.image.url(item.id, 300, undefined, !headers),
 			headers,
 			priority: FastImage.priority.normal
 		};

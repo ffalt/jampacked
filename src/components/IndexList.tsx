@@ -18,34 +18,43 @@ const style = StyleSheet.create({
 class IndexList extends React.PureComponent<{
 	index: Index;
 	title: string;
+	titleIcon: string;
 	refreshing: boolean;
 	theme: ITheme;
 	onRefresh: () => void;
 }> {
 	state: {
-		numColumns: number
+		tiles: boolean;
 	} = {
-		numColumns: 1
+		tiles: false
 	};
-	private renderHeader = (): JSX.Element => <PageHeader title={this.props.title}/>;
+
+	private toggleView = (): void => {
+		const {tiles} = this.state;
+		this.setState({tiles: !tiles});
+	};
+
+	private renderHeader = (): JSX.Element => {
+		const {tiles} = this.state;
+		const {title, titleIcon} = this.props;
+		return (<PageHeader title={title} titleIcon={titleIcon} tiles={tiles} toggleView={this.toggleView}/>);
+	};
 
 	private renderItemRow = ({item}: { item: IndexEntry }): JSX.Element => <Item item={item}/>;
-	private renderItemTile = ({item}: { item: IndexEntry }): JSX.Element => {
-		const {numColumns} = this.state;
-		return (<ImageItem item={item} numColumns={numColumns}/>);
-	};
+	private renderItemTile = ({item}: { item: IndexEntry }): JSX.Element => (<ImageItem item={item} numColumns={3}/>);
 	private keyExtractor = (item: IndexEntry): string => item.id;
 
 	render(): React.ReactElement {
 		const {theme} = this.props;
-		const {numColumns} = this.state;
-		if (numColumns > 1) {
+		const {tiles} = this.state;
+		if (tiles) {
 			return (
 				<AtoZList
 					data={this.props.index || []}
+					key="tiles"
 					renderItem={this.renderItemTile}
 					keyExtractor={this.keyExtractor}
-					numColumns={numColumns}
+					numColumns={3}
 					ListHeaderComponent={this.renderHeader}
 					columnWrapperStyle={style.row}
 					refreshControl={(
@@ -63,6 +72,7 @@ class IndexList extends React.PureComponent<{
 		return (
 			<AtoZList
 				data={this.props.index || []}
+				key="rows"
 				renderItem={this.renderItemRow}
 				keyExtractor={this.keyExtractor}
 				ItemSeparatorComponent={Separator}
