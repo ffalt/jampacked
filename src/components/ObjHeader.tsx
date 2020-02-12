@@ -1,5 +1,5 @@
 import React, {PureComponent, ReactNode} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import ThemedText from './ThemedText';
 import {ITheme, staticTheme, withTheme} from '../style/theming';
 import JamImage from './JamImage';
@@ -20,8 +20,15 @@ export const objHeaderStyles = StyleSheet.create({
 
 const styles = StyleSheet.create({
 	header: {
+		flexDirection: 'column',
 		paddingTop: 35,
-		height: 250
+		height: 350
+	},
+	headerTitleType: {
+		letterSpacing: 2,
+		textTransform: 'uppercase',
+		fontSize: staticTheme.fontSizeTiny,
+		fontWeight: 'bold'
 	},
 	headerTop: {
 		flexDirection: 'row',
@@ -35,48 +42,106 @@ const styles = StyleSheet.create({
 		justifyContent: 'space-between',
 		paddingHorizontal: staticTheme.padding
 	},
-	headerBottomCmds: {
+	headerTitleCmds: {
+		paddingTop: staticTheme.padding,
 		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'space-between',
 		height: 40,
-		// width: '100%',
-		borderRadius: 6,
-		backgroundColor: 'rgba(0,0,0,0.1)'
+		borderRadius: 6
+	},
+	headerTitleContainer: {
+		flex: 1,
+		flexDirection: 'column',
+		alignItems: 'center',
+		justifyContent: 'center'
 	},
 	headerTitle: {
-		flex: 1,
 		paddingLeft: staticTheme.padding,
-		fontSize: staticTheme.fontSizeBig
+		fontSize: staticTheme.fontSizeBig,
+		textAlign: 'center'
 	},
 	headerExtra: {
+		paddingTop: staticTheme.paddingLarge,
+		flexDirection: 'column'
+	},
+	ListHeaderRow: {
+		flexDirection: 'row'
+	},
+	ListHeaderTitle: {
 		flex: 1,
-		alignItems: 'flex-end'
+		letterSpacing: 2,
+		textTransform: 'uppercase',
+		paddingTop: 2,
+		fontSize: staticTheme.fontSizeTiny,
+		fontWeight: 'bold',
+		textAlign: 'right',
+		paddingRight: staticTheme.padding
+	},
+	ListHeaderValue: {
+		flex: 1
 	}
 });
+
+
+export interface HeaderDetail {
+	title: string;
+	value: string;
+	click?: () => void;
+}
 
 class ObjHeader extends PureComponent<{
 	id: string;
 	title: string;
+	typeName?: string;
 	theme: ITheme;
-	children?: ReactNode | Array<ReactNode>;
+	details?: Array<HeaderDetail>;
 	headerTitleCmds?: ReactNode | Array<ReactNode>;
 }> {
+
+	renderDetails(): JSX.Element | undefined {
+		const {details, theme} = this.props;
+		const result: Array<JSX.Element> = [];
+		(details || []).forEach(detail => {
+			if (detail.click) {
+				const onClick = (): void => {
+					if (detail.click) {
+						detail.click();
+					}
+				};
+				result.push((
+					<TouchableOpacity style={styles.ListHeaderRow} onPress={onClick}>
+						<ThemedText style={[styles.ListHeaderTitle, {color: theme.muted}]}>{detail.title}</ThemedText>
+						<ThemedText style={styles.ListHeaderValue}>{detail.value}</ThemedText>
+					</TouchableOpacity>
+				));
+			} else {
+				result.push((
+					<View style={styles.ListHeaderRow}>
+						<ThemedText style={[styles.ListHeaderTitle, {color: theme.muted}]}>{detail.title}</ThemedText>
+						<ThemedText style={styles.ListHeaderValue}>{detail.value}</ThemedText>
+					</View>
+				));
+			}
+		});
+		if (result.length) {
+			return (<View style={styles.headerExtra}>{result}</View>);
+		}
+	}
+
 	render(): React.ReactElement {
+		const {id, typeName, title, headerTitleCmds, theme} = this.props;
 		return (
 			<FastImageBackground id={this.props.id} style={styles.header}>
 				<View style={styles.headerTop}>
-					<JamImage id={this.props.id} size={173} requestSize={300}/>
-					<View style={styles.headerExtra}>
-						{this.props.children}
-						<View style={styles.headerBottomCmds}>
-							{this.props.headerTitleCmds}
-						</View>
+					<JamImage id={id} size={173} requestSize={300}/>
+					<View style={styles.headerTitleContainer}>
+						<ThemedText style={[styles.headerTitleType, {color: theme.muted}]}>{typeName}</ThemedText>
+						<ThemedText numberOfLines={3} style={styles.headerTitle}>{title}</ThemedText>
+						<View style={styles.headerTitleCmds}>{headerTitleCmds}</View>
 					</View>
 				</View>
-				<View style={styles.headerBottom}>
-					<ThemedText numberOfLines={1} style={styles.headerTitle}>{this.props.title}</ThemedText>
-				</View>
+				{this.renderDetails()}
 			</FastImageBackground>
 		);
 	}

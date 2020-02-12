@@ -19,6 +19,7 @@ export const staticTheme = {
 	fontSizeLarge: 20,
 	fontSize: 16,
 	fontSizeSmall: 13,
+	fontSizeTiny: 11,
 
 	paddingLarge: 15,
 	padding: 10,
@@ -110,7 +111,7 @@ const dark: ITheme = {
 	name: 'dark',
 	textColor: '#eeeeee',
 	barStyle: 'light-content',
-	muted: '#586478',
+	muted: '#808080',
 	background: '#0b1821',
 	itemBackground: '#090a12',
 	overlayGradient: ['rgba(0, 0, 0, 0.6)', 'rgba(0, 0, 0, 0.8)', '#0b1821'],

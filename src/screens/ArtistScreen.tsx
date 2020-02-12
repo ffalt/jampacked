@@ -4,7 +4,7 @@ import ThemedText from '../components/ThemedText';
 import {staticTheme, withTheme} from '../style/theming';
 import {HomeRoute, HomeStackWithThemeProps} from '../navigators/Routing';
 import Item from '../components/Item';
-import ObjHeader, {objHeaderStyles} from '../components/ObjHeader';
+import ObjHeader, {HeaderDetail} from '../components/ObjHeader';
 import {genreDisplay} from '../utils/genre.utils';
 import Separator from '../components/Separator';
 import dataService, {ArtistData, BaseEntry} from '../services/data';
@@ -23,7 +23,9 @@ class ArtistScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute
 	state: {
 		refreshing: boolean;
 		data?: ArtistData;
+		details: Array<HeaderDetail>;
 	} = {
+		details: this.buildDetails(),
 		refreshing: false,
 		data: undefined
 	};
@@ -34,9 +36,17 @@ class ArtistScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute
 
 	componentDidUpdate(prevProps: { route: { params: { id?: string } } }): void {
 		if (prevProps.route.params?.id !== this.props.route.params?.id) {
-			this.setState({data: undefined});
+			this.setState({data: undefined, details: this.buildDetails()});
 			this.load();
 		}
+	}
+
+	private buildDetails(albums?: number, tracks?: number, genre?: string): Array<HeaderDetail> {
+		return [
+			{title: 'Albums', value: `${albums || ''}`},
+			{title: 'Tracks', value: `${tracks || ''}`},
+			{title: 'Genre', value: genre || ''}
+		];
 	}
 
 	private load(forceRefresh: boolean = false): void {
@@ -47,7 +57,8 @@ class ArtistScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute
 		this.setState({refreshing: true});
 		dataService.artist(id, forceRefresh)
 			.then(data => {
-				this.setState({data, refreshing: false});
+				const details = this.buildDetails(data.artist.albumCount, data.artist.trackCount, genreDisplay(data.artist.genres));
+				this.setState({data, details, refreshing: false});
 
 			})
 			.catch(e => {
@@ -57,14 +68,12 @@ class ArtistScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute
 	}
 
 	private renderHeader = (): JSX.Element => (
-		<ObjHeader id={this.props.route?.params?.id} title={this.props.route?.params?.name}>
-			<ThemedText style={objHeaderStyles.ListHeaderUpperLabel}>Albums</ThemedText>
-			<ThemedText style={objHeaderStyles.ListHeaderUpperTitle}>{this.state.data?.artist.albumCount}</ThemedText>
-			<ThemedText style={objHeaderStyles.ListHeaderUpperLabel}>Tracks</ThemedText>
-			<ThemedText style={objHeaderStyles.ListHeaderUpperTitle}>{this.state.data?.artist.trackCount}</ThemedText>
-			<ThemedText style={objHeaderStyles.ListHeaderUpperLabel}>Genre</ThemedText>
-			<ThemedText style={objHeaderStyles.ListHeaderUpperTitle}>{genreDisplay(this.state.data?.artist.genres)}</ThemedText>
-		</ObjHeader>
+		<ObjHeader
+			id={this.props.route?.params?.id}
+			title={this.props.route?.params?.name}
+			details={this.state.details}
+			typeName="Artist"
+		/>
 	);
 
 	private renderSection = ({section}: { section: SectionListData<BaseEntry> }): JSX.Element => (

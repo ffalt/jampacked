@@ -1,12 +1,11 @@
 import React from 'react';
 import {FlatList, RefreshControl, StyleSheet, TouchableOpacity} from 'react-native';
-import ThemedText from '../components/ThemedText';
 import {staticTheme, withTheme} from '../style/theming';
 import TrackItem from '../components/TrackItem';
 import {HomeRoute, HomeStackWithThemeProps} from '../navigators/Routing';
 import {JamPlayer} from '../services/player';
 import ThemedIcon from '../components/ThemedIcon';
-import ObjHeader, {objHeaderStyles} from '../components/ObjHeader';
+import ObjHeader, {HeaderDetail} from '../components/ObjHeader';
 import {genreDisplay} from '../utils/genre.utils';
 import Separator from '../components/Separator';
 import dataService, {AlbumData, TrackEntry} from '../services/data';
@@ -28,9 +27,11 @@ class AlbumScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute.
 	state: {
 		data?: AlbumData;
 		refreshing: boolean;
+		details: Array<HeaderDetail>;
 	} = {
 		refreshing: false,
-		data: undefined
+		data: undefined,
+		details: this.buildDetails()
 	};
 
 	componentDidMount(): void {
@@ -39,9 +40,17 @@ class AlbumScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute.
 
 	componentDidUpdate(prevProps: { route: { params: { id?: string } } }): void {
 		if (prevProps.route.params?.id !== this.props.route.params?.id) {
-			this.setState({data: undefined});
+			this.setState({data: undefined, details: this.buildDetails()});
 			this.load();
 		}
+	}
+
+	private buildDetails(artist?: string, tracks?: number, genre?: string): Array<HeaderDetail> {
+		return [
+			{title: 'Artist', value: artist || '', click: artist ? this.toArtist : undefined},
+			{title: 'Tracks', value: `${tracks || ''}`},
+			{title: 'Genre', value: genre || ''}
+		];
 	}
 
 	private load(forceRefresh: boolean = false): void {
@@ -52,7 +61,8 @@ class AlbumScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute.
 		this.setState({refreshing: true});
 		dataService.album(id, forceRefresh)
 			.then(data => {
-				this.setState({data, refreshing: false});
+				const details = this.buildDetails(data.album.artist, data.album.trackCount, genreDisplay(data.album.genres));
+				this.setState({data, details, refreshing: false});
 			})
 			.catch(e => {
 				this.setState({refreshing: false});
@@ -88,22 +98,17 @@ class AlbumScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute.
 				<FavIcon style={styles.button} objType={JamObjectType.album} id={this.props.route.params?.id}/>
 			</>
 		);
-
+		const {details, data} = this.state;
+		const typeName = data?.album?.albumType;
+		const {id, name} = this.props.route?.params;
 		return (
 			<ObjHeader
-				id={this.props.route?.params?.id}
-				title={this.props.route?.params?.name}
+				id={id}
+				title={name}
+				typeName={typeName}
+				details={details}
 				headerTitleCmds={headerTitleCmds}
-			>
-				<ThemedText style={objHeaderStyles.ListHeaderUpperLabel}>Artist</ThemedText>
-				<TouchableOpacity onPress={this.toArtist}>
-					<ThemedText style={objHeaderStyles.ListHeaderUpperTitle}>{this.state.data?.album.artist}</ThemedText>
-				</TouchableOpacity>
-				<ThemedText style={objHeaderStyles.ListHeaderUpperLabel}>Tracks</ThemedText>
-				<ThemedText style={objHeaderStyles.ListHeaderUpperTitle}>{this.state.data?.album.trackCount}</ThemedText>
-				<ThemedText style={objHeaderStyles.ListHeaderUpperLabel}>Genre</ThemedText>
-				<ThemedText style={objHeaderStyles.ListHeaderUpperTitle}>{genreDisplay(this.state.data?.album.genres)}</ThemedText>
-			</ObjHeader>
+			/>
 		);
 	};
 

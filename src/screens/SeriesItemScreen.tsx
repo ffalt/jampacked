@@ -1,10 +1,10 @@
 import React from 'react';
-import {RefreshControl, SectionList, SectionListData, StyleSheet, TouchableOpacity} from 'react-native';
+import {RefreshControl, SectionList, SectionListData, StyleSheet} from 'react-native';
 import ThemedText from '../components/ThemedText';
 import {staticTheme, withTheme} from '../style/theming';
 import {HomeRoute, HomeStackWithThemeProps} from '../navigators/Routing';
 import Item from '../components/Item';
-import ObjHeader, {objHeaderStyles} from '../components/ObjHeader';
+import ObjHeader, {HeaderDetail} from '../components/ObjHeader';
 import dataService, {BaseEntry, SeriesData} from '../services/data';
 import {snackError} from '../services/snack';
 
@@ -33,8 +33,10 @@ const styles = StyleSheet.create({
 class SeriesItemScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute.SERIESITEM>> {
 	state: {
 		refreshing: boolean;
+		details: Array<HeaderDetail>;
 		data?: SeriesData;
 	} = {
+		details: this.buildDetails(),
 		refreshing: false,
 		data: undefined
 	};
@@ -45,9 +47,17 @@ class SeriesItemScreen extends React.PureComponent<HomeStackWithThemeProps<HomeR
 
 	componentDidUpdate(prevProps: { route: { params: { id?: string } } }): void {
 		if (prevProps.route.params?.id !== this.props.route.params?.id) {
-			this.setState({data: undefined});
+			this.setState({data: undefined, details: this.buildDetails()});
 			this.load();
 		}
+	}
+
+	private buildDetails(artist?: string, tracks?: number, genre?: string): Array<HeaderDetail> {
+		return [
+			{title: 'Artist', value: `${artist || ''}`, click: artist ? this.toArtist : undefined},
+			{title: 'Tracks', value: `${tracks || ''}`},
+			{title: 'Genre', value: genre || ''}
+		];
 	}
 
 	private load(forceRefresh: boolean = false): void {
@@ -58,7 +68,8 @@ class SeriesItemScreen extends React.PureComponent<HomeStackWithThemeProps<HomeR
 		this.setState({refreshing: true});
 		dataService.series(id, forceRefresh)
 			.then(data => {
-				this.setState({data, refreshing: false});
+				const details = this.buildDetails(data.series.artist, data.series.trackCount, 'Audio Series');
+				this.setState({data, details, refreshing: false});
 			})
 			.catch(e => {
 				this.setState({refreshing: false});
@@ -78,16 +89,12 @@ class SeriesItemScreen extends React.PureComponent<HomeStackWithThemeProps<HomeR
 	};
 
 	private renderHeader = (): JSX.Element => (
-		<ObjHeader id={this.props.route?.params?.id} title={this.props.route?.params?.name}>
-			<ThemedText style={objHeaderStyles.ListHeaderUpperLabel}>Artist</ThemedText>
-			<TouchableOpacity onPress={this.toArtist}>
-				<ThemedText style={objHeaderStyles.ListHeaderUpperTitle}>{this.state.data?.series.artist}</ThemedText>
-			</TouchableOpacity>
-			<ThemedText style={objHeaderStyles.ListHeaderUpperLabel}>Tracks</ThemedText>
-			<ThemedText style={objHeaderStyles.ListHeaderUpperTitle}>{this.state.data?.series.trackCount}</ThemedText>
-			<ThemedText style={objHeaderStyles.ListHeaderUpperLabel}>Genre</ThemedText>
-			<ThemedText style={objHeaderStyles.ListHeaderUpperTitle}>Audio Series</ThemedText>
-		</ObjHeader>
+		<ObjHeader
+			id={this.props.route?.params?.id}
+			title={this.props.route?.params?.name}
+			typeName="Series"
+			details={this.state.details}
+		/>
 	);
 
 	private renderSection = ({section}: { section: SectionListData<BaseEntry> }): JSX.Element => (

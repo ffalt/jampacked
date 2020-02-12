@@ -1,12 +1,11 @@
 import React from 'react';
 import {FlatList, RefreshControl, StyleSheet, TouchableOpacity, View} from 'react-native';
-import ThemedText from '../components/ThemedText';
 import {withTheme} from '../style/theming';
 import TrackItem from '../components/TrackItem';
 import {HomeRoute, HomeStackWithThemeProps} from '../navigators/Routing';
 import {JamPlayer} from '../services/player';
 import ThemedIcon from '../components/ThemedIcon';
-import ObjHeader, {objHeaderStyles} from '../components/ObjHeader';
+import ObjHeader, {HeaderDetail} from '../components/ObjHeader';
 import {genreDisplay} from '../utils/genre.utils';
 import Separator from '../components/Separator';
 import dataService, {FolderData, FolderEntry, TrackEntry} from '../services/data';
@@ -37,8 +36,10 @@ class FolderScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute
 	state: {
 		data?: FolderData;
 		list: Array<FolderItem>;
+		details: Array<HeaderDetail>;
 		refreshing: boolean;
 	} = {
+		details: this.buildDetails(),
 		data: undefined,
 		list: [],
 		refreshing: false
@@ -50,9 +51,17 @@ class FolderScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute
 
 	componentDidUpdate(prevProps: { route: { params: { id?: string } } }): void {
 		if (prevProps.route.params?.id !== this.props.route.params?.id) {
-			this.setState({list: [], data: undefined});
+			this.setState({list: [], data: undefined, details: this.buildDetails()});
 			this.load();
 		}
+	}
+
+	private buildDetails(artist?: string, tracks?: number, genre?: string): Array<HeaderDetail> {
+		return [
+			{title: 'Artist', value: `${artist || ''}`},
+			{title: 'Tracks', value: `${tracks || ''}`},
+			{title: 'Genre', value: genre || ''}
+		];
 	}
 
 	private load(forceRefresh: boolean = false): void {
@@ -66,7 +75,8 @@ class FolderScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute
 				const folders: Array<FolderItem> = (data.folders || []).map(folder => ({folder, id: folder.id}));
 				const tracks: Array<FolderItem> = (data.tracks || []).map(track => ({track, id: track.id}));
 				const list: Array<FolderItem> = folders.concat(tracks);
-				this.setState({data, list, refreshing: false});
+				const details = this.buildDetails(data.folder.tag?.artist, data.folder.trackCount, genreDisplay(data.folder.tag?.genres));
+				this.setState({data, details, list, refreshing: false});
 			})
 			.catch(e => {
 				this.setState({refreshing: false});
@@ -97,15 +107,10 @@ class FolderScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute
 			<ObjHeader
 				id={this.props.route?.params?.id}
 				title={this.props.route?.params?.name}
+				typeName={this.state.data?.folder?.type}
+				details={this.state.details}
 				headerTitleCmds={headerTitleCmds}
-			>
-				<ThemedText style={objHeaderStyles.ListHeaderUpperLabel}>Artist</ThemedText>
-				<ThemedText style={objHeaderStyles.ListHeaderUpperTitle}>{this.state.data?.folder.tag?.artist}</ThemedText>
-				<ThemedText style={objHeaderStyles.ListHeaderUpperLabel}>Tracks</ThemedText>
-				<ThemedText style={objHeaderStyles.ListHeaderUpperTitle}>{this.state.data?.folder.trackCount}</ThemedText>
-				<ThemedText style={objHeaderStyles.ListHeaderUpperLabel}>Genre</ThemedText>
-				<ThemedText style={objHeaderStyles.ListHeaderUpperTitle}>{genreDisplay(this.state.data?.folder.tag?.genres)}</ThemedText>
-			</ObjHeader>
+			/>
 		);
 	};
 
