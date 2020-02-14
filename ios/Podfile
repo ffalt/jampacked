@@ -46,7 +46,6 @@ target 'jam' do
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
   pod 'BVLinearGradient', :path => '../node_modules/react-native-linear-gradient'
 
-  pod 'RNCAsyncStorage', :path => '../node_modules/@react-native-community/async-storage'
 
   target 'jamTests' do
     inherit! :search_paths
