@@ -5,23 +5,13 @@ import TrackItem from '../components/TrackItem';
 import {HomeRoute, HomeStackWithThemeProps} from '../navigators/Routing';
 import {JamPlayer} from '../services/player';
 import ThemedIcon from '../components/ThemedIcon';
-import ObjHeader, {HeaderDetail} from '../components/ObjHeader';
+import ObjHeader, {HeaderDetail, objHeaderStyles} from '../components/ObjHeader';
 import {genreDisplay} from '../utils/genre.utils';
 import Separator from '../components/Separator';
 import dataService, {AlbumData, TrackEntry} from '../services/data';
 import {JamObjectType} from '../services/jam';
 import FavIcon from '../components/FavIcon';
 import {snackError} from '../services/snack';
-
-const styles = StyleSheet.create({
-	button: {
-		paddingHorizontal: staticTheme.paddingSmall,
-		marginHorizontal: staticTheme.marginLarge
-	},
-	buttonIcon: {
-		fontSize: 26
-	}
-});
 
 class AlbumScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute.ALBUM>> {
 	state: {
@@ -92,10 +82,10 @@ class AlbumScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute.
 	private renderHeader = (): JSX.Element => {
 		const headerTitleCmds = (
 			<>
-				<TouchableOpacity style={styles.button} onPress={this.playTracks}>
-					<ThemedIcon name="play" style={styles.buttonIcon}/>
+				<TouchableOpacity style={objHeaderStyles.button} onPress={this.playTracks}>
+					<ThemedIcon name="play" style={objHeaderStyles.buttonIcon}/>
 				</TouchableOpacity>
-				<FavIcon style={styles.button} objType={JamObjectType.album} id={this.props.route.params?.id}/>
+				<FavIcon style={objHeaderStyles.button} objType={JamObjectType.album} id={this.props.route.params?.id}/>
 			</>
 		);
 		const {details, data} = this.state;

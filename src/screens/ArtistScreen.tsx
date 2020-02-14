@@ -1,14 +1,17 @@
 import React from 'react';
-import {RefreshControl, SectionList, SectionListData, StyleSheet} from 'react-native';
+import {RefreshControl, SectionList, SectionListData, StyleSheet, TouchableOpacity} from 'react-native';
 import ThemedText from '../components/ThemedText';
 import {staticTheme, withTheme} from '../style/theming';
 import {HomeRoute, HomeStackWithThemeProps} from '../navigators/Routing';
 import Item from '../components/Item';
-import ObjHeader, {HeaderDetail} from '../components/ObjHeader';
+import ObjHeader, {HeaderDetail, objHeaderStyles} from '../components/ObjHeader';
 import {genreDisplay} from '../utils/genre.utils';
 import Separator from '../components/Separator';
 import dataService, {ArtistData, BaseEntry} from '../services/data';
 import {snackError} from '../services/snack';
+import ThemedIcon from '../components/ThemedIcon';
+import FavIcon from '../components/FavIcon';
+import {JamObjectType} from '../services/jam';
 
 const styles = StyleSheet.create({
 	SectionHeader: {
@@ -67,14 +70,22 @@ class ArtistScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute
 			});
 	}
 
-	private renderHeader = (): JSX.Element => (
-		<ObjHeader
-			id={this.props.route?.params?.id}
-			title={this.props.route?.params?.name}
-			details={this.state.details}
-			typeName="Artist"
-		/>
-	);
+	private renderHeader = (): JSX.Element => {
+		const headerTitleCmds = (
+			<>
+				<FavIcon style={objHeaderStyles.button} objType={JamObjectType.artist} id={this.props.route.params?.id}/>
+			</>
+		);
+		return (
+			<ObjHeader
+				id={this.props.route?.params?.id}
+				title={this.props.route?.params?.name}
+				details={this.state.details}
+				typeName="Artist"
+				headerTitleCmds={headerTitleCmds}
+			/>
+		);
+	};
 
 	private renderSection = ({section}: { section: SectionListData<BaseEntry> }): JSX.Element => (
 		<ThemedText style={styles.SectionHeader}>{section.title}</ThemedText>
