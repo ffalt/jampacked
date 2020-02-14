@@ -9,6 +9,7 @@ import {getTypeByAlbumType} from './jam-lists';
 import {HomeRoute} from '../navigators/Routing';
 import {Caching} from './caching';
 import {snackSuccess} from './snack';
+import AsyncStorage from '@react-native-community/async-storage';
 
 export interface Navig {
 	route: string;
@@ -635,6 +636,19 @@ class DataService {
 		snackSuccess('Cache optimized');
 	}
 
+	public async getSetting(key: string): Promise<string | null> {
+		const result = await AsyncStorage.getItem(`jam:${this.currentUserID}:${key}`);
+		console.log('got ', result);
+		return result;
+	}
+
+	public async setSetting(key: string, value?: string): Promise<void> {
+		if (!value) {
+			await AsyncStorage.removeItem(`jam:${this.currentUserID}:${key}`);
+		} else {
+			await AsyncStorage.setItem(`jam:${this.currentUserID}:${key}`, value);
+		}
+	}
 }
 
 const configuration = new JamConfigurationService();

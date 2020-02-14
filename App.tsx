@@ -3,7 +3,6 @@ import {NavigationContainer} from '@react-navigation/native';
 import 'react-native-gesture-handler';
 import {enableScreens} from 'react-native-screens';
 import {StatusBar} from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
 import {AppNavigator} from './src/navigators/AppNavigator';
 import {ThemeContext, ThemeProvider, themes, ThemeSettings} from './src/style/theming';
 import {setAppAvailable} from './service';
@@ -54,7 +53,7 @@ export default class App extends React.Component {
 
 	private async loadTheme(): Promise<void> {
 		try {
-			const theme = await AsyncStorage.getItem(`jam:theme:${dataService.currentUserName}`);
+			const theme = await dataService.getSetting('theme');
 			if (theme && themes[theme]) {
 				this.setState({theme: themes[theme]});
 			}
@@ -65,7 +64,7 @@ export default class App extends React.Component {
 
 	private async storeTheme(themeName: string): Promise<void> {
 		try {
-			await AsyncStorage.setItem(`jam:theme:${dataService.currentUserName}`, themeName);
+			await dataService.setSetting('theme', themeName);
 		} catch (e) {
 			console.error(e);
 		}
