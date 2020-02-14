@@ -203,12 +203,15 @@ export const themeList: Array<ITheme> = [light, dark, black];
 export interface ThemeSettings {
 	theme: ITheme;
 	setTheme: (themeName: string) => void;
+	loadUserTheme: () => Promise<void>;
 }
 
 export const ThemeContext = React.createContext<ThemeSettings>(
 	{
 		theme: themes.dark,
-		setTheme: () => {
+		loadUserTheme: async (): Promise<void> => {
+		},
+		setTheme: (): void => {
 			// nope
 		}
 	}

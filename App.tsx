@@ -16,6 +16,8 @@ export default class App extends React.Component {
 	state: ThemeSettings = {
 		theme: themes.dark,
 		// eslint-disable-next-line react/no-unused-state
+		loadUserTheme: () => this.loadTheme(),
+		// eslint-disable-next-line react/no-unused-state
 		setTheme: (themeName) => {
 			if (themes[themeName]) {
 				this.setState({
@@ -28,7 +30,6 @@ export default class App extends React.Component {
 
 	componentDidMount(): void {
 		setAppAvailable(true);
-		this.loadTheme();
 	}
 
 	componentWillUnmount(): void {

@@ -6,16 +6,19 @@ import {AppStackNavigatorParamList, AuthContext, Routing} from './Routing';
 import LoginScreen from '../screens/LoginScreen';
 import {ModalNavigator} from './ModalNavigator';
 import dataService from '../services/data';
+import {ThemeContext} from '../style/theming';
 
 const Stack = createStackNavigator<AppStackNavigatorParamList>();
 
 export class AppNavigator extends React.PureComponent {
+	static contextType = ThemeContext;
 	state = {
 		hasUser: false,
 		isLoading: true
 	};
 
 	async componentDidMount(): Promise<void> {
+		const themeSettings = this.context;
 		await dataService.jam.auth.load();
 		try {
 			await dataService.jam.auth.check();
@@ -23,6 +26,11 @@ export class AppNavigator extends React.PureComponent {
 			console.error(e);
 		}
 		this.setState({hasUser: dataService.jam.auth.isLoggedIn(), isLoading: false});
+		try {
+			await themeSettings.loadUserTheme();
+		} catch (e) {
+			console.error(e);
+		}
 		SplashScreen.hide();
 	}
 
