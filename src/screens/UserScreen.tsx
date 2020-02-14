@@ -51,10 +51,6 @@ class UserScreen extends React.PureComponent<BottomTabProps<BottomTabRoute.SETTI
 	render(): React.ReactElement {
 		return (
 			<View style={styles.container}>
-				<ThemedText style={styles.section}>Theme</ThemedText>
-				<ThemesView/>
-				<ThemedText style={styles.section}>Cache</ThemedText>
-				<DataCachingView />
 				<ThemedText style={styles.section}>Account</ThemedText>
 				<View style={styles.userSection}>
 					<JamImage id={dataService.currentUserID} size={80} style={styles.userImage}/>
@@ -63,6 +59,10 @@ class UserScreen extends React.PureComponent<BottomTabProps<BottomTabRoute.SETTI
 						<Button title="Logout" onPress={this.logout}/>
 					</View>
 				</View>
+				<ThemedText style={styles.section}>Cache</ThemedText>
+				<DataCachingView/>
+				<ThemedText style={styles.section}>Theme</ThemedText>
+				<ThemesView/>
 			</View>
 		);
 	}

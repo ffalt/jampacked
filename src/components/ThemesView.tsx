@@ -1,40 +1,27 @@
 import React from 'react';
-import {StyleSheet, Switch, View} from 'react-native';
-import {staticTheme, ThemeContext} from '../style/theming';
-import ThemedText from './ThemedText';
+import {ThemeContext} from '../style/theming';
+import RadioButtons, {RadioButtonEntry} from './RadioButton';
 
-const styles = StyleSheet.create({
-	container: {
-		alignItems: 'center',
-		flexDirection: 'row',
-		padding: staticTheme.paddingSmall
-	},
-	text: {
-		flex: 1
-	}
-});
+export const themesList: Array<RadioButtonEntry> = [{key: 'light', label: 'Light'}, {key: 'dark', label: 'Dark'}];
 
 export class ThemesView extends React.PureComponent {
 	static contextType = ThemeContext;
-	state: { dark: boolean } = {dark: true};
+	state: { theme: string; } = {theme: 'dark'};
 
 	componentDidMount(): void {
 		const {theme} = this.context;
-		this.setState({dark: theme.name === 'dark'});
+		this.setState({theme: theme.name});
 	}
 
-	private toggle = (dark: boolean): void => {
+	private changeTheme = (theme: string): void => {
 		const themeSettings = this.context;
-		themeSettings.setTheme(dark ? 'dark' : 'light');
-		this.setState({dark});
+		themeSettings.setTheme(theme);
+		this.setState({theme});
 	};
 
 	render(): React.ReactElement {
 		return (
-			<View style={styles.container}>
-				<ThemedText style={styles.text}>Dark Theme</ThemedText>
-				<Switch value={this.state.dark} onValueChange={this.toggle}/>
-			</View>
+			<RadioButtons options={themesList} value={this.state.theme} onChange={this.changeTheme}/>
 		);
 	}
 }
