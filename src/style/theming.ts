@@ -36,6 +36,7 @@ export const staticTheme = {
 // export type ITheme = ReturnType<typeof useTheme>;
 export interface ITheme {
 	name: string;
+	title: string;
 	textColor: string;
 	background: string;
 	itemBackground: string;
@@ -69,6 +70,7 @@ export interface ITheme {
 
 const light: ITheme = {
 	name: 'light',
+	title: 'Light',
 	barStyle: 'dark-content',
 	textColor: '#000000',
 	muted: '#202020',
@@ -110,6 +112,7 @@ const light: ITheme = {
 
 const dark: ITheme = {
 	name: 'dark',
+	title: 'Dark',
 	textColor: '#eeeeee',
 	barStyle: 'light-content',
 	muted: '#808080',
@@ -150,7 +153,52 @@ const dark: ITheme = {
 	}
 };
 
-export const themes: { light: ITheme, dark: ITheme, [name: string]: ITheme } = {light, dark};
+const black: ITheme = {
+	name: 'black',
+	title: 'Black',
+	textColor: '#eeeeee',
+	barStyle: 'light-content',
+	muted: '#808080',
+	background: '#000000',
+	itemBackground: '#090a12',
+	overlayGradient: ['rgba(0, 0, 0, 0.6)', 'rgba(0, 0, 0, 0.8)', '#000000'],
+	gradient: ['#0a0c15', '#000000'],
+	activeBackgroundColor: '#053e62',
+	separator: '#0b2932',
+	control: '#191f2b',
+	progress: '#6c6c6e',
+	sliderHandle: '#ffffff',
+	activeTintColor: '#5bbcd3',
+	inactiveTintColor: '#a2a69d',
+	warning: '#e60010',
+	refreshCtrlBackground: 'rgba(0,0,0,0.2)',
+	refreshCtrlColors: ['#00a9e0', '#309712'],
+	overlay: 'rgba(0,0,0,0.5)',
+	overlayText: '#ffffff',
+	statusBar: 'rgba(0,0,0,0.5)',
+	navigation: {
+		dark: true,
+		colors: {
+			primary: '#008300',
+			background: '#000000',
+			card: '#090a12',
+			text: '#D3D7CE',
+			border: '#545456'
+		}
+	},
+	waveform: {
+		active: '#006f00',
+		activeInverse: '#006f00',
+		activePlayable: '#008300',
+		activePlayableInverse: '#008300',
+		inactive: '#008300',
+		inactiveInverse: '#008300'
+	}
+};
+
+export const themes: { light: ITheme, dark: ITheme, black: ITheme, [name: string]: ITheme } = {light, dark, black};
+
+export const themeList: Array<ITheme> = [light, dark, black];
 
 export interface ThemeSettings {
 	theme: ITheme;

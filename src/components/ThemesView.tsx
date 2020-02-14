@@ -1,8 +1,9 @@
 import React from 'react';
-import {ThemeContext} from '../style/theming';
+import {ThemeContext, themeList} from '../style/theming';
 import RadioButtons, {RadioButtonEntry} from './RadioButton';
 
-export const themesList: Array<RadioButtonEntry> = [{key: 'light', label: 'Light'}, {key: 'dark', label: 'Dark'}];
+export const themesList: Array<RadioButtonEntry> = themeList
+	.map(theme => ({key: theme.name, label: theme.title}));
 
 export class ThemesView extends React.PureComponent {
 	static contextType = ThemeContext;
