@@ -172,9 +172,10 @@ class LoginScreen extends React.PureComponent<AppStackProps<Routing.AUTH>> {
 									placeholder="Server"
 									autoCorrect={false}
 									value={this.state.server}
-									autoCompleteType="off"
 									returnKeyType="next"
 									autoCapitalize="none"
+									textContentType="URL"
+									importantForAutofill="yes"
 									onSubmitEditing={this.focusUsername}
 									onChangeText={this.onChangeServerText}
 									blurOnSubmit={false}
@@ -189,7 +190,9 @@ class LoginScreen extends React.PureComponent<AppStackProps<Routing.AUTH>> {
 									placeholder="User"
 									autoCorrect={false}
 									value={this.state.name}
+									importantForAutofill="yes"
 									autoCompleteType="username"
+									textContentType="username"
 									returnKeyType="next"
 									autoCapitalize="none"
 									onSubmitEditing={this.focusPassword}
@@ -206,6 +209,8 @@ class LoginScreen extends React.PureComponent<AppStackProps<Routing.AUTH>> {
 									placeholder="Password"
 									autoCompleteType="password"
 									returnKeyType="done"
+									textContentType="password"
+									importantForAutofill="yes"
 									autoCorrect={false}
 									value={this.state.password}
 									secureTextEntry={true}
