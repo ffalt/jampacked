@@ -1,7 +1,7 @@
 import React from 'react';
 import {RefreshControl, ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Subscription} from 'rxjs';
-import {HomeRoute, HomeStackProps, HomeStackWithThemeProps} from '../navigators/Routing';
+import {HomeRoute, HomeStackWithThemeProps} from '../navigators/Routing';
 import ThemedText from '../components/ThemedText';
 import JamImage from '../components/JamImage';
 import {staticTheme, useTheme, withTheme} from '../style/theming';
@@ -25,14 +25,14 @@ const styles = StyleSheet.create({
 		fontSize: staticTheme.fontSizeLarge
 	},
 	homeStatContainer: {
+		width: '100%',
 		flexDirection: 'row',
 		flexWrap: 'wrap'
 	},
 	homeStat: {
-		width: 120,
+		margin: '1%',
+		width: '31%',
 		alignItems: 'center',
-		marginRight: staticTheme.margin,
-		marginBottom: staticTheme.margin,
 		padding: staticTheme.padding,
 		borderRadius: 4
 	},
@@ -81,11 +81,9 @@ const HomeStat: React.FC<HomeStatProps> = (props: HomeStatProps): JSX.Element =>
 	};
 
 	return (
-		<TouchableOpacity onPress={click}>
-			<View style={[styles.homeStat, {backgroundColor: theme.itemBackground}]}>
-				<ThemedText style={styles.homeStatValue}>{props.stat.value}</ThemedText>
-				<ThemedText style={styles.homeStatDesc}>{props.stat.text}</ThemedText>
-			</View>
+		<TouchableOpacity onPress={click} style={[styles.homeStat, {backgroundColor: theme.itemBackground}]}>
+			<ThemedText style={styles.homeStatValue}>{props.stat.value}</ThemedText>
+			<ThemedText style={styles.homeStatDesc}>{props.stat.text}</ThemedText>
 		</TouchableOpacity>
 	);
 };
