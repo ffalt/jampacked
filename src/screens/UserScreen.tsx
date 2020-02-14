@@ -33,7 +33,6 @@ const styles = StyleSheet.create({
 		marginBottom: staticTheme.marginSmall
 	},
 	userName: {
-		flex: 1
 	}
 });
 
@@ -54,9 +53,11 @@ class UserScreen extends React.PureComponent<BottomTabProps<BottomTabRoute.SETTI
 				<ThemedText style={styles.section}>Account</ThemedText>
 				<View style={styles.userSection}>
 					<JamImage id={dataService.currentUserID} size={80} style={styles.userImage}/>
-					<View style={styles.userName}>
-						<ThemedText>{dataService.currentUserName}</ThemedText>
-						<Button title="Logout" onPress={this.logout}/>
+					<View>
+						<View style={styles.userName}>
+							<ThemedText>{dataService.currentUserName}</ThemedText>
+							<Button title="Logout" onPress={this.logout}/>
+						</View>
 					</View>
 				</View>
 				<ThemedText style={styles.section}>Cache</ThemedText>

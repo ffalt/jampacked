@@ -21,8 +21,8 @@ export const objHeaderStyles = StyleSheet.create({
 const styles = StyleSheet.create({
 	header: {
 		flexDirection: 'column',
-		paddingTop: 35,
-		height: 350
+		paddingTop: staticTheme.statusBarOffset + staticTheme.padding,
+		height: 320
 	},
 	headerTitleType: {
 		letterSpacing: 2,
@@ -62,7 +62,8 @@ const styles = StyleSheet.create({
 		textAlign: 'center'
 	},
 	headerExtra: {
-		paddingTop: staticTheme.paddingLarge,
+		flex: 1,
+		justifyContent: 'center',
 		flexDirection: 'column'
 	},
 	ListHeaderRow: {
@@ -72,13 +73,13 @@ const styles = StyleSheet.create({
 		flex: 1,
 		letterSpacing: 2,
 		textTransform: 'uppercase',
-		paddingTop: 2,
-		fontSize: staticTheme.fontSizeTiny,
+		fontSize: staticTheme.fontSize,
 		fontWeight: 'bold',
 		textAlign: 'right',
 		paddingRight: staticTheme.padding
 	},
 	ListHeaderValue: {
+		fontSize: staticTheme.fontSize,
 		flex: 1
 	}
 });

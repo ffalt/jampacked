@@ -34,7 +34,7 @@ export default class App extends React.Component {
 		return (
 			<ThemeContext.Provider value={this.state}>
 				<ThemeProvider theme={this.state.theme}>
-					<StatusBar translucent={true} backgroundColor="rgba(0,0,0,0.5)" barStyle={this.state.theme.barStyle}/>
+					<StatusBar translucent={true} backgroundColor={this.state.theme.statusBar} barStyle={this.state.theme.barStyle}/>
 					<NavigationContainer
 						theme={this.state.theme.navigation}
 						ref={NavigationService.setTopLevelNavigator}

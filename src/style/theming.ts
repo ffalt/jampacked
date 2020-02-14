@@ -64,6 +64,7 @@ export interface ITheme {
 	}
 	refreshCtrlBackground: string;
 	refreshCtrlColors: Array<string>;
+	statusBar: string;
 }
 
 const light: ITheme = {
@@ -73,7 +74,7 @@ const light: ITheme = {
 	muted: '#202020',
 	background: '#ffffff',
 	itemBackground: '#f3f3f3',
-	overlayGradient: ['rgba(255, 255, 255, 0.8)', '#ffffff'],
+	overlayGradient: ['rgba(255, 255, 255, 0.7)', '#ffffff'],
 	gradient: ['#cfcfcf', '#ffffff'],
 	separator: '#a3a3a3',
 	activeBackgroundColor: '#dff8ff',
@@ -87,7 +88,7 @@ const light: ITheme = {
 	refreshCtrlColors: ['#00a9e0', '#309712'],
 	overlay: 'rgba(255,255,255,0.3)',
 	overlayText: '#000000',
-
+	statusBar: 'rgba(255,255,255,0.7)',
 	navigation: {
 		dark: false,
 		colors: {
@@ -128,6 +129,7 @@ const dark: ITheme = {
 	refreshCtrlColors: ['#00a9e0', '#309712'],
 	overlay: 'rgba(0,0,0,0.5)',
 	overlayText: '#ffffff',
+	statusBar: 'rgba(0,0,0,0.5)',
 	navigation: {
 		dark: true,
 		colors: {
