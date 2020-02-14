@@ -67,13 +67,14 @@ const styles = StyleSheet.create({
 		flexDirection: 'column'
 	},
 	ListHeaderRow: {
+		alignItems: 'center',
 		flexDirection: 'row'
 	},
 	ListHeaderTitle: {
 		flex: 1,
 		letterSpacing: 2,
 		textTransform: 'uppercase',
-		fontSize: staticTheme.fontSize,
+		fontSize: staticTheme.fontSizeSmall,
 		fontWeight: 'bold',
 		textAlign: 'right',
 		paddingRight: staticTheme.padding
@@ -111,14 +112,14 @@ class ObjHeader extends PureComponent<{
 					}
 				};
 				result.push((
-					<TouchableOpacity style={styles.ListHeaderRow} onPress={onClick}>
+					<TouchableOpacity key={detail.title} style={styles.ListHeaderRow} onPress={onClick}>
 						<ThemedText style={[styles.ListHeaderTitle, {color: theme.muted}]}>{detail.title}</ThemedText>
 						<ThemedText style={styles.ListHeaderValue}>{detail.value}</ThemedText>
 					</TouchableOpacity>
 				));
 			} else {
 				result.push((
-					<View style={styles.ListHeaderRow}>
+					<View key={detail.title} style={styles.ListHeaderRow}>
 						<ThemedText style={[styles.ListHeaderTitle, {color: theme.muted}]}>{detail.title}</ThemedText>
 						<ThemedText style={styles.ListHeaderValue}>{detail.value}</ThemedText>
 					</View>
