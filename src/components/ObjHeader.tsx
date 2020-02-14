@@ -6,15 +6,12 @@ import JamImage from './JamImage';
 import FastImageBackground from './JamBackgroundImage';
 
 export const objHeaderStyles = StyleSheet.create({
-	ListHeaderUpperTitle: {
-		fontSize: staticTheme.fontSize,
-		marginBottom: staticTheme.marginSmall
+	button: {
+		paddingHorizontal: staticTheme.paddingSmall,
+		marginHorizontal: staticTheme.marginLarge
 	},
-	ListHeaderUpperLabel: {
-		fontSize: staticTheme.fontSizeSmall
-	},
-	ListHeaderCmdButton: {
-		paddingHorizontal: staticTheme.padding
+	buttonIcon: {
+		fontSize: 26
 	}
 });
 
@@ -52,26 +49,29 @@ const styles = StyleSheet.create({
 	},
 	headerTitleContainer: {
 		flex: 1,
+		paddingHorizontal: staticTheme.padding,
 		flexDirection: 'column',
 		alignItems: 'center',
 		justifyContent: 'center'
 	},
 	headerTitle: {
-		paddingLeft: staticTheme.padding,
 		fontSize: staticTheme.fontSizeBig,
 		textAlign: 'center'
 	},
+	headerExtraContainer: {
+		alignSelf: 'center'
+	},
 	headerExtra: {
 		flex: 1,
-		justifyContent: 'center',
-		flexDirection: 'column'
+		justifyContent: 'space-around',
+		alignItems: 'center'
 	},
 	ListHeaderRow: {
 		alignItems: 'center',
 		flexDirection: 'row'
 	},
 	ListHeaderTitle: {
-		flex: 1,
+		width: 90,
 		letterSpacing: 2,
 		textTransform: 'uppercase',
 		fontSize: staticTheme.fontSizeSmall,
@@ -80,8 +80,8 @@ const styles = StyleSheet.create({
 		paddingRight: staticTheme.padding
 	},
 	ListHeaderValue: {
+		minWidth: 90,
 		fontSize: staticTheme.fontSize,
-		flex: 1
 	}
 });
 
@@ -127,7 +127,13 @@ class ObjHeader extends PureComponent<{
 			}
 		});
 		if (result.length) {
-			return (<View style={styles.headerExtra}>{result}</View>);
+			return (
+				<View style={styles.headerExtra}>
+					<View style={styles.headerExtraContainer}>
+						{result}
+					</View>
+				</View>
+			);
 		}
 	}
 
@@ -139,7 +145,7 @@ class ObjHeader extends PureComponent<{
 					<JamImage id={id} size={173} requestSize={300}/>
 					<View style={styles.headerTitleContainer}>
 						<ThemedText style={[styles.headerTitleType, {color: theme.muted}]}>{typeName}</ThemedText>
-						<ThemedText numberOfLines={3} style={styles.headerTitle}>{title}</ThemedText>
+						<ThemedText numberOfLines={2} style={styles.headerTitle}>{title}</ThemedText>
 						<View style={styles.headerTitleCmds}>{headerTitleCmds}</View>
 					</View>
 				</View>

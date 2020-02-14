@@ -1,9 +1,9 @@
 import React, {PureComponent} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
 import ThemedText from './ThemedText';
 import {ITheme, staticTheme, withTheme} from '../style/theming';
 import ThemedIcon from './ThemedIcon';
+import BackgroundIcon from './BackgroundIcon';
 
 const styles = StyleSheet.create({
 	ListHeaderTitle: {
@@ -11,19 +11,26 @@ const styles = StyleSheet.create({
 		fontSize: staticTheme.fontSizeHuge
 	},
 	ListHeaderTitleContainer: {
-		paddingLeft: staticTheme.padding,
+		flex: 1,
+		paddingLeft: 55,
+		justifyContent: 'center',
 		alignItems: 'center',
 		flexDirection: 'row'
 	},
+	ListHeaderBackground: {
+		height: 180
+	},
 	ListHeader: {
-		paddingTop: staticTheme.statusBarOffset,
 		alignItems: 'center',
 		flexDirection: 'row',
-		justifyContent: 'space-between',
-		height: 140
+		flex: 1
 	},
 	button: {
-		marginRight: staticTheme.marginLarge + 10,
+		marginRight: staticTheme.marginLarge + 15,
+		width: 40,
+		height: 40,
+		justifyContent: 'center',
+		alignItems: 'center',
 		borderRadius: 4,
 		padding: staticTheme.padding
 	},
@@ -31,7 +38,7 @@ const styles = StyleSheet.create({
 		fontSize: 18
 	},
 	icon: {
-		fontSize: 50
+		fontSize: 48
 	}
 });
 
@@ -54,20 +61,16 @@ class PageHeader extends PureComponent<{
 		const {tiles, theme, title, titleIcon} = this.props;
 		const iconName = tiles ? 'view-details' : 'view-tiles';
 		return (
-			<LinearGradient
-				colors={theme.gradient}
-				start={{x: 0, y: 0}}
-				end={{x: 0, y: 1}}
-				style={styles.ListHeader}
-			>
-				<View style={styles.ListHeaderTitleContainer}>
-					<ThemedIcon name={titleIcon} style={styles.icon}/>
-					<ThemedText style={styles.ListHeaderTitle}>{title}</ThemedText>
+			<BackgroundIcon name={titleIcon} style={styles.ListHeaderBackground}>
+				<View style={styles.ListHeader}>
+					<View style={styles.ListHeaderTitleContainer}>
+						<ThemedText style={styles.ListHeaderTitle}>{title}</ThemedText>
+					</View>
+					<TouchableOpacity style={styles.button} onPress={this.toggleView}>
+						<ThemedIcon name={iconName} style={styles.buttonIcon}/>
+					</TouchableOpacity>
 				</View>
-				<TouchableOpacity style={styles.button} onPress={this.toggleView}>
-					<ThemedIcon name={iconName} style={styles.buttonIcon}/>
-				</TouchableOpacity>
-			</LinearGradient>
+			</BackgroundIcon>
 		);
 	}
 }

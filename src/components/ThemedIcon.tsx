@@ -1,14 +1,7 @@
 import React from 'react';
 import {StyleProp, TextStyle} from 'react-native';
-// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-// @ts-ignore-next-line
-import {createIconSetFromFontello} from 'react-native-vector-icons';
 import {useTheme} from '../style/theming';
-// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-// @ts-ignore-next-line
-import fontelloConfig from '../assets/fonts/config.json';
-
-const FontelloIcon = createIconSetFromFontello(fontelloConfig);
+import {FontelloIcon} from './FontelloIcon';
 
 interface ThemedIconProps {
 	name: string,
