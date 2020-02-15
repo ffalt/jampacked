@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
 	trackListNumber: {
 		paddingRight: staticTheme.paddingLarge,
 		paddingLeft: staticTheme.paddingLarge,
-		flex: 1
+		width: 50
 	},
 	trackListTitle: {
 		flex: 5
