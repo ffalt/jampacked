@@ -33,7 +33,7 @@ async function monitorProgress(): Promise<void> {
 	}
 	if (!scrobble.done && scrobble.trigger > 0 && scrobble.time > scrobble.trigger) {
 		scrobble.done = true;
-		dataService.jam.media.stream_scrobble({id: scrobble.id})
+		dataService.scrobble(scrobble.id)
 			.catch(e => {
 				console.error(e);
 			});

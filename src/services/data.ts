@@ -1,6 +1,7 @@
 import {SectionListData} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {BehaviorSubject, Observable} from 'rxjs';
+import AsyncStorage from '@react-native-community/async-storage';
 import {Database} from './db';
 import {AlbumType, Jam, JamObjectType, JamService} from './jam';
 import {formatDuration} from '../utils/duration.utils';
@@ -9,7 +10,6 @@ import {getTypeByAlbumType} from './jam-lists';
 import {HomeRoute} from '../navigators/Routing';
 import {Caching} from './caching';
 import {snackSuccess} from './snack';
-import AsyncStorage from '@react-native-community/async-storage';
 
 export interface Navig {
 	route: string;
@@ -213,13 +213,23 @@ class DataService {
 		};
 	}
 
-	async refreshHomeData(): Promise<void> {
-		const result: HomeData = {};
+	async refreshHomeData(opts?: { favs?: boolean, recent?: boolean }): Promise<void> {
+		const before = (await this.homeDataCaching.getValue()) || {};
+		const result: HomeData = {
+			artistsFaved: before.artistsFaved || [],
+			albumsFaved: before.albumsFaved || [],
+			artistsRecent: before.artistsRecent || [],
+			albumsRecent: before.albumsRecent || []
+		};
 		const pack = (objs: Array<Jam.Base>, route: string): Array<HomeEntry> => objs.map(obj => ({obj, route}));
-		result.artistsFaved = pack((await this.jam.artist.list({list: 'faved', amount: 5})).items, HomeRoute.ARTIST);
-		result.albumsFaved = pack((await this.jam.album.list({list: 'faved', amount: 5})).items, HomeRoute.ALBUM);
-		result.artistsRecent = pack((await this.jam.artist.list({list: 'recent', amount: 5})).items, HomeRoute.ARTIST);
-		result.albumsRecent = pack((await this.jam.album.list({list: 'recent', amount: 5})).items, HomeRoute.ALBUM);
+		if (!opts || opts.favs) {
+			result.artistsFaved = pack((await this.jam.artist.list({list: 'faved', amount: 5})).items, HomeRoute.ARTIST);
+			result.albumsFaved = pack((await this.jam.album.list({list: 'faved', amount: 5})).items, HomeRoute.ALBUM);
+		}
+		if (!opts || opts.recent) {
+			result.artistsRecent = pack((await this.jam.artist.list({list: 'recent', amount: 5})).items, HomeRoute.ARTIST);
+			result.albumsRecent = pack((await this.jam.album.list({list: 'recent', amount: 5})).items, HomeRoute.ALBUM);
+		}
 		this.homeDataCaching.next(result);
 	}
 
@@ -517,8 +527,13 @@ class DataService {
 		const remove = jamState.faved ? true : undefined;
 		const result = await this.jam.base.fav(objType, {id, remove});
 		snackSuccess(result.faved ? 'Added to Favorites' : 'Removed from Favorites');
-		this.refreshHomeData().catch(e => console.error(e));
+		this.refreshHomeData({favs: true}).catch(e => console.error(e));
 		return result;
+	}
+
+	async scrobble(id: string): Promise<void> {
+		await this.jam.media.stream_scrobble({id});
+		this.refreshHomeData({recent: true}).catch(e => console.error(e));
 	}
 
 	// caching
@@ -636,6 +651,8 @@ class DataService {
 		snackSuccess('Cache optimized');
 	}
 
+	// user settings
+
 	public async getSetting(key: string): Promise<string | null> {
 		return await AsyncStorage.getItem(`jam:${this.currentUserID}:${key}`);
 	}
@@ -647,6 +664,7 @@ class DataService {
 			await AsyncStorage.setItem(`jam:${this.currentUserID}:${key}`, value);
 		}
 	}
+
 }
 
 const configuration = new JamConfigurationService();
