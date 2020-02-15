@@ -1,9 +1,13 @@
-import React, {PureComponent} from 'react';
+import React, {PureComponent, RefObject} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {staticTheme} from '../style/theming';
 import {JamPlayer} from '../services/player';
 import ThemedText from './ThemedText';
 import {TrackEntry} from '../services/data';
+// import RNPopoverMenu from 'react-native-popover-menu';
+import ThemedIcon from './ThemedIcon';
+
+export const trackEntryHeight = 46;
 
 const styles = StyleSheet.create({
 	trackListContainer: {
@@ -12,7 +16,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		marginRight: staticTheme.marginLarge,
 		marginLeft: staticTheme.marginLarge,
-		height: 46
+		height: trackEntryHeight
 	},
 	trackListNumber: {
 		flex: 1
@@ -39,6 +43,7 @@ const styles = StyleSheet.create({
 });
 
 export default class TrackItem extends PureComponent<{ track: TrackEntry }> {
+	containerRef: RefObject<TouchableOpacity> = React.createRef();
 
 	private playTrack = (): void => {
 		const {track} = this.props;
@@ -46,10 +51,54 @@ export default class TrackItem extends PureComponent<{ track: TrackEntry }> {
 			.catch(e => console.error(e));
 	};
 
+	private popupMenu = (): void => {
+
+		if (!this.containerRef.current) {
+			return;
+		}
+		const copy = <ThemedIcon name="artist"/>;
+		const paste = <ThemedIcon name="artist"/>;
+		const share = <ThemedIcon name="artist"/>;
+		const menus = [
+			{
+				label: 'Editing',
+				menus: [
+					{label: 'Copy'},
+					{label: 'Paste'}
+				]
+			},
+			{
+				label: 'Other',
+				menus: [
+					{label: 'Share'}
+				]
+			},
+			{
+				label: '',
+				menus: [
+					{label: 'Share me please'}
+				]
+			}
+		];
+		// RNPopoverMenu.Show(this.containerRef.current, {
+		// 	title: '',
+		// 	menus,
+		// 	onDone: () => {
+		// 	},
+		// 	onCancel: () => {
+		// 	}
+		// });
+	};
+
 	render(): React.ReactElement {
 		const {track} = this.props;
 		return (
-			<TouchableOpacity onPress={this.playTrack} style={styles.trackListContainer}>
+			<TouchableOpacity
+				ref={this.containerRef}
+				onPress={this.playTrack}
+				onLongPress={this.popupMenu}
+				style={styles.trackListContainer}
+			>
 				<View style={styles.trackListNumber}>
 					<ThemedText style={styles.trackNumberStyle}>{track.trackNr}</ThemedText>
 				</View>

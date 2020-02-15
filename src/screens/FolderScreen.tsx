@@ -11,6 +11,7 @@ import Separator from '../components/Separator';
 import dataService, {FolderData, FolderEntry, TrackEntry} from '../services/data';
 import {snackError} from '../services/snack';
 import Item from '../components/Item';
+import {FolderType, Jam} from '../services/jam';
 
 const styles = StyleSheet.create({
 	playButton: {
@@ -57,12 +58,30 @@ class FolderScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute
 		}
 	}
 
-	private buildDetails(artist?: string, tracks?: number, genre?: string): Array<HeaderDetail> {
-		return [
-			{title: 'Artist', value: `${artist || ''}`},
-			{title: 'Tracks', value: `${tracks || ''}`},
-			{title: 'Genre', value: genre || ''}
-		];
+	private buildDetails(folder?: Jam.Folder): Array<HeaderDetail> {
+		let result: Array<HeaderDetail> = [];
+		switch (folder?.type) {
+			case FolderType.artist:
+				result = [
+					{title: 'Folders', value: `${folder?.folderCount || ''}`},
+					{title: 'Tracks', value: `${folder?.trackCount || ''}`},
+					{title: 'Genre', value: genreDisplay(folder?.tag?.genres) || ''}
+				];
+				break;
+			case FolderType.multialbum:
+			case FolderType.album:
+				result = [
+					{title: 'Artist', value: `${folder?.tag?.artist || ''}`},
+					{title: 'Tracks', value: `${folder?.trackCount || ''}`},
+					{title: 'Genre', value: genreDisplay(folder?.tag?.genres) || ''}
+				];
+				break;
+			// case FolderType.unknown:
+			// case FolderType.collection:
+			// case FolderType.extras:
+			default:
+		}
+		return result.filter(item => item.value.length > 0);
 	}
 
 	private load(forceRefresh: boolean = false): void {
@@ -77,7 +96,7 @@ class FolderScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute
 				const folders: Array<FolderItem> = (data.folders || []).map(folder => ({folder, id: folder.id}));
 				const tracks: Array<FolderItem> = (data.tracks || []).map(track => ({track, id: track.id}));
 				const list: Array<FolderItem> = folders.concat(tracks);
-				const details = this.buildDetails(data.folder.tag?.artist, data.folder.trackCount, genreDisplay(data.folder.tag?.genres));
+				const details = this.buildDetails(data.folder);
 				this.setState({data, details, list, refreshing: false});
 			})
 			.catch(e => {

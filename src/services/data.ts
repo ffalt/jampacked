@@ -405,7 +405,7 @@ class DataService {
 	async folder(id: string, forceRefresh: boolean = false): Promise<FolderData> {
 		return this.get<FolderData>(forceRefresh, `${this.jam.auth.auth?.server}/folder/${id}`, async () => {
 			const result: FolderData = {
-				folder: await this.jam.folder.id({id, folderTag: true, folderChildren: true, trackTag: true}),
+				folder: await this.jam.folder.id({id, folderTag: true, folderCounts: true, folderChildren: true, trackTag: true}),
 				tracks: [],
 				folders: []
 			};

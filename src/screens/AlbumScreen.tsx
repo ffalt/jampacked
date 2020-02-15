@@ -1,7 +1,7 @@
 import React from 'react';
 import {FlatList, RefreshControl, TouchableOpacity} from 'react-native';
 import {withTheme} from '../style/theming';
-import TrackItem from '../components/TrackItem';
+import TrackItem, {trackEntryHeight} from '../components/TrackItem';
 import {HomeRoute, HomeStackWithThemeProps} from '../navigators/Routing';
 import {JamPlayer} from '../services/player';
 import ThemedIcon from '../components/ThemedIcon';
@@ -12,6 +12,7 @@ import dataService, {AlbumData, TrackEntry} from '../services/data';
 import {JamObjectType} from '../services/jam';
 import FavIcon from '../components/FavIcon';
 import {snackError} from '../services/snack';
+import {commonItemLayout} from '../components/AtoZList';
 
 class AlbumScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute.ALBUM>> {
 	state: {
@@ -112,6 +113,8 @@ class AlbumScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute.
 
 	private renderItem = ({item}: { item: TrackEntry }): JSX.Element => (<TrackItem track={item}/>);
 
+	private getItemLayout = commonItemLayout(trackEntryHeight);
+
 	render(): React.ReactElement {
 		const {theme} = this.props;
 		const {data, refreshing} = this.state;
@@ -122,6 +125,7 @@ class AlbumScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute.
 				keyExtractor={this.keyExtractor}
 				ItemSeparatorComponent={Separator}
 				ListHeaderComponent={this.renderHeader}
+				getItemLayout={this.getItemLayout}
 				refreshControl={(
 					<RefreshControl
 						refreshing={refreshing}
