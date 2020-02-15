@@ -48,12 +48,13 @@ class IndexList extends React.PureComponent<{
 	private keyExtractor = (item: IndexEntry): string => item.id;
 
 	render(): React.ReactElement {
-		const {theme} = this.props;
+		const {theme, index, refreshing, onRefresh} = this.props;
 		const {tiles} = this.state;
+		const data = index || [];
 		if (tiles) {
 			return (
 				<AtoZList
-					data={this.props.index || []}
+					data={data}
 					key="tiles"
 					renderItem={this.renderItemTile}
 					keyExtractor={this.keyExtractor}
@@ -63,8 +64,8 @@ class IndexList extends React.PureComponent<{
 					itemHeight={this.tileSize}
 					refreshControl={(
 						<RefreshControl
-							refreshing={this.props.refreshing}
-							onRefresh={this.props.onRefresh}
+							refreshing={refreshing}
+							onRefresh={onRefresh}
 							progressViewOffset={90}
 							progressBackgroundColor={theme.refreshCtrlBackground}
 							colors={theme.refreshCtrlColors}
@@ -75,7 +76,7 @@ class IndexList extends React.PureComponent<{
 		}
 		return (
 			<AtoZList
-				data={this.props.index || []}
+				data={data}
 				key="rows"
 				renderItem={this.renderItemRow}
 				keyExtractor={this.keyExtractor}
@@ -83,8 +84,8 @@ class IndexList extends React.PureComponent<{
 				ListHeaderComponent={this.renderHeader}
 				refreshControl={(
 					<RefreshControl
-						refreshing={this.props.refreshing}
-						onRefresh={this.props.onRefresh}
+						refreshing={refreshing}
+						onRefresh={onRefresh}
 						progressViewOffset={90}
 						progressBackgroundColor={theme.refreshCtrlBackground}
 						colors={theme.refreshCtrlColors}

@@ -49,15 +49,16 @@ export default class AtoZList<T extends SectionItem> extends PureComponent<AtoZL
 	};
 
 	render(): React.ReactElement {
+		const {itemHeight, data} = this.props;
 		return (
 			<View style={styles.container}>
 				<FlatList
 					ref={this.containerRef}
 					{...this.props}
-					getItemLayout={commonItemLayout(this.props.itemHeight)}
+					getItemLayout={commonItemLayout(itemHeight)}
 				/>
 				<AtoZPicker
-					data={this.props.data}
+					data={data}
 					onTouchLetter={this.onTouchLetter}
 				/>
 			</View>

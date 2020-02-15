@@ -75,15 +75,16 @@ interface HomeStatProps {
 
 const HomeStat: React.FC<HomeStatProps> = (props: HomeStatProps): JSX.Element => {
 	const theme = useTheme();
+	const {stat} = props;
 
 	const click = (): void => {
-		NavigationService.navigateLink(props.stat.link);
+		NavigationService.navigateLink(stat.link);
 	};
 
 	return (
 		<TouchableOpacity onPress={click} style={[styles.homeStat, {backgroundColor: theme.itemBackground}]}>
-			<ThemedText style={styles.homeStatValue}>{props.stat.value}</ThemedText>
-			<ThemedText style={styles.homeStatDesc}>{props.stat.text}</ThemedText>
+			<ThemedText style={styles.homeStatValue}>{stat.value}</ThemedText>
+			<ThemedText style={styles.homeStatDesc}>{stat.text}</ThemedText>
 		</TouchableOpacity>
 	);
 };
@@ -93,8 +94,9 @@ interface HomeStatsProps {
 }
 
 const HomeStats: React.FC<HomeStatsProps> = (props: HomeStatsProps): JSX.Element => {
-	const entries = props.stats && props.stats.length > 0
-		? props.stats.map(stat => <HomeStat key={stat.text} stat={stat}/>)
+	const {stats} = props;
+	const entries = stats && stats.length > 0
+		? stats.map(stat => <HomeStat key={stat.text} stat={stat}/>)
 		: [];
 	return (
 		<>
@@ -110,16 +112,17 @@ interface HomeSectionEntryProps {
 
 const HomeSectionEntry: React.FC<HomeSectionEntryProps> = (props: HomeSectionEntryProps): JSX.Element => {
 	const theme = useTheme();
+	const {entry} = props;
 
 	const click = (): void => {
-		NavigationService.navigate(props.entry.route, {id: props.entry.obj.id, name: props.entry.obj.name});
+		NavigationService.navigate(entry.route, {id: entry.obj.id, name: entry.obj.name});
 	};
 
 	return (
 		<TouchableOpacity onPress={click}>
 			<View style={[styles.HomeSectionEntry, {backgroundColor: theme.itemBackground}]}>
-				<JamImage id={props.entry.obj.id} size={80}/>
-				<ThemedText numberOfLines={1} style={styles.HomeSectionEntryText}>{props.entry.obj.name}</ThemedText>
+				<JamImage id={entry.obj.id} size={80}/>
+				<ThemedText numberOfLines={1} style={styles.HomeSectionEntryText}>{entry.obj.name}</ThemedText>
 			</View>
 		</TouchableOpacity>
 	);
@@ -131,13 +134,14 @@ interface HomeSectionProps {
 }
 
 const HomeSection: React.FC<HomeSectionProps> = (props: HomeSectionProps): JSX.Element => {
-	if (!props.section || props.section.length === 0) {
+	const {section, title} = props;
+	if (!section || section.length === 0) {
 		return (<></>);
 	}
-	const entries = props.section.map(entry => <HomeSectionEntry key={entry.obj.id} entry={entry}/>);
+	const entries = section.map(entry => <HomeSectionEntry key={entry.obj.id} entry={entry}/>);
 	return (
 		<View>
-			<ThemedText style={styles.headline}>{props.title}</ThemedText>
+			<ThemedText style={styles.headline}>{title}</ThemedText>
 			<ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
 				{entries}
 			</ScrollView>
@@ -199,8 +203,8 @@ class HomeScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute.S
 				this.setState({refreshing: statsLoading || homeLoading});
 			});
 
-
-		if (forceRefresh || !this.state.data) {
+		const {data} = this.state;
+		if (forceRefresh || !data) {
 			dataService.refreshHomeData()
 				.catch(e => {
 					snackError(e);
@@ -221,11 +225,12 @@ class HomeScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute.S
 
 	render(): React.ReactElement {
 		const {theme} = this.props;
+		const {data, refreshing, stats} = this.state;
 		return (
 			<ScrollView
 				refreshControl={(
 					<RefreshControl
-						refreshing={this.state.refreshing}
+						refreshing={refreshing}
 						onRefresh={this.reload}
 						progressViewOffset={70}
 						progressBackgroundColor={theme.refreshCtrlBackground}
@@ -235,11 +240,11 @@ class HomeScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute.S
 			>
 				<View style={styles.container}>
 					<WelcomeSection/>
-					<HomeStats stats={this.state.stats}/>
-					<HomeSection title="Recently Played Albums" section={this.state.data?.albumsRecent}/>
-					<HomeSection title="Recently Played Artists" section={this.state.data?.artistsRecent}/>
-					<HomeSection title="Favourite Albums" section={this.state.data?.albumsFaved}/>
-					<HomeSection title="Favourite Artists" section={this.state.data?.artistsFaved}/>
+					<HomeStats stats={stats}/>
+					<HomeSection title="Recently Played Albums" section={data?.albumsRecent}/>
+					<HomeSection title="Recently Played Artists" section={data?.artistsRecent}/>
+					<HomeSection title="Favourite Albums" section={data?.albumsFaved}/>
+					<HomeSection title="Favourite Artists" section={data?.artistsFaved}/>
 				</View>
 			</ScrollView>
 		);

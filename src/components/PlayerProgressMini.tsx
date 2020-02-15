@@ -12,9 +12,10 @@ const styles = StyleSheet.create({
 export class MiniProgressBar extends ProgressComponent<{ theme: ITheme }> {
 	render(): React.ReactElement {
 		const width = `${this.getProgress() * 100}%`;
+		const {theme} = this.props;
 		return (
-			<View style={[styles.miniProgress, {backgroundColor: this.props.theme.separator}]}>
-				<View style={[styles.miniProgress, {width, backgroundColor: this.props.theme.progress}]}/>
+			<View style={[styles.miniProgress, {backgroundColor: theme.separator}]}>
+				<View style={[styles.miniProgress, {width, backgroundColor: theme.progress}]}/>
 			</View>
 		);
 	}

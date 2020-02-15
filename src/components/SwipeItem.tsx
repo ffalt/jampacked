@@ -112,32 +112,32 @@ export default class SwipeableListItem extends React.PureComponent<SwipeableList
 			swipeDirection,
 			swipeState
 		} = this.state;
+		let {swipeInitialValue} = this.state;
 		const swipeAction = swipeDirection !== null ? swipeDirection + swipeState : swipeState;
-		let swipeInitialValue;
 		let swipeValue;
 		let maxDx = 0;
 		let newDx;
 		switch (swipeAction) {
 			case SWIPE.ACTION.CLOSELEFT:
-				swipeInitialValue = this.state.swipeInitialValue || this.swipeValueValue(swipeValueLeft);
+				swipeInitialValue = swipeInitialValue || this.swipeValueValue(swipeValueLeft);
 				swipeValue = swipeValueLeft;
 				maxDx = leftWidth;
 				newDx = swipeInitialValue + dx;
 				break;
 			case SWIPE.ACTION.CLOSERIGHT:
-				swipeInitialValue = this.state.swipeInitialValue || this.swipeValueValue(swipeValueRight);
+				swipeInitialValue = swipeInitialValue || this.swipeValueValue(swipeValueRight);
 				swipeValue = swipeValueRight;
 				maxDx = rightWidth;
 				newDx = swipeInitialValue - dx;
 				break;
 			case SWIPE.ACTION.OPENLEFT:
-				swipeInitialValue = this.state.swipeInitialValue || this.swipeValueValue(swipeValueLeft);
+				swipeInitialValue = swipeInitialValue || this.swipeValueValue(swipeValueLeft);
 				swipeValue = swipeValueLeft;
 				maxDx = leftWidth;
 				newDx = swipeInitialValue + dx;
 				break;
 			case SWIPE.ACTION.OPENRIGHT:
-				swipeInitialValue = this.state.swipeInitialValue || this.swipeValueValue(swipeValueRight);
+				swipeInitialValue = swipeInitialValue || this.swipeValueValue(swipeValueRight);
 				swipeValue = swipeValueRight;
 				maxDx = rightWidth;
 				newDx = swipeInitialValue - dx;

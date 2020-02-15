@@ -50,7 +50,8 @@ class FolderScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute
 	}
 
 	componentDidUpdate(prevProps: { route: { params: { id?: string } } }): void {
-		if (prevProps.route.params?.id !== this.props.route.params?.id) {
+		const newProps = this.props;
+		if (prevProps.route?.params?.id !== newProps.route?.params?.id) {
 			this.setState({list: [], data: undefined, details: this.buildDetails()});
 			this.load();
 		}
@@ -65,7 +66,8 @@ class FolderScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute
 	}
 
 	private load(forceRefresh: boolean = false): void {
-		const {id} = this.props.route.params;
+		const {route} = this.props;
+		const {id} = route?.params;
 		if (!id) {
 			return;
 		}
@@ -85,8 +87,9 @@ class FolderScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute
 	}
 
 	private playTracks = (): void => {
-		if (this.state.data?.tracks) {
-			JamPlayer.playTracks(this.state.data.tracks)
+		const {data} = this.state;
+		if (data?.tracks) {
+			JamPlayer.playTracks(data.tracks)
 				.catch(e => {
 					snackError(e);
 				});
@@ -94,9 +97,12 @@ class FolderScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute
 	};
 
 	private renderHeader = (): JSX.Element => {
-		const headerTitleCmds = this.state.data?.tracks?.length ? (
+		const {theme, route} = this.props;
+		const {id, name} = route?.params;
+		const {data, details} = this.state;
+		const headerTitleCmds = data?.tracks?.length ? (
 			<TouchableOpacity
-				style={[styles.playButton, {borderColor: this.props.theme.textColor}]}
+				style={[styles.playButton, {borderColor: theme.textColor}]}
 				onPress={this.playTracks}
 			>
 				<ThemedIcon name="play" style={styles.playButtonIcon}/>
@@ -105,10 +111,10 @@ class FolderScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute
 
 		return (
 			<ObjHeader
-				id={this.props.route?.params?.id}
-				title={this.props.route?.params?.name}
-				typeName={this.state.data?.folder?.type}
-				details={this.state.details}
+				id={id}
+				title={name}
+				typeName={data?.folder?.type}
+				details={details}
 				headerTitleCmds={headerTitleCmds}
 			/>
 		);
@@ -132,16 +138,17 @@ class FolderScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute
 
 	render(): React.ReactElement {
 		const {theme} = this.props;
+		const {list, refreshing} = this.state;
 		return (
 			<FlatList
-				data={this.state.list}
+				data={list}
 				renderItem={this.renderItem}
 				keyExtractor={this.keyExtractor}
 				ItemSeparatorComponent={Separator}
 				ListHeaderComponent={this.renderHeader}
 				refreshControl={(
 					<RefreshControl
-						refreshing={this.state.refreshing}
+						refreshing={refreshing}
 						onRefresh={this.reload}
 						progressViewOffset={90}
 						progressBackgroundColor={theme.refreshCtrlBackground}

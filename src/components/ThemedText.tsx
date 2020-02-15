@@ -4,8 +4,9 @@ import {ITheme, withTheme} from '../style/theming';
 
 class ThemedText extends React.PureComponent<{ theme: ITheme; numberOfLines?: number; style?: StyleProp<TextStyle> }> {
 	render(): React.ReactElement {
+		const {children, style, theme, numberOfLines} = this.props;
 		return (
-			<Text {...this.props} style={[{color: this.props.theme.textColor}, this.props.style]}>{this.props.children}</Text>
+			<Text numberOfLines={numberOfLines} style={[{color: theme.textColor}, style]}>{children}</Text>
 		);
 	}
 }

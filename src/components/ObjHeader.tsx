@@ -140,7 +140,7 @@ class ObjHeader extends PureComponent<{
 	render(): React.ReactElement {
 		const {id, typeName, title, headerTitleCmds, theme} = this.props;
 		return (
-			<FastImageBackground id={this.props.id} style={styles.header}>
+			<FastImageBackground id={id} style={styles.header}>
 				<View style={styles.headerTop}>
 					<JamImage id={id} size={173} requestSize={300}/>
 					<View style={styles.headerTitleContainer}>

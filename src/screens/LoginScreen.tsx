@@ -112,15 +112,16 @@ class LoginScreen extends React.PureComponent<AppStackProps<Routing.AUTH>> {
 	}
 
 	private login = async (): Promise<void> => {
-		if (this.checkEmpty(this.state.server)
-			|| this.checkEmpty(this.state.server)
-			|| this.checkEmpty(this.state.server)) {
+		const {server, name, password} = this.state;
+		if (this.checkEmpty(server)
+			|| this.checkEmpty(server)
+			|| this.checkEmpty(server)) {
 			this.setState({error: 'Please provide all fields to login.'});
 			return;
 		}
 		this.setState({loading: true, error: undefined});
 		try {
-			await this.context.login(this.state.server, this.state.name, this.state.password);
+			await this.context.login(server, name, password);
 		} catch (e) {
 			this.setState({error: `${e}`});
 		}
@@ -148,14 +149,19 @@ class LoginScreen extends React.PureComponent<AppStackProps<Routing.AUTH>> {
 	};
 
 	render(): React.ReactElement {
-		const content = this.state.loading
+		const {error, loading, name, server, password} = this.state;
+		const {theme} = this.props;
+
+		const contentView = loading
 			? (<ActivityIndicator size="large" color={styles.buttonIndicator.color}/>)
 			: (<Text style={styles.buttonText}>Login</Text>);
-		const error = this.state.error && (
+
+		const errorView = error && (
 			<View style={styles.error}>
-				<Text style={{color: this.props.theme.warning}}>{this.state.error}</Text>
+				<Text style={{color: theme.warning}}>{error}</Text>
 			</View>
 		);
+
 		return (
 			<ScrollView contentContainerStyle={styles.scrollContainer}>
 				<View style={styles.container}>
@@ -164,14 +170,14 @@ class LoginScreen extends React.PureComponent<AppStackProps<Routing.AUTH>> {
 					</View>
 					<View style={styles.loginBlock}>
 						<KeyboardAvoidingView style={styles.content}>
-							<View style={[styles.inputGroup, {borderColor: this.props.theme.textColor}]}>
+							<View style={[styles.inputGroup, {borderColor: theme.textColor}]}>
 								<ThemedIcon name="notes-beamed" style={styles.inputIcon}/>
 								<TextInput
-									style={[styles.input, {color: this.props.theme.textColor}]}
-									placeholderTextColor={this.props.theme.muted}
+									style={[styles.input, {color: theme.textColor}]}
+									placeholderTextColor={theme.muted}
 									placeholder="Server"
 									autoCorrect={false}
-									value={this.state.server}
+									value={server}
 									returnKeyType="next"
 									autoCapitalize="none"
 									textContentType="URL"
@@ -181,15 +187,15 @@ class LoginScreen extends React.PureComponent<AppStackProps<Routing.AUTH>> {
 									blurOnSubmit={false}
 								/>
 							</View>
-							<View style={[styles.inputGroup, {borderColor: this.props.theme.textColor}]}>
+							<View style={[styles.inputGroup, {borderColor: theme.textColor}]}>
 								<ThemedIcon name="user" style={styles.inputIcon}/>
 								<TextInput
 									ref={this.userNameRef}
-									style={[styles.input, {color: this.props.theme.textColor}]}
-									placeholderTextColor={this.props.theme.muted}
+									style={[styles.input, {color: theme.textColor}]}
+									placeholderTextColor={theme.muted}
 									placeholder="User"
 									autoCorrect={false}
-									value={this.state.name}
+									value={name}
 									importantForAutofill="yes"
 									autoCompleteType="username"
 									textContentType="username"
@@ -200,19 +206,19 @@ class LoginScreen extends React.PureComponent<AppStackProps<Routing.AUTH>> {
 									blurOnSubmit={false}
 								/>
 							</View>
-							<View style={[styles.inputGroup, {borderColor: this.props.theme.textColor}]}>
+							<View style={[styles.inputGroup, {borderColor: theme.textColor}]}>
 								<ThemedIcon name="key" style={styles.inputIcon}/>
 								<TextInput
 									ref={this.passwordRef}
-									style={[styles.input, {color: this.props.theme.textColor}]}
-									placeholderTextColor={this.props.theme.muted}
+									style={[styles.input, {color: theme.textColor}]}
+									placeholderTextColor={theme.muted}
 									placeholder="Password"
 									autoCompleteType="password"
 									returnKeyType="done"
 									textContentType="password"
 									importantForAutofill="yes"
 									autoCorrect={false}
-									value={this.state.password}
+									value={password}
 									secureTextEntry={true}
 									onChangeText={this.onChangePasswordText}
 									autoCapitalize="none"
@@ -221,9 +227,9 @@ class LoginScreen extends React.PureComponent<AppStackProps<Routing.AUTH>> {
 						</KeyboardAvoidingView>
 					</View>
 					<View style={styles.buttons}>
-						{error}
+						{errorView}
 						<LoginButton style={styles.button} onPress={this.login}>
-							{content}
+							{contentView}
 						</LoginButton>
 					</View>
 				</View>

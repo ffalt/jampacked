@@ -46,7 +46,8 @@ class SeriesItemScreen extends React.PureComponent<HomeStackWithThemeProps<HomeR
 	}
 
 	componentDidUpdate(prevProps: { route: { params: { id?: string } } }): void {
-		if (prevProps.route.params?.id !== this.props.route.params?.id) {
+		const newProps = this.props;
+		if (prevProps.route?.params?.id !== newProps.route?.params?.id) {
 			this.setState({data: undefined, details: this.buildDetails()});
 			this.load();
 		}
@@ -61,7 +62,8 @@ class SeriesItemScreen extends React.PureComponent<HomeStackWithThemeProps<HomeR
 	}
 
 	private load(forceRefresh: boolean = false): void {
-		const {id} = this.props.route.params;
+		const {route} = this.props;
+		const {id} = route?.params;
 		if (!id) {
 			return;
 		}
@@ -82,31 +84,42 @@ class SeriesItemScreen extends React.PureComponent<HomeStackWithThemeProps<HomeR
 	};
 
 	private toArtist = (): void => {
-		if (this.state.data?.series && this.state.data?.series.artistID) {
-			this.props.navigation.navigate(HomeRoute.ARTIST,
-				{id: this.state.data.series.artistID, name: this.state.data.series.artist || ''});
+		const {data} = this.state;
+		if (data?.series?.artistID) {
+			const {navigation} = this.props;
+			navigation.navigate(HomeRoute.ARTIST,
+				{id: data.series.artistID, name: data.series.artist || ''});
 		}
 	};
 
-	private renderHeader = (): JSX.Element => (
-		<ObjHeader
-			id={this.props.route?.params?.id}
-			title={this.props.route?.params?.name}
-			typeName="Series"
-			details={this.state.details}
-		/>
-	);
+	private renderHeader = (): JSX.Element => {
+		const {details} = this.state;
+		const {route} = this.props;
+		const {id, name} = route?.params;
+		return (
+			<ObjHeader
+				id={id}
+				title={name}
+				typeName="Series"
+				details={details}
+			/>
+		);
+	};
 
-	private renderSection = ({section}: { section: SectionListData<BaseEntry> }): JSX.Element => (
-		<ThemedText style={[styles.SectionHeader, {borderBottomColor: this.props.theme.separator}]}>{section.title}</ThemedText>
-	);
+	private renderSection = ({section}: { section: SectionListData<BaseEntry> }): JSX.Element => {
+		const {theme} = this.props;
+		return (
+			<ThemedText style={[styles.SectionHeader, {borderBottomColor: theme.separator}]}>{section.title}</ThemedText>
+		);
+	};
 
 	private renderItem = ({item}: { item: BaseEntry }): JSX.Element => (<Item item={item}/>);
 
 	private keyExtractor = (item: BaseEntry): string => item.id;
 
 	render(): React.ReactElement {
-		const sections = this.state.data?.albums || [];
+		const {data, refreshing} = this.state;
+		const sections = data?.albums || [];
 		const {theme} = this.props;
 		return (
 			<SectionList
@@ -117,7 +130,7 @@ class SeriesItemScreen extends React.PureComponent<HomeStackWithThemeProps<HomeR
 				renderItem={this.renderItem}
 				refreshControl={(
 					<RefreshControl
-						refreshing={this.state.refreshing}
+						refreshing={refreshing}
 						onRefresh={this.reload}
 						progressViewOffset={90}
 						progressBackgroundColor={theme.refreshCtrlBackground}

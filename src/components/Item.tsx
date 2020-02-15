@@ -51,8 +51,8 @@ class Item extends PureComponent<{ item: BaseEntry, theme: ITheme }> {
 	};
 
 	private click = (): void => {
-		const {id, title, objType} = this.props.item;
-		NavigationService.navigateObj(objType, id, title);
+		const {item} = this.props;
+		NavigationService.navigateObj(item.objType, item.id, item.title);
 	};
 
 	private left = (): JSX.Element => {

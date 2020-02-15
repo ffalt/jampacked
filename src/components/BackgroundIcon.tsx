@@ -30,13 +30,13 @@ class BackgroundIcon extends React.PureComponent<BackgroundIconProps> {
 	};
 
 	componentDidMount(): void {
-		const {name} = this.props;
-		this.load(name);
+		this.load();
 	}
 
 	componentDidUpdate(prevProps: { name?: string }): void {
-		if (prevProps.name !== this.props.name) {
-			this.load(this.props.name);
+		const newProps = this.props;
+		if (prevProps.name !== newProps.name) {
+			this.load();
 		}
 	}
 
@@ -61,8 +61,8 @@ class BackgroundIcon extends React.PureComponent<BackgroundIconProps> {
 		);
 	}
 
-	private async load(name: string): Promise<void> {
-		const {theme} = this.props;
+	private async load(): Promise<void> {
+		const {theme, name} = this.props;
 		const iconSource = await FontelloIcon.getImageSource(name, 50, theme.muted);
 		this.setState({iconSource});
 	}

@@ -32,13 +32,9 @@ class Lyrics extends PureComponent<LyricsProps> {
 		this.load();
 	}
 
-	componentDidUpdate(oldProps: LyricsProps): void {
+	componentDidUpdate(prevProps: LyricsProps): void {
 		const newProps = this.props;
-		if (oldProps.id !== newProps.id) {
-			if (!newProps.id) {
-				this.setState({lyrics: '[No track]'});
-				return;
-			}
+		if (prevProps.id !== newProps.id) {
 			this.load();
 		}
 	}
@@ -55,6 +51,8 @@ class Lyrics extends PureComponent<LyricsProps> {
 			}).catch(e => {
 				console.error(e);
 			});
+		} else {
+			this.setState({lyrics: '[No track]'});
 		}
 	}
 
@@ -65,7 +63,7 @@ class Lyrics extends PureComponent<LyricsProps> {
 			return (<ActivityIndicator size="large"/>);
 		}
 		return (
-			<ThemedText style={[styles.lyrics, {borderColor: theme.separator}]}>{this.state.lyrics}</ThemedText>
+			<ThemedText style={[styles.lyrics, {borderColor: theme.separator}]}>{lyrics}</ThemedText>
 		);
 	}
 

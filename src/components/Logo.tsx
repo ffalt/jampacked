@@ -4,9 +4,10 @@ import {IMAGE_LOGO} from '../style/images';
 
 export default class Logo extends React.PureComponent<{ size: number, style?: StyleProp<ImageStyle> }> {
 	render(): React.ReactElement {
+		const {size, style} = this.props;
 		return (
 			<Image
-				style={[this.props.style, {height: this.props.size, width: this.props.size}]}
+				style={[style, {height: size, width: size}]}
 				source={IMAGE_LOGO}
 			/>
 		);

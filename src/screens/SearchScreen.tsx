@@ -121,7 +121,8 @@ class SearchScreen extends React.PureComponent<BottomTabWithThemeProps<BottomTab
 		if (query && query.length) {
 			dataService.autocomplete(query)
 				.then(result => {
-					if (this.state.search === query) {
+					const {search} = this.state;
+					if (search === query) {
 						this.setState({result});
 					}
 				})
@@ -141,7 +142,8 @@ class SearchScreen extends React.PureComponent<BottomTabWithThemeProps<BottomTab
 	};
 
 	private search = (): void => {
-		this.handleInput(this.state.search);
+		const {search} = this.state;
+		this.handleInput(search);
 	};
 
 	private clear = (): void => {
@@ -149,7 +151,9 @@ class SearchScreen extends React.PureComponent<BottomTabWithThemeProps<BottomTab
 	};
 
 	render(): React.ReactElement {
-		const isEmpty = (!this.state.search || this.state.search.length === 0);
+		const {theme} = this.props;
+		const {result, search} = this.state;
+		const isEmpty = (!search || search.length === 0);
 		const cancel = !isEmpty
 			? (
 				<TouchableOpacity onPress={this.clear}>
@@ -159,22 +163,22 @@ class SearchScreen extends React.PureComponent<BottomTabWithThemeProps<BottomTab
 			: <></>;
 		return (
 			<View style={styles.container}>
-				<View style={[styles.inputGroup, {borderColor: this.props.theme.textColor}]}>
+				<View style={[styles.inputGroup, {borderColor: theme.textColor}]}>
 					<TouchableOpacity onPress={this.search}>
 						<ThemedIcon name="search" style={[styles.inputIcon, isEmpty && styles.disabled]}/>
 					</TouchableOpacity>
 					<TextInput
-						style={[styles.input, {color: this.props.theme.textColor}]}
-						placeholderTextColor={this.props.theme.muted}
+						style={[styles.input, {color: theme.textColor}]}
+						placeholderTextColor={theme.muted}
 						placeholder="Search"
-						value={this.state.search}
+						value={search}
 						onChangeText={this.handleChangeText}
 						returnKeyType="search"
 						autoCapitalize="none"
 					/>
 					{cancel}
 				</View>
-				<AutoCompleteResult result={this.state.result}/>
+				<AutoCompleteResult result={result}/>
 			</View>
 		);
 	}

@@ -49,16 +49,17 @@ export class AppNavigator extends React.PureComponent {
 	};
 
 	render(): React.ReactElement {
+		const {hasUser, isLoading} = this.state;
 		const value = {
-			hasUser: this.state.hasUser,
-			isLoading: this.state.isLoading,
+			hasUser,
+			isLoading,
 			login: this.loginHandler,
 			logout: this.logoutHandler
 		};
 		let screen: JSX.Element;
-		if (this.state.isLoading) {
+		if (isLoading) {
 			screen = <Stack.Screen name={Routing.LOAD} component={LoadingScreen}/>;
-		} else if (this.state.hasUser) {
+		} else if (hasUser) {
 			screen = <Stack.Screen name={Routing.APP} component={ModalNavigator}/>;
 		} else {
 			screen = <Stack.Screen name={Routing.AUTH} component={LoginScreen}/>;

@@ -24,14 +24,16 @@ class AlbumsScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute
 	}
 
 	componentDidUpdate(prevProps: { route: { params: { albumTypeID?: string } } }): void {
-		if (prevProps.route?.params?.albumTypeID !== this.props.route?.params?.albumTypeID) {
+		const newProps = this.props;
+		if (prevProps.route?.params?.albumTypeID !== newProps.route?.params?.albumTypeID) {
 			this.setState({title: '', titleIcon: '', index: []});
 			this.load();
 		}
 	}
 
 	private load(forceRefresh: boolean = false): void {
-		const albumTypeID = this.props.route?.params?.albumTypeID;
+		const {route} = this.props;
+		const albumTypeID = route?.params?.albumTypeID;
 		const type = getUrlTypeByID(albumTypeID);
 		if (!type || !type.albumType) {
 			return;

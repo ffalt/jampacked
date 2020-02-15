@@ -18,10 +18,11 @@ const styles = StyleSheet.create({
 
 export default class PlayerTime extends ProgressComponent {
 	render(): React.ReactElement {
+		const {duration, position} = this.state;
 		return (
 			<View style={styles.times}>
-				<DurationText style={styles.time} duration={this.state.position}/>
-				<DurationText style={styles.time} duration={this.state.duration}/>
+				<DurationText style={styles.time} duration={position}/>
+				<DurationText style={styles.time} duration={duration}/>
 			</View>
 		);
 	}

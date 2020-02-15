@@ -34,12 +34,13 @@ export default class FoldersScreen extends React.PureComponent<HomeStackWithThem
 	};
 
 	render(): React.ReactElement {
+		const {index, refreshing} = this.state;
 		return (
 			<IndexList
-				index={this.state.index}
+				index={index}
 				title="Folders"
 				titleIcon="folder"
-				refreshing={this.state.refreshing}
+				refreshing={refreshing}
 				onRefresh={this.reload}
 			/>
 		);

@@ -49,30 +49,33 @@ class PlayerProgressWaveformLoader extends PureComponent<{ id?: string; style?: 
 	state: { waveform?: Jam.WaveFormData } = {waveform: undefined};
 
 	componentDidMount(): void {
-		this.load(this.props.id)
-			.catch(e => console.error(e));
+		this.load();
 	}
 
-	componentDidUpdate(oldProps: { id: string }): void {
-		if (oldProps.id !== this.props.id) {
-			this.load(this.props.id)
-				.catch(e => console.error(e));
+	componentDidUpdate(prevProps: { id: string }): void {
+		const newProps = this.props;
+		if (prevProps.id !== newProps.id) {
+			this.load();
 		}
 	}
 
 	render(): React.ReactElement {
-		return (
-			<WaveformProgress style={this.props.style} waveform={this.state.waveform}/>
-		);
+		const {style} = this.props;
+		const {waveform} = this.state;
+		return (<WaveformProgress style={style} waveform={waveform}/>);
 	}
 
-	private async load(id?: string): Promise<void> {
+	private load(): void {
 		this.setState({waveform: undefined});
+		const {id} = this.props;
 		if (!id) {
 			return;
 		}
-		const waveform = await dataService.waveform(id);
-		this.setState({waveform});
+		dataService.waveform(id)
+			.then(waveform => {
+				this.setState({waveform});
+			})
+			.catch(e => console.error(e));
 	}
 }
 
@@ -91,11 +94,12 @@ class PlayerProgress extends ProgressComponent<{ theme: ITheme }> {
 	};
 
 	render(): React.ReactElement {
+		const {theme} = this.props;
 		return (
 			<Slider
-				thumbTintColor={this.props.theme.sliderHandle}
-				maximumTrackTintColor={this.props.theme.inactiveTintColor}
-				minimumTrackTintColor={this.props.theme.activeTintColor}
+				thumbTintColor={theme.sliderHandle}
+				maximumTrackTintColor={theme.inactiveTintColor}
+				minimumTrackTintColor={theme.activeTintColor}
 				style={styles.slider}
 				value={this.getProgress()}
 				onSlidingComplete={this.seek}

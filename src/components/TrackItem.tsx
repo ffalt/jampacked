@@ -41,23 +41,23 @@ const styles = StyleSheet.create({
 export default class TrackItem extends PureComponent<{ track: TrackEntry }> {
 
 	private playTrack = (): void => {
-		JamPlayer.playTrack(this.props.track)
+		const {track} = this.props;
+		JamPlayer.playTrack(track)
 			.catch(e => console.error(e));
 	};
 
 	render(): React.ReactElement {
+		const {track} = this.props;
 		return (
 			<TouchableOpacity onPress={this.playTrack} style={styles.trackListContainer}>
 				<View style={styles.trackListNumber}>
-					<ThemedText style={styles.trackNumberStyle}>{this.props.track.trackNr}</ThemedText>
+					<ThemedText style={styles.trackNumberStyle}>{track.trackNr}</ThemedText>
 				</View>
-
 				<View style={styles.trackListTitle}>
-					<ThemedText style={styles.trackTitleStyle} numberOfLines={2}>{this.props.track.title}</ThemedText>
+					<ThemedText style={styles.trackTitleStyle} numberOfLines={2}>{track.title}</ThemedText>
 				</View>
-
 				<View style={styles.trackListRuntime}>
-					<ThemedText style={styles.trackRuntimeStyle}>{this.props.track.duration}</ThemedText>
+					<ThemedText style={styles.trackRuntimeStyle}>{track.duration}</ThemedText>
 				</View>
 			</TouchableOpacity>
 		);

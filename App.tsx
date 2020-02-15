@@ -37,12 +37,13 @@ export default class App extends React.Component {
 	}
 
 	render(): React.ReactElement {
+		const {theme} = this.state;
 		return (
 			<ThemeContext.Provider value={this.state}>
-				<ThemeProvider theme={this.state.theme}>
-					<StatusBar translucent={true} backgroundColor={this.state.theme.statusBar} barStyle={this.state.theme.barStyle}/>
+				<ThemeProvider theme={theme}>
+					<StatusBar translucent={true} backgroundColor={theme.statusBar} barStyle={theme.barStyle}/>
 					<NavigationContainer
-						theme={this.state.theme.navigation}
+						theme={theme.navigation}
 						ref={NavigationService.setTopLevelNavigator}
 					>
 						<AppNavigator/>

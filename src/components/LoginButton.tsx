@@ -21,23 +21,24 @@ export default class LoginButton extends React.PureComponent<{
 		).start();
 	}
 
-	private onPress = (): void => {
+	private onPressButton = (): void => {
 		this.scale();
-		this.props.onPress();
+		const {onPress} = this.props;
+		if (onPress) {
+			onPress();
+		}
 	};
 
 	render(): React.ReactElement {
-
-		const content = this.props.children ? this.props.children : <Text>{this.props.label}</Text>;
-
-		const buttonScale = this.scaleValue.interpolate({
+		const {children, label, style} = this.props;
+		const content = children || <Text>{label}</Text>;
+		const scale = this.scaleValue.interpolate({
 			inputRange: [0, 0.5, 1],
 			outputRange: [1, 1.1, 1]
 		});
-
 		return (
-			<TouchableWithoutFeedback onPress={this.onPress}>
-				<Animated.View style={[this.props.style, {transform: [{scale: buttonScale}]}]}>
+			<TouchableWithoutFeedback onPress={this.onPressButton}>
+				<Animated.View style={[style, {transform: [{scale}]}]}>
 					{content}
 				</Animated.View>
 			</TouchableWithoutFeedback>

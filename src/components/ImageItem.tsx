@@ -12,7 +12,8 @@ const styles = StyleSheet.create({
 class ImageItem extends PureComponent<{ item: BaseEntry; theme: ITheme; size: number; }> {
 
 	private click = (): void => {
-		const {id, title, objType} = this.props.item;
+		const {item} = this.props;
+		const {id, title, objType} = item;
 		NavigationService.navigateObj(objType, id, title);
 	};
 

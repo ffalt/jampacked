@@ -37,7 +37,8 @@ class ArtistScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute
 	}
 
 	componentDidUpdate(prevProps: { route: { params: { id?: string } } }): void {
-		if (prevProps.route.params?.id !== this.props.route.params?.id) {
+		const newProps = this.props;
+		if (prevProps.route?.params?.id !== newProps.route?.params?.id) {
 			this.setState({data: undefined, details: this.buildDetails()});
 			this.load();
 		}
@@ -52,7 +53,8 @@ class ArtistScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute
 	}
 
 	private load(forceRefresh: boolean = false): void {
-		const {id} = this.props.route.params;
+		const {route} = this.props;
+		const {id} = route?.params;
 		if (!id) {
 			return;
 		}
@@ -70,16 +72,19 @@ class ArtistScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute
 	}
 
 	private renderHeader = (): JSX.Element => {
+		const {details} = this.state;
+		const {route} = this.props;
+		const {id, name} = route?.params;
 		const headerTitleCmds = (
 			<>
-				<FavIcon style={objHeaderStyles.button} objType={JamObjectType.artist} id={this.props.route.params?.id}/>
+				<FavIcon style={objHeaderStyles.button} objType={JamObjectType.artist} id={id}/>
 			</>
 		);
 		return (
 			<ObjHeader
-				id={this.props.route?.params?.id}
-				title={this.props.route?.params?.name}
-				details={this.state.details}
+				id={id}
+				title={name}
+				details={details}
 				typeName="Artist"
 				headerTitleCmds={headerTitleCmds}
 			/>
@@ -99,7 +104,8 @@ class ArtistScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute
 	};
 
 	render(): React.ReactElement {
-		const sections = this.state.data?.albums || [];
+		const {data, refreshing} = this.state;
+		const sections = data?.albums || [];
 		const {theme} = this.props;
 		return (
 			<SectionList
@@ -112,7 +118,7 @@ class ArtistScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute
 				renderItem={this.renderItem}
 				refreshControl={(
 					<RefreshControl
-						refreshing={this.state.refreshing}
+						refreshing={refreshing}
 						onRefresh={this.reload}
 						progressViewOffset={80}
 						progressBackgroundColor={theme.refreshCtrlBackground}

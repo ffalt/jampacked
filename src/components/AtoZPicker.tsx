@@ -65,10 +65,10 @@ class AtoZPicker<T extends SectionItem> extends React.PureComponent<AtoZPickerPr
 		onStartShouldSetPanResponder: () => true,
 		onMoveShouldSetPanResponder: () => true,
 		onPanResponderGrant: (e, gestureState) => {
-			if (this.props.onTouchStart) {
-				this.props.onTouchStart();
+			const {onTouchStart} = this.props;
+			if (onTouchStart) {
+				onTouchStart();
 			}
-
 			this.tapTimeout = setTimeout(() => {
 				this.check(gestureState.y0);
 			}, 250);
@@ -102,9 +102,9 @@ class AtoZPicker<T extends SectionItem> extends React.PureComponent<AtoZPickerPr
 		this.build();
 	}
 
-	componentDidUpdate(oldProps: AtoZPickerProps<T>): void {
+	componentDidUpdate(prevProps: AtoZPickerProps<T>): void {
 		const newProps = this.props;
-		if (oldProps.data !== newProps.data) {
+		if (prevProps.data !== newProps.data) {
 			this.build();
 		}
 	}
@@ -133,21 +133,22 @@ class AtoZPicker<T extends SectionItem> extends React.PureComponent<AtoZPickerPr
 	}
 
 	private onTouchLetter(letter?: string): void {
-		if (letter && this.props.onTouchLetter) {
-			this.props.onTouchLetter(letter);
+		const {onTouchLetter} = this.props;
+		if (letter && onTouchLetter) {
+			onTouchLetter(letter);
 		}
 	}
 
 	private onPanResponderEnd(): void {
+		const {onTouchEnd} = this.props;
 		setTimeout(() => {
 			this.setState({currentLetter: null});
 		}, 150);
-
-		requestAnimationFrame(() => {
-			if (this.props.onTouchEnd) {
-				this.props.onTouchEnd();
-			}
-		});
+		if (onTouchEnd) {
+			requestAnimationFrame(() => {
+				onTouchEnd();
+			});
+		}
 	}
 
 	private findTouchedLetter(y: number): string | undefined {

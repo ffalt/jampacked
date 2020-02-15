@@ -29,7 +29,8 @@ class AlbumScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute.
 	}
 
 	componentDidUpdate(prevProps: { route: { params: { id?: string } } }): void {
-		if (prevProps.route.params?.id !== this.props.route.params?.id) {
+		const newProps = this.props;
+		if (prevProps.route.params?.id !== newProps.route.params?.id) {
 			this.setState({data: undefined, details: this.buildDetails()});
 			this.load();
 		}
@@ -44,7 +45,8 @@ class AlbumScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute.
 	}
 
 	private load(forceRefresh: boolean = false): void {
-		const {id} = this.props.route.params;
+		const {route} = this.props;
+		const {id} = route.params;
 		if (!id) {
 			return;
 		}
@@ -65,14 +67,17 @@ class AlbumScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute.
 	};
 
 	private toArtist = (): void => {
-		if (this.state.data && this.state.data.album.artistID) {
-			this.props.navigation.navigate(HomeRoute.ARTIST, {id: this.state.data.album.artistID, name: this.state.data.album.artist || ''});
+		const {data} = this.state;
+		if (data?.album?.artistID) {
+			const {navigation} = this.props;
+			navigation.navigate(HomeRoute.ARTIST, {id: data.album.artistID, name: data.album.artist || ''});
 		}
 	};
 
 	private playTracks = (): void => {
-		if (this.state.data?.tracks) {
-			JamPlayer.playTracks(this.state.data?.tracks)
+		const {data} = this.state;
+		if (data?.tracks) {
+			JamPlayer.playTracks(data.tracks)
 				.catch(e => {
 					snackError(e);
 				});
@@ -80,17 +85,18 @@ class AlbumScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute.
 	};
 
 	private renderHeader = (): JSX.Element => {
+		const {route} = this.props;
+		const {id, name} = route?.params;
+		const {details, data} = this.state;
 		const headerTitleCmds = (
 			<>
 				<TouchableOpacity style={objHeaderStyles.button} onPress={this.playTracks}>
 					<ThemedIcon name="play" style={objHeaderStyles.buttonIcon}/>
 				</TouchableOpacity>
-				<FavIcon style={objHeaderStyles.button} objType={JamObjectType.album} id={this.props.route.params?.id}/>
+				<FavIcon style={objHeaderStyles.button} objType={JamObjectType.album} id={id}/>
 			</>
 		);
-		const {details, data} = this.state;
 		const typeName = data?.album?.albumType;
-		const {id, name} = this.props.route?.params;
 		return (
 			<ObjHeader
 				id={id}
@@ -108,16 +114,17 @@ class AlbumScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute.
 
 	render(): React.ReactElement {
 		const {theme} = this.props;
+		const {data, refreshing} = this.state;
 		return (
 			<FlatList
-				data={this.state.data?.tracks}
+				data={data?.tracks}
 				renderItem={this.renderItem}
 				keyExtractor={this.keyExtractor}
 				ItemSeparatorComponent={Separator}
 				ListHeaderComponent={this.renderHeader}
 				refreshControl={(
 					<RefreshControl
-						refreshing={this.state.refreshing}
+						refreshing={refreshing}
 						onRefresh={this.reload}
 						progressViewOffset={80}
 						progressBackgroundColor={theme.refreshCtrlBackground}

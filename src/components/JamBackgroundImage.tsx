@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
 
 class FastImageBackground extends React.PureComponent<{ id: string, style?: any, imageStyle?: any, theme: ITheme }> {
 	render(): React.ReactElement {
-		const {id, children, style, imageStyle, ...props} = this.props;
+		const {id, children, style, imageStyle, theme, ...props} = this.props;
 		const imgStyle = [
 			StyleSheet.absoluteFill,
 			{
@@ -37,7 +37,7 @@ class FastImageBackground extends React.PureComponent<{ id: string, style?: any,
 			<View style={style}>
 				<FastImage {...props} style={imgStyle} source={source}>
 					<LinearGradient
-						colors={this.props.theme.overlayGradient}
+						colors={theme.overlayGradient}
 						start={{x: 0, y: 0}}
 						end={{x: 0, y: 1}}
 						style={styles.linearGradient}

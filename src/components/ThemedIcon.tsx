@@ -24,9 +24,13 @@ interface TabBarIconProps {
 type TabBarIconFunc = (props: TabBarIconProps) => JSX.Element;
 
 export function getTabBarIcon(name: string): TabBarIconFunc {
-	return (props: TabBarIconProps): JSX.Element => (
-		<FontelloIcon name={name} size={props.focused ? 26 : 22} color={props.color}/>
-	);
+	return (props: TabBarIconProps): JSX.Element => {
+		const {focused, color} = props;
+		const size = focused ? 26 : 22;
+		return (
+			<FontelloIcon name={name} size={size} color={color}/>
+		);
+	};
 }
 
 export default ThemedIcon;

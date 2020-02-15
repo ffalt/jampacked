@@ -21,8 +21,9 @@ export class ThemesView extends React.PureComponent {
 	};
 
 	render(): React.ReactElement {
+		const {theme} = this.state;
 		return (
-			<RadioButtons options={themesList} value={this.state.theme} onChange={this.changeTheme}/>
+			<RadioButtons options={themesList} value={theme} onChange={this.changeTheme}/>
 		);
 	}
 }

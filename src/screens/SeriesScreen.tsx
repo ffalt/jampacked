@@ -35,12 +35,13 @@ class SeriesScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute
 	};
 
 	render(): React.ReactElement {
+		const {index, refreshing} = this.state;
 		return (
 			<IndexList
 				title="Series"
 				titleIcon="series"
-				index={this.state.index}
-				refreshing={this.state.refreshing}
+				index={index}
+				refreshing={refreshing}
 				onRefresh={this.reload}
 			/>
 		);

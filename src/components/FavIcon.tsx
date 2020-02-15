@@ -22,18 +22,19 @@ class FavIcon extends React.PureComponent<{ id?: string; objType: string; theme:
 	};
 
 	componentDidMount(): void {
-		const {id} = this.props;
-		this.load(id);
+		this.load();
 	}
 
 	componentDidUpdate(prevProps: { id?: string }): void {
-		if (prevProps.id !== this.props.id) {
-			this.load(this.props.id);
+		const newProps = this.props;
+		if (prevProps.id !== newProps.id) {
+			this.load();
 		}
 	}
 
-	private load(id?: string): void {
+	private load(): void {
 		this.setState({jamState: undefined});
+		const {id} = this.props;
 		if (!id) {
 			return;
 		}

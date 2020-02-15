@@ -5,8 +5,10 @@ import {formatDuration} from '../utils/duration.utils';
 
 export default class DurationText extends React.PureComponent<{ duration?: number, style?: StyleProp<TextStyle> }> {
 	render(): React.ReactElement {
+		const {style, duration} = this.props;
+		const text = formatDuration(duration);
 		return (
-			<ThemedText style={this.props.style}>{formatDuration(this.props.duration)}</ThemedText>
+			<ThemedText style={style}>{text}</ThemedText>
 		);
 	}
 }

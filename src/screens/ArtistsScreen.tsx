@@ -35,12 +35,13 @@ export default class ArtistsScreen extends React.PureComponent<HomeStackWithThem
 	};
 
 	render(): React.ReactElement {
+		const {index, refreshing} = this.state;
 		return (
 			<IndexList
-				index={this.state.index}
+				index={index}
 				title="Artists"
 				titleIcon="artist"
-				refreshing={this.state.refreshing}
+				refreshing={refreshing}
 				onRefresh={this.reload}
 			/>
 		);

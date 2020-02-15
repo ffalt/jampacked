@@ -50,7 +50,8 @@ function QueueItem(props: {
 	item: TrackPlayer.Track;
 }): JSX.Element {
 	const playItem = (): void => {
-		JamPlayer.skipToTrack(props.item.id)
+		const {item} = props;
+		JamPlayer.skipToTrack(item.id)
 			.catch(e => console.error(e));
 	};
 	const {index, active, item} = props;
