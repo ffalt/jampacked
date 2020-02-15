@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
 	},
 	ListHeaderValue: {
 		minWidth: 90,
-		fontSize: staticTheme.fontSize,
+		fontSize: staticTheme.fontSize
 	}
 });
 

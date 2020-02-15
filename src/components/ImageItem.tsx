@@ -1,12 +1,12 @@
 import React, {PureComponent} from 'react';
-import {Dimensions, StyleSheet, TouchableOpacity} from 'react-native';
+import {StyleSheet, TouchableOpacity} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {ITheme, withTheme} from '../style/theming';
 import dataService, {BaseEntry} from '../services/data';
 import NavigationService from '../services/navigation';
 
 const styles = StyleSheet.create({
-	item: {}
+	image: {flex: 1}
 });
 
 class ImageItem extends PureComponent<{ item: BaseEntry; theme: ITheme; size: number; }> {
@@ -27,14 +27,14 @@ class ImageItem extends PureComponent<{ item: BaseEntry; theme: ITheme; size: nu
 		return (
 			<TouchableOpacity
 				onPress={this.click}
-				style={[styles.item, {
+				style={{
 					height: size,
 					width: size,
 					backgroundColor: theme.background
-				}]}
+				}}
 			>
 				<FastImage
-					style={{flex: 1}}
+					style={styles.image}
 					source={source}
 					resizeMode={FastImage.resizeMode.contain}
 				/>

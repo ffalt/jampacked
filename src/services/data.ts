@@ -654,7 +654,7 @@ class DataService {
 	// user settings
 
 	public async getSetting(key: string): Promise<string | null> {
-		return await AsyncStorage.getItem(`jam:${this.currentUserID}:${key}`);
+		return AsyncStorage.getItem(`jam:${this.currentUserID}:${key}`);
 	}
 
 	public async setSetting(key: string, value?: string): Promise<void> {

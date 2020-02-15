@@ -1,6 +1,6 @@
 import React from 'react';
-import {FlatList, RefreshControl, StyleSheet, TouchableOpacity} from 'react-native';
-import {staticTheme, withTheme} from '../style/theming';
+import {FlatList, RefreshControl, TouchableOpacity} from 'react-native';
+import {withTheme} from '../style/theming';
 import TrackItem from '../components/TrackItem';
 import {HomeRoute, HomeStackWithThemeProps} from '../navigators/Routing';
 import {JamPlayer} from '../services/player';

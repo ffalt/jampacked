@@ -58,7 +58,7 @@ class PageHeader extends PureComponent<{
 	};
 
 	render(): React.ReactElement {
-		const {tiles, theme, title, titleIcon} = this.props;
+		const {tiles, title, titleIcon} = this.props;
 		const iconName = tiles ? 'view-details' : 'view-tiles';
 		return (
 			<BackgroundIcon name={titleIcon} style={styles.ListHeaderBackground}>

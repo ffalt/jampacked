@@ -1,5 +1,5 @@
 import React from 'react';
-import {RefreshControl, SectionList, SectionListData, StyleSheet, TouchableOpacity} from 'react-native';
+import {RefreshControl, SectionList, SectionListData, StyleSheet} from 'react-native';
 import ThemedText from '../components/ThemedText';
 import {staticTheme, withTheme} from '../style/theming';
 import {HomeRoute, HomeStackWithThemeProps} from '../navigators/Routing';
@@ -9,7 +9,6 @@ import {genreDisplay} from '../utils/genre.utils';
 import Separator from '../components/Separator';
 import dataService, {ArtistData, BaseEntry} from '../services/data';
 import {snackError} from '../services/snack';
-import ThemedIcon from '../components/ThemedIcon';
 import FavIcon from '../components/FavIcon';
 import {JamObjectType} from '../services/jam';
 

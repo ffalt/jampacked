@@ -2,7 +2,7 @@ import {FlatList, StyleSheet, TouchableOpacity, View} from 'react-native';
 import React from 'react';
 import {TrackPlayer} from '../services/player-api';
 import {JamPlayer, useCurrentTrackID, useQueue} from '../services/player';
-import {staticTheme, useTheme} from '../style/theming';
+import {staticTheme} from '../style/theming';
 import DurationText from './DurationText';
 import ThemedText from './ThemedText';
 import {commonItemLayout} from './AtoZList';
@@ -50,7 +50,8 @@ function QueueItem(props: {
 	item: TrackPlayer.Track;
 }): JSX.Element {
 	const playItem = (): void => {
-		JamPlayer.skipToTrack(props.item.id);
+		JamPlayer.skipToTrack(props.item.id)
+			.catch(e => console.error(e));
 	};
 	const {index, active, item} = props;
 
@@ -67,7 +68,11 @@ function QueueItem(props: {
 			</View>
 			<View style={styles.trackListTitle}>
 				<ThemedText style={styles.trackTitleStyle}>{item.title}</ThemedText>
-				<ThemedText style={styles.trackSubStyle}>{item.artist} - {item.album}</ThemedText>
+				<ThemedText style={styles.trackSubStyle}>
+					{item.artist}
+					-
+					{item.album}
+				</ThemedText>
 			</View>
 			<View style={styles.trackListRuntime}>
 				<DurationText style={styles.trackRuntimeStyle} duration={item.duration}/>
