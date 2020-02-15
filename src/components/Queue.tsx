@@ -7,13 +7,14 @@ import DurationText from './DurationText';
 import ThemedText from './ThemedText';
 import {commonItemLayout} from './AtoZList';
 import Separator from './Separator';
+import ThemedIcon from './ThemedIcon';
 
 const styles = StyleSheet.create({
 	trackListContainer: {
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: 'center',
-		height: 42
+		height: 56
 	},
 	trackListNumber: {
 		paddingRight: staticTheme.paddingLarge,
@@ -48,20 +49,28 @@ function QueueItem(props: {
 	index: number;
 	item: TrackPlayer.Track;
 }): JSX.Element {
-	const theme = useTheme();
 	const playItem = (): void => {
 		JamPlayer.skipToTrack(props.item.id);
 	};
+	const {index, active, item} = props;
+
+	const renderTrackNr = (): JSX.Element => {
+		if (active) {
+			return (<ThemedIcon name="play"/>);
+		}
+		return (<ThemedText style={styles.trackNumberStyle}>{index + 1}</ThemedText>);
+	};
 	return (
-		<TouchableOpacity onPress={playItem} style={[styles.trackListContainer, props.active && {backgroundColor: theme.activeBackgroundColor}]}>
+		<TouchableOpacity onPress={playItem} style={styles.trackListContainer}>
 			<View style={styles.trackListNumber}>
-				<ThemedText style={styles.trackNumberStyle}>{props.index + 1}</ThemedText>
+				{renderTrackNr()}
 			</View>
 			<View style={styles.trackListTitle}>
-				<ThemedText style={styles.trackTitleStyle}>{props.item.title}</ThemedText>
+				<ThemedText style={styles.trackTitleStyle}>{item.title}</ThemedText>
+				<ThemedText style={styles.trackSubStyle}>{item.artist} - {item.album}</ThemedText>
 			</View>
 			<View style={styles.trackListRuntime}>
-				<DurationText style={styles.trackRuntimeStyle} duration={props.item.duration}/>
+				<DurationText style={styles.trackRuntimeStyle} duration={item.duration}/>
 			</View>
 		</TouchableOpacity>
 	);
@@ -77,7 +86,7 @@ export default function Queue(): JSX.Element {
 
 	const keyExtractor = (item: TrackPlayer.Track): string => item.id;
 
-	const getItemLayout = commonItemLayout(43);
+	const getItemLayout = commonItemLayout(56);
 
 	return (
 		<FlatList

@@ -28,8 +28,8 @@ const styles = StyleSheet.create({
 	},
 	tabItem: {
 		alignItems: 'center',
-		paddingTop: 5,
-		paddingBottom: 5,
+		paddingTop: staticTheme.padding,
+		paddingBottom: staticTheme.padding,
 		paddingLeft: 16,
 		paddingRight: 16
 	},

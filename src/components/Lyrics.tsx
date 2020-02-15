@@ -1,4 +1,4 @@
-import {ScrollView, StyleSheet} from 'react-native';
+import {ActivityIndicator, ScrollView, StyleSheet} from 'react-native';
 import React, {PureComponent} from 'react';
 import {ITheme, staticTheme, withTheme} from '../style/theming';
 import dataService from '../services/data';
@@ -15,7 +15,11 @@ const styles = StyleSheet.create({
 	},
 	lyrics: {
 		fontSize: staticTheme.fontSize,
-		padding: staticTheme.paddingLarge * 2
+		borderLeftWidth: 2,
+		borderRightWidth: 2,
+		marginHorizontal: staticTheme.marginLarge,
+		marginVertical: staticTheme.margin,
+		paddingHorizontal: staticTheme.padding
 	}
 });
 
@@ -24,35 +28,51 @@ class Lyrics extends PureComponent<LyricsProps> {
 		lyrics: ''
 	};
 
+	componentDidMount(): void {
+		this.load();
+	}
+
 	componentDidUpdate(oldProps: LyricsProps): void {
 		const newProps = this.props;
 		if (oldProps.id !== newProps.id) {
 			if (!newProps.id) {
-				this.setState({lyrics: ''});
+				this.setState({lyrics: '[No track]'});
 				return;
 			}
-
-			this.load(newProps.id)
-				.catch(e => {
-					console.error(e);
-				});
+			this.load();
 		}
 	}
 
-	async load(id: string): Promise<void> {
-		const lyrics = await dataService.lyrics(id);
-		if (lyrics && lyrics.lyrics) {
-			this.setState({lyrics: lyrics.lyrics});
-		} else {
-			this.setState({lyrics: '[No lyrics found]'});
+	load(): void {
+		const {id} = this.props;
+		if (id) {
+			dataService.lyrics(id).then(lyrics => {
+				if (lyrics && lyrics.lyrics) {
+					this.setState({lyrics: lyrics.lyrics});
+				} else {
+					this.setState({lyrics: '[No lyrics found]'});
+				}
+			}).catch(e => {
+				console.error(e);
+			});
 		}
+	}
+
+	private renderLyrics(): JSX.Element {
+		const {lyrics} = this.state;
+		const {theme} = this.props;
+		if (!lyrics) {
+			return (<ActivityIndicator size="large"/>);
+		}
+		return (
+			<ThemedText style={[styles.lyrics, {borderColor: theme.separator}]}>{this.state.lyrics}</ThemedText>
+		);
 	}
 
 	render(): React.ReactElement {
-		const {theme} = this.props;
 		return (
-			<ScrollView style={[styles.container, {backgroundColor: theme.itemBackground}]}>
-				<ThemedText style={styles.lyrics}>{this.state.lyrics}</ThemedText>
+			<ScrollView style={styles.container}>
+				{this.renderLyrics()}
 			</ScrollView>
 		);
 	}
