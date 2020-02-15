@@ -1,5 +1,5 @@
 import React from 'react';
-import {RefreshControl, StyleSheet} from 'react-native';
+import {Dimensions, RefreshControl, StyleSheet} from 'react-native';
 import {ITheme, withTheme} from '../style/theming';
 import PageHeader from './PageHeader';
 import Separator from './Separator';
@@ -28,6 +28,9 @@ class IndexList extends React.PureComponent<{
 	} = {
 		tiles: false
 	};
+	numColumns = 3;
+	width = Dimensions.get('window').width;
+	tileSize = this.width / (this.numColumns || 1);
 
 	private toggleView = (): void => {
 		const {tiles} = this.state;
@@ -41,7 +44,7 @@ class IndexList extends React.PureComponent<{
 	};
 
 	private renderItemRow = ({item}: { item: IndexEntry }): JSX.Element => <Item item={item}/>;
-	private renderItemTile = ({item}: { item: IndexEntry }): JSX.Element => (<ImageItem item={item} numColumns={3}/>);
+	private renderItemTile = ({item}: { item: IndexEntry }): JSX.Element => (<ImageItem item={item} size={this.tileSize}/>);
 	private keyExtractor = (item: IndexEntry): string => item.id;
 
 	render(): React.ReactElement {
@@ -54,9 +57,10 @@ class IndexList extends React.PureComponent<{
 					key="tiles"
 					renderItem={this.renderItemTile}
 					keyExtractor={this.keyExtractor}
-					numColumns={3}
+					numColumns={this.numColumns}
 					ListHeaderComponent={this.renderHeader}
 					columnWrapperStyle={style.row}
+					itemHeight={this.tileSize}
 					refreshControl={(
 						<RefreshControl
 							refreshing={this.props.refreshing}

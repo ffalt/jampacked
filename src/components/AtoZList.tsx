@@ -42,7 +42,8 @@ export default class AtoZList<T extends SectionItem> extends PureComponent<AtoZL
 			const {data, numColumns} = this.props;
 			const index = (data || []).findIndex(d => d.letter === letter);
 			if (index >= 0) {
-				this.containerRef.current.scrollToIndex({index: Math.floor(index / (numColumns || 1))});
+				const scrollIndex = Math.floor(index / (numColumns || 1));
+				this.containerRef.current.scrollToIndex({index: scrollIndex});
 			}
 		}
 	};

@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
 	item: {}
 });
 
-class ImageItem extends PureComponent<{ item: BaseEntry; theme: ITheme; numColumns: number; }> {
+class ImageItem extends PureComponent<{ item: BaseEntry; theme: ITheme; size: number; }> {
 
 	private click = (): void => {
 		const {id, title, objType} = this.props.item;
@@ -17,21 +17,17 @@ class ImageItem extends PureComponent<{ item: BaseEntry; theme: ITheme; numColum
 	};
 
 	render(): React.ReactElement {
-		const {item, theme, numColumns} = this.props;
+		const {item, theme, size} = this.props;
 		const headers = dataService.currentUserToken ? {Authorization: `Bearer ${dataService.currentUserToken}`} : undefined;
 		const source = {
 			uri: dataService.jam.image.url(item.id, 300, undefined, !headers),
 			headers,
 			priority: FastImage.priority.normal
 		};
-		const {width} = Dimensions.get('window');
-		const size = width / (numColumns || 1);
-		const flex = 1 / (numColumns || 1);
 		return (
 			<TouchableOpacity
 				onPress={this.click}
 				style={[styles.item, {
-					flex,
 					height: size,
 					width: size,
 					backgroundColor: theme.background
