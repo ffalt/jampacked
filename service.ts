@@ -1,6 +1,7 @@
 import {JamPlayer} from './src/services/player';
 import {TrackPlayer} from './src/services/player-api';
 import {snackError} from './src/services/snack';
+import {ScrobbleWatch} from './src/services/scrobble';
 
 let hasApp: boolean = false;
 
@@ -21,6 +22,15 @@ export function setAppAvailable(available: boolean): void {
 // | "remote-bookmark";
 
 export default async function service(): Promise<void> {
+	TrackPlayer.addEventListener('playback-state', ({state}: { state: number }) => {
+		if (state === TrackPlayer.STATE_PLAYING) {
+			ScrobbleWatch.start();
+		} else if (state === TrackPlayer.STATE_PAUSED) {
+			ScrobbleWatch.pause();
+		} else if (state === TrackPlayer.STATE_STOPPED) {
+			ScrobbleWatch.stop();
+		}
+	});
 	TrackPlayer.addEventListener('remote-play', () => JamPlayer.play());
 	TrackPlayer.addEventListener('remote-pause', () => JamPlayer.pause());
 	TrackPlayer.addEventListener('remote-next', () => JamPlayer.skipToNext());
