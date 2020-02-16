@@ -33,7 +33,11 @@ export class JamPlayer {
 	static async clearQueue(): Promise<void> {
 		const fetched = await TrackPlayer.getQueue();
 		const current = await TrackPlayer.getCurrentTrack();
-		await TrackPlayer.remove(fetched.map(track => track.id).filter(id => id !== current));
+		const ids = fetched.map(track => track.id).filter(id => id !== current);
+		await TrackPlayer.remove(ids);
+		if (ids.length === 0) {
+			await JamPlayer.stop();
+		}
 	}
 
 	static async addTrackToQueue(track: TrackEntry): Promise<void> {
