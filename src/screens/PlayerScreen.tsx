@@ -6,6 +6,7 @@ import PlayerControl from '../components/PlayerControl';
 import PlayerTabs from '../components/PlayerTabs';
 import {staticTheme} from '../style/theming';
 import PlayerTrack from '../components/PlayerTrack';
+import {ModalRouting, ModalStackWithThemeProps} from '../navigators/Routing';
 
 const styles = StyleSheet.create({
 	player: {
@@ -15,15 +16,19 @@ const styles = StyleSheet.create({
 	}
 });
 
-const PlayerScreen: React.FC = () => (
-	<View style={styles.player}>
-		<PlayerTabs/>
-		<PlayerTrack/>
-		<PlayerWaveFormProgress/>
-		<PlayerProgress/>
-		<PlayerTime/>
-		<PlayerControl/>
-	</View>
-);
+const PlayerScreen: React.FC<ModalStackWithThemeProps<ModalRouting.PLAYER>> = (props: ModalStackWithThemeProps<ModalRouting.PLAYER>) => {
+	const {route} = props;
+	const toQueue = route?.params?.toQueue;
+	return (
+		<View style={styles.player}>
+			<PlayerTabs toQueue={toQueue}/>
+			<PlayerTrack/>
+			<PlayerWaveFormProgress/>
+			<PlayerProgress/>
+			<PlayerTime/>
+			<PlayerControl/>
+		</View>
+	);
+};
 
 export default PlayerScreen;

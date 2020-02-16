@@ -13,16 +13,19 @@ import {JamObjectType} from '../services/jam';
 import FavIcon from '../components/FavIcon';
 import {snackError} from '../services/snack';
 import {commonItemLayout} from '../components/AtoZList';
+import PopupMenu, {PopupMenuAction, PopupMenuRef} from '../components/PopupMenu';
 
 class AlbumScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute.ALBUM>> {
 	state: {
 		data?: AlbumData;
 		refreshing: boolean;
 		details: Array<HeaderDetail>;
+		popupMenuActions: Array<PopupMenuAction>;
 	} = {
 		refreshing: false,
 		data: undefined,
-		details: this.buildDetails()
+		details: this.buildDetails(),
+		popupMenuActions: []
 	};
 
 	componentDidMount(): void {
@@ -111,31 +114,62 @@ class AlbumScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute.
 
 	private keyExtractor = (item: TrackEntry): string => item.id;
 
-	private renderItem = ({item}: { item: TrackEntry }): JSX.Element => (<TrackItem track={item}/>);
+	private menuRef: PopupMenuRef = React.createRef();
+	private showMenu = (ref: React.RefObject<any>, item: TrackEntry): void => {
+		const popupMenuActions = [
+			{
+				title: 'Add Track to Queue',
+				click: (): void => {
+					JamPlayer.addTrackToQueue(item)
+						.catch(e => console.error(e));
+				}
+			},
+			{
+				title: 'Add Tracks from here to Queue',
+				click: (): void => {
+					const {data} = this.state;
+					const tracks = data?.tracks || [];
+					const index = tracks.indexOf(item);
+					if (index >= 0) {
+						JamPlayer.addTracksToQueue(tracks.slice(index))
+							.catch(e => console.error(e));
+					}
+				}
+			}
+		];
+		this.setState({popupMenuActions});
+		if (this.menuRef.current) {
+			this.menuRef.current.showMenu(ref);
+		}
+	};
+	private renderItem = ({item}: { item: TrackEntry }): JSX.Element => (<TrackItem track={item} showMenu={this.showMenu}/>);
 
 	private getItemLayout = commonItemLayout(trackEntryHeight);
 
 	render(): React.ReactElement {
 		const {theme} = this.props;
-		const {data, refreshing} = this.state;
+		const {data, refreshing, popupMenuActions} = this.state;
 		return (
-			<FlatList
-				data={data?.tracks}
-				renderItem={this.renderItem}
-				keyExtractor={this.keyExtractor}
-				ItemSeparatorComponent={Separator}
-				ListHeaderComponent={this.renderHeader}
-				getItemLayout={this.getItemLayout}
-				refreshControl={(
-					<RefreshControl
-						refreshing={refreshing}
-						onRefresh={this.reload}
-						progressViewOffset={80}
-						progressBackgroundColor={theme.refreshCtrlBackground}
-						colors={theme.refreshCtrlColors}
-					/>
-				)}
-			/>
+			<>
+				<PopupMenu ref={this.menuRef} actions={popupMenuActions}/>
+				<FlatList
+					data={data?.tracks}
+					renderItem={this.renderItem}
+					keyExtractor={this.keyExtractor}
+					ItemSeparatorComponent={Separator}
+					ListHeaderComponent={this.renderHeader}
+					getItemLayout={this.getItemLayout}
+					refreshControl={(
+						<RefreshControl
+							refreshing={refreshing}
+							onRefresh={this.reload}
+							progressViewOffset={80}
+							progressBackgroundColor={theme.refreshCtrlBackground}
+							colors={theme.refreshCtrlColors}
+						/>
+					)}
+				/>
+			</>
 		);
 	}
 }

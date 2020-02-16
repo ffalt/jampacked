@@ -11,12 +11,12 @@ interface LyricsProps {
 
 const styles = StyleSheet.create({
 	container: {
-		flex: 1
+		flex: 1,
+		borderBottomWidth: 2
 	},
 	lyrics: {
 		fontSize: staticTheme.fontSize,
-		borderLeftWidth: 2,
-		borderRightWidth: 2,
+		lineHeight: staticTheme.fontSize * 1.5,
 		marginHorizontal: staticTheme.marginLarge,
 		marginVertical: staticTheme.margin,
 		paddingHorizontal: staticTheme.padding
@@ -58,18 +58,18 @@ class Lyrics extends PureComponent<LyricsProps> {
 
 	private renderLyrics(): JSX.Element {
 		const {lyrics} = this.state;
-		const {theme} = this.props;
 		if (!lyrics) {
 			return (<ActivityIndicator size="large"/>);
 		}
 		return (
-			<ThemedText style={[styles.lyrics, {borderColor: theme.separator}]}>{lyrics}</ThemedText>
+			<ThemedText style={styles.lyrics}>{lyrics}</ThemedText>
 		);
 	}
 
 	render(): React.ReactElement {
+		const {theme} = this.props;
 		return (
-			<ScrollView style={styles.container}>
+			<ScrollView style={[styles.container, {borderColor: theme.separator}]}>
 				{this.renderLyrics()}
 			</ScrollView>
 		);

@@ -1,11 +1,9 @@
-import React, {PureComponent, RefObject} from 'react';
+import React, {PureComponent} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {staticTheme} from '../style/theming';
 import {JamPlayer} from '../services/player';
 import ThemedText from './ThemedText';
 import {TrackEntry} from '../services/data';
-// import RNPopoverMenu from 'react-native-popover-menu';
-import ThemedIcon from './ThemedIcon';
 
 export const trackEntryHeight = 46;
 
@@ -42,8 +40,8 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default class TrackItem extends PureComponent<{ track: TrackEntry }> {
-	containerRef: RefObject<TouchableOpacity> = React.createRef();
+export default class TrackItem extends PureComponent<{ track: TrackEntry, showMenu?: (ref: React.RefObject<any>, item: TrackEntry) => void; }> {
+	ref = React.createRef<TouchableOpacity>();
 
 	private playTrack = (): void => {
 		const {track} = this.props;
@@ -52,49 +50,17 @@ export default class TrackItem extends PureComponent<{ track: TrackEntry }> {
 	};
 
 	private popupMenu = (): void => {
-
-		if (!this.containerRef.current) {
-			return;
+		const {showMenu, track} = this.props;
+		if (showMenu) {
+			showMenu(this.ref, track);
 		}
-		const copy = <ThemedIcon name="artist"/>;
-		const paste = <ThemedIcon name="artist"/>;
-		const share = <ThemedIcon name="artist"/>;
-		const menus = [
-			{
-				label: 'Editing',
-				menus: [
-					{label: 'Copy'},
-					{label: 'Paste'}
-				]
-			},
-			{
-				label: 'Other',
-				menus: [
-					{label: 'Share'}
-				]
-			},
-			{
-				label: '',
-				menus: [
-					{label: 'Share me please'}
-				]
-			}
-		];
-		// RNPopoverMenu.Show(this.containerRef.current, {
-		// 	title: '',
-		// 	menus,
-		// 	onDone: () => {
-		// 	},
-		// 	onCancel: () => {
-		// 	}
-		// });
 	};
 
 	render(): React.ReactElement {
 		const {track} = this.props;
 		return (
 			<TouchableOpacity
-				ref={this.containerRef}
+				ref={this.ref}
 				onPress={this.playTrack}
 				onLongPress={this.popupMenu}
 				style={styles.trackListContainer}

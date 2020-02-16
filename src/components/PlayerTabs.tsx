@@ -61,8 +61,12 @@ const renderScene = SceneMap({
 
 const renderLazyPlaceholder: React.FC<LazyPlaceholderProps> = ({route}: LazyPlaceholderProps) => <LazyPlaceholder route={route}/>;
 
-const PlayerTabs: React.FC = () => {
-	const [index, setIndex] = React.useState(0);
+interface PlayerTabsProps {
+	toQueue?: boolean;
+}
+
+const PlayerTabs: React.FC<PlayerTabsProps> = ({toQueue}: PlayerTabsProps) => {
+	const [index, setIndex] = React.useState(toQueue ? 2 : 0);
 	const [routes] = React.useState([
 		{key: 'cover', title: 'Cover'},
 		{key: 'lyrics', title: 'Lyrics'},

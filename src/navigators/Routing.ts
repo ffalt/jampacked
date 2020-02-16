@@ -44,7 +44,13 @@ export enum ModalRouting {
 
 export type ModalStackNavigatorParamList = {
 	Main: undefined;
-	Player: undefined;
+	Player: { toQueue: boolean };
+};
+
+export type ModalStackWithThemeProps<T extends keyof ModalStackNavigatorParamList> = {
+	navigation: StackNavigationProp<ModalStackNavigatorParamList, T>;
+	route: RouteProp<ModalStackNavigatorParamList, T>;
+	theme: ITheme;
 };
 
 // Bottom Tab Routes

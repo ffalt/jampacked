@@ -80,6 +80,9 @@ const PlayerStrip: React.FC = () => {
 	const showPlayer = (): void => {
 		navigation.navigate(ModalRouting.PLAYER);
 	};
+	const showQueue = (): void => {
+		navigation.navigate(ModalRouting.PLAYER, {toQueue: true});
+	};
 	return (
 		<View style={[styles.playerStrip, {borderTopColor: theme.separator, backgroundColor: theme.control}]}>
 			<View style={styles.playerStripContent}>
@@ -101,6 +104,9 @@ const PlayerStrip: React.FC = () => {
 						<ThemedIcon name="forward" style={forwardDisabled && styles.disabled}/>
 					</TouchableOpacity>
 				</View>
+				<TouchableOpacity onPress={showQueue} style={styles.button}>
+					<ThemedIcon name="queue"/>
+				</TouchableOpacity>
 			</View>
 			<MiniProgressBar theme={theme}/>
 		</View>

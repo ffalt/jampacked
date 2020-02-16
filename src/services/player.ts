@@ -3,7 +3,50 @@ import {AudioFormatType} from './jam';
 import {TrackPlayer, TrackPlayerEvents, useTrackPlayerEvents} from './player-api';
 import dataService, {TrackEntry} from './data';
 
+
+function buildTrackPlayerTrack(t: TrackEntry): TrackPlayer.Track {
+	const headers = dataService.currentUserToken ? {Authorization: `Bearer ${dataService.currentUserToken}`} : undefined;
+	const imageID = t.seriesID ? t.id : (t.albumID || t.id);
+	const track: TrackPlayer.Track = {
+		id: t.id,
+		url: dataService.jam.media.stream_url(t.id, AudioFormatType.mp3, !headers),
+		title: t.title,
+		artist: t.artist,
+		album: t.album,
+		genre: t.genre,
+		duration: t.durationMS,
+		artwork: dataService.jam.image.url(imageID, 300, undefined, !headers),
+		headers
+		// type: TrackType.default;
+		// date: t.tag?.year,
+		// description?: string;
+		// rating?: number | boolean;
+		// userAgent?: string;
+		// contentType?: string;
+		// pitchAlgorithm?: PitchAlgorithm
+	};
+	return track;
+}
+
 export class JamPlayer {
+
+	static async clearQueue(): Promise<void> {
+		const fetched = await TrackPlayer.getQueue();
+		const current = await TrackPlayer.getCurrentTrack();
+		await TrackPlayer.remove(fetched.map(track => track.id).filter(id => id !== current));
+	}
+
+	static async addTrackToQueue(track: TrackEntry): Promise<void> {
+		await TrackPlayer.add(buildTrackPlayerTrack(track));
+	}
+
+	static async removeTrackFromQueue(trackID: string): Promise<void> {
+		await TrackPlayer.remove(trackID);
+	}
+
+	static async addTracksToQueue(tracks: Array<TrackEntry>): Promise<void> {
+		await TrackPlayer.add(tracks.map(t => buildTrackPlayerTrack(t)));
+	}
 
 	static async playTrack(track: TrackEntry): Promise<void> {
 		const queueItem = (await TrackPlayer.getQueue()).find(t => t.id === track.id);
@@ -16,29 +59,7 @@ export class JamPlayer {
 
 	static async playTracks(tracks: Array<TrackEntry>): Promise<void> {
 		await TrackPlayer.reset();
-		const headers = dataService.currentUserToken ? {Authorization: `Bearer ${dataService.currentUserToken}`} : undefined;
-		await TrackPlayer.add(tracks.map(t => {
-			const imageID = t.seriesID ? t.id : (t.albumID || t.id);
-			const track: TrackPlayer.Track = {
-				id: t.id,
-				url: dataService.jam.media.stream_url(t.id, AudioFormatType.mp3, !headers),
-				title: t.title,
-				artist: t.artist,
-				album: t.album,
-				genre: t.genre,
-				duration: t.durationMS,
-				artwork: dataService.jam.image.url(imageID, 300, undefined, !headers),
-				headers
-				// type: TrackType.default;
-				// date: t.tag?.year,
-				// description?: string;
-				// rating?: number | boolean;
-				// userAgent?: string;
-				// contentType?: string;
-				// pitchAlgorithm?: PitchAlgorithm
-			};
-			return track;
-		}));
+		await TrackPlayer.add(tracks.map(t => buildTrackPlayerTrack(t)));
 		await TrackPlayer.play();
 	}
 
@@ -133,27 +154,27 @@ export class JamPlayer {
 	}
 }
 
-export function useQueue(initialQueue?: Array<TrackPlayer.Track>): Array<TrackPlayer.Track> {
+export function useQueue(): Array<TrackPlayer.Track> {
 	const [queue, setQueueState] = useState<Array<TrackPlayer.Track>>([]);
 
-	useEffect(() => {
-		let didCancel = false;
-		const applyInitialQueue = async (): Promise<void> => {
-			await TrackPlayer.reset();
-			if (didCancel) {
-				return;
-			}
-			if (initialQueue) {
-				await TrackPlayer.add(initialQueue);
-			}
-		};
-		if (initialQueue) {
-			applyInitialQueue();
-		}
-		return (): void => {
-			didCancel = true;
-		};
-	}, [initialQueue]);
+	// useEffect(() => {
+	// 	let didCancel = false;
+	// 	const applyInitialQueue = async (): Promise<void> => {
+	// 		await TrackPlayer.reset();
+	// 		if (didCancel) {
+	// 			return;
+	// 		}
+	// 		if (initialQueue) {
+	// 			await TrackPlayer.add(initialQueue);
+	// 		}
+	// 	};
+	// 	if (initialQueue) {
+	// 		applyInitialQueue();
+	// 	}
+	// 	return (): void => {
+	// 		didCancel = true;
+	// 	};
+	// }, [initialQueue]);
 
 	useEffect(() => {
 		let didCancel = false;
@@ -167,7 +188,7 @@ export function useQueue(initialQueue?: Array<TrackPlayer.Track>): Array<TrackPl
 		return (): void => {
 			didCancel = true;
 		};
-	}, []);
+	}, [queue]);
 
 	return queue;
 }
