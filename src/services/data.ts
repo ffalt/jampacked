@@ -89,13 +89,29 @@ export interface SeriesData {
 }
 
 export interface AutoCompleteEntryData extends Jam.AutoCompleteEntry {
-	route: string;
+	objType: JamObjectType;
 }
 
 export type Index = Array<IndexEntry>;
 export type HomeStatData = { text: string, link: Navig, value: number };
 export type HomeStatsData = Array<HomeStatData>;
-export type AutoCompleteData = Array<SectionListData<AutoCompleteEntryData>>;
+
+export interface AutoCompleteDataSection extends SectionListData<AutoCompleteEntryData> {
+	objType: JamObjectType;
+}
+
+export type AutoCompleteData = Array<AutoCompleteDataSection>;
+
+export type SearchResultEntry = {
+	id: string;
+	name: string;
+	objType: JamObjectType;
+};
+export type SearchResultData = {
+	total: number;
+	offset: number;
+	entries: Array<BaseEntry>;
+};
 
 class DataService {
 	db?: Database;
@@ -472,53 +488,114 @@ class DataService {
 			if (result.albums && result.albums.length > 0) {
 				sections.push({
 					key: 'Albums',
-					data: result.albums.map(entry => ({...entry, route: HomeRoute.ALBUM}))
+					objType: JamObjectType.album,
+					data: result.albums.map(entry => ({...entry, objType: JamObjectType.album}))
 				});
 			}
 			if (result.artists && result.artists.length > 0) {
 				sections.push({
 					key: 'Artists',
-					data: result.artists.map(entry => ({...entry, route: HomeRoute.ARTIST}))
-				});
-			}
-			if (result.tracks && result.tracks.length > 0) {
-				sections.push({
-					key: 'Tracks',
-					data: result.tracks.map(entry => ({...entry, route: HomeRoute.TRACK}))
-				});
-			}
-			if (result.folders && result.folders.length > 0) {
-				sections.push({
-					key: 'Folders',
-					data: result.folders.map(entry => ({...entry, route: HomeRoute.FOLDER}))
-				});
-			}
-			if (result.podcasts && result.podcasts.length > 0) {
-				sections.push({
-					key: 'Podcasts',
-					data: result.podcasts.map(entry => ({...entry, route: HomeRoute.PODCAST}))
-				});
-			}
-			if (result.episodes && result.episodes.length > 0) {
-				sections.push({
-					key: 'Podcast Episodes',
-					data: result.episodes.map(entry => ({...entry, route: HomeRoute.EPISODE}))
-				});
-			}
-			if (result.playlists && result.playlists.length > 0) {
-				sections.push({
-					key: 'Playlists',
-					data: result.playlists.map(entry => ({...entry, route: HomeRoute.PLAYLIST}))
+					objType: JamObjectType.artist,
+					data: result.artists.map(entry => ({...entry, objType: JamObjectType.artist}))
 				});
 			}
 			if (result.series && result.series.length > 0) {
 				sections.push({
 					key: 'Series',
-					data: result.series.map(entry => ({...entry, route: HomeRoute.SERIESITEM}))
+					objType: JamObjectType.series,
+					data: result.series.map(entry => ({...entry, objType: JamObjectType.series}))
+				});
+			}
+			if (result.podcasts && result.podcasts.length > 0) {
+				sections.push({
+					key: 'Podcasts',
+					objType: JamObjectType.podcast,
+					data: result.podcasts.map(entry => ({...entry, objType: JamObjectType.podcast}))
+				});
+			}
+			if (result.episodes && result.episodes.length > 0) {
+				sections.push({
+					key: 'Podcast Episodes',
+					objType: JamObjectType.episode,
+					data: result.episodes.map(entry => ({...entry, objType: JamObjectType.episode}))
+				});
+			}
+			if (result.playlists && result.playlists.length > 0) {
+				sections.push({
+					key: 'Playlists',
+					objType: JamObjectType.playlist,
+					data: result.playlists.map(entry => ({...entry, objType: JamObjectType.playlist}))
+				});
+			}
+			if (result.folders && result.folders.length > 0) {
+				sections.push({
+					key: 'Folders',
+					objType: JamObjectType.folder,
+					data: result.folders.map(entry => ({...entry, objType: JamObjectType.folder}))
+				});
+			}
+			if (result.tracks && result.tracks.length > 0) {
+				sections.push({
+					key: 'Tracks',
+					objType: JamObjectType.track,
+					data: result.tracks.map(entry => ({...entry, objType: JamObjectType.track}))
 				});
 			}
 		}
 		return sections;
+	}
+
+	async search(query: string, objType: JamObjectType, offset: number, amount: number): Promise<SearchResultData> {
+		let result: SearchResultData = {
+			total: 0,
+			offset: 0,
+			entries: []
+		};
+
+		const build = (list: Jam.ListResult): SearchResultData => {
+			const {items} = (list as { items: Array<Jam.Base> });
+			return {
+				total: list.total || 0,
+				offset: list.offset || 0,
+				entries: items.map((item: Jam.Base) => ({id: item.id, title: item.name, desc: '', objType}))
+			};
+		};
+
+		switch (objType) {
+			case JamObjectType.album:
+				result = build(await this.jam.album.search({query, offset, amount}));
+				break;
+			case JamObjectType.artist:
+				result = build(await this.jam.artist.search({query, offset, amount}));
+				break;
+			case JamObjectType.folder:
+				result = build(await this.jam.folder.search({query, offset, amount}));
+				break;
+			case JamObjectType.track:
+				result = build(await this.jam.track.search({query, offset, amount}));
+				break;
+			case JamObjectType.playlist:
+				result = build(await this.jam.playlist.search({query, offset, amount}));
+				break;
+			case JamObjectType.podcast:
+				result = build(await this.jam.podcast.search({query, offset, amount}));
+				break;
+			case JamObjectType.series:
+				result = build(await this.jam.series.search({query, offset, amount}));
+				break;
+			case JamObjectType.episode:
+				result = build(await this.jam.episode.search({query, offset, amount}));
+				break;
+			// case JamObjectType.root:
+			// case JamObjectType.user:
+			// case JamObjectType.state:
+			// case JamObjectType.bookmark:
+			// case JamObjectType.playqueue:
+			// case JamObjectType.radio:
+			default:
+
+		}
+		return result;
 	}
 
 	// action

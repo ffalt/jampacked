@@ -1,15 +1,12 @@
 import React from 'react';
-import {SectionList, SectionListData, StyleSheet, TextInput, TouchableOpacity, View} from 'react-native';
+import {StyleSheet, TextInput, TouchableOpacity, View} from 'react-native';
 import debounce from 'lodash.debounce';
-import ThemedText from '../components/ThemedText';
 import {BottomTabRoute, BottomTabWithThemeProps} from '../navigators/Routing';
 import {staticTheme, withTheme} from '../style/theming';
 import ThemedIcon from '../components/ThemedIcon';
-import Separator from '../components/Separator';
-import JamImage from '../components/JamImage';
-import dataService, {AutoCompleteData, AutoCompleteEntryData} from '../services/data';
-import NavigationService from '../services/navigation';
-import {snackError} from '../services/snack';
+import {JamObjectType} from '../services/jam';
+import SearchQuick from '../components/SearchQuick';
+import Search from '../components/Search';
 
 const styles = StyleSheet.create({
 	container: {
@@ -17,15 +14,6 @@ const styles = StyleSheet.create({
 		paddingBottom: staticTheme.padding,
 		paddingHorizontal: staticTheme.padding,
 		flex: 1
-	},
-	list: {
-		flex: 1
-	},
-	section: {
-		fontSize: staticTheme.fontSizeLarge,
-		textTransform: 'capitalize',
-		fontWeight: 'bold',
-		padding: staticTheme.padding
 	},
 	input: {
 		flex: 1,
@@ -52,92 +40,27 @@ const styles = StyleSheet.create({
 		paddingRight: staticTheme.paddingLarge,
 		paddingTop: 10
 	},
-	item: {
-		padding: staticTheme.padding,
-		flexDirection: 'row',
-		alignItems: 'center'
-	},
-	itemContent: {
-		alignSelf: 'stretch',
-		paddingLeft: staticTheme.padding,
-		justifyContent: 'center',
-		flexDirection: 'column',
-		flex: 1
-	},
-	itemText: {
-		fontSize: staticTheme.fontSize
-	},
 	disabled: {
 		opacity: 0.3
 	}
 });
 
-
-function AutoCompleteResult({result}: { result: AutoCompleteData | undefined }): JSX.Element {
-
-	const renderSection = ({section}: { section: SectionListData<AutoCompleteEntryData> }): JSX.Element => <ThemedText style={styles.section}>{section.key}</ThemedText>;
-
-	const renderItem = ({item}: { item: AutoCompleteEntryData }): JSX.Element => {
-
-		const click = (): void => {
-			NavigationService.navigate(item.route, {id: item.id, name: item.name});
-		};
-
-		return (
-			<TouchableOpacity onPress={click} style={styles.item}>
-				<JamImage id={item.id} size={28}/>
-				<View style={styles.itemContent}>
-					<ThemedText style={styles.itemText}>{item.name}</ThemedText>
-				</View>
-			</TouchableOpacity>
-		);
-	};
-
-	const keyExtractor = (item: AutoCompleteEntryData): string => item.id;
-
-	return (
-		<SectionList
-			style={styles.list}
-			sections={result || []}
-			ItemSeparatorComponent={Separator}
-			SectionSeparatorComponent={Separator}
-			keyExtractor={keyExtractor}
-			renderSectionHeader={renderSection}
-			renderItem={renderItem}
-		/>
-	);
-}
-
 class SearchScreen extends React.PureComponent<BottomTabWithThemeProps<BottomTabRoute.SEARCH>> {
 	state: {
-		search: string | undefined;
-		result: AutoCompleteData | undefined;
+		search?: string;
+		objType?: JamObjectType;
 	} = {
 		search: undefined,
-		result: undefined
+		objType: undefined
 	};
 
-	private handleInput = (query?: string): void => {
-		if (query && query.length) {
-			dataService.autocomplete(query)
-				.then(result => {
-					const {search} = this.state;
-					if (search === query) {
-						this.setState({result});
-					}
-				})
-				.catch(e => {
-					snackError(e);
-				});
-		} else {
-			this.setState({result: undefined});
-		}
+	private handleInput = (search?: string): void => {
+		this.setState({search});
 	};
 
 	private handleInputThrottled = debounce(this.handleInput, 1000);
 
 	private handleChangeText = (search: string): void => {
-		this.setState({search});
 		this.handleInputThrottled(search);
 	};
 
@@ -150,9 +73,17 @@ class SearchScreen extends React.PureComponent<BottomTabWithThemeProps<BottomTab
 		this.setState({search: undefined});
 	};
 
+	private setObjectTypeSearch = (objType?: JamObjectType): void => {
+		this.setState({objType});
+	};
+
+	private backToAll = (): void => {
+		this.setState({objType: undefined});
+	};
+
 	render(): React.ReactElement {
 		const {theme} = this.props;
-		const {result, search} = this.state;
+		const {search, objType} = this.state;
 		const isEmpty = (!search || search.length === 0);
 		const cancel = !isEmpty
 			? (
@@ -161,6 +92,9 @@ class SearchScreen extends React.PureComponent<BottomTabWithThemeProps<BottomTab
 				</TouchableOpacity>
 			)
 			: <></>;
+		const content = !objType
+			? (<SearchQuick query={search} setObjType={this.setObjectTypeSearch}/>)
+			: (<Search query={search} objType={objType} backToAll={this.backToAll}/>);
 		return (
 			<View style={styles.container}>
 				<View style={[styles.inputGroup, {borderColor: theme.textColor}]}>
@@ -178,7 +112,7 @@ class SearchScreen extends React.PureComponent<BottomTabWithThemeProps<BottomTab
 					/>
 					{cancel}
 				</View>
-				<AutoCompleteResult result={result}/>
+				{content}
 			</View>
 		);
 	}

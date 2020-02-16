@@ -31,6 +31,14 @@ export default class NavigationService {
 				return HomeRoute.ARTIST;
 			case JamObjectType.folder:
 				return HomeRoute.FOLDER;
+			case JamObjectType.track:
+				return HomeRoute.TRACK;
+			case JamObjectType.podcast:
+				return HomeRoute.PODCAST;
+			case JamObjectType.episode:
+				return HomeRoute.EPISODE;
+			case JamObjectType.playlist:
+				return HomeRoute.PLAYLIST;
 			case JamObjectType.series:
 				return HomeRoute.SERIESITEM;
 			default:
