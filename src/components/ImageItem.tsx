@@ -19,6 +19,9 @@ class ImageItem extends PureComponent<{ item: BaseEntry; theme: ITheme; size: nu
 
 	render(): React.ReactElement {
 		const {item, theme, size} = this.props;
+		if (!item || !item.id) {
+			return (<></>);
+		}
 		const headers = dataService.currentUserToken ? {Authorization: `Bearer ${dataService.currentUserToken}`} : undefined;
 		const source = {
 			uri: dataService.jam.image.url(item.id, 300, undefined, !headers),

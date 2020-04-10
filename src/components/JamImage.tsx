@@ -5,8 +5,11 @@ import dataService from '../services/data';
 
 export default class JamImage extends React.PureComponent<{ id: string, size: number, requestSize?: number, style?: StyleProp<ImageStyle> }> {
 	render(): React.ReactElement {
-		const headers = dataService.currentUserToken ? {Authorization: `Bearer ${dataService.currentUserToken}`} : undefined;
 		const {id, requestSize, size, style} = this.props;
+		if (!id) {
+			return (<></>);
+		}
+		const headers = dataService.currentUserToken ? {Authorization: `Bearer ${dataService.currentUserToken}`} : undefined;
 		const source = {
 			uri: dataService.jam.image.url(id, requestSize || 80, undefined, !headers),
 			headers,

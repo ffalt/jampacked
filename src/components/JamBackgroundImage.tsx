@@ -33,16 +33,19 @@ class FastImageBackground extends React.PureComponent<{ id: string, style?: any,
 			headers,
 			priority: FastImage.priority.normal
 		};
+		const backgroundImage = id && (
+			<FastImage {...props} style={imgStyle} source={source}>
+				<LinearGradient
+					colors={theme.overlayGradient}
+					start={{x: 0, y: 0}}
+					end={{x: 0, y: 1}}
+					style={styles.linearGradient}
+				/>
+			</FastImage>
+		);
 		return (
 			<View style={style}>
-				<FastImage {...props} style={imgStyle} source={source}>
-					<LinearGradient
-						colors={theme.overlayGradient}
-						start={{x: 0, y: 0}}
-						end={{x: 0, y: 1}}
-						style={styles.linearGradient}
-					/>
-				</FastImage>
+				{backgroundImage}
 				{children}
 			</View>
 		);
