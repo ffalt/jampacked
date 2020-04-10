@@ -5,6 +5,7 @@ import {AppStackProps, AuthContext, Routing} from '../navigators/Routing';
 import LoginButton from '../components/LoginButton';
 import ThemedIcon from '../components/ThemedIcon';
 import Logo from '../components/Logo';
+import dataService from '../services/data';
 
 const styles = StyleSheet.create({
 	container: {
@@ -26,10 +27,17 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		flex: 1
 	},
+	inputIconWrapper: {
+		textAlign: 'center',
+		justifyContent: 'center',
+		alignItems: 'center',
+		padding: staticTheme.paddingSmall,
+		minWidth: 38,
+		marginTop: 10,
+		marginRight: staticTheme.margin
+	},
 	inputIcon: {
-		fontSize: 22,
-		paddingRight: staticTheme.padding,
-		paddingTop: 10
+		fontSize: 22
 	},
 	input: {
 		flex: 1,
@@ -107,6 +115,14 @@ class LoginScreen extends React.PureComponent<AppStackProps<Routing.AUTH>> {
 	userNameRef: RefObject<TextInput> = React.createRef();
 	passwordRef: RefObject<TextInput> = React.createRef();
 
+	async componentDidMount(): Promise<void> {
+		const server = (await dataService.getStored('last:server')) || '';
+		const name = (await dataService.getStored('last:user')) || '';
+		if (server || name) {
+			this.setState({server, name});
+		}
+	}
+
 	private checkEmpty(s: string): boolean {
 		return (!s || s.trim().length === 0);
 	}
@@ -122,6 +138,8 @@ class LoginScreen extends React.PureComponent<AppStackProps<Routing.AUTH>> {
 		this.setState({loading: true, error: undefined});
 		try {
 			await this.context.login(server, name, password);
+			await dataService.setStored('last:user', name);
+			await dataService.setStored('last:server', server);
 		} catch (e) {
 			this.setState({error: `${e}`});
 		}
@@ -171,7 +189,9 @@ class LoginScreen extends React.PureComponent<AppStackProps<Routing.AUTH>> {
 					<View style={styles.loginBlock}>
 						<KeyboardAvoidingView style={styles.content}>
 							<View style={[styles.inputGroup, {borderColor: theme.textColor}]}>
-								<ThemedIcon name="notes-beamed" style={styles.inputIcon}/>
+								<View style={styles.inputIconWrapper}>
+									<ThemedIcon name="notes-beamed" style={styles.inputIcon}/>
+								</View>
 								<TextInput
 									style={[styles.input, {color: theme.textColor}]}
 									placeholderTextColor={theme.muted}
@@ -180,6 +200,7 @@ class LoginScreen extends React.PureComponent<AppStackProps<Routing.AUTH>> {
 									value={server}
 									returnKeyType="next"
 									autoCapitalize="none"
+									autoCompleteType="name"
 									textContentType="URL"
 									importantForAutofill="yes"
 									onSubmitEditing={this.focusUsername}
@@ -188,7 +209,9 @@ class LoginScreen extends React.PureComponent<AppStackProps<Routing.AUTH>> {
 								/>
 							</View>
 							<View style={[styles.inputGroup, {borderColor: theme.textColor}]}>
-								<ThemedIcon name="user" style={styles.inputIcon}/>
+								<View style={styles.inputIconWrapper}>
+									<ThemedIcon name="user" style={styles.inputIcon}/>
+								</View>
 								<TextInput
 									ref={this.userNameRef}
 									style={[styles.input, {color: theme.textColor}]}
@@ -207,7 +230,9 @@ class LoginScreen extends React.PureComponent<AppStackProps<Routing.AUTH>> {
 								/>
 							</View>
 							<View style={[styles.inputGroup, {borderColor: theme.textColor}]}>
-								<ThemedIcon name="key" style={styles.inputIcon}/>
+								<View style={styles.inputIconWrapper}>
+									<ThemedIcon name="key" style={styles.inputIcon}/>
+								</View>
 								<TextInput
 									ref={this.passwordRef}
 									style={[styles.input, {color: theme.textColor}]}

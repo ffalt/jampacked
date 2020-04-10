@@ -189,6 +189,10 @@ class DataService {
 
 	// auth
 
+	get currentServer(): string {
+		return (this.jam.auth?.auth?.server || '');
+	}
+
 	get currentUserName(): string {
 		return (this.jam.auth?.user?.name || '');
 	}
@@ -739,6 +743,20 @@ class DataService {
 			await AsyncStorage.removeItem(`jam:${this.currentUserID}:${key}`);
 		} else {
 			await AsyncStorage.setItem(`jam:${this.currentUserID}:${key}`, value);
+		}
+	}
+
+	// user settings
+
+	public async getStored(key: string): Promise<string | null> {
+		return AsyncStorage.getItem(`jam-store:${key}`);
+	}
+
+	public async setStored(key: string, value?: string): Promise<void> {
+		if (!value) {
+			await AsyncStorage.removeItem(`jam-store:${key}`);
+		} else {
+			await AsyncStorage.setItem(`jam-store:${key}`, value);
 		}
 	}
 
