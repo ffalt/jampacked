@@ -1,5 +1,5 @@
 import React, {RefObject} from 'react';
-import Menu, {MenuItem, Position} from 'react-native-enhanced-popup-menu';
+import {Menu, MenuItem, Position} from './popupmenu/index';
 import {ITheme, withTheme} from '../style/theming';
 
 export interface PopupMenuAction {
@@ -25,7 +25,6 @@ class PopupMenu extends React.PureComponent<{
 
 	showMenu(ref: React.RefObject<any>): void {
 		if (this.menuRef) {
-			console.log('ssss', ref.current);
 			this.menuRef.show(ref.current, Position.BOTTOM_CENTER);
 		}
 	}

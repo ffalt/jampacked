@@ -16,7 +16,8 @@ export default class LoginButton extends React.PureComponent<{
 			{
 				toValue: 1,
 				duration: 300,
-				easing: Easing.bounce
+				easing: Easing.bounce,
+				useNativeDriver: false
 			}
 		).start();
 	}
