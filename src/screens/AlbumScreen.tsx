@@ -14,6 +14,7 @@ import FavIcon from '../components/FavIcon';
 import {snackError} from '../services/snack';
 import {commonItemLayout} from '../components/AtoZList';
 import PopupMenu, {PopupMenuAction, PopupMenuRef} from '../components/PopupMenu';
+import NavigationService from '../services/navigation';
 
 class AlbumScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute.ALBUM>> {
 	state: {
@@ -118,6 +119,13 @@ class AlbumScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute.
 	private showMenu = (ref: React.RefObject<any>, item: TrackEntry): void => {
 		const popupMenuActions = [
 			{
+				title: 'Play Track',
+				click: (): void => {
+					JamPlayer.playTrack(item)
+						.catch(e => console.error(e));
+				}
+			},
+			{
 				title: 'Add Track to Queue',
 				click: (): void => {
 					JamPlayer.addTrackToQueue(item)
@@ -134,6 +142,12 @@ class AlbumScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute.
 						JamPlayer.addTracksToQueue(tracks.slice(index))
 							.catch(e => console.error(e));
 					}
+				}
+			},
+			{
+				title: 'Open Track Profile',
+				click: (): void => {
+					NavigationService.navigateObj(JamObjectType.track, item.id, item.title);
 				}
 			}
 		];

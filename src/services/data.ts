@@ -422,6 +422,13 @@ class DataService {
 		});
 	}
 
+	async track(id: string, forceRefresh: boolean = false): Promise<TrackEntry> {
+		return this.get<TrackEntry>(forceRefresh, `${this.jam.auth.auth?.server}/track/${id}`, async () => {
+			const track = await this.jam.track.id({id, trackMedia: true, trackTag: true});
+			return this.buildTrackEntry(track);
+		});
+	}
+
 	async folder(id: string, forceRefresh: boolean = false): Promise<FolderData> {
 		return this.get<FolderData>(forceRefresh, `${this.jam.auth.auth?.server}/folder/${id}`, async () => {
 			const result: FolderData = {
