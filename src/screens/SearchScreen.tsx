@@ -48,9 +48,11 @@ const styles = StyleSheet.create({
 class SearchScreen extends React.PureComponent<BottomTabWithThemeProps<BottomTabRoute.SEARCH>> {
 	state: {
 		search?: string;
+		query?: string;
 		objType?: JamObjectType;
 	} = {
 		search: undefined,
+		query: undefined,
 		objType: undefined
 	};
 
@@ -60,8 +62,9 @@ class SearchScreen extends React.PureComponent<BottomTabWithThemeProps<BottomTab
 
 	private handleInputThrottled = debounce(this.handleInput, 1000);
 
-	private handleChangeText = (search: string): void => {
-		this.handleInputThrottled(search);
+	private handleChangeText = (query: string): void => {
+		this.setState({query});
+		this.handleInputThrottled(query);
 	};
 
 	private search = (): void => {
@@ -83,8 +86,8 @@ class SearchScreen extends React.PureComponent<BottomTabWithThemeProps<BottomTab
 
 	render(): React.ReactElement {
 		const {theme} = this.props;
-		const {search, objType} = this.state;
-		const isEmpty = (!search || search.length === 0);
+		const {query, search, objType} = this.state;
+		const isEmpty = (!query || query.length === 0);
 		const cancel = !isEmpty
 			? (
 				<TouchableOpacity onPress={this.clear}>
@@ -105,7 +108,7 @@ class SearchScreen extends React.PureComponent<BottomTabWithThemeProps<BottomTab
 						style={[styles.input, {color: theme.textColor}]}
 						placeholderTextColor={theme.muted}
 						placeholder="Search"
-						value={search}
+						value={query}
 						onChangeText={this.handleChangeText}
 						returnKeyType="search"
 						autoCapitalize="none"
