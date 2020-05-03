@@ -77,6 +77,11 @@ export interface AlbumData {
 	tracks: Array<TrackEntry>;
 }
 
+export interface PodcastData {
+	podcast: Jam.Podcast;
+	episodes: Array<TrackEntry>;
+}
+
 export interface FolderData {
 	folder: Jam.Folder;
 	folders: Array<FolderEntry>;
@@ -291,6 +296,23 @@ class DataService {
 		});
 	}
 
+	async podcastsIndex(forceRefresh: boolean = false): Promise<Index> {
+		// return this.get<Index>(forceRefresh, `${this.jam.auth.auth?.server}/artistIndex/${albumType}`, async () => {
+		const data = await this.jam.podcast.search({podcastEpisodeCount: true});
+		const result: Index = [];
+		data.items.forEach(podcast => {
+			result.push({
+				id: podcast.id,
+				desc: `Episodes: ${podcast.episodeCount}`,
+				objType: JamObjectType.podcast,
+				title: podcast.name,
+				letter: podcast.name[0] || ' '
+			});
+		});
+		return result;
+		// });
+	}
+
 	async folderIndex(forceRefresh: boolean = false): Promise<Index> {
 		return this.get<Index>(forceRefresh, `${this.jam.auth.auth?.server}/folderIndex`, async () => {
 			const data = await this.jam.folder.index({level: 1});
@@ -372,6 +394,11 @@ class DataService {
 					text: 'Tracks',
 					link: {route: HomeRoute.TRACKS},
 					value: stat.track
+				},
+				{
+					text: 'Podcasts',
+					link: {route: HomeRoute.PODCASTS},
+					value: stat.podcasts
 				}
 			].filter(t => t.value > 0);
 			return result;
@@ -417,6 +444,25 @@ class DataService {
 			};
 			if (result.album && result.album.tracks) {
 				result.tracks = result.album.tracks.map(track => this.buildTrackEntry(track));
+			}
+			return result;
+		});
+	}
+
+	async podcast(id: string, forceRefresh: boolean = false): Promise<PodcastData> {
+		return this.get<PodcastData>(forceRefresh, `${this.jam.auth.auth?.server}/podcast/${id}`, async () => {
+			const result: PodcastData = {
+				podcast: await this.jam.podcast.id({id, podcastEpisodes: true, trackTag: true}),
+				episodes: []
+			};
+			if (result.podcast && result.podcast.episodes) {
+				result.episodes = result.podcast.episodes.map(episode => {
+					const track = this.buildTrackEntry(episode);
+					track.trackNr = (new Date(episode.date).toDateString());
+					track.album = result.podcast.name;
+					track.artist = result.podcast.name;
+					return track;
+				});
 			}
 			return result;
 		});

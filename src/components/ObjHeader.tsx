@@ -12,6 +12,10 @@ export const objHeaderStyles = StyleSheet.create({
 	},
 	buttonIcon: {
 		fontSize: 26
+	},
+	panel: {
+		paddingHorizontal: staticTheme.paddingSmall,
+		marginHorizontal: staticTheme.marginLarge
 	}
 });
 
@@ -99,10 +103,20 @@ class ObjHeader extends PureComponent<{
 	theme: ITheme;
 	details?: Array<HeaderDetail>;
 	headerTitleCmds?: ReactNode | Array<ReactNode>;
+	customDetails?: ReactNode | Array<ReactNode>;
 }> {
 
 	renderDetails(): JSX.Element | undefined {
-		const {details, theme} = this.props;
+		const {details, theme, customDetails} = this.props;
+		if (customDetails) {
+			return (
+				<View style={styles.headerExtra}>
+					<View style={styles.headerExtraContainer}>
+						{customDetails}
+					</View>
+				</View>
+			);
+		}
 		const result: Array<JSX.Element> = [];
 		(details || []).forEach(detail => {
 			if (detail.click) {
