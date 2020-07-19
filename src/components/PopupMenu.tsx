@@ -1,4 +1,4 @@
-import React, {RefObject} from 'react';
+import React, {MutableRefObject, RefObject} from 'react';
 import {Menu, MenuItem, Position} from './popupmenu/index';
 import {ITheme, withTheme} from '../style/theming';
 
@@ -8,7 +8,7 @@ export interface PopupMenuAction {
 }
 
 class PopupMenu extends React.PureComponent<{
-	ref: RefObject<PopupMenu>;
+	ref: MutableRefObject<PopupMenu | undefined>;
 	actions: Array<PopupMenuAction>;
 	theme: ITheme;
 }> {
@@ -25,7 +25,7 @@ class PopupMenu extends React.PureComponent<{
 
 	showMenu(ref: React.RefObject<any>): void {
 		if (this.menuRef) {
-			this.menuRef.show(ref.current, Position.BOTTOM_CENTER);
+			this.menuRef.show(ref.current, Position.AUTO_CENTER);
 		}
 	}
 
@@ -54,6 +54,6 @@ class PopupMenu extends React.PureComponent<{
 	}
 }
 
-export type PopupMenuRef = RefObject<PopupMenu>;
+export const usePopupMenuRef = (): MutableRefObject<PopupMenu | undefined> => React.useRef<PopupMenu | undefined>();
 
 export default withTheme(PopupMenu);

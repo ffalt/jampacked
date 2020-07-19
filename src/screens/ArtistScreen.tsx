@@ -1,16 +1,17 @@
-import React from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {RefreshControl, SectionList, SectionListData, StyleSheet} from 'react-native';
-import ThemedText from '../components/ThemedText';
-import {staticTheme, withTheme} from '../style/theming';
-import {HomeRoute, HomeStackWithThemeProps} from '../navigators/Routing';
-import Item from '../components/Item';
-import ObjHeader, {HeaderDetail, objHeaderStyles} from '../components/ObjHeader';
+import {ThemedText} from '../components/ThemedText';
+import {staticTheme, useTheme} from '../style/theming';
+import {HomeRoute, HomeStackProps} from '../navigators/Routing';
+import {Item} from '../components/Item';
+import {HeaderDetail, ObjHeader, objHeaderStyles} from '../components/ObjHeader';
 import {genreDisplay} from '../utils/genre.utils';
-import Separator from '../components/Separator';
-import dataService, {ArtistData, BaseEntry} from '../services/data';
-import {snackError} from '../services/snack';
-import FavIcon from '../components/FavIcon';
+import {Separator} from '../components/Separator';
+import {FavIcon} from '../components/FavIcon';
 import {JamObjectType} from '../services/jam';
+import {BaseEntry} from '../services/types';
+import {useLazyArtistQuery} from '../services/queries/artist';
+import {snackError} from '../services/snack';
 
 const styles = StyleSheet.create({
 	SectionHeader: {
@@ -21,113 +22,82 @@ const styles = StyleSheet.create({
 	}
 });
 
-class ArtistScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute.ARTIST>> {
-	state: {
-		refreshing: boolean;
-		data?: ArtistData;
-		details: Array<HeaderDetail>;
-	} = {
-		details: this.buildDetails(),
-		refreshing: false,
-		data: undefined
-	};
+const buildDetails = (albums?: number, tracks?: number, genre?: string): Array<HeaderDetail> => {
+	return [
+		{title: 'Albums', value: `${albums || ''}`},
+		{title: 'Tracks', value: `${tracks || ''}`},
+		{title: 'Genre', value: genre || ''}
+	];
+};
 
-	componentDidMount(): void {
-		this.load();
-	}
+export const ArtistScreen: React.FC<HomeStackProps<HomeRoute.ARTIST>> = ({route}) => {
+	const theme = useTheme();
+	const [details, setDetails] = useState<Array<HeaderDetail>>(buildDetails());
+	const [getArtist, {loading, error, artist}] = useLazyArtistQuery();
+	const {id, name} = route?.params;
 
-	componentDidUpdate(prevProps: { route: { params: { id?: string } } }): void {
-		const newProps = this.props;
-		if (prevProps.route?.params?.id !== newProps.route?.params?.id) {
-			this.setState({data: undefined, details: this.buildDetails()});
-			this.load();
+	useEffect(() => {
+		if (id) {
+			getArtist(id);
 		}
-	}
+	}, [getArtist, id]);
 
-	private buildDetails(albums?: number, tracks?: number, genre?: string): Array<HeaderDetail> {
-		return [
-			{title: 'Albums', value: `${albums || ''}`},
-			{title: 'Tracks', value: `${tracks || ''}`},
-			{title: 'Genre', value: genre || ''}
-		];
-	}
-
-	private load(forceRefresh: boolean = false): void {
-		const {route} = this.props;
-		const {id} = route?.params;
-		if (!id) {
-			return;
+	useEffect(() => {
+		if (artist) {
+			setDetails(buildDetails(artist.albumsCount, artist.tracksCount, genreDisplay(artist.genres)));
 		}
-		this.setState({refreshing: true});
-		dataService.artist(id, forceRefresh)
-			.then(data => {
-				const details = this.buildDetails(data.artist.albumCount, data.artist.trackCount, genreDisplay(data.artist.genres));
-				this.setState({data, details, refreshing: false});
+	}, [artist]);
 
-			})
-			.catch(e => {
-				this.setState({refreshing: false});
-				snackError(e);
-			});
+	if (error) {
+		snackError(error);
 	}
 
-	private renderHeader = (): JSX.Element => {
-		const {details} = this.state;
-		const {route} = this.props;
-		const {id, name} = route?.params;
-		const headerTitleCmds = (
-			<>
-				<FavIcon style={objHeaderStyles.button} objType={JamObjectType.artist} id={id}/>
-			</>
-		);
-		return (
-			<ObjHeader
-				id={id}
-				title={name}
-				details={details}
-				typeName="Artist"
-				headerTitleCmds={headerTitleCmds}
-			/>
-		);
-	};
+	const headerTitleCmds = (
+		<FavIcon style={objHeaderStyles.button} objType={JamObjectType.artist} id={id}/>
+	);
 
-	private renderSection = ({section}: { section: SectionListData<BaseEntry> }): JSX.Element => (
+	const ListHeader = (
+		<ObjHeader
+			id={id}
+			title={name}
+			details={details}
+			typeName="Artist"
+			headerTitleCmds={headerTitleCmds}
+		/>
+	);
+
+	const renderSection = ({section}: { section: SectionListData<BaseEntry> }): JSX.Element => (
 		<ThemedText style={styles.SectionHeader}>{section.title}</ThemedText>
 	);
 
-	private renderItem = ({item}: { item: BaseEntry }): JSX.Element => (<Item item={item}/>);
+	const renderItem = useCallback(({item}: { item: BaseEntry }): JSX.Element => (<Item item={item}/>), []);
 
-	private keyExtractor = (item: BaseEntry): string => item.id;
+	const keyExtractor = (item: BaseEntry): string => item.id;
 
-	private reload = (): void => {
-		this.load(true);
-	};
+	const reload = useCallback((): void => {
+		if (id) {
+			getArtist(id);
+		}
+	}, [id, getArtist]);
 
-	render(): React.ReactElement {
-		const {data, refreshing} = this.state;
-		const sections = data?.albums || [];
-		const {theme} = this.props;
-		return (
-			<SectionList
-				sections={sections}
-				ListHeaderComponent={this.renderHeader}
-				ItemSeparatorComponent={Separator}
-				SectionSeparatorComponent={Separator}
-				keyExtractor={this.keyExtractor}
-				renderSectionHeader={this.renderSection}
-				renderItem={this.renderItem}
-				refreshControl={(
-					<RefreshControl
-						refreshing={refreshing}
-						onRefresh={this.reload}
-						progressViewOffset={80}
-						progressBackgroundColor={theme.refreshCtrlBackground}
-						colors={theme.refreshCtrlColors}
-					/>
-				)}
-			/>
-		);
-	}
-}
-
-export default withTheme(ArtistScreen);
+	return (
+		<SectionList
+			sections={artist?.sections || []}
+			ListHeaderComponent={ListHeader}
+			ItemSeparatorComponent={Separator}
+			SectionSeparatorComponent={Separator}
+			keyExtractor={keyExtractor}
+			renderSectionHeader={renderSection}
+			renderItem={renderItem}
+			refreshControl={(
+				<RefreshControl
+					refreshing={loading}
+					onRefresh={reload}
+					progressViewOffset={80}
+					progressBackgroundColor={theme.refreshCtrlBackground}
+					colors={theme.refreshCtrlColors}
+				/>
+			)}
+		/>
+	);
+};

@@ -1,137 +1,42 @@
-import {SectionListData} from 'react-native';
 import FastImage from 'react-native-fast-image';
-import {BehaviorSubject, Observable} from 'rxjs';
 import AsyncStorage from '@react-native-community/async-storage';
 import {Database} from './db';
-import {AlbumType, Jam, JamObjectType, JamService} from './jam';
-import {formatDuration} from '../utils/duration.utils';
+import {JamService} from './jam';
 import {JamConfigurationService} from './jam-configuration';
-import {getTypeByAlbumType} from './jam-lists';
-import {HomeRoute} from '../navigators/Routing';
 import {Caching} from './caching';
 import {snackSuccess} from './snack';
+import {MediaCache} from './media-cache';
+import {Doc} from './types';
+import {PersistentStorage} from 'apollo-cache-persist/types';
 
-export interface Navig {
-	route: string;
-	params?: {
-		id?: string;
-		name?: string;
-		albumTypeID?: string;
-	};
-}
-
-export interface HomeEntry {
-	obj: Jam.Base;
-	route: string;
-}
-
-export interface HomeData {
-	artistsRecent?: Array<HomeEntry>;
-	artistsFaved?: Array<HomeEntry>;
-	albumsFaved?: Array<HomeEntry>;
-	albumsRecent?: Array<HomeEntry>;
-}
-
-export interface Doc<T> {
-	key: string;
-	version: number;
-	date: number;
-	data: T;
-}
-
-export interface BaseEntry {
-	id: string;
-	title: string;
-	desc: string;
-	objType: string;
-}
-
-export interface IndexEntry extends BaseEntry {
-	letter: string;
-}
-
-export interface FolderEntry extends BaseEntry {
-}
-
-export interface TrackEntry {
-	id: string;
-	duration: string;
-	durationMS: number;
-	trackNr: string;
-	title: string;
-	artist: string;
-	album: string;
-	seriesID?: string;
-	albumID?: string;
-	artistID?: string;
-	genre?: string;
-}
-
-export interface ArtistData {
-	artist: Jam.Artist;
-	albums: Array<SectionListData<BaseEntry>>;
-}
-
-export interface AlbumData {
-	album: Jam.Album;
-	tracks: Array<TrackEntry>;
-}
-
-export interface PodcastData {
-	podcast: Jam.Podcast;
-	episodes: Array<TrackEntry>;
-}
-
-export interface FolderData {
-	folder: Jam.Folder;
-	folders: Array<FolderEntry>;
-	tracks: Array<TrackEntry>;
-}
-
-export interface SeriesData {
-	series: Jam.Series,
-	albums: Array<SectionListData<BaseEntry>>;
-}
-
-export interface AutoCompleteEntryData extends Jam.AutoCompleteEntry {
-	objType: JamObjectType;
-}
-
-export type Index = Array<IndexEntry>;
-export type HomeStatData = { text: string, link: Navig, value: number };
-export type HomeStatsData = Array<HomeStatData>;
-
-export interface AutoCompleteDataSection extends SectionListData<AutoCompleteEntryData> {
-	objType: JamObjectType;
-}
-
-export type AutoCompleteData = Array<AutoCompleteDataSection>;
-
-export type SearchResultEntry = {
-	id: string;
-	name: string;
-	objType: JamObjectType;
-};
-export type SearchResultData = {
-	total: number;
-	offset: number;
-	entries: Array<BaseEntry>;
-};
-
-class DataService {
+class DataService implements PersistentStorage<any> {
 	db?: Database;
 	version = 9;
-	lastLyrics?: { id: string, data: Jam.TrackLyrics };
-	lastWaveform?: { id: string, data: Jam.WaveFormData };
 	dataCaching = new Caching(
 		(caller) => this.fillCache(caller),
 		(caller) => this.clearCache(caller)
 	);
-	private homeDataCaching = new BehaviorSubject<HomeData | undefined>(undefined);
-	homeData: Observable<HomeData | undefined> = this.homeDataCaching.asObservable();
+	mediaCache = new MediaCache();
 
 	constructor(public jam: JamService) {
 		this.open();
+	}
+
+	// PersistentStorage
+
+	async getItem<T>(id: string): Promise<any> {
+		const doc = await this.getDoc<T>(id);
+		if (doc) {
+			return doc.data;
+		}
+	}
+
+	async setItem(id: string, data: any): Promise<void> {
+		await this.setDoc(id, data);
+	}
+
+	async removeItem(id: string): Promise<void> {
+		await this.clearDoc(id);
 	}
 
 	// db
@@ -139,6 +44,7 @@ class DataService {
 	async open(): Promise<void> {
 		this.db = await Database.getInstance();
 		await this.check();
+		await this.mediaCache.init();
 	}
 
 	async check(): Promise<void> {
@@ -176,6 +82,21 @@ class DataService {
 		}
 	}
 
+	private async clearDoc<T>(id: string): Promise<void> {
+		if (!this.db) {
+			return;
+		}
+		await this.db.delete('jam', {key: id});
+	}
+
+	private async setDoc<T>(id: string, data: T): Promise<void> {
+		if (!this.db) {
+			return;
+		}
+		await this.clearDoc(id);
+		await this.db.insert('jam', ['data', 'key', 'date', 'version'], [JSON.stringify(data), id, Date.now(), this.version]);
+	}
+
 	async get<T>(forceRefresh: boolean, id: string, build: () => Promise<T>): Promise<T> {
 		if (!forceRefresh) {
 			const doc = await this.getDoc<T>(id);
@@ -184,19 +105,11 @@ class DataService {
 			}
 		}
 		const result = await build();
-		if (!this.db) {
-			return result;
-		}
-		await this.db.delete('jam', {key: id});
-		await this.db.insert('jam', ['data', 'key', 'date', 'version'], [JSON.stringify(result), id, Date.now(), this.version]);
+		await this.setDoc(id, result);
 		return result;
 	}
 
 	// auth
-
-	get currentServer(): string {
-		return (this.jam.auth?.auth?.server || '');
-	}
 
 	get currentUserName(): string {
 		return (this.jam.auth?.user?.name || '');
@@ -212,462 +125,9 @@ class DataService {
 
 	// data
 
-	private buildFolderEntry(folder: Jam.Folder): FolderEntry {
-		return {
-			id: folder.id,
-			title: folder.name,
-			desc: folder.type,
-			objType: JamObjectType.folder
-		};
-	}
-
-	private buildTrackEntry(track: Jam.Track): TrackEntry {
-		return {
-			// entry: track,
-			id: track.id,
-			title: track.tag?.title || track.name,
-			artist: track.tag?.artist || '?',
-			genre: track.tag?.genre,
-			album: track.tag?.album || '?',
-			albumID: track.albumID,
-			artistID: track.albumID,
-			seriesID: track.seriesID,
-			trackNr: (track.tag?.disc ? `${track.tag?.disc}-` : '') + (track.tag?.trackNr || ''),
-			durationMS: track.duration,
-			duration: formatDuration(track.duration)
-		};
-	}
-
-	async refreshHomeData(opts?: { favs?: boolean, recent?: boolean }): Promise<void> {
-		const before = (await this.homeDataCaching.getValue()) || {};
-		const result: HomeData = {
-			artistsFaved: before.artistsFaved || [],
-			albumsFaved: before.albumsFaved || [],
-			artistsRecent: before.artistsRecent || [],
-			albumsRecent: before.albumsRecent || []
-		};
-		const pack = (objs: Array<Jam.Base>, route: string): Array<HomeEntry> => objs.map(obj => ({obj, route}));
-		if (!opts || opts.favs) {
-			result.artistsFaved = pack((await this.jam.artist.list({list: 'faved', amount: 5})).items, HomeRoute.ARTIST);
-			result.albumsFaved = pack((await this.jam.album.list({list: 'faved', amount: 5})).items, HomeRoute.ALBUM);
-		}
-		if (!opts || opts.recent) {
-			result.artistsRecent = pack((await this.jam.artist.list({list: 'recent', amount: 5})).items, HomeRoute.ARTIST);
-			result.albumsRecent = pack((await this.jam.album.list({list: 'recent', amount: 5})).items, HomeRoute.ALBUM);
-		}
-		this.homeDataCaching.next(result);
-	}
-
-	async albumIndex(albumType: Jam.AlbumType, forceRefresh: boolean = false): Promise<Index> {
-		return this.get<Index>(forceRefresh, `${this.jam.auth.auth?.server}/albumIndex/${albumType}`, async () => {
-			const data = await this.jam.album.index({albumType});
-			const result: Index = [];
-			data.groups.forEach(group => {
-				group.entries.forEach(entry => {
-					result.push({
-						id: entry.id,
-						objType: JamObjectType.album,
-						desc: entry.artist,
-						title: entry.name,
-						letter: group.name
-					});
-				});
-			});
-			return result;
-		});
-	}
-
-	async artistIndex(albumType: Jam.AlbumType, forceRefresh: boolean = false): Promise<Index> {
-		return this.get<Index>(forceRefresh, `${this.jam.auth.auth?.server}/artistIndex/${albumType}`, async () => {
-			const data = await this.jam.artist.index({albumType});
-			const result: Index = [];
-			data.groups.forEach(group => {
-				group.entries.forEach(entry => {
-					result.push({
-						id: entry.artistID,
-						desc: `Albums: ${entry.albumCount}`,
-						objType: JamObjectType.artist,
-						title: entry.name,
-						letter: group.name
-					});
-				});
-			});
-			return result;
-		});
-	}
-
-	async podcastsIndex(forceRefresh: boolean = false): Promise<Index> {
-		// return this.get<Index>(forceRefresh, `${this.jam.auth.auth?.server}/artistIndex/${albumType}`, async () => {
-		const data = await this.jam.podcast.search({podcastEpisodeCount: true});
-		const result: Index = [];
-		data.items.forEach(podcast => {
-			result.push({
-				id: podcast.id,
-				desc: `Episodes: ${podcast.episodeCount}`,
-				objType: JamObjectType.podcast,
-				title: podcast.name,
-				letter: podcast.name[0] || ' '
-			});
-		});
-		return result;
-		// });
-	}
-
-	async folderIndex(forceRefresh: boolean = false): Promise<Index> {
-		return this.get<Index>(forceRefresh, `${this.jam.auth.auth?.server}/folderIndex`, async () => {
-			const data = await this.jam.folder.index({level: 1});
-			const result: Index = [];
-			data.groups.forEach(group => {
-				group.entries.forEach(entry => {
-					result.push({
-						id: entry.folderID,
-						objType: JamObjectType.folder,
-						desc: `Tracks: ${entry.trackCount}`,
-						title: entry.name,
-						letter: group.name
-					});
-				});
-			});
-			return result;
-		});
-	}
-
-	async seriesIndex(forceRefresh: boolean = false): Promise<Index> {
-		return this.get<Index>(forceRefresh, `${this.jam.auth.auth?.server}/seriesIndex`, async () => {
-			const data = await this.jam.series.index({});
-			const result: Index = [];
-			data.groups.forEach(group => {
-				group.entries.forEach(entry => {
-					result.push({
-						id: entry.seriesID,
-						desc: `Episodes: ${entry.albumCount}`,
-						objType: JamObjectType.series,
-						title: entry.name,
-						letter: group.name
-					});
-				});
-			});
-			return result;
-		});
-	}
-
-	async stats(forceRefresh: boolean = false): Promise<HomeStatsData> {
-		return this.get<HomeStatsData>(forceRefresh, `${this.jam.auth.auth?.server}/stats`, async () => {
-			const stat = await this.jam.various.stats({});
-			const result: HomeStatsData = [
-				{
-					text: 'Artists',
-					link: {route: HomeRoute.ARTISTS},
-					value: stat.artistTypes.album
-				},
-				...[
-					{type: getTypeByAlbumType(AlbumType.album), value: stat.albumTypes.album},
-					{type: getTypeByAlbumType(AlbumType.compilation), value: stat.albumTypes.compilation}
-				].map(t => ({
-					text: t.type?.text || '',
-					link: {route: HomeRoute.ALBUMS, params: {albumTypeID: t.type?.id || ''}},
-					value: t.value
-				})),
-				{
-					text: 'Series',
-					link: {route: HomeRoute.SERIES},
-					value: stat.series
-				},
-				...[
-					{type: getTypeByAlbumType(AlbumType.audiobook), value: stat.albumTypes.audiobook},
-					{type: getTypeByAlbumType(AlbumType.soundtrack), value: stat.albumTypes.soundtrack},
-					{type: getTypeByAlbumType(AlbumType.live), value: stat.albumTypes.live},
-					{type: getTypeByAlbumType(AlbumType.bootleg), value: stat.albumTypes.bootleg},
-					{type: getTypeByAlbumType(AlbumType.ep), value: stat.albumTypes.ep},
-					{type: getTypeByAlbumType(AlbumType.single), value: stat.albumTypes.single}
-				].map(t => ({
-					text: t.type?.text || '',
-					link: {route: HomeRoute.ALBUMS, params: {albumTypeID: t.type?.id || ''}},
-					value: t.value
-				})),
-				{
-					text: 'Folders',
-					link: {route: HomeRoute.FOLDERS},
-					value: stat.folder
-				},
-				{
-					text: 'Tracks',
-					link: {route: HomeRoute.TRACKS},
-					value: stat.track
-				},
-				{
-					text: 'Podcasts',
-					link: {route: HomeRoute.PODCASTS},
-					value: stat.podcasts
-				}
-			].filter(t => t.value > 0);
-			return result;
-		});
-	}
-
-	async artist(id: string, forceRefresh: boolean = false): Promise<ArtistData> {
-		return this.get<ArtistData>(forceRefresh, `${this.jam.auth.auth?.server}/artist/${id}`, async () => {
-			const artist = await this.jam.artist.id({id, artistAlbums: true});
-			const albums: Array<SectionListData<BaseEntry>> = [];
-			(artist.albums || []).forEach(album => {
-				let section = albums.find(s => s.key === album.albumType);
-				if (!section) {
-					section = {
-						key: album.albumType,
-						title: album.albumType,
-						data: []
-					};
-					albums.push(section);
-				}
-				let desc = '';
-				if (album.seriesNr) {
-					desc = `Episode ${album.seriesNr}`;
-				} else if (album.year) {
-					desc = `${album.year}`;
-				}
-				section.data = section.data.concat([{
-					objType: JamObjectType.album,
-					id: album.id,
-					title: album.name,
-					desc
-				}]);
-			});
-			return {artist, albums};
-		});
-	}
-
-	async album(id: string, forceRefresh: boolean = false): Promise<AlbumData> {
-		return this.get<AlbumData>(forceRefresh, `${this.jam.auth.auth?.server}/album/${id}`, async () => {
-			const result: AlbumData = {
-				album: await this.jam.album.id({id, albumTracks: true, trackTag: true}),
-				tracks: []
-			};
-			if (result.album && result.album.tracks) {
-				result.tracks = result.album.tracks.map(track => this.buildTrackEntry(track));
-			}
-			return result;
-		});
-	}
-
-	async podcast(id: string, forceRefresh: boolean = false): Promise<PodcastData> {
-		return this.get<PodcastData>(forceRefresh, `${this.jam.auth.auth?.server}/podcast/${id}`, async () => {
-			const result: PodcastData = {
-				podcast: await this.jam.podcast.id({id, podcastEpisodes: true, trackTag: true}),
-				episodes: []
-			};
-			if (result.podcast && result.podcast.episodes) {
-				result.episodes = result.podcast.episodes.map(episode => {
-					const track = this.buildTrackEntry(episode);
-					track.trackNr = (new Date(episode.date).toDateString());
-					track.album = result.podcast.name;
-					track.artist = result.podcast.name;
-					return track;
-				});
-			}
-			return result;
-		});
-	}
-
-	async track(id: string, forceRefresh: boolean = false): Promise<TrackEntry> {
-		return this.get<TrackEntry>(forceRefresh, `${this.jam.auth.auth?.server}/track/${id}`, async () => {
-			const track = await this.jam.track.id({id, trackMedia: true, trackTag: true});
-			return this.buildTrackEntry(track);
-		});
-	}
-
-	async folder(id: string, forceRefresh: boolean = false): Promise<FolderData> {
-		return this.get<FolderData>(forceRefresh, `${this.jam.auth.auth?.server}/folder/${id}`, async () => {
-			const result: FolderData = {
-				folder: await this.jam.folder.id({id, folderTag: true, folderCounts: true, folderChildren: true, trackTag: true}),
-				tracks: [],
-				folders: []
-			};
-			if (result.folder && result.folder.tracks) {
-				result.tracks = result.folder.tracks.map(track => this.buildTrackEntry(track));
-			}
-			if (result.folder && result.folder.folders) {
-				result.folders = result.folder.folders.map(folder => this.buildFolderEntry(folder));
-			}
-			return result;
-		});
-	}
-
-	async series(id: string, forceRefresh: boolean = false): Promise<SeriesData> {
-		return this.get<SeriesData>(forceRefresh, `${this.jam.auth.auth?.server}/series/${id}`, async () => {
-			const series = await this.jam.series.id({id, seriesAlbums: true});
-			const albums: Array<SectionListData<BaseEntry>> = [];
-			(series.albums || []).forEach((album: Jam.Album) => {
-				let section = albums.find(s => s.key === album.albumType);
-				if (!section) {
-					section = {
-						key: album.albumType,
-						title: album.albumType,
-						data: []
-					};
-					albums.push(section);
-				}
-				section.data = section.data.concat([{
-					// obj: album,
-					objType: JamObjectType.album,
-					id: album.id,
-					title: album.name,
-					desc: `Episode ${album.seriesNr}`
-				}]);
-			});
-			return {series, albums};
-		});
-	}
-
-	async lyrics(id: string): Promise<Jam.TrackLyrics> {
-		if (this.lastLyrics && this.lastLyrics.id === id) {
-			return this.lastLyrics.data;
-		}
-		const data = await this.jam.track.lyrics({id});
-		this.lastLyrics = {id, data};
-		return data;
-	}
-
-	async waveform(id: string): Promise<Jam.WaveFormData> {
-		if (this.lastWaveform && this.lastWaveform.id === id) {
-			return this.lastWaveform.data;
-		}
-		const data = await this.jam.media.waveform_json({id});
-		this.lastWaveform = {id, data};
-		return data;
-	}
-
-	async autocomplete(query: string): Promise<AutoCompleteData> {
-		const result = await this.jam.various.autocomplete(
-			{query, album: 5, artist: 5, playlist: 5, podcast: 5, track: 5, episode: 5, series: 5}
-		);
-		const sections: AutoCompleteData = [];
-		if (result) {
-			if (result.albums && result.albums.length > 0) {
-				sections.push({
-					key: 'Albums',
-					objType: JamObjectType.album,
-					data: result.albums.map(entry => ({...entry, objType: JamObjectType.album}))
-				});
-			}
-			if (result.artists && result.artists.length > 0) {
-				sections.push({
-					key: 'Artists',
-					objType: JamObjectType.artist,
-					data: result.artists.map(entry => ({...entry, objType: JamObjectType.artist}))
-				});
-			}
-			if (result.series && result.series.length > 0) {
-				sections.push({
-					key: 'Series',
-					objType: JamObjectType.series,
-					data: result.series.map(entry => ({...entry, objType: JamObjectType.series}))
-				});
-			}
-			if (result.podcasts && result.podcasts.length > 0) {
-				sections.push({
-					key: 'Podcasts',
-					objType: JamObjectType.podcast,
-					data: result.podcasts.map(entry => ({...entry, objType: JamObjectType.podcast}))
-				});
-			}
-			if (result.episodes && result.episodes.length > 0) {
-				sections.push({
-					key: 'Podcast Episodes',
-					objType: JamObjectType.episode,
-					data: result.episodes.map(entry => ({...entry, objType: JamObjectType.episode}))
-				});
-			}
-			if (result.playlists && result.playlists.length > 0) {
-				sections.push({
-					key: 'Playlists',
-					objType: JamObjectType.playlist,
-					data: result.playlists.map(entry => ({...entry, objType: JamObjectType.playlist}))
-				});
-			}
-			if (result.folders && result.folders.length > 0) {
-				sections.push({
-					key: 'Folders',
-					objType: JamObjectType.folder,
-					data: result.folders.map(entry => ({...entry, objType: JamObjectType.folder}))
-				});
-			}
-			if (result.tracks && result.tracks.length > 0) {
-				sections.push({
-					key: 'Tracks',
-					objType: JamObjectType.track,
-					data: result.tracks.map(entry => ({...entry, objType: JamObjectType.track}))
-				});
-			}
-		}
-		return sections;
-	}
-
-	async search(query: string, objType: JamObjectType, offset: number, amount: number): Promise<SearchResultData> {
-		let result: SearchResultData = {
-			total: 0,
-			offset: 0,
-			entries: []
-		};
-
-		const build = (list: Jam.ListResult): SearchResultData => {
-			const {items} = (list as { items: Array<Jam.Base> });
-			return {
-				total: list.total || 0,
-				offset: list.offset || 0,
-				entries: items.map((item: Jam.Base) => ({id: item.id, title: item.name, desc: '', objType}))
-			};
-		};
-
-		switch (objType) {
-			case JamObjectType.album:
-				result = build(await this.jam.album.search({query, offset, amount}));
-				break;
-			case JamObjectType.artist:
-				result = build(await this.jam.artist.search({query, offset, amount}));
-				break;
-			case JamObjectType.folder:
-				result = build(await this.jam.folder.search({query, offset, amount}));
-				break;
-			case JamObjectType.track:
-				result = build(await this.jam.track.search({query, offset, amount}));
-				break;
-			case JamObjectType.playlist:
-				result = build(await this.jam.playlist.search({query, offset, amount}));
-				break;
-			case JamObjectType.podcast:
-				result = build(await this.jam.podcast.search({query, offset, amount}));
-				break;
-			case JamObjectType.series:
-				result = build(await this.jam.series.search({query, offset, amount}));
-				break;
-			case JamObjectType.episode:
-				result = build(await this.jam.episode.search({query, offset, amount}));
-				break;
-			// case JamObjectType.root:
-			// case JamObjectType.user:
-			// case JamObjectType.state:
-			// case JamObjectType.bookmark:
-			// case JamObjectType.playqueue:
-			// case JamObjectType.radio:
-			default:
-
-		}
-		return result;
-	}
-
-	// action
-
-	async toggleFav(objType: string, id: string, jamState: Jam.State): Promise<Jam.State> {
-		const remove = jamState.faved ? true : undefined;
-		const result = await this.jam.base.fav(objType, {id, remove});
-		snackSuccess(result.faved ? 'Added to Favorites' : 'Removed from Favorites');
-		this.refreshHomeData({favs: true}).catch(e => console.error(e));
-		return result;
-	}
-
 	async scrobble(id: string): Promise<void> {
-		await this.jam.media.stream_scrobble({id});
-		this.refreshHomeData({recent: true}).catch(e => console.error(e));
+		await this.jam.nowplaying.scrobble({id});
+		// this.refreshHomeData({recent: true}).catch(e => console.error(e));
 	}
 
 	// caching
@@ -686,10 +146,8 @@ class DataService {
 		snackSuccess('Cache cleared');
 	}
 
-	private async fillCache(caller: Caching): Promise<void> {
-		let artistIDs: Array<string> = [];
-		let albumIDs: Array<string> = [];
-		let seriesIDs: Array<string> = [];
+	private async fillCache(_caller: Caching): Promise<void> {
+		/*
 		const forceRefresh = false;
 		const tasks: Array<() => Promise<void>> = [
 			async (): Promise<void> => {
@@ -699,13 +157,6 @@ class DataService {
 				const index = await this.artistIndex(AlbumType.album, forceRefresh);
 				artistIDs = artistIDs.concat(index.map(o => o.id));
 			},
-			...[
-				AlbumType.album, AlbumType.live, AlbumType.compilation, AlbumType.soundtrack, AlbumType.audiobook,
-				AlbumType.series, AlbumType.bootleg, AlbumType.ep, AlbumType.single
-			].map(albumType => async (): Promise<void> => {
-				const index = await this.albumIndex(albumType, forceRefresh);
-				albumIDs = albumIDs.concat(index.map(o => o.id));
-			}),
 			async (): Promise<void> => {
 				await this.folderIndex(forceRefresh);
 			},
@@ -775,14 +226,16 @@ class DataService {
 			caller.updateText(`5/${total} Caching Image ${i}/${images.length}`);
 			await new Promise<void>(resolve => {
 				FastImage.preload([image],
-					(/* loaded, total */) => {
+					(_loaded, _total) => {
+						// nope
 					},
-					(/* loaded, failed */) => {
+					(_loaded, _failed) => {
 						resolve();
 					});
 			});
 		}
 		snackSuccess('Cache optimized');
+	*/
 	}
 
 	// user settings

@@ -1,7 +1,6 @@
 import React, {ReactNode} from 'react';
 import {Animated, GestureResponderEvent, PanResponder, PanResponderGestureState, StyleSheet, TouchableOpacity, View} from 'react-native';
 
-
 const SWIPE = {
 	ACTION: {
 		CLOSELEFT: -2,
@@ -52,7 +51,7 @@ type SwipeableListItemProps = {
 	onPressRight?: (caller: SwipeableListItem) => void
 };
 
-export default class SwipeableListItem extends React.PureComponent<SwipeableListItemProps> {
+export class SwipeableListItem extends React.PureComponent<SwipeableListItemProps> {
 	state: {
 		swipeValueLeft: Animated.Value,
 		swipeValueRight: Animated.Value,
@@ -95,11 +94,11 @@ export default class SwipeableListItem extends React.PureComponent<SwipeableList
 
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	handlePanResponderGrant = (event: GestureResponderEvent, gestureState: PanResponderGestureState): void => {
+		//
 	};
 
 	swipeValueValue(value: Animated.Value): number {
 		// TODO: fix hacky private variable access
-		// eslint-disable-next-line no-underscore-dangle
 		return (value as any)._value || 0;
 	}
 
@@ -212,7 +211,8 @@ export default class SwipeableListItem extends React.PureComponent<SwipeableList
 			{
 				toValue,
 				friction, // default: 7
-				tension // default: 40
+				tension, // default: 40
+				useNativeDriver: false
 			},
 		).start();
 		this.setState({
@@ -254,7 +254,8 @@ export default class SwipeableListItem extends React.PureComponent<SwipeableList
 				{
 					toValue: 0,
 					friction, // default: 7
-					tension // default: 40
+					tension, // default: 40
+					useNativeDriver: false
 				},
 			).start();
 		}

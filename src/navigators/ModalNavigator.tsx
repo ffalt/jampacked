@@ -2,8 +2,8 @@ import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContext} from '@react-navigation/native';
 import {Linking} from 'react-native';
-import BottomTabNavigator from './BottomTabNavigator';
-import PlayerScreen from '../screens/PlayerScreen';
+import {BottomTabNavigator} from './BottomTabNavigator';
+import {PlayerScreen} from '../screens/PlayerScreen';
 import {ModalRouting} from './Routing';
 
 const ModalStack = createStackNavigator<any>();

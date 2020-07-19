@@ -1,14 +1,15 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {JamObjectType} from '../services/jam';
 import {RefreshControl, SectionList, SectionListData, StyleSheet, TouchableOpacity, View} from 'react-native';
-import ThemedText from './ThemedText';
-import dataService, {AutoCompleteData, AutoCompleteDataSection, AutoCompleteEntryData} from '../services/data';
-import ThemedIcon from './ThemedIcon';
-import NavigationService from '../services/navigation';
-import JamImage from './JamImage';
-import Separator from './Separator';
+import {ThemedText} from './ThemedText';
+import {ThemedIcon} from './ThemedIcon';
+import {NavigationService} from '../services/navigation';
+import {JamImage} from './JamImage';
+import {Separator} from './Separator';
 import {snackError} from '../services/snack';
-import {ITheme, staticTheme, withTheme} from '../style/theming';
+import {staticTheme, useTheme} from '../style/theming';
+import {AutoCompleteData, AutoCompleteDataSection, AutoCompleteEntryData} from '../services/types';
+import {useLazyAutocompleteQuery} from '../services/queries/autocomplete';
 
 const styles = StyleSheet.create({
 	item: {
@@ -32,17 +33,17 @@ const styles = StyleSheet.create({
 	section: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		flex: 1
+		flex: 1,
+		padding: staticTheme.padding
 	},
 	sectionText: {
 		flex: 1,
 		fontSize: staticTheme.fontSizeLarge,
 		textTransform: 'capitalize',
 		fontWeight: 'bold',
-		padding: staticTheme.padding
+		paddingLeft: staticTheme.padding
 	},
 	sectionIcon: {
-		padding: staticTheme.padding,
 		fontSize: staticTheme.fontSizeLarge
 	}
 });
@@ -50,62 +51,44 @@ const styles = StyleSheet.create({
 interface SearchQuickProps {
 	query?: string;
 	setObjType?: (objType: JamObjectType) => void;
-	theme: ITheme;
 }
 
-class SearchQuick extends React.PureComponent<SearchQuickProps> {
-	state: {
-		result?: AutoCompleteData;
-		refreshing: boolean;
-	} = {
-		refreshing: false,
-		result: undefined
-	};
+export const SearchQuick: React.FC<SearchQuickProps> = ({query, setObjType}) => {
+	const [list, setList] = useState<AutoCompleteData>([]);
+	const [getAutocomplete, {loading, sections, error}] = useLazyAutocompleteQuery();
+	const theme = useTheme();
 
-	componentDidMount(): void {
-		this.reload();
-	}
-
-	componentDidUpdate(prevProps: { query?: string }): void {
-		const newProps = this.props;
-		if (prevProps.query !== newProps.query) {
-			this.autocomplete(newProps.query);
+	useEffect(() => {
+		if (query) {
+			getAutocomplete(query);
 		}
+	}, [getAutocomplete, query]);
+
+
+	useEffect(() => {
+		if (!loading && sections) {
+			setList(sections);
+		}
+	}, [sections, loading]);
+
+	if (error) {
+		snackError(error);
 	}
 
-	private reload = (): void => {
-		const {query} = this.props;
-		this.autocomplete(query);
-	};
-
-	private autocomplete = (search?: string): void => {
-		if (search && search.length) {
-			this.setState({refreshing: true});
-			dataService.autocomplete(search)
-				.then(result => {
-					const {query} = this.props;
-					if (query === search) {
-						this.setState({result, refreshing: false});
-					}
-				})
-				.catch(e => {
-					this.setState({refreshing: false});
-					snackError(e);
-				});
-		} else {
-			this.setState({result: undefined});
+	const reload = (): void => {
+		if (query) {
+			getAutocomplete(query);
 		}
 	};
 
-	private renderSection = ({section}: { section: SectionListData<AutoCompleteEntryData> }): JSX.Element => {
-		const {setObjType} = this.props;
+	const renderSection = ({section}: { section: SectionListData<AutoCompleteEntryData> }): JSX.Element => {
 		const setType = (): void => {
 			if (setObjType) {
 				const {objType} = section as AutoCompleteDataSection;
 				setObjType(objType);
 			}
 		};
-		const icon = (section.data.length >= 5) && <ThemedIcon style={styles.sectionIcon} name="right-open"/>;
+		const icon = (section.data.length >= 5) && <ThemedIcon size={styles.sectionIcon.fontSize} name="right-open"/>;
 		return (
 			<View>
 				<TouchableOpacity style={styles.section} onPress={setType}>
@@ -116,7 +99,7 @@ class SearchQuick extends React.PureComponent<SearchQuickProps> {
 		);
 	};
 
-	private renderItem = ({item}: { item: AutoCompleteEntryData }): JSX.Element => {
+	const renderItem = ({item}: { item: AutoCompleteEntryData }): JSX.Element => {
 
 		const click = (): void => {
 			const route = NavigationService.routeByObjType(item.objType);
@@ -135,32 +118,26 @@ class SearchQuick extends React.PureComponent<SearchQuickProps> {
 		);
 	};
 
-	private keyExtractor = (item: AutoCompleteEntryData): string => item.id;
+	const keyExtractor = (item: AutoCompleteEntryData): string => item.id;
 
-	render(): React.ReactElement {
-		const {result, refreshing} = this.state;
-		const {theme} = this.props;
-		return (
-			<SectionList
-				style={styles.list}
-				sections={result || []}
-				ItemSeparatorComponent={Separator}
-				SectionSeparatorComponent={Separator}
-				keyExtractor={this.keyExtractor}
-				renderSectionHeader={this.renderSection}
-				renderItem={this.renderItem}
-				refreshControl={(
-					<RefreshControl
-						refreshing={refreshing}
-						onRefresh={this.reload}
-						progressViewOffset={80}
-						progressBackgroundColor={theme.refreshCtrlBackground}
-						colors={theme.refreshCtrlColors}
-					/>
-				)}
-			/>
-		);
-	}
-}
-
-export default withTheme(SearchQuick);
+	return (
+		<SectionList
+			style={styles.list}
+			sections={list}
+			ItemSeparatorComponent={Separator}
+			SectionSeparatorComponent={Separator}
+			keyExtractor={keyExtractor}
+			renderSectionHeader={renderSection}
+			renderItem={renderItem}
+			refreshControl={(
+				<RefreshControl
+					refreshing={loading}
+					onRefresh={reload}
+					progressViewOffset={80}
+					progressBackgroundColor={theme.refreshCtrlBackground}
+					colors={theme.refreshCtrlColors}
+				/>
+			)}
+		/>
+	);
+};

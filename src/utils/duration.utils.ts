@@ -2,7 +2,7 @@ export function padTime(val: number): string {
 	return (val <= 9) ? `0${val}` : val.toString();
 }
 
-export function splitTime(value: number): { days: number; hours: number; minutes: number; seconds: number } {
+function splitTime(value: number): { days: number; hours: number; minutes: number; seconds: number } {
 	const duration = {
 		days: 0,
 		hours: 0,
@@ -27,7 +27,7 @@ export function formatDuration(val?: number): string {
 	if (val === undefined) {
 		return '';
 	}
-	const time = splitTime(val);
+	const time = splitTime(val / 1000);
 	const duration: Array<string> = [];
 	if (time.days > 0) {
 		duration.push(`${time.days}d `);

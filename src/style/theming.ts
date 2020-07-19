@@ -1,6 +1,6 @@
 import {createTheming} from '@callstack/react-theme-provider';
 import {DefaultTheme} from '@react-navigation/native';
-import React from 'react';
+import React, {useContext} from 'react';
 
 export declare type NavigationTheme = {
 	dark: boolean;
@@ -210,6 +210,7 @@ export const ThemeContext = React.createContext<ThemeSettings>(
 	{
 		theme: themes.dark,
 		loadUserTheme: async (): Promise<void> => {
+			// nope
 		},
 		setTheme: (): void => {
 			// nope
@@ -218,3 +219,4 @@ export const ThemeContext = React.createContext<ThemeSettings>(
 );
 
 export const {ThemeProvider, withTheme, useTheme} = createTheming(themes.dark);
+export const useThemeContext = (): ThemeSettings => useContext<ThemeSettings>(ThemeContext);

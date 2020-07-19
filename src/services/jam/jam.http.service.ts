@@ -1,4 +1,5 @@
-// THIS FILE IS GENERATED, DO NOT EDIT MANUALLY
+// @generated
+// This file was automatically generated and should not be edited.
 
 import axios from 'axios';
 
@@ -29,7 +30,7 @@ export class JamHttpService {
 				headers: options.headers,
 				params: options.params,
 				reportProgress: options.reportProgress,
-				responseType: 'arraybuffer' as 'arraybuffer',
+				responseType: 'arraybuffer' as const,
 				withCredentials: options.withCredentials
 			};
 			const result = await axios.get(url, opts);

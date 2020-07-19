@@ -1,13 +1,12 @@
-import React, {PureComponent} from 'react';
-import {ActivityIndicator, StyleSheet, TouchableOpacity, View} from 'react-native';
-import ThemedText from './ThemedText';
-import {ITheme, staticTheme, withTheme} from '../style/theming';
-import JamImage from './JamImage';
-import dataService, {BaseEntry} from '../services/data';
-import NavigationService from '../services/navigation';
-import SwipeableListItem from './SwipeItem';
-import ThemedIcon from './ThemedIcon';
-import {Jam} from '../services/jam';
+import React, {useCallback} from 'react';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import {ThemedText} from './ThemedText';
+import {staticTheme, useTheme} from '../style/theming';
+import {JamImage} from './JamImage';
+import {NavigationService} from '../services/navigation';
+import {SwipeableListItem} from './SwipeItem';
+import {BaseEntry} from '../services/types';
+import {FavIcon} from './FavIcon';
 
 const styles = StyleSheet.create({
 	item: {
@@ -33,75 +32,36 @@ const styles = StyleSheet.create({
 	}
 });
 
-class Item extends PureComponent<{ item: BaseEntry, theme: ITheme }> {
-	state: {
-		loading: boolean;
-		jamState?: Jam.State;
-	} = {
-		loading: false,
-		jamState: undefined
-	};
+export const Item: React.FC<{ item: BaseEntry }> = React.memo(({item}) => {
+	const theme = useTheme();
 
-	private loadState = (): void => {
-		const {item} = this.props;
-		this.setState({loading: true});
-		dataService.jam.base.state(item.objType, {id: item.id}).then(jamState => {
-			this.setState({loading: false, jamState});
-		}).catch(e => console.error(e));
-	};
-
-	private click = (): void => {
-		const {item} = this.props;
+	const handlePress = useCallback((): void => {
 		NavigationService.navigateObj(item.objType, item.id, item.title);
-	};
+	}, [item]);
 
-	private left = (): JSX.Element => {
-		const {loading, jamState} = this.state;
-		if (!loading && jamState) {
-			const iconName = jamState.faved ? 'heart-full' : 'heart-empty';
-			return (<ThemedIcon name={iconName} style={styles.buttonText}/>);
-		}
-		if (!loading) {
-			setTimeout(() => {
-				this.loadState();
-			});
-		}
-		return (<ActivityIndicator size="large"/>);
-	};
+	const leftItem = useCallback((): JSX.Element => {
+		return (<View><FavIcon id={item.id} objType={item.objType}/></View>);
+	}, [item]);
 
-	private leftPress = (): void => {
-		const {item} = this.props;
-		const {jamState} = this.state;
-		if (item && jamState) {
-			this.setState({loading: true});
-			dataService.toggleFav(item.objType, item.id, jamState)
-				.then(result => {
-					this.setState({loading: false, jamState: result});
-				})
-				.catch(e => console.error(e));
-		}
-	};
+	const handleLeftPress = useCallback((): void => {
+		//
+	}, []);
 
-	render(): React.ReactElement {
-		const {item, theme} = this.props;
-		return (
-			<SwipeableListItem
-				height={64}
-				left={this.left}
-				leftWidth={64}
-				rightWidth={0}
-				onPressLeft={this.leftPress}
-			>
-				<TouchableOpacity onPress={this.click} style={[styles.item, {backgroundColor: theme.background}]}>
-					<JamImage id={item.id} size={46}/>
-					<View style={styles.itemContent}>
-						<ThemedText style={styles.itemText} numberOfLines={2}>{item.title}</ThemedText>
-						<ThemedText style={styles.itemFooter} numberOfLines={1}>{item.desc}</ThemedText>
-					</View>
-				</TouchableOpacity>
-			</SwipeableListItem>
-		);
-	}
-}
-
-export default withTheme(Item);
+	return (
+		<SwipeableListItem
+			height={64}
+			left={leftItem}
+			leftWidth={64}
+			rightWidth={0}
+			onPressLeft={handleLeftPress}
+		>
+			<TouchableOpacity onPress={handlePress} style={[styles.item, {backgroundColor: theme.background}]}>
+				<JamImage id={item.id} size={46}/>
+				<View style={styles.itemContent}>
+					<ThemedText style={styles.itemText} numberOfLines={2}>{item.title}</ThemedText>
+					<ThemedText style={styles.itemFooter} numberOfLines={1}>{item.desc}</ThemedText>
+				</View>
+			</TouchableOpacity>
+		</SwipeableListItem>
+	);
+});

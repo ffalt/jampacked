@@ -1,11 +1,12 @@
-import React, {RefObject} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {ActivityIndicator, KeyboardAvoidingView, ScrollView, StyleSheet, Text, TextInput, View} from 'react-native';
-import {staticTheme, withTheme} from '../style/theming';
-import {AppStackProps, AuthContext, Routing} from '../navigators/Routing';
-import LoginButton from '../components/LoginButton';
-import ThemedIcon from '../components/ThemedIcon';
-import Logo from '../components/Logo';
+import {staticTheme, useTheme} from '../style/theming';
+import {AppStackProps, Routing} from '../navigators/Routing';
+import {LoginButton} from '../components/LoginButton';
+import {ThemedIcon} from '../components/ThemedIcon';
+import {Logo} from '../components/Logo';
 import dataService from '../services/data';
+import {useAuth} from '../services/auth';
 
 const styles = StyleSheet.create({
 	container: {
@@ -89,178 +90,170 @@ const styles = StyleSheet.create({
 	}
 });
 
-class LoginScreen extends React.PureComponent<AppStackProps<Routing.AUTH>> {
-	state: {
-		server: string;
-		name: string;
-		password: string;
-		loading: boolean;
-		error?: string;
-	} = (__DEV__)
-		? {
-			server: 'http://10.0.2.2:4040',
-			name: 'admin',
-			password: 'admin',
-			loading: false,
-			error: undefined
-		}
-		: {
-			server: '',
-			name: '',
-			password: '',
-			loading: false,
-			error: undefined
-		};
-	static contextType = AuthContext;
-	userNameRef: RefObject<TextInput> = React.createRef();
-	passwordRef: RefObject<TextInput> = React.createRef();
-
-	async componentDidMount(): Promise<void> {
-		const server = (await dataService.getStored('last:server')) || '';
-		const name = (await dataService.getStored('last:user')) || '';
-		if (server || name) {
-			this.setState({server, name});
-		}
+const defaultState = (__DEV__)
+	? {
+		server: 'http://10.0.2.2:4040',
+		name: 'admin',
+		password: 'admin'
 	}
+	: {
+		server: '',
+		name: '',
+		password: ''
+	};
 
-	private checkEmpty(s: string): boolean {
+export const LoginScreen: React.FC<AppStackProps<Routing.AUTH>> = () => {
+	const [server, setServer] = useState<string>(defaultState.server);
+	const [name, setName] = useState<string>(defaultState.name);
+	const [password, setPassword] = useState<string>(defaultState.password);
+	const [loading, setLoading] = useState<boolean>(false);
+	const [error, setError] = useState<string | undefined>();
+	const auth = useAuth();
+	const userNameRef = useRef<TextInput | null>(null);
+	const passwordRef = useRef<TextInput | null>(null);
+	const theme = useTheme();
+
+	useEffect(() => {
+		dataService.getStored('last:server').then(result => {
+			setServer(result || '');
+		});
+		dataService.getStored('last:user').then(result => {
+			setName(result || '');
+		});
+	}, []);
+
+	const checkEmpty = (s: string): boolean => {
 		return (!s || s.trim().length === 0);
-	}
+	};
 
-	private login = async (): Promise<void> => {
-		const {server, name, password} = this.state;
-		if (this.checkEmpty(server)
-			|| this.checkEmpty(server)
-			|| this.checkEmpty(server)) {
-			this.setState({error: 'Please provide all fields to login.'});
+	const login = async (): Promise<void> => {
+		if (checkEmpty(server)
+			|| checkEmpty(name)
+			|| checkEmpty(password)) {
+			setError('Please provide all fields to login.');
 			return;
 		}
-		this.setState({loading: true, error: undefined});
+		setError(undefined);
+		setLoading(true);
 		try {
-			await this.context.login(server, name, password);
+			await auth.login(server, name, password);
 			await dataService.setStored('last:user', name);
 			await dataService.setStored('last:server', server);
 		} catch (e) {
-			this.setState({error: `${e}`});
+			setError(`${e}`);
 		}
-		this.setState({loading: false});
+		setLoading(false);
 	};
 
-	private focusUsername = (): void => {
-		this.userNameRef.current?.focus();
+	const focusUsername = (): void => {
+		userNameRef.current?.focus();
 	};
 
-	private focusPassword = (): void => {
-		this.passwordRef.current?.focus();
+	const focusPassword = (): void => {
+		passwordRef.current?.focus();
 	};
 
-	private onChangeServerText = (text: string): void => {
-		this.setState({server: text});
+	const onChangeServerText = (text: string): void => {
+		setServer(text);
 	};
 
-	private onChangeNameText = (text: string): void => {
-		this.setState({name: text});
+	const onChangeNameText = (text: string): void => {
+		setName(text);
 	};
 
-	private onChangePasswordText = (text: string): void => {
-		this.setState({password: text});
+	const onChangePasswordText = (text: string): void => {
+		setPassword(text);
 	};
 
-	render(): React.ReactElement {
-		const {error, loading, name, server, password} = this.state;
-		const {theme} = this.props;
+	const contentView = loading
+		? (<ActivityIndicator size="large" color={styles.buttonIndicator.color}/>)
+		: (<Text style={styles.buttonText}>Login</Text>);
 
-		const contentView = loading
-			? (<ActivityIndicator size="large" color={styles.buttonIndicator.color}/>)
-			: (<Text style={styles.buttonText}>Login</Text>);
+	const errorView = error && (
+		<View style={styles.error}>
+			<Text style={{color: theme.warning}}>{error}</Text>
+		</View>
+	);
 
-		const errorView = error && (
-			<View style={styles.error}>
-				<Text style={{color: theme.warning}}>{error}</Text>
-			</View>
-		);
-
-		return (
-			<ScrollView contentContainerStyle={styles.scrollContainer}>
-				<View style={styles.container}>
-					<View style={styles.headline}>
-						<Logo size={140}/>
-					</View>
-					<View style={styles.loginBlock}>
-						<KeyboardAvoidingView style={styles.content}>
-							<View style={[styles.inputGroup, {borderColor: theme.textColor}]}>
-								<View style={styles.inputIconWrapper}>
-									<ThemedIcon name="notes-beamed" style={styles.inputIcon}/>
-								</View>
-								<TextInput
-									style={[styles.input, {color: theme.textColor}]}
-									placeholderTextColor={theme.muted}
-									placeholder="Server"
-									autoCorrect={false}
-									value={server}
-									returnKeyType="next"
-									autoCapitalize="none"
-									autoCompleteType="name"
-									textContentType="URL"
-									importantForAutofill="yes"
-									onSubmitEditing={this.focusUsername}
-									onChangeText={this.onChangeServerText}
-									blurOnSubmit={false}
-								/>
-							</View>
-							<View style={[styles.inputGroup, {borderColor: theme.textColor}]}>
-								<View style={styles.inputIconWrapper}>
-									<ThemedIcon name="user" style={styles.inputIcon}/>
-								</View>
-								<TextInput
-									ref={this.userNameRef}
-									style={[styles.input, {color: theme.textColor}]}
-									placeholderTextColor={theme.muted}
-									placeholder="User"
-									autoCorrect={false}
-									value={name}
-									importantForAutofill="yes"
-									autoCompleteType="username"
-									textContentType="username"
-									returnKeyType="next"
-									autoCapitalize="none"
-									onSubmitEditing={this.focusPassword}
-									onChangeText={this.onChangeNameText}
-									blurOnSubmit={false}
-								/>
-							</View>
-							<View style={[styles.inputGroup, {borderColor: theme.textColor}]}>
-								<View style={styles.inputIconWrapper}>
-									<ThemedIcon name="key" style={styles.inputIcon}/>
-								</View>
-								<TextInput
-									ref={this.passwordRef}
-									style={[styles.input, {color: theme.textColor}]}
-									placeholderTextColor={theme.muted}
-									placeholder="Password"
-									autoCompleteType="password"
-									returnKeyType="done"
-									textContentType="password"
-									importantForAutofill="yes"
-									autoCorrect={false}
-									value={password}
-									secureTextEntry={true}
-									onChangeText={this.onChangePasswordText}
-									autoCapitalize="none"
-								/>
-							</View>
-						</KeyboardAvoidingView>
-					</View>
-					<View style={styles.buttons}>
-						{errorView}
-						<LoginButton style={styles.button} onPress={this.login}>
-							{contentView}
-						</LoginButton>
-					</View>
+	return (
+		<ScrollView contentContainerStyle={styles.scrollContainer}>
+			<View style={styles.container}>
+				<View style={styles.headline}>
+					<Logo size={140}/>
 				</View>
-			</ScrollView>
-		);
-	}
-}
+				<View style={styles.loginBlock}>
+					<KeyboardAvoidingView style={styles.content}>
+						<View style={[styles.inputGroup, {borderColor: theme.textColor}]}>
+							<View style={styles.inputIconWrapper}>
+								<ThemedIcon name="notes-beamed" size={styles.inputIcon.fontSize}/>
+							</View>
+							<TextInput
+								style={[styles.input, {color: theme.textColor}]}
+								placeholderTextColor={theme.muted}
+								placeholder="Server"
+								autoCorrect={false}
+								value={server}
+								returnKeyType="next"
+								autoCapitalize="none"
+								autoCompleteType="name"
+								textContentType="URL"
+								importantForAutofill="yes"
+								onSubmitEditing={focusUsername}
+								onChangeText={onChangeServerText}
+								blurOnSubmit={false}
+							/>
+						</View>
+						<View style={[styles.inputGroup, {borderColor: theme.textColor}]}>
+							<View style={styles.inputIconWrapper}>
+								<ThemedIcon name="user" size={styles.inputIcon.fontSize}/>
+							</View>
+							<TextInput
+								ref={userNameRef}
+								style={[styles.input, {color: theme.textColor}]}
+								placeholderTextColor={theme.muted}
+								placeholder="User"
+								autoCorrect={false}
+								value={name}
+								importantForAutofill="yes"
+								autoCompleteType="username"
+								textContentType="username"
+								returnKeyType="next"
+								autoCapitalize="none"
+								onSubmitEditing={focusPassword}
+								onChangeText={onChangeNameText}
+								blurOnSubmit={false}
+							/>
+						</View>
+						<View style={[styles.inputGroup, {borderColor: theme.textColor}]}>
+							<View style={styles.inputIconWrapper}>
+								<ThemedIcon name="key" size={styles.inputIcon.fontSize}/>
+							</View>
+							<TextInput
+								ref={passwordRef}
+								style={[styles.input, {color: theme.textColor}]}
+								placeholderTextColor={theme.muted}
+								placeholder="Password"
+								autoCompleteType="password"
+								returnKeyType="done"
+								textContentType="password"
+								importantForAutofill="yes"
+								autoCorrect={false}
+								value={password}
+								secureTextEntry={true}
+								onChangeText={onChangePasswordText}
+								autoCapitalize="none"
+							/>
+						</View>
+					</KeyboardAvoidingView>
+				</View>
+				<View style={styles.buttons}>
+					{errorView}
+					<LoginButton style={styles.button} onPress={login}>
+						{contentView}
+					</LoginButton>
+				</View>
+			</View>
+		</ScrollView>
+	);
+};
 
-export default withTheme(LoginScreen);

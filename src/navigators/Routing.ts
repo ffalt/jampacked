@@ -1,19 +1,5 @@
-import React from 'react';
-import {StackNavigationProp} from '@react-navigation/stack';
 import {Route, RouteProp} from '@react-navigation/core';
-import {ITheme} from '../style/theming';
-
-export const AuthContext = React.createContext({
-	hasUser: false,
-	isLoading: true,
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	login: async (server: string, name: string, password: string): Promise<void> => {
-		// dummy
-	},
-	logout: async (): Promise<void> => {
-		// dummy
-	}
-});
+import {StackNavigationProp} from '@react-navigation/stack';
 
 // App Routes
 
@@ -32,7 +18,6 @@ export type AppStackNavigatorParamList = {
 export type AppStackProps<T extends keyof AppStackNavigatorParamList> = {
 	navigation: StackNavigationProp<AppStackNavigatorParamList, T>;
 	route: Route<T>;
-	theme: ITheme;
 };
 
 // Modal Routes
@@ -47,10 +32,9 @@ export type ModalStackNavigatorParamList = {
 	Player: { toQueue: boolean };
 };
 
-export type ModalStackWithThemeProps<T extends keyof ModalStackNavigatorParamList> = {
+export type ModalStackProps<T extends keyof ModalStackNavigatorParamList> = {
 	navigation: StackNavigationProp<ModalStackNavigatorParamList, T>;
 	route: RouteProp<ModalStackNavigatorParamList, T>;
-	theme: ITheme;
 };
 
 // Bottom Tab Routes
@@ -70,12 +54,6 @@ export type BottomTabNavigatorParamList = {
 export type BottomTabProps<T extends keyof BottomTabNavigatorParamList> = {
 	navigation: StackNavigationProp<BottomTabNavigatorParamList, T>;
 	route: Route<T>;
-};
-
-export type BottomTabWithThemeProps<T extends keyof BottomTabNavigatorParamList> = {
-	navigation: StackNavigationProp<BottomTabNavigatorParamList, T>;
-	route: Route<T>;
-	theme: ITheme;
 };
 
 export type BottomTabParams = {
@@ -126,11 +104,5 @@ export type HomeStackNavigatorParamList = {
 
 export type HomeStackProps<T extends keyof HomeStackNavigatorParamList> = {
 	navigation: StackNavigationProp<HomeStackNavigatorParamList, T>;
-	route: Route<T>;
-};
-
-export type HomeStackWithThemeProps<T extends keyof HomeStackNavigatorParamList> = {
-	navigation: StackNavigationProp<HomeStackNavigatorParamList, T>;
 	route: RouteProp<HomeStackNavigatorParamList, T>;
-	theme: ITheme;
 };

@@ -8,8 +8,6 @@ const styles = StyleSheet.create({
 	}
 });
 
-export const MenuDivider: React.FC<{ color?: string }> = ({color}: { color?: string }) => (
+export const MenuDivider: React.FC<{ color?: string }> = React.memo(({color}: { color?: string }) => (
 	<View style={[styles.divider, {borderBottomColor: color || 'rgba(0,0,0,0.12)'}]}/>
-);
-
-export default MenuDivider;
+));

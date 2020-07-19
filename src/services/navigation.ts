@@ -1,11 +1,11 @@
 import {CommonActions, NavigationContainerRef} from '@react-navigation/core';
-import {Navig} from './data';
 import {JamObjectType} from './jam';
 import {HomeRoute} from '../navigators/Routing';
+import {Navig} from './types';
 
 let navigator: NavigationContainerRef;
 
-export default class NavigationService {
+export class NavigationService {
 
 	static setTopLevelNavigator(navigatorRef: NavigationContainerRef): void {
 		navigator = navigatorRef;

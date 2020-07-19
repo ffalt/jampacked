@@ -1,12 +1,12 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import {Button, StyleSheet, View} from 'react-native';
-import {AuthContext, BottomTabProps, BottomTabRoute} from '../navigators/Routing';
+import {BottomTabProps, BottomTabRoute} from '../navigators/Routing';
 import {ThemesView} from '../components/ThemesView';
-import ThemedText from '../components/ThemedText';
+import {ThemedText} from '../components/ThemedText';
 import {staticTheme} from '../style/theming';
-import JamImage from '../components/JamImage';
-import dataService from '../services/data';
-import DataCachingView from '../components/DataCachingView';
+import {JamImage} from '../components/JamImage';
+import {DataCachingView} from '../components/DataCachingView';
+import {useAuth} from '../services/auth';
 
 const styles = StyleSheet.create({
 	container: {
@@ -31,42 +31,35 @@ const styles = StyleSheet.create({
 		borderBottomColor: 'rgba(0,0,0,0.7)',
 		borderBottomWidth: 1,
 		marginBottom: staticTheme.marginSmall
-	},
-	userName: {
 	}
 });
 
-class UserScreen extends React.PureComponent<BottomTabProps<BottomTabRoute.SETTINGS>> {
-	static contextType = AuthContext;
+export const UserScreen: React.FC<BottomTabProps<BottomTabRoute.SETTINGS>> = () => {
+	const auth = useAuth();
 
-	private logout = (): void => {
-		const auth = this.context;
+	const logout = useCallback((): void => {
 		auth.logout()
 			.catch((e: any) => {
 				console.error(e);
 			});
-	};
+	}, [auth]);
 
-	render(): React.ReactElement {
-		return (
-			<View style={styles.container}>
-				<ThemedText style={styles.section}>Account</ThemedText>
-				<View style={styles.userSection}>
-					<JamImage id={dataService.currentUserID} size={80} style={styles.userImage}/>
+	return (
+		<View style={styles.container}>
+			<ThemedText style={styles.section}>Account</ThemedText>
+			<View style={styles.userSection}>
+				<JamImage id={auth.currentUserID()} size={80} style={styles.userImage}/>
+				<View>
 					<View>
-						<View style={styles.userName}>
-							<ThemedText>{dataService.currentUserName}</ThemedText>
-							<Button title="Logout" onPress={this.logout}/>
-						</View>
+						<ThemedText>{auth.currentUserName()}</ThemedText>
+						<Button title="Logout" onPress={logout}/>
 					</View>
 				</View>
-				<ThemedText style={styles.section}>Cache</ThemedText>
-				<DataCachingView/>
-				<ThemedText style={styles.section}>Theme</ThemedText>
-				<ThemesView/>
 			</View>
-		);
-	}
-}
-
-export default UserScreen;
+			<ThemedText style={styles.section}>Cache</ThemedText>
+			<DataCachingView/>
+			<ThemedText style={styles.section}>Theme</ThemedText>
+			<ThemesView/>
+		</View>
+	);
+};

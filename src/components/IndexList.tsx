@@ -1,12 +1,13 @@
-import React from 'react';
-import {Dimensions, RefreshControl, StyleSheet} from 'react-native';
-import {ITheme, withTheme} from '../style/theming';
-import PageHeader from './PageHeader';
-import Separator from './Separator';
-import AtoZList from './AtoZList';
-import {Index, IndexEntry} from '../services/data';
-import Item from './Item';
-import ImageItem from './ImageItem';
+import React, {useCallback, useState} from 'react';
+import {RefreshControl, StyleSheet} from 'react-native';
+import {useTheme} from '../style/theming';
+import {PageHeader} from './PageHeader';
+import {Separator} from './Separator';
+import {AtoZList} from './AtoZList';
+import {Item} from './Item';
+import {ImageItem} from './ImageItem';
+import {Index, IndexEntry} from '../services/types';
+import {useWindowWidth} from '../utils/dimension.hook';
 
 const style = StyleSheet.create({
 	row: {
@@ -15,73 +16,40 @@ const style = StyleSheet.create({
 	}
 });
 
-class IndexList extends React.PureComponent<{
-	index: Index;
+export const IndexList: React.FC<{
+	index?: Index;
 	title: string;
 	titleIcon: string;
 	refreshing: boolean;
-	theme: ITheme;
 	onRefresh: () => void;
-}> {
-	state: {
-		tiles: boolean;
-	} = {
-		tiles: false
-	};
-	numColumns = 3;
-	width = Dimensions.get('window').width;
-	tileSize = this.width / (this.numColumns || 1);
+}> = ({title, titleIcon, index, refreshing, onRefresh}) => {
+	const [tiles, setTiles] = useState<boolean>(false);
+	const numColumns = 3;
+	const width = useWindowWidth();
+	const tileSize = width / (numColumns || 1);
+	const theme = useTheme();
 
-	private toggleView = (): void => {
-		const {tiles} = this.state;
-		this.setState({tiles: !tiles});
-	};
+	const toggleView = useCallback((): void => {
+		setTiles(!tiles);
+	}, [tiles]);
 
-	private renderHeader = (): JSX.Element => {
-		const {tiles} = this.state;
-		const {title, titleIcon} = this.props;
-		return (<PageHeader title={title} titleIcon={titleIcon} tiles={tiles} toggleView={this.toggleView}/>);
-	};
+	const ListHeaderComponent = (<PageHeader title={title} titleIcon={titleIcon} tiles={tiles} toggleView={toggleView}/>);
 
-	private renderItemRow = ({item}: { item: IndexEntry }): JSX.Element => <Item item={item}/>;
-	private renderItemTile = ({item}: { item: IndexEntry }): JSX.Element => (<ImageItem item={item} size={this.tileSize}/>);
-	private keyExtractor = (item: IndexEntry): string => item.id;
+	const renderItemRow = useCallback(({item}: { item: IndexEntry }): JSX.Element => (<Item item={item}/>), []);
+	const renderItemTile = useCallback(({item}: { item: IndexEntry }): JSX.Element => (<ImageItem item={item} size={tileSize}/>), [tileSize]);
+	const keyExtractor = (item: IndexEntry): string => item.id;
 
-	render(): React.ReactElement {
-		const {theme, index, refreshing, onRefresh} = this.props;
-		const {tiles} = this.state;
-		const data = index || [];
-		if (tiles) {
-			return (
-				<AtoZList
-					data={data}
-					key="tiles"
-					renderItem={this.renderItemTile}
-					keyExtractor={this.keyExtractor}
-					numColumns={this.numColumns}
-					ListHeaderComponent={this.renderHeader}
-					columnWrapperStyle={style.row}
-					itemHeight={this.tileSize}
-					refreshControl={(
-						<RefreshControl
-							refreshing={refreshing}
-							onRefresh={onRefresh}
-							progressViewOffset={90}
-							progressBackgroundColor={theme.refreshCtrlBackground}
-							colors={theme.refreshCtrlColors}
-						/>
-					)}
-				/>
-			);
-		}
+	if (tiles) {
 		return (
 			<AtoZList
-				data={data}
-				key="rows"
-				renderItem={this.renderItemRow}
-				keyExtractor={this.keyExtractor}
-				ItemSeparatorComponent={Separator}
-				ListHeaderComponent={this.renderHeader}
+				data={index}
+				key="tiles"
+				renderItem={renderItemTile}
+				keyExtractor={keyExtractor}
+				numColumns={numColumns}
+				ListHeaderComponent={ListHeaderComponent}
+				columnWrapperStyle={style.row}
+				itemHeight={tileSize}
 				refreshControl={(
 					<RefreshControl
 						refreshing={refreshing}
@@ -91,11 +59,28 @@ class IndexList extends React.PureComponent<{
 						colors={theme.refreshCtrlColors}
 					/>
 				)}
-				itemHeight={65}
 			/>
 		);
 	}
+	return (
+		<AtoZList
+			data={index}
+			key="rows"
+			renderItem={renderItemRow}
+			keyExtractor={keyExtractor}
+			ItemSeparatorComponent={Separator}
+			ListHeaderComponent={ListHeaderComponent}
+			refreshControl={(
+				<RefreshControl
+					refreshing={refreshing}
+					onRefresh={onRefresh}
+					progressViewOffset={90}
+					progressBackgroundColor={theme.refreshCtrlBackground}
+					colors={theme.refreshCtrlColors}
+				/>
+			)}
+			itemHeight={65}
+		/>
+	);
+};
 
-}
-
-export default withTheme(IndexList);

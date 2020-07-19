@@ -1,19 +1,20 @@
 import React from 'react';
-import {StyleProp, TextStyle} from 'react-native';
 import {useTheme} from '../style/theming';
 import {FontelloIcon} from './FontelloIcon';
 
 interface ThemedIconProps {
-	name: string,
-	style?: StyleProp<TextStyle> | Array<StyleProp<TextStyle> | undefined | false>;
+	name: string;
+	color?: string;
+	size?: number;
 }
 
-const ThemedIcon: React.FC<ThemedIconProps> = (props?: ThemedIconProps) => {
+export const ThemedIcon: React.FC<ThemedIconProps> = React.memo(({name, size, color}) => {
 	const theme = useTheme();
+	const iconStyle = [{color: color || theme.textColor, fontSize: size}];
 	return (
-		<FontelloIcon name={props?.name} style={[{color: theme.textColor}, props?.style]}/>
+		<FontelloIcon name={name} style={iconStyle}/>
 	);
-};
+});
 
 interface TabBarIconProps {
 	focused: boolean;
@@ -32,5 +33,3 @@ export function getTabBarIcon(name: string): TabBarIconFunc {
 		);
 	};
 }
-
-export default ThemedIcon;

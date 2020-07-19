@@ -4,8 +4,7 @@ module.exports = {
 		"eslint:recommended",
 		"plugin:@typescript-eslint/eslint-recommended",
 		"plugin:@typescript-eslint/recommended",
-		"@react-native-community",
-		"airbnb-typescript"
+		"@react-native-community"
 	],
 	parser: "@typescript-eslint/parser",
 	plugins: ["@typescript-eslint"],

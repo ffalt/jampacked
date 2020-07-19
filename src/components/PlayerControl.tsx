@@ -1,8 +1,8 @@
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import React from 'react';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {JamPlayer} from '../services/player';
-import ThemedIcon from './ThemedIcon';
-import PlayButton from './PlayButton';
+import {ThemedIcon} from './ThemedIcon';
+import {PlayButton} from './PlayButton';
 
 const styles = StyleSheet.create({
 	playerControl: {
@@ -25,25 +25,23 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default class PlayerControl extends React.PureComponent {
-	render(): React.ReactElement {
-		const forwardDisabled = false;
-		return (
-			<View style={styles.playerControl}>
-				<TouchableOpacity onPress={JamPlayer.skipToPrevious} style={styles.button}>
-					<ThemedIcon name="step-backward"/>
-				</TouchableOpacity>
-				<TouchableOpacity onPress={JamPlayer.skipBackward} style={styles.button}>
-					<ThemedIcon name="backward"/>
-				</TouchableOpacity>
-				<PlayButton/>
-				<TouchableOpacity disabled={forwardDisabled} onPress={JamPlayer.skipForward} style={styles.button}>
-					<ThemedIcon name="forward" style={forwardDisabled && styles.disabled}/>
-				</TouchableOpacity>
-				<TouchableOpacity onPress={JamPlayer.skipToNext} style={styles.button}>
-					<ThemedIcon name="step-forward"/>
-				</TouchableOpacity>
-			</View>
-		);
-	}
-}
+export const PlayerControl: React.FC = () => {
+	const forwardDisabled = false;
+	return (
+		<View style={styles.playerControl}>
+			<TouchableOpacity onPress={JamPlayer.skipToPrevious} style={styles.button}>
+				<ThemedIcon name="step-backward"/>
+			</TouchableOpacity>
+			<TouchableOpacity onPress={JamPlayer.skipBackward} style={styles.button}>
+				<ThemedIcon name="backward"/>
+			</TouchableOpacity>
+			<PlayButton/>
+			<TouchableOpacity disabled={forwardDisabled} onPress={JamPlayer.skipForward} style={[styles.button,forwardDisabled && styles.disabled]}>
+				<ThemedIcon name="forward"/>
+			</TouchableOpacity>
+			<TouchableOpacity onPress={JamPlayer.skipToNext} style={styles.button}>
+				<ThemedIcon name="step-forward"/>
+			</TouchableOpacity>
+		</View>
+	);
+};

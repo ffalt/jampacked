@@ -1,0 +1,16 @@
+{
+  "name": "Jam GraphQL Schema",
+  "schemaPath": "schema.graphql",
+  "extensions": {
+    "endpoints": {
+      "Jam GraphQL Endpoint": {
+        "url": "http://localhost:4040/graphql",
+        "headers": {
+          "user-agent": "JS GraphQL",
+          "Authorization": "Bearer ${env: TOKEN}"
+         },
+        "introspect": false
+      }
+    }
+  }
+}

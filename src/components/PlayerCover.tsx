@@ -1,7 +1,7 @@
 import {StyleSheet, View} from 'react-native';
 import React from 'react';
 import {useCurrentTrackID} from '../services/player';
-import JamImage from './JamImage';
+import {JamImage} from './JamImage';
 
 const styles = StyleSheet.create({
 	cover: {
@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const PlayerCover: React.FC = () => {
+export const PlayerCover: React.FC = () => {
 	const id = useCurrentTrackID();
 	if (!id) {
 		return <></>;
@@ -27,5 +27,3 @@ const PlayerCover: React.FC = () => {
 		</View>
 	);
 };
-
-export default PlayerCover;

@@ -1,9 +1,8 @@
-// THIS FILE IS GENERATED, DO NOT EDIT MANUALLY
+// @generated
+// This file was automatically generated and should not be edited.
 
 import {JamAuthService} from './jam.auth.service';
 import {JamHttpService} from './jam.http.service';
-import {JamParameters} from './model/jam-rest-params';
-import {Jam} from './model/jam-rest-data';
 
 export class JamBaseService {
 
@@ -15,7 +14,7 @@ export class JamBaseService {
 		if (forDOM && this.authService.auth?.token) {
 			buildParams.bearer = this.authService.auth?.token;
 		}
-		return {url: this.authService.auth?.server + this.authService.apiPrefix + view, parameters: buildParams};
+		return {url: this.authService.auth?.server + JamAuthService.apiPrefix + view, parameters: buildParams};
 	}
 
 	static flattenParams(params: any): string {
@@ -116,25 +115,4 @@ export class JamBaseService {
 		options.reportProgress = true;
 		return this.http.postObserve<T>(url, formData, options, onUploadProgress);
 	}
-
-	async state(type: string, params: JamParameters.ID): Promise<Jam.State> {
-		return this.requestData<Jam.State>(`${type}/state`, params);
-	}
-
-	async fav(type: string, params: JamParameters.Fav): Promise<Jam.State> {
-		return this.requestPostData<Jam.State>(`${type}/fav/update`, params);
-	}
-
-	async rate(type: string, params: JamParameters.Rate): Promise<Jam.State> {
-		return this.requestPostData<Jam.State>(`${type}/rate/update`, params);
-	}
-
-	image_url(id: string, size?: number, format?: JamParameters.ImageFormatType): string {
-		if ((!id) || (id.length === 0)) {
-			return '';
-		}
-		const s = (size !== undefined ? `-${size.toString()}` : '');
-		return this.buildRequestUrl(`image/${id}${s}${(format ? `.${format}` : '')}`);
-	}
-
 }

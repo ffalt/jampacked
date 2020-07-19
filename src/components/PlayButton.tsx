@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {JamPlayer, usePlaybackStateIsPlaying} from '../services/player';
-import ThemedIcon from './ThemedIcon';
+import {ThemedIcon} from './ThemedIcon';
 
 const styles = StyleSheet.create({
 	playButton: {
@@ -19,20 +19,14 @@ const styles = StyleSheet.create({
 	}
 });
 
-const PlayButton: React.FC = () => {
+export const PlayButton: React.FC = () => {
 	const isPlaying = usePlaybackStateIsPlaying();
 	const icon = isPlaying ? 'pause' : 'play';
-	const toggle = (): void => {
-		JamPlayer.toggle()
-			.catch(e => console.error(e));
-	};
 	return (
-		<TouchableOpacity onPress={toggle}>
+		<TouchableOpacity onPress={JamPlayer.toggle}>
 			<View style={styles.playButton}>
-				<ThemedIcon name={icon} style={[styles.playButtonIcon]}/>
+				<ThemedIcon name={icon} size={styles.playButtonIcon.fontSize} color={styles.playButtonIcon.color}/>
 			</View>
 		</TouchableOpacity>
 	);
 };
-
-export default PlayButton;

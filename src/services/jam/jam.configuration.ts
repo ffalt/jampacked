@@ -1,4 +1,5 @@
-// THIS FILE IS GENERATED, DO NOT EDIT MANUALLY
+// @generated
+// This file was automatically generated and should not be edited.
 
 import {Auth} from './model/jam-auth';
 import {Jam} from './model/jam-rest-data';

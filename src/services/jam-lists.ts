@@ -1,4 +1,4 @@
-import {AlbumType, JamObjectType, JamParameters} from './jam';
+import {AlbumType, JamObjectType, ListType} from './jam';
 
 export interface JamAlbumType {
 	id: AlbumType;
@@ -97,10 +97,10 @@ export function getUrlTypeByID(val?: string): JamType | undefined {
 	return JamUrlTypes.find(part => part.id === val);
 }
 
-export const ListTypeUrlNamesKeys: { [key: string]: JamParameters.ListType } = {
-	random: 'random',
-	favorites: 'faved',
-	'top-rated': 'highest',
-	'most-played': 'frequent',
-	'recently-played': 'recent'
+export const ListTypeUrlNamesKeys: { [key: string]: ListType } = {
+	random: ListType.random,
+	favorites: ListType.faved,
+	'top-rated': ListType.highest,
+	'most-played': ListType.frequent,
+	'recently-played': ListType.recent
 };

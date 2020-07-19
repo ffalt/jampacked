@@ -1,23 +1,15 @@
 import React from 'react';
-import {BottomTabBar, createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {View} from 'react-native';
-import HomeStackNavigator from './HomeStackNavigator';
-import UserScreen from '../screens/UserScreen';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {HomeStackNavigator} from './HomeStackNavigator';
+import {UserScreen} from '../screens/UserScreen';
 import {BottomTabParams, BottomTabRoute} from './Routing';
-import SearchScreen from '../screens/SearchScreen';
-import PlayerStrip from '../components/PlayerStrip';
+import {SearchScreen} from '../screens/SearchScreen';
 import {getTabBarIcon} from '../components/ThemedIcon';
+import {JamTabBar} from './JamTabBar';
 
 const BottomTabs = createBottomTabNavigator<BottomTabParams>();
 
-const JamTabBar: React.FC<any> = (props: any) => (
-	<View>
-		<PlayerStrip/>
-		<BottomTabBar {...props} showLabel={false} />
-	</View>
-);
-
-const BottomTabNavigator: React.FC = () => (
+export const BottomTabNavigator: React.FC = () => (
 	<BottomTabs.Navigator tabBar={JamTabBar}>
 		<BottomTabs.Screen
 			name={BottomTabRoute.HOME}
@@ -36,5 +28,3 @@ const BottomTabNavigator: React.FC = () => (
 		/>
 	</BottomTabs.Navigator>
 );
-
-export default BottomTabNavigator;

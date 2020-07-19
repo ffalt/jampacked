@@ -2,11 +2,11 @@ import React from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {JamPlayer, useCurrentTrack} from '../services/player';
-import JamImage from './JamImage';
-import ThemedText from './ThemedText';
+import {JamImage} from './JamImage';
+import {ThemedText} from './ThemedText';
 import {staticTheme, useTheme} from '../style/theming';
-import ThemedIcon from './ThemedIcon';
-import PlayButton from './PlayButton';
+import {ThemedIcon} from './ThemedIcon';
+import {PlayButton} from './PlayButton';
 import {ModalRouting} from '../navigators/Routing';
 import {MiniProgressBar} from './PlayerProgressMini';
 
@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const PlayerStrip: React.FC = () => {
+export const PlayerStrip: React.FC = () => {
 	const track = useCurrentTrack();
 	const navigation = useNavigation();
 	const theme = useTheme();
@@ -100,17 +100,16 @@ const PlayerStrip: React.FC = () => {
 						<ThemedIcon name="backward"/>
 					</TouchableOpacity>
 					<PlayButton/>
-					<TouchableOpacity disabled={forwardDisabled} onPress={JamPlayer.skipForward} style={styles.button}>
-						<ThemedIcon name="forward" style={forwardDisabled && styles.disabled}/>
+					<TouchableOpacity disabled={forwardDisabled} onPress={JamPlayer.skipForward} style={[styles.button, forwardDisabled && styles.disabled]}>
+						<ThemedIcon name="forward"/>
 					</TouchableOpacity>
 				</View>
 				<TouchableOpacity onPress={showQueue} style={styles.button}>
 					<ThemedIcon name="queue"/>
 				</TouchableOpacity>
 			</View>
-			<MiniProgressBar theme={theme}/>
+			<MiniProgressBar/>
 		</View>
 	);
 };
 
-export default PlayerStrip;

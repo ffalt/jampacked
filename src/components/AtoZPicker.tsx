@@ -1,6 +1,6 @@
 import React from 'react';
 import {PanResponder, StyleSheet, Text, TouchableWithoutFeedback, View} from 'react-native';
-import AtoZLetter from './AtoZLetter';
+import {AtoZLetter} from './AtoZLetter';
 import {ITheme, withTheme} from '../style/theming';
 
 const styles = StyleSheet.create({
@@ -117,8 +117,9 @@ class AtoZPicker<T extends SectionItem> extends React.PureComponent<AtoZPickerPr
 				letters.push(item.letter);
 			}
 		});
-		this.setState({letters});
-
+		if (this.state.letters.length + letters.length > 0) {
+			this.setState({letters});
+		}
 	}
 
 	private check(y: number): void {

@@ -1,7 +1,7 @@
 import {StyleSheet, View} from 'react-native';
 import React from 'react';
 import {useCurrentTrack} from '../services/player';
-import ThemedText from './ThemedText';
+import {ThemedText} from './ThemedText';
 import {staticTheme} from '../style/theming';
 
 const styles = StyleSheet.create({
@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const PlayerTrack: React.FC = () => {
+export const PlayerTrack: React.FC = () => {
 	const currentTrack = useCurrentTrack() || {artwork: undefined, title: undefined, artist: undefined};
 	return (
 		<View style={styles.card}>
@@ -27,5 +27,3 @@ const PlayerTrack: React.FC = () => {
 		</View>
 	);
 };
-
-export default PlayerTrack;

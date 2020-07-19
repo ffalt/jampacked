@@ -1,21 +1,20 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import SplashScreen from 'react-native-splash-screen';
-import LoadingScreen from '../screens/LoadingScreen';
-import {AppStackNavigatorParamList, AuthContext, Routing} from './Routing';
-import LoginScreen from '../screens/LoginScreen';
+import {LoadingScreen} from '../screens/LoadingScreen';
+import {AppStackNavigatorParamList, Routing} from './Routing';
+import {LoginScreen} from '../screens/LoginScreen';
 import {ModalNavigator} from './ModalNavigator';
 import dataService from '../services/data';
 import {ThemeContext} from '../style/theming';
+import {defaultAuth, AuthContext} from '../services/auth';
+import {Jam} from '../services/jam';
 
 const Stack = createStackNavigator<AppStackNavigatorParamList>();
 
 export class AppNavigator extends React.PureComponent {
 	static contextType = ThemeContext;
-	state = {
-		hasUser: false,
-		isLoading: true
-	};
+	state: { hasUser: boolean; isLoading: boolean; user?: Jam.SessionUser } = {hasUser: false, isLoading: true, user: undefined};
 
 	async componentDidMount(): Promise<void> {
 		const themeSettings = this.context;
@@ -25,7 +24,7 @@ export class AppNavigator extends React.PureComponent {
 		} catch (e) {
 			console.error(e);
 		}
-		this.setState({hasUser: dataService.jam.auth.isLoggedIn(), isLoading: false});
+		this.setState({hasUser: dataService.jam.auth.isLoggedIn(), user: dataService.jam.auth.user, isLoading: false});
 		try {
 			await themeSettings.loadUserTheme();
 		} catch (e) {
@@ -36,7 +35,7 @@ export class AppNavigator extends React.PureComponent {
 
 	private loginHandler = async (server: string, name: string, password: string): Promise<void> => {
 		await dataService.jam.auth.login(server, name, password);
-		this.setState({hasUser: dataService.jam.auth.isLoggedIn()});
+		this.setState({hasUser: dataService.jam.auth.isLoggedIn(), user: dataService.jam.auth.user});
 	};
 
 	private logoutHandler = async (): Promise<void> => {
@@ -45,13 +44,15 @@ export class AppNavigator extends React.PureComponent {
 		} catch (e) {
 			console.error(e);
 		}
-		this.setState({hasUser: false});
+		this.setState({hasUser: false, user: undefined});
 	};
 
 	render(): React.ReactElement {
-		const {hasUser, isLoading} = this.state;
+		const {hasUser, isLoading, user} = this.state;
 		const value = {
+			...defaultAuth,
 			hasUser,
+			user,
 			isLoading,
 			login: this.loginHandler,
 			logout: this.logoutHandler

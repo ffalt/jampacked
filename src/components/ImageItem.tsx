@@ -1,50 +1,42 @@
-import React, {PureComponent} from 'react';
+import React, {useCallback} from 'react';
 import {StyleSheet, TouchableOpacity} from 'react-native';
 import FastImage from 'react-native-fast-image';
-import {ITheme, withTheme} from '../style/theming';
-import dataService, {BaseEntry} from '../services/data';
-import NavigationService from '../services/navigation';
+import {useTheme} from '../style/theming';
+import {NavigationService} from '../services/navigation';
+import {BaseEntry} from '../services/types';
+import {useAuth} from '../services/auth';
 
 const styles = StyleSheet.create({
 	image: {flex: 1}
 });
 
-class ImageItem extends PureComponent<{ item: BaseEntry; theme: ITheme; size: number; }> {
+export const ImageItem: React.FC<{ item: BaseEntry; size: number; }> = React.memo(({item, size}) => {
+	const theme = useTheme();
+	const auth = useAuth();
 
-	private click = (): void => {
-		const {item} = this.props;
+	const handleClick = useCallback((): void => {
 		const {id, title, objType} = item;
 		NavigationService.navigateObj(objType, id, title);
-	};
+	}, [item]);
 
-	render(): React.ReactElement {
-		const {item, theme, size} = this.props;
-		if (!item || !item.id) {
-			return (<></>);
-		}
-		const headers = dataService.currentUserToken ? {Authorization: `Bearer ${dataService.currentUserToken}`} : undefined;
-		const source = {
-			uri: dataService.jam.image.url(item.id, 300, undefined, !headers),
-			headers,
-			priority: FastImage.priority.normal
-		};
-		return (
-			<TouchableOpacity
-				onPress={this.click}
-				style={{
-					height: size,
-					width: size,
-					backgroundColor: theme.background
-				}}
-			>
-				<FastImage
-					style={styles.image}
-					source={source}
-					resizeMode={FastImage.resizeMode.contain}
-				/>
-			</TouchableOpacity>
-		);
+	const source = auth.imgSource(item?.id, 300);
+	if (!item || !item.id || !source || !source.uri) {
+		return (<></>);
 	}
-}
-
-export default withTheme(ImageItem);
+	return (
+		<TouchableOpacity
+			onPress={handleClick}
+			style={{
+				height: size,
+				width: size,
+				backgroundColor: theme.background
+			}}
+		>
+			<FastImage
+				style={styles.image}
+				source={source}
+				resizeMode={FastImage.resizeMode.contain}
+			/>
+		</TouchableOpacity>
+	);
+});

@@ -1,13 +1,9 @@
 import {ActivityIndicator, ScrollView, StyleSheet} from 'react-native';
-import React, {PureComponent} from 'react';
-import {ITheme, staticTheme, withTheme} from '../style/theming';
-import dataService from '../services/data';
-import ThemedText from './ThemedText';
-
-interface LyricsProps {
-	id?: string | null;
-	theme: ITheme;
-}
+import React, {useEffect, useState} from 'react';
+import {staticTheme, useTheme} from '../style/theming';
+import {ThemedText} from './ThemedText';
+import {useLazyTrackLyricsQuery} from '../services/queries/lyrics';
+import {snackError} from '../services/snack';
 
 const styles = StyleSheet.create({
 	container: {
@@ -23,57 +19,36 @@ const styles = StyleSheet.create({
 	}
 });
 
-class Lyrics extends PureComponent<LyricsProps> {
-	state: { lyrics: string } = {
-		lyrics: ''
-	};
+export const Lyrics: React.FC<{ id?: string | null }> = ({id}) => {
+	const [text, setText] = useState<string>('');
+	const theme = useTheme();
+	const [getLyrics, {lyrics, loading, error}] = useLazyTrackLyricsQuery();
 
-	componentDidMount(): void {
-		this.load();
-	}
-
-	componentDidUpdate(prevProps: LyricsProps): void {
-		const newProps = this.props;
-		if (prevProps.id !== newProps.id) {
-			this.load();
-		}
-	}
-
-	load(): void {
-		const {id} = this.props;
+	useEffect(() => {
 		if (id) {
-			dataService.lyrics(id).then(lyrics => {
-				if (lyrics && lyrics.lyrics) {
-					this.setState({lyrics: lyrics.lyrics});
-				} else {
-					this.setState({lyrics: '[No lyrics found]'});
-				}
-			}).catch(e => {
-				console.error(e);
-			});
+			getLyrics(id);
+		}
+	}, [getLyrics, id]);
+
+	useEffect(() => {
+		if (lyrics) {
+			setText((lyrics && lyrics.lyrics) ? lyrics.lyrics : '[No lyrics found]');
 		} else {
-			this.setState({lyrics: '[No track]'});
+			setText('');
 		}
+	}, [lyrics]);
+
+	if (loading) {
+		return (<ActivityIndicator size="large"/>);
 	}
 
-	private renderLyrics(): JSX.Element {
-		const {lyrics} = this.state;
-		if (!lyrics) {
-			return (<ActivityIndicator size="large"/>);
-		}
-		return (
-			<ThemedText style={styles.lyrics}>{lyrics}</ThemedText>
-		);
+	if (error) {
+		snackError(error);
 	}
 
-	render(): React.ReactElement {
-		const {theme} = this.props;
-		return (
-			<ScrollView style={[styles.container, {borderColor: theme.separator}]}>
-				{this.renderLyrics()}
-			</ScrollView>
-		);
-	}
-}
-
-export default withTheme(Lyrics);
+	return (
+		<ScrollView style={[styles.container, {borderColor: theme.separator}]}>
+			<ThemedText style={styles.lyrics}>{text}</ThemedText>
+		</ScrollView>
+	);
+};

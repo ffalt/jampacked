@@ -763,6 +763,18 @@
       "css": "home",
       "code": 59498,
       "src": "fontawesome"
+    },
+    {
+      "uid": "6373242453e92e8ce419b8391463867a",
+      "css": "pin-outline",
+      "code": 59499,
+      "src": "typicons"
+    },
+    {
+      "uid": "p57wgnf4glngbchbucdi029iptu8oxb8",
+      "css": "pin",
+      "code": 59500,
+      "src": "typicons"
     }
   ]
 }

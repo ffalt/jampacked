@@ -1,5 +1,5 @@
 import * as Keychain from 'react-native-keychain';
-import {Jam, JamConfiguration, Auth} from './jam';
+import {Auth, Jam, JamConfiguration} from './jam';
 
 export class JamConfigurationService implements JamConfiguration {
 	public clientName = 'Jam';
@@ -10,7 +10,11 @@ export class JamConfigurationService implements JamConfiguration {
 
 	async fromStorage(): Promise<{ user: Jam.SessionUser; auth: Auth } | undefined> {
 		const credentials = await Keychain.getGenericPassword();
-		return credentials ? JSON.parse(credentials.password) : undefined;
+		const result = credentials ? JSON.parse(credentials.password) : undefined;
+		// if (__DEV__ && result) {
+		// 	console.error(result);
+		// }
+		return result;
 	}
 
 	async toStorage(data: { user: Jam.SessionUser; auth: Auth } | undefined): Promise<void> {

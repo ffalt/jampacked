@@ -3,7 +3,7 @@
 	based on https://github.com/rgovindji/react-native-atoz-list
 
  */
-import React, {PureComponent, RefObject} from 'react';
+import React, {MutableRefObject, useCallback} from 'react';
 import {FlatList, FlatListProps, StyleSheet, View} from 'react-native';
 import AtoZPicker from './AtoZPicker';
 
@@ -34,35 +34,34 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default class AtoZList<T extends SectionItem> extends PureComponent<AtoZListProps<T>> {
-	containerRef: RefObject<FlatList<T>> = React.createRef();
+export const AtoZList: React.FC<AtoZListProps<any>> = <T extends SectionItem, >(props: AtoZListProps<T>) => {
+	const containerRef: MutableRefObject<FlatList<T> | null> = React.useRef<FlatList<T>>(null);
+	const {itemHeight, data, numColumns} = props;
 
-	private onTouchLetter = (letter: string): void => {
-		if (this.containerRef.current) {
-			const {data, numColumns} = this.props;
+	const onTouchLetter = useCallback((letter: string): void => {
+		if (containerRef.current) {
 			const index = (data || []).findIndex(d => d.letter === letter);
 			if (index >= 0) {
 				const scrollIndex = Math.floor(index / (numColumns || 1));
-				this.containerRef.current.scrollToIndex({index: scrollIndex});
+				containerRef.current.scrollToIndex({index: scrollIndex});
 			}
 		}
-	};
+	}, [data, numColumns]);
 
-	render(): React.ReactElement {
-		const {itemHeight, data} = this.props;
-		return (
-			<View style={styles.container}>
-				<FlatList
-					ref={this.containerRef}
-					{...this.props}
-					getItemLayout={commonItemLayout(itemHeight)}
-				/>
-				<AtoZPicker
-					data={data}
-					onTouchLetter={this.onTouchLetter}
-				/>
-			</View>
-		);
-	}
+	const getItemLayout = React.useMemo(() => commonItemLayout(itemHeight), [itemHeight]);
 
-}
+	return (
+		<View style={styles.container}>
+			<FlatList
+				ref={containerRef}
+				{...props}
+				getItemLayout={getItemLayout}
+			/>
+			<AtoZPicker
+				data={data}
+				onTouchLetter={onTouchLetter}
+			/>
+		</View>
+	);
+
+};

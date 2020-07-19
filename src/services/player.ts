@@ -1,7 +1,8 @@
 import {useEffect, useState} from 'react';
 import {AudioFormatType} from './jam';
 import {TrackPlayer, TrackPlayerEvents, useTrackPlayerEvents} from './player-api';
-import dataService, {TrackEntry} from './data';
+import dataService from './data';
+import {TrackEntry} from './types';
 
 
 function buildTrackPlayerTrack(t: TrackEntry): TrackPlayer.Track {
@@ -9,13 +10,13 @@ function buildTrackPlayerTrack(t: TrackEntry): TrackPlayer.Track {
 	const imageID = t.seriesID ? t.id : (t.albumID || t.id);
 	const track: TrackPlayer.Track = {
 		id: t.id,
-		url: dataService.jam.media.stream_url(t.id, AudioFormatType.mp3, !headers),
+		url: dataService.jam.stream.streamUrl({id: t.id, format: AudioFormatType.mp3}, !headers),
 		title: t.title,
 		artist: t.artist,
 		album: t.album,
 		genre: t.genre,
 		duration: t.durationMS,
-		artwork: dataService.jam.image.url(imageID, 300, undefined, !headers),
+		artwork: dataService.jam.image.imageUrl({id: imageID, size: 300}, !headers),
 		headers
 		// type: TrackType.default;
 		// date: t.tag?.year,

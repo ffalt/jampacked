@@ -6,18 +6,31 @@ import {StatusBar} from 'react-native';
 import {AppNavigator} from './src/navigators/AppNavigator';
 import {ThemeContext, ThemeProvider, themes, ThemeSettings} from './src/style/theming';
 import {setAppAvailable} from './service';
-import NavigationService from './src/services/navigation';
+import {NavigationService} from './src/services/navigation';
 import dataService from './src/services/data';
+import {ApolloProvider} from '@apollo/react-hooks';
+import {initApolloClient} from './src/services/apollo';
+import {ApolloClient} from 'apollo-client';
+// import AsyncStorage from '@react-native-community/async-storage';
 
 enableScreens();
 
+/*
+AsyncStorage.getAllKeys((err, keys) => {
+	AsyncStorage.multiGet(keys || [], (error, stores) => {
+		(stores || []).forEach((result, i, store) => {
+			console.log(store[i][0]);
+			// console.log({[store[i][0]]: store[i][1]});
+		});
+	});
+});
+*/
+
 export default class App extends React.Component {
 	static contextType = ThemeContext;
-	state: ThemeSettings = {
+	state: ThemeSettings & { client?: ApolloClient<any> } = {
 		theme: themes.dark,
-		// eslint-disable-next-line react/no-unused-state
 		loadUserTheme: () => this.loadTheme(),
-		// eslint-disable-next-line react/no-unused-state
 		setTheme: (themeName) => {
 			if (themes[themeName]) {
 				this.setState({
@@ -28,7 +41,9 @@ export default class App extends React.Component {
 		}
 	};
 
-	componentDidMount(): void {
+	async componentDidMount(): Promise<void> {
+		const client = await initApolloClient();
+		this.setState({client});
 		setAppAvailable(true);
 	}
 
@@ -37,19 +52,24 @@ export default class App extends React.Component {
 	}
 
 	render(): React.ReactElement {
-		const {theme} = this.state;
+		const {theme, client} = this.state;
+		if (!client) {
+			return <></>;
+		}
 		return (
-			<ThemeContext.Provider value={this.state}>
-				<ThemeProvider theme={theme}>
-					<StatusBar translucent={true} backgroundColor={theme.statusBar} barStyle={theme.barStyle}/>
-					<NavigationContainer
-						theme={theme.navigation}
-						ref={NavigationService.setTopLevelNavigator}
-					>
-						<AppNavigator/>
-					</NavigationContainer>
-				</ThemeProvider>
-			</ThemeContext.Provider>
+			<ApolloProvider client={client}>
+				<ThemeContext.Provider value={this.state}>
+					<ThemeProvider theme={theme}>
+						<StatusBar translucent={true} backgroundColor={theme.statusBar} barStyle={theme.barStyle}/>
+						<NavigationContainer
+							theme={theme.navigation}
+							ref={NavigationService.setTopLevelNavigator}
+						>
+							<AppNavigator/>
+						</NavigationContainer>
+					</ThemeProvider>
+				</ThemeContext.Provider>
+			</ApolloProvider>
 		);
 	}
 

@@ -1,12 +1,13 @@
 import React from 'react';
 import {Platform, StyleSheet, View} from 'react-native';
-import PlayerProgress, {PlayerWaveFormProgress} from '../components/PlayerProgress';
-import PlayerTime from '../components/PlayerTime';
-import PlayerControl from '../components/PlayerControl';
-import PlayerTabs from '../components/PlayerTabs';
+import {PlayerProgress} from '../components/PlayerProgress';
+import {PlayerTime} from '../components/PlayerTime';
+import {PlayerControl} from '../components/PlayerControl';
+import {PlayerTabs} from '../components/PlayerTabs';
 import {staticTheme} from '../style/theming';
-import PlayerTrack from '../components/PlayerTrack';
-import {ModalRouting, ModalStackWithThemeProps} from '../navigators/Routing';
+import {PlayerTrack} from '../components/PlayerTrack';
+import {ModalRouting, ModalStackProps} from '../navigators/Routing';
+import {PlayerWaveformProgress} from '../components/PlayerWaveformProgress';
 
 const styles = StyleSheet.create({
 	player: {
@@ -16,19 +17,16 @@ const styles = StyleSheet.create({
 	}
 });
 
-const PlayerScreen: React.FC<ModalStackWithThemeProps<ModalRouting.PLAYER>> = (props: ModalStackWithThemeProps<ModalRouting.PLAYER>) => {
-	const {route} = props;
+export const PlayerScreen: React.FC<ModalStackProps<ModalRouting.PLAYER>> = ({route}) => {
 	const toQueue = route?.params?.toQueue;
 	return (
 		<View style={styles.player}>
 			<PlayerTabs toQueue={toQueue}/>
 			<PlayerTrack/>
-			<PlayerWaveFormProgress/>
+			<PlayerWaveformProgress/>
 			<PlayerProgress/>
 			<PlayerTime/>
 			<PlayerControl/>
 		</View>
 	);
 };
-
-export default PlayerScreen;

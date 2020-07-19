@@ -1,7 +1,7 @@
 import {ImageBackground, ImageSourcePropType, StyleProp, StyleSheet, ViewStyle} from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import LinearGradient from 'react-native-linear-gradient';
-import {ITheme, withTheme} from '../style/theming';
+import {useTheme} from '../style/theming';
 import {FontelloIcon} from './FontelloIcon';
 
 const styles = StyleSheet.create({
@@ -16,56 +16,34 @@ const styles = StyleSheet.create({
 	}
 });
 
-interface BackgroundIconProps {
-	name: string,
+export const BackgroundIcon: React.FC<{
+	name: string;
 	style?: StyleProp<ViewStyle>;
-	theme: ITheme;
-}
+}> = ({name, children, style}) => {
+	const [iconSource, setIconSource] = useState<ImageSourcePropType>(0);
+	const theme = useTheme();
 
-class BackgroundIcon extends React.PureComponent<BackgroundIconProps> {
-	state: {
-		iconSource: ImageSourcePropType;
-	} = {
-		iconSource: 0
-	};
+	useEffect(() => {
+		FontelloIcon.getImageSource(name, 50, theme.muted)
+			.then((src: ImageSourcePropType) => {
+				setIconSource(src);
+			});
+	}, [name, theme]);
 
-	componentDidMount(): void {
-		this.load();
-	}
-
-	componentDidUpdate(prevProps: { name?: string }): void {
-		const newProps = this.props;
-		if (prevProps.name !== newProps.name) {
-			this.load();
-		}
-	}
-
-	render(): React.ReactElement {
-		const {children, theme, style} = this.props;
-		const {iconSource} = this.state;
-		return (
-			<ImageBackground
-				style={[style]}
-				imageStyle={styles.image}
-				source={iconSource}
+	return (
+		<ImageBackground
+			style={[style]}
+			imageStyle={styles.image}
+			source={iconSource}
+		>
+			<LinearGradient
+				colors={theme.overlayGradient}
+				start={{x: 0, y: 0}}
+				end={{x: 0, y: 1}}
+				style={styles.gradient}
 			>
-				<LinearGradient
-					colors={theme.overlayGradient}
-					start={{x: 0, y: 0}}
-					end={{x: 0, y: 1}}
-					style={styles.gradient}
-				>
-					{children}
-				</LinearGradient>
-			</ImageBackground>
-		);
-	}
-
-	private async load(): Promise<void> {
-		const {theme, name} = this.props;
-		const iconSource = await FontelloIcon.getImageSource(name, 50, theme.muted);
-		this.setState({iconSource});
-	}
-}
-
-export default withTheme(BackgroundIcon);
+				{children}
+			</LinearGradient>
+		</ImageBackground>
+	);
+};

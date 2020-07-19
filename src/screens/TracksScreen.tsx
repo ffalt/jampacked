@@ -1,51 +1,49 @@
-import React from 'react';
-import {HomeRoute, HomeStackWithThemeProps} from '../navigators/Routing';
-import PageHeader from '../components/PageHeader';
+import React, {useCallback} from 'react';
+import {HomeRoute, HomeStackProps} from '../navigators/Routing';
+import {PageHeader} from '../components/PageHeader';
 import {FlatList, RefreshControl} from 'react-native';
-import Separator from '../components/Separator';
-import {TrackEntry} from '../services/data';
-import TrackItem, {trackEntryHeight} from '../components/TrackItem';
-import {withTheme} from '../style/theming';
+import {Separator} from '../components/Separator';
+import {trackEntryHeight, TrackItem} from '../components/TrackItem';
 import {commonItemLayout} from '../components/AtoZList';
+import {TrackEntry} from '../services/types';
+import {useTheme} from '../style/theming';
 
-class TracksScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute.TRACKS>> {
+export const TracksScreen: React.FC<HomeStackProps<HomeRoute.TRACKS>> = () => {
+	const theme = useTheme();
 
-	private reload = (): void => {
-
+	const reload = (): void => {
+		// TODO: TracksScreen
 	};
 
-	private keyExtractor = (item: TrackEntry): string => item.id;
+	const keyExtractor = (item: TrackEntry): string => item.id;
 
-	private renderItem = ({item}: { item: TrackEntry }): JSX.Element => (<TrackItem track={item}/>);
+	const renderItem = useCallback(({item}: { item: TrackEntry }): JSX.Element => (<TrackItem track={item}/>), []);
 
-	private renderHeader = (): JSX.Element => <PageHeader title="Tracks" titleIcon="track"/>;
+	const renderHeader = (): JSX.Element => (<PageHeader title="Tracks" titleIcon="track"/>);
 
-	private getItemLayout = commonItemLayout(trackEntryHeight);
+	const getItemLayout = React.useMemo(() => commonItemLayout(trackEntryHeight), []);
 
-	render(): React.ReactElement {
-		const {theme} = this.props;
-		const tracks: Array<TrackEntry> = [];
-		const refreshing = false;
-		return (
-			<FlatList
-				data={tracks}
-				renderItem={this.renderItem}
-				keyExtractor={this.keyExtractor}
-				ItemSeparatorComponent={Separator}
-				ListHeaderComponent={this.renderHeader}
-				getItemLayout={this.getItemLayout}
-				refreshControl={(
-					<RefreshControl
-						refreshing={refreshing}
-						onRefresh={this.reload}
-						progressViewOffset={80}
-						progressBackgroundColor={theme.refreshCtrlBackground}
-						colors={theme.refreshCtrlColors}
-					/>
-				)}
-			/>
-		);
-	}
-}
+	const tracks: Array<TrackEntry> = [];
+	const refreshing = false;
 
-export default withTheme(TracksScreen);
+	return (
+		<FlatList
+			data={tracks || []}
+			renderItem={renderItem}
+			keyExtractor={keyExtractor}
+			ItemSeparatorComponent={Separator}
+			ListHeaderComponent={renderHeader}
+			getItemLayout={getItemLayout}
+			refreshControl={(
+				<RefreshControl
+					refreshing={refreshing}
+					onRefresh={reload}
+					progressViewOffset={80}
+					progressBackgroundColor={theme.refreshCtrlBackground}
+					colors={theme.refreshCtrlColors}
+				/>
+			)}
+		/>
+	);
+};
+

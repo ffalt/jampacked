@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {ActivityIndicator, Button, StyleSheet, View} from 'react-native';
-import ThemedText from './ThemedText';
+import {ThemedText} from './ThemedText';
 import {Caching, CachingState} from '../services/caching';
 import {staticTheme} from '../style/theming';
 
@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const CachingView: React.FC<{ cache: Caching, title: string }> = ({cache, title}: { cache: Caching, title: string }) => {
+export const CachingView: React.FC<{ cache: Caching, title: string }> = ({cache, title}: { cache: Caching, title: string }) => {
 	const [status, setStatus] = useState<CachingState>(cache.cachingData);
 
 	useEffect(() => {
@@ -63,5 +63,3 @@ const CachingView: React.FC<{ cache: Caching, title: string }> = ({cache, title}
 		</View>
 	);
 };
-
-export default CachingView;

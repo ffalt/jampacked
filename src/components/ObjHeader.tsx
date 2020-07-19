@@ -1,9 +1,9 @@
-import React, {PureComponent, ReactNode} from 'react';
+import React, {ReactNode} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import ThemedText from './ThemedText';
-import {ITheme, staticTheme, withTheme} from '../style/theming';
-import JamImage from './JamImage';
-import FastImageBackground from './JamBackgroundImage';
+import {ThemedText} from './ThemedText';
+import {staticTheme, useTheme} from '../style/theming';
+import {JamImage} from './JamImage';
+import {FastImageBackground} from './JamBackgroundImage';
 
 export const objHeaderStyles = StyleSheet.create({
 	button: {
@@ -85,10 +85,10 @@ const styles = StyleSheet.create({
 	},
 	ListHeaderValue: {
 		minWidth: 90,
+		maxWidth: '75%',
 		fontSize: staticTheme.fontSize
 	}
 });
-
 
 export interface HeaderDetail {
 	title: string;
@@ -96,18 +96,17 @@ export interface HeaderDetail {
 	click?: () => void;
 }
 
-class ObjHeader extends PureComponent<{
+export const ObjHeader: React.FC<{
 	id: string;
 	title: string;
 	typeName?: string;
-	theme: ITheme;
 	details?: Array<HeaderDetail>;
 	headerTitleCmds?: ReactNode | Array<ReactNode>;
 	customDetails?: ReactNode | Array<ReactNode>;
-}> {
+}> = ({id, typeName, title, headerTitleCmds, details, customDetails}) => {
+	const theme = useTheme();
 
-	renderDetails(): JSX.Element | undefined {
-		const {details, theme, customDetails} = this.props;
+	const renderDetails = (): JSX.Element | undefined => {
 		if (customDetails) {
 			return (
 				<View style={styles.headerExtra}>
@@ -149,24 +148,19 @@ class ObjHeader extends PureComponent<{
 				</View>
 			);
 		}
-	}
+	};
 
-	render(): React.ReactElement {
-		const {id, typeName, title, headerTitleCmds, theme} = this.props;
-		return (
-			<FastImageBackground id={id} style={styles.header}>
-				<View style={styles.headerTop}>
-					<JamImage id={id} size={173} requestSize={300}/>
-					<View style={styles.headerTitleContainer}>
-						<ThemedText style={[styles.headerTitleType, {color: theme.muted}]}>{typeName}</ThemedText>
-						<ThemedText numberOfLines={2} style={styles.headerTitle}>{title}</ThemedText>
-						<View style={styles.headerTitleCmds}>{headerTitleCmds}</View>
-					</View>
+	return (
+		<FastImageBackground id={id} style={styles.header}>
+			<View style={styles.headerTop}>
+				<JamImage id={id} size={173} requestSize={300}/>
+				<View style={styles.headerTitleContainer}>
+					<ThemedText style={[styles.headerTitleType, {color: theme.muted}]}>{typeName}</ThemedText>
+					<ThemedText numberOfLines={2} style={styles.headerTitle}>{title}</ThemedText>
+					<View style={styles.headerTitleCmds}>{headerTitleCmds}</View>
 				</View>
-				{this.renderDetails()}
-			</FastImageBackground>
-		);
-	}
-}
-
-export default withTheme(ObjHeader);
+			</View>
+			{renderDetails()}
+		</FastImageBackground>
+	);
+};

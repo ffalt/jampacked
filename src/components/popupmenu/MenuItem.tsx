@@ -25,8 +25,8 @@ interface MenuItemProps {
 	onPress?: () => void;
 }
 
-export const MenuItem: React.FC<MenuItemProps> = (props: MenuItemProps) => {
-	const {
+export const MenuItem: React.FC<MenuItemProps> = (
+	{
 		children,
 		disabled,
 		disabledTextColor,
@@ -34,7 +34,7 @@ export const MenuItem: React.FC<MenuItemProps> = (props: MenuItemProps) => {
 		style,
 		textStyle,
 		underlayColor
-	} = props;
+	}) => {
 	return (
 		<TouchableHighlight
 			disabled={disabled}
@@ -48,7 +48,7 @@ export const MenuItem: React.FC<MenuItemProps> = (props: MenuItemProps) => {
 				style={[
 					styles.title,
 					disabled && {color: disabledTextColor || '#BDBDBD'},
-					textStyle,
+					textStyle
 				]}
 			>
 				{children}
@@ -56,5 +56,3 @@ export const MenuItem: React.FC<MenuItemProps> = (props: MenuItemProps) => {
 		</TouchableHighlight>
 	);
 };
-
-export default MenuItem;

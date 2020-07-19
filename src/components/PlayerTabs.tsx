@@ -1,13 +1,14 @@
 import React from 'react';
-import {Dimensions, StyleSheet, TouchableOpacity, View} from 'react-native';
-import {Route, SceneMap, TabView} from 'react-native-tab-view';
-import {useNavigation} from '@react-navigation/core';
-import ThemedText from './ThemedText';
-import ThemedIcon from './ThemedIcon';
-import Queue from './Queue';
+import {ActivityIndicator, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {SceneMap, TabView} from 'react-native-tab-view';
+import {ThemedText} from './ThemedText';
+import {ThemedIcon} from './ThemedIcon';
+import {Queue} from './Queue';
 import {staticTheme, useTheme} from '../style/theming';
-import PlayerLyrics from './PlayerLyrics';
-import PlayerCover from './PlayerCover';
+import {PlayerLyrics} from './PlayerLyrics';
+import {PlayerCover} from './PlayerCover';
+import {useWindowWidth} from '../utils/dimension.hook';
+import {useNavigation} from '@react-navigation/native';
 
 const styles = StyleSheet.create({
 	container: {
@@ -38,20 +39,14 @@ const styles = StyleSheet.create({
 	}
 });
 
-interface LazyPlaceholderProps {
-	route: Route;
-}
-
-const LazyPlaceholder: React.FC<LazyPlaceholderProps> = ({route}: LazyPlaceholderProps) => {
-	const title = `Loading ${route.title}…`;
+const LazyPlaceholder: React.FC = () => {
 	return (
 		<View style={styles.scene}>
-			<ThemedText>{title}</ThemedText>
+			<ActivityIndicator size="large"/>
 		</View>
 	);
 };
 
-const initialLayout = {width: Dimensions.get('window').width};
 
 const renderScene = SceneMap({
 	cover: () => (<PlayerCover/>),
@@ -59,13 +54,14 @@ const renderScene = SceneMap({
 	queue: () => (<Queue/>)
 });
 
-const renderLazyPlaceholder: React.FC<LazyPlaceholderProps> = ({route}: LazyPlaceholderProps) => <LazyPlaceholder route={route}/>;
+const renderLazyPlaceholder: React.FC<{ route: { title: string } }> = () => <LazyPlaceholder/>;
 
 interface PlayerTabsProps {
 	toQueue?: boolean;
 }
 
-const PlayerTabs: React.FC<PlayerTabsProps> = ({toQueue}: PlayerTabsProps) => {
+export const PlayerTabs: React.FC<PlayerTabsProps> = ({toQueue}: PlayerTabsProps) => {
+	const initialLayout = {width: useWindowWidth()};
 	const [index, setIndex] = React.useState(toQueue ? 2 : 0);
 	const [routes] = React.useState([
 		{key: 'cover', title: 'Cover'},
@@ -80,7 +76,7 @@ const PlayerTabs: React.FC<PlayerTabsProps> = ({toQueue}: PlayerTabsProps) => {
 	};
 
 	const renderTabBar = (tabBarProps: any): JSX.Element => {
-		const buttons = tabBarProps.navigationState.routes.map((route: Route, i: number) => {
+		const buttons = tabBarProps.navigationState.routes.map((route: { title: string }, i: number) => {
 			const style = [styles.tabItem,
 				i === index && styles.tabItemActive,
 				i === index && {borderBottomColor: theme.textColor}
@@ -97,7 +93,7 @@ const PlayerTabs: React.FC<PlayerTabsProps> = ({toQueue}: PlayerTabsProps) => {
 		return (
 			<View style={styles.tabBar}>
 				<TouchableOpacity style={styles.tabItem} onPress={close}>
-					<ThemedIcon name="down-open-big" style={styles.icon}/>
+					<ThemedIcon name="down-open-big" size={styles.icon.fontSize}/>
 				</TouchableOpacity>
 				{buttons}
 			</View>
@@ -118,5 +114,3 @@ const PlayerTabs: React.FC<PlayerTabsProps> = ({toQueue}: PlayerTabsProps) => {
 		/>
 	);
 };
-
-export default PlayerTabs;

@@ -1,29 +1,18 @@
 import React from 'react';
-import {ThemeContext, themeList} from '../style/theming';
-import RadioButtons, {RadioButtonEntry} from './RadioButton';
+import {themeList, useThemeContext} from '../style/theming';
+import {RadioButtonEntry, RadioButtons} from './RadioButton';
 
 export const themesList: Array<RadioButtonEntry> = themeList
 	.map(theme => ({key: theme.name, label: theme.title}));
 
-export class ThemesView extends React.PureComponent {
-	static contextType = ThemeContext;
-	state: { theme: string; } = {theme: 'dark'};
+export const ThemesView: React.FC = () => {
+	const themeSettings = useThemeContext();
 
-	componentDidMount(): void {
-		const {theme} = this.context;
-		this.setState({theme: theme.name});
-	}
-
-	private changeTheme = (theme: string): void => {
-		const themeSettings = this.context;
+	const changeTheme = (theme: string): void => {
 		themeSettings.setTheme(theme);
-		this.setState({theme});
 	};
 
-	render(): React.ReactElement {
-		const {theme} = this.state;
-		return (
-			<RadioButtons options={themesList} value={theme} onChange={this.changeTheme}/>
-		);
-	}
-}
+	return (
+		<RadioButtons options={themesList} value={themeSettings.theme.name} onChange={changeTheme}/>
+	);
+};

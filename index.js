@@ -1,3 +1,4 @@
+// import './wdyr';
 import {AppRegistry} from 'react-native';
 import {initPlayer, TrackPlayer} from './src/services/player-api';
 import App from './App';

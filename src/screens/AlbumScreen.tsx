@@ -1,123 +1,107 @@
-import React from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {FlatList, RefreshControl, TouchableOpacity} from 'react-native';
-import {withTheme} from '../style/theming';
-import TrackItem, {trackEntryHeight} from '../components/TrackItem';
-import {HomeRoute, HomeStackWithThemeProps} from '../navigators/Routing';
+import {trackEntryHeight, TrackItem} from '../components/TrackItem';
+import {HomeRoute, HomeStackProps} from '../navigators/Routing';
 import {JamPlayer} from '../services/player';
-import ThemedIcon from '../components/ThemedIcon';
-import ObjHeader, {HeaderDetail, objHeaderStyles} from '../components/ObjHeader';
+import {ThemedIcon} from '../components/ThemedIcon';
+import {HeaderDetail, ObjHeader, objHeaderStyles} from '../components/ObjHeader';
 import {genreDisplay} from '../utils/genre.utils';
-import Separator from '../components/Separator';
-import dataService, {AlbumData, TrackEntry} from '../services/data';
+import {Separator} from '../components/Separator';
+import dataService from '../services/data';
 import {JamObjectType} from '../services/jam';
-import FavIcon from '../components/FavIcon';
+import {FavIcon} from '../components/FavIcon';
 import {snackError} from '../services/snack';
 import {commonItemLayout} from '../components/AtoZList';
-import PopupMenu, {PopupMenuAction, PopupMenuRef} from '../components/PopupMenu';
-import NavigationService from '../services/navigation';
+import PopupMenu, {PopupMenuAction, usePopupMenuRef} from '../components/PopupMenu';
+import {NavigationService} from '../services/navigation';
+import {TrackEntry} from '../services/types';
+import {useLazyAlbumQuery} from '../services/queries/album';
+import {useTheme} from '../style/theming';
 
-class AlbumScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute.ALBUM>> {
-	state: {
-		data?: AlbumData;
-		refreshing: boolean;
-		details: Array<HeaderDetail>;
-		popupMenuActions: Array<PopupMenuAction>;
-	} = {
-		refreshing: false,
-		data: undefined,
-		details: this.buildDetails(),
-		popupMenuActions: []
-	};
+const buildDetails = (artist?: string, tracks?: number, genre?: string, click?: () => void): Array<HeaderDetail> => {
+	return [
+		{title: 'Artist', value: artist || '', click: artist ? click : undefined},
+		{title: 'Tracks', value: `${tracks || ''}`},
+		{title: 'Genre', value: genre || ''}
+	];
+};
 
-	componentDidMount(): void {
-		this.load();
-	}
+export const AlbumScreen: React.FC<HomeStackProps<HomeRoute.ALBUM>> = ({route}) => {
+	const theme = useTheme();
+	const [details, setDetails] = useState<Array<HeaderDetail>>(buildDetails());
+	const [popupMenuActions, setPopupMenuActions] = useState<Array<PopupMenuAction>>([]);
+	const [getAlbum, {loading, error, album}] = useLazyAlbumQuery();
+	const {id, name} = route?.params;
 
-	componentDidUpdate(prevProps: { route: { params: { id?: string } } }): void {
-		const newProps = this.props;
-		if (prevProps.route.params?.id !== newProps.route.params?.id) {
-			this.setState({data: undefined, details: this.buildDetails()});
-			this.load();
+	useEffect(() => {
+		if (id) {
+			getAlbum(id);
 		}
-	}
+	}, [id, getAlbum]);
 
-	private buildDetails(artist?: string, tracks?: number, genre?: string): Array<HeaderDetail> {
-		return [
-			{title: 'Artist', value: artist || '', click: artist ? this.toArtist : undefined},
-			{title: 'Tracks', value: `${tracks || ''}`},
-			{title: 'Genre', value: genre || ''}
-		];
-	}
-
-	private load(forceRefresh: boolean = false): void {
-		const {route} = this.props;
-		const {id} = route.params;
-		if (!id) {
-			return;
+	useEffect(() => {
+		if (album) {
+			setDetails(buildDetails(album.artistName, album.trackCount, genreDisplay(album.genres), (): void => {
+				if (album && album.artistID) {
+					NavigationService.navigate(HomeRoute.ARTIST, {id: album.artistID, name: album.artistName || ''});
+				}
+			}));
 		}
-		this.setState({refreshing: true});
-		dataService.album(id, forceRefresh)
-			.then(data => {
-				const details = this.buildDetails(data.album.artist, data.album.trackCount, genreDisplay(data.album.genres));
-				this.setState({data, details, refreshing: false});
-			})
-			.catch(e => {
-				this.setState({refreshing: false});
-				snackError(e);
-			});
+	}, [album]);
+
+	if (error) {
+		snackError(error);
 	}
 
-	private reload = (): void => {
-		this.load(true);
-	};
+	const reload = useCallback((): void => {
+		getAlbum(id);
+	}, [getAlbum, id]);
 
-	private toArtist = (): void => {
-		const {data} = this.state;
-		if (data?.album?.artistID) {
-			const {navigation} = this.props;
-			navigation.navigate(HomeRoute.ARTIST, {id: data.album.artistID, name: data.album.artist || ''});
-		}
-	};
-
-	private playTracks = (): void => {
-		const {data} = this.state;
-		if (data?.tracks) {
-			JamPlayer.playTracks(data.tracks)
+	const pinTracks = (): void => {
+		if (album) {
+			dataService.mediaCache.download(album.tracks)
 				.catch(e => {
 					snackError(e);
 				});
 		}
 	};
 
-	private renderHeader = (): JSX.Element => {
-		const {route} = this.props;
-		const {id, name} = route?.params;
-		const {details, data} = this.state;
-		const headerTitleCmds = (
-			<>
-				<TouchableOpacity style={objHeaderStyles.button} onPress={this.playTracks}>
-					<ThemedIcon name="play" style={objHeaderStyles.buttonIcon}/>
-				</TouchableOpacity>
-				<FavIcon style={objHeaderStyles.button} objType={JamObjectType.album} id={id}/>
-			</>
-		);
-		const typeName = data?.album?.albumType;
-		return (
-			<ObjHeader
-				id={id}
-				title={name}
-				typeName={typeName}
-				details={details}
-				headerTitleCmds={headerTitleCmds}
-			/>
-		);
+	const playTracks = (): void => {
+		if (album) {
+			JamPlayer.playTracks(album.tracks)
+				.catch(e => {
+					snackError(e);
+				});
+		}
 	};
 
-	private keyExtractor = (item: TrackEntry): string => item.id;
+	const headerTitleCmds = (
+		<>
+			<TouchableOpacity style={objHeaderStyles.button} onPress={playTracks}>
+				<ThemedIcon name="play" size={objHeaderStyles.buttonIcon.fontSize}/>
+			</TouchableOpacity>
+			<TouchableOpacity style={objHeaderStyles.button} onPress={pinTracks}>
+				<ThemedIcon name="pin-outline" size={objHeaderStyles.buttonIcon.fontSize}/>
+			</TouchableOpacity>
+			<FavIcon style={objHeaderStyles.button} objType={JamObjectType.album} id={id}/>
+		</>
+	);
 
-	private menuRef: PopupMenuRef = React.createRef();
-	private showMenu = (ref: React.RefObject<any>, item: TrackEntry): void => {
-		const popupMenuActions = [
+	const ListHeader = (
+		<ObjHeader
+			id={id}
+			title={name}
+			typeName={album?.albumType}
+			details={details}
+			headerTitleCmds={headerTitleCmds}
+		/>
+	);
+
+	const keyExtractor = (item: TrackEntry): string => item.id;
+
+	const menuRef = usePopupMenuRef();
+	const showMenu = useCallback((ref: React.RefObject<any>, item: TrackEntry): void => {
+		const actions = [
 			{
 				title: 'Play Track',
 				click: (): void => {
@@ -135,12 +119,12 @@ class AlbumScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute.
 			{
 				title: 'Add Tracks from here to Queue',
 				click: (): void => {
-					const {data} = this.state;
-					const tracks = data?.tracks || [];
-					const index = tracks.indexOf(item);
-					if (index >= 0) {
-						JamPlayer.addTracksToQueue(tracks.slice(index))
-							.catch(e => console.error(e));
+					if (album) {
+						const index = album.tracks.indexOf(item);
+						if (index >= 0) {
+							JamPlayer.addTracksToQueue(album.tracks.slice(index))
+								.catch(e => console.error(e));
+						}
 					}
 				}
 			},
@@ -151,41 +135,37 @@ class AlbumScreen extends React.PureComponent<HomeStackWithThemeProps<HomeRoute.
 				}
 			}
 		];
-		this.setState({popupMenuActions});
-		if (this.menuRef.current) {
-			this.menuRef.current.showMenu(ref);
+		setPopupMenuActions(actions);
+		if (menuRef.current) {
+			menuRef.current.showMenu(ref);
 		}
-	};
-	private renderItem = ({item}: { item: TrackEntry }): JSX.Element => (<TrackItem track={item} showMenu={this.showMenu}/>);
+	}, [album, menuRef]);
 
-	private getItemLayout = commonItemLayout(trackEntryHeight);
+	const renderItem = useCallback(({item}: { item: TrackEntry }): JSX.Element => (<TrackItem track={item} showMenu={showMenu}/>),
+		[showMenu]);
 
-	render(): React.ReactElement {
-		const {theme} = this.props;
-		const {data, refreshing, popupMenuActions} = this.state;
-		return (
-			<>
-				<PopupMenu ref={this.menuRef} actions={popupMenuActions}/>
-				<FlatList
-					data={data?.tracks}
-					renderItem={this.renderItem}
-					keyExtractor={this.keyExtractor}
-					ItemSeparatorComponent={Separator}
-					ListHeaderComponent={this.renderHeader}
-					getItemLayout={this.getItemLayout}
-					refreshControl={(
-						<RefreshControl
-							refreshing={refreshing}
-							onRefresh={this.reload}
-							progressViewOffset={80}
-							progressBackgroundColor={theme.refreshCtrlBackground}
-							colors={theme.refreshCtrlColors}
-						/>
-					)}
-				/>
-			</>
-		);
-	}
-}
+	const getItemLayout = React.useMemo(() => commonItemLayout(trackEntryHeight), []);
 
-export default withTheme(AlbumScreen);
+	return (
+		<>
+			<PopupMenu ref={menuRef} actions={popupMenuActions}/>
+			<FlatList
+				data={album?.tracks || []}
+				renderItem={renderItem}
+				keyExtractor={keyExtractor}
+				ItemSeparatorComponent={Separator}
+				ListHeaderComponent={ListHeader}
+				getItemLayout={getItemLayout}
+				refreshControl={(
+					<RefreshControl
+						refreshing={loading}
+						onRefresh={reload}
+						progressViewOffset={80}
+						progressBackgroundColor={theme.refreshCtrlBackground}
+						colors={theme.refreshCtrlColors}
+					/>
+				)}
+			/>
+		</>
+	);
+};

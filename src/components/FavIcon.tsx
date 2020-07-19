@@ -1,9 +1,10 @@
-import React from 'react';
-import {StyleProp, StyleSheet, TouchableOpacity, View, ViewStyle} from 'react-native';
-import {ITheme, staticTheme, withTheme} from '../style/theming';
-import {Jam} from '../services/jam';
-import dataService from '../services/data';
-import ThemedIcon from './ThemedIcon';
+import React, {useEffect, useState} from 'react';
+import {ActivityIndicator, StyleProp, StyleSheet, TouchableOpacity, View, ViewStyle} from 'react-native';
+import {staticTheme, useTheme} from '../style/theming';
+import {ThemedIcon} from './ThemedIcon';
+import {JamObjectType} from '../services/jam';
+import {useFavMutation, useLazyFavQuery} from '../services/queries/fav';
+import {snackSuccess} from '../services/snack';
 
 const styles = StyleSheet.create({
 	button: {
@@ -14,70 +15,49 @@ const styles = StyleSheet.create({
 	}
 });
 
-class FavIcon extends React.PureComponent<{ id?: string; objType: string; theme: ITheme, style?: StyleProp<ViewStyle> }> {
-	state: {
-		jamState?: Jam.State;
-	} = {
-		jamState: undefined
-	};
+export const FavIcon: React.FC<{ id?: string; objType: JamObjectType; style?: StyleProp<ViewStyle> }> = ({id, style}) => {
+	const [fav, setFav] = useState<{ timestamp?: number } | undefined>();
+	const [getFaved, {faved, loading}] = useLazyFavQuery();
+	const [toggleFav] = useFavMutation();
+	const theme = useTheme();
 
-	componentDidMount(): void {
-		this.load();
-	}
-
-	componentDidUpdate(prevProps: { id?: string }): void {
-		const newProps = this.props;
-		if (prevProps.id !== newProps.id) {
-			this.load();
+	useEffect(() => {
+		if (id) {
+			getFaved(id);
 		}
-	}
+	}, [getFaved, id]);
 
-	private load(): void {
-		this.setState({jamState: undefined});
-		const {id} = this.props;
-		if (!id) {
-			return;
-		}
-		this.loadState(id)
-			.catch(e => console.error(e));
-	}
+	useEffect(() => {
+		setFav(faved);
+	}, [faved]);
 
-	private async loadState(id: string): Promise<void> {
-		const {objType} = this.props;
-		const jamState = await dataService.jam.base.state(objType, {id});
-		this.setState({jamState});
-	}
+	const isFaved = (fav?.timestamp || 0) > 0;
 
-	private toggleFav = (): void => {
-		const {jamState} = this.state;
-		const {id, objType} = this.props;
-		if (jamState && id) {
-			this.setState({jamState: undefined});
-			dataService.toggleFav(objType, id, jamState)
+	const handleToggleFav = (): void => {
+		if (id && fav) {
+			toggleFav({variables: {id, remove: isFaved}})
 				.then(result => {
-					this.setState({jamState: result});
-				})
-				.catch(e => console.error(e));
+					setFav({timestamp: result.data?.fav?.faved || undefined});
+					snackSuccess(result.data?.fav?.faved ? 'Added to Favorites' : 'Removed from Favorites');
+				});
 		}
 	};
+	if (loading || !faved) {
+		return (<ActivityIndicator/>);
+	}
 
-	render(): React.ReactElement {
-		const {theme, style} = this.props;
-		const {jamState} = this.state;
-		if (jamState) {
-			const iconName = jamState.faved !== undefined ? 'heart-full' : 'heart-empty';
-			return (
-				<TouchableOpacity style={[styles.button, style]} onPress={this.toggleFav}>
-					<ThemedIcon name={iconName} style={styles.buttonIcon}/>
-				</TouchableOpacity>
-			);
-		}
+	if (!fav) {
 		return (
 			<View style={[styles.button, style]}>
-				<ThemedIcon name="heart-empty" style={[styles.buttonIcon, {color: theme.muted}]}/>
+				<ThemedIcon name="heart-empty" size={styles.buttonIcon.fontSize} color={theme.muted}/>
 			</View>
 		);
 	}
-}
+	const iconName = isFaved ? 'heart-full' : 'heart-empty';
+	return (
+		<TouchableOpacity style={[styles.button, style]} onPress={handleToggleFav}>
+			<ThemedIcon name={iconName} size={styles.buttonIcon.fontSize}/>
+		</TouchableOpacity>
+	);
 
-export default withTheme(FavIcon);
+};

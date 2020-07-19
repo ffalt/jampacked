@@ -2,8 +2,8 @@ import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import LinearGradient from 'react-native-linear-gradient';
-import {ITheme, withTheme} from '../style/theming';
-import dataService from '../services/data';
+import {useAuth} from '../services/auth';
+import {useTheme} from '../style/theming';
 
 const styles = StyleSheet.create({
 	linearGradient: {
@@ -16,40 +16,32 @@ const styles = StyleSheet.create({
 	}
 });
 
-class FastImageBackground extends React.PureComponent<{ id: string, style?: any, imageStyle?: any, theme: ITheme }> {
-	render(): React.ReactElement {
-		const {id, children, style, imageStyle, theme, ...props} = this.props;
-		const imgStyle = [
-			StyleSheet.absoluteFill,
-			{
-				width: style?.width,
-				height: style?.height
-			},
-			imageStyle
-		];
-		const headers = dataService.currentUserToken ? {Authorization: `Bearer ${dataService.currentUserToken}`} : undefined;
-		const source = {
-			uri: dataService.jam.image.url(id, 300, undefined, !headers),
-			headers,
-			priority: FastImage.priority.normal
-		};
-		const backgroundImage = id && (
-			<FastImage {...props} style={imgStyle} source={source}>
-				<LinearGradient
-					colors={theme.overlayGradient}
-					start={{x: 0, y: 0}}
-					end={{x: 0, y: 1}}
-					style={styles.linearGradient}
-				/>
-			</FastImage>
-		);
-		return (
-			<View style={style}>
-				{backgroundImage}
-				{children}
-			</View>
-		);
-	}
-}
-
-export default withTheme(FastImageBackground);
+export const FastImageBackground: React.FC<{ id: string, style?: any, imageStyle?: any }> = ({id, children, style, imageStyle}) => {
+	const auth = useAuth();
+	const theme = useTheme();
+	const imgStyle = [
+		StyleSheet.absoluteFill,
+		{
+			width: style?.width,
+			height: style?.height
+		},
+		imageStyle
+	];
+	const source = auth.imgSource(id, 300);
+	const backgroundImage = (id && source && source.uri) && (
+		<FastImage style={imgStyle} source={source}>
+			<LinearGradient
+				colors={theme.overlayGradient}
+				start={{x: 0, y: 0}}
+				end={{x: 0, y: 1}}
+				style={styles.linearGradient}
+			/>
+		</FastImage>
+	);
+	return (
+		<View style={style}>
+			{backgroundImage}
+			{children}
+		</View>
+	);
+};

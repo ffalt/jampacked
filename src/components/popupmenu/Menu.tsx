@@ -44,7 +44,9 @@ export enum Position {
 	TOP_CENTER = 'TOP_CENTER',
 	BOTTOM_LEFT = 'BOTTOM_LEFT',
 	BOTTOM_RIGHT = 'BOTTOM_RIGHT',
-	BOTTOM_CENTER = 'BOTTOM_CENTER'
+	BOTTOM_CENTER = 'BOTTOM_CENTER',
+	AUTO_LEFT = 'AUTO_LEFT',
+	AUTO_CENTER = 'AUTO_CENTER'
 }
 
 interface Offset {
@@ -84,8 +86,18 @@ interface ComponentOffset {
 	top: number
 }
 
-const getMenuOffset = (stickTo: Position, component: ComponentOffset, menu: ComponentOffset): Offset => {
+const getMenuOffset = (stickTo: Position, component: ComponentOffset, menu: ComponentOffset, screenHeight: number): Offset => {
 	switch (stickTo) {
+		case Position.AUTO_LEFT:
+			if (component.top + menu.height > screenHeight) {
+				return getMenuOffset(Position.TOP_LEFT, component, menu, screenHeight);
+			}
+			return getMenuOffset(Position.BOTTOM_LEFT, component, menu, screenHeight);
+		case Position.AUTO_CENTER:
+			if (component.top + menu.height > screenHeight) {
+				return getMenuOffset(Position.TOP_CENTER, component, menu, screenHeight);
+			}
+			return getMenuOffset(Position.BOTTOM_CENTER, component, menu, screenHeight);
 		case Position.TOP_LEFT:
 			return {left: component.left, top: component.top};
 		case Position.TOP_RIGHT:
@@ -316,8 +328,9 @@ export class Menu extends React.Component<{
 		// } else
 		if (menuState === STATES.CALCULATING) {
 			const {stickTo, component, offsets} = this.state;
+			const dimensions = Dimensions.get('screen');
 
-			const baseOffset = getMenuOffset(stickTo, component, menu);
+			const baseOffset = getMenuOffset(stickTo, component, menu, dimensions.height);
 			const allOffsets = [baseOffset, offsets.staticOffset, offsets.computedOffset];
 			const finalOffset = getSummarizedOffset(allOffsets);
 			this.setState({
@@ -354,5 +367,3 @@ export class Menu extends React.Component<{
 		}
 	}
 }
-
-export default Menu;
