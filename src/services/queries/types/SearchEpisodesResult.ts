@@ -10,7 +10,7 @@
 export interface SearchEpisodesResult_episodes_items {
   id: string;
   name: string;
-  date: number;
+  date: any;
 }
 
 export interface SearchEpisodesResult_episodes {

@@ -39,6 +39,7 @@ export enum FolderOrderFields {
 	created = 'created',
 	updated = 'updated',
 	name = 'name',
+	title = 'title',
 	year = 'year'
 }
 
@@ -60,6 +61,7 @@ export enum EpisodeOrderFields {
 	default = 'default',
 	created = 'created',
 	updated = 'updated',
+	name = 'name',
 	status = 'status',
 	date = 'date'
 }

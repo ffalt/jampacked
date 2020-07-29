@@ -15,7 +15,7 @@ export interface PodcastResult_podcast_episodes_tag {
 export interface PodcastResult_podcast_episodes {
   id: string;
   name: string;
-  date: number;
+  date: any;
   duration: number | null;
   tag: PodcastResult_podcast_episodes_tag | null;
 }
