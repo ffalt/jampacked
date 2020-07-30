@@ -20,8 +20,8 @@ export const PlayerTime: React.FC = () => {
 	const {duration, position} = useTrackPlayerProgress();
 	return (
 		<View style={styles.times}>
-			<DurationText style={styles.time} duration={position}/>
-			<DurationText style={styles.time} duration={duration}/>
+			<DurationText style={styles.time} duration={position * 1000}/>
+			<DurationText style={styles.time} duration={duration * 1000}/>
 		</View>
 	);
 };

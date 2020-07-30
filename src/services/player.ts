@@ -15,7 +15,7 @@ function buildTrackPlayerTrack(t: TrackEntry): TrackPlayer.Track {
 		artist: t.artist,
 		album: t.album,
 		genre: t.genre,
-		duration: t.durationMS,
+		duration: t.durationMS / 1000,
 		artwork: dataService.jam.image.imageUrl({id: imageID, size: 300}, !headers),
 		headers
 		// type: TrackType.default;
