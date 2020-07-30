@@ -115,10 +115,14 @@ export const LoginScreen: React.FC<AppStackProps<Routing.AUTH>> = () => {
 
 	useEffect(() => {
 		dataService.getStored('last:server').then(result => {
-			setServer(result || '');
+			if (result) {
+				setServer(result);
+			}
 		});
 		dataService.getStored('last:user').then(result => {
-			setName(result || '');
+			if (result) {
+				setName(result);
+			}
 		});
 	}, []);
 
