@@ -24,10 +24,14 @@ export const BackgroundIcon: React.FC<{
 	const theme = useTheme();
 
 	useEffect(() => {
+		let isSubscribed = true;
 		FontelloIcon.getImageSource(name, 50, theme.muted)
 			.then((src: ImageSourcePropType) => {
-				setIconSource(src);
+				if (isSubscribed) {
+					setIconSource(src);
+				}
 			});
+		return (): any => isSubscribed = false;
 	}, [name, theme]);
 
 	return (

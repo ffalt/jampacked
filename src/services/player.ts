@@ -234,10 +234,14 @@ export function useCurrentTrackID(): string | undefined {
 		}
 	);
 
-	useEffect(() => {
+	useEffect((): any => {
+		let isSubscribed = true;
 		TrackPlayer.getCurrentTrack().then(tId => {
-			setTrackId(tId);
+			if (isSubscribed) {
+				setTrackId(tId);
+			}
 		});
+		return (): any => isSubscribed = false;
 	}, [trackId]);
 
 	return trackId;

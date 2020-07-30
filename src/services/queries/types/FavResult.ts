@@ -9,7 +9,7 @@
 
 export interface FavResult_state {
   id: string;
-  faved: number | null;
+  faved: any | null;
 }
 
 export interface FavResult {

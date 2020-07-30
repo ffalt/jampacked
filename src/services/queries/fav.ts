@@ -15,7 +15,7 @@ const GET_FAV = gql`
 `;
 
 function transformData(data: FavResult | undefined): { timestamp?: number } {
-	return {timestamp: data?.state?.faved ? data.state.faved : undefined};
+	return {timestamp: data?.state?.faved ? (new Date(data.state.faved)).valueOf() : undefined};
 }
 
 export const useLazyFavQuery = (): [(id: string) => void,

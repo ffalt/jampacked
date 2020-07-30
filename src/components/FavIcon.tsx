@@ -37,7 +37,7 @@ export const FavIcon: React.FC<{ id?: string; objType: JamObjectType; style?: St
 		if (id && fav) {
 			toggleFav({variables: {id, remove: isFaved}})
 				.then(result => {
-					setFav({timestamp: result.data?.fav?.faved || undefined});
+					setFav({timestamp: result.data?.fav?.faved ? (new Date(result.data.fav.faved)).valueOf() : undefined});
 					snackSuccess(result.data?.fav?.faved ? 'Added to Favorites' : 'Removed from Favorites');
 				});
 		}

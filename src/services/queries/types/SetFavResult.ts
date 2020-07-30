@@ -9,7 +9,7 @@
 
 export interface SetFavResult_fav {
   id: string;
-  faved: number | null;
+  faved: any | null;
 }
 
 export interface SetFavResult {
