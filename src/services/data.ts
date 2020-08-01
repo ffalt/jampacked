@@ -17,7 +17,7 @@ import {ApolloError} from 'apollo-client';
 
 class DataService implements PersistentStorage<any> {
 	db?: Database;
-	version = 9;
+	version = 10;
 	dataCaching = new Caching(
 		(caller) => this.fillCache(caller),
 		(caller) => this.clearCache(caller)
@@ -278,11 +278,14 @@ const configuration = new JamConfigurationService();
 const dataService = new DataService(new JamService(configuration));
 export default dataService;
 
-export function useCacheOrLazyQuery<TData = any, TVariables = OperationVariables>(query: DocumentNode, options?: LazyQueryHookOptions<TData, TVariables>):
-	[(options?: QueryLazyOptions<TVariables>, forceRefresh?: boolean) => void, { loading: boolean, error?: ApolloError, data?: TData, called: boolean }] {
-	const [result, setResult] = useState<TData | undefined>();
+export function useCacheOrLazyQuery<TData = any, TVariables = OperationVariables, TResult = any>(
+	query: DocumentNode,
+	transform: (d?: TData) => TResult | undefined,
+	options?: LazyQueryHookOptions<TData, TVariables>):
+	[(options?: QueryLazyOptions<TVariables>, forceRefresh?: boolean) => void, { loading: boolean, error?: ApolloError, data?: TResult, called: boolean }] {
+	const [result, setResult] = useState<TResult | undefined>();
 	const [id, setID] = useState<string | undefined>();
-	const [q, {loading, error, data, variables, called}] = useLazyQuery<TData, TVariables>(query, options);
+	const [q, {loading, error, data, called}] = useLazyQuery<TData, TVariables>(query, options);
 
 	const execute = useCallback((queryOptions?: QueryLazyOptions<TVariables>, forceRefresh?: boolean): void => {
 		const opDef = query.definitions.find(d => d.kind === 'OperationDefinition');
@@ -303,13 +306,13 @@ export function useCacheOrLazyQuery<TData = any, TVariables = OperationVariables
 	}, [query, q]);
 
 	useEffect(() => {
-		setResult(data);
-		if (id && data) {
-			dataService.setItem(id, data).then(() => {
+		const r = transform(data);
+		if (id && r) {
+			dataService.setItem(id, r).then(() => {
 				//
 			});
 		}
-	}, [data, id]);
+	}, [data, transform, id]);
 
 	return [execute, {loading, error, data: result, called}];
 }

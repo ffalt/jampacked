@@ -43,24 +43,17 @@ function transformData(data?: SeriesIndexResult): Index | undefined {
 export const useLazySeriesIndexQuery = (): [(forceRefresh?: boolean) => void,
 	{ loading: boolean, error?: ApolloError, index?: Index, called: boolean }
 ] => {
-	const [index, setIndex] = useState<Index | undefined>(undefined);
-	const [query, {loading, error, data, called}] = useCacheOrLazyQuery<SeriesIndexResult>(GET_SERIESINDEX);
-
-	useEffect(() => {
-		setIndex(transformData(data));
-	}, [data]);
-
+	const [query, {loading, error, data, called}] = useCacheOrLazyQuery<SeriesIndexResult, any, Index>(GET_SERIESINDEX, transformData);
 	const get = useCallback((forceRefresh?: boolean): void => {
 		query({}, forceRefresh);
 	}, [query]);
-
 	return [
 		get,
 		{
 			loading,
 			error,
 			called,
-			index
+			index: data
 		}
 	];
 };

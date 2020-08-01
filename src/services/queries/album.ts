@@ -2,7 +2,7 @@ import {TrackEntry} from '../types';
 import {AlbumType} from '../jam';
 import {formatDuration} from '../../utils/duration.utils';
 import {ApolloError} from 'apollo-client';
-import {useCallback, useEffect, useState} from 'react';
+import {useCallback} from 'react';
 import {AlbumResult, AlbumResult_album_tracks, AlbumResultVariables} from './types/AlbumResult';
 import gql from 'graphql-tag';
 import {useCacheOrLazyQuery} from '../data';
@@ -91,24 +91,17 @@ function transformData(data?: AlbumResult): Album | undefined {
 export const useLazyAlbumQuery = (): [(id: string, forceRefresh?: boolean) => void,
 	{ loading: boolean, error?: ApolloError, album?: Album, called: boolean }
 ] => {
-	const [album, setAlbum] = useState<Album | undefined>(undefined);
-	const [query, {loading, error, data, called}] = useCacheOrLazyQuery<AlbumResult, AlbumResultVariables>(GET_ALBUM);
-
-	useEffect(() => {
-		setAlbum(transformData(data));
-	}, [data]);
-
+	const [query, {loading, error, data, called}] = useCacheOrLazyQuery<AlbumResult, AlbumResultVariables, Album>(GET_ALBUM, transformData);
 	const get = useCallback((id: string, forceRefresh?: boolean): void => {
 		query({variables: {id}}, forceRefresh);
 	}, [query]);
-
 	return [
 		get,
 		{
 			loading,
 			called,
 			error,
-			album
+			album: data
 		}
 	];
 };

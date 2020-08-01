@@ -73,24 +73,17 @@ export const transformData = (data?: TrackResult): TrackEntry | undefined => {
 export const useLazyTrackQuery = (): [(id: string, forceRefresh?: boolean) => void,
 	{ loading: boolean, error?: ApolloError, track?: TrackEntry, called: boolean }
 ] => {
-	const [track, setTrack] = useState<TrackEntry | undefined>(undefined);
-	const [query, {loading, error, data, called}] = useCacheOrLazyQuery<TrackResult, TrackResultVariables>(GET_TRACK);
-
-	useEffect(() => {
-		setTrack(transformData(data));
-	}, [data]);
-
+	const [query, {loading, error, data, called}] = useCacheOrLazyQuery<TrackResult, TrackResultVariables, TrackEntry>(GET_TRACK, transformData);
 	const get = useCallback((id: string, forceRefresh?: boolean): void => {
 		query({variables: {id}}, forceRefresh);
 	}, [query]);
-
 	return [
 		get,
 		{
 			loading,
 			called,
 			error,
-			track
+			track: data
 		}
 	];
 };

@@ -2,7 +2,7 @@ import {AlbumType, JamObjectType} from '../jam';
 import gql from 'graphql-tag';
 import {ApolloError} from 'apollo-client';
 import {Index} from '../types';
-import {useCallback, useEffect, useState} from 'react';
+import {useCallback, useState} from 'react';
 import {AlbumIndexResult, AlbumIndexResultVariables} from './types/AlbumIndexResult';
 import {useCacheOrLazyQuery} from '../data';
 
@@ -15,8 +15,8 @@ const GET_ALBUMINDEX = gql`
                     id
                     name
                     artist {
-						name
-					}
+                        name
+                    }
                 }
             }
         }
@@ -45,24 +45,17 @@ function transformData(data?: AlbumIndexResult): Index | undefined {
 export const useLazyAlbumIndexQuery = (): [(albumTypes: Array<AlbumType>, forceRefresh?: boolean) => void,
 	{ loading: boolean, error?: ApolloError, index?: Index, called: boolean }
 ] => {
-	const [index, setIndex] = useState<Index | undefined>(undefined);
-	const [query, {loading, error, data, called}] = useCacheOrLazyQuery<AlbumIndexResult, AlbumIndexResultVariables>(GET_ALBUMINDEX);
-
-	useEffect(() => {
-		setIndex(transformData(data));
-	}, [data]);
-
-	const get = useCallback( (albumTypes: Array<AlbumType>, forceRefresh?: boolean): void => {
+	const [query, {loading, error, data, called}] = useCacheOrLazyQuery<AlbumIndexResult, AlbumIndexResultVariables, Index>(GET_ALBUMINDEX, transformData);
+	const get = useCallback((albumTypes: Array<AlbumType>, forceRefresh?: boolean): void => {
 		query({variables: {albumTypes}}, forceRefresh);
 	}, [query]);
-
 	return [
 		get,
 		{
 			loading,
 			called,
 			error,
-			index
+			index: data
 		}
 	];
 };

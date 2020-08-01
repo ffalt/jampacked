@@ -143,24 +143,17 @@ function transformData(data?: FolderResult): Folder | undefined {
 export const useLazyFolderQuery = (): [(id: string, forceRefresh?: boolean) => void,
 	{ loading: boolean, error?: ApolloError, folder?: Folder, called: boolean }
 ] => {
-	const [folder, setFolder] = useState<Folder | undefined>(undefined);
-	const [query, {loading, error, data, called}] = useCacheOrLazyQuery<FolderResult, FolderResultVariables>(GET_FOLDER);
-
-	useEffect(() => {
-		setFolder(transformData(data));
-	}, [data]);
-
+	const [query, {loading, error, data, called}] = useCacheOrLazyQuery<FolderResult, FolderResultVariables, Folder>(GET_FOLDER, transformData);
 	const get = useCallback((id: string, forceRefresh?: boolean): void => {
 		query({variables: {id}}, forceRefresh);
 	}, [query]);
-
 	return [
 		get,
 		{
 			loading,
 			called,
 			error,
-			folder
+			folder: data
 		}
 	];
 };

@@ -91,24 +91,17 @@ function transformData(data?: SeriesResult): Series | undefined {
 export const useLazySeriesQuery = (): [(id: string, forceRefresh?: boolean) => void,
 	{ loading: boolean, error?: ApolloError, series?: Series, called: boolean }
 ] => {
-	const [series, setSeries] = useState<Series | undefined>(undefined);
-	const [query, {loading, error, data, called}] = useCacheOrLazyQuery<SeriesResult, SeriesResultVariables>(GET_SERIES);
-
-	useEffect(() => {
-		setSeries(transformData(data));
-	}, [data]);
-
+	const [query, {loading, error, data, called}] = useCacheOrLazyQuery<SeriesResult, SeriesResultVariables, Series>(GET_SERIES, transformData);
 	const get = useCallback((id: string, forceRefresh?: boolean): void => {
 		query({variables: {id}}, forceRefresh);
 	}, [query]);
-
 	return [
 		get,
 		{
 			loading,
 			called,
 			error,
-			series
+			series: data
 		}
 	];
 };

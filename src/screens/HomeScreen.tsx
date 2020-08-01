@@ -107,7 +107,7 @@ export const HomeScreen: React.FC<HomeStackProps<HomeRoute.START>> = () => {
 			<View style={styles.container}>
 				<View style={styles.userHeader}>
 					<Logo size={40}/>
-					<ThemedText style={styles.userHeaderText}>{userName}</ThemedText>
+					<ThemedText style={styles.userHeaderText} numberOfLines={2} >{userName}</ThemedText>
 					<JamImage id={userId} size={40} style={styles.userImage}/>
 				</View>
 				<HomeStats stats={homeData?.stats}/>

@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
 import {ApolloError} from 'apollo-client';
-import {useCallback, useEffect, useState} from 'react';
+import {useCallback} from 'react';
 import {TrackLyricsResult, TrackLyricsResultVariables} from './types/TrackLyricsResult';
 import {useCacheOrLazyQuery} from '../data';
 
@@ -31,24 +31,17 @@ export const transformData = (data?: TrackLyricsResult): TrackLyrics | undefined
 export const useLazyTrackLyricsQuery = (): [(id: string, forceRefresh?: boolean) => void,
 	{ loading: boolean, error?: ApolloError, lyrics?: TrackLyrics, called: boolean }
 ] => {
-	const [lyrics, setLyrics] = useState<TrackLyrics | undefined>(undefined);
-	const [query, {loading, error, data, called}] = useCacheOrLazyQuery<TrackLyricsResult, TrackLyricsResultVariables>(GET_TRACKLYRICS);
-
-	useEffect(() => {
-		setLyrics(transformData(data));
-	}, [data]);
-
+	const [query, {loading, error, data, called}] = useCacheOrLazyQuery<TrackLyricsResult, TrackLyricsResultVariables, TrackLyrics>(GET_TRACKLYRICS, transformData);
 	const get = useCallback((id: string, forceRefresh?: boolean): void => {
 		query({variables: {id}}, forceRefresh);
 	}, [query]);
-
 	return [
 		get,
 		{
 			loading,
 			called,
 			error,
-			lyrics
+			lyrics: data
 		}
 	];
 };
