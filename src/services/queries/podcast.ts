@@ -1,10 +1,10 @@
 import gql from 'graphql-tag';
-import {useLazyQuery} from '@apollo/react-hooks';
 import {TrackEntry} from '../types';
 import {ApolloError} from 'apollo-client';
 import {formatDuration} from '../../utils/duration.utils';
 import {useCallback, useEffect, useState} from 'react';
 import {PodcastResult, PodcastResult_podcast_episodes, PodcastResultVariables} from './types/PodcastResult';
+import {useCacheOrLazyQuery} from '../data';
 
 const GET_PODCAST = gql`
     query PodcastResult($id: ID!) {
@@ -58,18 +58,18 @@ function transformData(data?: PodcastResult): Podcast | undefined {
 	};
 }
 
-export const useLazyPodcastQuery = (): [(id: string) => void,
+export const useLazyPodcastQuery = (): [(id: string, forceRefresh?: boolean) => void,
 	{ loading: boolean, error?: ApolloError, podcast?: Podcast, called: boolean }
 ] => {
 	const [podcast, setPodcast] = useState<Podcast | undefined>(undefined);
-	const [query, {loading, error, data, called}] = useLazyQuery<PodcastResult, PodcastResultVariables>(GET_PODCAST);
+	const [query, {loading, error, data, called}] = useCacheOrLazyQuery<PodcastResult, PodcastResultVariables>(GET_PODCAST);
 
 	useEffect(() => {
 		setPodcast(transformData(data));
 	}, [data]);
 
-	const get = useCallback((id: string): void => {
-		query({variables: {id}});
+	const get = useCallback((id: string, forceRefresh?: boolean): void => {
+		query({variables: {id}}, forceRefresh);
 	}, [query]);
 
 	return [

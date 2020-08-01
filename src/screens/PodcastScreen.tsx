@@ -34,7 +34,7 @@ export const PodcastScreen: React.FC<HomeStackProps<HomeRoute.PODCAST>> = ({rout
 	}
 
 	const reload = useCallback((): void => {
-		getPodcast(id);
+		getPodcast(id, true);
 	}, [getPodcast, id]);
 
 	const playTracks = useCallback((): void => {

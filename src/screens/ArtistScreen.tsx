@@ -76,7 +76,7 @@ export const ArtistScreen: React.FC<HomeStackProps<HomeRoute.ARTIST>> = ({route}
 
 	const reload = useCallback((): void => {
 		if (id) {
-			getArtist(id);
+			getArtist(id, true);
 		}
 	}, [id, getArtist]);
 

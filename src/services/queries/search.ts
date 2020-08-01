@@ -223,7 +223,7 @@ export const useLazySearchQuery = (objType: JamObjectType): [(query: string, tak
 	const [getSearch, {loading, error, data, variables, called}] = useLazyQuery<SearchQueryResults, SearchVariable>(getSearchQuery(objType));
 
 	useEffect(() => {
-		if (data) {
+		if (data && variables) {
 			setResult(transformData(data, variables));
 		}
 	}, [data, variables]);

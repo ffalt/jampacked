@@ -86,7 +86,7 @@ export const HomeScreen: React.FC<HomeStackProps<HomeRoute.START>> = () => {
 	}
 
 	const reload = useCallback((): void => {
-		getHomeData();
+		getHomeData(true);
 	}, [getHomeData]);
 
 	const userName = `Welcome, ${auth.currentUserName()}`;

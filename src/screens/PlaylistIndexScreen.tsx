@@ -18,7 +18,7 @@ export const PlaylistIndexScreen: React.FC<HomeStackProps<HomeRoute.PLAYLISTS>> 
 	}
 
 	const reload = useCallback((): void => {
-		getIndex();
+		getIndex(true);
 	}, [getIndex]);
 
 	return (

@@ -54,7 +54,7 @@ export const AlbumScreen: React.FC<HomeStackProps<HomeRoute.ALBUM>> = ({route}) 
 	}
 
 	const reload = useCallback((): void => {
-		getAlbum(id);
+		getAlbum(id, true);
 	}, [getAlbum, id]);
 
 	const pinTracks = (): void => {

@@ -50,7 +50,7 @@ export const TrackScreen: React.FC<HomeStackProps<HomeRoute.TRACK>> = ({route}) 
 	}, [track]);
 
 	const reload = useCallback((): void => {
-		getTrack(id);
+		getTrack(id, true);
 	}, [getTrack, id]);
 
 	const headerTitleCmds = (

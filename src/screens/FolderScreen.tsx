@@ -116,7 +116,7 @@ export const FolderScreen: React.FC<HomeStackProps<HomeRoute.FOLDER>> = ({route}
 	}, []);
 
 	const reload = useCallback((): void => {
-		getFolder(id);
+		getFolder(id, true);
 	}, [getFolder, id]);
 
 	return (

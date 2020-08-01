@@ -1,11 +1,11 @@
 import gql from 'graphql-tag';
-import {useLazyQuery} from '@apollo/react-hooks';
 import {FolderType, JamObjectType} from '../jam';
 import {BaseEntry, TrackEntry} from '../types';
 import {formatDuration} from '../../utils/duration.utils';
 import {ApolloError} from 'apollo-client';
 import {useCallback, useEffect, useState} from 'react';
 import {FolderResult, FolderResult_folder_tracks, FolderResultVariables} from './types/FolderResult';
+import {useCacheOrLazyQuery} from '../data';
 
 const GET_FOLDER = gql`
     query FolderResult($id: ID!) {
@@ -140,18 +140,18 @@ function transformData(data?: FolderResult): Folder | undefined {
 	};
 }
 
-export const useLazyFolderQuery = (): [(id: string) => void,
+export const useLazyFolderQuery = (): [(id: string, forceRefresh?: boolean) => void,
 	{ loading: boolean, error?: ApolloError, folder?: Folder, called: boolean }
 ] => {
 	const [folder, setFolder] = useState<Folder | undefined>(undefined);
-	const [query, {loading, error, data, called}] = useLazyQuery<FolderResult, FolderResultVariables>(GET_FOLDER);
+	const [query, {loading, error, data, called}] = useCacheOrLazyQuery<FolderResult, FolderResultVariables>(GET_FOLDER);
 
 	useEffect(() => {
 		setFolder(transformData(data));
 	}, [data]);
 
-	const get = useCallback((id: string): void => {
-		query({variables: {id}});
+	const get = useCallback((id: string, forceRefresh?: boolean): void => {
+		query({variables: {id}}, forceRefresh);
 	}, [query]);
 
 	return [

@@ -1,11 +1,11 @@
 import gql from 'graphql-tag';
-import {useLazyQuery} from '@apollo/react-hooks';
 import {AlbumType, JamObjectType} from '../jam';
 import {ApolloError} from 'apollo-client';
 import {SectionListData} from 'react-native';
 import {BaseEntry} from '../types';
 import {useCallback, useEffect, useState} from 'react';
 import {SeriesResult, SeriesResultVariables} from './types/SeriesResult';
+import {useCacheOrLazyQuery} from '../data';
 
 const GET_SERIES = gql`
     query SeriesResult($id: ID!) {
@@ -36,8 +36,8 @@ export interface AlbumEntry {
 export interface Series {
 	id: string;
 	name: string;
-	artistID: string;
-	artistName: string;
+	artistID?: string;
+	artistName?: string;
 	tracksCount: number;
 	albums: Array<AlbumEntry>;
 	sections: Array<SectionListData<BaseEntry>>;
@@ -88,18 +88,18 @@ function transformData(data?: SeriesResult): Series | undefined {
 	};
 }
 
-export const useLazySeriesQuery = (): [(id: string) => void,
+export const useLazySeriesQuery = (): [(id: string, forceRefresh?: boolean) => void,
 	{ loading: boolean, error?: ApolloError, series?: Series, called: boolean }
 ] => {
 	const [series, setSeries] = useState<Series | undefined>(undefined);
-	const [query, {loading, error, data, called}] = useLazyQuery<SeriesResult, SeriesResultVariables>(GET_SERIES);
+	const [query, {loading, error, data, called}] = useCacheOrLazyQuery<SeriesResult, SeriesResultVariables>(GET_SERIES);
 
 	useEffect(() => {
 		setSeries(transformData(data));
 	}, [data]);
 
-	const get = useCallback((id: string): void => {
-		query({variables: {id}});
+	const get = useCallback((id: string, forceRefresh?: boolean): void => {
+		query({variables: {id}}, forceRefresh);
 	}, [query]);
 
 	return [

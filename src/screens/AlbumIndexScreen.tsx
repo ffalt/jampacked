@@ -31,7 +31,7 @@ export const AlbumIndexScreen: React.FC<HomeStackProps<HomeRoute.ALBUMS>> = ({ro
 
 	const reload = useCallback((): void => {
 		if (type && type.albumType) {
-			getIndex([type.albumType]);
+			getIndex([type.albumType], true);
 		}
 	}, [type, getIndex]);
 

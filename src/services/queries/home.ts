@@ -1,12 +1,12 @@
 import gql from 'graphql-tag';
-import {useLazyQuery} from '@apollo/react-hooks';
 import {HomeData, HomeStatsData} from '../types';
 import {HomeRoute} from '../../navigators/Routing';
 import {getTypeByAlbumType} from '../jam-lists';
 import {AlbumType} from '../jam';
 import {ApolloError} from 'apollo-client';
-import {useEffect, useState} from 'react';
+import {useCallback, useEffect, useState} from 'react';
 import {HomeResult} from './types/HomeResult';
+import {useCacheOrLazyQuery} from '../data';
 
 const GET_HOMEDATA = gql`
     query HomeResult {
@@ -137,11 +137,11 @@ function transformData(data?: HomeResult): HomeDataResult | undefined {
 	return {homeData, stats};
 }
 
-export const useLazyHomeDataQuery = (): [() => void,
+export const useLazyHomeDataQuery = (): [(forceRefresh?: boolean) => void,
 	{ loading: boolean, error?: ApolloError, homeData?: HomeDataResult, called: boolean }
 ] => {
 	const [homeData, setHomeData] = useState<HomeDataResult | undefined>(undefined);
-	const [query, {loading, error, data, called}] = useLazyQuery<HomeResult>(GET_HOMEDATA);
+	const [query, {loading, error, data, called}] = useCacheOrLazyQuery<HomeResult>(GET_HOMEDATA);
 
 	useEffect(() => {
 		if (data) {
@@ -149,8 +149,12 @@ export const useLazyHomeDataQuery = (): [() => void,
 		}
 	}, [data]);
 
+	const get = useCallback((forceRefresh?: boolean): void => {
+		query({}, forceRefresh);
+	}, [query]);
+
 	return [
-		query,
+		get,
 		{
 			loading,
 			called,

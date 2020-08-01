@@ -1,11 +1,11 @@
 import gql from 'graphql-tag';
-import {useLazyQuery} from '@apollo/react-hooks';
 import {AlbumType, JamObjectType} from '../jam';
 import {ApolloError} from 'apollo-client';
 import {SectionListData} from 'react-native';
 import {BaseEntry} from '../types';
 import {useCallback, useEffect, useState} from 'react';
 import {ArtistResult, ArtistResultVariables} from './types/ArtistResult';
+import {useCacheOrLazyQuery} from '../data';
 
 const GET_ARTIST = gql`
     query ArtistResult($id: ID!) {
@@ -83,18 +83,18 @@ function transformData(data?: ArtistResult): Artist | undefined {
 	};
 }
 
-export const useLazyArtistQuery = (): [(id: string) => void,
+export const useLazyArtistQuery = (): [(id: string, forceRefresh?: boolean) => void,
 	{ loading: boolean, error?: ApolloError, artist?: Artist, called: boolean }
 ] => {
 	const [artist, setArtist] = useState<Artist | undefined>(undefined);
-	const [query, {loading, error, data, called}] = useLazyQuery<ArtistResult, ArtistResultVariables>(GET_ARTIST);
+	const [query, {loading, error, data, called}] = useCacheOrLazyQuery<ArtistResult, ArtistResultVariables>(GET_ARTIST);
 
 	useEffect(() => {
 		setArtist(transformData(data));
 	}, [data]);
 
-	const get = useCallback((id: string): void => {
-		query({variables: {id}});
+	const get = useCallback((id: string, forceRefresh?: boolean): void => {
+		query({variables: {id}}, forceRefresh);
 	}, [query]);
 
 	return [

@@ -18,7 +18,7 @@ export const PodcastIndexScreen: React.FC<HomeStackProps<HomeRoute.PODCASTS>> = 
 	}
 
 	const reload = useCallback((): void => {
-		getIndex();
+		getIndex(true);
 	}, [getIndex]);
 
 	return (

@@ -1,10 +1,10 @@
 import gql from 'graphql-tag';
-import {useLazyQuery} from '@apollo/react-hooks';
 import {TrackEntry} from '../types';
 import {formatDuration} from '../../utils/duration.utils';
 import {ApolloError} from 'apollo-client';
 import {useCallback, useEffect, useState} from 'react';
 import {TrackResult, TrackResultVariables} from './types/TrackResult';
+import {useCacheOrLazyQuery} from '../data';
 
 const GET_TRACK = gql`
     query TrackResult($id: ID!) {
@@ -70,18 +70,18 @@ export const transformData = (data?: TrackResult): TrackEntry | undefined => {
 	};
 };
 
-export const useLazyTrackQuery = (): [(id: string) => void,
+export const useLazyTrackQuery = (): [(id: string, forceRefresh?: boolean) => void,
 	{ loading: boolean, error?: ApolloError, track?: TrackEntry, called: boolean }
 ] => {
 	const [track, setTrack] = useState<TrackEntry | undefined>(undefined);
-	const [query, {loading, error, data, called}] = useLazyQuery<TrackResult, TrackResultVariables>(GET_TRACK);
+	const [query, {loading, error, data, called}] = useCacheOrLazyQuery<TrackResult, TrackResultVariables>(GET_TRACK);
 
 	useEffect(() => {
 		setTrack(transformData(data));
 	}, [data]);
 
-	const get = useCallback((id: string): void => {
-		query({variables: {id}});
+	const get = useCallback((id: string, forceRefresh?: boolean): void => {
+		query({variables: {id}}, forceRefresh);
 	}, [query]);
 
 	return [

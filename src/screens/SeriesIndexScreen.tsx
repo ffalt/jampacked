@@ -18,7 +18,7 @@ export const SeriesIndexScreen: React.FC<HomeStackProps<HomeRoute.SERIES>> = () 
 	}
 
 	const reload = useCallback((): void => {
-		getIndex();
+		getIndex(true);
 	}, [getIndex]);
 
 	return (

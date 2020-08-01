@@ -19,7 +19,7 @@ export const ArtistIndexScreen: React.FC<HomeStackProps<HomeRoute.ARTISTS>> = ()
 	}
 
 	const reload = useCallback((): void => {
-		getIndex([AlbumType.album]);
+		getIndex([AlbumType.album], true);
 	}, [getIndex]);
 
 	return (

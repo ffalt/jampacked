@@ -1,10 +1,10 @@
 import gql from 'graphql-tag';
-import {useLazyQuery} from '@apollo/react-hooks';
 import {ApolloError} from 'apollo-client';
 import {Index} from '../types';
 import {JamObjectType} from '../jam';
-import {useEffect, useState} from 'react';
+import {useCallback, useEffect, useState} from 'react';
 import {PodcastIndexResult} from './types/PodcastIndexResult';
+import {useCacheOrLazyQuery} from '../data';
 
 const GET_PODCASTINDEX = gql`
     query PodcastIndexResult {
@@ -35,18 +35,22 @@ function transformData(data?: PodcastIndexResult): Index | undefined {
 	return index;
 }
 
-export const useLazyPodcastIndexQuery = (): [() => void,
+export const useLazyPodcastIndexQuery = (): [(forceRefresh?: boolean) => void,
 	{ loading: boolean, error?: ApolloError, index?: Index, called: boolean }
 ] => {
 	const [index, setIndex] = useState<Index | undefined>(undefined);
-	const [query, {loading, error, data, called}] = useLazyQuery<PodcastIndexResult>(GET_PODCASTINDEX);
+	const [query, {loading, error, data, called}] = useCacheOrLazyQuery<PodcastIndexResult>(GET_PODCASTINDEX);
 
 	useEffect(() => {
 		setIndex(transformData(data));
 	}, [data]);
 
+	const get = useCallback((forceRefresh?: boolean): void => {
+		query({}, forceRefresh);
+	}, [query]);
+
 	return [
-		query,
+		get,
 		{
 			loading,
 			called,

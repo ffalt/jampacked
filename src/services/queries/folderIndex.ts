@@ -1,10 +1,10 @@
 import gql from 'graphql-tag';
-import {useLazyQuery} from '@apollo/react-hooks';
-import {FolderType, JamObjectType} from '../jam';
+import {JamObjectType} from '../jam';
 import {ApolloError} from 'apollo-client';
 import {Index} from '../types';
 import {useCallback, useEffect, useState} from 'react';
 import {FolderIndexResult, FolderIndexResultVariables} from './types/FolderIndexResult';
+import {useCacheOrLazyQuery} from '../data';
 
 const GET_FOLDERINDEX = gql`
     query FolderIndexResult($level: Int) {
@@ -46,18 +46,18 @@ function transformData(data?: FolderIndexResult): Index | undefined {
 	return index;
 }
 
-export const useLazyFolderIndexQuery = (): [(level: number) => void,
+export const useLazyFolderIndexQuery = (): [(level: number, forceRefresh?: boolean) => void,
 	{ loading: boolean, error?: ApolloError, index?: Index, called: boolean }
 ] => {
 	const [index, setIndex] = useState<Index | undefined>(undefined);
-	const [query, {loading, error, data, called}] = useLazyQuery<FolderIndexResult, FolderIndexResultVariables>(GET_FOLDERINDEX);
+	const [query, {loading, error, data, called}] = useCacheOrLazyQuery<FolderIndexResult, FolderIndexResultVariables>(GET_FOLDERINDEX);
 
 	useEffect(() => {
 		setIndex(transformData(data));
 	}, [data]);
 
-	const get = useCallback((level: number): void => {
-		query({variables: {level}});
+	const get = useCallback((level: number, forceRefresh?: boolean): void => {
+		query({variables: {level}}, forceRefresh);
 	}, [query]);
 
 	return [

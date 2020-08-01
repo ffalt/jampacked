@@ -1,10 +1,10 @@
 import gql from 'graphql-tag';
-import {useLazyQuery} from '@apollo/react-hooks';
 import {TrackEntry} from '../types';
 import {ApolloError} from 'apollo-client';
 import {formatDuration} from '../../utils/duration.utils';
 import {useCallback, useEffect, useState} from 'react';
 import {PlaylistResult, PlaylistResult_playlist_entries_episode, PlaylistResult_playlist_entries_track, PlaylistResultVariables} from './types/PlaylistResult';
+import {useCacheOrLazyQuery} from '../data';
 
 const GET_PLAYLIST = gql`
     query PlaylistResult($id: ID!) {
@@ -111,17 +111,17 @@ function transformData(data?: PlaylistResult): Playlist | undefined {
 	};
 }
 
-export const useLazyPlaylistQuery = (): [(id: string) => void,
+export const useLazyPlaylistQuery = (): [(id: string, forceRefresh?: boolean) => void,
 	{ loading: boolean, error?: ApolloError, playlist?: Playlist, called: boolean }] => {
 	const [playlist, setPlaylist] = useState<Playlist | undefined>();
-	const [query, {loading, error, data, called}] = useLazyQuery<PlaylistResult, PlaylistResultVariables>(GET_PLAYLIST);
+	const [query, {loading, error, data, called}] = useCacheOrLazyQuery<PlaylistResult, PlaylistResultVariables>(GET_PLAYLIST);
 
 	useEffect(() => {
 		setPlaylist(transformData(data));
 	}, [data]);
 
-	const get = useCallback((id: string): void => {
-		query({variables: {id}});
+	const get = useCallback((id: string, forceRefresh?: boolean): void => {
+		query({variables: {id}}, forceRefresh);
 	}, [query]);
 
 	return [

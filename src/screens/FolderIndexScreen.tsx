@@ -18,7 +18,7 @@ export const FolderIndexScreen: React.FC<HomeStackProps<HomeRoute.FOLDERS>> = ()
 	}
 
 	const reload = useCallback((): void => {
-		getIndex(1);
+		getIndex(1, true);
 	}, [getIndex]);
 
 	return (

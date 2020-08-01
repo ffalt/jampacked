@@ -10,6 +10,7 @@ export declare type NavigationTheme = {
 		card: string;
 		text: string;
 		border: string;
+		notification: string;
 	};
 };
 
@@ -140,7 +141,8 @@ const dark: ITheme = {
 			background: '#0b1821',
 			card: '#0b1821',
 			text: '#D3D7CE',
-			border: '#545456'
+			border: '#545456',
+			notification: '#0b1821'
 		}
 	},
 	waveform: {
@@ -183,7 +185,8 @@ const black: ITheme = {
 			background: '#000000',
 			card: '#090a12',
 			text: '#D3D7CE',
-			border: '#545456'
+			border: '#545456',
+			notification: '#090a12'
 		}
 	},
 	waveform: {

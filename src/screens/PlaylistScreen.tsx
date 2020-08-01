@@ -34,7 +34,7 @@ export const PlaylistScreen: React.FC<HomeStackProps<HomeRoute.PLAYLIST>> = ({ro
 	}
 
 	const reload = useCallback((): void => {
-		getPlaylist(id);
+		getPlaylist(id, true);
 	}, [getPlaylist, id]);
 
 	const playTracks = useCallback((): void => {

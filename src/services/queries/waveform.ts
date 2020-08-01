@@ -1,9 +1,9 @@
 import gql from 'graphql-tag';
-import {useLazyQuery} from '@apollo/react-hooks';
 import {ApolloError} from 'apollo-client';
 import {useCallback, useEffect, useState} from 'react';
 import {Jam} from '../jam';
 import {WaveformResult, WaveformResultVariables} from './types/WaveformResult';
+import {useLazyQuery} from '@apollo/react-hooks';
 
 const GET_WAVEFORM = gql`
     query WaveformResult($id: ID!) {

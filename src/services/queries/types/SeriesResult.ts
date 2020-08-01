@@ -25,7 +25,7 @@ export interface SeriesResult_series_albums {
 export interface SeriesResult_series {
   id: string;
   name: string;
-  artist: SeriesResult_series_artist;
+  artist: SeriesResult_series_artist | null;
   tracksCount: number;
   albums: SeriesResult_series_albums[];
 }

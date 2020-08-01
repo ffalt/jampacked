@@ -65,7 +65,7 @@ export const SeriesScreen: React.FC<HomeStackProps<HomeRoute.SERIESITEM>> = ({ro
 	}
 
 	const reload = useCallback((): void => {
-		getSeries(id);
+		getSeries(id, true);
 	}, [getSeries, id]);
 
 	const ListHeader = (
