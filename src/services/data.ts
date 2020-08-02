@@ -294,20 +294,22 @@ export function useCacheOrLazyQuery<TData = any, TVariables = OperationVariables
 			setID(queryID);
 			if (forceRefresh) {
 				q(queryOptions);
+			} else {
+				dataService.getItem(queryID).then(r => {
+					if (r) {
+						setResult(r);
+					} else {
+						q(queryOptions);
+					}
+				});
 			}
-			dataService.getItem(queryID).then(r => {
-				if (r) {
-					setResult(r);
-				} else {
-					q(queryOptions);
-				}
-			});
 		}
 	}, [query, q]);
 
 	useEffect(() => {
 		const r = transform(data);
 		if (id && r) {
+			setResult(r);
 			dataService.setItem(id, r).then(() => {
 				//
 			});
