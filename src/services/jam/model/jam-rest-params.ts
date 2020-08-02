@@ -1369,7 +1369,9 @@ export declare namespace JamParameters {
 		mode?: JamEnums.SessionMode;
 	}
 
-	export interface SessionOrderArgs extends DefaultOrderArgs {
+	export interface SessionOrderArgs extends OrderByArgs {
+		/** order by field */
+		orderBy?: JamEnums.SessionOrderFields;
 	}
 
 	export interface StatesArgs {

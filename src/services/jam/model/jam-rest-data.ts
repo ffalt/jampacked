@@ -1670,7 +1670,7 @@ export declare namespace Jam {
 
 	export interface User extends Base {
 		/** User Email */
-		email: string;
+		email?: string;
 		/** User Roles */
 		roles: UserRoles;
 	}
