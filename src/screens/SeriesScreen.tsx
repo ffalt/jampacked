@@ -9,6 +9,7 @@ import {BaseEntry} from '../services/types';
 import {useLazySeriesQuery} from '../services/queries/series';
 import {snackError} from '../services/snack';
 import {NavigationService} from '../services/navigation';
+import {Separator} from '../components/Separator';
 
 const styles = StyleSheet.create({
 	ListHeaderTitle: {
@@ -88,8 +89,10 @@ export const SeriesScreen: React.FC<HomeStackProps<HomeRoute.SERIESITEM>> = ({ro
 		<SectionList
 			sections={series?.sections || []}
 			ListHeaderComponent={ListHeader}
-			keyExtractor={keyExtractor}
 			renderSectionHeader={renderSection}
+			ItemSeparatorComponent={Separator}
+			SectionSeparatorComponent={Separator}
+			keyExtractor={keyExtractor}
 			renderItem={renderItem}
 			refreshControl={(
 				<RefreshControl
