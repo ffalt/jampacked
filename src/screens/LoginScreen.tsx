@@ -114,16 +114,20 @@ export const LoginScreen: React.FC<AppStackProps<Routing.AUTH>> = () => {
 	const theme = useTheme();
 
 	useEffect(() => {
+		let didCancel = false;
 		dataService.getStored('last:server').then(result => {
-			if (result) {
+			if (result && !didCancel) {
 				setServer(result);
 			}
 		});
 		dataService.getStored('last:user').then(result => {
-			if (result) {
+			if (result && !didCancel) {
 				setName(result);
 			}
 		});
+		return (): void => {
+			didCancel = true;
+		};
 	}, []);
 
 	const checkEmpty = (s: string): boolean => {
