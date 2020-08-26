@@ -14,6 +14,7 @@ import {LazyQueryHookOptions, QueryLazyOptions} from '@apollo/client/react/types
 import {useLazyQuery} from '@apollo/react-hooks';
 import {useCallback, useEffect, useState} from 'react';
 import {ApolloError} from 'apollo-client';
+import {Subject} from 'rxjs';
 
 class DataService implements PersistentStorage<any> {
 	db?: Database;
@@ -23,9 +24,15 @@ class DataService implements PersistentStorage<any> {
 		(caller) => this.clearCache(caller)
 	);
 	mediaCache = new MediaCache();
+	homeDataUpdate = new Subject();
 
 	constructor(public jam: JamService) {
 		this.open();
+	}
+
+	async notifyHomeDataChange(): Promise<void> {
+		await this.removeItem('HomeResult');
+		this.homeDataUpdate.next();
 	}
 
 	// PersistentStorage
@@ -133,7 +140,7 @@ class DataService implements PersistentStorage<any> {
 
 	async scrobble(id: string): Promise<void> {
 		await this.jam.nowplaying.scrobble({id});
-		// this.refreshHomeData({recent: true}).catch(e => console.error(e));
+		this.notifyHomeDataChange().catch(e => console.error(e));
 	}
 
 	// caching

@@ -10,6 +10,7 @@ import {HomeDataSection} from '../components/HomeDataSection';
 import {useLazyHomeDataQuery} from '../services/queries/home';
 import {snackError} from '../services/snack';
 import {useAuth} from '../services/auth';
+import dataService from '../services/data';
 
 const styles = StyleSheet.create({
 	container: {
@@ -25,7 +26,10 @@ const styles = StyleSheet.create({
 	userHeaderText: {
 		paddingLeft: staticTheme.padding,
 		paddingRight: staticTheme.padding,
-		fontSize: staticTheme.fontSizeLarge
+		fontSize: staticTheme.fontSizeLarge,
+		textAlign: 'center',
+		flex: 1,
+		flexWrap: 'wrap'
 	},
 	homeStatContainer: {
 		width: '100%',
@@ -82,6 +86,13 @@ export const HomeScreen: React.FC<HomeStackProps<HomeRoute.START>> = () => {
 			getHomeData();
 		}
 	}, [getHomeData, called]);
+
+	useEffect(() => {
+		const subscription = dataService.homeDataUpdate.subscribe(() => {
+			getHomeData();
+		});
+		return (): void => subscription.unsubscribe();
+	}, [getHomeData]);
 
 	if (error) {
 		snackError(error);
