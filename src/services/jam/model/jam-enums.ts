@@ -25,7 +25,8 @@ export enum TrackOrderFields {
 	seriesNr = 'seriesNr',
 	album = 'album',
 	title = 'title',
-	parent = 'parent'
+	parent = 'parent',
+	filename = 'filename'
 }
 
 export enum ArtistOrderFields {

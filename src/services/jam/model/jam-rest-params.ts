@@ -26,7 +26,61 @@ export declare namespace JamParameters {
 		inc?: string;
 	}
 
-	export interface AdminSettingsArgs {
+	export interface AdminSettings {
+		/** Admin Chat Settings */
+		chat: AdminSettingsChat;
+		/** Admin Index Settings */
+		index: AdminSettingsIndex;
+		/** Admin Library Settings */
+		library: AdminSettingsLibrary;
+		/** Admin External Services Settings */
+		externalServices: AdminSettingsExternal;
+	}
+
+	export interface AdminSettingsArgs extends AdminSettings {
+	}
+
+	export interface AdminSettingsChat {
+		/**
+		 * Maximum Number of Chat Messages to keep
+		 * @TJS-type integer
+		 * @minimum 0
+		 */
+		maxMessages: number;
+		/** Maximum Age of Chat Messages to keep */
+		maxAge: AdminSettingsChatMaxAge;
+	}
+
+	export interface AdminSettingsChatMaxAge {
+		/**
+		 * Value of Maximum Age
+		 * @TJS-type integer
+		 * @minimum 0
+		 */
+		value: number;
+		/** Unit of Maximum Age */
+		unit: string;
+	}
+
+	export interface AdminSettingsExternal {
+		/**
+		 * Enable External Services
+		 * @TJS-type boolean
+		 */
+		enabled: boolean;
+	}
+
+	export interface AdminSettingsIndex {
+		/** List of ignored Articles */
+		ignoreArticles: Array<string>;
+	}
+
+	export interface AdminSettingsLibrary {
+		/**
+		 * Start Root Scanning on Server Start
+		 * @TJS-type boolean
+		 */
+		scanAtStart: boolean;
 	}
 
 	export interface AlbumFilterArgs {

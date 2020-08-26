@@ -577,6 +577,8 @@ export declare namespace Jam {
 	 * Folder
 	 */
 	export interface FolderBase extends Base {
+		/** Title */
+		title?: string;
 		/** Album Type */
 		type: JamEnums.FolderType;
 		/**
