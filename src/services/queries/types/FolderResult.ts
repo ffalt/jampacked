@@ -11,7 +11,7 @@ import { FolderType } from "./graphql-types";
 
 export interface FolderResult_folder_children {
   id: string;
-  title: string;
+  title: string | null;
   folderType: FolderType;
 }
 
@@ -48,7 +48,7 @@ export interface FolderResult_folder_tracks {
 
 export interface FolderResult_folder {
   id: string;
-  title: string;
+  title: string | null;
   childrenCount: number;
   tracksCount: number;
   folderType: FolderType;
