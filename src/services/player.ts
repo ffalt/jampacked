@@ -5,12 +5,16 @@ import dataService from './data';
 import {TrackEntry} from './types';
 
 
-function buildTrackPlayerTrack(t: TrackEntry): TrackPlayer.Track {
+async function buildTrackPlayerTrack(t: TrackEntry): Promise<TrackPlayer.Track> {
 	const headers = dataService.currentUserToken ? {Authorization: `Bearer ${dataService.currentUserToken}`} : undefined;
 	const imageID = t.seriesID ? t.id : (t.albumID || t.id);
+	const local = dataService.mediaCache.isDownloaded(t.id);
+	const url = local ?
+		dataService.mediaCache.pathInCache(t.id) :
+		dataService.jam.stream.streamUrl({id: t.id, format: AudioFormatType.mp3}, !headers);
 	const track: TrackPlayer.Track = {
 		id: t.id,
-		url: dataService.jam.stream.streamUrl({id: t.id, format: AudioFormatType.mp3}, !headers),
+		url,
 		title: t.title,
 		artist: t.artist,
 		album: t.album,
@@ -42,7 +46,7 @@ export class JamPlayer {
 	}
 
 	static async addTrackToQueue(track: TrackEntry): Promise<void> {
-		await TrackPlayer.add(buildTrackPlayerTrack(track));
+		await TrackPlayer.add(await buildTrackPlayerTrack(track));
 	}
 
 	static async removeTrackFromQueue(trackID: string): Promise<void> {
@@ -50,7 +54,7 @@ export class JamPlayer {
 	}
 
 	static async addTracksToQueue(tracks: Array<TrackEntry>): Promise<void> {
-		await TrackPlayer.add(tracks.map(t => buildTrackPlayerTrack(t)));
+		await TrackPlayer.add(await Promise.all(tracks.map(t => buildTrackPlayerTrack(t))));
 	}
 
 	static async playTrack(track: TrackEntry): Promise<void> {
@@ -64,7 +68,7 @@ export class JamPlayer {
 
 	static async playTracks(tracks: Array<TrackEntry>): Promise<void> {
 		await TrackPlayer.reset();
-		await TrackPlayer.add(tracks.map(t => buildTrackPlayerTrack(t)));
+		await TrackPlayer.add(await Promise.all(tracks.map(t => buildTrackPlayerTrack(t))));
 		await TrackPlayer.play();
 	}
 
