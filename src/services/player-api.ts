@@ -29,9 +29,9 @@ export async function initPlayer(): Promise<void> {
 	});
 }
 
-export const useTrackPlayerProgressPercent = (): { progress: number, bufferProgress: number } => {
+export const useTrackPlayerProgressPercent = (interval = 1000): { progress: number, bufferProgress: number } => {
 	const [percent, setPercent] = useState<{ progress: number, bufferProgress: number }>({progress: 0, bufferProgress: 0});
-	const {position, bufferedPosition, duration} = useTrackPlayerProgress();
+	const {position, bufferedPosition, duration} = useTrackPlayerProgress(interval);
 
 	useEffect(() => {
 		const progress = duration ? (position / duration) : 0;

@@ -10,21 +10,20 @@ import {useTheme} from '../style/theming';
 
 export const TracksScreen: React.FC<HomeStackProps<HomeRoute.TRACKS>> = () => {
 	const theme = useTheme();
+	const tracks: Array<TrackEntry> = [];
+	const refreshing = false;
 
-	const reload = (): void => {
+	const reload = useCallback((): void => {
 		// TODO: TracksScreen
-	};
+	}, []);
 
 	const keyExtractor = (item: TrackEntry): string => item.id;
 
 	const renderItem = useCallback(({item}: { item: TrackEntry }): JSX.Element => (<TrackItem track={item}/>), []);
 
-	const renderHeader = (): JSX.Element => (<PageHeader title="Tracks" titleIcon="track"/>);
+	const renderHeader = useCallback((): JSX.Element => (<PageHeader title="Tracks" titleIcon="track"/>), []);
 
 	const getItemLayout = React.useMemo(() => commonItemLayout(trackEntryHeight), []);
-
-	const tracks: Array<TrackEntry> = [];
-	const refreshing = false;
 
 	return (
 		<FlatList

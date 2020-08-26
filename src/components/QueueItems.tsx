@@ -50,16 +50,16 @@ export const QueueItem: React.FC<{ active: boolean; index: number; item: TrackPl
 			.catch(e => console.error(e));
 	}, [item]);
 
-	const renderTrackNr = (): JSX.Element => {
+	const renderTrackNr = useCallback((): JSX.Element => {
 		if (active) {
 			return (<ThemedIcon name="play"/>);
 		}
 		return (<ThemedText style={styles.trackNumberStyle}>{index + 1}</ThemedText>);
-	};
+	}, [active, index]);
 
-	const right = (): JSX.Element => {
+	const right = useCallback((): JSX.Element => {
 		return (<ThemedIcon name="remove"/>);
-	};
+	}, []);
 
 	const rightPress = useCallback((): void => {
 		JamPlayer.removeTrackFromQueue(item.id)
@@ -82,7 +82,7 @@ export const QueueItem: React.FC<{ active: boolean; index: number; item: TrackPl
 					<ThemedText style={styles.trackTitleStyle}>{item.title}</ThemedText>
 				</View>
 				<View style={styles.trackListRuntime}>
-					<DurationText style={styles.trackRuntimeStyle} duration={item.duration}/>
+					<DurationText style={styles.trackRuntimeStyle} duration={item.duration} ms={true}/>
 				</View>
 			</TouchableOpacity>
 		</SwipeableListItem>

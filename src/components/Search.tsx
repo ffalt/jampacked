@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {JamObjectType} from '../services/jam';
 import {FlatList, RefreshControl, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {ThemedText} from './ThemedText';
@@ -69,13 +69,13 @@ export const Search: React.FC<SearchProps> = ({objType, query, backToAll}) => {
 		snackError(error);
 	}
 
-	const handleBack = (): void => {
+	const handleBack = useCallback((): void => {
 		if (backToAll) {
 			backToAll();
 		}
-	};
+	}, [backToAll]);
 
-	const handleLoadMore = (): void => {
+	const handleLoadMore = useCallback((): void => {
 		if (loading) {
 			return;
 		}
@@ -85,18 +85,18 @@ export const Search: React.FC<SearchProps> = ({objType, query, backToAll}) => {
 				setSearch({query: search.query, offset});
 			}
 		}
-	};
+	}, [data, loading, search]);
 
-	const reload = (): void => {
+	const reload = useCallback((): void => {
 		setData(undefined);
 		if (query) {
 			setSearch({query, offset: 0});
 		}
-	};
+	}, [query]);
 
 	const getItemLayout = React.useMemo(() => commonItemLayout(65), []);
 	const keyExtractor = (item: BaseEntry): string => item.id;
-	const renderItem = ({item}: { item: BaseEntry }): JSX.Element => (<Item item={item}/>);
+	const renderItem = useCallback(({item}: { item: BaseEntry }): JSX.Element => (<Item item={item}/>), []);
 
 	return (
 		<View>

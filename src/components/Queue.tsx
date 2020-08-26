@@ -1,5 +1,5 @@
 import {FlatList, StyleSheet, TouchableOpacity, View} from 'react-native';
-import React from 'react';
+import React, {useCallback} from 'react';
 import {TrackPlayer} from '../services/player-api';
 import {JamPlayer, useCurrentTrackID, useQueue} from '../services/player';
 import {staticTheme, useTheme} from '../style/theming';
@@ -36,16 +36,16 @@ export const Queue: React.FC = () => {
 	const theme = useTheme();
 	const current = useCurrentTrackID();
 
-	const renderQueueItem = ({item, index}: { item: TrackPlayer.Track, index: number }): JSX.Element => (
+	const renderQueueItem = useCallback(({item, index}: { item: TrackPlayer.Track, index: number }): JSX.Element => (
 		<QueueItem item={item} index={index} active={item.id === current}/>
-	);
+	), [current]);
 
 	const keyExtractor = (item: TrackPlayer.Track): string => item.id;
 
 	const getItemLayout = React.useMemo(() => commonItemLayout(56), []);
 
 	return (
-		<>
+		<View>
 			<FlatList
 				data={queue}
 				renderItem={renderQueueItem}
@@ -59,6 +59,6 @@ export const Queue: React.FC = () => {
 					<ThemedText style={styles.queueButtonText}>Clear</ThemedText>
 				</TouchableOpacity>
 			</View>
-		</>
+		</View>
 	);
 };

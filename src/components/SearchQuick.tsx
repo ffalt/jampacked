@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {JamObjectType} from '../services/jam';
 import {RefreshControl, SectionList, SectionListData, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {ThemedText} from './ThemedText';
@@ -75,13 +75,13 @@ export const SearchQuick: React.FC<SearchQuickProps> = ({query, setObjType}) => 
 		snackError(error);
 	}
 
-	const reload = (): void => {
+	const reload = useCallback((): void => {
 		if (query) {
 			getAutocomplete(query);
 		}
-	};
+	}, [getAutocomplete, query]);
 
-	const renderSection = ({section}: { section: SectionListData<AutoCompleteEntryData> }): JSX.Element => {
+	const renderSection =  useCallback(({section}: { section: SectionListData<AutoCompleteEntryData> }): JSX.Element => {
 		const setType = (): void => {
 			if (setObjType) {
 				const {objType} = section as AutoCompleteDataSection;
@@ -97,9 +97,9 @@ export const SearchQuick: React.FC<SearchQuickProps> = ({query, setObjType}) => 
 				</TouchableOpacity>
 			</View>
 		);
-	};
+	}, [setObjType]);
 
-	const renderItem = ({item}: { item: AutoCompleteEntryData }): JSX.Element => {
+	const renderItem = useCallback(({item}: { item: AutoCompleteEntryData }): JSX.Element => {
 
 		const click = (): void => {
 			const route = NavigationService.routeByObjType(item.objType);
@@ -116,7 +116,7 @@ export const SearchQuick: React.FC<SearchQuickProps> = ({query, setObjType}) => 
 				</View>
 			</TouchableOpacity>
 		);
-	};
+	}, []);
 
 	const keyExtractor = (item: AutoCompleteEntryData): string => item.id;
 

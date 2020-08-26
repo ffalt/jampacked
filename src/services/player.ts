@@ -162,31 +162,21 @@ export class JamPlayer {
 export function useQueue(): Array<TrackPlayer.Track> {
 	const [queue, setQueueState] = useState<Array<TrackPlayer.Track>>([]);
 
-	// useEffect(() => {
-	// 	let didCancel = false;
-	// 	const applyInitialQueue = async (): Promise<void> => {
-	// 		await TrackPlayer.reset();
-	// 		if (didCancel) {
-	// 			return;
-	// 		}
-	// 		if (initialQueue) {
-	// 			await TrackPlayer.add(initialQueue);
-	// 		}
-	// 	};
-	// 	if (initialQueue) {
-	// 		applyInitialQueue();
-	// 	}
-	// 	return (): void => {
-	// 		didCancel = true;
-	// 	};
-	// }, [initialQueue]);
-
 	useEffect(() => {
 		let didCancel = false;
 		const fetchQueue = async (): Promise<void> => {
 			const fetched = await TrackPlayer.getQueue();
 			if (!didCancel) {
-				setQueueState(fetched);
+				if (fetched?.length !== queue?.length) {
+					setQueueState(fetched);
+				} else if (queue) {
+					for (let i = 0; i < fetched.length; i++) {
+						if (queue[i].id !== fetched[i].id) {
+							setQueueState(fetched);
+							return;
+						}
+					}
+				}
 			}
 		};
 		fetchQueue().catch(e => console.error(e));
@@ -215,10 +205,16 @@ export function useCurrentTrack(): TrackPlayer.Track | undefined {
 	);
 
 	useEffect(() => {
+		let didCancel = false;
 		TrackPlayer.getCurrentTrack().then(tId => {
-			setTrackId(tId);
-			getTrack(tId).then(t => setTrack(t));
+			if (!didCancel) {
+				setTrackId(tId);
+				getTrack(tId).then(t => setTrack(t));
+			}
 		});
+		return (): void => {
+			didCancel = true;
+		};
 	}, [trackId]);
 
 	return track;
@@ -230,14 +226,16 @@ export function useCurrentTrackID(): string | undefined {
 	useTrackPlayerEvents(
 		[TrackPlayerEvents.PLAYBACK_TRACK_CHANGED],
 		({nextTrack}: { nextTrack: string | undefined }) => {
-			setTrackId(nextTrack);
+			if (trackId !== nextTrack) {
+				setTrackId(nextTrack);
+			}
 		}
 	);
 
 	useEffect((): any => {
 		let isSubscribed = true;
 		TrackPlayer.getCurrentTrack().then(tId => {
-			if (isSubscribed) {
+			if (isSubscribed && trackId !== tId) {
 				setTrackId(tId);
 			}
 		});

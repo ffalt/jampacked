@@ -19,15 +19,18 @@ const styles = StyleSheet.create({
 export const FastImageBackground: React.FC<{ id: string, style?: any, imageStyle?: any }> = ({id, children, style, imageStyle}) => {
 	const auth = useAuth();
 	const theme = useTheme();
-	const imgStyle = [
+
+	const source = React.useMemo(() => auth.imgSource(id, 300), [auth, id]);
+
+	const imgStyle = React.useMemo(() => [
 		StyleSheet.absoluteFill,
 		{
 			width: style?.width,
 			height: style?.height
 		},
 		imageStyle
-	];
-	const source = auth.imgSource(id, 300);
+	], [imageStyle, style]);
+
 	const backgroundImage = (id && source && source.uri) && (
 		<FastImage style={imgStyle} source={source}>
 			<LinearGradient
@@ -38,6 +41,7 @@ export const FastImageBackground: React.FC<{ id: string, style?: any, imageStyle
 			/>
 		</FastImage>
 	);
+
 	return (
 		<View style={style}>
 			{backgroundImage}

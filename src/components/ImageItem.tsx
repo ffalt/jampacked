@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {StyleSheet, TouchableOpacity} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {useTheme} from '../style/theming';
@@ -19,7 +19,8 @@ export const ImageItem: React.FC<{ item: BaseEntry; size: number; }> = React.mem
 		NavigationService.navigateObj(objType, id, title);
 	}, [item]);
 
-	const source = auth.imgSource(item?.id, 300);
+	const source = React.useMemo(() => auth.imgSource(item?.id, 300), [item, auth]);
+
 	if (!item || !item.id || !source || !source.uri) {
 		return (<></>);
 	}

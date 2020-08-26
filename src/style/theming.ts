@@ -87,7 +87,7 @@ const light: ITheme = {
 	activeTintColor: '#5bbcd3',
 	inactiveTintColor: '#90948b',
 	warning: '#db3334',
-	refreshCtrlBackground: 'rgba(0,0,0,0.2)',
+	refreshCtrlBackground: 'rgba(255,255,255,0.8)',
 	refreshCtrlColors: ['#00a9e0', '#309712'],
 	overlay: 'rgba(255,255,255,0.3)',
 	overlayText: '#000000',
