@@ -450,7 +450,7 @@ export declare namespace Jam {
 	 */
 	export interface Chat {
 		/** User Name */
-		userName?: string;
+		userName: string;
 		/** User Id */
 		userID: string;
 		/**
@@ -1720,7 +1720,7 @@ export declare namespace Jam {
 		 * Session Expiration
 		 * @TJS-type integer
 		 */
-		expires: number;
+		expires?: number;
 		/** Session Mode */
 		mode: JamEnums.SessionMode;
 		/** Session Platform */

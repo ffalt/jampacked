@@ -852,6 +852,72 @@ export declare namespace JamParameters {
 		 * @default false
 		 */
 		folderIncTracks?: boolean;
+		/**
+		 * include tag on child folder(s)
+		 * @TJS-type boolean
+		 * @default false
+		 */
+		folderChildIncTag?: boolean;
+		/**
+		 * include state (fav,rate) on child folder(s)
+		 * @TJS-type boolean
+		 * @default false
+		 */
+		folderChildIncState?: boolean;
+		/**
+		 * include child folder count on child folder(s)
+		 * @TJS-type boolean
+		 * @default false
+		 */
+		folderChildIncChildFolderCount?: boolean;
+		/**
+		 * include track count on child folder(s)
+		 * @TJS-type boolean
+		 * @default false
+		 */
+		folderChildIncTrackCount?: boolean;
+		/**
+		 * include artwork count on child folder(s)
+		 * @TJS-type boolean
+		 * @default false
+		 */
+		folderChildIncArtworkCount?: boolean;
+		/**
+		 * include a list of all parent folder ids/names on child folder(s)
+		 * @TJS-type boolean
+		 * @default false
+		 */
+		folderChildIncParents?: boolean;
+		/**
+		 * include extended meta data on child folder(s)
+		 * @TJS-type boolean
+		 * @default false
+		 */
+		folderChildIncInfo?: boolean;
+		/**
+		 * include similar folders list on child folder(s) - only for folders of type artist
+		 * @TJS-type boolean
+		 * @default false
+		 */
+		folderChildIncSimilar?: boolean;
+		/**
+		 * include artwork images Ids on child folder(s)
+		 * @TJS-type boolean
+		 * @default false
+		 */
+		folderChildIncArtworkIDs?: boolean;
+		/**
+		 * include track Ids on child folder(s)
+		 * @TJS-type boolean
+		 * @default false
+		 */
+		folderChildIncTrackIDs?: boolean;
+		/**
+		 * include children folder Ids on child folder(s)
+		 * @TJS-type boolean
+		 * @default false
+		 */
+		folderChildIncFolderIDs?: boolean;
 	}
 
 	export interface IncludesNowPlayingArgs {
@@ -1648,9 +1714,13 @@ export declare namespace JamParameters {
 		lang?: string;
 	}
 
-	export interface ID {		id: string;	}
+	export interface ID {
+		id: string;
+	}
 
-	export interface MaybeID {		id?: string;	}
+	export interface MaybeID {
+		id?: string;
+	}
 
 	export type AlbumIdArgs = IncludesArtistArgs & IncludesTrackArgs & IncludesAlbumChildrenArgs & IncludesAlbumArgs & ID;
 
