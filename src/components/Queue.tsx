@@ -11,7 +11,7 @@ import {QueueItem} from './QueueItems';
 
 const styles = StyleSheet.create({
 	queueButtons: {
-		borderTopWidth: 2,
+		borderTopWidth: 1,
 		paddingRight: staticTheme.paddingLarge,
 		paddingLeft: staticTheme.paddingLarge,
 		flexDirection: 'row',
@@ -45,7 +45,7 @@ export const Queue: React.FC = () => {
 	const getItemLayout = React.useMemo(() => commonItemLayout(56), []);
 
 	return (
-		<View>
+		<>
 			<FlatList
 				data={queue}
 				renderItem={renderQueueItem}
@@ -59,6 +59,6 @@ export const Queue: React.FC = () => {
 					<ThemedText style={styles.queueButtonText}>Clear</ThemedText>
 				</TouchableOpacity>
 			</View>
-		</View>
+		</>
 	);
 };

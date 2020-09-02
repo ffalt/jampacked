@@ -8,7 +8,8 @@ import {snackError} from '../services/snack';
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		borderBottomWidth: 2
+		borderBottomWidth: 1,
+		marginBottom: 32
 	},
 	lyrics: {
 		fontSize: staticTheme.fontSize,
@@ -31,12 +32,14 @@ export const Lyrics: React.FC<{ id?: string | null }> = ({id}) => {
 	}, [getLyrics, id]);
 
 	useEffect(() => {
-		if (lyrics) {
-			setText((lyrics && lyrics.lyrics) ? lyrics.lyrics : '[No lyrics found]');
+		if (loading) {
+			setText('[Loading lyrics]');
+		} else if (lyrics?.lyrics) {
+			setText(lyrics.lyrics);
 		} else {
-			setText('');
+			setText(error ? error.toString() : '[No lyrics found]');
 		}
-	}, [lyrics]);
+	}, [lyrics, loading, error]);
 
 	if (loading) {
 		return (<ActivityIndicator size="large"/>);
