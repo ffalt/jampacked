@@ -8,9 +8,9 @@ import {TrackEntry} from './types';
 async function buildTrackPlayerTrack(t: TrackEntry): Promise<TrackPlayer.Track> {
 	const headers = dataService.currentUserToken ? {Authorization: `Bearer ${dataService.currentUserToken}`} : undefined;
 	const imageID = t.seriesID ? t.id : (t.albumID || t.id);
-	const local = await dataService.mediaCache.isDownloaded(t.id);
+	const local = await dataService.isDownloaded(t.id);
 	const url = local ?
-		dataService.mediaCache.pathInCache(t.id) :
+		dataService.downloadedPath(t.id) :
 		dataService.jam.stream.streamUrl({id: t.id, format: AudioFormatType.mp3}, !headers);
 	const track: TrackPlayer.Track = {
 		id: t.id,

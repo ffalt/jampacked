@@ -1,12 +1,12 @@
 import FastImage from 'react-native-fast-image';
 import AsyncStorage from '@react-native-community/async-storage';
 import {Database} from './db';
-import {JamService} from './jam';
+import {AudioFormatType, JamService} from './jam';
 import {JamConfigurationService} from './jam-configuration';
 import {Caching} from './caching';
 import {snackSuccess} from './snack';
 import {MediaCache} from './media-cache';
-import {Doc} from './types';
+import {Doc, TrackEntry} from './types';
 import {PersistentStorage} from 'apollo-cache-persist/types';
 import {OperationVariables} from '@apollo/client/core';
 import {DocumentNode} from 'graphql';
@@ -23,7 +23,7 @@ class DataService implements PersistentStorage<any> {
 		(caller) => this.fillCache(caller),
 		(caller) => this.clearCache(caller)
 	);
-	mediaCache = new MediaCache();
+	private mediaCache = new MediaCache();
 	homeDataUpdate = new Subject();
 
 	constructor(public jam: JamService) {
@@ -279,6 +279,26 @@ class DataService implements PersistentStorage<any> {
 		}
 	}
 
+	async isDownloaded(id: string): Promise<boolean> {
+		return this.mediaCache.isDownloaded(id);
+	}
+
+	downloadedPath(id: string): string {
+		return this.mediaCache.pathInCache(id);
+	}
+
+	async download(tracks: Array<TrackEntry>): Promise<void> {
+		const headers = dataService.currentUserToken ? {Authorization: `Bearer ${dataService.currentUserToken}`} : undefined;
+		const downloads = tracks.map(t => {
+			return {
+				id: t.id,
+				url: dataService.jam.stream.streamUrl({id: t.id, format: AudioFormatType.mp3}, !headers),
+				destination: this.mediaCache.pathInCache(t.id),
+				headers
+			};
+		});
+		return this.mediaCache.download(downloads);
+	}
 }
 
 const configuration = new JamConfigurationService();

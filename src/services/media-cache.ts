@@ -1,7 +1,7 @@
 import {TrackEntry} from './types';
 import dataService from './data';
 import {AudioFormatType} from './jam';
-import RNBackgroundDownloader, {DownloadTask} from 'react-native-background-downloader';
+import RNBackgroundDownloader, {DownloadOption, DownloadTask} from 'react-native-background-downloader';
 import RNFS from 'react-native-fs';
 // @ts-ignore
 import DownloadNotification from 'react-native-download-notification';
@@ -59,16 +59,10 @@ export class MediaCache {
 		return `${RNBackgroundDownloader.directories.documents}/${id}.mp3`;
 	}
 
-	async download(tracks: Array<TrackEntry>): Promise<void> {
-		const headers = dataService.currentUserToken ? {Authorization: `Bearer ${dataService.currentUserToken}`} : undefined;
-		for (const t of tracks) {
+	async download(downloads: Array<DownloadOption>): Promise<void> {
+		for (const t of downloads) {
 			if (!await this.isDownloaded(t.id)) {
-				const task = RNBackgroundDownloader.download({
-					id: t.id,
-					url: dataService.jam.stream.streamUrl({id: t.id, format: AudioFormatType.mp3}, !headers),
-					destination: this.pathInCache(t.id),
-					headers
-				});
+				const task = RNBackgroundDownloader.download(t);
 				task.pause();
 				this.tasks.push(task);
 			}
