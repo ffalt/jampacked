@@ -129,7 +129,7 @@ function transformData(data?: FolderResult): Folder | undefined {
 
 	return {
 		id: data.folder.id,
-		title: data.folder.title,
+		title: data.folder.title || undefined,
 		folderCount: data.folder.childrenCount,
 		trackCount: data.folder.tracksCount,
 		type: data.folder.folderType,
