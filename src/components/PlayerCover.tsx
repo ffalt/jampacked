@@ -11,8 +11,7 @@ const styles = StyleSheet.create({
 		padding: 0,
 		alignItems: 'center',
 		borderBottomWidth: 1,
-		justifyContent: 'center',
-		marginBottom: 32
+		justifyContent: 'center'
 	},
 	image: {
 		borderRadius: 4

@@ -11,7 +11,7 @@ import {QueueItem} from './QueueItems';
 
 const styles = StyleSheet.create({
 	queueButtons: {
-		borderTopWidth: 1,
+		borderBottomWidth: 1,
 		paddingRight: staticTheme.paddingLarge,
 		paddingLeft: staticTheme.paddingLarge,
 		flexDirection: 'row',

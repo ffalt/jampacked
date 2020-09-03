@@ -17,14 +17,14 @@ const GET_TRACKLYRICS = gql`
 `;
 
 interface TrackLyrics {
-	lyrics: string;
-	source: string;
+	lyrics?: string;
+	source?: string;
 }
 
 export const transformData = (data?: TrackLyricsResult): TrackLyrics | undefined => {
-	return data?.track?.lyrics?.lyrics ? {
-		lyrics: data.track.lyrics.lyrics,
-		source: data.track.lyrics.source || ''
+	return data ? {
+		lyrics: data.track?.lyrics?.lyrics || undefined,
+		source: data.track?.lyrics?.source || undefined
 	} : undefined;
 };
 
