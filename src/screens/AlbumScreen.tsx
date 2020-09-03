@@ -59,7 +59,7 @@ export const AlbumScreen: React.FC<HomeStackProps<HomeRoute.ALBUM>> = ({route}) 
 
 	const pinTracks = (): void => {
 		if (album) {
-			dataService.mediaCache.download(album.tracks)
+			dataService.download(album.tracks)
 				.catch(e => {
 					snackError(e);
 				});
