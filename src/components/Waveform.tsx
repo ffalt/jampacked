@@ -14,11 +14,8 @@ import {Jam} from '../services/jam';
 
 interface Colors {
 	active: string,
-	activeInverse: string,
 	activePlayable: string,
-	activePlayableInverse: string,
 	inactive: string,
-	inactiveInverse: string
 }
 
 interface WaveFormProps {
@@ -32,21 +29,25 @@ interface WaveFormProps {
 	style?: StyleProp<ViewStyle>;
 }
 
-function getColor(inverse: boolean, bar: number, chunksLength: number, percentPlayed: number, percentPlayable: number, colors: Colors): string {
+function getColor(bar: number, chunksLength: number, percentPlayed: number, percentPlayable: number, colors: Colors): string {
 	if (bar / chunksLength < percentPlayed) {
-		return inverse ? colors.activeInverse : colors.active;
+		return colors.active;
 	}
 	if (bar / chunksLength < percentPlayable) {
-		return inverse ? colors.activePlayableInverse : colors.activePlayable;
+		return colors.activePlayable;
 	}
-	return inverse ? colors.inactiveInverse : colors.inactive;
+	return colors.inactive;
+}
+
+interface WaveFormBar {
+	top: number;
+	height: number;
 }
 
 interface WaveFormViewProps {
 	height: number;
 	width: number;
-	inverse: boolean;
-	bars: { items: Array<number> };
+	bars: { items: Array<WaveFormBar> };
 	percentPlayed: number;
 	percentPlayable: number;
 	colors: Colors;
@@ -70,6 +71,35 @@ const styles = StyleSheet.create({
 	}
 });
 
+
+interface WaveformViewBarProps {
+	top: number;
+	height: number;
+	index: number;
+	backgroundColor: string;
+	goToIndex: (index: number) => void;
+}
+
+const WaveformViewBar: React.FC<WaveformViewBarProps> = React.memo((
+	{
+		top,
+		height,
+		backgroundColor,
+		goToIndex,
+		index
+	}) => {
+
+	const goTime = useCallback((): void => {
+		goToIndex(index);
+	}, [goToIndex, index]);
+
+	return (
+		<TouchableOpacity onPress={goTime}>
+			<View style={[styles.waveformBar, {backgroundColor, height, marginTop: top}]}/>
+		</TouchableOpacity>
+	);
+});
+
 const WaveformView: React.FC<WaveFormViewProps> = React.memo((
 	{
 		bars,
@@ -77,27 +107,26 @@ const WaveformView: React.FC<WaveFormViewProps> = React.memo((
 		colors,
 		height,
 		width,
-		setTime,
-		inverse
+		setTime
 	}) => {
 
-	const time = useCallback((i: number): void => {
-		setTime(i / bars.items.length);
-	}, [setTime, bars]);
+	const goToIndex = useCallback((index: number) => {
+		setTime(index / bars.items.length);
+	}, [setTime, bars.items.length]);
+
 	return (
-		<View style={[styles.waveform, {height, width}, inverse && styles.waveformInverse]}>
+		<View style={[styles.waveform, {height, width}]}>
 			{bars.items.map((bar, i) => {
-				const backgroundColor = getColor(inverse, i, bars.items.length, percentPlayed, percentPlayable, colors);
+				const backgroundColor = getColor(i, bars.items.length, percentPlayed, percentPlayable, colors);
 				return (
-					<TouchableOpacity key={i.toString()} onPress={(): void => time(i)}>
-						<View style={[styles.waveformBar,
-							{
-								backgroundColor,
-								height: bar
-							}
-						]}
-						/>
-					</TouchableOpacity>
+					<WaveformViewBar
+						key={i.toString()}
+						index={i}
+						top={bar.top}
+						height={bar.height}
+						goToIndex={goToIndex}
+						backgroundColor={backgroundColor}
+					/>
 				);
 			})}
 		</View>
@@ -124,13 +153,7 @@ export const SoundCloudWave: React.FC<WaveFormProps> = (
 		waveform,
 		style
 	}) => {
-	const [channelHeight, setChannelHeight] = useState<number>(0);
-	const [highBars, setHighBars] = useState<{ items: Array<number> }>({items: []});
-	const [lowBars, setLowBars] = useState<{ items: Array<number> }>({items: []});
-
-	useEffect(() => {
-		setChannelHeight(height / 2);
-	}, [height]);
+	const [bars, setBars] = useState<{ items: Array<WaveFormBar> }>({items: []});
 
 	useEffect(() => {
 		if (waveform) {
@@ -144,35 +167,31 @@ export const SoundCloudWave: React.FC<WaveFormProps> = (
 			const refWith = (width - 40) || 1;
 			const chunkNr = wfWidth / (refWith / 3);
 			const chunksHigh = chunk(wf.channel(0).max_array(), chunkNr);
-			setHighBars(buildBars([0, wfHeight], [0, channelHeight], chunksHigh));
 			const chunksLow = chunk(wf.channel(0).min_array(), chunkNr);
-			setLowBars(buildBars([-wfHeight, 0], [channelHeight, 0], chunksLow));
+			const barsHigh = buildBars([0, wfHeight], [0, height / 2], chunksHigh);
+			const barsLow = buildBars([-wfHeight, 0], [height / 2, 0], chunksLow);
+			const bars = barsHigh.items.map((high, index) => {
+				const low = barsLow.items[index];
+				return {
+					// high, low,
+					top: (height / 2) - high,
+					height: (high + low)
+				};
+			});
+			setBars({items: bars});
 		}
-	}, [waveform, channelHeight, width]);
+	}, [waveform, height, width]);
 
 	return (
 		<View style={[styles.container, {height}, style]}>
 			<WaveformView
-				key="high"
-				bars={highBars}
+				bars={bars}
 				colors={colors}
 				percentPlayed={percentPlayed}
 				percentPlayable={percentPlayable}
-				height={channelHeight}
+				height={height}
 				width={width}
 				setTime={setTime}
-				inverse={true}
-			/>
-			<WaveformView
-				key="low"
-				bars={lowBars}
-				colors={colors}
-				percentPlayed={percentPlayed}
-				percentPlayable={percentPlayable}
-				height={channelHeight}
-				width={width}
-				setTime={setTime}
-				inverse={false}
 			/>
 		</View>
 	);
