@@ -3,7 +3,7 @@ import {staticTheme} from '../style/theming';
 import {HomeStatData} from '../services/types';
 import React from 'react';
 import {ThemedText} from './ThemedText';
-import {HomeStat} from './HomeStat';
+import {Stat} from './Stat';
 
 const styles = StyleSheet.create({
 	homeStatContainer: {
@@ -21,13 +21,13 @@ const styles = StyleSheet.create({
 	}
 });
 
-export const HomeStats: React.FC<{ stats?: Array<HomeStatData>; }> = React.memo(({stats}) => {
+export const Stats: React.FC<{ stats?: Array<HomeStatData>; label: string }> = React.memo(({stats, label}) => {
 	const entries = stats && stats.length > 0
-		? stats.map(stat => <HomeStat key={stat.text} stat={stat}/>)
+		? stats.map(stat => <Stat key={stat.text} stat={stat}/>)
 		: [];
 	return (
 		<>
-			<ThemedText style={styles.headline}>Library</ThemedText>
+			<ThemedText style={styles.headline}>{label}</ThemedText>
 			<View style={styles.homeStatContainer}>{entries}</View>
 		</>
 	);

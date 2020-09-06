@@ -110,6 +110,8 @@ export declare namespace JamParameters {
 		mbReleaseIDs?: Array<string>;
 		/** filter by MusicBrainz Artist Ids */
 		mbArtistIDs?: Array<string>;
+		/** exclude by MusicBrainz Artist Id */
+		notMbArtistID?: string;
 		/** filter by Genres */
 		genres?: Array<string>;
 		/**
@@ -164,6 +166,8 @@ export declare namespace JamParameters {
 		albumTypes?: Array<JamEnums.AlbumType>;
 		/** filter by MusicBrainz Artist Ids */
 		mbArtistIDs?: Array<string>;
+		/** exclude by MusicBrainz Artist Id */
+		notMbArtistID?: string;
 		/**
 		 * filter by Creation timestamp
 		 * @TJS-type integer
@@ -349,6 +353,8 @@ export declare namespace JamParameters {
 		 * @minimum 0
 		 */
 		since?: number;
+		/** filter by User Ids */
+		userIDs?: Array<string>;
 	}
 
 	export interface BookmarkOrderArgs extends OrderByArgs {
@@ -1487,6 +1493,8 @@ export declare namespace JamParameters {
 		expiresTo?: number;
 		/** filter by session mode */
 		mode?: JamEnums.SessionMode;
+		/** filter by User Ids */
+		userIDs?: Array<string>;
 	}
 
 	export interface SessionOrderArgs extends OrderByArgs {
@@ -1722,9 +1730,9 @@ export declare namespace JamParameters {
 		id?: string;
 	}
 
-	export type AlbumIdArgs = IncludesArtistArgs & IncludesTrackArgs & IncludesAlbumChildrenArgs & IncludesAlbumArgs & ID;
+	export type AlbumIdArgs = ID & IncludesAlbumArgs & IncludesAlbumChildrenArgs & IncludesTrackArgs & IncludesArtistArgs;
 
-	export type AlbumSearchArgs = ListArgs & AlbumOrderArgs & AlbumFilterArgs & IncludesArtistArgs & IncludesTrackArgs & IncludesAlbumChildrenArgs & IncludesAlbumArgs & PageArgs;
+	export type AlbumSearchArgs = PageArgs & IncludesAlbumArgs & IncludesAlbumChildrenArgs & IncludesTrackArgs & IncludesArtistArgs & AlbumFilterArgs & AlbumOrderArgs & ListArgs;
 
 	export type AlbumTracksArgs = TrackOrderArgs & AlbumFilterArgs & IncludesTrackArgs & PageArgs;
 
@@ -1732,7 +1740,7 @@ export declare namespace JamParameters {
 
 	export type ArtistIdArgs = IncludesSeriesArgs & IncludesAlbumArgs & IncludesTrackArgs & IncludesArtistChildrenArgs & IncludesArtistArgs & ID;
 
-	export type ArtistSearchArgs = ListArgs & ArtistOrderArgs & ArtistFilterArgs & IncludesSeriesArgs & IncludesAlbumArgs & IncludesTrackArgs & IncludesArtistChildrenArgs & IncludesArtistArgs & PageArgs;
+	export type ArtistSearchArgs = PageArgs & IncludesArtistArgs & IncludesArtistChildrenArgs & IncludesTrackArgs & IncludesAlbumArgs & IncludesSeriesArgs & ArtistFilterArgs & ArtistOrderArgs & ListArgs;
 
 	export type ArtistSimilarArgs = IncludesArtistArgs & PageArgs & ID;
 
@@ -1810,7 +1818,7 @@ export declare namespace JamParameters {
 
 	export type PlaylistEntriesArgs = PlaylistEntryOrderArgs & PlaylistFilterArgs & IncludesEpisodeArgs & IncludesTrackArgs & PageArgs;
 
-	export type GenreListArgs = GenreFilterArgs & PageArgs;
+	export type GenreListArgs = PageArgs & GenreFilterArgs;
 
 	export type DownloadDownloadArgs = DownloadArgs & ID;
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {HomeStackNavigator} from './HomeStackNavigator';
-import {UserScreen} from '../screens/UserScreen';
+import {SettingsScreen} from '../screens/SettingsScreen';
 import {BottomTabParams, BottomTabRoute} from './Routing';
 import {SearchScreen} from '../screens/SearchScreen';
 import {getTabBarIcon} from '../components/ThemedIcon';
@@ -23,8 +23,8 @@ export const BottomTabNavigator: React.FC = () => (
 		/>
 		<BottomTabs.Screen
 			name={BottomTabRoute.SETTINGS}
-			component={UserScreen}
-			options={{tabBarIcon: getTabBarIcon('user')}}
+			component={SettingsScreen}
+			options={{tabBarIcon: getTabBarIcon('settings')}}
 		/>
 	</BottomTabs.Navigator>
 );

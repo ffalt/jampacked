@@ -1577,13 +1577,13 @@ export declare namespace Jam {
 		 */
 		live: number;
 		/**
-		 * Number of Type Live
+		 * Number of Type Audiobooks
 		 * @TJS-type integer
 		 * @minimum 0
 		 */
 		audiobook: number;
 		/**
-		 * Number of Type Live
+		 * Number of Type Soundtracks
 		 * @TJS-type integer
 		 * @minimum 0
 		 */
@@ -1595,19 +1595,19 @@ export declare namespace Jam {
 		 */
 		series: number;
 		/**
-		 * Number of Type Live
+		 * Number of Type Bootlegs
 		 * @TJS-type integer
 		 * @minimum 0
 		 */
 		bootleg: number;
 		/**
-		 * Number of Type Live
+		 * Number of Type EPs
 		 * @TJS-type integer
 		 * @minimum 0
 		 */
 		ep: number;
 		/**
-		 * Number of Type Live
+		 * Number of Type Singles
 		 * @TJS-type integer
 		 * @minimum 0
 		 */
@@ -1678,6 +1678,46 @@ export declare namespace Jam {
 	}
 
 	/*
+	 * User Detail Stats
+	 */
+	export interface UserDetailStats {
+		/**
+		 * Number of Tracks
+		 * @TJS-type integer
+		 * @minimum 0
+		 */
+		track: number;
+		/**
+		 * Number of Folders
+		 * @TJS-type integer
+		 * @minimum 0
+		 */
+		folder: number;
+		/**
+		 * Number of Series
+		 * @TJS-type integer
+		 * @minimum 0
+		 */
+		series: number;
+		/**
+		 * Number of Artist
+		 * @TJS-type integer
+		 * @minimum 0
+		 */
+		artist: number;
+		/** Detailed Artists Stats */
+		artistTypes: StatsAlbumTypes;
+		/**
+		 * Number of Albums
+		 * @TJS-type integer
+		 * @minimum 0
+		 */
+		album: number;
+		/** Detailed Album Stats */
+		albumTypes: StatsAlbumTypes;
+	}
+
+	/*
 	 * Users Page
 	 */
 	export interface UserPage extends Page {
@@ -1729,6 +1769,28 @@ export declare namespace Jam {
 		os?: string;
 		/** Session User Agent */
 		agent: string;
+	}
+
+	/*
+	 * User Stats
+	 */
+	export interface UserStats {
+		/**
+		 * Number of Playlists
+		 * @TJS-type integer
+		 * @minimum 0
+		 */
+		playlist: number;
+		/**
+		 * Number of Bookmarks
+		 * @TJS-type integer
+		 * @minimum 0
+		 */
+		bookmark: number;
+		/** Detailed User Favorites Stats */
+		favorite: UserDetailStats;
+		/** Detailed User Played Stats */
+		played: UserDetailStats;
 	}
 
 	/*

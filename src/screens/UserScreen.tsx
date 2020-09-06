@@ -1,12 +1,15 @@
-import React, {useCallback} from 'react';
-import {Button, StyleSheet, View} from 'react-native';
+import React, {useCallback, useEffect} from 'react';
+import {Button, RefreshControl, ScrollView, StyleSheet, View} from 'react-native';
 import {BottomTabProps, BottomTabRoute} from '../navigators/Routing';
-import {ThemesView} from '../components/ThemesView';
 import {ThemedText} from '../components/ThemedText';
-import {staticTheme} from '../style/theming';
+import {staticTheme, useTheme} from '../style/theming';
 import {JamImage} from '../components/JamImage';
-import {DataCachingView} from '../components/DataCachingView';
 import {useAuth} from '../services/auth';
+import {ThemedIcon} from '../components/ThemedIcon';
+import {useLazyUserDataQuery} from '../services/queries/user';
+import dataService from '../services/data';
+import {snackError} from '../services/snack';
+import {Stats} from '../components/Stats';
 
 const styles = StyleSheet.create({
 	container: {
@@ -21,6 +24,12 @@ const styles = StyleSheet.create({
 	userImage: {
 		marginRight: staticTheme.margin
 	},
+	permission: {
+		flexDirection: 'row'
+	},
+	permissionText: {
+		paddingHorizontal: staticTheme.paddingSmall
+	},
 	section: {
 		paddingVertical: staticTheme.padding,
 		letterSpacing: 2,
@@ -34,8 +43,37 @@ const styles = StyleSheet.create({
 	}
 });
 
+
+export const UserPermission: React.FC<{ text: string }> = ({text}) => {
+	return (
+		<View style={styles.permission}>
+			<ThemedIcon name='checkmark'/>
+			<ThemedText style={styles.permissionText}>{text}</ThemedText>
+		</View>
+	);
+};
+
 export const UserScreen: React.FC<BottomTabProps<BottomTabRoute.SETTINGS>> = () => {
 	const auth = useAuth();
+	const theme = useTheme();
+	const [getUserData, {loading, error, called, userData}] = useLazyUserDataQuery();
+
+	useEffect(() => {
+		if (!called) {
+			getUserData();
+		}
+	}, [getUserData, called]);
+
+	useEffect(() => {
+		const subscription = dataService.homeDataUpdate.subscribe(() => {
+			getUserData();
+		});
+		return (): void => subscription.unsubscribe();
+	}, [getUserData]);
+
+	const reload = useCallback((): void => {
+		getUserData(true);
+	}, [getUserData]);
 
 	const logout = useCallback((): void => {
 		auth.logout()
@@ -44,22 +82,42 @@ export const UserScreen: React.FC<BottomTabProps<BottomTabRoute.SETTINGS>> = () 
 			});
 	}, [auth]);
 
+	if (error) {
+		snackError(error);
+	}
+
 	return (
-		<View style={styles.container}>
-			<ThemedText style={styles.section}>Account</ThemedText>
-			<View style={styles.userSection}>
-				<JamImage id={auth.currentUserID()} size={80} style={styles.userImage}/>
-				<View>
+		<ScrollView
+			refreshControl={(
+				<RefreshControl
+					refreshing={loading}
+					onRefresh={reload}
+					progressViewOffset={70}
+					progressBackgroundColor={theme.refreshCtrlBackground}
+					colors={theme.refreshCtrlColors}
+				/>
+			)}
+		>
+			<View style={styles.container}>
+				<ThemedText style={styles.section}>User</ThemedText>
+				<View style={styles.userSection}>
+					<JamImage id={auth.currentUserID()} size={80} style={styles.userImage}/>
 					<View>
-						<ThemedText>{auth.currentUserName()}</ThemedText>
-						<Button title="Logout" onPress={logout}/>
+						<View>
+							<ThemedText>{auth.currentUserName()}</ThemedText>
+							<Button title="Logout" onPress={logout}/>
+						</View>
 					</View>
 				</View>
+				<ThemedText style={styles.section}>Permissions</ThemedText>
+				{auth?.user?.roles.stream && <UserPermission text="Stream Audio"/>}
+				{auth?.user?.roles.podcast && <UserPermission text="Manage Podcasts"/>}
+				{auth?.user?.roles.upload && <UserPermission text="Upload Audio"/>}
+				{auth?.user?.roles.admin && <UserPermission text="Server Administration"/>}
 			</View>
-			<ThemedText style={styles.section}>Cache</ThemedText>
-			<DataCachingView/>
-			<ThemedText style={styles.section}>Theme</ThemedText>
-			<ThemesView/>
-		</View>
+			{userData?.stats && <Stats stats={userData.stats} label="Library"/>}
+			{userData?.favorites && <Stats stats={userData.favorites} label="Favorites"/>}
+			{userData?.played && <Stats stats={userData.played} label="Played"/>}
+		</ScrollView>
 	);
 };

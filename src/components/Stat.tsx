@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
 });
 
 
-export const HomeStat: React.FC<{ stat: HomeStatData }> = React.memo(({stat}) => {
+export const Stat: React.FC<{ stat: HomeStatData }> = React.memo(({stat}) => {
 	const theme = useTheme();
 
 	const click = (): void => {

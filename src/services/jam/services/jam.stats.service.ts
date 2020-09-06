@@ -17,4 +17,11 @@ export class JamStatsService {
 		return this.base.requestData<Jam.Stats>('/stats', params);
 	}
 
+	/**
+	 * Get count Stats for the current User: Playlists/Favorites/Played // Rights needed: stream
+	 */
+	async user(): Promise<Jam.UserStats> {
+		return this.base.requestData<Jam.UserStats>('/stats/user', {});
+	}
+
 }

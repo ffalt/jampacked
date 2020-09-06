@@ -1,16 +1,17 @@
 import React, {useCallback, useEffect} from 'react';
-import {RefreshControl, ScrollView, StyleSheet, View} from 'react-native';
+import {RefreshControl, ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {HomeRoute, HomeStackProps} from '../navigators/Routing';
 import {ThemedText} from '../components/ThemedText';
 import {JamImage} from '../components/JamImage';
 import {staticTheme, useTheme} from '../style/theming';
 import {Logo} from '../components/Logo';
-import {HomeStats} from '../components/HomeStats';
+import {Stats} from '../components/Stats';
 import {HomeDataSection} from '../components/HomeDataSection';
 import {useLazyHomeDataQuery} from '../services/queries/home';
 import {snackError} from '../services/snack';
 import {useAuth} from '../services/auth';
 import dataService from '../services/data';
+import {NavigationService} from '../services/navigation';
 
 const styles = StyleSheet.create({
 	container: {
@@ -102,6 +103,10 @@ export const HomeScreen: React.FC<HomeStackProps<HomeRoute.START>> = () => {
 		getHomeData(true);
 	}, [getHomeData]);
 
+	const goToUser = useCallback((): void => {
+		NavigationService.navigate(HomeRoute.USER, {});
+	}, []);
+
 	const userName = `Welcome, ${auth.currentUserName()}`;
 	const userId = auth.currentUserID();
 
@@ -121,9 +126,11 @@ export const HomeScreen: React.FC<HomeStackProps<HomeRoute.START>> = () => {
 				<View style={styles.userHeader}>
 					<Logo size={40}/>
 					<ThemedText style={styles.userHeaderText} numberOfLines={2}>{userName}</ThemedText>
-					<JamImage id={userId} size={40} style={styles.userImage}/>
+					<TouchableOpacity onPress={goToUser}>
+						<JamImage id={userId} size={40} style={styles.userImage}/>
+					</TouchableOpacity>
 				</View>
-				<HomeStats stats={homeData?.stats}/>
+				<Stats stats={homeData?.stats} label="Library"/>
 				<HomeDataSection homeData={homeData?.homeData}/>
 			</View>
 		</ScrollView>
