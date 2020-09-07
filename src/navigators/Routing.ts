@@ -85,7 +85,8 @@ export enum HomeRoute {
 	USER = 'User',
 	ALBUMLIST = 'Albumlist',
 	ARTISTLIST = 'Artistlist',
-	SERIESLIST = 'Serieslist'
+	SERIESLIST = 'Serieslist',
+	FOLDERLIST = 'Folderlist'
 }
 
 export type HomeStackNavigatorParamList = {
@@ -97,6 +98,7 @@ export type HomeStackNavigatorParamList = {
 	Podcasts: undefined;
 	Playlists: undefined;
 	User: undefined;
+	Folderlist: { listType: ListType, albumTypeID?: string };
 	Serieslist: { listType: ListType, albumTypeID?: string };
 	Albumlist: { listType: ListType, albumTypeID?: string };
 	Artistlist: { listType: ListType, albumTypeID?: string };

@@ -20,6 +20,7 @@ import {UserScreen} from '../screens/UserScreen';
 import {AlbumListScreen} from '../screens/AlbumListScreen';
 import {ArtistListScreen} from '../screens/ArtistListScreen';
 import {SeriesListScreen} from '../screens/SeriesListScreen';
+import {FolderListScreen} from '../screens/FolderListScreen';
 
 const Stack = createStackNavigator<HomeStackNavigatorParamList>();
 
@@ -44,5 +45,6 @@ export const HomeStackNavigator: React.FC = () => (
 		<Stack.Screen name={HomeRoute.ALBUMLIST} component={AlbumListScreen}/>
 		<Stack.Screen name={HomeRoute.ARTISTLIST} component={ArtistListScreen}/>
 		<Stack.Screen name={HomeRoute.SERIESLIST} component={SeriesListScreen}/>
+		<Stack.Screen name={HomeRoute.FOLDERLIST} component={FolderListScreen}/>
 	</Stack.Navigator>
 );

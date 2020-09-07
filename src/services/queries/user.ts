@@ -105,7 +105,7 @@ function transformSectionStats(stats: UserResult_currentUser_stats_played | User
 		})),
 		{
 			text: 'Folders',
-			link: {route: HomeRoute.FOLDERS},
+			link: {route: HomeRoute.FOLDERLIST, params: {listType} },
 			value: stats.folder
 		},
 		{
