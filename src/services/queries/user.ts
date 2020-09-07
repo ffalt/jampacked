@@ -6,7 +6,7 @@ import {UserResult, UserResult_currentUser_stats_favorite, UserResult_currentUse
 import {HomeStatsData} from '../types';
 import {HomeRoute} from '../../navigators/Routing';
 import {getTypeByAlbumType} from '../jam-lists';
-import {AlbumType} from '../jam';
+import {AlbumType, ListType} from '../jam';
 
 const GET_USERDATA = gql`
     query UserResult {
@@ -71,7 +71,7 @@ export interface UserDataResult {
 	played: HomeStatsData;
 }
 
-function transformSectionStats(stats: UserResult_currentUser_stats_played | UserResult_currentUser_stats_favorite): HomeStatsData {
+function transformSectionStats(stats: UserResult_currentUser_stats_played | UserResult_currentUser_stats_favorite, listType: ListType): HomeStatsData {
 	return [
 		{
 			text: 'Artists',
@@ -83,7 +83,7 @@ function transformSectionStats(stats: UserResult_currentUser_stats_played | User
 			{type: getTypeByAlbumType(AlbumType.compilation), value: stats.albumTypes.compilation}
 		].map(t => ({
 			text: t.type?.text || '',
-			link: {route: HomeRoute.ALBUMS, params: {albumTypeID: t.type?.id || ''}},
+			link: {route: HomeRoute.ALBUMLIST, params: {albumTypeID: t.type?.id || '', listType}},
 			value: t.value
 		})),
 		{
@@ -100,7 +100,7 @@ function transformSectionStats(stats: UserResult_currentUser_stats_played | User
 			{type: getTypeByAlbumType(AlbumType.single), value: stats.albumTypes.single}
 		].map(t => ({
 			text: t.type?.text || '',
-			link: {route: HomeRoute.ALBUMS, params: {albumTypeID: t.type?.id || ''}},
+			link: {route: HomeRoute.ALBUMLIST, params: {albumTypeID: t.type?.id || '', listType}},
 			value: t.value
 		})),
 		{
@@ -133,8 +133,8 @@ function transformData(data?: UserResult): UserDataResult | undefined {
 			value: stats.playlist
 		}
 	].filter(t => t.value !== undefined);
-	const favorites: HomeStatsData = transformSectionStats(stats.favorite);
-	const played: HomeStatsData = transformSectionStats(stats.played);
+	const favorites: HomeStatsData = transformSectionStats(stats.favorite, ListType.faved);
+	const played: HomeStatsData = transformSectionStats(stats.played, ListType.recent);
 	return {stats: base, favorites, played};
 }
 

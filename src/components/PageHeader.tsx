@@ -10,15 +10,19 @@ const styles = StyleSheet.create({
 		paddingLeft: staticTheme.padding,
 		fontSize: staticTheme.fontSizeHuge
 	},
+	ListHeaderSubtitle: {
+		paddingLeft: staticTheme.padding,
+		fontSize: staticTheme.fontSize
+	},
 	ListHeaderTitleContainer: {
 		flex: 1,
 		paddingLeft: 55,
 		justifyContent: 'center',
 		alignItems: 'center',
-		flexDirection: 'row'
+		flexDirection: 'column'
 	},
 	ListHeaderBackground: {
-		height: 180
+		height: 140
 	},
 	ListHeader: {
 		alignItems: 'center',
@@ -44,10 +48,11 @@ const styles = StyleSheet.create({
 
 export const PageHeader: React.FC<{
 	title: string;
+	subtitle?: string;
 	titleIcon: string;
 	tiles?: boolean;
 	toggleView?: () => void;
-}> = ({tiles, title, titleIcon, toggleView}) => {
+}> = ({tiles, title, titleIcon, toggleView, subtitle}) => {
 
 	const handleToggleView = (): void => {
 		if (toggleView) {
@@ -62,13 +67,18 @@ export const PageHeader: React.FC<{
 				<ThemedIcon name={iconName} size={styles.buttonIcon.fontSize}/>
 			</TouchableOpacity>
 		)
-		: <></>;
+		: undefined;
+	const subtitleView = subtitle ?
+		(<ThemedText style={styles.ListHeaderSubtitle}>{subtitle}</ThemedText>) :
+		undefined;
+
 	const paddingRight = toggleView ? 0 : 75;
 
 	return (
 		<BackgroundIcon name={titleIcon} style={styles.ListHeaderBackground}>
 			<View style={styles.ListHeader}>
 				<View style={[styles.ListHeaderTitleContainer, {paddingRight}]}>
+					{subtitleView}
 					<ThemedText style={styles.ListHeaderTitle}>{title}</ThemedText>
 				</View>
 				{toggleViewButton}

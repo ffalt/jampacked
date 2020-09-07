@@ -307,12 +307,12 @@ export default dataService;
 
 export function useCacheOrLazyQuery<TData = any, TVariables = OperationVariables, TResult = any>(
 	query: DocumentNode,
-	transform: (d?: TData) => TResult | undefined,
+	transform: (d?: TData, variables?: TVariables) => TResult | undefined,
 	options?: LazyQueryHookOptions<TData, TVariables>):
 	[(options?: QueryLazyOptions<TVariables>, forceRefresh?: boolean) => void, { loading: boolean, error?: ApolloError, data?: TResult, called: boolean }] {
 	const [result, setResult] = useState<TResult | undefined>();
 	const [id, setID] = useState<string | undefined>();
-	const [q, {loading, error, data, called}] = useLazyQuery<TData, TVariables>(query, options);
+	const [q, {loading, error, data, called, variables}] = useLazyQuery<TData, TVariables>(query, options);
 
 	const execute = useCallback((queryOptions?: QueryLazyOptions<TVariables>, forceRefresh?: boolean): void => {
 		const opDef = query.definitions.find(d => d.kind === 'OperationDefinition');
@@ -334,14 +334,14 @@ export function useCacheOrLazyQuery<TData = any, TVariables = OperationVariables
 	}, [query, q]);
 
 	useEffect(() => {
-		const r = transform(data);
+		const r = transform(data, variables);
 		if (id && r) {
 			setResult(r);
 			dataService.setItem(id, r).then(() => {
 				//
 			});
 		}
-	}, [data, transform, id]);
+	}, [data, variables, id, transform]);
 
 	return [execute, {loading, error, data: result, called}];
 }

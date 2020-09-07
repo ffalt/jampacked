@@ -3,13 +3,13 @@ import {JamObjectType} from '../services/jam';
 import {FlatList, RefreshControl, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {ThemedText} from './ThemedText';
 import {commonItemLayout} from './AtoZList';
-import {Separator} from './Separator';
 import {Item} from './Item';
 import {staticTheme, useTheme} from '../style/theming';
 import {ThemedIcon} from './ThemedIcon';
-import {BaseEntry, SearchResultData} from '../services/types';
+import {BaseEntry} from '../services/types';
 import {useLazySearchQuery} from '../services/queries/search';
 import {snackError} from '../services/snack';
+import {Separator} from './Separator';
 
 const styles = StyleSheet.create({
 	section: {
@@ -36,34 +36,36 @@ interface SearchProps {
 }
 
 export const Search: React.FC<SearchProps> = ({objType, query, backToAll}) => {
-	const [data, setData] = useState<SearchResultData | undefined>();
-	const [search, setSearch] = useState<{ query: string, offset: number } | undefined>();
+	const [q, setQ] = useState<string | undefined>();
+	const [total, setTotal] = useState<number>(0);
+	const [offset, setOffset] = useState<number>(0);
+	const [entries, setEntries] = useState<Array<BaseEntry>>([]);
 	const [getSearch, {loading, error, result}] = useLazySearchQuery(objType);
 	const amount = 10;
 	const theme = useTheme();
 
 	useEffect(() => {
 		if (query) {
-			setData(undefined);
-			setSearch({query, offset: 0});
+			setEntries([]);
+			setOffset(0);
+			setQ(query);
 		}
-	}, [query, objType]);
+	}, [query]);
 
 	useEffect(() => {
-		if (search) {
-			getSearch(search.query, amount, search?.offset);
+		if (q) {
+			getSearch(q, amount, offset);
 		}
-	}, [getSearch, search]);
+	}, [getSearch, q, offset]);
 
 	useEffect(() => {
-		if (result) {
-			if (search?.query === result.query && data) {
-				setData({...result, entries: result.entries.concat(data.entries)});
-			} else {
-				setData(result);
-			}
+		if (result?.entries?.length) {
+			setTotal(result.total);
+			setEntries((prev) => {
+				return prev.concat(result.entries);
+			});
 		}
-	}, [result, data, search]);
+	}, [result]);
 
 	if (error) {
 		snackError(error);
@@ -76,36 +78,34 @@ export const Search: React.FC<SearchProps> = ({objType, query, backToAll}) => {
 	}, [backToAll]);
 
 	const handleLoadMore = useCallback((): void => {
-		if (loading) {
-			return;
-		}
-		if (search && data) {
-			const offset = search.offset + amount;
-			if (search.offset + amount < data.total) {
-				setSearch({query: search.query, offset});
+		setOffset((prev => {
+			if (prev + amount > total) {
+				return prev;
 			}
-		}
-	}, [data, loading, search]);
+			return prev + amount;
+		}));
+	}, [total]);
 
 	const reload = useCallback((): void => {
-		setData(undefined);
-		if (query) {
-			setSearch({query, offset: 0});
+		if (q) {
+			setEntries([]);
+			setOffset(0);
+			getSearch(q, amount, offset);
 		}
-	}, [query]);
+	}, [q, getSearch, offset]);
 
 	const getItemLayout = React.useMemo(() => commonItemLayout(65), []);
 	const keyExtractor = (item: BaseEntry): string => item.id;
 	const renderItem = useCallback(({item}: { item: BaseEntry }): JSX.Element => (<Item item={item}/>), []);
 
 	return (
-		<View>
+		<>
 			<TouchableOpacity style={styles.section} onPress={handleBack}>
 				<ThemedIcon size={styles.sectionIcon.fontSize} name="left-open"/>
 				<ThemedText style={styles.sectionText}>{objType}</ThemedText>
 			</TouchableOpacity>
 			<FlatList
-				data={data?.entries}
+				data={entries}
 				renderItem={renderItem}
 				keyExtractor={keyExtractor}
 				ItemSeparatorComponent={Separator}
@@ -122,6 +122,6 @@ export const Search: React.FC<SearchProps> = ({objType, query, backToAll}) => {
 					/>
 				)}
 			/>
-		</View>
+		</>
 	);
 };

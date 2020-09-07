@@ -11,14 +11,14 @@ export class JamStatsService {
 	}
 
 	/**
-	 * Get count Stats for Folders/Tracks/Albums/... // Rights needed: stream
+	 * Get count stats for Folders/Tracks/Albums/... // Rights needed: stream
 	 */
 	async get(params: JamParameters.StatsFilter): Promise<Jam.Stats> {
 		return this.base.requestData<Jam.Stats>('/stats', params);
 	}
 
 	/**
-	 * Get count Stats for the current User: Playlists/Favorites/Played // Rights needed: stream
+	 * Get count stats for the calling User: Playlists/Favorites/Played // Rights needed: stream
 	 */
 	async user(): Promise<Jam.UserStats> {
 		return this.base.requestData<Jam.UserStats>('/stats/user', {});

@@ -29,6 +29,18 @@ export enum FolderType {
   unknown = "unknown",
 }
 
+/**
+ * Type of List Request
+ */
+export enum ListType {
+  avghighest = "avghighest",
+  faved = "faved",
+  frequent = "frequent",
+  highest = "highest",
+  random = "random",
+  recent = "recent",
+}
+
 //==============================================================
 // END Enums and Input Objects
 //==============================================================

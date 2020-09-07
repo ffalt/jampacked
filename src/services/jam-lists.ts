@@ -90,12 +90,25 @@ export function getTypeByAlbumType(albumType: string): JamType | undefined {
 	return JamUrlTypes.find(part => part.albumType === albumType);
 }
 
+export function getUrlTypeIdByAlbumType(albumType: string): string | undefined {
+	const type = JamUrlTypes.find(part => part.albumType === albumType);
+	return type?.id;
+}
+
 export function getUrlTypeByID(val?: string): JamType | undefined {
 	if (!val) {
 		return;
 	}
 	return JamUrlTypes.find(part => part.id === val);
 }
+
+export const ListTypeName: { [key: string]: string } = {
+	random: 'Random',
+	faved: 'Favorite',
+	highest: 'Top Rated',
+	frequent: 'Most Played',
+	recent: 'Recently Played'
+};
 
 export const ListTypeUrlNamesKeys: { [key: string]: ListType } = {
 	random: ListType.random,
