@@ -1,7 +1,7 @@
 import {CommonActions, NavigationContainerRef} from '@react-navigation/core';
 import {JamObjectType} from './jam';
 import {HomeRoute} from '../navigators/Routing';
-import {Navig} from './types';
+import {Navig, NavigParams} from './types';
 
 let navigator: NavigationContainerRef;
 
@@ -11,7 +11,7 @@ export class NavigationService {
 		navigator = navigatorRef;
 	}
 
-	static navigate(routeName: string, params: any): void {
+	static navigate(routeName: string, params?: NavigParams): void {
 		if (navigator) {
 			navigator.dispatch(
 				CommonActions.navigate({name: routeName, params})

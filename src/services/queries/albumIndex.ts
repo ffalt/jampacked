@@ -2,7 +2,7 @@ import {AlbumType, JamObjectType} from '../jam';
 import gql from 'graphql-tag';
 import {ApolloError} from 'apollo-client';
 import {Index} from '../types';
-import {useCallback, useState} from 'react';
+import {useCallback} from 'react';
 import {AlbumIndexResult, AlbumIndexResultVariables} from './types/AlbumIndexResult';
 import {useCacheOrLazyQuery} from '../data';
 

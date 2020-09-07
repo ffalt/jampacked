@@ -3,7 +3,13 @@ import {useCurrentTrackID} from '../services/player';
 import {WaveformProgress} from './WaveformProgress';
 import {useLazyWaveformQuery} from '../services/queries/waveform';
 import {snackError} from '../services/snack';
-import {View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
+
+const styles = StyleSheet.create({
+	container: {
+		height: 50
+	}
+});
 
 export const PlayerWaveformProgress: React.FC = () => {
 	const id = useCurrentTrackID();
@@ -20,7 +26,7 @@ export const PlayerWaveformProgress: React.FC = () => {
 	}
 
 	if (!waveform) {
-		return (<View style={{height: 50}}/>);
+		return (<View style={styles.container}/>);
 	}
 
 	return (

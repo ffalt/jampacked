@@ -31,7 +31,9 @@ export const BackgroundIcon: React.FC<{
 					setIconSource(src);
 				}
 			});
-		return (): any => isSubscribed = false;
+		return (): void => {
+			isSubscribed = false;
+		};
 	}, [name, theme]);
 
 	return (

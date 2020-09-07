@@ -1,8 +1,8 @@
 import TrackPlayer from 'react-native-track-player';
 import {useEffect, useState} from 'react';
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-// @ts-ignore-next-line
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 const {TrackPlayerEvents, Track, useTrackPlayerEvents, useTrackPlayerProgress} = TrackPlayer;
 
 export async function initPlayer(): Promise<void> {
@@ -56,8 +56,11 @@ export const useTrackPlayerProgressMS = (): { duration: number, position: number
 				setNow({duration: d * 1000, position: p * 1000});
 			}
 		}
+
 		fetchData();
-		return (): any => isSubscribed = false;
+		return (): void => {
+			isSubscribed = false;
+		};
 	}, []);
 
 	useEffect(() => {

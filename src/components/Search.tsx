@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {JamObjectType} from '../services/jam';
-import {FlatList, RefreshControl, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {FlatList, RefreshControl, StyleSheet, TouchableOpacity} from 'react-native';
 import {ThemedText} from './ThemedText';
 import {commonItemLayout} from './AtoZList';
 import {Item} from './Item';

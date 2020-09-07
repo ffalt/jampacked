@@ -1,6 +1,6 @@
 import {AlbumType, JamObjectType, ListType} from '../jam';
 import gql from 'graphql-tag';
-import {BaseEntry, BaseEntryList, useListFunction} from '../types';
+import {BaseEntryList, useListFunction} from '../types';
 import {useCallback} from 'react';
 import {AlbumListResult, AlbumListResultVariables} from './types/AlbumListResult';
 import {useCacheOrLazyQuery} from '../data';

@@ -12,7 +12,7 @@ async function buildTrackPlayerTrack(t: TrackEntry): Promise<TrackPlayer.Track> 
 	const url = local ?
 		dataService.downloadedPath(t.id) :
 		dataService.jam.stream.streamUrl({id: t.id, format: AudioFormatType.mp3}, !headers);
-	const track: TrackPlayer.Track = {
+	return {
 		id: t.id,
 		url,
 		title: t.title,
@@ -30,7 +30,6 @@ async function buildTrackPlayerTrack(t: TrackEntry): Promise<TrackPlayer.Track> 
 		// contentType?: string;
 		// pitchAlgorithm?: PitchAlgorithm
 	};
-	return track;
 }
 
 export class JamPlayer {
@@ -243,7 +242,9 @@ export function useCurrentTrackID(): string | undefined {
 				setTrackId(tId);
 			}
 		});
-		return (): any => isSubscribed = false;
+		return (): void => {
+			isSubscribed = false;
+		};
 	}, [trackId]);
 
 	return trackId;

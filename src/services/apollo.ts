@@ -24,9 +24,10 @@ const authLink = setContext((_, {headers}: any) => {
 });
 
 const logLink = new ApolloLink((operation: any, forward: any) => {
+	// eslint-disable-next-line no-console
 	console.log('start', operation.operationName, operation.variables);
 	return forward(operation).map((result: any) => {
-		console.log('stop', operation.operationName);
+		// console.log('stop', operation.operationName);
 		return result;
 	});
 });

@@ -11,20 +11,16 @@ export const AlbumListScreen: React.FC<HomeStackProps<HomeRoute.ALBUMLIST>> = ({
 		albumTypes: Array<AlbumType>;
 		icon: string;
 		text: string;
-	}>({
-		albumTypes: [],
-		icon: '',
-		text: ''
-	});
+	}>({albumTypes: [], icon: '', text: ''});
 
 	useEffect(() => {
-		const listType = route?.params?.listType;
-		const albumTypeID = route?.params?.albumTypeID;
-		const type = getUrlTypeByID(albumTypeID);
-		const text = type?.text || 'Albums';
-		const icon = type?.text || 'album';
-		const albumTypes = type?.albumType ? [type.albumType] : []
-		setView({listType, text, icon, albumTypes});
+		const type = getUrlTypeByID(route?.params?.albumTypeID);
+		setView({
+			listType: route?.params?.listType,
+			text: type?.text || 'Albums',
+			icon: type?.text || 'album',
+			albumTypes: type?.albumType ? [type.albumType] : []
+		});
 	}, [route.params]);
 
 	return (

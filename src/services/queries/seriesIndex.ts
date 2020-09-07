@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 import {Index} from '../types';
 import {JamObjectType} from '../jam';
 import {ApolloError} from 'apollo-client';
-import {useCallback, useEffect, useState} from 'react';
+import {useCallback} from 'react';
 import {SeriesIndexResult} from './types/SeriesIndexResult';
 import {useCacheOrLazyQuery} from '../data';
 

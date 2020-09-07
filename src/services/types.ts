@@ -2,13 +2,16 @@ import {SectionListData} from 'react-native';
 import {AlbumType, Jam, JamObjectType, ListType} from './jam';
 import {ApolloError} from 'apollo-client';
 
+export interface NavigParams {
+	id?: string;
+	name?: string;
+	albumTypeID?: string;
+	listType?: string;
+}
+
 export interface Navig {
 	route: string;
-	params?: {
-		id?: string;
-		name?: string;
-		albumTypeID?: string;
-	};
+	params?: NavigParams;
 }
 
 export interface HomeEntry {

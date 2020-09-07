@@ -3,7 +3,7 @@ import {AlbumType, JamObjectType} from '../jam';
 import {ApolloError} from 'apollo-client';
 import {SectionListData} from 'react-native';
 import {BaseEntry} from '../types';
-import {useCallback, useEffect, useState} from 'react';
+import {useCallback} from 'react';
 import {SeriesResult, SeriesResultVariables} from './types/SeriesResult';
 import {useCacheOrLazyQuery} from '../data';
 

@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import FastImage, {FastImageSource, ImageStyle} from 'react-native-fast-image';
+import React from 'react';
+import FastImage, {ImageStyle} from 'react-native-fast-image';
 import {StyleProp} from 'react-native';
 import {useAuth} from '../services/auth';
 

@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 import {TrackEntry} from '../types';
 import {formatDuration} from '../../utils/duration.utils';
 import {ApolloError} from 'apollo-client';
-import {useCallback, useEffect, useState} from 'react';
+import {useCallback} from 'react';
 import {TrackResult, TrackResultVariables} from './types/TrackResult';
 import {useCacheOrLazyQuery} from '../data';
 

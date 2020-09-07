@@ -170,7 +170,7 @@ export const SoundCloudWave: React.FC<WaveFormProps> = (
 			const chunksLow = chunk(wf.channel(0).min_array(), chunkNr);
 			const barsHigh = buildBars([0, wfHeight], [0, height / 2], chunksHigh);
 			const barsLow = buildBars([-wfHeight, 0], [height / 2, 0], chunksLow);
-			const bars = barsHigh.items.map((high, index) => {
+			const items = barsHigh.items.map((high, index) => {
 				const low = barsLow.items[index];
 				return {
 					// high, low,
@@ -178,7 +178,7 @@ export const SoundCloudWave: React.FC<WaveFormProps> = (
 					height: (high + low)
 				};
 			});
-			setBars({items: bars});
+			setBars({items});
 		}
 	}, [waveform, height, width]);
 

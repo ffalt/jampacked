@@ -1,8 +1,6 @@
-import {TrackEntry} from './types';
-import dataService from './data';
-import {AudioFormatType} from './jam';
 import RNBackgroundDownloader, {DownloadOption, DownloadTask} from 'react-native-background-downloader';
 import RNFS from 'react-native-fs';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import DownloadNotification from 'react-native-download-notification';
 
@@ -81,28 +79,28 @@ export class MediaCache {
 	private connectToTask(task: DownloadTask, notification: DNotification): void {
 		task
 			.begin((expectedBytes) => {
-				console.log(task.id, `Going to download ${expectedBytes} bytes!`);
-				notification.setExtraInfo(`Total: ${expectedBytes}`)
+				// console.log(task.id, `Going to download ${expectedBytes} bytes!`);
+				notification.setExtraInfo(`Total: ${expectedBytes}`);
 			})
 			.progress((percent) => {
 				notification.updateProgress(percent * 100);
-				console.log(task.id, `Downloaded: ${percent * 100}%`);
+				// console.log(task.id, `Downloaded: ${percent * 100}%`);
 			})
 			.done(() => {
 				this.tasks = this.tasks.filter(t => t !== task);
-				console.log(task.id, 'Download is done!');
+				// console.log(task.id, 'Download is done!');
 				notification.setStateCompleted();
 				this.start();
 			})
-			.error((error) => {
-				console.log(task.id, 'Download canceled due to error: ', error);
+			.error((_: Error) => {
+				// console.log(task.id, 'Download canceled due to error: ', error);
 				notification.setStateCancelled();
 			});
 	}
 
 	private async start(): Promise<void> {
 		if (this.tasks.length > 0) {
-			console.log('start tasks', this.tasks.length);
+			// console.log('start tasks', this.tasks.length);
 			const task = this.tasks[0];
 			const notification = await DownloadNotification.create(
 				`Audio ${task.id}`,
