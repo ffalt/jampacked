@@ -10,7 +10,7 @@ import {JamObjectType} from '../services/jam';
 import {FavIcon} from '../components/FavIcon';
 import {snackError} from '../services/snack';
 import {commonItemLayout} from '../components/AtoZList';
-import PopupMenu, {PopupMenuAction, usePopupMenuRef} from '../components/PopupMenu';
+import PopupMenu, {PopupMenuAction, PopupMenuRef, usePopupMenuRef} from '../components/PopupMenu';
 import {NavigationService} from '../services/navigation';
 import {ThemedText} from '../components/ThemedText';
 import {TrackEntry} from '../services/types';
@@ -71,7 +71,7 @@ export const PodcastScreen: React.FC<HomeStackProps<HomeRoute.PODCAST>> = ({rout
 
 	const menuRef = usePopupMenuRef();
 
-	const showMenu = useCallback((ref: React.RefObject<any>, item: TrackEntry): void => {
+	const showMenu = useCallback((ref: PopupMenuRef, item: TrackEntry): void => {
 		const actions = [
 			{
 				title: 'Play Episode',

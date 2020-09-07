@@ -1,5 +1,5 @@
 import gql from 'graphql-tag';
-import {useLazyQuery} from '@apollo/react-hooks';
+import {DocumentNode, useLazyQuery} from '@apollo/react-hooks';
 import {JamObjectType} from '../jam';
 import {ApolloError} from 'apollo-client';
 import {useCallback, useEffect, useState} from 'react';
@@ -194,7 +194,7 @@ function transformData(data: SearchQueryResults | undefined, variables: SearchVa
 	}
 }
 
-function getSearchQuery(objType: JamObjectType): any {
+function getSearchQuery(objType: JamObjectType): DocumentNode {
 	switch (objType) {
 		case JamObjectType.folder:
 			return GET_SEARCH_FOLDERS;

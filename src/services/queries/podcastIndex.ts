@@ -38,7 +38,7 @@ function transformData(data?: PodcastIndexResult): Index | undefined {
 export const useLazyPodcastIndexQuery = (): [(forceRefresh?: boolean) => void,
 	{ loading: boolean, error?: ApolloError, index?: Index, called: boolean }
 ] => {
-	const [query, {loading, error, data, called}] = useCacheOrLazyQuery<PodcastIndexResult, any, Index>(GET_PODCASTINDEX, transformData);
+	const [query, {loading, error, data, called}] = useCacheOrLazyQuery<PodcastIndexResult, void, Index>(GET_PODCASTINDEX, transformData);
 	const get = useCallback((forceRefresh?: boolean): void => {
 		query({}, forceRefresh);
 	}, [query]);

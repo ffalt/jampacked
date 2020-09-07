@@ -38,7 +38,7 @@ function transformData(data?: PlaylistIndexResult): Index | undefined {
 export const useLazyPlaylistIndexQuery = (): [(forceRefresh?: boolean) => void,
 	{ loading: boolean, error?: ApolloError, index?: Index, called: boolean }
 ] => {
-	const [query, {loading, error, data, called}] = useCacheOrLazyQuery<PlaylistIndexResult, any, Index>(GET_PLAYLISTINDEX, transformData);
+	const [query, {loading, error, data, called}] = useCacheOrLazyQuery<PlaylistIndexResult, void, Index>(GET_PLAYLISTINDEX, transformData);
 	const get = useCallback((forceRefresh?: boolean): void => {
 		query({}, forceRefresh);
 	}, [query]);

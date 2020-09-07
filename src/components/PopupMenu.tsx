@@ -2,6 +2,8 @@ import React, {MutableRefObject, RefObject} from 'react';
 import {Menu, MenuItem, Position} from './popupmenu/index';
 import {ITheme, withTheme} from '../style/theming';
 
+export type PopupMenuRef = React.RefObject<any>;
+
 export interface PopupMenuAction {
 	title: string;
 	click: () => void;
@@ -23,7 +25,7 @@ class PopupMenu extends React.PureComponent<{
 		}
 	}
 
-	showMenu(ref: React.RefObject<any>): void {
+	showMenu(ref: PopupMenuRef): void {
 		if (this.menuRef) {
 			this.menuRef.show(ref.current, Position.AUTO_CENTER);
 		}

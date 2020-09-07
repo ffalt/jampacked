@@ -11,24 +11,12 @@ import dataService from './src/services/data';
 import {ApolloProvider} from '@apollo/react-hooks';
 import {initApolloClient} from './src/services/apollo';
 import {ApolloClient} from 'apollo-client';
-// import AsyncStorage from '@react-native-community/async-storage';
 
 enableScreens();
 
-/*
-AsyncStorage.getAllKeys((err, keys) => {
-	AsyncStorage.multiGet(keys || [], (error, stores) => {
-		(stores || []).forEach((result, i, store) => {
-			console.log(store[i][0]);
-			// console.log({[store[i][0]]: store[i][1]});
-		});
-	});
-});
-*/
-
 export default class App extends React.Component {
 	static contextType = ThemeContext;
-	state: ThemeSettings & { client?: ApolloClient<any> } = {
+	state: ThemeSettings & { client?: ApolloClient<unknown> } = {
 		theme: themes.dark,
 		loadUserTheme: () => this.loadTheme(),
 		setTheme: (themeName) => {

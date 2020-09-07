@@ -140,7 +140,7 @@ function transformData(data?: HomeResult): HomeDataResult | undefined {
 export const useLazyHomeDataQuery = (): [(forceRefresh?: boolean) => void,
 	{ loading: boolean, error?: ApolloError, homeData?: HomeDataResult, called: boolean }
 ] => {
-	const [query, {loading, error, data, called}] = useCacheOrLazyQuery<HomeResult, any, HomeDataResult>(GET_HOMEDATA, transformData);
+	const [query, {loading, error, data, called}] = useCacheOrLazyQuery<HomeResult, void, HomeDataResult>(GET_HOMEDATA, transformData);
 	const get = useCallback((forceRefresh?: boolean): void => {
 		query({}, forceRefresh);
 	}, [query]);

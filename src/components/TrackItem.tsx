@@ -4,6 +4,7 @@ import {staticTheme} from '../style/theming';
 import {JamPlayer} from '../services/player';
 import {ThemedText} from './ThemedText';
 import {TrackEntry} from '../services/types';
+import {PopupMenuRef} from './PopupMenu';
 
 export const trackEntryHeight = 46;
 
@@ -40,7 +41,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-export const TrackItem: React.FC<{ track: TrackEntry, showMenu?: (ref: React.RefObject<any>, item: TrackEntry) => void; }> = React.memo(({track, showMenu}) => {
+export const TrackItem: React.FC<{ track: TrackEntry, showMenu?: (ref: PopupMenuRef, item: TrackEntry) => void; }> = React.memo(({track, showMenu}) => {
 	const ref = useRef<TouchableOpacity | null>(null);
 
 	const playTrack = useCallback((): void => {

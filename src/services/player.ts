@@ -235,7 +235,7 @@ export function useCurrentTrackID(): string | undefined {
 		}
 	);
 
-	useEffect((): any => {
+	useEffect(() => {
 		let isSubscribed = true;
 		TrackPlayer.getCurrentTrack().then(tId => {
 			if (isSubscribed && trackId !== tId) {

@@ -16,7 +16,7 @@ import {useCallback, useEffect, useState} from 'react';
 import {ApolloError} from 'apollo-client';
 import {Subject} from 'rxjs';
 
-class DataService implements PersistentStorage<any> {
+class DataService implements PersistentStorage<unknown> {
 	db?: Database;
 	version = 10;
 	dataCaching = new Caching(

@@ -77,7 +77,7 @@ export const UserScreen: React.FC<BottomTabProps<BottomTabRoute.SETTINGS>> = () 
 
 	const logout = useCallback((): void => {
 		auth.logout()
-			.catch((e: any) => {
+			.catch(e => {
 				console.error(e);
 			});
 	}, [auth]);

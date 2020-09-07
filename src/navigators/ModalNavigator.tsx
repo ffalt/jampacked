@@ -6,7 +6,7 @@ import {BottomTabNavigator} from './BottomTabNavigator';
 import {PlayerScreen} from '../screens/PlayerScreen';
 import {ModalRouting} from './Routing';
 
-const ModalStack = createStackNavigator<any>();
+const ModalStack = createStackNavigator();
 
 export class ModalNavigator extends React.PureComponent {
 	static contextType = NavigationContext;
