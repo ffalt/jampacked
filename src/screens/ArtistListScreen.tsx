@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import {HomeRoute, HomeStackProps} from '../navigators/Routing';
-import {useLazyAlbumListQuery} from '../services/queries/albumList';
 import {BaseEntryListList} from '../components/BaseEntryListList';
 import {AlbumType, ListType} from '../services/jam';
 import {getUrlTypeByID} from '../services/jam-lists';
+import {useLazyArtistListQuery} from '../services/queries/artistList';
 
-export const AlbumListScreen: React.FC<HomeStackProps<HomeRoute.ALBUMLIST>> = ({route}) => {
+export const ArtistListScreen: React.FC<HomeStackProps<HomeRoute.ARTISTLIST>> = ({route}) => {
 	const [view, setView] = useState<{
 		listType?: ListType;
 		albumTypes: Array<AlbumType>;
@@ -21,9 +21,9 @@ export const AlbumListScreen: React.FC<HomeStackProps<HomeRoute.ALBUMLIST>> = ({
 		const listType = route?.params?.listType;
 		const albumTypeID = route?.params?.albumTypeID;
 		const type = getUrlTypeByID(albumTypeID);
-		const text = type?.text || 'Albums';
-		const icon = type?.text || 'album';
-		const albumTypes = type?.albumType ? [type.albumType] : []
+		const text = type?.text || 'Artists';
+		const icon = type?.text || 'artist';
+		const albumTypes = type?.albumType ? [type.albumType] : [];
 		setView({listType, text, icon, albumTypes});
 	}, [route.params]);
 
@@ -33,6 +33,6 @@ export const AlbumListScreen: React.FC<HomeStackProps<HomeRoute.ALBUMLIST>> = ({
 			icon={view.icon}
 			listType={view.listType}
 			albumTypes={view.albumTypes}
-			useList={useLazyAlbumListQuery}
+			useList={useLazyArtistListQuery}
 		/>);
 };

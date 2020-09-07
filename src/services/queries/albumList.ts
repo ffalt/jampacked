@@ -1,7 +1,6 @@
 import {AlbumType, JamObjectType, ListType} from '../jam';
 import gql from 'graphql-tag';
-import {ApolloError} from 'apollo-client';
-import {BaseEntry} from '../types';
+import {BaseEntry, BaseEntryList, useListFunction} from '../types';
 import {useCallback} from 'react';
 import {AlbumListResult, AlbumListResultVariables} from './types/AlbumListResult';
 import {useCacheOrLazyQuery} from '../data';
@@ -23,20 +22,11 @@ const GET_ALBUMLIST = gql`
     }
 `;
 
-
-interface AlbumList {
-	listType?: ListType;
-	items: Array<BaseEntry>;
-	total: number;
-	skip?: number;
-	take?: number;
-}
-
-function transformData(data?: AlbumListResult, variables?: AlbumListResultVariables): AlbumList | undefined {
+function transformData(data?: AlbumListResult, variables?: AlbumListResultVariables): BaseEntryList | undefined {
 	if (!data) {
 		return;
 	}
-	const result: AlbumList = {
+	const result: BaseEntryList = {
 		total: data.albums.total,
 		skip: data.albums.skip === null ? undefined : data.albums.skip,
 		take: data.albums.take === null ? undefined : data.albums.take,
@@ -54,10 +44,8 @@ function transformData(data?: AlbumListResult, variables?: AlbumListResultVariab
 	return result;
 }
 
-export const useLazyAlbumListQuery = (): [(albumTypes: Array<AlbumType>, listType: ListType, take: number, skip: number, forceRefresh?: boolean) => void,
-	{ loading: boolean, error?: ApolloError, data?: AlbumList, called: boolean }
-] => {
-	const [query, {loading, error, data, called}] = useCacheOrLazyQuery<AlbumListResult, AlbumListResultVariables, AlbumList>(GET_ALBUMLIST, transformData);
+export const useLazyAlbumListQuery: useListFunction = () => {
+	const [query, {loading, error, data, called}] = useCacheOrLazyQuery<AlbumListResult, AlbumListResultVariables, BaseEntryList>(GET_ALBUMLIST, transformData);
 	const get = useCallback((albumTypes: Array<AlbumType>, listType: ListType, take: number, skip: number, forceRefresh?: boolean): void => {
 		query({variables: {albumTypes, listType, skip, take}}, forceRefresh);
 	}, [query]);

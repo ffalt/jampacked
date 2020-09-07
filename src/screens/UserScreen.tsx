@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
 export const UserPermission: React.FC<{ text: string }> = ({text}) => {
 	return (
 		<View style={styles.permission}>
-			<ThemedIcon name='checkmark'/>
+			<ThemedIcon name="checkmark"/>
 			<ThemedText style={styles.permissionText}>{text}</ThemedText>
 		</View>
 	);

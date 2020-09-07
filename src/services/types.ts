@@ -1,5 +1,6 @@
 import {SectionListData} from 'react-native';
-import {Jam, JamObjectType} from './jam';
+import {AlbumType, Jam, JamObjectType, ListType} from './jam';
+import {ApolloError} from 'apollo-client';
 
 export interface Navig {
 	route: string;
@@ -79,3 +80,16 @@ export type SearchResultData = {
 	skip?: number;
 	entries: Array<BaseEntry>;
 };
+
+export type BaseEntryList = {
+	listType?: ListType;
+	items: Array<BaseEntry>;
+	total: number;
+	skip?: number;
+	take?: number;
+};
+
+export type useListFunction = () => [
+	(albumTypes: Array<AlbumType>, listType: ListType, take: number, skip: number, forceRefresh?: boolean) => void,
+	{ loading: boolean, error?: ApolloError, data?: BaseEntryList, called: boolean }
+];
