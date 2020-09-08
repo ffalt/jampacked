@@ -12,6 +12,7 @@ import {snackError} from '../services/snack';
 import {useAuth} from '../services/auth';
 import dataService from '../services/data';
 import {NavigationService} from '../services/navigation';
+import {ErrorView} from '../components/ErrorView';
 
 const styles = StyleSheet.create({
 	container: {
@@ -95,10 +96,6 @@ export const HomeScreen: React.FC<HomeStackProps<HomeRoute.START>> = () => {
 		return (): void => subscription.unsubscribe();
 	}, [getHomeData]);
 
-	if (error) {
-		snackError(error);
-	}
-
 	const reload = useCallback((): void => {
 		getHomeData(true);
 	}, [getHomeData]);
@@ -109,6 +106,10 @@ export const HomeScreen: React.FC<HomeStackProps<HomeRoute.START>> = () => {
 
 	const userName = `Welcome, ${auth.currentUserName()}`;
 	const userId = auth.currentUserID();
+
+	if (error) {
+		return (<ErrorView error={error} onRetry={reload}/>);
+	}
 
 	return (
 		<ScrollView

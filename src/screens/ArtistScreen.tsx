@@ -12,6 +12,7 @@ import {JamObjectType} from '../services/jam';
 import {BaseEntry} from '../services/types';
 import {useLazyArtistQuery} from '../services/queries/artist';
 import {snackError} from '../services/snack';
+import {ErrorView} from '../components/ErrorView';
 
 const styles = StyleSheet.create({
 	SectionHeader: {
@@ -48,10 +49,6 @@ export const ArtistScreen: React.FC<HomeStackProps<HomeRoute.ARTIST>> = ({route}
 		}
 	}, [artist]);
 
-	if (error) {
-		snackError(error);
-	}
-
 	const headerTitleCmds = (
 		<FavIcon style={objHeaderStyles.button} objType={JamObjectType.artist} id={id}/>
 	);
@@ -79,6 +76,10 @@ export const ArtistScreen: React.FC<HomeStackProps<HomeRoute.ARTIST>> = ({route}
 			getArtist(id, true);
 		}
 	}, [id, getArtist]);
+
+	if (error) {
+		return (<ErrorView error={error} onRetry={reload}/>);
+	}
 
 	return (
 		<SectionList

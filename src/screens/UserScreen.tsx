@@ -10,6 +10,7 @@ import {useLazyUserDataQuery} from '../services/queries/user';
 import dataService from '../services/data';
 import {snackError} from '../services/snack';
 import {Stats} from '../components/Stats';
+import {ErrorView} from '../components/ErrorView';
 
 const styles = StyleSheet.create({
 	container: {
@@ -82,8 +83,9 @@ export const UserScreen: React.FC<BottomTabProps<BottomTabRoute.SETTINGS>> = () 
 			});
 	}, [auth]);
 
+
 	if (error) {
-		snackError(error);
+		return (<ErrorView error={error} onRetry={reload}/>);
 	}
 
 	return (

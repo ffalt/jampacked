@@ -16,6 +16,7 @@ import {ThemedText} from '../components/ThemedText';
 import {TrackEntry} from '../services/types';
 import {useLazyPlaylistQuery} from '../services/queries/playlist';
 import {useTheme} from '../style/theming';
+import {ErrorView} from '../components/ErrorView';
 
 export const PlaylistScreen: React.FC<HomeStackProps<HomeRoute.PLAYLIST>> = ({route}) => {
 	const theme = useTheme();
@@ -28,10 +29,6 @@ export const PlaylistScreen: React.FC<HomeStackProps<HomeRoute.PLAYLIST>> = ({ro
 			getPlaylist(id);
 		}
 	}, [getPlaylist, id]);
-
-	if (error) {
-		snackError(error);
-	}
 
 	const reload = useCallback((): void => {
 		getPlaylist(id, true);
@@ -114,6 +111,10 @@ export const PlaylistScreen: React.FC<HomeStackProps<HomeRoute.PLAYLIST>> = ({ro
 		[showMenu]);
 
 	const getItemLayout = React.useMemo(() => commonItemLayout(trackEntryHeight), []);
+
+	if (error) {
+		return (<ErrorView error={error} onRetry={reload}/>);
+	}
 
 	return (
 		<>

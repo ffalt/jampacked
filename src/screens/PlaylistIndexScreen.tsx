@@ -3,6 +3,7 @@ import {HomeRoute, HomeStackProps} from '../navigators/Routing';
 import {IndexList} from '../components/IndexList';
 import {useLazyPlaylistIndexQuery} from '../services/queries/playlistIndex';
 import {snackError} from '../services/snack';
+import {ErrorView} from '../components/ErrorView';
 
 export const PlaylistIndexScreen: React.FC<HomeStackProps<HomeRoute.PLAYLISTS>> = () => {
 	const [getIndex, {loading, error, called, index}] = useLazyPlaylistIndexQuery();
@@ -13,13 +14,13 @@ export const PlaylistIndexScreen: React.FC<HomeStackProps<HomeRoute.PLAYLISTS>> 
 		}
 	}, [getIndex, called]);
 
-	if (error) {
-		snackError(error);
-	}
-
 	const reload = useCallback((): void => {
 		getIndex(true);
 	}, [getIndex]);
+
+	if (error) {
+		return (<ErrorView error={error} onRetry={reload}/>);
+	}
 
 	return (
 		<IndexList

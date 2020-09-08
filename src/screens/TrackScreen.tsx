@@ -11,6 +11,7 @@ import {Lyrics} from '../components/Lyrics';
 import {useTheme} from '../style/theming';
 import {useLazyTrackQuery} from '../services/queries/track';
 import {snackError} from '../services/snack';
+import {ErrorView} from '../components/ErrorView';
 
 const buildDetails = (artist?: string, album?: string, genre?: string): Array<HeaderDetail> => {
 	return [
@@ -38,10 +39,6 @@ export const TrackScreen: React.FC<HomeStackProps<HomeRoute.TRACK>> = ({route}) 
 		}
 	}, [track]);
 
-	if (error) {
-		snackError(error);
-	}
-
 	const playTrack = useCallback((): void => {
 		if (track) {
 			JamPlayer.playTrack(track)
@@ -61,6 +58,10 @@ export const TrackScreen: React.FC<HomeStackProps<HomeRoute.TRACK>> = ({route}) 
 			<FavIcon style={objHeaderStyles.button} objType={JamObjectType.track} id={id}/>
 		</>
 	);
+
+	if (error) {
+		return (<ErrorView error={error} onRetry={reload}/>);
+	}
 
 	return (
 		<ScrollView

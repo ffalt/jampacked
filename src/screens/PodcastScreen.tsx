@@ -16,6 +16,7 @@ import {ThemedText} from '../components/ThemedText';
 import {TrackEntry} from '../services/types';
 import {useLazyPodcastQuery} from '../services/queries/podcast';
 import {useTheme} from '../style/theming';
+import {ErrorView} from '../components/ErrorView';
 
 export const PodcastScreen: React.FC<HomeStackProps<HomeRoute.PODCAST>> = ({route}) => {
 	const theme = useTheme();
@@ -28,10 +29,6 @@ export const PodcastScreen: React.FC<HomeStackProps<HomeRoute.PODCAST>> = ({rout
 			getPodcast(id);
 		}
 	}, [getPodcast, id]);
-
-	if (error) {
-		snackError(error);
-	}
 
 	const reload = useCallback((): void => {
 		getPodcast(id, true);
@@ -115,6 +112,10 @@ export const PodcastScreen: React.FC<HomeStackProps<HomeRoute.PODCAST>> = ({rout
 		[showMenu]);
 
 	const getItemLayout = React.useMemo(() => commonItemLayout(trackEntryHeight), []);
+
+	if (error) {
+		return (<ErrorView error={error} onRetry={reload}/>);
+	}
 
 	return (
 		<>

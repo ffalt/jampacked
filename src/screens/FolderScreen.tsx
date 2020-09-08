@@ -12,6 +12,7 @@ import {Item} from '../components/Item';
 import {FolderType} from '../services/jam';
 import {Folder, FolderItem, useLazyFolderQuery} from '../services/queries/folder';
 import {useTheme} from '../style/theming';
+import {ErrorView} from '../components/ErrorView';
 
 const styles = StyleSheet.create({
 	playButton: {
@@ -71,10 +72,6 @@ export const FolderScreen: React.FC<HomeStackProps<HomeRoute.FOLDER>> = ({route}
 		}
 	}, [folder]);
 
-	if (error) {
-		snackError(error);
-	}
-
 	const playTracks = useCallback((): void => {
 		if (folder) {
 			JamPlayer.playTracks(folder.tracks)
@@ -118,6 +115,10 @@ export const FolderScreen: React.FC<HomeStackProps<HomeRoute.FOLDER>> = ({route}
 	const reload = useCallback((): void => {
 		getFolder(id, true);
 	}, [getFolder, id]);
+
+	if (error) {
+		return (<ErrorView error={error} onRetry={reload}/>);
+	}
 
 	return (
 		<FlatList

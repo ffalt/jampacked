@@ -17,6 +17,7 @@ import {NavigationService} from '../services/navigation';
 import {TrackEntry} from '../services/types';
 import {useLazyAlbumQuery} from '../services/queries/album';
 import {useTheme} from '../style/theming';
+import {ErrorView} from '../components/ErrorView';
 
 const buildDetails = (artist?: string, tracks?: number, genre?: string, click?: () => void): Array<HeaderDetail> => {
 	return [
@@ -48,10 +49,6 @@ export const AlbumScreen: React.FC<HomeStackProps<HomeRoute.ALBUM>> = ({route}) 
 			}));
 		}
 	}, [album]);
-
-	if (error) {
-		snackError(error);
-	}
 
 	const reload = useCallback((): void => {
 		getAlbum(id, true);
@@ -145,6 +142,10 @@ export const AlbumScreen: React.FC<HomeStackProps<HomeRoute.ALBUM>> = ({route}) 
 		[showMenu]);
 
 	const getItemLayout = React.useMemo(() => commonItemLayout(trackEntryHeight), []);
+
+	if (error) {
+		return (<ErrorView error={error} onRetry={reload}/>);
+	}
 
 	return (
 		<>

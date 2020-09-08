@@ -1205,6 +1205,11 @@ export declare namespace JamParameters {
 		take?: number;
 	}
 
+	export interface PlaylistEntryFilterArgs {
+		/** filter by Playlist Ids */
+		playlistIDs?: Array<string>;
+	}
+
 	export interface PlaylistEntryOrderArgs extends OrderByArgs {
 		/** order by field */
 		orderBy?: JamEnums.PlaylistEntryOrderFields;

@@ -4,6 +4,7 @@ import {HomeRoute, HomeStackProps} from '../navigators/Routing';
 import {IndexList} from '../components/IndexList';
 import {useLazyArtistIndexQuery} from '../services/queries/artistIndex';
 import {snackError} from '../services/snack';
+import {ErrorView} from '../components/ErrorView';
 
 export const ArtistIndexScreen: React.FC<HomeStackProps<HomeRoute.ARTISTS>> = () => {
 	const [getIndex, {loading, error, called, index}] = useLazyArtistIndexQuery();
@@ -14,13 +15,13 @@ export const ArtistIndexScreen: React.FC<HomeStackProps<HomeRoute.ARTISTS>> = ()
 		}
 	}, [getIndex, called]);
 
-	if (error) {
-		snackError(error);
-	}
-
 	const reload = useCallback((): void => {
 		getIndex([AlbumType.album], true);
 	}, [getIndex]);
+
+	if (error) {
+		return (<ErrorView error={error} onRetry={reload}/>);
+	}
 
 	return (
 		<IndexList

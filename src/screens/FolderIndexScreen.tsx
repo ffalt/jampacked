@@ -3,6 +3,7 @@ import {HomeRoute, HomeStackProps} from '../navigators/Routing';
 import {IndexList} from '../components/IndexList';
 import {useLazyFolderIndexQuery} from '../services/queries/folderIndex';
 import {snackError} from '../services/snack';
+import {ErrorView} from '../components/ErrorView';
 
 export const FolderIndexScreen: React.FC<HomeStackProps<HomeRoute.FOLDERS>> = () => {
 	const [getIndex, {loading, error, called, index}] = useLazyFolderIndexQuery();
@@ -13,13 +14,13 @@ export const FolderIndexScreen: React.FC<HomeStackProps<HomeRoute.FOLDERS>> = ()
 		}
 	}, [getIndex, called]);
 
-	if (error) {
-		snackError(error);
-	}
-
 	const reload = useCallback((): void => {
 		getIndex(1, true);
 	}, [getIndex]);
+
+	if (error) {
+		return (<ErrorView error={error} onRetry={reload}/>);
+	}
 
 	return (
 		<IndexList

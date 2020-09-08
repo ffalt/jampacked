@@ -47,6 +47,8 @@ target 'jam' do
   pod 'BVLinearGradient', :path => '../node_modules/react-native-linear-gradient'
 
 
+  pod 'react-native-background-downloader', :path => '../node_modules/react-native-background-downloader'
+
   target 'jamTests' do
     inherit! :search_paths
     # Pods for testing

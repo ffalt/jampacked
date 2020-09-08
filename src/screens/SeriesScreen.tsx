@@ -12,6 +12,7 @@ import {NavigationService} from '../services/navigation';
 import {Separator} from '../components/Separator';
 import {FavIcon} from '../components/FavIcon';
 import {JamObjectType} from '../services/jam';
+import {ErrorView} from '../components/ErrorView';
 
 const styles = StyleSheet.create({
 	ListHeaderTitle: {
@@ -63,10 +64,6 @@ export const SeriesScreen: React.FC<HomeStackProps<HomeRoute.SERIESITEM>> = ({ro
 		}
 	}, [series]);
 
-	if (error) {
-		snackError(error);
-	}
-
 	const reload = useCallback((): void => {
 		getSeries(id, true);
 	}, [getSeries, id]);
@@ -91,6 +88,10 @@ export const SeriesScreen: React.FC<HomeStackProps<HomeRoute.SERIESITEM>> = ({ro
 	const renderItem = useCallback(({item}: { item: BaseEntry }): JSX.Element => (<Item item={item}/>), []);
 
 	const keyExtractor = (item: BaseEntry): string => item.id;
+
+	if (error) {
+		return (<ErrorView error={error} onRetry={reload}/>);
+	}
 
 	return (
 		<SectionList
