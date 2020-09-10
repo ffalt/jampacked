@@ -7957,8 +7957,9 @@ react-native-actions-sheet@^0.3.5:
   resolved "https://registry.yarnpkg.com/react-native-actions-sheet/-/react-native-actions-sheet-0.3.5.tgz#7e91a7a5598e396a7ea3de223291a94a0fcb5b32"
   integrity sha512-m777kTyNLADV3hF0wCT43LTWeIPS4ZHC5Gd5+8WQ6OD1u6U44AXpmYXpBfn6ji7dq70a3Is+Dh9SkzmmVK++JQ==
 
-"react-native-background-downloader@file:./3rdparty/react-native-background-downloader":
+react-native-background-downloader@ffalt/react-native-background-downloader:
   version "2.3.4"
+  resolved "https://codeload.github.com/ffalt/react-native-background-downloader/tar.gz/4c3e20a6c49de975d1d8cbd74361978318c6955a"
 
 react-native-background-timer@2.4.0:
   version "2.4.0"

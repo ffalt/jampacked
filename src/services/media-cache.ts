@@ -82,7 +82,6 @@ export class MediaCache {
 			if (!this.tasks.find(d => d.id === t.id) && !await this.isDownloaded(t.id)) {
 				const task = RNBackgroundDownloader.download(t);
 				task.pause();
-				console.log('queue', task);
 				this.connectToTask(task);
 				this.tasks.push(task);
 			}
@@ -93,21 +92,8 @@ export class MediaCache {
 	private connectToTask(task: DownloadTask): void {
 		task
 			.onBegin(() => {
-				console.log('begin', task);
 				// console.log(task.id, `Going to download ${task.totalBytes} bytes!`);
 				this.notifyTaskChange(task);
-
-				/*
-				       // doesn't check in-progress downloads, but hey, it's a start
-        DeviceInfo.getFreeDiskStorage().then((freeDiskStorage) => {
-          if (totalBytes > freeDiskStorage) {
-            alert(
-              "You don't have enough storage space on your phone to download this lesson.",
-            );
-            DownloadManager.stopDownload(downloadId);
-          }
-        });
-				 */
 			})
 			.onProgress(() => {
 				this.notifyTaskChange(task);
@@ -121,14 +107,17 @@ export class MediaCache {
 				this.notifyTaskChange(task);
 				// console.log(task.id, `Resumed`);
 			})
+			.onCancelled(() => {
+				this.notifyTaskChange(task);
+				// console.log(task.id, `Resumed`);
+			})
 			.onDone(() => {
-				console.log('done', task);
 				this.tasks = this.tasks.filter(t => t !== task);
 				this.notifyTasksChange();
 				this.notifyCacheChange();
 				// console.log(task.id, 'Download is done!');
 			})
-			.onError((error: Error) => {
+			.onError((_: Error) => {
 				this.notifyTaskChange(task);
 				// console.log(task.id, 'Download canceled due to error: ', error);
 			});
@@ -152,16 +141,12 @@ export class MediaCache {
 
 	getProgress(id: string): DownloadProgress | undefined {
 		const task = this.tasks.find(t => t.id === id);
-		return task ? this.buildProgress(task) : undefined;
-	}
-
-	private buildProgress(task: DownloadTask): DownloadProgress {
-		return {task};
+		return task ? {task} : undefined;
 	}
 
 	private notifyTaskChange(task: DownloadTask): void {
 		const array = this.downloadSubscriptions.get(task.id) || [];
-		const progress = this.buildProgress(task);
+		const progress = {task};
 		array.forEach(update => {
 			update(progress);
 		});

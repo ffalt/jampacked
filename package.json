@@ -43,7 +43,7 @@
     "react": "16.13.1",
     "react-native": "0.63.2",
     "react-native-actions-sheet": "^0.3.5",
-    "react-native-background-downloader": "file:./3rdparty/react-native-background-downloader",
+    "react-native-background-downloader": "ffalt/react-native-background-downloader",
     "react-native-background-timer": "2.4.0",
     "react-native-fast-image": "ffalt/react-native-fast-image",
     "react-native-fs": "2.16.6",
