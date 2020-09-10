@@ -1,4 +1,4 @@
-import React, {MutableRefObject, RefObject} from 'react';
+import React, {MutableRefObject} from 'react';
 import {Menu, MenuItem, Position} from './popupmenu/index';
 import {ITheme, withTheme} from '../style/theming';
 

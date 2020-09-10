@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {ThemedText} from './ThemedText';
-import {useTheme} from '../style/theming';
+import {staticTheme, useTheme} from '../style/theming';
 
 export interface RadioButtonEntry {
 	key: string;
@@ -27,6 +27,9 @@ const styles = StyleSheet.create({
 		width: 14,
 		height: 14,
 		borderRadius: 7
+	},
+	text: {
+		paddingLeft: staticTheme.paddingSmall
 	}
 });
 
@@ -47,7 +50,7 @@ export const RadioButtons: React.FC<{
 		<View>
 			{options.map(item => (
 				<TouchableOpacity key={item.key} style={styles.buttonContainer} onPress={(): void => select(item)}>
-					<ThemedText>{item.label}</ThemedText>
+					<ThemedText style={styles.text}>{item.label}</ThemedText>
 					<View style={[styles.circle, {borderColor: theme.textColor}]}>
 						{value === item.key && <View style={[styles.checkedCircle, {backgroundColor: theme.navigation.colors.primary}]}/>}
 					</View>

@@ -6,6 +6,7 @@ import {BottomTabParams, BottomTabRoute} from './Routing';
 import {SearchScreen} from '../screens/SearchScreen';
 import {getTabBarIcon} from '../components/ThemedIcon';
 import {JamTabBar} from './JamTabBar';
+import {DownloadsScreen} from '../screens/DownloadsScreen';
 
 const BottomTabs = createBottomTabNavigator<BottomTabParams>();
 
@@ -25,6 +26,11 @@ export const BottomTabNavigator: React.FC = () => (
 			name={BottomTabRoute.SETTINGS}
 			component={SettingsScreen}
 			options={{tabBarIcon: getTabBarIcon('settings')}}
+		/>
+		<BottomTabs.Screen
+			name={BottomTabRoute.DOWNLOADS}
+			component={DownloadsScreen}
+			options={{tabBarIcon: getTabBarIcon('download')}}
 		/>
 	</BottomTabs.Navigator>
 );

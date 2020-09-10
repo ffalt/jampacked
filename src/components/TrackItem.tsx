@@ -1,10 +1,9 @@
-import React, {useCallback, useRef} from 'react';
+import React, {useCallback} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {staticTheme} from '../style/theming';
 import {JamPlayer} from '../services/player';
 import {ThemedText} from './ThemedText';
 import {TrackEntry} from '../services/types';
-import {PopupMenuRef} from './PopupMenu';
 
 export const trackEntryHeight = 46;
 
@@ -41,8 +40,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-export const TrackItem: React.FC<{ track: TrackEntry, showMenu?: (ref: PopupMenuRef, item: TrackEntry) => void; }> = React.memo(({track, showMenu}) => {
-	const ref = useRef<TouchableOpacity | null>(null);
+export const TrackItem: React.FC<{ track: TrackEntry, showMenu?: (item: TrackEntry) => void; }> = React.memo(({track, showMenu}) => {
 
 	const playTrack = useCallback((): void => {
 		JamPlayer.playTrack(track)
@@ -51,13 +49,12 @@ export const TrackItem: React.FC<{ track: TrackEntry, showMenu?: (ref: PopupMenu
 
 	const popupMenu = useCallback((): void => {
 		if (showMenu) {
-			showMenu(ref, track);
+			showMenu(track);
 		}
-	}, [showMenu, ref, track]);
+	}, [showMenu, track]);
 
 	return (
 		<TouchableOpacity
-			ref={ref}
 			onPress={playTrack}
 			onLongPress={popupMenu}
 			style={styles.trackListContainer}

@@ -5,7 +5,7 @@ import {AudioFormatType, JamService} from './jam';
 import {JamConfigurationService} from './jam-configuration';
 import {Caching} from './caching';
 import {snackSuccess} from './snack';
-import {MediaCache} from './media-cache';
+import {MediaCache, MediaCacheStat} from './media-cache';
 import {Doc, TrackEntry} from './types';
 import {PersistentStorage} from 'apollo-cache-persist/types';
 import {OperationVariables} from '@apollo/client/core';
@@ -16,6 +16,7 @@ import {useCallback, useEffect, useState} from 'react';
 import {ApolloError} from 'apollo-client';
 import {Subject} from 'rxjs';
 
+
 class DataService implements PersistentStorage<unknown> {
 	db?: Database;
 	version = 10;
@@ -23,7 +24,7 @@ class DataService implements PersistentStorage<unknown> {
 		(caller) => this.fillCache(caller),
 		(caller) => this.clearCache(caller)
 	);
-	private mediaCache = new MediaCache();
+	mediaCache = new MediaCache();
 	homeDataUpdate = new Subject();
 
 	constructor(public jam: JamService) {
@@ -294,6 +295,7 @@ class DataService implements PersistentStorage<unknown> {
 				id: t.id,
 				url: dataService.jam.stream.streamUrl({id: t.id, format: AudioFormatType.mp3}, !headers),
 				destination: this.mediaCache.pathInCache(t.id),
+				tag: t.title,
 				headers
 			};
 		});

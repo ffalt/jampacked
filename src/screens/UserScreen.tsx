@@ -8,7 +8,6 @@ import {useAuth} from '../services/auth';
 import {ThemedIcon} from '../components/ThemedIcon';
 import {useLazyUserDataQuery} from '../services/queries/user';
 import dataService from '../services/data';
-import {snackError} from '../services/snack';
 import {Stats} from '../components/Stats';
 import {ErrorView} from '../components/ErrorView';
 
@@ -43,7 +42,6 @@ const styles = StyleSheet.create({
 		marginBottom: staticTheme.marginSmall
 	}
 });
-
 
 export const UserPermission: React.FC<{ text: string }> = ({text}) => {
 	return (

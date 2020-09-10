@@ -7,6 +7,7 @@ import {ThemedIcon} from '../components/ThemedIcon';
 import {Logo} from '../components/Logo';
 import dataService from '../services/data';
 import {useAuth} from '../services/auth';
+import {ThemedText} from '../components/ThemedText';
 
 const styles = StyleSheet.create({
 	container: {
@@ -188,6 +189,7 @@ export const LoginScreen: React.FC<AppStackProps<Routing.AUTH>> = () => {
 			<View style={styles.container}>
 				<View style={styles.headline}>
 					<Logo size={140}/>
+					<ThemedText>JAM</ThemedText>
 				</View>
 				<View style={styles.loginBlock}>
 					<KeyboardAvoidingView style={styles.content}>

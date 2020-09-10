@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {MutableRefObject, useCallback, useEffect, useState} from 'react';
 import {FlatList, RefreshControl, TouchableOpacity} from 'react-native';
 import {trackEntryHeight, TrackItem} from '../components/TrackItem';
 import {HomeRoute, HomeStackProps} from '../navigators/Routing';
@@ -12,12 +12,13 @@ import {JamObjectType} from '../services/jam';
 import {FavIcon} from '../components/FavIcon';
 import {snackError} from '../services/snack';
 import {commonItemLayout} from '../components/AtoZList';
-import PopupMenu, {PopupMenuAction, PopupMenuRef, usePopupMenuRef} from '../components/PopupMenu';
 import {NavigationService} from '../services/navigation';
 import {TrackEntry} from '../services/types';
 import {useLazyAlbumQuery} from '../services/queries/album';
 import {useTheme} from '../style/theming';
 import {ErrorView} from '../components/ErrorView';
+import ActionSheet from 'react-native-actions-sheet';
+import {ActionSheetTrack} from '../components/ActionSheetTrack';
 
 const buildDetails = (artist?: string, tracks?: number, genre?: string, click?: () => void): Array<HeaderDetail> => {
 	return [
@@ -28,9 +29,10 @@ const buildDetails = (artist?: string, tracks?: number, genre?: string, click?: 
 };
 
 export const AlbumScreen: React.FC<HomeStackProps<HomeRoute.ALBUM>> = ({route}) => {
+	const actionSheetRef: MutableRefObject<ActionSheet | null> = React.useRef<ActionSheet>(null);
 	const theme = useTheme();
 	const [details, setDetails] = useState<Array<HeaderDetail>>(buildDetails());
-	const [popupMenuActions, setPopupMenuActions] = useState<Array<PopupMenuAction>>([]);
+	const [currentTrack, setCurrentTrack] = useState<TrackEntry | undefined>();
 	const [getAlbum, {loading, error, album}] = useLazyAlbumQuery();
 	const {id, name} = route?.params;
 
@@ -96,47 +98,12 @@ export const AlbumScreen: React.FC<HomeStackProps<HomeRoute.ALBUM>> = ({route}) 
 
 	const keyExtractor = (item: TrackEntry): string => item.id;
 
-	const menuRef = usePopupMenuRef();
-	const showMenu = useCallback((ref: PopupMenuRef, item: TrackEntry): void => {
-		const actions = [
-			{
-				title: 'Play Track',
-				click: (): void => {
-					JamPlayer.playTrack(item)
-						.catch(e => console.error(e));
-				}
-			},
-			{
-				title: 'Add Track to Queue',
-				click: (): void => {
-					JamPlayer.addTrackToQueue(item)
-						.catch(e => console.error(e));
-				}
-			},
-			{
-				title: 'Add Tracks from here to Queue',
-				click: (): void => {
-					if (album) {
-						const index = album.tracks.indexOf(item);
-						if (index >= 0) {
-							JamPlayer.addTracksToQueue(album.tracks.slice(index))
-								.catch(e => console.error(e));
-						}
-					}
-				}
-			},
-			{
-				title: 'Open Track Profile',
-				click: (): void => {
-					NavigationService.navigateObj(JamObjectType.track, item.id, item.title);
-				}
-			}
-		];
-		setPopupMenuActions(actions);
-		if (menuRef.current) {
-			menuRef.current.showMenu(ref);
+	const showMenu = useCallback((item: TrackEntry): void => {
+		setCurrentTrack(item);
+		if (actionSheetRef.current) {
+			actionSheetRef.current.setModalVisible();
 		}
-	}, [album, menuRef]);
+	}, [actionSheetRef]);
 
 	const renderItem = useCallback(({item}: { item: TrackEntry }): JSX.Element => (<TrackItem track={item} showMenu={showMenu}/>),
 		[showMenu]);
@@ -149,7 +116,16 @@ export const AlbumScreen: React.FC<HomeStackProps<HomeRoute.ALBUM>> = ({route}) 
 
 	return (
 		<>
-			<PopupMenu ref={menuRef} actions={popupMenuActions}/>
+			<ActionSheet
+				initialOffsetFromBottom={1}
+				ref={actionSheetRef}
+				bounceOnOpen={true}
+				bounciness={8}
+				gestureEnabled={true}
+				containerStyle={{backgroundColor: theme.background}}
+				defaultOverlayOpacity={0.3}>
+				<ActionSheetTrack item={currentTrack}/>
+			</ActionSheet>
 			<FlatList
 				data={album?.tracks || []}
 				renderItem={renderItem}

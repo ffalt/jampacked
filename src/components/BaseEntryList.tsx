@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {FlatList, RefreshControl, StyleSheet} from 'react-native';
 import {useTheme} from '../style/theming';
 import {PageHeader} from './PageHeader';
@@ -38,7 +38,6 @@ export const BaseEntryList: React.FC<{
 	const toggleView = useCallback((): void => {
 		setTiles(!tiles);
 	}, [tiles]);
-
 
 	const renderItemRow = useCallback(({item}: { item: BaseEntry }): JSX.Element => (<Item item={item}/>), []);
 	const renderItemTile = useCallback(({item}: { item: BaseEntry }): JSX.Element => (<ImageItem item={item} size={tileSize}/>), [tileSize]);

@@ -5,8 +5,10 @@ import {ThemesView} from '../components/ThemesView';
 import {ThemedText} from '../components/ThemedText';
 import {staticTheme} from '../style/theming';
 import {JamImage} from '../components/JamImage';
-import {DataCachingView} from '../components/DataCachingView';
 import {useAuth} from '../services/auth';
+import dataService from '../services/data';
+import {CachingView} from '../components/CachingView';
+import {MediaCachingView} from '../components/MediaCachingView';
 
 const styles = StyleSheet.create({
 	container: {
@@ -57,7 +59,9 @@ export const SettingsScreen: React.FC<BottomTabProps<BottomTabRoute.SETTINGS>> =
 				</View>
 			</View>
 			<ThemedText style={styles.section}>Cache</ThemedText>
-			<DataCachingView/>
+			<CachingView cache={dataService.dataCaching} title="Data & Image Cache"/>
+			<ThemedText style={styles.section}>Pinned Offline Tracks</ThemedText>
+			<MediaCachingView/>
 			<ThemedText style={styles.section}>Theme</ThemedText>
 			<ThemesView/>
 		</View>

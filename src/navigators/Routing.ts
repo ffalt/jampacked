@@ -43,13 +43,15 @@ export type ModalStackProps<T extends keyof ModalStackNavigatorParamList> = {
 export enum BottomTabRoute {
 	HOME = 'Home',
 	SEARCH = 'Search',
-	SETTINGS = 'Settings'
+	SETTINGS = 'Settings',
+	DOWNLOADS = 'Downloads'
 }
 
 export type BottomTabNavigatorParamList = {
 	Home: undefined;
 	Search: undefined;
 	Settings: undefined;
+	Downloads: undefined;
 };
 
 export type BottomTabProps<T extends keyof BottomTabNavigatorParamList> = {
@@ -61,6 +63,7 @@ export type BottomTabParams = {
 	Home: undefined;
 	Search: undefined;
 	Settings: undefined;
+	Downloads: undefined;
 };
 
 // Home Routes

@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {MutableRefObject, useCallback, useEffect, useState} from 'react';
 import {FlatList, RefreshControl, TouchableOpacity} from 'react-native';
 import {trackEntryHeight, TrackItem} from '../components/TrackItem';
 import {HomeRoute, HomeStackProps} from '../navigators/Routing';
@@ -10,17 +10,18 @@ import {JamObjectType} from '../services/jam';
 import {FavIcon} from '../components/FavIcon';
 import {snackError} from '../services/snack';
 import {commonItemLayout} from '../components/AtoZList';
-import PopupMenu, {PopupMenuAction, PopupMenuRef, usePopupMenuRef} from '../components/PopupMenu';
-import {NavigationService} from '../services/navigation';
 import {ThemedText} from '../components/ThemedText';
 import {TrackEntry} from '../services/types';
 import {useLazyPlaylistQuery} from '../services/queries/playlist';
 import {useTheme} from '../style/theming';
 import {ErrorView} from '../components/ErrorView';
+import ActionSheet from 'react-native-actions-sheet';
+import {ActionSheetTrack} from '../components/ActionSheetTrack';
 
 export const PlaylistScreen: React.FC<HomeStackProps<HomeRoute.PLAYLIST>> = ({route}) => {
+	const actionSheetRef: MutableRefObject<ActionSheet | null> = React.useRef<ActionSheet>(null);
 	const theme = useTheme();
-	const [popupMenuActions, setPopupMenuActions] = useState<Array<PopupMenuAction>>([]);
+	const [currentTrack, setCurrentTrack] = useState<TrackEntry | undefined>();
 	const [getPlaylist, {loading, error, playlist}] = useLazyPlaylistQuery();
 	const {id, name} = route?.params;
 
@@ -66,46 +67,12 @@ export const PlaylistScreen: React.FC<HomeStackProps<HomeRoute.PLAYLIST>> = ({ro
 
 	const keyExtractor = (item: TrackEntry): string => item.id;
 
-	const menuRef = usePopupMenuRef();
-	const showMenu = useCallback((ref: PopupMenuRef, item: TrackEntry): void => {
-		const actions = [
-			{
-				title: 'Play Track',
-				click: (): void => {
-					JamPlayer.playTrack(item)
-						.catch(e => console.error(e));
-				}
-			},
-			{
-				title: 'Add Track to Queue',
-				click: (): void => {
-					JamPlayer.addTrackToQueue(item)
-						.catch(e => console.error(e));
-				}
-			},
-			{
-				title: 'Add Tracks from here to Queue',
-				click: (): void => {
-					const tracks = playlist?.tracks || [];
-					const index = tracks.indexOf(item);
-					if (index >= 0) {
-						JamPlayer.addTracksToQueue(tracks.slice(index))
-							.catch(e => console.error(e));
-					}
-				}
-			},
-			{
-				title: 'Open Track Profile',
-				click: (): void => {
-					NavigationService.navigateObj(JamObjectType.episode, item.id, item.title);
-				}
-			}
-		];
-		setPopupMenuActions(actions);
-		if (menuRef.current) {
-			menuRef.current.showMenu(ref);
+	const showMenu = useCallback((item: TrackEntry): void => {
+		setCurrentTrack(item);
+		if (actionSheetRef.current) {
+			actionSheetRef.current.setModalVisible();
 		}
-	}, [menuRef, playlist]);
+	}, [actionSheetRef]);
 
 	const renderItem = useCallback(({item}: { item: TrackEntry }): JSX.Element => (<TrackItem track={item} showMenu={showMenu}/>),
 		[showMenu]);
@@ -118,7 +85,16 @@ export const PlaylistScreen: React.FC<HomeStackProps<HomeRoute.PLAYLIST>> = ({ro
 
 	return (
 		<>
-			<PopupMenu ref={menuRef} actions={popupMenuActions}/>
+			<ActionSheet
+				initialOffsetFromBottom={1}
+				ref={actionSheetRef}
+				bounceOnOpen={true}
+				bounciness={8}
+				gestureEnabled={true}
+				containerStyle={{backgroundColor: theme.background}}
+				defaultOverlayOpacity={0.3}>
+				<ActionSheetTrack item={currentTrack}/>
+			</ActionSheet>
 			<FlatList
 				data={playlist?.tracks || []}
 				renderItem={renderItem}

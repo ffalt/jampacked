@@ -1,51 +1,44 @@
 import RNBackgroundDownloader, {DownloadOption, DownloadTask} from 'react-native-background-downloader';
 import RNFS from 'react-native-fs';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import DownloadNotification from 'react-native-download-notification';
+import {humanFileSize} from '../utils/filesize.utils';
 
+export interface MediaCacheStat {
+	files: number;
+	size: number;
+	humanSize: string;
+}
 
-type DNotificationIntentHandler = () => void;
-
-interface DNotification {
-	updateProgress(progress: number): void;
-
-	setStateCompleted(): void;
-
-	setStateCancelled(): void;
-
-	setStateFailed(): void;
-
-	setExtraInfo(data: string): void;
-
-	getExtraInfo(): string;
-
-	getId(): string;
-
-	register(intentHandler: DNotificationIntentHandler): void;
-
-	unregister(): void;
+export interface DownloadProgress {
+	error?: Error;
+	task: DownloadTask;
 }
 
 export class MediaCache {
 	tasks: Array<DownloadTask> = [];
-
-	// private notification?: DNotification;
+	private downloadSubscriptions = new Map<string, Array<(progress: DownloadProgress) => void>>();
+	private downloadsSubscriptions: Array<(tasks: Array<DownloadTask>) => void> = [];
+	private cacheChangeSubscriptions: Array<() => void> = [];
 
 	async init(): Promise<void> {
 		const lostTasks = await RNBackgroundDownloader.checkForExistingDownloads();
 		this.tasks = lostTasks || [];
-		await this.start();
+		for (const task of this.tasks) {
+			this.connectToTask(task);
+		}
+		await this.initCachePath();
+		// try {
+		// 	const list = await this.list();
+		// 	console.log('In Cache: ' + list);
+		// } catch (e) {
+		//
+		// }
 	}
 
-	intentHandler(intent: string): void {
-		// intent is a String, depending on the notification state could be:
-		//   'cancel' if download is on going
-		//   'open' if it is set to completed
-		//   'dismiss' if the user dismisses it
-		if (intent === 'cancel') {
-			// a reference of the notification tapped is binded
-			// this.setStateCancelled();
+	async initCachePath(): Promise<void> {
+		try {
+			await RNFS.mkdir(this.cachePath());
+		} catch (e) {
+			console.error(e);
 		}
 	}
 
@@ -53,61 +46,153 @@ export class MediaCache {
 		return await RNFS.exists(this.pathInCache(id));
 	}
 
+	cachePath(): string {
+		return `${RNBackgroundDownloader.directories.documents}/mp3`;
+	}
+
+	async stat(): Promise<MediaCacheStat> {
+		let size = 0;
+		let files = 0;
+		const result = await RNFS.readDir(this.cachePath());
+		for (const item of result) {
+			if (item.isFile()) {
+				size += Number(item.size);
+				files += 1;
+			}
+		}
+		return {files, size, humanSize: humanFileSize(size)};
+	}
+
+	async clear(): Promise<void> {
+		await RNFS.unlink(this.cachePath());
+		await this.initCachePath();
+		this.notifyCacheChange();
+	}
+
+	async list(): Promise<Array<string>> {
+		return RNFS.readdir(this.cachePath());
+	}
+
 	pathInCache(id: string): string {
-		return `${RNBackgroundDownloader.directories.documents}/${id}.mp3`;
+		return `${this.cachePath()}/${id}.mp3`;
 	}
 
 	async download(downloads: Array<DownloadOption>): Promise<void> {
 		for (const t of downloads) {
-			if (!await this.isDownloaded(t.id)) {
+			if (!this.tasks.find(d => d.id === t.id) && !await this.isDownloaded(t.id)) {
 				const task = RNBackgroundDownloader.download(t);
 				task.pause();
+				console.log('queue', task);
+				this.connectToTask(task);
 				this.tasks.push(task);
 			}
 		}
-		await this.start();
-		// .pause();
-		// this.connectToTask(task);
-		// Pause the task
-		// 		task.pause();
-		// Resume after pause
-		// 		task.resume();
-		// Cancel the task
-		// 		task.stop();
+		this.notifyTasksChange();
 	}
 
-	private connectToTask(task: DownloadTask, notification: DNotification): void {
+	private connectToTask(task: DownloadTask): void {
 		task
-			.begin((expectedBytes) => {
-				// console.log(task.id, `Going to download ${expectedBytes} bytes!`);
-				notification.setExtraInfo(`Total: ${expectedBytes}`);
+			.onBegin(() => {
+				console.log('begin', task);
+				// console.log(task.id, `Going to download ${task.totalBytes} bytes!`);
+				this.notifyTaskChange(task);
+
+				/*
+				       // doesn't check in-progress downloads, but hey, it's a start
+        DeviceInfo.getFreeDiskStorage().then((freeDiskStorage) => {
+          if (totalBytes > freeDiskStorage) {
+            alert(
+              "You don't have enough storage space on your phone to download this lesson.",
+            );
+            DownloadManager.stopDownload(downloadId);
+          }
+        });
+				 */
 			})
-			.progress((percent) => {
-				notification.updateProgress(percent * 100);
-				// console.log(task.id, `Downloaded: ${percent * 100}%`);
+			.onProgress(() => {
+				this.notifyTaskChange(task);
+				// console.log(task.id, `Downloaded: ${task.percent * 100}%, ETA: ${task.etaInMilliSeconds}`);
 			})
-			.done(() => {
+			.onPause(() => {
+				this.notifyTaskChange(task);
+				// console.log(task.id, `Paused`);
+			})
+			.onResume(() => {
+				this.notifyTaskChange(task);
+				// console.log(task.id, `Resumed`);
+			})
+			.onDone(() => {
+				console.log('done', task);
 				this.tasks = this.tasks.filter(t => t !== task);
+				this.notifyTasksChange();
+				this.notifyCacheChange();
 				// console.log(task.id, 'Download is done!');
-				notification.setStateCompleted();
-				this.start();
 			})
-			.error((_: Error) => {
+			.onError((error: Error) => {
+				this.notifyTaskChange(task);
 				// console.log(task.id, 'Download canceled due to error: ', error);
-				notification.setStateCancelled();
 			});
 	}
 
-	private async start(): Promise<void> {
-		if (this.tasks.length > 0) {
-			// console.log('start tasks', this.tasks.length);
-			const task = this.tasks[0];
-			const notification = await DownloadNotification.create(
-				`Audio ${task.id}`,
-				this.intentHandler
-			);
-			this.connectToTask(task, notification);
-			task.resume();
+	subscribeTaskUpdates(update: (tasks: Array<DownloadTask>) => void): void {
+		this.downloadsSubscriptions.push(update);
+	}
+
+	unsubscribeTaskUpdates(update: (tasks: Array<DownloadTask>) => void): void {
+		this.downloadsSubscriptions = this.downloadsSubscriptions.filter(u => u !== update);
+	}
+
+	subscribeCacheChangeUpdates(update: () => void): void {
+		this.cacheChangeSubscriptions.push(update);
+	}
+
+	unsubscribeCacheChangeUpdates(update: () => void): void {
+		this.cacheChangeSubscriptions = this.cacheChangeSubscriptions.filter(u => u !== update);
+	}
+
+	getProgress(id: string): DownloadProgress | undefined {
+		const task = this.tasks.find(t => t.id === id);
+		return task ? this.buildProgress(task) : undefined;
+	}
+
+	private buildProgress(task: DownloadTask): DownloadProgress {
+		return {task};
+	}
+
+	private notifyTaskChange(task: DownloadTask): void {
+		const array = this.downloadSubscriptions.get(task.id) || [];
+		const progress = this.buildProgress(task);
+		array.forEach(update => {
+			update(progress);
+		});
+	}
+
+	private notifyCacheChange(): void {
+		this.cacheChangeSubscriptions.forEach(update => {
+			update();
+		});
+	}
+
+	private notifyTasksChange(): void {
+		this.downloadsSubscriptions.forEach(update => {
+			update(this.tasks);
+		});
+	}
+
+	subscribeDownloadUpdates(id: string, update: (progress: DownloadProgress) => void): void {
+		const array = this.downloadSubscriptions.get(id) || [];
+		array.push(update);
+		this.downloadSubscriptions.set(id, array);
+	}
+
+	unsubscribeDownloadUpdates(id: string, update: (progress: DownloadProgress) => void): void {
+		let array = this.downloadSubscriptions.get(id) || [];
+		array = array.splice(array.indexOf(update), 1);
+		if (array.length === 0) {
+			this.downloadSubscriptions.delete(id);
+		} else {
+			this.downloadSubscriptions.set(id, array);
 		}
 	}
+
 }
