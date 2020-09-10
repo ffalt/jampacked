@@ -42,7 +42,8 @@ module.exports = {
 	rules: {
 		"comma-dangle": ["error", {"functions": "ignore"}],
 		"max-len": ["error", 200],
-		"no-console": ["error", {allow: ["warn", "error"]}],
+		"no-console": "off",
+		// "no-console": ["error", {allow: ["warn", "error"]}],
 		"object-curly-newline": ["error", {ImportDeclaration: "never"}],
 		"prettier/prettier": "off",
 		"react/destructuring-assignment": [0, "always", {"ignoreClassFields": true}],
