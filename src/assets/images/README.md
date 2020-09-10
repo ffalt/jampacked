@@ -1,2 +1,4 @@
 dinosaur.png
-<div>Icons made by <a href="https://www.flaticon.com/authors/smashicons" title="Smashicons">Smashicons</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
+https://www.flaticon.com/free-icon/dinosaur_2809124
+logo.png / logo.svg 
+https://www.flaticon.com/free-icon/strawberry-with-heart-shape_33090 (modified)
