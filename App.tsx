@@ -9,13 +9,12 @@ import {setAppAvailable} from './service';
 import {NavigationService} from './src/services/navigation';
 import dataService from './src/services/data';
 import {ApolloProvider} from '@apollo/react-hooks';
-import {initApolloClient} from './src/services/apollo';
-import {ApolloClient} from 'apollo-client';
+import {initApolloClient, JamApolloClient} from './src/services/apollo';
 
 enableScreens();
 
 export const App: React.FC = () => {
-	const [client, setClient] = useState<ApolloClient<unknown> | undefined>();
+	const [client, setClient] = useState<JamApolloClient | undefined>();
 	const [themeSettings, setThemeSettings] = useState<ThemeSettings>({
 		theme: themes.dark,
 		loadUserTheme: async (): Promise<void> => {
@@ -58,10 +57,7 @@ export const App: React.FC = () => {
 			<ThemeContext.Provider value={themeSettings}>
 				<ThemeProvider theme={themeSettings.theme}>
 					<StatusBar translucent={true} backgroundColor={themeSettings.theme.statusBar} barStyle={themeSettings.theme.barStyle}/>
-					<NavigationContainer
-						theme={themeSettings.theme.navigation}
-						ref={NavigationService.setTopLevelNavigator}
-					>
+					<NavigationContainer theme={themeSettings.theme.navigation} ref={NavigationService.setTopLevelNavigator}>
 						<AppNavigator/>
 					</NavigationContainer>
 				</ThemeProvider>

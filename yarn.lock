@@ -7883,7 +7883,7 @@ prompts@^2.0.1:
     kleur "^3.0.3"
     sisteransi "^1.0.4"
 
-prop-types@^15.6.2, prop-types@^15.7.2:
+prop-types@^15.5.10, prop-types@^15.6.2, prop-types@^15.7.2:
   version "15.7.2"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.7.2.tgz#52c41e75b8c87e72b9d9360e0206b99dcbffa6c5"
   integrity sha512-8QQikdH7//R2vurIJSutZ1smHYTcLpRWEOlHnzcWHmBYrOGUysKwSsrC89BCiFj3CbrfJ/nXFdJepOVrY1GCHQ==
@@ -8019,6 +8019,13 @@ react-native-sensitive-info@6.0.0-alpha.5:
   version "6.0.0-alpha.5"
   resolved "https://registry.yarnpkg.com/react-native-sensitive-info/-/react-native-sensitive-info-6.0.0-alpha.5.tgz#1d813e2a8b6a90308a18131fb88e4a7c368a6654"
   integrity sha512-Ucdx138L2xO//4fQAsw+tvJrWynnrn5YEUE5xQbMiree0T4gQJiyOpfIrFDudywNWf4G8mtdZklGB2LT1LRt0Q==
+
+react-native-side-menu-updated@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/react-native-side-menu-updated/-/react-native-side-menu-updated-1.2.1.tgz#5513b0b40b7f4ce098c72b23617f07aed609fee7"
+  integrity sha512-ARslMh8Zwax+BvIWOOuxOR1Bq4Hc1d9FzbLk02uaxP0cXKH2RPlsMITJpCvLZuybKF0JuatrGEtWt6mxLv6tmA==
+  dependencies:
+    prop-types "^15.5.10"
 
 react-native-snackbar@2.2.3:
   version "2.2.3"

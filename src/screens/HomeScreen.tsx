@@ -8,7 +8,6 @@ import {Logo} from '../components/Logo';
 import {Stats} from '../components/Stats';
 import {HomeDataSection} from '../components/HomeDataSection';
 import {useLazyHomeDataQuery} from '../services/queries/home';
-import {snackError} from '../services/snack';
 import {useAuth} from '../services/auth';
 import dataService from '../services/data';
 import {NavigationService} from '../services/navigation';

@@ -53,6 +53,7 @@
     "react-native-safe-area-context": "3.1.7",
     "react-native-screens": "2.10.1",
     "react-native-sensitive-info": "6.0.0-alpha.5",
+    "react-native-side-menu-updated": "^1.2.1",
     "react-native-snackbar": "2.2.3",
     "react-native-splash-screen": "3.2.0",
     "react-native-sqlite-storage": "5.0.0",

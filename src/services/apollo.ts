@@ -1,12 +1,11 @@
-import {ApolloClient, DefaultOptions} from 'apollo-client';
-import {createHttpLink} from 'apollo-link-http';
+import {ApolloClient, ApolloLink, DefaultOptions, InMemoryCache} from '@apollo/client';
+import {HttpLink} from 'apollo-link-http';
 import {setContext} from 'apollo-link-context';
-import {InMemoryCache} from 'apollo-cache-inmemory';
 import dataService from './data';
-import {ApolloLink} from 'apollo-link';
+import {onError} from 'apollo-link-error';
 
-const httpLink = createHttpLink({
-	uri: (_) => {
+const httpLink = new HttpLink({
+	uri: (_): string => {
 		return `${dataService.jam.auth.auth?.server}/graphql`;
 	},
 	credentials: 'include'
@@ -21,6 +20,19 @@ const authLink = setContext((_, {headers}: any) => {
 				headers.authorization
 		}
 	};
+}) as any as ApolloLink;
+
+const errorLink = onError(({graphQLErrors, networkError}) => {
+	if (graphQLErrors)
+		graphQLErrors.map(({message, locations, path}) =>
+			console.error(
+				`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
+			),
+		);
+
+	if (networkError) {
+		console.error(`[Network error]: ${networkError}`);
+	}
 });
 
 const logLink = new ApolloLink((operation: any, forward: any) => {
@@ -47,9 +59,15 @@ const defaultOptions: DefaultOptions = {
 
 const logging = true;
 
-const authHttpLink = authLink.concat(httpLink);
-const link = logging ? ApolloLink.from([logLink, authHttpLink]) : authHttpLink;
+const authHttpLink = ApolloLink.concat(authLink, httpLink);
+const links = logging ? [logLink, errorLink, authHttpLink] : [errorLink, authHttpLink];
 
-export async function initApolloClient(): Promise<ApolloClient<any>> {
-	return new ApolloClient({link, cache, defaultOptions});
+export type JamApolloClient = ApolloClient<unknown>;
+
+export async function initApolloClient(): Promise<JamApolloClient> {
+	return new ApolloClient<unknown>({
+		link: ApolloLink.from(links),
+		cache,
+		defaultOptions
+	});
 }
