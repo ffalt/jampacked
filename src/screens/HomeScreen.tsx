@@ -124,7 +124,9 @@ export const HomeScreen: React.FC<HomeStackProps<HomeRoute.START>> = () => {
 		>
 			<View style={styles.container}>
 				<View style={styles.userHeader}>
-					<Logo size={40}/>
+					<TouchableOpacity onPress={NavigationService.openSideBar}>
+						<Logo size={40}/>
+					</TouchableOpacity>
 					<ThemedText style={styles.userHeaderText} numberOfLines={2}>{userName}</ThemedText>
 					<TouchableOpacity onPress={goToUser}>
 						<JamImage id={userId} size={40} style={styles.userImage}/>

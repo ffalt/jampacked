@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {BottomTabProps, BottomTabRoute} from '../navigators/Routing';
+import {HomeRoute, HomeStackProps} from '../navigators/Routing';
 import {FlatList, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Separator} from '../components/Separator';
 import {commonItemLayout} from '../components/AtoZList';
@@ -103,7 +103,7 @@ export const DownloadItem: React.FC<{ item: DownloadTask }> = React.memo(({item}
 	);
 });
 
-export const DownloadsScreen: React.FC<BottomTabProps<BottomTabRoute.SETTINGS>> = () => {
+export const DownloadsScreen: React.FC<HomeStackProps<HomeRoute.DOWNLOADS>> = () => {
 	const downloads = useDownloads();
 	const getItemLayout = React.useMemo(() => commonItemLayout(65), []);
 	const keyExtractor = (item: DownloadTask): string => item.id;

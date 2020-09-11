@@ -20,20 +20,36 @@ const styles = StyleSheet.create({
 	userImage: {
 		marginRight: 10
 	},
+	drawerRow: {
+		height: 35
+	},
 	userHeaderText: {}
 });
 
-export const AppDrawer: React.FC<{ handleClose: () => void}> = (
-	{handleClose}) => {
+export const AppDrawerLink: React.FC<{ title: string; route: string, params?: any }> = ({title, route, params}) => {
+	const theme = useTheme();
+	const goToRoute = useCallback((): void => {
+		NavigationService.closeSideBar();
+		NavigationService.navigate(route, params || {});
+	}, [route, params]);
+
+	return (
+		<TouchableOpacity style={[styles.drawerRow, {borderColor: theme.separator}]} onPress={goToRoute}>
+			<ThemedText>{title}</ThemedText>
+		</TouchableOpacity>
+	);
+};
+
+export const AppDrawer: React.FC = () => {
 	const theme = useTheme();
 	const auth = useAuth();
 	const userId = auth.currentUserID();
 	const userName = auth.currentUserName();
 
 	const goToUser = useCallback((): void => {
+		NavigationService.closeSideBar();
 		NavigationService.navigate(HomeRoute.USER, {});
-		handleClose();
-	}, [handleClose]);
+	}, []);
 
 	return (
 		<ScrollView style={[styles.drawer, {backgroundColor: theme.control}]}>
@@ -42,7 +58,10 @@ export const AppDrawer: React.FC<{ handleClose: () => void}> = (
 					<JamImage id={userId} size={40} style={styles.userImage}/>
 					<ThemedText style={styles.userHeaderText} numberOfLines={2}>{userName}</ThemedText>
 				</TouchableOpacity>
-				<ThemedText>HI</ThemedText>
+				<AppDrawerLink title="Start" route={HomeRoute.START}/>
+				<AppDrawerLink title="Downloads" route={HomeRoute.DOWNLOADS}/>
+				<AppDrawerLink title="Artists" route={HomeRoute.ARTISTS}/>
+				<AppDrawerLink title="Series" route={HomeRoute.SERIES}/>
 			</SafeAreaView>
 		</ScrollView>
 	);

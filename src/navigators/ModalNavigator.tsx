@@ -11,7 +11,7 @@ import {Linking} from 'react-native';
 const ModalStack = createStackNavigator();
 
 export const ModalNavigator: React.FC = () => {
-	const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+	const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
 
 	useEffect(() => {
 		let isSubscribed = true;
@@ -19,8 +19,6 @@ export const ModalNavigator: React.FC = () => {
 		const handleUrl = (data?: { url: string | null }): void => {
 			if (data?.url === 'trackplayer://notification.click') {
 				NavigationService.navigate(ModalRouting.PLAYER);
-				// const navigation = this.context;
-				// navigation.navigate(ModalRouting.PLAYER);
 			}
 		};
 
@@ -41,25 +39,39 @@ export const ModalNavigator: React.FC = () => {
 		};
 	}, []);
 
-	const closeMenu = (): void => {
-		setIsMenuOpen(false);
-	};
+	useEffect(() => {
+		let isSubscribed = true;
 
-	const onSideMenuChange = useCallback(
-		(nextIsOpen: boolean) => {
-			if (nextIsOpen !== isMenuOpen) {
-				setTimeout(() => {
-					setIsMenuOpen(nextIsOpen);
-				}, 10);
+		const setSidebar = (open: boolean): void => {
+			if (isSubscribed) {
+				setIsSidebarOpen(open);
 			}
-		},
-		[isMenuOpen]
-	);
+		};
+
+		NavigationService.setSidebarControl(() => {
+			setSidebar(true);
+		}, () => {
+			setSidebar(false);
+		});
+
+		return (): void => {
+			NavigationService.setSidebarControl(undefined, undefined);
+			isSubscribed = false;
+		};
+	}, []);
+
+	const onSideMenuChange = useCallback((nextIsOpen: boolean) => {
+		if (nextIsOpen !== isSidebarOpen) {
+			setTimeout(() => {
+				setIsSidebarOpen(nextIsOpen);
+			}, 0);
+		}
+	}, [isSidebarOpen]);
 
 	return (
 		<SideMenu
-			isOpen={isMenuOpen}
-			menu={<AppDrawer handleClose={closeMenu}/>}
+			isOpen={isSidebarOpen}
+			menu={<AppDrawer/>}
 			onChange={onSideMenuChange}
 		>
 			<ModalStack.Navigator mode="modal" headerMode="none">
@@ -70,45 +82,3 @@ export const ModalNavigator: React.FC = () => {
 	);
 
 };
-/*
-export class ModalNavigator extends React.PureComponent {
-	static contextType = NavigationContext;
-
-	componentDidMount(): void {
-		Linking.getInitialURL().then((url) => this.handleUrl({url}));
-		Linking.addEventListener('url', this.handleUrl.bind(this));
-	}
-
-	componentWillUnmount(): void {
-		Linking.removeEventListener('url', this.handleUrl);
-	}
-
-	handleUrl(data: { url: string | null }): void {
-		if (data.url === 'trackplayer://notification.click') {
-			const navigation = this.context;
-			navigation.navigate(ModalRouting.PLAYER);
-		}
-	}
-
-
-	//
-
-
-	render(): React.ReactElement {
-		return (
-			<SideMenu
-				// isOpen={isMenuOpen}
-				menu={<AppDrawer handleClose={() => {
-
-				}}/>}
-				// onChange={onSideMenuChange}
-			>
-				<ModalStack.Navigator mode="modal" headerMode="none">
-					<ModalStack.Screen name="Main" component={BottomTabNavigator}/>
-					<ModalStack.Screen name="Player" component={PlayerScreen} options={{gestureEnabled: true}}/>
-				</ModalStack.Navigator>
-			</SideMenu>
-		);
-	}
-}
-*/

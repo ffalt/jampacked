@@ -11,19 +11,11 @@ import {ModalRouting} from '../navigators/Routing';
 import {MiniProgressBar} from './PlayerProgressMini';
 
 const styles = StyleSheet.create({
-	progress: {
-		height: 1
-	},
 	disabled: {
 		opacity: 0.3
 	},
 	playerStrip: {
 		borderTopWidth: 1
-	},
-	modal: {
-		backgroundColor: 'black',
-		margin: 0,
-		padding: 0
 	},
 	playerStripTrack: {
 		flexDirection: 'row',

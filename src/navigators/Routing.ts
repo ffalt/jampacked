@@ -43,15 +43,13 @@ export type ModalStackProps<T extends keyof ModalStackNavigatorParamList> = {
 export enum BottomTabRoute {
 	HOME = 'Home',
 	SEARCH = 'Search',
-	SETTINGS = 'Settings',
-	DOWNLOADS = 'Downloads'
+	SETTINGS = 'Settings'
 }
 
 export type BottomTabNavigatorParamList = {
 	Home: undefined;
 	Search: undefined;
 	Settings: undefined;
-	Downloads: undefined;
 };
 
 export type BottomTabProps<T extends keyof BottomTabNavigatorParamList> = {
@@ -63,7 +61,6 @@ export type BottomTabParams = {
 	Home: undefined;
 	Search: undefined;
 	Settings: undefined;
-	Downloads: undefined;
 };
 
 // Home Routes
@@ -89,7 +86,8 @@ export enum HomeRoute {
 	ALBUMLIST = 'Albumlist',
 	ARTISTLIST = 'Artistlist',
 	SERIESLIST = 'Serieslist',
-	FOLDERLIST = 'Folderlist'
+	FOLDERLIST = 'Folderlist',
+	DOWNLOADS = 'Downloads',
 }
 
 export type HomeStackNavigatorParamList = {
@@ -99,6 +97,7 @@ export type HomeStackNavigatorParamList = {
 	Folders: undefined;
 	Tracks: undefined;
 	Podcasts: undefined;
+	Downloads: undefined;
 	Playlists: undefined;
 	User: undefined;
 	Folderlist: { listType: ListType, albumTypeID?: string };

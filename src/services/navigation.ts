@@ -4,11 +4,30 @@ import {HomeRoute} from '../navigators/Routing';
 import {Navig, NavigParams} from './types';
 
 let navigator: NavigationContainerRef;
+let topSidebarOpen: (() => void) | undefined;
+let topSidebarClose: (() => void) | undefined;
 
 export class NavigationService {
 
 	static setTopLevelNavigator(navigatorRef: NavigationContainerRef): void {
 		navigator = navigatorRef;
+	}
+
+	static setSidebarControl(sidebarOpen?: () => void, sidebarClose?: () => void): void {
+		topSidebarOpen = sidebarOpen;
+		topSidebarClose = sidebarClose;
+	}
+
+	static closeSideBar(): void {
+		if (topSidebarClose) {
+			topSidebarClose();
+		}
+	}
+
+	static openSideBar(): void {
+		if (topSidebarOpen) {
+			topSidebarOpen();
+		}
 	}
 
 	static navigate(routeName: string, params?: NavigParams): void {
