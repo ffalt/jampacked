@@ -35,7 +35,7 @@ const errorLink = onError(({graphQLErrors, networkError}) => {
 
 const logLink = new ApolloLink((operation: any, forward: any) => {
 	// eslint-disable-next-line no-console
-	console.log('start', operation.operationName, operation.variables);
+	console.log('query', operation.operationName, operation.variables);
 	return forward(operation).map((result: any) => {
 		// console.log('stop', operation.operationName);
 		return result;
@@ -55,7 +55,7 @@ const defaultOptions: DefaultOptions = {
 	}
 };
 
-const logging = true;
+const logging = false;
 
 const authHttpLink = ApolloLink.concat(authLink, httpLink);
 const links: Array<ApolloLink> = logging ? [logLink, errorLink, authHttpLink] : [errorLink, authHttpLink];

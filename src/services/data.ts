@@ -326,7 +326,6 @@ export function useCacheOrLazyQuery<TData, TVariables, TResult>(
 				q(queryOptions);
 			} else {
 				setResult(undefined);
-				console.log('queryID', queryID);
 				dataService.getItem(queryID).then(r => {
 					if (r) {
 						setResult(r);

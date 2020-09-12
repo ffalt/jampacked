@@ -28,7 +28,6 @@ export class NavigationService {
 	}
 
 	static navigate(routeName: string, params?: NavigParams): void {
-		console.log('navigate', routeName, params);
 		if (navigator) {
 			navigator.dispatch(
 				CommonActions.navigate({name: routeName, params})
