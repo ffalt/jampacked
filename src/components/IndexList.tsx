@@ -1,5 +1,5 @@
 import React, {useCallback, useState} from 'react';
-import {RefreshControl, StyleSheet} from 'react-native';
+import {FlatList, RefreshControl, StyleSheet} from 'react-native';
 import {useTheme} from '../style/theming';
 import {PageHeader} from './PageHeader';
 import {Separator} from './Separator';
@@ -45,12 +45,13 @@ export const IndexList: React.FC<{
 		return (
 			<AtoZList
 				data={index}
+				contentContainerStyle={{flex:1}}
 				key="tiles"
 				renderItem={renderItemTile}
 				keyExtractor={keyExtractor}
 				numColumns={numColumns}
 				ListHeaderComponent={ListHeaderComponent}
-				ListEmptyComponent={<ListEmpty called={called} loading={refreshing}/>}
+				ListEmptyComponent={<ListEmpty list={index}/>}
 				columnWrapperStyle={style.row}
 				itemHeight={tileSize}
 				refreshControl={(
@@ -73,7 +74,7 @@ export const IndexList: React.FC<{
 			keyExtractor={keyExtractor}
 			ItemSeparatorComponent={Separator}
 			ListHeaderComponent={ListHeaderComponent}
-			ListEmptyComponent={<ListEmpty called={called} loading={refreshing}/>}
+			ListEmptyComponent={<ListEmpty list={index}/>}
 			refreshControl={(
 				<RefreshControl
 					refreshing={refreshing}

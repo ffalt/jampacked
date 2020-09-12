@@ -11,9 +11,8 @@ import {ListEmpty} from '../components/ListEmpty';
 
 export const TracksScreen: React.FC<HomeStackProps<HomeRoute.TRACKS>> = () => {
 	const theme = useTheme();
-	const tracks: Array<TrackEntry> = [];
+	const tracks: Array<TrackEntry> | undefined = undefined;
 	const refreshing = false;
-	const called = false;
 
 	const reload = useCallback((): void => {
 		// TODO: TracksScreen
@@ -34,7 +33,7 @@ export const TracksScreen: React.FC<HomeStackProps<HomeRoute.TRACKS>> = () => {
 			keyExtractor={keyExtractor}
 			ItemSeparatorComponent={Separator}
 			ListHeaderComponent={renderHeader}
-			ListEmptyComponent={<ListEmpty called={called} loading={refreshing}/>}
+			ListEmptyComponent={<ListEmpty list={tracks}/>}
 			getItemLayout={getItemLayout}
 			refreshControl={(
 				<RefreshControl

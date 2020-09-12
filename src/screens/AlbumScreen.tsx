@@ -133,7 +133,7 @@ export const AlbumScreen: React.FC<HomeStackProps<HomeRoute.ALBUM>> = ({route}) 
 				keyExtractor={keyExtractor}
 				ItemSeparatorComponent={Separator}
 				ListHeaderComponent={ListHeader}
-				ListEmptyComponent={<ListEmpty called={called} loading={loading}/>}
+				ListEmptyComponent={<ListEmpty list={album?.tracks}/>}
 				getItemLayout={getItemLayout}
 				refreshControl={(
 					<RefreshControl

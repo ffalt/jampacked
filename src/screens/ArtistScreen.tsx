@@ -85,7 +85,7 @@ export const ArtistScreen: React.FC<HomeStackProps<HomeRoute.ARTIST>> = ({route}
 		<SectionList
 			sections={artist?.sections || []}
 			ListHeaderComponent={ListHeader}
-			ListEmptyComponent={<ListEmpty called={called} loading={loading}/>}
+			ListEmptyComponent={<ListEmpty list={artist?.sections}/>}
 			ItemSeparatorComponent={Separator}
 			SectionSeparatorComponent={Separator}
 			keyExtractor={keyExtractor}

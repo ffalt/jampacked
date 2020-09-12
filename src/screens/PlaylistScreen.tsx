@@ -102,7 +102,7 @@ export const PlaylistScreen: React.FC<HomeStackProps<HomeRoute.PLAYLIST>> = ({ro
 				keyExtractor={keyExtractor}
 				ItemSeparatorComponent={Separator}
 				ListHeaderComponent={ListHeader}
-				ListEmptyComponent={<ListEmpty called={called} loading={loading}/>}
+				ListEmptyComponent={<ListEmpty list={playlist?.tracks}/>}
 				getItemLayout={getItemLayout}
 				refreshControl={(
 					<RefreshControl

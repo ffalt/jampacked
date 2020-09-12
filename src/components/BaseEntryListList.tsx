@@ -19,7 +19,7 @@ export const BaseEntryListList: React.FC<{
 	});
 	const [total, setTotal] = useState<number>(0);
 	const [offset, setOffset] = useState<number>(0);
-	const [entries, setEntries] = useState<Array<BaseEntry>>([]);
+	const [entries, setEntries] = useState<Array<BaseEntry> | undefined>();
 	const amount = 10;
 	const [getList, {loading, error, called, data}] = useList();
 
@@ -29,16 +29,16 @@ export const BaseEntryListList: React.FC<{
 	}, [listType, icon, text]);
 
 	useEffect(() => {
-		if (listType && !called) {
+		if (listType) {
 			getList(albumTypes, listType, amount, offset);
 		}
-	}, [albumTypes, called, listType, getList, offset]);
+	}, [albumTypes, listType, getList, offset]);
 
 	useEffect(() => {
 		if (data?.items?.length) {
 			setTotal(data.total);
 			setEntries((prev) => {
-				return prev.concat(data?.items);
+				return prev ? prev.concat(data?.items) : data?.items;
 			});
 		}
 	}, [data]);

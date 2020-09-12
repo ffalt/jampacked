@@ -128,7 +128,7 @@ export const FolderScreen: React.FC<HomeStackProps<HomeRoute.FOLDER>> = ({route}
 			keyExtractor={keyExtractor}
 			ItemSeparatorComponent={Separator}
 			ListHeaderComponent={ListHeader}
-			ListEmptyComponent={<ListEmpty called={called} loading={loading}/>}
+			ListEmptyComponent={<ListEmpty list={folder?.items}/>}
 			refreshControl={(
 				<RefreshControl
 					refreshing={loading}

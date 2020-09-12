@@ -97,7 +97,7 @@ export const SeriesScreen: React.FC<HomeStackProps<HomeRoute.SERIESITEM>> = ({ro
 		<SectionList
 			sections={series?.sections || []}
 			ListHeaderComponent={ListHeader}
-			ListEmptyComponent={<ListEmpty called={called} loading={loading}/>}
+			ListEmptyComponent={<ListEmpty list={series?.sections}/>}
 			renderSectionHeader={renderSection}
 			ItemSeparatorComponent={Separator}
 			SectionSeparatorComponent={Separator}

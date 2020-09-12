@@ -24,7 +24,7 @@ export interface BaseEntryListInfo {
 }
 
 export const BaseEntryList: React.FC<{
-	entries: Array<BaseEntry>;
+	entries?: Array<BaseEntry>;
 	info: BaseEntryListInfo;
 	called: boolean;
 	refreshing: boolean;
@@ -52,7 +52,7 @@ export const BaseEntryList: React.FC<{
 	if (tiles) {
 		return (
 			<FlatList
-				data={entries}
+				data={entries || []}
 				key="index"
 				renderItem={renderItemTile}
 				keyExtractor={keyExtractor}
@@ -63,7 +63,7 @@ export const BaseEntryList: React.FC<{
 				onEndReached={onLoadMore}
 				getItemLayout={getTileItemLayout}
 				ListHeaderComponent={ListHeaderComponent}
-				ListEmptyComponent={<ListEmpty called={called} loading={refreshing}/>}
+				ListEmptyComponent={<ListEmpty list={entries}/>}
 				refreshControl={(
 					<RefreshControl
 						refreshing={refreshing}
@@ -78,7 +78,7 @@ export const BaseEntryList: React.FC<{
 	}
 	return (
 		<FlatList
-			data={entries}
+			data={entries || []}
 			key="rows"
 			renderItem={renderItemRow}
 			keyExtractor={keyExtractor}
@@ -87,7 +87,7 @@ export const BaseEntryList: React.FC<{
 			onEndReachedThreshold={0.4}
 			onEndReached={onLoadMore}
 			ListHeaderComponent={ListHeaderComponent}
-			ListEmptyComponent={<ListEmpty called={called} loading={refreshing}/>}
+			ListEmptyComponent={<ListEmpty list={entries}/>}
 			refreshControl={(
 				<RefreshControl
 					refreshing={refreshing}

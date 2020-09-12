@@ -102,7 +102,7 @@ export const PodcastScreen: React.FC<HomeStackProps<HomeRoute.PODCAST>> = ({rout
 				keyExtractor={keyExtractor}
 				ItemSeparatorComponent={Separator}
 				ListHeaderComponent={ListHeader}
-				ListEmptyComponent={<ListEmpty called={called} loading={loading}/>}
+				ListEmptyComponent={<ListEmpty list={podcast?.episodes}/>}
 				getItemLayout={getItemLayout}
 				refreshControl={(
 					<RefreshControl

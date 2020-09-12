@@ -116,7 +116,7 @@ export const DownloadsScreen: React.FC<HomeStackProps<HomeRoute.DOWNLOADS>> = ()
 			key="downloads"
 			renderItem={renderItem}
 			keyExtractor={keyExtractor}
-			// ListEmptyComponent={<ListEmpty/>}
+			ListEmptyComponent={<ListEmpty list={downloads}/>}
 			ListHeaderComponent={ListHeaderComponent}
 			ItemSeparatorComponent={Separator}
 			getItemLayout={getItemLayout}

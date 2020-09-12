@@ -7,6 +7,7 @@ import {JamImage} from './JamImage';
 import {NavigationService} from '../services/navigation';
 import {HomeRoute} from '../navigators/Routing';
 import {JamUrlType} from '../services/jam-lists';
+import {Separator} from './Separator';
 
 const styles = StyleSheet.create({
 	drawer: {
@@ -14,7 +15,8 @@ const styles = StyleSheet.create({
 		paddingHorizontal: staticTheme.margin
 	},
 	drawerHeader: {
-		marginVertical: 40,
+		marginTop: 40,
+		marginBottom: staticTheme.margin,
 		alignItems: 'center',
 		flexDirection: 'row'
 	},
@@ -23,7 +25,8 @@ const styles = StyleSheet.create({
 	},
 	drawerRow: {
 		flexDirection: 'row',
-		height: 35
+		height: 48,
+		alignItems: 'center'
 	},
 	drawerRowText: {
 		marginLeft: staticTheme.margin,
@@ -56,13 +59,16 @@ const routes = [
 
 	{route: HomeRoute.ARTISTS, title: 'Artists', icon: 'artist'},
 	{route: HomeRoute.SERIES, title: 'Series', icon: 'series'},
+	{route: HomeRoute.FOLDERS, title: 'Folders', icon: 'folder'},
 
 	{route: HomeRoute.ALBUMS, title: 'Albums', icon: 'album', params: {albumUrlType: JamUrlType.albums}},
 	{route: HomeRoute.ALBUMS, title: 'Audiobooks', icon: 'audiobook', params: {albumUrlType: JamUrlType.audiobooks}},
-	{route: HomeRoute.ALBUMS, title: 'Singles', icon: 'single', params: {albumUrlType: JamUrlType.singles}},
-	{route: HomeRoute.ALBUMS, title: 'EPs', icon: 'ep', params: {albumUrlType: JamUrlType.eps}},
+	{route: HomeRoute.ALBUMS, title: 'Compilations', icon: 'audiobook', params: {albumUrlType: JamUrlType.compilations}},
+	{route: HomeRoute.ALBUMS, title: 'Soundtracks', icon: 'soundtrack', params: {albumUrlType: JamUrlType.soundtracks}},
 	{route: HomeRoute.ALBUMS, title: 'Bootlegs', icon: 'bootleg', params: {albumUrlType: JamUrlType.bootlegs}},
-	{route: HomeRoute.ALBUMS, title: 'Soundtrack', icon: 'soundtrack', params: {albumUrlType: JamUrlType.soundtracks}}
+	{route: HomeRoute.ALBUMS, title: 'EPs', icon: 'ep', params: {albumUrlType: JamUrlType.eps}},
+	{route: HomeRoute.ALBUMS, title: 'Live', icon: 'live', params: {albumUrlType: JamUrlType.live}},
+	{route: HomeRoute.ALBUMS, title: 'Singles', icon: 'single', params: {albumUrlType: JamUrlType.singles}}
 ];
 
 export const AppDrawer: React.FC = () => {
@@ -77,12 +83,13 @@ export const AppDrawer: React.FC = () => {
 	}, []);
 
 	return (
-		<ScrollView style={[styles.drawer, {backgroundColor: theme.control}]}>
+		<ScrollView style={[styles.drawer, {backgroundColor: theme.sidebar}]}>
 			<SafeAreaView>
 				<TouchableOpacity style={styles.drawerHeader} onPress={goToUser}>
 					<JamImage id={userId} size={40} style={styles.userImage}/>
 					<ThemedText style={styles.userHeaderText} numberOfLines={2}>{userName}</ThemedText>
 				</TouchableOpacity>
+				<Separator/>
 				<>
 					{routes.map(route => (
 						<AppDrawerLink key={route.title} title={route.title} icon={route.icon} route={route.route} params={route.params}/>

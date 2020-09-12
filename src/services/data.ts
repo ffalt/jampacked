@@ -315,7 +315,7 @@ export function useCacheOrLazyQuery<TData, TVariables, TResult>(
 	options?: LazyQueryHookOptions<TData, TVariables>): [QueryFunc<TVariables>, QueryHookData<TResult>] {
 	const [result, setResult] = useState<TResult | undefined>();
 	const [id, setID] = useState<string | undefined>();
-	const [q, {loading, error, data, called, variables}] = useLazyQuery<TData, TVariables>(query, options);
+	const [q, {loading, error, data, variables}] = useLazyQuery<TData, TVariables>(query, options);
 
 	const execute = useCallback((queryOptions?: QueryLazyOptions<TVariables>, forceRefresh?: boolean): void => {
 		const opDef = query.definitions.find(d => d.kind === 'OperationDefinition');
@@ -325,6 +325,8 @@ export function useCacheOrLazyQuery<TData, TVariables, TResult>(
 			if (forceRefresh) {
 				q(queryOptions);
 			} else {
+				setResult(undefined);
+				console.log('queryID', queryID);
 				dataService.getItem(queryID).then(r => {
 					if (r) {
 						setResult(r);
@@ -334,7 +336,7 @@ export function useCacheOrLazyQuery<TData, TVariables, TResult>(
 				});
 			}
 		}
-	}, [query.definitions, q]);
+	}, [query, q]);
 
 	useEffect(() => {
 		const r = transform(data, variables);
@@ -346,6 +348,6 @@ export function useCacheOrLazyQuery<TData, TVariables, TResult>(
 		}
 	}, [data, variables, id, transform]);
 
-	return [execute, {loading, error, data: result, called}];
+	return [execute, {loading, error, data: result, called: !!id}];
 }
 
