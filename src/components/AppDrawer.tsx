@@ -1,5 +1,5 @@
 import React, {useCallback} from 'react';
-import {SafeAreaView, ScrollView, StyleSheet, TouchableOpacity} from 'react-native';
+import {SafeAreaView, ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {staticTheme, useTheme} from '../style/theming';
 import {ThemedText} from './ThemedText';
 import {useAuth} from '../services/auth';
@@ -8,6 +8,7 @@ import {NavigationService} from '../services/navigation';
 import {HomeRoute} from '../navigators/Routing';
 import {JamUrlType} from '../services/jam-lists';
 import {Separator} from './Separator';
+import {ThemedIcon} from './ThemedIcon';
 
 const styles = StyleSheet.create({
 	drawer: {
@@ -29,14 +30,17 @@ const styles = StyleSheet.create({
 		alignItems: 'center'
 	},
 	drawerRowText: {
-		marginLeft: staticTheme.margin,
 		fontSize: staticTheme.fontSize
+	},
+	iconView: {
+		minWidth: staticTheme.fontSize + 4,
+		marginRight: staticTheme.margin
 	},
 	userHeaderText: {}
 });
 
 export const AppDrawerLink: React.FC<{ title: string; icon: string; route: string, params?: any }> =
-	({title, route, params}) => {
+	({title, route, icon, params}) => {
 		const theme = useTheme();
 		const goToRoute = useCallback((): void => {
 			NavigationService.closeSideBar();
@@ -45,7 +49,9 @@ export const AppDrawerLink: React.FC<{ title: string; icon: string; route: strin
 
 		return (
 			<TouchableOpacity style={[styles.drawerRow, {borderColor: theme.separator}]} onPress={goToRoute}>
-				{/*<ThemedIcon name={icon} size={20}/>*/}
+				<View style={styles.iconView}>
+					<ThemedIcon name={icon} size={18} color={theme.muted}/>
+				</View>
 				<ThemedText style={styles.drawerRowText}>{title}</ThemedText>
 			</TouchableOpacity>
 		);
