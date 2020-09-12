@@ -33,23 +33,6 @@ const GET_TRACK = gql`
     }
 `;
 
-interface Track {
-	id: string;
-	name: string;
-	album?: { id: string };
-	artist?: { id: string };
-	series?: { id: string };
-	tag?: {
-		mediaDuration: number;
-		title?: string;
-		artist?: string;
-		genre?: string;
-		album?: string;
-		disc?: number;
-		trackNr?: number;
-	}
-}
-
 export const transformData = (data?: TrackResult): TrackEntry | undefined => {
 	if (!data) {
 		return;

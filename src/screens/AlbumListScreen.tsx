@@ -14,7 +14,7 @@ export const AlbumListScreen: React.FC<HomeStackProps<HomeRoute.ALBUMLIST>> = ({
 	}>({albumTypes: [], icon: '', text: ''});
 
 	useEffect(() => {
-		const type = getUrlTypeByID(route?.params?.albumTypeID);
+		const type = getUrlTypeByID(route?.params?.albumUrlType);
 		setView({
 			listType: route?.params?.listType,
 			text: type?.text || 'Albums',

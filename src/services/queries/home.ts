@@ -97,7 +97,7 @@ function transformData(data?: HomeResult): HomeDataResult | undefined {
 			{type: getTypeByAlbumType(AlbumType.compilation), value: data.stats.albumTypes.compilation}
 		].map(t => ({
 			text: t.type?.text || '',
-			link: {route: HomeRoute.ALBUMS, params: {albumTypeID: t.type?.id || ''}},
+			link: {route: HomeRoute.ALBUMS, params: {albumUrlType: t.type?.id}},
 			value: t.value
 		})),
 		{
@@ -114,7 +114,7 @@ function transformData(data?: HomeResult): HomeDataResult | undefined {
 			{type: getTypeByAlbumType(AlbumType.single), value: data.stats.albumTypes.single}
 		].map(t => ({
 			text: t.type?.text || '',
-			link: {route: HomeRoute.ALBUMS, params: {albumTypeID: t.type?.id || ''}},
+			link: {route: HomeRoute.ALBUMS, params: {albumUrlType: t.type?.id}},
 			value: t.value
 		})),
 		{

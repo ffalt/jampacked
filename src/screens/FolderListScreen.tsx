@@ -19,8 +19,7 @@ export const FolderListScreen: React.FC<HomeStackProps<HomeRoute.FOLDERLIST>> = 
 
 	useEffect(() => {
 		const listType = route?.params?.listType;
-		const albumTypeID = route?.params?.albumTypeID;
-		const type = getUrlTypeByID(albumTypeID);
+		const type = getUrlTypeByID(route?.params?.albumUrlType);
 		const text = type?.text || 'Folders';
 		const icon = type?.text || 'folder';
 		const albumTypes = type?.albumType ? [type.albumType] : [];

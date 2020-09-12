@@ -9,8 +9,7 @@ export const AlbumIndexScreen: React.FC<HomeStackProps<HomeRoute.ALBUMS>> = ({ro
 	const [title, setTitle] = useState<string>('');
 	const [titleIcon, setTitleIcon] = useState<string>('album');
 	const [getIndex, {loading, error, called, index}] = useLazyAlbumIndexQuery();
-	const albumTypeID = route?.params?.albumTypeID;
-	const type = getUrlTypeByID(albumTypeID);
+	const type = getUrlTypeByID(route?.params?.albumUrlType);
 
 	useEffect(() => {
 		if (type && type.albumType) {

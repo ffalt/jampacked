@@ -19,8 +19,7 @@ export const ArtistListScreen: React.FC<HomeStackProps<HomeRoute.ARTISTLIST>> = 
 
 	useEffect(() => {
 		const listType = route?.params?.listType;
-		const albumTypeID = route?.params?.albumTypeID;
-		const type = getUrlTypeByID(albumTypeID);
+		const type = getUrlTypeByID(route?.params?.albumUrlType);
 		const text = type?.text || 'Artists';
 		const icon = type?.text || 'artist';
 		const albumTypes = type?.albumType ? [type.albumType] : [];

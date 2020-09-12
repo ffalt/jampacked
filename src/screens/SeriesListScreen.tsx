@@ -19,8 +19,7 @@ export const SeriesListScreen: React.FC<HomeStackProps<HomeRoute.SERIESLIST>> = 
 
 	useEffect(() => {
 		const listType = route?.params?.listType;
-		const albumTypeID = route?.params?.albumTypeID;
-		const type = getUrlTypeByID(albumTypeID);
+		const type = getUrlTypeByID(route?.params?.albumUrlType);
 		const text = 'Series';
 		const icon = 'series';
 		const albumTypes = type?.albumType ? [type.albumType] : [];

@@ -1,6 +1,7 @@
 import {Route, RouteProp} from '@react-navigation/core';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {ListType} from '../services/jam';
+import {JamUrlType} from '../services/jam-lists';
 
 // App Routes
 
@@ -100,11 +101,11 @@ export type HomeStackNavigatorParamList = {
 	Downloads: undefined;
 	Playlists: undefined;
 	User: undefined;
-	Folderlist: { listType: ListType, albumTypeID?: string };
-	Serieslist: { listType: ListType, albumTypeID?: string };
-	Albumlist: { listType: ListType, albumTypeID?: string };
-	Artistlist: { listType: ListType, albumTypeID?: string };
-	Albums: { albumTypeID: string };
+	Folderlist: { listType: ListType, albumUrlType?: JamUrlType };
+	Serieslist: { listType: ListType, albumUrlType?: JamUrlType };
+	Albumlist: { listType: ListType, albumUrlType?: JamUrlType };
+	Artistlist: { listType: ListType, albumUrlType?: JamUrlType };
+	Albums: { albumUrlType: JamUrlType };
 	Playlist: { id: string, name: string };
 	Episode: { id: string, name: string };
 	Podcast: { id: string, name: string };

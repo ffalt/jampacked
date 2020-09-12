@@ -1,11 +1,9 @@
-import {CommonActions, NavigationContainerRef} from '@react-navigation/core';
+import {CommonActions, DrawerActions, NavigationContainerRef} from '@react-navigation/core';
 import {JamObjectType} from './jam';
 import {HomeRoute} from '../navigators/Routing';
 import {Navig, NavigParams} from './types';
 
 let navigator: NavigationContainerRef;
-let topSidebarOpen: (() => void) | undefined;
-let topSidebarClose: (() => void) | undefined;
 
 export class NavigationService {
 
@@ -13,20 +11,19 @@ export class NavigationService {
 		navigator = navigatorRef;
 	}
 
-	static setSidebarControl(sidebarOpen?: () => void, sidebarClose?: () => void): void {
-		topSidebarOpen = sidebarOpen;
-		topSidebarClose = sidebarClose;
-	}
-
 	static closeSideBar(): void {
-		if (topSidebarClose) {
-			topSidebarClose();
+		if (navigator) {
+			navigator.dispatch(
+				DrawerActions.closeDrawer()
+			);
 		}
 	}
 
 	static openSideBar(): void {
-		if (topSidebarOpen) {
-			topSidebarOpen();
+		if (navigator) {
+			navigator.dispatch(
+				DrawerActions.openDrawer()
+			);
 		}
 	}
 

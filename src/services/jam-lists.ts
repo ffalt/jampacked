@@ -95,7 +95,7 @@ export function getUrlTypeIdByAlbumType(albumType: string): string | undefined {
 	return type?.id;
 }
 
-export function getUrlTypeByID(val?: string): JamType | undefined {
+export function getUrlTypeByID(val?: JamUrlType): JamType | undefined {
 	if (!val) {
 		return;
 	}

@@ -48,41 +48,6 @@ const GET_FOLDER = gql`
     }
 `;
 
-interface FolderEntry {
-	id: string;
-	folderType: FolderType;
-	title: string;
-}
-
-export interface ResultFolderTrack {
-	id: string;
-	name: string;
-	album?: { id: string };
-	artist?: { id: string };
-	series?: { id: string };
-	tag?: {
-		mediaDuration: number;
-		title?: string;
-		artist?: string;
-		genre?: string;
-		album?: string;
-		disc?: number;
-		trackNr?: number;
-	}
-}
-
-interface ResultFolder {
-	id: string;
-	title: string;
-	childrenCount: number;
-	tracksCount: number;
-	folderType: FolderType;
-	artist: string;
-	genres: Array<string>;
-	children: Array<FolderEntry>;
-	tracks: Array<ResultFolderTrack>;
-}
-
 export interface FolderItem {
 	id: string;
 	folder?: BaseEntry;

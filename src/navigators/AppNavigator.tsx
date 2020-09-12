@@ -4,11 +4,11 @@ import SplashScreen from 'react-native-splash-screen';
 import {LoadingScreen} from '../screens/LoadingScreen';
 import {AppStackNavigatorParamList, Routing} from './Routing';
 import {LoginScreen} from '../screens/LoginScreen';
-import {ModalNavigator} from './ModalNavigator';
 import dataService from '../services/data';
 import {ThemeContext} from '../style/theming';
 import {defaultAuth, AuthContext} from '../services/auth';
 import {Jam} from '../services/jam';
+import {DrawerNavigator} from './DrawerNavigation';
 
 const Stack = createStackNavigator<AppStackNavigatorParamList>();
 
@@ -61,7 +61,7 @@ export class AppNavigator extends React.PureComponent {
 		if (isLoading) {
 			screen = <Stack.Screen name={Routing.LOAD} component={LoadingScreen}/>;
 		} else if (hasUser) {
-			screen = <Stack.Screen name={Routing.APP} component={ModalNavigator}/>;
+			screen = <Stack.Screen name={Routing.APP} component={DrawerNavigator}/>;
 		} else {
 			screen = <Stack.Screen name={Routing.AUTH} component={LoginScreen}/>;
 		}

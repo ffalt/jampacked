@@ -83,7 +83,7 @@ function transformSectionStats(stats: UserResult_currentUser_stats_played | User
 			{type: getTypeByAlbumType(AlbumType.compilation), value: stats.albumTypes.compilation}
 		].map(t => ({
 			text: t.type?.text || '',
-			link: {route: HomeRoute.ALBUMLIST, params: {albumTypeID: t.type?.id, listType}},
+			link: {route: HomeRoute.ALBUMLIST, params: {albumUrlType: t.type?.id, listType}},
 			value: t.value
 		})),
 		{
@@ -100,7 +100,7 @@ function transformSectionStats(stats: UserResult_currentUser_stats_played | User
 			{type: getTypeByAlbumType(AlbumType.single), value: stats.albumTypes.single}
 		].map(t => ({
 			text: t.type?.text || '',
-			link: {route: HomeRoute.ALBUMLIST, params: {albumTypeID: t.type?.id || '', listType}},
+			link: {route: HomeRoute.ALBUMLIST, params: {albumUrlType: t.type?.id, listType}},
 			value: t.value
 		})),
 		{

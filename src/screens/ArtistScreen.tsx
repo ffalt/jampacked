@@ -11,7 +11,6 @@ import {FavIcon} from '../components/FavIcon';
 import {JamObjectType} from '../services/jam';
 import {BaseEntry} from '../services/types';
 import {useLazyArtistQuery} from '../services/queries/artist';
-import {snackError} from '../services/snack';
 import {ErrorView} from '../components/ErrorView';
 
 const styles = StyleSheet.create({
