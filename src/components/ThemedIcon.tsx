@@ -1,6 +1,7 @@
 import React from 'react';
 import {useTheme} from '../style/theming';
 import {FontelloIcon} from './FontelloIcon';
+import {StyleSheet} from 'react-native';
 
 interface ThemedIconProps {
 	name: string;
@@ -8,9 +9,15 @@ interface ThemedIconProps {
 	size?: number;
 }
 
+const styles = StyleSheet.create({
+	icon: {
+		textAlign: 'center'
+	}
+});
+
 export const ThemedIcon: React.FC<ThemedIconProps> = React.memo(({name, size, color}) => {
 	const theme = useTheme();
-	const iconStyle = [{color: color || theme.textColor, fontSize: size}];
+	const iconStyle = [styles.icon, {color: color || theme.textColor, fontSize: size}];
 	return (
 		<FontelloIcon name={name} style={iconStyle}/>
 	);
