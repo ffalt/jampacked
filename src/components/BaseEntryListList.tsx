@@ -70,6 +70,7 @@ export const BaseEntryListList: React.FC<{
 			onRefresh={reload}
 			onLoadMore={handleLoadMore}
 			refreshing={loading}
+			called={called}
 			info={info}
 		/>);
 };

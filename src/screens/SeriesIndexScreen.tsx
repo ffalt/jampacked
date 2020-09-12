@@ -27,6 +27,7 @@ export const SeriesIndexScreen: React.FC<HomeStackProps<HomeRoute.SERIES>> = () 
 			title="Series"
 			titleIcon="series"
 			refreshing={loading}
+			called={called}
 			onRefresh={reload}
 		/>
 	);

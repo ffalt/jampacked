@@ -19,6 +19,7 @@ import {useTheme} from '../style/theming';
 import {ErrorView} from '../components/ErrorView';
 import ActionSheet from 'react-native-actions-sheet';
 import {ActionSheetTrack} from '../components/ActionSheetTrack';
+import {ListEmpty} from '../components/ListEmpty';
 
 const buildDetails = (artist?: string, tracks?: number, genre?: string, click?: () => void): Array<HeaderDetail> => {
 	return [
@@ -33,7 +34,7 @@ export const AlbumScreen: React.FC<HomeStackProps<HomeRoute.ALBUM>> = ({route}) 
 	const theme = useTheme();
 	const [details, setDetails] = useState<Array<HeaderDetail>>(buildDetails());
 	const [currentTrack, setCurrentTrack] = useState<TrackEntry | undefined>();
-	const [getAlbum, {loading, error, album}] = useLazyAlbumQuery();
+	const [getAlbum, {loading, error, album, called}] = useLazyAlbumQuery();
 	const {id, name} = route?.params;
 
 	useEffect(() => {
@@ -132,6 +133,7 @@ export const AlbumScreen: React.FC<HomeStackProps<HomeRoute.ALBUM>> = ({route}) 
 				keyExtractor={keyExtractor}
 				ItemSeparatorComponent={Separator}
 				ListHeaderComponent={ListHeader}
+				ListEmptyComponent={<ListEmpty called={called} loading={loading}/>}
 				getItemLayout={getItemLayout}
 				refreshControl={(
 					<RefreshControl

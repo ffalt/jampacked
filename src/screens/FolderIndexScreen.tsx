@@ -26,6 +26,7 @@ export const FolderIndexScreen: React.FC<HomeStackProps<HomeRoute.FOLDERS>> = ()
 			index={index}
 			title="Folders"
 			titleIcon="folder"
+			called={called}
 			refreshing={loading}
 			onRefresh={reload}
 		/>

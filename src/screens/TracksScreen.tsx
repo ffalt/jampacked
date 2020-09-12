@@ -7,11 +7,13 @@ import {trackEntryHeight, TrackItem} from '../components/TrackItem';
 import {commonItemLayout} from '../components/AtoZList';
 import {TrackEntry} from '../services/types';
 import {useTheme} from '../style/theming';
+import {ListEmpty} from '../components/ListEmpty';
 
 export const TracksScreen: React.FC<HomeStackProps<HomeRoute.TRACKS>> = () => {
 	const theme = useTheme();
 	const tracks: Array<TrackEntry> = [];
 	const refreshing = false;
+	const called = false;
 
 	const reload = useCallback((): void => {
 		// TODO: TracksScreen
@@ -32,6 +34,7 @@ export const TracksScreen: React.FC<HomeStackProps<HomeRoute.TRACKS>> = () => {
 			keyExtractor={keyExtractor}
 			ItemSeparatorComponent={Separator}
 			ListHeaderComponent={renderHeader}
+			ListEmptyComponent={<ListEmpty called={called} loading={refreshing}/>}
 			getItemLayout={getItemLayout}
 			refreshControl={(
 				<RefreshControl

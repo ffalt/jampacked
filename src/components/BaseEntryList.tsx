@@ -8,6 +8,7 @@ import {Item} from './Item';
 import {ImageItem} from './ImageItem';
 import {BaseEntry} from '../services/types';
 import {useWindowWidth} from '../utils/dimension.hook';
+import {ListEmpty} from './ListEmpty';
 
 const style = StyleSheet.create({
 	row: {
@@ -25,10 +26,11 @@ export interface BaseEntryListInfo {
 export const BaseEntryList: React.FC<{
 	entries: Array<BaseEntry>;
 	info: BaseEntryListInfo;
+	called: boolean;
 	refreshing: boolean;
 	onRefresh: () => void;
 	onLoadMore: () => void;
-}> = ({info, entries, refreshing, onRefresh, onLoadMore}) => {
+}> = ({info, entries, refreshing, called, onRefresh, onLoadMore}) => {
 	const [tiles, setTiles] = useState<boolean>(false);
 	const numColumns = 3;
 	const width = useWindowWidth();
@@ -61,6 +63,7 @@ export const BaseEntryList: React.FC<{
 				onEndReached={onLoadMore}
 				getItemLayout={getTileItemLayout}
 				ListHeaderComponent={ListHeaderComponent}
+				ListEmptyComponent={<ListEmpty called={called} loading={refreshing}/>}
 				refreshControl={(
 					<RefreshControl
 						refreshing={refreshing}
@@ -84,6 +87,7 @@ export const BaseEntryList: React.FC<{
 			onEndReachedThreshold={0.4}
 			onEndReached={onLoadMore}
 			ListHeaderComponent={ListHeaderComponent}
+			ListEmptyComponent={<ListEmpty called={called} loading={refreshing}/>}
 			refreshControl={(
 				<RefreshControl
 					refreshing={refreshing}

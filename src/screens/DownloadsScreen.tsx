@@ -11,6 +11,7 @@ import {ThemedIcon} from '../components/ThemedIcon';
 import {PageHeader} from '../components/PageHeader';
 import {CircularProgress} from '../components/CircularProgress';
 import {useDownloads, useDownloadStatus} from '../services/cache-hooks';
+import {ListEmpty} from '../components/ListEmpty';
 
 const styles = StyleSheet.create({
 	item: {
@@ -115,6 +116,7 @@ export const DownloadsScreen: React.FC<HomeStackProps<HomeRoute.DOWNLOADS>> = ()
 			key="downloads"
 			renderItem={renderItem}
 			keyExtractor={keyExtractor}
+			// ListEmptyComponent={<ListEmpty/>}
 			ListHeaderComponent={ListHeaderComponent}
 			ItemSeparatorComponent={Separator}
 			getItemLayout={getItemLayout}

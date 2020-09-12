@@ -17,12 +17,13 @@ import {useTheme} from '../style/theming';
 import {ErrorView} from '../components/ErrorView';
 import ActionSheet from 'react-native-actions-sheet';
 import {ActionSheetTrack} from '../components/ActionSheetTrack';
+import {ListEmpty} from '../components/ListEmpty';
 
 export const PlaylistScreen: React.FC<HomeStackProps<HomeRoute.PLAYLIST>> = ({route}) => {
 	const actionSheetRef: MutableRefObject<ActionSheet | null> = React.useRef<ActionSheet>(null);
 	const theme = useTheme();
 	const [currentTrack, setCurrentTrack] = useState<TrackEntry | undefined>();
-	const [getPlaylist, {loading, error, playlist}] = useLazyPlaylistQuery();
+	const [getPlaylist, {loading, error, playlist, called}] = useLazyPlaylistQuery();
 	const {id, name} = route?.params;
 
 	useEffect(() => {
@@ -101,6 +102,7 @@ export const PlaylistScreen: React.FC<HomeStackProps<HomeRoute.PLAYLIST>> = ({ro
 				keyExtractor={keyExtractor}
 				ItemSeparatorComponent={Separator}
 				ListHeaderComponent={ListHeader}
+				ListEmptyComponent={<ListEmpty called={called} loading={loading}/>}
 				getItemLayout={getItemLayout}
 				refreshControl={(
 					<RefreshControl

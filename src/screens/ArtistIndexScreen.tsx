@@ -27,6 +27,7 @@ export const ArtistIndexScreen: React.FC<HomeStackProps<HomeRoute.ARTISTS>> = ()
 			index={index}
 			title="Artists"
 			titleIcon="artist"
+			called={called}
 			refreshing={loading}
 			onRefresh={reload}
 		/>

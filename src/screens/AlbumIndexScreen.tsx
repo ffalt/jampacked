@@ -40,6 +40,7 @@ export const AlbumIndexScreen: React.FC<HomeStackProps<HomeRoute.ALBUMS>> = ({ro
 			title={title}
 			titleIcon={titleIcon}
 			refreshing={loading}
+			called={called}
 			onRefresh={reload}
 		/>
 	);

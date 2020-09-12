@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {RefreshControl, SectionList, SectionListData, StyleSheet} from 'react-native';
+import {FlatList, RefreshControl, SectionList, SectionListData, StyleSheet} from 'react-native';
 import {ThemedText} from '../components/ThemedText';
 import {staticTheme, useTheme} from '../style/theming';
 import {HomeRoute, HomeStackProps} from '../navigators/Routing';
@@ -12,6 +12,7 @@ import {Separator} from '../components/Separator';
 import {FavIcon} from '../components/FavIcon';
 import {JamObjectType} from '../services/jam';
 import {ErrorView} from '../components/ErrorView';
+import {ListEmpty} from '../components/ListEmpty';
 
 const styles = StyleSheet.create({
 	ListHeaderTitle: {
@@ -46,7 +47,7 @@ const buildDetails = (artist?: string, tracks?: number, genre?: string, toArtist
 export const SeriesScreen: React.FC<HomeStackProps<HomeRoute.SERIESITEM>> = ({route}) => {
 	const theme = useTheme();
 	const [details, setDetails] = useState<Array<HeaderDetail>>(buildDetails());
-	const [getSeries, {loading, error, series}] = useLazySeriesQuery();
+	const [getSeries, {loading, error, called, series}] = useLazySeriesQuery();
 	const {id, name} = route?.params;
 
 	useEffect(() => {
@@ -96,6 +97,7 @@ export const SeriesScreen: React.FC<HomeStackProps<HomeRoute.SERIESITEM>> = ({ro
 		<SectionList
 			sections={series?.sections || []}
 			ListHeaderComponent={ListHeader}
+			ListEmptyComponent={<ListEmpty called={called} loading={loading}/>}
 			renderSectionHeader={renderSection}
 			ItemSeparatorComponent={Separator}
 			SectionSeparatorComponent={Separator}

@@ -17,11 +17,12 @@ import {useTheme} from '../style/theming';
 import {ErrorView} from '../components/ErrorView';
 import ActionSheet from 'react-native-actions-sheet';
 import {ActionSheetEpisode} from '../components/ActionSheetEpisode';
+import {ListEmpty} from '../components/ListEmpty';
 
 export const PodcastScreen: React.FC<HomeStackProps<HomeRoute.PODCAST>> = ({route}) => {
 	const actionSheetRef: MutableRefObject<ActionSheet | null> = React.useRef<ActionSheet>(null);
 	const theme = useTheme();
-	const [getPodcast, {loading, error, podcast}] = useLazyPodcastQuery();
+	const [getPodcast, {loading, error, podcast, called}] = useLazyPodcastQuery();
 	const [currentEpisode, setCurrentEpisode] = useState<TrackEntry | undefined>();
 	const {id, name} = route?.params;
 
@@ -101,6 +102,7 @@ export const PodcastScreen: React.FC<HomeStackProps<HomeRoute.PODCAST>> = ({rout
 				keyExtractor={keyExtractor}
 				ItemSeparatorComponent={Separator}
 				ListHeaderComponent={ListHeader}
+				ListEmptyComponent={<ListEmpty called={called} loading={loading}/>}
 				getItemLayout={getItemLayout}
 				refreshControl={(
 					<RefreshControl

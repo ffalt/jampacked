@@ -13,6 +13,7 @@ import {FolderType} from '../services/jam';
 import {Folder, FolderItem, useLazyFolderQuery} from '../services/queries/folder';
 import {useTheme} from '../style/theming';
 import {ErrorView} from '../components/ErrorView';
+import {ListEmpty} from '../components/ListEmpty';
 
 const styles = StyleSheet.create({
 	playButton: {
@@ -57,7 +58,7 @@ const buildDetails = (folder?: Folder): Array<HeaderDetail> => {
 export const FolderScreen: React.FC<HomeStackProps<HomeRoute.FOLDER>> = ({route}) => {
 	const theme = useTheme();
 	const [details, setDetails] = useState<Array<HeaderDetail>>(buildDetails());
-	const [getFolder, {loading, error, folder}] = useLazyFolderQuery();
+	const [getFolder, {loading, error, folder, called}] = useLazyFolderQuery();
 	const {id, name} = route?.params;
 
 	useEffect(() => {
@@ -127,6 +128,7 @@ export const FolderScreen: React.FC<HomeStackProps<HomeRoute.FOLDER>> = ({route}
 			keyExtractor={keyExtractor}
 			ItemSeparatorComponent={Separator}
 			ListHeaderComponent={ListHeader}
+			ListEmptyComponent={<ListEmpty called={called} loading={loading}/>}
 			refreshControl={(
 				<RefreshControl
 					refreshing={loading}

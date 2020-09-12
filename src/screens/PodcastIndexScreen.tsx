@@ -26,6 +26,7 @@ export const PodcastIndexScreen: React.FC<HomeStackProps<HomeRoute.PODCASTS>> = 
 			index={index}
 			title="Podcasts"
 			titleIcon="podcast"
+			called={called}
 			refreshing={loading}
 			onRefresh={reload}
 		/>

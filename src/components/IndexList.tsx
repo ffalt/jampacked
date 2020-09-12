@@ -8,6 +8,7 @@ import {Item} from './Item';
 import {ImageItem} from './ImageItem';
 import {Index, IndexEntry} from '../services/types';
 import {useWindowWidth} from '../utils/dimension.hook';
+import {ListEmpty} from './ListEmpty';
 
 const style = StyleSheet.create({
 	row: {
@@ -21,8 +22,9 @@ export const IndexList: React.FC<{
 	title: string;
 	titleIcon: string;
 	refreshing: boolean;
+	called: boolean;
 	onRefresh: () => void;
-}> = ({title, titleIcon, index, refreshing, onRefresh}) => {
+}> = ({title, titleIcon, index, called, refreshing, onRefresh}) => {
 	const [tiles, setTiles] = useState<boolean>(false);
 	const numColumns = 3;
 	const width = useWindowWidth();
@@ -48,6 +50,7 @@ export const IndexList: React.FC<{
 				keyExtractor={keyExtractor}
 				numColumns={numColumns}
 				ListHeaderComponent={ListHeaderComponent}
+				ListEmptyComponent={<ListEmpty called={called} loading={refreshing}/>}
 				columnWrapperStyle={style.row}
 				itemHeight={tileSize}
 				refreshControl={(
@@ -70,6 +73,7 @@ export const IndexList: React.FC<{
 			keyExtractor={keyExtractor}
 			ItemSeparatorComponent={Separator}
 			ListHeaderComponent={ListHeaderComponent}
+			ListEmptyComponent={<ListEmpty called={called} loading={refreshing}/>}
 			refreshControl={(
 				<RefreshControl
 					refreshing={refreshing}

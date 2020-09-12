@@ -12,6 +12,7 @@ import {JamObjectType} from '../services/jam';
 import {BaseEntry} from '../services/types';
 import {useLazyArtistQuery} from '../services/queries/artist';
 import {ErrorView} from '../components/ErrorView';
+import {ListEmpty} from '../components/ListEmpty';
 
 const styles = StyleSheet.create({
 	SectionHeader: {
@@ -33,7 +34,7 @@ const buildDetails = (albums?: number, tracks?: number, genre?: string): Array<H
 export const ArtistScreen: React.FC<HomeStackProps<HomeRoute.ARTIST>> = ({route}) => {
 	const theme = useTheme();
 	const [details, setDetails] = useState<Array<HeaderDetail>>(buildDetails());
-	const [getArtist, {loading, error, artist}] = useLazyArtistQuery();
+	const [getArtist, {loading, error, artist, called}] = useLazyArtistQuery();
 	const {id, name} = route?.params;
 
 	useEffect(() => {
@@ -84,6 +85,7 @@ export const ArtistScreen: React.FC<HomeStackProps<HomeRoute.ARTIST>> = ({route}
 		<SectionList
 			sections={artist?.sections || []}
 			ListHeaderComponent={ListHeader}
+			ListEmptyComponent={<ListEmpty called={called} loading={loading}/>}
 			ItemSeparatorComponent={Separator}
 			SectionSeparatorComponent={Separator}
 			keyExtractor={keyExtractor}

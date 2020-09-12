@@ -9,7 +9,7 @@ const httpLink = new HttpLink({
 		return `${dataService.jam.auth.auth?.server}/graphql`;
 	},
 	credentials: 'include'
-});
+}) as any as ApolloLink;
 
 const authLink = setContext((_, {headers}: any) => {
 	return {
@@ -20,7 +20,7 @@ const authLink = setContext((_, {headers}: any) => {
 				headers.authorization
 		}
 	};
-});
+}) as any as ApolloLink;
 
 const errorLink = onError(({graphQLErrors, networkError}) => {
 	if (graphQLErrors) {
@@ -31,7 +31,7 @@ const errorLink = onError(({graphQLErrors, networkError}) => {
 	if (networkError) {
 		console.error(`[Network error]: ${networkError}`);
 	}
-});
+}) as any as ApolloLink;
 
 const logLink = new ApolloLink((operation: any, forward: any) => {
 	// eslint-disable-next-line no-console
@@ -58,7 +58,7 @@ const defaultOptions: DefaultOptions = {
 const logging = true;
 
 const authHttpLink = ApolloLink.concat(authLink, httpLink);
-const links = logging ? [logLink, errorLink, authHttpLink] : [errorLink, authHttpLink];
+const links: Array<ApolloLink> = logging ? [logLink, errorLink, authHttpLink] : [errorLink, authHttpLink];
 
 export type JamApolloClient = ApolloClient<unknown>;
 
