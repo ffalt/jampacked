@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
 });
 
 export const AppDrawerLink: React.FC<{ title: string; icon: string; route: string, params?: any }> =
-	({title, icon, route, params}) => {
+	({title, route, params}) => {
 		const theme = useTheme();
 		const goToRoute = useCallback((): void => {
 			NavigationService.closeSideBar();
@@ -62,7 +62,7 @@ const routes = [
 	{route: HomeRoute.ALBUMS, title: 'Singles', icon: 'single', params: {albumUrlType: JamUrlType.singles}},
 	{route: HomeRoute.ALBUMS, title: 'EPs', icon: 'ep', params: {albumUrlType: JamUrlType.eps}},
 	{route: HomeRoute.ALBUMS, title: 'Bootlegs', icon: 'bootleg', params: {albumUrlType: JamUrlType.bootlegs}},
-	{route: HomeRoute.ALBUMS, title: 'Soundtrack', icon: 'soundtrack', params: {albumUrlType: JamUrlType.soundtracks}},
+	{route: HomeRoute.ALBUMS, title: 'Soundtrack', icon: 'soundtrack', params: {albumUrlType: JamUrlType.soundtracks}}
 ];
 
 export const AppDrawer: React.FC = () => {

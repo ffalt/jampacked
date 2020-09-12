@@ -53,9 +53,9 @@ export function useDownloads(): Array<DownloadTask> {
 
 	useEffect(() => {
 		let isSubscribed = true;
-		const update = (tasks: Array<DownloadTask>): void => {
+		const update = (list: Array<DownloadTask>): void => {
 			if (isSubscribed) {
-				setTasks(tasks.slice(0));
+				setTasks(list);
 			}
 		};
 

@@ -1,11 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import {TrackEntry} from '../services/types';
-import {ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {ScrollView, StyleSheet, TouchableOpacity} from 'react-native';
 import {ThemedText} from './ThemedText';
 import {JamPlayer} from '../services/player';
 import {NavigationService} from '../services/navigation';
 import {JamObjectType} from '../services/jam';
-
 
 const styles = StyleSheet.create({
 	container: {
@@ -20,10 +19,10 @@ const styles = StyleSheet.create({
 	}
 });
 
-export const ActionSheetTrack: React.FC<{
-	item?: TrackEntry
-}> = ({item}) => {
-	const [actions, setActions] = useState<Array<{ title: string, click: () => void }>>([]);
+type ClickFunc = () => void;
+
+export const ActionSheetTrack: React.FC<{ item?: TrackEntry }> = ({item}) => {
+	const [actions, setActions] = useState<Array<{ title: string; click: ClickFunc }>>([]);
 
 	useEffect(() => {
 		if (!item) {

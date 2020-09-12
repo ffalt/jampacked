@@ -3,7 +3,6 @@ import {AlbumType} from '../services/jam';
 import {HomeRoute, HomeStackProps} from '../navigators/Routing';
 import {IndexList} from '../components/IndexList';
 import {useLazyArtistIndexQuery} from '../services/queries/artistIndex';
-import {snackError} from '../services/snack';
 import {ErrorView} from '../components/ErrorView';
 
 export const ArtistIndexScreen: React.FC<HomeStackProps<HomeRoute.ARTISTS>> = () => {

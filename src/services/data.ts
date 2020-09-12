@@ -5,10 +5,9 @@ import {AudioFormatType, JamService} from './jam';
 import {JamConfigurationService} from './jam-configuration';
 import {Caching} from './caching';
 import {snackSuccess} from './snack';
-import {MediaCache, MediaCacheStat} from './media-cache';
+import {MediaCache} from './media-cache';
 import {Doc, TrackEntry} from './types';
 import {PersistentStorage} from 'apollo-cache-persist/types';
-import {OperationVariables} from '@apollo/client/core';
 import {DocumentNode} from 'graphql';
 import {LazyQueryHookOptions, QueryLazyOptions} from '@apollo/client/react/types/types';
 import {useLazyQuery} from '@apollo/react-hooks';
@@ -96,7 +95,7 @@ class DataService implements PersistentStorage<unknown> {
 		}
 	}
 
-	private async clearDoc<T>(id: string): Promise<void> {
+	private async clearDoc(id: string): Promise<void> {
 		if (!this.db) {
 			return;
 		}
@@ -307,11 +306,13 @@ const configuration = new JamConfigurationService();
 const dataService = new DataService(new JamService(configuration));
 export default dataService;
 
-export function useCacheOrLazyQuery<TData = any, TVariables = OperationVariables, TResult = any>(
+export type QueryFunc<TVariables> = (options?: QueryLazyOptions<TVariables>, forceRefresh?: boolean) => void;
+export type QueryHookData<TResult> = { loading: boolean, error?: ApolloError, data?: TResult, called: boolean };
+
+export function useCacheOrLazyQuery<TData, TVariables, TResult>(
 	query: DocumentNode,
 	transform: (d?: TData, variables?: TVariables) => TResult | undefined,
-	options?: LazyQueryHookOptions<TData, TVariables>):
-	[(options?: QueryLazyOptions<TVariables>, forceRefresh?: boolean) => void, { loading: boolean, error?: ApolloError, data?: TResult, called: boolean }] {
+	options?: LazyQueryHookOptions<TData, TVariables>): [QueryFunc<TVariables>, QueryHookData<TResult>] {
 	const [result, setResult] = useState<TResult | undefined>();
 	const [id, setID] = useState<string | undefined>();
 	const [q, {loading, error, data, called, variables}] = useLazyQuery<TData, TVariables>(query, options);
@@ -333,7 +334,7 @@ export function useCacheOrLazyQuery<TData = any, TVariables = OperationVariables
 				});
 			}
 		}
-	}, [query, q]);
+	}, [query.definitions, q]);
 
 	useEffect(() => {
 		const r = transform(data, variables);

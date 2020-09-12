@@ -18,13 +18,14 @@ module.exports = {
 		ecmaVersion: 2020,
 		sourceType: "module",
 		ecmaFeatures: {
-			jsx: true,
+			jsx: true
 		},
 		project: "./tsconfig.eslint.json",
 		tsconfigRootDir: __dirname,
 	},
 	globals: {
 		fetch: false,
+		JSX: false,
 		__DEV__: false,
 		requestIdleCallback: false,
 		requestAnimationFrame: false
@@ -45,22 +46,23 @@ module.exports = {
 		// "no-console": "off",
 		"no-console": ["error", {allow: ["warn", "error"]}],
 		"object-curly-newline": ["error", {ImportDeclaration: "never"}],
-		"prettier/prettier": "off",
-		"react/destructuring-assignment": [0, "always", {"ignoreClassFields": true}],
-		"react/jsx-indent": [1, 'tab'],
-		"react/jsx-indent-props": [1, 'tab'],
-		"react/no-did-mount-set-state": "off",
-		"react/no-did-update-set-state": "off",
-		"react/state-in-constructor": "off"
+		"prettier/prettier": "off"
 	},
 	"overrides": [
 		{
 			// enable the rule specifically for TypeScript files
 			"files": ["*.ts", "*.tsx"],
 			"rules": {
+				"react/destructuring-assignment": [0, "always", {"ignoreClassFields": true}],
+				"react/jsx-no-undef": 1,
+				"react/jsx-indent": [1, 'tab'],
+				"react/jsx-indent-props": [1, 'tab'],
+				"react/no-did-mount-set-state": "off",
+				"react/no-did-update-set-state": "off",
+				"react/state-in-constructor": "off",
 				"@typescript-eslint/indent": ["error", "tab"],
 				"@typescript-eslint/no-inferrable-types": "off",
-				// "@typescript-eslint/no-explicit-any": "off",
+				"@typescript-eslint/no-explicit-any": "off",
 				"@typescript-eslint/explicit-function-return-type": ["error"],
 				"@typescript-eslint/explicit-module-boundary-types": "off"
 			}

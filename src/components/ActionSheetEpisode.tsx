@@ -6,7 +6,6 @@ import {JamPlayer} from '../services/player';
 import {NavigationService} from '../services/navigation';
 import {JamObjectType} from '../services/jam';
 
-
 const styles = StyleSheet.create({
 	container: {
 		width: '100%',
@@ -20,10 +19,10 @@ const styles = StyleSheet.create({
 	}
 });
 
-export const ActionSheetEpisode: React.FC<{
-	item?: TrackEntry
-}> = ({item}) => {
-	const [actions, setActions] = useState<Array<{ title: string, click: () => void }>>([]);
+type ClickFunc = () => void;
+
+export const ActionSheetEpisode: React.FC<{ item?: TrackEntry }> = ({item}) => {
+	const [actions, setActions] = useState<Array<{ title: string; click: ClickFunc }>>([]);
 
 	useEffect(() => {
 		if (!item) {

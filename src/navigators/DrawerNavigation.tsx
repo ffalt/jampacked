@@ -7,7 +7,10 @@ const Drawer = createDrawerNavigator();
 
 export const DrawerNavigator: React.FC = () => {
 	return (
-		<Drawer.Navigator initialRouteName="Drawer" drawerContent={_ => <AppDrawer/>}>
+		<Drawer.Navigator
+			initialRouteName="Drawer"
+			drawerContent={(_): JSX.Element => <AppDrawer/>}
+		>
 			<Drawer.Screen name="Drawer" component={ModalNavigator}/>
 		</Drawer.Navigator>
 	);

@@ -10,7 +10,6 @@ import {FavIcon} from '../components/FavIcon';
 import {Lyrics} from '../components/Lyrics';
 import {useTheme} from '../style/theming';
 import {useLazyTrackQuery} from '../services/queries/track';
-import {snackError} from '../services/snack';
 import {ErrorView} from '../components/ErrorView';
 
 const buildDetails = (artist?: string, album?: string, genre?: string): Array<HeaderDetail> => {

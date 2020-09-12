@@ -2,7 +2,6 @@ import React, {useCallback, useEffect} from 'react';
 import {HomeRoute, HomeStackProps} from '../navigators/Routing';
 import {IndexList} from '../components/IndexList';
 import {useLazyFolderIndexQuery} from '../services/queries/folderIndex';
-import {snackError} from '../services/snack';
 import {ErrorView} from '../components/ErrorView';
 
 export const FolderIndexScreen: React.FC<HomeStackProps<HomeRoute.FOLDERS>> = () => {

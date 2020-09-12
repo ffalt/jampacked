@@ -7,7 +7,6 @@ import {Item} from '../components/Item';
 import {HeaderDetail, ObjHeader, objHeaderStyles} from '../components/ObjHeader';
 import {BaseEntry} from '../services/types';
 import {useLazySeriesQuery} from '../services/queries/series';
-import {snackError} from '../services/snack';
 import {NavigationService} from '../services/navigation';
 import {Separator} from '../components/Separator';
 import {FavIcon} from '../components/FavIcon';

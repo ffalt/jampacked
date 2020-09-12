@@ -159,8 +159,9 @@ export class MediaCache {
 	}
 
 	private notifyTasksChange(): void {
+		const list = this.tasks.slice(0);
 		this.downloadsSubscriptions.forEach(update => {
-			update(this.tasks);
+			update(list);
 		});
 	}
 
