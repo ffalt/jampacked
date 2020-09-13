@@ -112,11 +112,14 @@ class AtoZPicker<T extends SectionItem> extends React.PureComponent<AtoZPickerPr
 	private build(): void {
 		const {data} = this.props;
 		const letters: Array<string> = [];
-		(data || []).forEach(item => {
-			if (!letters.includes(item.letter)) {
-				letters.push(item.letter);
-			}
-		});
+		const items = (data || []);
+		if (items.length > 20) {
+			items.forEach(item => {
+				if (!letters.includes(item.letter)) {
+					letters.push(item.letter);
+				}
+			});
+		}
 		if (this.state.letters.length + letters.length > 0) {
 			this.setState({letters});
 		}
