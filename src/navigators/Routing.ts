@@ -225,11 +225,13 @@ export type FoldersRouteProps<T extends keyof FoldersRouteParamList> = {
 // Folders Routes
 
 export enum DownloadsRoute {
-	ACTIVE = 'DownloadsActive'
+	ACTIVE = 'DownloadsActive',
+	PINNED = 'DownloadsPinned'
 }
 
 export type DownloadsRouteParamList = {
 	DownloadsActive: undefined;
+	DownloadsPinned: undefined;
 };
 
 export type DownloadsRouteProps<T extends keyof DownloadsRouteParamList> = {

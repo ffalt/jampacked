@@ -125,11 +125,11 @@ export const HomeScreen: React.FC<HomeRouteProps<HomeRoute.START>> = () => {
 			<View style={styles.container}>
 				<View style={styles.userHeader}>
 					<TouchableOpacity onPress={NavigationService.openSideBar}>
-						<Logo size={40}/>
+						<Logo size={staticTheme.userImage}/>
 					</TouchableOpacity>
 					<ThemedText style={styles.userHeaderText} numberOfLines={2}>{userName}</ThemedText>
 					<TouchableOpacity onPress={goToUser}>
-						<JamImage id={userId} size={40} style={styles.userImage}/>
+						<JamImage id={userId} size={staticTheme.userImage} style={styles.userImage}/>
 					</TouchableOpacity>
 				</View>
 				<Stats stats={homeData?.stats} label="Library"/>

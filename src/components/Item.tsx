@@ -56,7 +56,7 @@ export const Item: React.FC<{ item: BaseEntry }> = React.memo(({item}) => {
 			onPressLeft={handleLeftPress}
 		>
 			<TouchableOpacity onPress={handlePress} style={[styles.item, {backgroundColor: theme.background}]}>
-				<JamImage id={item.id} size={46}/>
+				<JamImage id={item.id} size={staticTheme.thumb}/>
 				<View style={styles.itemContent}>
 					<ThemedText style={styles.itemText} numberOfLines={2}>{item.title}</ThemedText>
 					<ThemedText style={styles.itemFooter} numberOfLines={1}>{item.desc}</ThemedText>

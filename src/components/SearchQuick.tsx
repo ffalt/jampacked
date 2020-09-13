@@ -110,7 +110,7 @@ export const SearchQuick: React.FC<SearchQuickProps> = ({query, setObjType}) => 
 
 		return (
 			<TouchableOpacity onPress={click} style={styles.item}>
-				<JamImage id={item.id} size={28}/>
+				<JamImage id={item.id} size={staticTheme.thumb}/>
 				<View style={styles.itemContent}>
 					<ThemedText style={styles.itemText}>{item.name}</ThemedText>
 				</View>

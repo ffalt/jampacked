@@ -159,7 +159,7 @@ export const AppDrawer: React.FC = () => {
 		<ScrollView style={[styles.drawer, {backgroundColor: theme.sidebar}]}>
 			<SafeAreaView>
 				<TouchableOpacity style={styles.drawerHeader} onPress={goToUser}>
-					<JamImage id={userId} size={40} style={styles.userImage}/>
+					<JamImage id={userId} size={staticTheme.userImage} style={styles.userImage}/>
 					<ThemedText style={styles.userHeaderText} numberOfLines={2}>{userName}</ThemedText>
 				</TouchableOpacity>
 				<Separator/>

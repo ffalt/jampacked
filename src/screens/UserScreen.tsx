@@ -101,7 +101,7 @@ export const UserScreen: React.FC<BottomTabProps<BottomTabRoute.SETTINGS>> = () 
 			<View style={styles.container}>
 				<ThemedText style={styles.section}>User</ThemedText>
 				<View style={styles.userSection}>
-					<JamImage id={auth.currentUserID()} size={80} style={styles.userImage}/>
+					<JamImage id={auth.currentUserID()} size={staticTheme.thumbMedium} style={styles.userImage}/>
 					<View>
 						<View>
 							<ThemedText>{auth.currentUserName()}</ThemedText>

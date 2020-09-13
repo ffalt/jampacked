@@ -153,7 +153,7 @@ export const ObjHeader: React.FC<{
 	return (
 		<FastImageBackground id={id} style={styles.header}>
 			<View style={styles.headerTop}>
-				<JamImage id={id} size={173} requestSize={300}/>
+				<JamImage id={id} size={173} requestSize={staticTheme.cover}/>
 				<View style={styles.headerTitleContainer}>
 					<ThemedText style={[styles.headerTitleType, {color: theme.muted}]}>{typeName}</ThemedText>
 					<ThemedText numberOfLines={2} style={styles.headerTitle}>{title}</ThemedText>

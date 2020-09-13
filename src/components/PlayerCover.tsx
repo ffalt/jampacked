@@ -2,7 +2,7 @@ import {StyleSheet, View} from 'react-native';
 import React from 'react';
 import {useCurrentTrackID} from '../services/player';
 import {JamImage} from './JamImage';
-import {useTheme} from '../style/theming';
+import {staticTheme, useTheme} from '../style/theming';
 
 const styles = StyleSheet.create({
 	cover: {
@@ -26,7 +26,7 @@ export const PlayerCover: React.FC = () => {
 	}
 	return (
 		<View style={[styles.cover, {borderColor: theme.separator}]}>
-			<JamImage id={id} size={300} requestSize={300} style={styles.image}/>
+			<JamImage id={id} size={staticTheme.cover} requestSize={staticTheme.cover} style={styles.image}/>
 		</View>
 	);
 };

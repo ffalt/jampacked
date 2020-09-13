@@ -321,6 +321,29 @@ class DataService implements PersistentStorage<unknown> {
 		return this.mediaCache.download(downloads);
 	}
 
+	private async getPinDocs<T>(): Promise<Array<Doc<T>>> {
+		if (!this.db) {
+			return [];
+		}
+		try {
+			const results = await this.db.query('SELECT * FROM pin');
+			const list: Array<Doc<T>> = [];
+			for (let i = 0; i < results.rows.length; i++) {
+				const result = results.rows.item(i);
+				list.push({
+					key: result.key,
+					version: result.version,
+					date: result.date,
+					data: JSON.parse(result.data)
+				});
+			}
+			return list;
+		} catch (e) {
+			console.error(e);
+			return [];
+		}
+	}
+
 	private async getPinDoc<T>(id: string): Promise<Doc<T> | undefined> {
 		if (!this.db) {
 			return;
@@ -358,12 +381,7 @@ class DataService implements PersistentStorage<unknown> {
 
 	async getPinState(id: string): Promise<PinState> {
 		const key = `pin_${id}`;
-		console.log('getPinState', key);
-		const doc = await this.getPinDoc<{
-			name: string;
-			objType: JamObjectType;
-			tracks: Array<TrackEntry>;
-		}>(key);
+		const doc = await this.getPinDoc<PinMedia>(key);
 		if (!doc) {
 			return {
 				active: false,
@@ -388,12 +406,8 @@ class DataService implements PersistentStorage<unknown> {
 		this.notifyPinChange(id, {active: true, pinned: true});
 		const album = await getAlbum(id);
 		if (album) {
-			const data = {name: album.name, objType, tracks: album.tracks || []};
-			await this.setPinDoc<{
-				name: string;
-				objType: JamObjectType;
-				tracks: Array<TrackEntry>;
-			}>(key, data);
+			const data: PinMedia = {id, name: album.name, objType, tracks: album.tracks || []};
+			await this.setPinDoc<PinMedia>(key, data);
 			await this.download(album.tracks || []);
 			this.waitForPin(id, data);
 		} else {
@@ -401,11 +415,7 @@ class DataService implements PersistentStorage<unknown> {
 		}
 	}
 
-	private waitForPin(id: string, data: {
-		name: string;
-		objType: JamObjectType;
-		tracks: Array<TrackEntry>;
-	}): void {
+	private waitForPin(id: string, data: PinMedia): void {
 		const waitForIDs = data.tracks.map(t => t.id);
 		const update = (tasks: Array<DownloadTask>): void => {
 			const task = tasks.find(task => waitForIDs.includes(task.id));
@@ -419,11 +429,7 @@ class DataService implements PersistentStorage<unknown> {
 
 	async unpin(id: string): Promise<void> {
 		const key = `pin_${id}`;
-		const doc = await this.getPinDoc<{
-			name: string;
-			objType: JamObjectType;
-			tracks: Array<TrackEntry>;
-		}>(key);
+		const doc = await this.getPinDoc<PinMedia>(key);
 		if (doc) {
 			this.notifyPinChange(id, {active: true, pinned: false});
 			const ids = doc.data.tracks.map(t => t.id);
@@ -461,6 +467,18 @@ class DataService implements PersistentStorage<unknown> {
 		await this.mediaCache.clear();
 		await this.dropPinCache();
 	}
+
+	async getPins(): Promise<Array<PinMedia>> {
+		const docs = await this.getPinDocs<PinMedia>();
+		return docs.map(doc => doc.data);
+	}
+}
+
+export interface PinMedia {
+	id: string;
+	name: string;
+	objType: JamObjectType;
+	tracks: Array<TrackEntry>;
 }
 
 export interface PinState {

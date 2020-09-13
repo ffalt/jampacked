@@ -31,7 +31,12 @@ export const staticTheme = {
 	marginSmall: 5,
 
 	statusBarOffset: 25,
-	a2zWidth: 40
+	a2zWidth: 40,
+
+	cover: 300,
+	userImage: 40,
+	thumb: 46,
+	thumbMedium: 80
 };
 
 // export type ITheme = ReturnType<typeof useTheme>;

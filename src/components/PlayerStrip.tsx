@@ -80,7 +80,7 @@ export const PlayerStrip: React.FC = () => {
 			<View style={styles.playerStripContent}>
 				<TouchableOpacity onPress={showPlayer} style={styles.playerStripTrack}>
 					<View style={styles.playerStripImage}>
-						<JamImage id={track.id} size={46}/>
+						<JamImage id={track.id} size={staticTheme.thumb}/>
 					</View>
 					<View style={styles.playerStripText}>
 						<ThemedText numberOfLines={1} style={styles.title}>{track.title}</ThemedText>
