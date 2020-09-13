@@ -26,12 +26,6 @@ export class MediaCache {
 			this.connectToTask(task);
 		}
 		await this.initCachePath();
-		// try {
-		// 	const list = await this.list();
-		// 	console.log('In Cache: ' + list);
-		// } catch (e) {
-		//
-		// }
 	}
 
 	async initCachePath(): Promise<void> {
@@ -69,6 +63,15 @@ export class MediaCache {
 		this.notifyCacheChange();
 	}
 
+	async removeFromCache(ids: Array<string>): Promise<void> {
+		for (const id of ids) {
+			if (await this.isDownloaded(id)) {
+				await RNFS.unlink(this.pathInCache(id));
+			}
+		}
+		this.notifyCacheChange();
+	}
+
 	async list(): Promise<Array<string>> {
 		return RNFS.readdir(this.cachePath());
 	}
@@ -81,7 +84,7 @@ export class MediaCache {
 		for (const t of downloads) {
 			if (!this.tasks.find(d => d.id === t.id) && !await this.isDownloaded(t.id)) {
 				const task = RNBackgroundDownloader.download(t);
-				task.pause();
+				// task.pause();
 				this.connectToTask(task);
 				this.tasks.push(task);
 			}
@@ -142,6 +145,21 @@ export class MediaCache {
 	getProgress(id: string): DownloadProgress | undefined {
 		const task = this.tasks.find(t => t.id === id);
 		return task ? {task} : undefined;
+	}
+
+	hasDownloadTask(id: string): boolean {
+		return !!this.tasks.find(t => t.id === id);
+	}
+
+	hasAnyDownloadTask(ids: Array<string>): boolean {
+		return !!this.tasks.find(t => ids.includes(t.id));
+	}
+
+	cancelTasks(ids: Array<string>): void {
+		const tasks = this.tasks.filter(t => ids.includes(t.id));
+		tasks.forEach(task => {
+			task.stop();
+		});
 	}
 
 	private notifyTaskChange(task: DownloadTask): void {

@@ -7,7 +7,6 @@ import {ThemedIcon} from '../components/ThemedIcon';
 import {HeaderDetail, ObjHeader, objHeaderStyles} from '../components/ObjHeader';
 import {genreDisplay} from '../utils/genre.utils';
 import {Separator} from '../components/Separator';
-import dataService from '../services/data';
 import {JamObjectType} from '../services/jam';
 import {FavIcon} from '../components/FavIcon';
 import {snackError} from '../services/snack';
@@ -20,6 +19,7 @@ import {ErrorView} from '../components/ErrorView';
 import ActionSheet from 'react-native-actions-sheet';
 import {ActionSheetTrack} from '../components/ActionSheetTrack';
 import {ListEmpty} from '../components/ListEmpty';
+import {PinIcon} from '../components/PinIcon';
 
 const buildDetails = (artist?: string, tracks?: number, genre?: string, click?: () => void): Array<HeaderDetail> => {
 	return [
@@ -34,7 +34,7 @@ export const AlbumScreen: React.FC<HomeRouteProps<HomeRoute.ALBUM>> = ({route}) 
 	const theme = useTheme();
 	const [details, setDetails] = useState<Array<HeaderDetail>>(buildDetails());
 	const [currentTrack, setCurrentTrack] = useState<TrackEntry | undefined>();
-	const [getAlbum, {loading, error, album, called}] = useLazyAlbumQuery();
+	const [getAlbum, {loading, error, album}] = useLazyAlbumQuery();
 	const {id, name} = route?.params;
 
 	useEffect(() => {
@@ -57,32 +57,21 @@ export const AlbumScreen: React.FC<HomeRouteProps<HomeRoute.ALBUM>> = ({route}) 
 		getAlbum(id, true);
 	}, [getAlbum, id]);
 
-	const pinTracks = (): void => {
-		if (album) {
-			dataService.download(album.tracks)
-				.catch(e => {
-					snackError(e);
-				});
-		}
-	};
-
-	const playTracks = (): void => {
+	const playTracks = useCallback((): void => {
 		if (album) {
 			JamPlayer.playTracks(album.tracks)
 				.catch(e => {
 					snackError(e);
 				});
 		}
-	};
+	}, [album]);
 
 	const headerTitleCmds = (
 		<>
 			<TouchableOpacity style={objHeaderStyles.button} onPress={playTracks}>
 				<ThemedIcon name="play" size={objHeaderStyles.buttonIcon.fontSize}/>
 			</TouchableOpacity>
-			<TouchableOpacity style={objHeaderStyles.button} onPress={pinTracks}>
-				<ThemedIcon name="pin-outline" size={objHeaderStyles.buttonIcon.fontSize}/>
-			</TouchableOpacity>
+			<PinIcon style={objHeaderStyles.button} objType={JamObjectType.album} id={id}/>
 			<FavIcon style={objHeaderStyles.button} objType={JamObjectType.album} id={id}/>
 		</>
 	);

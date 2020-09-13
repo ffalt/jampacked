@@ -44,7 +44,7 @@ const buildDetails = (artist?: string, tracks?: number, genre?: string, toArtist
 	];
 };
 
-export const SeriesScreen: React.FC<HomeRouteProps<HomeRoute.SERIESITEM>> = ({route}) => {
+export const SeriesScreen: React.FC<HomeRouteProps<HomeRoute.SERIE>> = ({route}) => {
 	const theme = useTheme();
 	const [details, setDetails] = useState<Array<HeaderDetail>>(buildDetails());
 	const [getSeries, {loading, error, called, series}] = useLazySeriesQuery();

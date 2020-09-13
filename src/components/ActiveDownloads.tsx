@@ -1,17 +1,12 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {HomeRoute, HomeRouteProps} from '../navigators/Routing';
-import {FlatList, StyleSheet, TouchableOpacity, View} from 'react-native';
-import {Separator} from '../components/Separator';
-import {commonItemLayout} from '../components/AtoZList';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {DownloadTask} from 'react-native-background-downloader';
 import {staticTheme, useTheme} from '../style/theming';
 import {ThemedText} from '../components/ThemedText';
 import {formatDuration} from '../utils/duration.utils';
 import {ThemedIcon} from '../components/ThemedIcon';
-import {PageHeader} from '../components/PageHeader';
 import {CircularProgress} from '../components/CircularProgress';
-import {useDownloads, useDownloadStatus} from '../services/cache-hooks';
-import {ListEmpty} from '../components/ListEmpty';
+import {useDownloadStatus} from '../services/cache-hooks';
 
 const styles = StyleSheet.create({
 	item: {
@@ -37,12 +32,9 @@ const styles = StyleSheet.create({
 	itemText: {
 		fontSize: staticTheme.fontSizeSmall
 	},
-	buttonText: {
-		fontSize: staticTheme.fontSizeHuge
-	}
 });
 
-export const DownloadItem: React.FC<{ item: DownloadTask }> = React.memo(({item}) => {
+export const ActiveDownloadItem: React.FC<{ item: DownloadTask }> = React.memo(({item}) => {
 	const theme = useTheme();
 	const [state, setState] = useState<{ indeterminate: boolean, text: string, state: string, duration: string, icon: string, percent: number }>({
 		text: '',
@@ -81,7 +73,6 @@ export const DownloadItem: React.FC<{ item: DownloadTask }> = React.memo(({item}
 		});
 	}, [progress]);
 
-
 	return (
 		<View style={[styles.item, {backgroundColor: theme.background}]}>
 			<CircularProgress
@@ -103,23 +94,3 @@ export const DownloadItem: React.FC<{ item: DownloadTask }> = React.memo(({item}
 		</View>
 	);
 });
-
-export const DownloadsScreen: React.FC<HomeRouteProps<HomeRoute.DOWNLOADS>> = () => {
-	const downloads = useDownloads();
-	const getItemLayout = React.useMemo(() => commonItemLayout(65), []);
-	const keyExtractor = (item: DownloadTask): string => item.id;
-	const renderItem = useCallback(({item}: { item: DownloadTask }): JSX.Element => (<DownloadItem item={item}/>), []);
-	const ListHeaderComponent = (<PageHeader title="Downloads" subtitle="Pinned Media" titleIcon="download"/>);
-	return (
-		<FlatList
-			data={downloads}
-			key="downloads"
-			renderItem={renderItem}
-			keyExtractor={keyExtractor}
-			ListEmptyComponent={<ListEmpty list={downloads}/>}
-			ListHeaderComponent={ListHeaderComponent}
-			ItemSeparatorComponent={Separator}
-			getItemLayout={getItemLayout}
-		/>
-	);
-};

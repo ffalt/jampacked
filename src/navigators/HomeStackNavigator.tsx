@@ -13,11 +13,11 @@ import {TrackScreen} from '../screens/TrackScreen';
 import {PlaylistScreen} from '../screens/PlaylistScreen';
 import {PlaylistIndexScreen} from '../screens/PlaylistIndexScreen';
 import {UserScreen} from '../screens/UserScreen';
-import {DownloadsScreen} from '../screens/DownloadsScreen';
 import {ArtistsNavigator} from './ArtistsNavigator';
 import {AlbumsNavigator} from './AlbumsNavigator';
 import {SeriesNavigator} from './SeriesNavigator';
 import {FoldersNavigator} from './FoldersNavigator';
+import {DownloadsNavigator} from './DownloadsNavigator';
 
 const Stack = createStackNavigator<HomeRouteParamList>();
 
@@ -28,7 +28,7 @@ export const HomeStackNavigator: React.FC = () => (
 		<Stack.Screen name={HomeRoute.ALBUMS} component={AlbumsNavigator}/>
 		<Stack.Screen name={HomeRoute.SERIES} component={SeriesNavigator}/>
 		<Stack.Screen name={HomeRoute.FOLDERS} component={FoldersNavigator}/>
-		<Stack.Screen name={HomeRoute.SERIESITEM} component={SeriesScreen}/>
+		<Stack.Screen name={HomeRoute.SERIE} component={SeriesScreen}/>
 		<Stack.Screen name={HomeRoute.FOLDER} component={FolderScreen}/>
 		<Stack.Screen name={HomeRoute.PLAYLIST} component={PlaylistScreen}/>
 		<Stack.Screen name={HomeRoute.PLAYLISTS} component={PlaylistIndexScreen}/>
@@ -39,6 +39,6 @@ export const HomeStackNavigator: React.FC = () => (
 		<Stack.Screen name={HomeRoute.ARTIST} component={ArtistScreen}/>
 		<Stack.Screen name={HomeRoute.ALBUM} component={AlbumScreen}/>
 		<Stack.Screen name={HomeRoute.USER} component={UserScreen}/>
-		<Stack.Screen name={HomeRoute.DOWNLOADS} component={DownloadsScreen}/>
+		<Stack.Screen name={HomeRoute.DOWNLOADS} component={DownloadsNavigator}/>
 	</Stack.Navigator>
 );

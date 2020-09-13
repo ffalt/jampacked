@@ -1,7 +1,7 @@
 import FastImage from 'react-native-fast-image';
 import AsyncStorage from '@react-native-community/async-storage';
 import {Database} from './db';
-import {AudioFormatType, JamService} from './jam';
+import {AudioFormatType, JamObjectType, JamService} from './jam';
 import {JamConfigurationService} from './jam-configuration';
 import {Caching} from './caching';
 import {snackSuccess} from './snack';
@@ -14,7 +14,8 @@ import {useLazyQuery} from '@apollo/react-hooks';
 import {useCallback, useEffect, useState} from 'react';
 import {ApolloError} from 'apollo-client';
 import {Subject} from 'rxjs';
-
+import {getAlbum} from './queries/album';
+import {DownloadTask} from 'react-native-background-downloader';
 
 class DataService implements PersistentStorage<unknown> {
 	db?: Database;
@@ -23,6 +24,7 @@ class DataService implements PersistentStorage<unknown> {
 		(caller) => this.fillCache(caller),
 		(caller) => this.clearCache(caller)
 	);
+	private pinSubscriptions = new Map<string, Array<(state: PinState) => void>>();
 	mediaCache = new MediaCache();
 	homeDataUpdate = new Subject();
 
@@ -64,8 +66,10 @@ class DataService implements PersistentStorage<unknown> {
 		if (!this.db) {
 			return;
 		}
-		const createTableScript = 'CREATE TABLE if not exists jam(_id INTEGER PRIMARY KEY AUTOINCREMENT, key TEXT, data TEXT, date integer, version integer)';
-		await this.db.query(createTableScript);
+		const createJamTableScript = 'CREATE TABLE if not exists jam(_id INTEGER PRIMARY KEY AUTOINCREMENT, key TEXT, data TEXT, date integer, version integer)';
+		await this.db.query(createJamTableScript);
+		const createPinTableScript = 'CREATE TABLE if not exists pin(_id INTEGER PRIMARY KEY AUTOINCREMENT, key TEXT, data TEXT, date integer, version integer)';
+		await this.db.query(createPinTableScript);
 	}
 
 	async close(): Promise<void> {
@@ -153,10 +157,26 @@ class DataService implements PersistentStorage<unknown> {
 		FastImage.clearDiskCache();
 		FastImage.clearMemoryCache();
 		caller.updateText('2/2 Clearing Data Cache');
+		await this.dropJamCache();
+		snackSuccess('Cache cleared');
+	}
+
+	private async dropJamCache(): Promise<void> {
+		if (!this.db) {
+			return;
+		}
 		const dropTableScript = 'DROP TABLE IF EXISTS jam';
 		await this.db.query(dropTableScript);
 		await this.check();
-		snackSuccess('Cache cleared');
+	}
+
+	private async dropPinCache(): Promise<void> {
+		if (!this.db) {
+			return;
+		}
+		const dropTableScript = 'DROP TABLE IF EXISTS pin';
+		await this.db.query(dropTableScript);
+		await this.check();
 	}
 
 	private async fillCache(_caller: Caching): Promise<void> {
@@ -300,6 +320,152 @@ class DataService implements PersistentStorage<unknown> {
 		});
 		return this.mediaCache.download(downloads);
 	}
+
+	private async getPinDoc<T>(id: string): Promise<Doc<T> | undefined> {
+		if (!this.db) {
+			return;
+		}
+		try {
+			const results = await this.db.query('SELECT * FROM pin WHERE key=?', [id]);
+			const result = results.rows.item(0);
+			if (result) {
+				return {
+					key: result.key,
+					version: result.version,
+					date: result.date,
+					data: JSON.parse(result.data)
+				};
+			}
+		} catch (e) {
+			console.error(e);
+		}
+	}
+
+	private async clearPinDoc(key: string): Promise<void> {
+		if (!this.db) {
+			return;
+		}
+		await this.db.delete('pin', {key});
+	}
+
+	private async setPinDoc<T>(key: string, data: T): Promise<void> {
+		if (!this.db) {
+			return;
+		}
+		await this.clearPinDoc(key);
+		await this.db.insert('pin', ['data', 'key', 'date', 'version'], [JSON.stringify(data), key, Date.now(), this.version]);
+	}
+
+	async getPinState(id: string): Promise<PinState> {
+		const key = `pin_${id}`;
+		console.log('getPinState', key);
+		const doc = await this.getPinDoc<{
+			name: string;
+			objType: JamObjectType;
+			tracks: Array<TrackEntry>;
+		}>(key);
+		if (!doc) {
+			return {
+				active: false,
+				pinned: false
+			};
+		}
+		const active = this.mediaCache.hasAnyDownloadTask(doc.data.tracks.map(t => t.id));
+		if (active) {
+			const array = this.pinSubscriptions.get(id);
+			if (array?.length) {
+				this.waitForPin(id, doc.data);
+			}
+		}
+		return {
+			active,
+			pinned: true
+		};
+	}
+
+	async pin(id: string, objType: JamObjectType): Promise<void> {
+		const key = `pin_${id}`;
+		this.notifyPinChange(id, {active: true, pinned: true});
+		const album = await getAlbum(id);
+		if (album) {
+			const data = {name: album.name, objType, tracks: album.tracks || []};
+			await this.setPinDoc<{
+				name: string;
+				objType: JamObjectType;
+				tracks: Array<TrackEntry>;
+			}>(key, data);
+			await this.download(album.tracks || []);
+			this.waitForPin(id, data);
+		} else {
+			this.notifyPinChange(id, {active: false, pinned: false});
+		}
+	}
+
+	private waitForPin(id: string, data: {
+		name: string;
+		objType: JamObjectType;
+		tracks: Array<TrackEntry>;
+	}): void {
+		const waitForIDs = data.tracks.map(t => t.id);
+		const update = (tasks: Array<DownloadTask>): void => {
+			const task = tasks.find(task => waitForIDs.includes(task.id));
+			if (!task || tasks.length === 0) {
+				this.mediaCache.unsubscribeTaskUpdates(update);
+				this.notifyPinChange(id, {active: false, pinned: true});
+			}
+		};
+		this.mediaCache.subscribeTaskUpdates(update);
+	}
+
+	async unpin(id: string): Promise<void> {
+		const key = `pin_${id}`;
+		const doc = await this.getPinDoc<{
+			name: string;
+			objType: JamObjectType;
+			tracks: Array<TrackEntry>;
+		}>(key);
+		if (doc) {
+			this.notifyPinChange(id, {active: true, pinned: false});
+			const ids = doc.data.tracks.map(t => t.id);
+			await this.mediaCache.cancelTasks(ids);
+			await this.mediaCache.removeFromCache(ids);
+			await this.clearPinDoc(key);
+			this.notifyPinChange(id, {active: false, pinned: false});
+		}
+	}
+
+	notifyPinChange(id: string, state: PinState): void {
+		const array = this.pinSubscriptions.get(id) || [];
+		array.forEach(update => {
+			update(state);
+		});
+	}
+
+	subscribePinChangeUpdates(id: string, update: (state: PinState) => void): void {
+		const array = this.pinSubscriptions.get(id) || [];
+		array.push(update);
+		this.pinSubscriptions.set(id, array);
+	}
+
+	unsubscribePinChangeUpdates(id: string, update: (state: PinState) => void): void {
+		let array = this.pinSubscriptions.get(id) || [];
+		array = array.splice(array.indexOf(update), 1);
+		if (array.length === 0) {
+			this.pinSubscriptions.delete(id);
+		} else {
+			this.pinSubscriptions.set(id, array);
+		}
+	}
+
+	async clearPins(): Promise<void> {
+		await this.mediaCache.clear();
+		await this.dropPinCache();
+	}
+}
+
+export interface PinState {
+	active: boolean;
+	pinned: boolean;
 }
 
 const configuration = new JamConfigurationService();

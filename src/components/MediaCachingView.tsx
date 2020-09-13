@@ -26,7 +26,7 @@ export const MediaCachingView: React.FC = () => {
 
 	const clearMediaCache = useCallback((): void => {
 		setRunning(true);
-		dataService.mediaCache.clear()
+		dataService.clearPins()
 			.then(() => {
 				setRunning(false);
 			})

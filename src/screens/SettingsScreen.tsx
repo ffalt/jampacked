@@ -1,11 +1,9 @@
-import React, {useCallback} from 'react';
-import {Button, StyleSheet, View} from 'react-native';
+import React from 'react';
+import {StyleSheet, View} from 'react-native';
 import {BottomTabProps, BottomTabRoute} from '../navigators/Routing';
 import {ThemesView} from '../components/ThemesView';
 import {ThemedText} from '../components/ThemedText';
 import {staticTheme} from '../style/theming';
-import {JamImage} from '../components/JamImage';
-import {useAuth} from '../services/auth';
 import dataService from '../services/data';
 import {CachingView} from '../components/CachingView';
 import {MediaCachingView} from '../components/MediaCachingView';
@@ -37,27 +35,8 @@ const styles = StyleSheet.create({
 });
 
 export const SettingsScreen: React.FC<BottomTabProps<BottomTabRoute.SETTINGS>> = () => {
-	const auth = useAuth();
-
-	const logout = useCallback((): void => {
-		auth.logout()
-			.catch(e => {
-				console.error(e);
-			});
-	}, [auth]);
-
 	return (
 		<View style={styles.container}>
-			<ThemedText style={styles.section}>Account</ThemedText>
-			<View style={styles.userSection}>
-				<JamImage id={auth.currentUserID()} size={80} style={styles.userImage}/>
-				<View>
-					<View>
-						<ThemedText>{auth.currentUserName()}</ThemedText>
-						<Button title="Logout" onPress={logout}/>
-					</View>
-				</View>
-			</View>
 			<ThemedText style={styles.section}>Cache</ThemedText>
 			<CachingView cache={dataService.dataCaching} title="Data & Image Cache"/>
 			<ThemedText style={styles.section}>Pinned Offline Tracks</ThemedText>

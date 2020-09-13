@@ -1,6 +1,6 @@
 import {Route, RouteProp} from '@react-navigation/core';
 import {StackNavigationProp} from '@react-navigation/stack';
-import {AlbumType, ListType} from '../services/jam';
+import {AlbumType} from '../services/jam';
 
 // App Routes
 
@@ -71,8 +71,7 @@ export enum HomeRoute {
 	ALBUMS = 'Albums',
 	SERIES = 'Series',
 	FOLDERS = 'Folders',
-
-	SERIESITEM = 'SeriesItem',
+	SERIE = 'Serie',
 	ARTIST = 'Artist',
 	FOLDER = 'Folder',
 	PODCASTS = 'Podcasts',
@@ -105,7 +104,7 @@ export type HomeRouteParamList = {
 	Podcast: { id: string, name: string };
 	Track: { id: string, name: string };
 	Folder: { id: string, name: string };
-	SeriesItem: { id: string, name: string };
+	Serie: { id: string, name: string };
 	Artist: { id: string, name: string };
 	Album: { id: string, name: string };
 };
@@ -221,4 +220,19 @@ export type FoldersRouteParamList = {
 export type FoldersRouteProps<T extends keyof FoldersRouteParamList> = {
 	navigation: StackNavigationProp<FoldersRouteParamList, T>;
 	route: RouteProp<FoldersRouteParamList, T>;
+};
+
+// Folders Routes
+
+export enum DownloadsRoute {
+	ACTIVE = 'DownloadsActive'
+}
+
+export type DownloadsRouteParamList = {
+	DownloadsActive: undefined;
+};
+
+export type DownloadsRouteProps<T extends keyof DownloadsRouteParamList> = {
+	navigation: StackNavigationProp<DownloadsRouteParamList, T>;
+	route: RouteProp<DownloadsRouteParamList, T>;
 };

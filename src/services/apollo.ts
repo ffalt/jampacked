@@ -62,10 +62,17 @@ const links: Array<ApolloLink> = logging ? [logLink, errorLink, authHttpLink] : 
 
 export type JamApolloClient = ApolloClient<unknown>;
 
+let client: JamApolloClient;
+
+export function apolloClient(): JamApolloClient {
+	return client;
+}
+
 export async function initApolloClient(): Promise<JamApolloClient> {
-	return new ApolloClient<unknown>({
+	client = new ApolloClient<unknown>({
 		link: ApolloLink.from(links),
 		cache,
 		defaultOptions
 	});
+	return client;
 }

@@ -6,6 +6,7 @@ import {useCallback} from 'react';
 import {AlbumResult, AlbumResult_album_tracks, AlbumResultVariables} from './types/AlbumResult';
 import gql from 'graphql-tag';
 import {useCacheOrLazyQuery} from '../data';
+import {apolloClient} from '../apollo';
 
 const GET_ALBUM = gql`
     query AlbumResult($id: ID!) {
@@ -86,6 +87,11 @@ function transformData(data?: AlbumResult): Album | undefined {
 		genres: data.album.genres,
 		tracks: data.album.tracks.map(track => formatTrack(track))
 	};
+}
+
+export async function getAlbum(id: string): Promise<Album | undefined> {
+	const result = await apolloClient().query<AlbumResult>({query: GET_ALBUM, variables: {id}});
+	return transformData(result?.data);
 }
 
 export const useLazyAlbumQuery = (): [(id: string, forceRefresh?: boolean) => void,

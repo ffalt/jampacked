@@ -1,6 +1,6 @@
 import {CommonActions, DrawerActions, NavigationContainerRef} from '@react-navigation/core';
 import {JamObjectType} from '../services/jam';
-import {AlbumsRoute, HomeRoute} from './Routing';
+import {AlbumsRoute, ArtistsRoute, FoldersRoute, HomeRoute, SeriesRoute} from './Routing';
 import {Navig, NavigParams} from '../services/types';
 import {RouteLink} from './Routes';
 
@@ -28,34 +28,38 @@ export class NavigationService {
 		}
 	}
 
-	static navigate(routeName: string, params?: NavigParams): void {
+	static navigateToChild(parentRouteName: string, routeName: string, defaultRouteName: string, params?: NavigParams): void {
 		if (navigator) {
-			console.log('go', routeName, params);
-			if (routeName.startsWith('Artists') && routeName !== HomeRoute.ARTISTS) {
-				navigator.dispatch(
-					CommonActions.navigate({
-						name: HomeRoute.ARTISTS,
-						params: {
-							screen: routeName,
-							params
-						}
-					})
-				);
-				return;
-			}
-			if (routeName.startsWith('Albums')) {
-				navigator.dispatch(
-					CommonActions.navigate({
-						name: HomeRoute.ALBUMS,
-						params: {
-							...params,
-							screen: routeName !== HomeRoute.ALBUMS ? routeName : AlbumsRoute.INDEX,
-							params
-						}
-					})
-				);
-				return;
-			}
+			navigator.dispatch(
+				CommonActions.navigate({
+					name: parentRouteName,
+					params: {
+						screen: routeName !== parentRouteName ? routeName : defaultRouteName,
+						params
+					}
+				})
+			);
+		}
+	}
+
+	static navigate(routeName: string, params?: NavigParams): void {
+		if (routeName.startsWith('Artists')) {
+			this.navigateToChild(HomeRoute.ARTISTS, routeName, ArtistsRoute.INDEX, params);
+			return;
+		}
+		if (routeName.startsWith('Albums')) {
+			this.navigateToChild(HomeRoute.ALBUMS, routeName, AlbumsRoute.INDEX, params);
+			return;
+		}
+		if (routeName.startsWith('Series')) {
+			this.navigateToChild(HomeRoute.SERIES, routeName, SeriesRoute.INDEX, params);
+			return;
+		}
+		if (routeName.startsWith('Folders')) {
+			this.navigateToChild(HomeRoute.FOLDERS, routeName, FoldersRoute.INDEX, params);
+			return;
+		}
+		if (navigator) {
 			navigator.dispatch(
 				CommonActions.navigate({name: routeName, params})
 			);
@@ -87,7 +91,7 @@ export class NavigationService {
 			case JamObjectType.playlist:
 				return HomeRoute.PLAYLIST;
 			case JamObjectType.series:
-				return HomeRoute.SERIESITEM;
+				return HomeRoute.SERIE;
 			default:
 		}
 	}

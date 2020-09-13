@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {StyleProp, StyleSheet, TouchableOpacity, View, ViewStyle} from 'react-native';
 import {staticTheme, useTheme} from '../style/theming';
 import {ThemedIcon} from './ThemedIcon';
@@ -35,7 +35,7 @@ export const FavIcon: React.FC<{ id?: string; objType: JamObjectType; style?: St
 	const isFaved = (fav?.timestamp || 0) > 0;
 	const iconName = isFaved ? 'heart-full' : 'heart-empty';
 
-	const handleToggleFav = (): void => {
+	const handleToggleFav = useCallback((): void => {
 		if (id && fav) {
 			toggleFav({variables: {id, remove: isFaved}})
 				.then(result => {
@@ -44,7 +44,8 @@ export const FavIcon: React.FC<{ id?: string; objType: JamObjectType; style?: St
 					dataService.notifyHomeDataChange().catch(e => console.error(e));
 				});
 		}
-	};
+	}, [id, fav, toggleFav, isFaved]);
+
 	if (loading || !fav) {
 		return (
 			<View style={[styles.button, style]}>
