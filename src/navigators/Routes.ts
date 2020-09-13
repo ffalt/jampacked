@@ -1,5 +1,5 @@
 import {AlbumType, JamObjectType, ListType} from '../services/jam';
-import {HomeRoute} from './Routing';
+import {BottomTabRoute, HomeRoute} from './Routing';
 import {Navig} from '../services/types';
 import {getAlbumTypeInfos} from '../services/jam-lists';
 
@@ -66,6 +66,14 @@ export class JamRouteLinks {
 
 	static home(): RouteLink {
 		return ({title: 'Home', icon: 'home', navig: {route: HomeRoute.START}});
+	}
+
+	static settings(): RouteLink {
+		return ({title: 'Settings', icon: 'settings', navig: {route: BottomTabRoute.SETTINGS}});
+	}
+
+	static user(): RouteLink {
+		return ({title: 'User', icon: 'user', navig: {route: HomeRoute.USER}});
 	}
 
 	static downloads() {

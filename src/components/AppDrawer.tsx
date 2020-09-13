@@ -32,14 +32,23 @@ const styles = StyleSheet.create({
 	},
 	drawerTiles: {
 		flexWrap: 'wrap',
-		flexDirection: 'row'
+		flexDirection: 'row',
+		justifyContent: 'center'
+	},
+	drawerTilesHeaderText: {
+		marginBottom: staticTheme.marginSmall,
+		fontSize: staticTheme.fontSizeTiny,
+		paddingHorizontal: staticTheme.paddingSmall,
+		paddingVertical: 2,
+		backgroundColor: 'rgba(255,255,255,0.1)'
 	},
 	drawerTile: {
 		flexDirection: 'column',
 		alignItems: 'center',
 		width: 70,
-		paddingTop: staticTheme.padding,
-		marginRight: staticTheme.margin,
+		paddingVertical: staticTheme.padding,
+		marginRight: staticTheme.marginSmall,
+		marginBottom: staticTheme.marginSmall,
 		borderRadius: 4,
 		backgroundColor: 'rgba(0,0,0,0.2)'
 	},
@@ -90,31 +99,49 @@ export const AppDrawerLinkTile: React.FC<{ link: RouteLink }> = ({link}) => {
 	);
 };
 
+const sections = [
+	{
+		name: 'Jam', items: [
+			JamRouteLinks.home(),
+			JamRouteLinks.downloads(),
+			JamRouteLinks.settings()
+		]
+	},
+	{
+		name: 'User', items: [
+			JamRouteLinks.user(),
+			JamRouteLinks.playlists(),
+			JamRouteLinks.bookmarks()
+		]
+	},
+	{
+		name: 'Spoken', items: [
+			JamRouteLinks.albums(AlbumType.audiobook),
+			JamRouteLinks.podcasts(),
+			JamRouteLinks.series()
+		]
+	},
+	{
+		name: 'Library', items: [
+			JamRouteLinks.artists(),
+			JamRouteLinks.folders(),
+			JamRouteLinks.tracks()
+		]
+	},
+	{
+		name: 'Albums', items: [
+			JamRouteLinks.albums(AlbumType.album),
+			JamRouteLinks.albums(AlbumType.compilation),
+			JamRouteLinks.albums(AlbumType.soundtrack),
+			JamRouteLinks.albums(AlbumType.live),
+			JamRouteLinks.albums(AlbumType.ep),
+			JamRouteLinks.albums(AlbumType.single)
+		]
+	}
+];
+
 const routes = [
-	JamRouteLinks.home(),
-	JamRouteLinks.downloads(),
-	JamRouteLinks.artists(),
-	JamRouteLinks.albums(AlbumType.album),
-	JamRouteLinks.folders()
-];
-
-const userRoutes = [
-	JamRouteLinks.playlists(),
-	JamRouteLinks.bookmarks()
-];
-
-const spokenRoutes = [
-	JamRouteLinks.podcasts(),
-	JamRouteLinks.series(),
-	JamRouteLinks.albums(AlbumType.audiobook)
-];
-
-const tileRoutes = [
-	JamRouteLinks.albums(AlbumType.compilation),
-	JamRouteLinks.albums(AlbumType.soundtrack),
-	JamRouteLinks.albums(AlbumType.ep),
-	JamRouteLinks.albums(AlbumType.live),
-	JamRouteLinks.albums(AlbumType.single)
+	JamRouteLinks.home()
 ];
 
 export const AppDrawer: React.FC = () => {
@@ -136,27 +163,21 @@ export const AppDrawer: React.FC = () => {
 					<ThemedText style={styles.userHeaderText} numberOfLines={2}>{userName}</ThemedText>
 				</TouchableOpacity>
 				<Separator/>
-				<>
-					{routes.map(link => (
-						<AppDrawerLink key={link.title} link={link}/>
-					))}
-				</>
-				<View style={styles.drawerTiles}>
-					{userRoutes.map(link => (
-						<AppDrawerLinkTile key={link.title} link={link}/>
-					))}
-				</View>
-				<View style={styles.drawerTiles}>
-					{spokenRoutes.map(link => (
-						<AppDrawerLinkTile key={link.title} link={link}/>
-					))}
-				</View>
-				<View style={styles.drawerTiles}>
-					{tileRoutes.map(link => (
-						<AppDrawerLinkTile key={link.title} link={link}/>
-					))}
-				</View>
-
+				{sections.map(section => (
+					<View key={section.name}>
+						<ThemedText style={styles.drawerTilesHeaderText}>{section.name}</ThemedText>
+						<View key={section.name} style={styles.drawerTiles}>
+							{section.items.map(link => (
+								<AppDrawerLinkTile key={link.title} link={link}/>
+							))}
+						</View>
+					</View>
+				))}
+				{/*<>*/}
+				{/*	{routes.map(link => (*/}
+				{/*		<AppDrawerLink key={link.title} link={link}/>*/}
+				{/*	))}*/}
+				{/*</>*/}
 			</SafeAreaView>
 		</ScrollView>
 	);
