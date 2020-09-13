@@ -6,9 +6,10 @@ import {useAuth} from '../services/auth';
 import {JamImage} from './JamImage';
 import {NavigationService} from '../services/navigation';
 import {HomeRoute} from '../navigators/Routing';
-import {JamUrlType} from '../services/jam-lists';
 import {Separator} from './Separator';
 import {ThemedIcon} from './ThemedIcon';
+import {JamRouteLinks, RouteLink} from '../navigators/Routes';
+import {AlbumType} from '../services/jam';
 
 const styles = StyleSheet.create({
 	drawer: {
@@ -29,6 +30,22 @@ const styles = StyleSheet.create({
 		height: 48,
 		alignItems: 'center'
 	},
+	drawerTiles: {
+		flexWrap: 'wrap',
+		flexDirection: 'row'
+	},
+	drawerTile: {
+		flexDirection: 'column',
+		alignItems: 'center',
+		width: 70,
+		paddingTop: staticTheme.padding,
+		marginRight: staticTheme.margin,
+		borderRadius: 4,
+		backgroundColor: 'rgba(0,0,0,0.2)'
+	},
+	drawerTileText: {
+		fontSize: staticTheme.fontSizeTiny
+	},
 	drawerRowText: {
 		fontSize: staticTheme.fontSize
 	},
@@ -39,42 +56,65 @@ const styles = StyleSheet.create({
 	userHeaderText: {}
 });
 
-export const AppDrawerLink: React.FC<{ title: string; icon: string; route: string, params?: any }> =
-	({title, route, icon, params}) => {
-		const theme = useTheme();
-		const goToRoute = useCallback((): void => {
-			NavigationService.closeSideBar();
-			NavigationService.navigate(route, params || {});
-		}, [route, params]);
+export const AppDrawerLink: React.FC<{ link: RouteLink }> = ({link}) => {
+	const theme = useTheme();
 
-		return (
-			<TouchableOpacity style={[styles.drawerRow, {borderColor: theme.separator}]} onPress={goToRoute}>
-				<View style={styles.iconView}>
-					<ThemedIcon name={icon} size={18} color={theme.muted}/>
-				</View>
-				<ThemedText style={styles.drawerRowText}>{title}</ThemedText>
-			</TouchableOpacity>
-		);
-	};
+	const goToRoute = useCallback((): void => {
+		NavigationService.closeSideBar();
+		NavigationService.navigate(link.navig.route, link.navig.params);
+	}, [link]);
+
+	return (
+		<TouchableOpacity style={[styles.drawerRow, {borderColor: theme.separator}]} onPress={goToRoute}>
+			<View style={styles.iconView}>
+				<ThemedIcon name={link.icon} size={18} color={theme.muted}/>
+			</View>
+			<ThemedText style={styles.drawerRowText}>{link.title}</ThemedText>
+		</TouchableOpacity>
+	);
+};
+
+export const AppDrawerLinkTile: React.FC<{ link: RouteLink }> = ({link}) => {
+	const theme = useTheme();
+
+	const goToRoute = useCallback((): void => {
+		NavigationService.closeSideBar();
+		NavigationService.navigate(link.navig.route, link.navig.params);
+	}, [link]);
+
+	return (
+		<TouchableOpacity style={[styles.drawerTile, {borderColor: theme.separator}]} onPress={goToRoute}>
+			<ThemedIcon name={link.icon} size={18} color={theme.muted}/>
+			<ThemedText style={styles.drawerTileText}>{link.title}</ThemedText>
+		</TouchableOpacity>
+	);
+};
 
 const routes = [
-	{route: HomeRoute.START, title: 'Start', icon: 'home'},
-	{route: HomeRoute.DOWNLOADS, title: 'Downloads', icon: 'download'},
-	{route: HomeRoute.PLAYLISTS, title: 'Playlists', icon: 'playlist'},
-	{route: HomeRoute.PODCASTS, title: 'Podcasts', icon: 'podcast'},
+	JamRouteLinks.home(),
+	JamRouteLinks.downloads(),
+	JamRouteLinks.artists(),
+	JamRouteLinks.albums(AlbumType.album),
+	JamRouteLinks.folders()
+];
 
-	{route: HomeRoute.ARTISTS, title: 'Artists', icon: 'artist'},
-	{route: HomeRoute.SERIES, title: 'Series', icon: 'series'},
-	{route: HomeRoute.FOLDERS, title: 'Folders', icon: 'folder'},
+const userRoutes = [
+	JamRouteLinks.playlists(),
+	JamRouteLinks.bookmarks()
+];
 
-	{route: HomeRoute.ALBUMS, title: 'Albums', icon: 'album', params: {albumUrlType: JamUrlType.albums}},
-	{route: HomeRoute.ALBUMS, title: 'Audiobooks', icon: 'audiobook', params: {albumUrlType: JamUrlType.audiobooks}},
-	{route: HomeRoute.ALBUMS, title: 'Compilations', icon: 'audiobook', params: {albumUrlType: JamUrlType.compilations}},
-	{route: HomeRoute.ALBUMS, title: 'Soundtracks', icon: 'soundtrack', params: {albumUrlType: JamUrlType.soundtracks}},
-	{route: HomeRoute.ALBUMS, title: 'Bootlegs', icon: 'bootleg', params: {albumUrlType: JamUrlType.bootlegs}},
-	{route: HomeRoute.ALBUMS, title: 'EPs', icon: 'ep', params: {albumUrlType: JamUrlType.eps}},
-	{route: HomeRoute.ALBUMS, title: 'Live', icon: 'live', params: {albumUrlType: JamUrlType.live}},
-	{route: HomeRoute.ALBUMS, title: 'Singles', icon: 'single', params: {albumUrlType: JamUrlType.singles}}
+const spokenRoutes = [
+	JamRouteLinks.podcasts(),
+	JamRouteLinks.series(),
+	JamRouteLinks.albums(AlbumType.audiobook)
+];
+
+const tileRoutes = [
+	JamRouteLinks.albums(AlbumType.compilation),
+	JamRouteLinks.albums(AlbumType.soundtrack),
+	JamRouteLinks.albums(AlbumType.ep),
+	JamRouteLinks.albums(AlbumType.live),
+	JamRouteLinks.albums(AlbumType.single)
 ];
 
 export const AppDrawer: React.FC = () => {
@@ -97,10 +137,26 @@ export const AppDrawer: React.FC = () => {
 				</TouchableOpacity>
 				<Separator/>
 				<>
-					{routes.map(route => (
-						<AppDrawerLink key={route.title} title={route.title} icon={route.icon} route={route.route} params={route.params}/>
+					{routes.map(link => (
+						<AppDrawerLink key={link.title} link={link}/>
 					))}
 				</>
+				<View style={styles.drawerTiles}>
+					{userRoutes.map(link => (
+						<AppDrawerLinkTile key={link.title} link={link}/>
+					))}
+				</View>
+				<View style={styles.drawerTiles}>
+					{spokenRoutes.map(link => (
+						<AppDrawerLinkTile key={link.title} link={link}/>
+					))}
+				</View>
+				<View style={styles.drawerTiles}>
+					{tileRoutes.map(link => (
+						<AppDrawerLinkTile key={link.title} link={link}/>
+					))}
+				</View>
+
 			</SafeAreaView>
 		</ScrollView>
 	);

@@ -1,12 +1,12 @@
 import {SectionListData} from 'react-native';
 import {AlbumType, Jam, JamObjectType, ListType} from './jam';
 import {ApolloError} from 'apollo-client';
-import {JamUrlType} from './jam-lists';
+import {RouteLink} from '../navigators/Routes';
 
 export interface NavigParams {
 	id?: string;
 	name?: string;
-	albumUrlType?: JamUrlType;
+	albumType?: AlbumType;
 	listType?: string;
 }
 
@@ -67,7 +67,7 @@ export interface AutoCompleteEntryData extends Jam.AutoCompleteEntry {
 
 export type Index = Array<IndexEntry>;
 
-export type HomeStatData = { text: string, link: Navig, value: number };
+export type HomeStatData = { link: RouteLink, value: number };
 
 export type HomeStatsData = Array<HomeStatData>;
 

@@ -5,15 +5,21 @@ import React from 'react';
 import {ThemedText} from './ThemedText';
 import {HomeSectionEntry} from './HomeSectionEntry';
 import {NavigationService} from '../services/navigation';
+import {ThemedIcon} from './ThemedIcon';
 
 const styles = StyleSheet.create({
 	headline: {
 		letterSpacing: 2,
 		textTransform: 'uppercase',
 		fontSize: staticTheme.fontSizeSmall,
-		fontWeight: 'bold',
+		fontWeight: 'bold'
+	},
+	sectionHeader: {
 		padding: staticTheme.padding,
-		marginTop: staticTheme.margin
+		marginTop: staticTheme.margin,
+		alignItems: 'center',
+		flexDirection: 'row',
+		justifyContent: 'space-between'
 	}
 });
 
@@ -31,8 +37,9 @@ export const HomeSection: React.FC<{ title: string; section?: Array<HomeEntry>; 
 	const entries = section.map(entry => <HomeSectionEntry key={entry.id} entry={entry}/>);
 	return (
 		<>
-			<TouchableOpacity onPress={click}>
+			<TouchableOpacity style={styles.sectionHeader} onPress={click}>
 				<ThemedText style={styles.headline}>{title}</ThemedText>
+				<ThemedIcon size={staticTheme.fontSizeSmall} name="right-open"/>
 			</TouchableOpacity>
 			<ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
 				{entries}

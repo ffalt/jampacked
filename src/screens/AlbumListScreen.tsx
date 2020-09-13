@@ -3,29 +3,33 @@ import {HomeRoute, HomeStackProps} from '../navigators/Routing';
 import {useLazyAlbumListQuery} from '../services/queries/albumList';
 import {BaseEntryListList} from '../components/BaseEntryListList';
 import {AlbumType, ListType} from '../services/jam';
-import {getUrlTypeByID} from '../services/jam-lists';
+import {getAlbumTypeInfos} from '../services/jam-lists';
 
 export const AlbumListScreen: React.FC<HomeStackProps<HomeRoute.ALBUMLIST>> = ({route}) => {
 	const [view, setView] = useState<{
 		listType?: ListType;
-		albumTypes: Array<AlbumType>;
+		title: string;
 		icon: string;
-		text: string;
-	}>({albumTypes: [], icon: '', text: ''});
+		albumTypes: Array<AlbumType>;
+	}>({
+		title: '',
+		icon: 'album',
+		albumTypes: []
+	});
 
 	useEffect(() => {
-		const type = getUrlTypeByID(route?.params?.albumUrlType);
+		const type = route?.params?.albumType ? getAlbumTypeInfos(route?.params?.albumType) : {title: 'Albums', icon: 'Album', albumType: undefined};
 		setView({
 			listType: route?.params?.listType,
-			text: type?.text || 'Albums',
-			icon: type?.text || 'album',
-			albumTypes: type?.albumType ? [type.albumType] : []
+			title: type.title,
+			icon: type.icon,
+			albumTypes: type.albumType ? [type.albumType] : []
 		});
-	}, [route.params]);
+	}, [route]);
 
 	return (
 		<BaseEntryListList
-			text={view.text}
+			text={view.title}
 			icon={view.icon}
 			listType={view.listType}
 			albumTypes={view.albumTypes}

@@ -2,34 +2,27 @@ import React, {useEffect, useState} from 'react';
 import {HomeRoute, HomeStackProps} from '../navigators/Routing';
 import {BaseEntryListList} from '../components/BaseEntryListList';
 import {AlbumType, ListType} from '../services/jam';
-import {getUrlTypeByID} from '../services/jam-lists';
 import {useLazyArtistListQuery} from '../services/queries/artistList';
+import {JamRouteLinks, RouteLink} from '../navigators/Routes';
 
 export const ArtistListScreen: React.FC<HomeStackProps<HomeRoute.ARTISTLIST>> = ({route}) => {
-	const [view, setView] = useState<{
-		listType?: ListType;
-		albumTypes: Array<AlbumType>;
-		icon: string;
-		text: string;
-	}>({
+	const [view, setView] = useState<{ listType?: ListType; albumTypes: Array<AlbumType>; info: RouteLink }>({
 		albumTypes: [],
-		icon: '',
-		text: ''
+		info: JamRouteLinks.artists()
 	});
 
 	useEffect(() => {
-		const listType = route?.params?.listType;
-		const type = getUrlTypeByID(route?.params?.albumUrlType);
-		const text = type?.text || 'Artists';
-		const icon = type?.text || 'artist';
-		const albumTypes = type?.albumType ? [type.albumType] : [];
-		setView({listType, text, icon, albumTypes});
-	}, [route.params]);
+		setView({
+			listType: route?.params?.listType,
+			albumTypes: route?.params?.albumType ? [route?.params?.albumType] : [],
+			info: JamRouteLinks.artists()
+		});
+	}, [route]);
 
 	return (
 		<BaseEntryListList
-			text={view.text}
-			icon={view.icon}
+			text={view.info.title}
+			icon={view.info.icon}
 			listType={view.listType}
 			albumTypes={view.albumTypes}
 			useList={useLazyArtistListQuery}

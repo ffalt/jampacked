@@ -1,9 +1,9 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {ListTypeName} from '../services/jam-lists';
 import {BaseEntry, useListFunction} from '../services/types';
-import {snackError} from '../services/snack';
 import {BaseEntryList, BaseEntryListInfo} from '../components/BaseEntryList';
 import {AlbumType, ListType} from '../services/jam';
+import {ErrorView} from './ErrorView';
 
 export const BaseEntryListList: React.FC<{
 	listType?: ListType;
@@ -43,10 +43,6 @@ export const BaseEntryListList: React.FC<{
 		}
 	}, [data]);
 
-	if (error) {
-		snackError(error);
-	}
-
 	const reload = useCallback((): void => {
 		if (listType) {
 			setEntries([]);
@@ -63,6 +59,10 @@ export const BaseEntryListList: React.FC<{
 			return prev + amount;
 		}));
 	}, [total]);
+
+	if (error) {
+		return (<ErrorView error={error} onRetry={reload}/>);
+	}
 
 	return (
 		<BaseEntryList

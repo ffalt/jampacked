@@ -2,6 +2,7 @@ import {CommonActions, DrawerActions, NavigationContainerRef} from '@react-navig
 import {JamObjectType} from './jam';
 import {HomeRoute} from '../navigators/Routing';
 import {Navig, NavigParams} from './types';
+import {RouteLink} from '../navigators/Routes';
 
 let navigator: NavigationContainerRef;
 
@@ -35,8 +36,12 @@ export class NavigationService {
 		}
 	}
 
-	static navigateLink(link: Navig): void {
-		NavigationService.navigate(link.route, link.params);
+	static navigateTo(navig: Navig): void {
+		NavigationService.navigate(navig.route, navig.params);
+	}
+
+	static navigateLink(link: RouteLink): void {
+		NavigationService.navigateTo(link.navig);
 	}
 
 	static routeByObjType(objType: JamObjectType): string | undefined {

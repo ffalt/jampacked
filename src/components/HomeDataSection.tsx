@@ -16,10 +16,10 @@ export const HomeDataSection: React.FC<{ homeData?: HomeData; }> = React.memo(({
 			<HomeSection title="Recently Played Artists" section={homeData?.artistsRecent}sectionNavig={
 				{route: HomeRoute.ARTISTLIST, params: {listType: ListType.faved}}
 			}/>
-			<HomeSection title="Favourite Albums" section={homeData?.albumsFaved} sectionNavig={
+			<HomeSection title="Favorite Albums" section={homeData?.albumsFaved} sectionNavig={
 				{route: HomeRoute.ALBUMLIST, params: {listType: ListType.faved}}
 			}/>
-			<HomeSection title="Favourite Artists" section={homeData?.artistsFaved}sectionNavig={
+			<HomeSection title="Favorite Artists" section={homeData?.artistsFaved}sectionNavig={
 				{route: HomeRoute.ARTISTLIST, params: {listType: ListType.faved}}
 			}/>
 		</>

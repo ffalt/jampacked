@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
 
 export const Stats: React.FC<{ stats?: Array<HomeStatData>; label: string }> = React.memo(({stats, label}) => {
 	const entries = stats && stats.length > 0
-		? stats.map(stat => <Stat key={stat.text} stat={stat}/>)
+		? stats.map(stat => <Stat key={stat.link.title} stat={stat}/>)
 		: [];
 	return (
 		<>

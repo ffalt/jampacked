@@ -4,9 +4,8 @@ import {useCallback} from 'react';
 import {useCacheOrLazyQuery} from '../data';
 import {UserResult, UserResult_currentUser_stats_favorite, UserResult_currentUser_stats_played} from './types/UserResult';
 import {HomeStatsData} from '../types';
-import {HomeRoute} from '../../navigators/Routing';
-import {getTypeByAlbumType} from '../jam-lists';
 import {AlbumType, ListType} from '../jam';
+import {JamRouteLinks} from '../../navigators/Routes';
 
 const GET_USERDATA = gql`
     query UserResult {
@@ -73,47 +72,19 @@ export interface UserDataResult {
 
 function transformSectionStats(stats: UserResult_currentUser_stats_played | UserResult_currentUser_stats_favorite, listType: ListType): HomeStatsData {
 	return [
-		{
-			text: 'Artists',
-			link: {route: HomeRoute.ARTISTLIST, params: {listType}},
-			value: stats.artistTypes.album
-		},
-		...[
-			{type: getTypeByAlbumType(AlbumType.album), value: stats.albumTypes.album},
-			{type: getTypeByAlbumType(AlbumType.compilation), value: stats.albumTypes.compilation}
-		].map(t => ({
-			text: t.type?.text || '',
-			link: {route: HomeRoute.ALBUMLIST, params: {albumUrlType: t.type?.id, listType}},
-			value: t.value
-		})),
-		{
-			text: 'Series',
-			link: {route: HomeRoute.SERIESLIST, params: {listType}},
-			value: stats.series
-		},
-		...[
-			{type: getTypeByAlbumType(AlbumType.audiobook), value: stats.albumTypes.audiobook},
-			{type: getTypeByAlbumType(AlbumType.soundtrack), value: stats.albumTypes.soundtrack},
-			{type: getTypeByAlbumType(AlbumType.live), value: stats.albumTypes.live},
-			{type: getTypeByAlbumType(AlbumType.bootleg), value: stats.albumTypes.bootleg},
-			{type: getTypeByAlbumType(AlbumType.ep), value: stats.albumTypes.ep},
-			{type: getTypeByAlbumType(AlbumType.single), value: stats.albumTypes.single}
-		].map(t => ({
-			text: t.type?.text || '',
-			link: {route: HomeRoute.ALBUMLIST, params: {albumUrlType: t.type?.id, listType}},
-			value: t.value
-		})),
-		{
-			text: 'Folders',
-			link: {route: HomeRoute.FOLDERLIST, params: {listType} },
-			value: stats.folder
-		},
-		{
-			text: 'Tracks',
-			link: {route: HomeRoute.TRACKS},
-			value: stats.track
-		}
-	].filter(t => t.value > 0) as HomeStatsData;
+		{link: JamRouteLinks.artistlist(listType), value: stats.artistTypes.album},
+		{link: JamRouteLinks.albumlist(listType, AlbumType.album), value: stats.albumTypes.album},
+		{link: JamRouteLinks.albumlist(listType, AlbumType.compilation), value: stats.albumTypes.compilation},
+		{link: JamRouteLinks.serieslist(listType), value: stats.series},
+		{link: JamRouteLinks.albumlist(listType, AlbumType.audiobook), value: stats.albumTypes.audiobook},
+		{link: JamRouteLinks.albumlist(listType, AlbumType.soundtrack), value: stats.albumTypes.soundtrack},
+		{link: JamRouteLinks.albumlist(listType, AlbumType.live), value: stats.albumTypes.live},
+		{link: JamRouteLinks.albumlist(listType, AlbumType.bootleg), value: stats.albumTypes.bootleg},
+		{link: JamRouteLinks.albumlist(listType, AlbumType.ep), value: stats.albumTypes.ep},
+		{link: JamRouteLinks.albumlist(listType, AlbumType.single), value: stats.albumTypes.single},
+		{link: JamRouteLinks.folderlist(listType), value: stats.folder},
+		{link: JamRouteLinks.tracklist(listType), value: stats.track},
+	].filter(t => t.value > 0);
 }
 
 function transformData(data?: UserResult): UserDataResult | undefined {
@@ -122,16 +93,8 @@ function transformData(data?: UserResult): UserDataResult | undefined {
 	}
 	const stats = data.currentUser.stats;
 	const base: HomeStatsData = [
-		{
-			text: 'Bookmarks',
-			link: {route: HomeRoute.ARTISTS},
-			value: stats.bookmark
-		},
-		{
-			text: 'Playlists',
-			link: {route: HomeRoute.PLAYLISTS},
-			value: stats.playlist
-		}
+		{link: JamRouteLinks.bookmarks(), value: stats.bookmark},
+		{link: JamRouteLinks.playlists(), value: stats.playlist}
 	].filter(t => t.value !== undefined);
 	const favorites: HomeStatsData = transformSectionStats(stats.favorite, ListType.faved);
 	const played: HomeStatsData = transformSectionStats(stats.played, ListType.recent);

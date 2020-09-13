@@ -775,6 +775,12 @@
       "css": "pin",
       "code": 59500,
       "src": "typicons"
+    },
+    {
+      "uid": "f04a5d24e9e659145b966739c4fde82a",
+      "css": "bookmark",
+      "code": 59501,
+      "src": "fontawesome"
     }
   ]
 }

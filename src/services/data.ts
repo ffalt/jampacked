@@ -18,7 +18,7 @@ import {Subject} from 'rxjs';
 
 class DataService implements PersistentStorage<unknown> {
 	db?: Database;
-	version = 10;
+	version = 11;
 	dataCaching = new Caching(
 		(caller) => this.fillCache(caller),
 		(caller) => this.clearCache(caller)

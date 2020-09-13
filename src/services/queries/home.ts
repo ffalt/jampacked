@@ -1,12 +1,12 @@
 import gql from 'graphql-tag';
 import {HomeData, HomeStatsData} from '../types';
 import {HomeRoute} from '../../navigators/Routing';
-import {getTypeByAlbumType} from '../jam-lists';
 import {AlbumType} from '../jam';
 import {ApolloError} from 'apollo-client';
 import {useCallback} from 'react';
 import {HomeResult} from './types/HomeResult';
 import {useCacheOrLazyQuery} from '../data';
+import {JamRouteLinks} from '../../navigators/Routes';
 
 const GET_HOMEDATA = gql`
     query HomeResult {
@@ -80,60 +80,27 @@ function transformData(data?: HomeResult): HomeDataResult | undefined {
 	if (!data) {
 		return;
 	}
-	const homeData = {
+	const homeData: HomeData = {
 		artistsRecent: (data.artistsRecent?.items || []).map(o => ({...o, route: HomeRoute.ARTIST})),
 		artistsFaved: (data.artistsFaved?.items || []).map(o => ({...o, route: HomeRoute.ARTIST})),
 		albumsFaved: (data.albumsFaved?.items || []).map(o => ({...o, route: HomeRoute.ALBUM})),
 		albumsRecent: (data.albumsRecent?.items || []).map(o => ({...o, route: HomeRoute.ALBUM}))
 	};
 	const stats: HomeStatsData = [
-		{
-			text: 'Artists',
-			link: {route: HomeRoute.ARTISTS},
-			value: data.stats.artistTypes.album
-		},
-		...[
-			{type: getTypeByAlbumType(AlbumType.album), value: data.stats.albumTypes.album},
-			{type: getTypeByAlbumType(AlbumType.compilation), value: data.stats.albumTypes.compilation}
-		].map(t => ({
-			text: t.type?.text || '',
-			link: {route: HomeRoute.ALBUMS, params: {albumUrlType: t.type?.id}},
-			value: t.value
-		})),
-		{
-			text: 'Series',
-			link: {route: HomeRoute.SERIES},
-			value: data.stats.series
-		},
-		...[
-			{type: getTypeByAlbumType(AlbumType.audiobook), value: data.stats.albumTypes.audiobook},
-			{type: getTypeByAlbumType(AlbumType.soundtrack), value: data.stats.albumTypes.soundtrack},
-			{type: getTypeByAlbumType(AlbumType.live), value: data.stats.albumTypes.live},
-			{type: getTypeByAlbumType(AlbumType.bootleg), value: data.stats.albumTypes.bootleg},
-			{type: getTypeByAlbumType(AlbumType.ep), value: data.stats.albumTypes.ep},
-			{type: getTypeByAlbumType(AlbumType.single), value: data.stats.albumTypes.single}
-		].map(t => ({
-			text: t.type?.text || '',
-			link: {route: HomeRoute.ALBUMS, params: {albumUrlType: t.type?.id}},
-			value: t.value
-		})),
-		{
-			text: 'Folders',
-			link: {route: HomeRoute.FOLDERS},
-			value: data.stats.folder
-		},
-		{
-			text: 'Tracks',
-			link: {route: HomeRoute.TRACKS},
-			value: data.stats.track
-		},
-		{
-			text: 'Podcasts',
-			link: {route: HomeRoute.PODCASTS},
-			value: data.podcasts?.total
-		}
+		{link: JamRouteLinks.artists(), value: data.stats.artistTypes.album},
+		{link: JamRouteLinks.albums(AlbumType.album), value: data.stats.albumTypes.album},
+		{link: JamRouteLinks.albums(AlbumType.compilation), value: data.stats.albumTypes.compilation},
+		{link: JamRouteLinks.series(), value: data.stats.series},
+		{link: JamRouteLinks.albums(AlbumType.audiobook), value: data.stats.albumTypes.audiobook},
+		{link: JamRouteLinks.albums(AlbumType.soundtrack), value: data.stats.albumTypes.soundtrack},
+		{link: JamRouteLinks.albums(AlbumType.live), value: data.stats.albumTypes.live},
+		{link: JamRouteLinks.albums(AlbumType.bootleg), value: data.stats.albumTypes.bootleg},
+		{link: JamRouteLinks.albums(AlbumType.ep), value: data.stats.albumTypes.ep},
+		{link: JamRouteLinks.albums(AlbumType.single), value: data.stats.albumTypes.single},
+		{link: JamRouteLinks.folders(), value: data.stats.folder},
+		{link: JamRouteLinks.tracks(), value: data.stats.track},
+		{link: JamRouteLinks.podcasts(), value: data.podcasts?.total}
 	].filter(t => t.value > 0);
-
 	return {homeData, stats};
 }
 

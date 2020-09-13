@@ -33,7 +33,7 @@ export const Stat: React.FC<{ stat: HomeStatData }> = React.memo(({stat}) => {
 	return (
 		<TouchableOpacity onPress={click} style={[styles.homeStat, {backgroundColor: theme.itemBackground}]}>
 			<ThemedText style={styles.homeStatValue}>{stat.value}</ThemedText>
-			<ThemedText style={styles.homeStatDesc}>{stat.text}</ThemedText>
+			<ThemedText style={styles.homeStatDesc}>{stat.link.title}</ThemedText>
 		</TouchableOpacity>
 	);
 });
