@@ -1,27 +1,27 @@
 import React, {useEffect, useState} from 'react';
-import {HomeRoute, HomeRouteProps} from '../navigators/Routing';
 import {BaseEntryListList, BaseEntryListListQuery} from '../components/BaseEntryListList';
-import {useLazyFolderListQuery} from '../services/queries/folderList';
+import {AlbumType, ListType} from '../services/jam';
+import {useLazyArtistListQuery} from '../services/queries/artistList';
 import {JamRouteLinks} from '../navigators/Routes';
 
-export const FolderListScreen: React.FC<HomeRouteProps<HomeRoute.FOLDERLIST>> = ({route}) => {
+export const ArtistList: React.FC<{ query: { listType?: ListType; albumType?: AlbumType } }> = ({query}) => {
 	const [view, setView] = useState<BaseEntryListListQuery>({
 		text: '',
-		icon: 'folder',
+		icon: 'artist',
 		albumTypes: [],
-		useList: useLazyFolderListQuery
+		useList: useLazyArtistListQuery
 	});
 
 	useEffect(() => {
 		const info = JamRouteLinks.artists();
 		setView({
-			listType: route?.params?.listType,
+			listType: query?.listType,
 			text: info.title,
 			icon: info.icon,
-			albumTypes: route?.params?.albumType ? [route.params.albumType] : [],
-			useList: useLazyFolderListQuery
+			albumTypes: query?.albumType ? [query.albumType] : [],
+			useList: useLazyArtistListQuery
 		});
-	}, [route]);
+	}, [query]);
 
 	return (<BaseEntryListList query={view}/>);
 };

@@ -1,30 +1,27 @@
 import React, {useEffect, useState} from 'react';
-import {HomeRoute, HomeStackProps} from '../navigators/Routing';
-import {BaseEntryListList} from '../components/BaseEntryListList';
-import {AlbumType, ListType} from '../services/jam';
+import {HomeRoute, HomeRouteProps} from '../navigators/Routing';
+import {BaseEntryListList, BaseEntryListListQuery} from '../components/BaseEntryListList';
 import {useLazySeriesListQuery} from '../services/queries/seriesList';
-import {JamRouteLinks, RouteLink} from '../navigators/Routes';
+import {JamRouteLinks} from '../navigators/Routes';
 
-export const SeriesListScreen: React.FC<HomeStackProps<HomeRoute.SERIESLIST>> = ({route}) => {
-	const [view, setView] = useState<{ listType?: ListType; albumTypes: Array<AlbumType>; info: RouteLink }>({
+export const SeriesListScreen: React.FC<HomeRouteProps<HomeRoute.SERIESLIST>> = ({route}) => {
+	const [view, setView] = useState<BaseEntryListListQuery>({
+		text: '',
+		icon: 'series',
 		albumTypes: [],
-		info: JamRouteLinks.series()
+		useList: useLazySeriesListQuery
 	});
 
 	useEffect(() => {
+		const info = JamRouteLinks.series();
 		setView({
 			listType: route?.params?.listType,
-			albumTypes: route?.params?.albumType ? [route?.params?.albumType] : [],
-			info: JamRouteLinks.series()
+			text: info.title,
+			icon: info.icon,
+			albumTypes: route?.params?.albumType ? [route.params.albumType] : [],
+			useList: useLazySeriesListQuery
 		});
 	}, [route]);
 
-	return (
-		<BaseEntryListList
-			text={view.info.title}
-			icon={view.info.icon}
-			listType={view.listType}
-			albumTypes={view.albumTypes}
-			useList={useLazySeriesListQuery}
-		/>);
+	return (<BaseEntryListList query={view}/>);
 };

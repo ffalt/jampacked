@@ -3,7 +3,7 @@ import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {ThemedText} from './ThemedText';
 import {staticTheme, useTheme} from '../style/theming';
 import {JamImage} from './JamImage';
-import {NavigationService} from '../services/navigation';
+import {NavigationService} from '../navigators/navigation';
 import {SwipeableListItem} from './SwipeItem';
 import {BaseEntry} from '../services/types';
 import {FavIcon} from './FavIcon';

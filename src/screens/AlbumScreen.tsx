@@ -1,7 +1,7 @@
 import React, {MutableRefObject, useCallback, useEffect, useState} from 'react';
 import {FlatList, RefreshControl, TouchableOpacity} from 'react-native';
 import {trackEntryHeight, TrackItem} from '../components/TrackItem';
-import {HomeRoute, HomeStackProps} from '../navigators/Routing';
+import {HomeRoute, HomeRouteProps} from '../navigators/Routing';
 import {JamPlayer} from '../services/player';
 import {ThemedIcon} from '../components/ThemedIcon';
 import {HeaderDetail, ObjHeader, objHeaderStyles} from '../components/ObjHeader';
@@ -12,7 +12,7 @@ import {JamObjectType} from '../services/jam';
 import {FavIcon} from '../components/FavIcon';
 import {snackError} from '../services/snack';
 import {commonItemLayout} from '../components/AtoZList';
-import {NavigationService} from '../services/navigation';
+import {NavigationService} from '../navigators/navigation';
 import {TrackEntry} from '../services/types';
 import {useLazyAlbumQuery} from '../services/queries/album';
 import {useTheme} from '../style/theming';
@@ -29,7 +29,7 @@ const buildDetails = (artist?: string, tracks?: number, genre?: string, click?: 
 	];
 };
 
-export const AlbumScreen: React.FC<HomeStackProps<HomeRoute.ALBUM>> = ({route}) => {
+export const AlbumScreen: React.FC<HomeRouteProps<HomeRoute.ALBUM>> = ({route}) => {
 	const actionSheetRef: MutableRefObject<ActionSheet | null> = React.useRef<ActionSheet>(null);
 	const theme = useTheme();
 	const [details, setDetails] = useState<Array<HeaderDetail>>(buildDetails());

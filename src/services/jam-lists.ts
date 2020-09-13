@@ -57,14 +57,7 @@ export const ListTypeName: { [key: string]: string } = {
 	random: 'Random',
 	faved: 'Favorite',
 	highest: 'Top Rated',
+	avghighest: 'Avg. Top Rated',
 	frequent: 'Most Played',
 	recent: 'Recently Played'
-};
-
-export const ListTypeUrlNamesKeys: { [key: string]: ListType } = {
-	random: ListType.random,
-	favorites: ListType.faved,
-	'top-rated': ListType.highest,
-	'most-played': ListType.frequent,
-	'recently-played': ListType.recent
 };

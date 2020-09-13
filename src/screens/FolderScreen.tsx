@@ -1,7 +1,7 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {FlatList, RefreshControl, StyleSheet, TouchableOpacity} from 'react-native';
 import {TrackItem} from '../components/TrackItem';
-import {HomeRoute, HomeStackProps} from '../navigators/Routing';
+import {HomeRoute, HomeRouteProps} from '../navigators/Routing';
 import {JamPlayer} from '../services/player';
 import {ThemedIcon} from '../components/ThemedIcon';
 import {HeaderDetail, ObjHeader} from '../components/ObjHeader';
@@ -55,7 +55,7 @@ const buildDetails = (folder?: Folder): Array<HeaderDetail> => {
 	return result.filter(item => item.value.length > 0);
 };
 
-export const FolderScreen: React.FC<HomeStackProps<HomeRoute.FOLDER>> = ({route}) => {
+export const FolderScreen: React.FC<HomeRouteProps<HomeRoute.FOLDER>> = ({route}) => {
 	const theme = useTheme();
 	const [details, setDetails] = useState<Array<HeaderDetail>>(buildDetails());
 	const [getFolder, {loading, error, folder, called}] = useLazyFolderQuery();

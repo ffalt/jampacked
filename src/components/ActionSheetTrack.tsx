@@ -3,7 +3,7 @@ import {TrackEntry} from '../services/types';
 import {ScrollView, StyleSheet, TouchableOpacity} from 'react-native';
 import {ThemedText} from './ThemedText';
 import {JamPlayer} from '../services/player';
-import {NavigationService} from '../services/navigation';
+import {NavigationService} from '../navigators/navigation';
 import {JamObjectType} from '../services/jam';
 
 const styles = StyleSheet.create({

@@ -4,7 +4,7 @@ import {staticTheme, useTheme} from '../style/theming';
 import {ThemedText} from './ThemedText';
 import {useAuth} from '../services/auth';
 import {JamImage} from './JamImage';
-import {NavigationService} from '../services/navigation';
+import {NavigationService} from '../navigators/navigation';
 import {HomeRoute} from '../navigators/Routing';
 import {Separator} from './Separator';
 import {ThemedIcon} from './ThemedIcon';

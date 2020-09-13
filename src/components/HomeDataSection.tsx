@@ -1,8 +1,7 @@
 import {HomeData} from '../services/types';
 import React from 'react';
 import {HomeSection} from './HomeSection';
-import {HomeRoute} from '../navigators/Routing';
-import {ListType} from '../services/jam';
+import {AlbumsRoute, ArtistsRoute} from '../navigators/Routing';
 
 export const HomeDataSection: React.FC<{ homeData?: HomeData; }> = React.memo(({homeData}) => {
 	if (!homeData) {
@@ -10,18 +9,26 @@ export const HomeDataSection: React.FC<{ homeData?: HomeData; }> = React.memo(({
 	}
 	return (
 		<>
-			<HomeSection title="Recently Played Albums" section={homeData?.albumsRecent} sectionNavig={
-				{route: HomeRoute.ALBUMLIST, params: {listType: ListType.recent}}
-			}/>
-			<HomeSection title="Recently Played Artists" section={homeData?.artistsRecent}sectionNavig={
-				{route: HomeRoute.ARTISTLIST, params: {listType: ListType.faved}}
-			}/>
-			<HomeSection title="Favorite Albums" section={homeData?.albumsFaved} sectionNavig={
-				{route: HomeRoute.ALBUMLIST, params: {listType: ListType.faved}}
-			}/>
-			<HomeSection title="Favorite Artists" section={homeData?.artistsFaved}sectionNavig={
-				{route: HomeRoute.ARTISTLIST, params: {listType: ListType.faved}}
-			}/>
+			<HomeSection
+				title="Recently Played Albums"
+				section={homeData?.albumsRecent}
+				sectionNavig={{route: AlbumsRoute.RECENT}}
+			/>
+			<HomeSection
+				title="Recently Played Artists"
+				section={homeData?.artistsRecent}
+				sectionNavig={{route: ArtistsRoute.RECENT}}
+			/>
+			<HomeSection
+				title="Favorite Albums"
+				section={homeData?.albumsFaved}
+				sectionNavig={{route: AlbumsRoute.FAV}}
+			/>
+			<HomeSection
+				title="Favorite Artists"
+				section={homeData?.artistsFaved}
+				sectionNavig={{route: ArtistsRoute.FAV}}
+			/>
 		</>
 	);
 });

@@ -1,5 +1,5 @@
 import React, {useCallback} from 'react';
-import {HomeRoute, HomeStackProps} from '../navigators/Routing';
+import {HomeRoute, HomeRouteProps} from '../navigators/Routing';
 import {PageHeader} from '../components/PageHeader';
 import {FlatList, RefreshControl} from 'react-native';
 import {Separator} from '../components/Separator';
@@ -9,7 +9,7 @@ import {TrackEntry} from '../services/types';
 import {useTheme} from '../style/theming';
 import {ListEmpty} from '../components/ListEmpty';
 
-export const TracksScreen: React.FC<HomeStackProps<HomeRoute.TRACKS>> = () => {
+export const TracksScreen: React.FC<HomeRouteProps<HomeRoute.TRACKS>> = () => {
 	const theme = useTheme();
 	const tracks: Array<TrackEntry> | undefined = undefined;
 	const refreshing = false;

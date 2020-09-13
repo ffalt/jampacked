@@ -1,38 +1,29 @@
-import React, {useEffect, useState} from 'react';
-import {HomeRoute, HomeStackProps} from '../navigators/Routing';
-import {useLazyAlbumListQuery} from '../services/queries/albumList';
-import {BaseEntryListList} from '../components/BaseEntryListList';
-import {AlbumType, ListType} from '../services/jam';
-import {getAlbumTypeInfos} from '../services/jam-lists';
+import React, {useContext} from 'react';
+import {AlbumsRoute, AlbumsRouteProps} from '../navigators/Routing';
+import {ListType} from '../services/jam';
+import {AlbumList} from '../components/AlbumList';
+import {AlbumsTabNavigatorContext} from '../navigators/AlbumsNavigatorContext';
 
-export const AlbumListScreen: React.FC<HomeStackProps<HomeRoute.ALBUMLIST>> = ({route}) => {
-	const [view, setView] = useState<{
-		listType?: ListType;
-		title: string;
-		icon: string;
-		albumTypes: Array<AlbumType>;
-	}>({
-		title: '',
-		icon: 'album',
-		albumTypes: []
-	});
+const AlbumListScreen: React.FC<{ listType: ListType }> = ({listType}) => {
+	const state = useContext(AlbumsTabNavigatorContext);
+	return (<AlbumList query={{listType, albumType: state?.albumType}}/>);
+};
 
-	useEffect(() => {
-		const type = route?.params?.albumType ? getAlbumTypeInfos(route?.params?.albumType) : {title: 'Albums', icon: 'Album', albumType: undefined};
-		setView({
-			listType: route?.params?.listType,
-			title: type.title,
-			icon: type.icon,
-			albumTypes: type.albumType ? [type.albumType] : []
-		});
-	}, [route]);
-
-	return (
-		<BaseEntryListList
-			text={view.title}
-			icon={view.icon}
-			listType={view.listType}
-			albumTypes={view.albumTypes}
-			useList={useLazyAlbumListQuery}
-		/>);
+export const AlbumListFavScreen: React.FC<AlbumsRouteProps<AlbumsRoute.FAV>> = () => {
+	return (<AlbumListScreen listType={ListType.faved}/>);
+};
+export const AlbumListRecentScreen: React.FC<AlbumsRouteProps<AlbumsRoute.RECENT>> = () => {
+	return (<AlbumListScreen listType={ListType.recent}/>);
+};
+export const AlbumListRandomScreen: React.FC<AlbumsRouteProps<AlbumsRoute.RANDOM>> = () => {
+	return (<AlbumListScreen listType={ListType.random}/>);
+};
+export const AlbumListHighestScreen: React.FC<AlbumsRouteProps<AlbumsRoute.HIGHEST>> = () => {
+	return (<AlbumListScreen listType={ListType.highest}/>);
+};
+export const AlbumListAvgHighestScreen: React.FC<AlbumsRouteProps<AlbumsRoute.AVGHIGHEST>> = () => {
+	return (<AlbumListScreen listType={ListType.avghighest}/>);
+};
+export const AlbumListFrequentScreen: React.FC<AlbumsRouteProps<AlbumsRoute.FREQUENT>> = () => {
+	return (<AlbumListScreen listType={ListType.frequent}/>);
 };

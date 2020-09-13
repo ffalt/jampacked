@@ -3,7 +3,7 @@ import {JamObjectType} from '../services/jam';
 import {RefreshControl, SectionList, SectionListData, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {ThemedText} from './ThemedText';
 import {ThemedIcon} from './ThemedIcon';
-import {NavigationService} from '../services/navigation';
+import {NavigationService} from '../navigators/navigation';
 import {JamImage} from './JamImage';
 import {Separator} from './Separator';
 import {snackError} from '../services/snack';

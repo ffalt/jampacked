@@ -4,7 +4,7 @@ import {HomeEntry} from '../services/types';
 import React from 'react';
 import {ThemedText} from './ThemedText';
 import {HomeSectionEntry} from './HomeSectionEntry';
-import {NavigationService} from '../services/navigation';
+import {NavigationService} from '../navigators/navigation';
 import {ThemedIcon} from './ThemedIcon';
 
 const styles = StyleSheet.create({
@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-export const HomeSection: React.FC<{ title: string; section?: Array<HomeEntry>; sectionNavig?: { route: string, params: any } }> = React.memo(({section, title, sectionNavig}) => {
+export const HomeSection: React.FC<{ title: string; section?: Array<HomeEntry>; sectionNavig?: { route: string, params?: any } }> = React.memo(({section, title, sectionNavig}) => {
 	if (!section || section.length === 0) {
 		return (<></>);
 	}

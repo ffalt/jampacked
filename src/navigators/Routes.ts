@@ -1,5 +1,5 @@
-import {AlbumType, JamObjectType, ListType} from '../services/jam';
-import {BottomTabRoute, HomeRoute} from './Routing';
+import {AlbumType, ListType} from '../services/jam';
+import {AlbumsRoute, ArtistsRoute, BottomTabRoute, HomeRoute} from './Routing';
 import {Navig} from '../services/types';
 import {getAlbumTypeInfos} from '../services/jam-lists';
 
@@ -14,8 +14,42 @@ export class JamRouteLinks {
 		return ({title: 'Artists', icon: 'artist', navig: {route: HomeRoute.ARTISTS}});
 	}
 
+	static artistlistRoute(listType: ListType): ArtistsRoute {
+		switch (listType) {
+			case ListType.random:
+				return ArtistsRoute.RANDOM;
+			case ListType.highest:
+				return ArtistsRoute.HIGHEST;
+			case ListType.avghighest:
+				return ArtistsRoute.AVGHIGHEST;
+			case ListType.frequent:
+				return ArtistsRoute.FREQUENT;
+			case ListType.faved:
+				return ArtistsRoute.FAV;
+			case ListType.recent:
+				return ArtistsRoute.RECENT;
+		}
+	}
+
+	static albumlistRoute(listType: ListType): AlbumsRoute {
+		switch (listType) {
+			case ListType.random:
+				return AlbumsRoute.RANDOM;
+			case ListType.highest:
+				return AlbumsRoute.HIGHEST;
+			case ListType.avghighest:
+				return AlbumsRoute.AVGHIGHEST;
+			case ListType.frequent:
+				return AlbumsRoute.FREQUENT;
+			case ListType.faved:
+				return AlbumsRoute.FAV;
+			case ListType.recent:
+				return AlbumsRoute.RECENT;
+		}
+	}
+
 	static artistlist(listType: ListType): RouteLink {
-		return ({title: 'Artists', icon: 'artist', navig: {route: HomeRoute.ARTISTLIST, params: {listType}}});
+		return ({title: 'Artists', icon: 'artist', navig: {route: JamRouteLinks.artistlistRoute(listType)}});
 	}
 
 	static series(): RouteLink {
@@ -41,7 +75,7 @@ export class JamRouteLinks {
 
 	static albumlist(listType: ListType, albumType: AlbumType): RouteLink {
 		const t = getAlbumTypeInfos(albumType);
-		return ({title: t?.title || 'Albums', icon: t?.icon || 'album', navig: {route: HomeRoute.ALBUMLIST, params: {albumType, listType}}});
+		return ({title: t?.title || 'Albums', icon: t?.icon || 'album', navig: {route: JamRouteLinks.albumlistRoute(listType), params: {albumType}}});
 	}
 
 	static serieslist(listType: ListType): RouteLink {

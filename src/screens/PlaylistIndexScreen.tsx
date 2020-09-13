@@ -1,10 +1,10 @@
 import React, {useCallback, useEffect} from 'react';
-import {HomeRoute, HomeStackProps} from '../navigators/Routing';
+import {HomeRoute, HomeRouteProps} from '../navigators/Routing';
 import {IndexList} from '../components/IndexList';
 import {useLazyPlaylistIndexQuery} from '../services/queries/playlistIndex';
 import {ErrorView} from '../components/ErrorView';
 
-export const PlaylistIndexScreen: React.FC<HomeStackProps<HomeRoute.PLAYLISTS>> = () => {
+export const PlaylistIndexScreen: React.FC<HomeRouteProps<HomeRoute.PLAYLISTS>> = () => {
 	const [getIndex, {loading, error, called, index}] = useLazyPlaylistIndexQuery();
 
 	useEffect(() => {

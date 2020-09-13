@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect} from 'react';
 import {RefreshControl, ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native';
-import {HomeRoute, HomeStackProps} from '../navigators/Routing';
+import {HomeRoute, HomeRouteProps} from '../navigators/Routing';
 import {ThemedText} from '../components/ThemedText';
 import {JamImage} from '../components/JamImage';
 import {staticTheme, useTheme} from '../style/theming';
@@ -10,7 +10,7 @@ import {HomeDataSection} from '../components/HomeDataSection';
 import {useLazyHomeDataQuery} from '../services/queries/home';
 import {useAuth} from '../services/auth';
 import dataService from '../services/data';
-import {NavigationService} from '../services/navigation';
+import {NavigationService} from '../navigators/navigation';
 import {ErrorView} from '../components/ErrorView';
 
 const styles = StyleSheet.create({
@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-export const HomeScreen: React.FC<HomeStackProps<HomeRoute.START>> = () => {
+export const HomeScreen: React.FC<HomeRouteProps<HomeRoute.START>> = () => {
 	const theme = useTheme();
 	const auth = useAuth();
 	const [getHomeData, {loading, error, called, homeData}] = useLazyHomeDataQuery();

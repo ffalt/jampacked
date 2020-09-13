@@ -2,7 +2,7 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {RefreshControl, SectionList, SectionListData, StyleSheet} from 'react-native';
 import {ThemedText} from '../components/ThemedText';
 import {staticTheme, useTheme} from '../style/theming';
-import {HomeRoute, HomeStackProps} from '../navigators/Routing';
+import {HomeRoute, HomeRouteProps} from '../navigators/Routing';
 import {Item} from '../components/Item';
 import {HeaderDetail, ObjHeader, objHeaderStyles} from '../components/ObjHeader';
 import {genreDisplay} from '../utils/genre.utils';
@@ -31,7 +31,7 @@ const buildDetails = (albums?: number, tracks?: number, genre?: string): Array<H
 	];
 };
 
-export const ArtistScreen: React.FC<HomeStackProps<HomeRoute.ARTIST>> = ({route}) => {
+export const ArtistScreen: React.FC<HomeRouteProps<HomeRoute.ARTIST>> = ({route}) => {
 	const theme = useTheme();
 	const [details, setDetails] = useState<Array<HeaderDetail>>(buildDetails());
 	const [getArtist, {loading, error, artist, called}] = useLazyArtistQuery();

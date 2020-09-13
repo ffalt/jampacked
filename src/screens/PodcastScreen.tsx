@@ -1,7 +1,7 @@
 import React, {MutableRefObject, useCallback, useEffect, useState} from 'react';
 import {FlatList, RefreshControl, TouchableOpacity} from 'react-native';
 import {trackEntryHeight, TrackItem} from '../components/TrackItem';
-import {HomeRoute, HomeStackProps} from '../navigators/Routing';
+import {HomeRoute, HomeRouteProps} from '../navigators/Routing';
 import {JamPlayer} from '../services/player';
 import {ThemedIcon} from '../components/ThemedIcon';
 import {ObjHeader, objHeaderStyles} from '../components/ObjHeader';
@@ -19,7 +19,7 @@ import ActionSheet from 'react-native-actions-sheet';
 import {ActionSheetEpisode} from '../components/ActionSheetEpisode';
 import {ListEmpty} from '../components/ListEmpty';
 
-export const PodcastScreen: React.FC<HomeStackProps<HomeRoute.PODCAST>> = ({route}) => {
+export const PodcastScreen: React.FC<HomeRouteProps<HomeRoute.PODCAST>> = ({route}) => {
 	const actionSheetRef: MutableRefObject<ActionSheet | null> = React.useRef<ActionSheet>(null);
 	const theme = useTheme();
 	const [getPodcast, {loading, error, podcast, called}] = useLazyPodcastQuery();

@@ -1,30 +1,33 @@
-import React, {useEffect, useState} from 'react';
-import {HomeRoute, HomeStackProps} from '../navigators/Routing';
-import {BaseEntryListList} from '../components/BaseEntryListList';
-import {AlbumType, ListType} from '../services/jam';
-import {useLazyArtistListQuery} from '../services/queries/artistList';
-import {JamRouteLinks, RouteLink} from '../navigators/Routes';
+import React from 'react';
+import {ArtistsRoute, ArtistsRouteProps} from '../navigators/Routing';
+import {ListType} from '../services/jam';
+import {ArtistList} from '../components/ArtistList';
 
-export const ArtistListScreen: React.FC<HomeStackProps<HomeRoute.ARTISTLIST>> = ({route}) => {
-	const [view, setView] = useState<{ listType?: ListType; albumTypes: Array<AlbumType>; info: RouteLink }>({
-		albumTypes: [],
-		info: JamRouteLinks.artists()
-	});
+// export const ArtistListScreen: React.FC<HomeRouteProps<HomeRoute.ARTISTLIST>> = ({route}) => {
+// 	const [view, setView] = useState<{ listType?: ListType; albumType?: AlbumType }>({});
+//
+// 	useEffect(() => {
+// 		setView({...route?.params});
+// 	}, [route]);
+//
+// 	return (<ArtistList query={view}/>);
+// };
 
-	useEffect(() => {
-		setView({
-			listType: route?.params?.listType,
-			albumTypes: route?.params?.albumType ? [route?.params?.albumType] : [],
-			info: JamRouteLinks.artists()
-		});
-	}, [route]);
-
-	return (
-		<BaseEntryListList
-			text={view.info.title}
-			icon={view.info.icon}
-			listType={view.listType}
-			albumTypes={view.albumTypes}
-			useList={useLazyArtistListQuery}
-		/>);
+export const ArtistListFavScreen: React.FC<ArtistsRouteProps<ArtistsRoute.FAV>> = ({}) => {
+	return (<ArtistList query={{listType: ListType.faved}}/>);
+};
+export const ArtistListRecentScreen: React.FC<ArtistsRouteProps<ArtistsRoute.RECENT>> = ({}) => {
+	return (<ArtistList query={{listType: ListType.recent}}/>);
+};
+export const ArtistListRandomScreen: React.FC<ArtistsRouteProps<ArtistsRoute.RANDOM>> = ({}) => {
+	return (<ArtistList query={{listType: ListType.random}}/>);
+};
+export const ArtistListHighestScreen: React.FC<ArtistsRouteProps<ArtistsRoute.HIGHEST>> = ({}) => {
+	return (<ArtistList query={{listType: ListType.highest}}/>);
+};
+export const ArtistListAvgHighestScreen: React.FC<ArtistsRouteProps<ArtistsRoute.AVGHIGHEST>> = ({}) => {
+	return (<ArtistList query={{listType: ListType.avghighest}}/>);
+};
+export const ArtistListFrequentScreen: React.FC<ArtistsRouteProps<ArtistsRoute.FREQUENT>> = ({}) => {
+	return (<ArtistList query={{listType: ListType.frequent}}/>);
 };

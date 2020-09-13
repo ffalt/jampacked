@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {RefreshControl, ScrollView, TouchableOpacity, View} from 'react-native';
-import {HomeRoute, HomeStackProps} from '../navigators/Routing';
+import {HomeRoute, HomeRouteProps} from '../navigators/Routing';
 import {HeaderDetail, ObjHeader, objHeaderStyles} from '../components/ObjHeader';
 import {genreDisplay} from '../utils/genre.utils';
 import {JamPlayer} from '../services/player';
@@ -20,7 +20,7 @@ const buildDetails = (artist?: string, album?: string, genre?: string): Array<He
 	];
 };
 
-export const TrackScreen: React.FC<HomeStackProps<HomeRoute.TRACK>> = ({route}) => {
+export const TrackScreen: React.FC<HomeRouteProps<HomeRoute.TRACK>> = ({route}) => {
 	const theme = useTheme();
 	const [details, setDetails] = useState<Array<HeaderDetail>>(buildDetails());
 	const [getTrack, {loading, error, track}] = useLazyTrackQuery();

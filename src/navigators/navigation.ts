@@ -1,8 +1,8 @@
 import {CommonActions, DrawerActions, NavigationContainerRef} from '@react-navigation/core';
-import {JamObjectType} from './jam';
-import {HomeRoute} from '../navigators/Routing';
-import {Navig, NavigParams} from './types';
-import {RouteLink} from '../navigators/Routes';
+import {JamObjectType} from '../services/jam';
+import {AlbumsRoute, HomeRoute} from './Routing';
+import {Navig, NavigParams} from '../services/types';
+import {RouteLink} from './Routes';
 
 let navigator: NavigationContainerRef;
 
@@ -30,6 +30,32 @@ export class NavigationService {
 
 	static navigate(routeName: string, params?: NavigParams): void {
 		if (navigator) {
+			console.log('go', routeName, params);
+			if (routeName.startsWith('Artists') && routeName !== HomeRoute.ARTISTS) {
+				navigator.dispatch(
+					CommonActions.navigate({
+						name: HomeRoute.ARTISTS,
+						params: {
+							screen: routeName,
+							params
+						}
+					})
+				);
+				return;
+			}
+			if (routeName.startsWith('Albums')) {
+				navigator.dispatch(
+					CommonActions.navigate({
+						name: HomeRoute.ALBUMS,
+						params: {
+							...params,
+							screen: routeName !== HomeRoute.ALBUMS ? routeName : AlbumsRoute.INDEX,
+							params
+						}
+					})
+				);
+				return;
+			}
 			navigator.dispatch(
 				CommonActions.navigate({name: routeName, params})
 			);

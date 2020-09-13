@@ -2,12 +2,12 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {FlatList, RefreshControl, SectionList, SectionListData, StyleSheet} from 'react-native';
 import {ThemedText} from '../components/ThemedText';
 import {staticTheme, useTheme} from '../style/theming';
-import {HomeRoute, HomeStackProps} from '../navigators/Routing';
+import {HomeRoute, HomeRouteProps} from '../navigators/Routing';
 import {Item} from '../components/Item';
 import {HeaderDetail, ObjHeader, objHeaderStyles} from '../components/ObjHeader';
 import {BaseEntry} from '../services/types';
 import {useLazySeriesQuery} from '../services/queries/series';
-import {NavigationService} from '../services/navigation';
+import {NavigationService} from '../navigators/navigation';
 import {Separator} from '../components/Separator';
 import {FavIcon} from '../components/FavIcon';
 import {JamObjectType} from '../services/jam';
@@ -44,7 +44,7 @@ const buildDetails = (artist?: string, tracks?: number, genre?: string, toArtist
 	];
 };
 
-export const SeriesScreen: React.FC<HomeStackProps<HomeRoute.SERIESITEM>> = ({route}) => {
+export const SeriesScreen: React.FC<HomeRouteProps<HomeRoute.SERIESITEM>> = ({route}) => {
 	const theme = useTheme();
 	const [details, setDetails] = useState<Array<HeaderDetail>>(buildDetails());
 	const [getSeries, {loading, error, called, series}] = useLazySeriesQuery();

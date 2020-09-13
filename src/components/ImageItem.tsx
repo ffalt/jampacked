@@ -2,7 +2,7 @@ import React, {useCallback} from 'react';
 import {StyleSheet, TouchableOpacity} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {useTheme} from '../style/theming';
-import {NavigationService} from '../services/navigation';
+import {NavigationService} from '../navigators/navigation';
 import {BaseEntry} from '../services/types';
 import {useAuth} from '../services/auth';
 

@@ -1,11 +1,11 @@
 import React, {useCallback, useEffect} from 'react';
 import {AlbumType} from '../services/jam';
-import {HomeRoute, HomeStackProps} from '../navigators/Routing';
+import {ArtistsRoute, ArtistsRouteProps} from '../navigators/Routing';
 import {IndexList} from '../components/IndexList';
 import {useLazyArtistIndexQuery} from '../services/queries/artistIndex';
 import {ErrorView} from '../components/ErrorView';
 
-export const ArtistIndexScreen: React.FC<HomeStackProps<HomeRoute.ARTISTS>> = () => {
+export const ArtistIndexScreen: React.FC<ArtistsRouteProps<ArtistsRoute.INDEX>> = () => {
 	const [getIndex, {loading, error, called, index}] = useLazyArtistIndexQuery();
 
 	useEffect(() => {

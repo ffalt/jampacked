@@ -1,7 +1,7 @@
 import React, {MutableRefObject, useCallback, useEffect, useState} from 'react';
 import {FlatList, RefreshControl, TouchableOpacity} from 'react-native';
 import {trackEntryHeight, TrackItem} from '../components/TrackItem';
-import {HomeRoute, HomeStackProps} from '../navigators/Routing';
+import {HomeRoute, HomeRouteProps} from '../navigators/Routing';
 import {JamPlayer} from '../services/player';
 import {ThemedIcon} from '../components/ThemedIcon';
 import {ObjHeader, objHeaderStyles} from '../components/ObjHeader';
@@ -19,7 +19,7 @@ import ActionSheet from 'react-native-actions-sheet';
 import {ActionSheetTrack} from '../components/ActionSheetTrack';
 import {ListEmpty} from '../components/ListEmpty';
 
-export const PlaylistScreen: React.FC<HomeStackProps<HomeRoute.PLAYLIST>> = ({route}) => {
+export const PlaylistScreen: React.FC<HomeRouteProps<HomeRoute.PLAYLIST>> = ({route}) => {
 	const actionSheetRef: MutableRefObject<ActionSheet | null> = React.useRef<ActionSheet>(null);
 	const theme = useTheme();
 	const [currentTrack, setCurrentTrack] = useState<TrackEntry | undefined>();

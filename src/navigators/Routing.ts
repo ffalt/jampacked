@@ -66,10 +66,12 @@ export type BottomTabParams = {
 // Home Routes
 
 export enum HomeRoute {
+	START = 'Start',
+	ARTISTS = 'Artists',
+	ALBUMS = 'Albums',
+
 	SERIES = 'Series',
 	SERIESITEM = 'SeriesItem',
-	ALBUMS = 'Albums',
-	ARTISTS = 'Artists',
 	ARTIST = 'Artist',
 	FOLDER = 'Folder',
 	PODCASTS = 'Podcasts',
@@ -79,21 +81,20 @@ export enum HomeRoute {
 	PLAYLISTS = 'Playlists',
 	TRACK = 'Track',
 	ALBUM = 'Album',
-	START = 'Start',
 	TRACKS = 'Tracks',
 	FOLDERS = 'Folders',
 	USER = 'User',
-	ALBUMLIST = 'Albumlist',
-	ARTISTLIST = 'Artistlist',
 	SERIESLIST = 'Serieslist',
 	FOLDERLIST = 'Folderlist',
 	DOWNLOADS = 'Downloads',
 	BOOKMARKS = 'Bookmarks'
 }
 
-export type HomeStackNavigatorParamList = {
+export type HomeRouteParamList = {
 	Start: undefined;
 	Artists: undefined;
+	Albums: { albumType: AlbumType };
+
 	Series: undefined;
 	Folders: undefined;
 	Tracks: undefined;
@@ -104,9 +105,6 @@ export type HomeStackNavigatorParamList = {
 	Bookmarks: undefined;
 	Folderlist: { listType: ListType, albumType?: AlbumType };
 	Serieslist: { listType: ListType, albumType?: AlbumType };
-	Albumlist: { listType: ListType, albumType?: AlbumType };
-	Artistlist: { listType: ListType, albumType?: AlbumType };
-	Albums: { albumType: AlbumType };
 	Playlist: { id: string, name: string };
 	Episode: { id: string, name: string };
 	Podcast: { id: string, name: string };
@@ -117,7 +115,60 @@ export type HomeStackNavigatorParamList = {
 	Album: { id: string, name: string };
 };
 
-export type HomeStackProps<T extends keyof HomeStackNavigatorParamList> = {
-	navigation: StackNavigationProp<HomeStackNavigatorParamList, T>;
-	route: RouteProp<HomeStackNavigatorParamList, T>;
+export type HomeRouteProps<T extends keyof HomeRouteParamList> = {
+	navigation: StackNavigationProp<HomeRouteParamList, T>;
+	route: RouteProp<HomeRouteParamList, T>;
+};
+
+// Artist Routes
+
+export enum ArtistsRoute {
+	INDEX = 'ArtistsIndex',
+	FAV = 'ArtistsFav',
+	RECENT = 'ArtistsRecent',
+	RANDOM = 'ArtistsRandom',
+	HIGHEST = 'ArtistsHighest',
+	AVGHIGHEST = 'ArtistsAvgHighest',
+	FREQUENT = 'ArtistsFrequent'
+}
+
+export type ArtistsRouteParamList = {
+	ArtistsIndex: undefined;
+	ArtistsFav: undefined;
+	ArtistsRecent: undefined;
+	ArtistsRandom: undefined;
+	ArtistsHighest: undefined;
+	ArtistsAvgHighest: undefined;
+	ArtistsFrequent: undefined;
+};
+
+export type ArtistsRouteProps<T extends keyof ArtistsRouteParamList> = {
+	navigation: StackNavigationProp<ArtistsRouteParamList, T>;
+	route: RouteProp<ArtistsRouteParamList, T>;
+};
+// Artist Routes
+
+export enum AlbumsRoute {
+	INDEX = 'AlbumsIndex',
+	FAV = 'AlbumsFav',
+	RECENT = 'AlbumsRecent',
+	RANDOM = 'AlbumsRandom',
+	HIGHEST = 'AlbumsHighest',
+	AVGHIGHEST = 'AlbumsAvgHighest',
+	FREQUENT = 'AlbumsFrequent'
+}
+
+export type AlbumsRouteParamList = {
+	AlbumsIndex: { albumType: AlbumType };
+	AlbumsFav: { albumType: AlbumType };
+	AlbumsRecent: { albumType: AlbumType };
+	AlbumsRandom: { albumType: AlbumType };
+	AlbumsHighest: { albumType: AlbumType };
+	AlbumsAvgHighest: { albumType: AlbumType };
+	AlbumsFrequent: { albumType: AlbumType };
+};
+
+export type AlbumsRouteProps<T extends keyof AlbumsRouteParamList> = {
+	navigation: StackNavigationProp<AlbumsRouteParamList, T>;
+	route: RouteProp<AlbumsRouteParamList, T>;
 };

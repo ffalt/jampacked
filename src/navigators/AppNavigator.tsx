@@ -8,7 +8,7 @@ import dataService from '../services/data';
 import {ThemeContext} from '../style/theming';
 import {defaultAuth, AuthContext} from '../services/auth';
 import {Jam} from '../services/jam';
-import {DrawerNavigator} from './DrawerNavigation';
+import {DrawerNavigator} from './DrawerNavigator';
 
 const Stack = createStackNavigator<AppStackNavigatorParamList>();
 

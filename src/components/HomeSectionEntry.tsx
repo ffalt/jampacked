@@ -2,7 +2,7 @@ import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {staticTheme, useTheme} from '../style/theming';
 import {HomeEntry} from '../services/types';
 import React from 'react';
-import {NavigationService} from '../services/navigation';
+import {NavigationService} from '../navigators/navigation';
 import {JamImage} from './JamImage';
 import {ThemedText} from './ThemedText';
 

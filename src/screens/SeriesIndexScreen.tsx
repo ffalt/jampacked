@@ -1,10 +1,10 @@
 import React, {useCallback, useEffect} from 'react';
-import {HomeRoute, HomeStackProps} from '../navigators/Routing';
+import {HomeRoute, HomeRouteProps} from '../navigators/Routing';
 import {IndexList} from '../components/IndexList';
 import {useLazySeriesIndexQuery} from '../services/queries/seriesIndex';
 import {ErrorView} from '../components/ErrorView';
 
-export const SeriesIndexScreen: React.FC<HomeStackProps<HomeRoute.SERIES>> = () => {
+export const SeriesIndexScreen: React.FC<HomeRouteProps<HomeRoute.SERIES>> = () => {
 	const [getIndex, {loading, error, called, index}] = useLazySeriesIndexQuery();
 
 	useEffect(() => {
