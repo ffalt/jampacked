@@ -1,27 +1,29 @@
-import React, {useEffect, useState} from 'react';
-import {HomeRoute, HomeRouteProps} from '../navigators/Routing';
-import {BaseEntryListList, BaseEntryListListQuery} from '../components/BaseEntryListList';
-import {useLazyFolderListQuery} from '../services/queries/folderList';
-import {JamRouteLinks} from '../navigators/Routes';
+import React, {useContext} from 'react';
+import {FoldersRoute, FoldersRouteProps} from '../navigators/Routing';
+import {ListType} from '../services/jam';
+import {FolderList} from '../components/FolderList';
+import {FoldersTabNavigatorContext} from '../navigators/FoldersNavigatorContext';
 
-export const FolderListScreen: React.FC<HomeRouteProps<HomeRoute.FOLDERLIST>> = ({route}) => {
-	const [view, setView] = useState<BaseEntryListListQuery>({
-		text: '',
-		icon: 'folder',
-		albumTypes: [],
-		useList: useLazyFolderListQuery
-	});
+const FolderListScreen: React.FC<{ listType: ListType }> = ({listType}) => {
+	const state = useContext(FoldersTabNavigatorContext);
+	return (<FolderList query={{listType, albumType: state?.albumType}}/>);
+};
 
-	useEffect(() => {
-		const info = JamRouteLinks.artists();
-		setView({
-			listType: route?.params?.listType,
-			text: info.title,
-			icon: info.icon,
-			albumTypes: route?.params?.albumType ? [route.params.albumType] : [],
-			useList: useLazyFolderListQuery
-		});
-	}, [route]);
-
-	return (<BaseEntryListList query={view}/>);
+export const FolderListFavScreen: React.FC<FoldersRouteProps<FoldersRoute.FAV>> = () => {
+	return (<FolderListScreen listType={ListType.faved}/>);
+};
+export const FolderListRecentScreen: React.FC<FoldersRouteProps<FoldersRoute.RECENT>> = () => {
+	return (<FolderListScreen listType={ListType.recent}/>);
+};
+export const FolderListRandomScreen: React.FC<FoldersRouteProps<FoldersRoute.RANDOM>> = () => {
+	return (<FolderListScreen listType={ListType.random}/>);
+};
+export const FolderListHighestScreen: React.FC<FoldersRouteProps<FoldersRoute.HIGHEST>> = () => {
+	return (<FolderListScreen listType={ListType.highest}/>);
+};
+export const FolderListAvgHighestScreen: React.FC<FoldersRouteProps<FoldersRoute.AVGHIGHEST>> = () => {
+	return (<FolderListScreen listType={ListType.avghighest}/>);
+};
+export const FolderListFrequentScreen: React.FC<FoldersRouteProps<FoldersRoute.FREQUENT>> = () => {
+	return (<FolderListScreen listType={ListType.frequent}/>);
 };

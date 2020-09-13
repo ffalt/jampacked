@@ -1,5 +1,5 @@
 import {AlbumType, ListType} from '../services/jam';
-import {AlbumsRoute, ArtistsRoute, BottomTabRoute, HomeRoute} from './Routing';
+import {AlbumsRoute, ArtistsRoute, BottomTabRoute, FoldersRoute, HomeRoute, SeriesRoute} from './Routing';
 import {Navig} from '../services/types';
 import {getAlbumTypeInfos} from '../services/jam-lists';
 
@@ -48,6 +48,40 @@ export class JamRouteLinks {
 		}
 	}
 
+	static serieslistRoute(listType: ListType): SeriesRoute {
+		switch (listType) {
+			case ListType.random:
+				return SeriesRoute.RANDOM;
+			case ListType.highest:
+				return SeriesRoute.HIGHEST;
+			case ListType.avghighest:
+				return SeriesRoute.AVGHIGHEST;
+			case ListType.frequent:
+				return SeriesRoute.FREQUENT;
+			case ListType.faved:
+				return SeriesRoute.FAV;
+			case ListType.recent:
+				return SeriesRoute.RECENT;
+		}
+	}
+
+	static folderlistRoute(listType: ListType): FoldersRoute {
+		switch (listType) {
+			case ListType.random:
+				return FoldersRoute.RANDOM;
+			case ListType.highest:
+				return FoldersRoute.HIGHEST;
+			case ListType.avghighest:
+				return FoldersRoute.AVGHIGHEST;
+			case ListType.frequent:
+				return FoldersRoute.FREQUENT;
+			case ListType.faved:
+				return FoldersRoute.FAV;
+			case ListType.recent:
+				return FoldersRoute.RECENT;
+		}
+	}
+
 	static artistlist(listType: ListType): RouteLink {
 		return ({title: 'Artists', icon: 'artist', navig: {route: JamRouteLinks.artistlistRoute(listType)}});
 	}
@@ -79,11 +113,11 @@ export class JamRouteLinks {
 	}
 
 	static serieslist(listType: ListType): RouteLink {
-		return ({title: 'Series', icon: 'series', navig: {route: HomeRoute.SERIESLIST, params: {listType}}});
+		return ({title: 'Series', icon: 'series', navig: {route: JamRouteLinks.serieslistRoute(listType)}});
 	}
 
-	static folderlist(listType: ListType): RouteLink {
-		return ({title: 'Folders', icon: 'folder', navig: {route: HomeRoute.FOLDERLIST, params: {listType}}});
+	static folderlist(listType: ListType, albumType?: AlbumType): RouteLink {
+		return ({title: 'Folders', icon: 'folder', navig: {route: JamRouteLinks.folderlistRoute(listType), params: {albumType}}});
 	}
 
 	static tracklist(listType: ListType): RouteLink {
