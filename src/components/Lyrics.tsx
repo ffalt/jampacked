@@ -31,8 +31,8 @@ const styles = StyleSheet.create({
 	},
 	buttonText: {},
 	lyrics: {
-		fontSize: staticTheme.fontSizeSmall,
-		lineHeight: staticTheme.fontSizeSmall * 1.5,
+		fontSize: staticTheme.fontSize,
+		lineHeight: staticTheme.fontSize * 1.5,
 		marginHorizontal: staticTheme.marginLarge,
 		marginVertical: staticTheme.margin,
 		paddingHorizontal: staticTheme.padding
@@ -69,7 +69,7 @@ export const Lyrics: React.FC<{ id?: string | null }> = ({id}) => {
 
 	if (!lyrics) {
 		return (
-			<View style={[styles.containerLoading, {borderColor: theme.separator}]}>
+			<View key="nolyrics" style={[styles.containerLoading, {borderColor: theme.separator}]}>
 				{id && !error && !loading && <ThemedText style={styles.none}>{text}</ThemedText>}
 				{loading && <ActivityIndicator size="small" color={theme.textColor}/>}
 				{error && !loading && (
@@ -85,7 +85,7 @@ export const Lyrics: React.FC<{ id?: string | null }> = ({id}) => {
 		);
 	}
 	return (
-		<ScrollView style={[styles.container, {borderColor: theme.separator}]}>
+		<ScrollView key="lyrics" style={[styles.container, {borderColor: theme.separator}]}>
 			<ThemedText style={styles.lyrics}>{text}</ThemedText>
 		</ScrollView>
 	);

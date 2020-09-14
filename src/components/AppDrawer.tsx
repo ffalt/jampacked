@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
 	drawerTile: {
 		flexDirection: 'column',
 		alignItems: 'center',
-		width: 70,
+		width: 80,
 		paddingVertical: staticTheme.padding,
 		marginRight: staticTheme.marginSmall,
 		marginBottom: staticTheme.marginSmall,
@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
 		backgroundColor: 'rgba(0,0,0,0.2)'
 	},
 	drawerTileText: {
-		fontSize: staticTheme.fontSizeTiny
+		fontSize: staticTheme.fontSizeSmall
 	},
 	drawerRowText: {
 		fontSize: staticTheme.fontSize
@@ -94,7 +94,7 @@ export const AppDrawerLinkTile: React.FC<{ link: RouteLink }> = ({link}) => {
 	return (
 		<TouchableOpacity style={[styles.drawerTile, {borderColor: theme.separator}]} onPress={goToRoute}>
 			<ThemedIcon name={link.icon} size={18} color={theme.muted}/>
-			<ThemedText style={styles.drawerTileText}>{link.title}</ThemedText>
+			<ThemedText style={styles.drawerTileText} numberOfLines={1}>{link.title}</ThemedText>
 		</TouchableOpacity>
 	);
 };
@@ -139,10 +139,10 @@ const sections = [
 		]
 	}
 ];
-
-const routes = [
-	JamRouteLinks.home()
-];
+//
+// const routes = [
+// 	JamRouteLinks.home()
+// ];
 
 export const AppDrawer: React.FC = () => {
 	const theme = useTheme();
