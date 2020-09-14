@@ -35,6 +35,7 @@ export interface AlbumListResult {
 
 export interface AlbumListResultVariables {
   listType: ListType;
+  seed?: string | null;
   albumTypes?: AlbumType[] | null;
   take: number;
   skip: number;

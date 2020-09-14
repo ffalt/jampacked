@@ -31,6 +31,7 @@ export interface SeriesListResult {
 
 export interface SeriesListResultVariables {
   listType: ListType;
+  seed?: string | null;
   albumTypes?: AlbumType[] | null;
   take: number;
   skip: number;

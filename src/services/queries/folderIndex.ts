@@ -23,6 +23,10 @@ const GET_FOLDERINDEX = gql`
     }
 `;
 
+function titleCase(s: string): string {
+	return s[0].toUpperCase() + s.slice(1);
+}
+
 function transformData(data?: FolderIndexResult): Index | undefined {
 	if (!data) {
 		return;
@@ -30,10 +34,9 @@ function transformData(data?: FolderIndexResult): Index | undefined {
 	const index: Index = [];
 	data.folderIndex.groups.forEach(group => {
 		group.items.forEach(entry => {
-			const desc = (entry.folderType || '') + ' ' + (
-				(entry.tracksCount || 0) > 0 ? `Tracks: ${entry.tracksCount}` :
-					((entry.childrenCount || 0) > 0 ? `Folder: ${entry.childrenCount}` : '')
-			);
+			const desc = `${titleCase(entry.folderType || '')}`;
+			// `${(entry.tracksCount || 0) > 0 ? `Tracks: ${entry.tracksCount}` :
+			// (@(entry.childrenCount || 0) > 0 ? `Folder: ${entry.childrenCount}` : '')}`;
 			index.push({
 				id: entry.id,
 				objType: JamObjectType.folder,

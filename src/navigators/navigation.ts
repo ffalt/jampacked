@@ -34,6 +34,7 @@ export class NavigationService {
 				CommonActions.navigate({
 					name: parentRouteName,
 					params: {
+						...params,
 						screen: routeName !== parentRouteName ? routeName : defaultRouteName,
 						params
 					}

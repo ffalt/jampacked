@@ -93,7 +93,8 @@ export type BaseEntryList = {
 	take?: number;
 };
 
+export type UseListCallFunction = (albumTypes: Array<AlbumType>, listType: ListType, seed: string | undefined, take: number, skip: number, forceRefresh?: boolean) => void;
 export type useListFunction = () => [
-	(albumTypes: Array<AlbumType>, listType: ListType, take: number, skip: number, forceRefresh?: boolean) => void,
-	{ loading: boolean, error?: ApolloError, data?: BaseEntryList, called: boolean }
+	UseListCallFunction,
+	{ loading: boolean, error?: ApolloError, data?: BaseEntryList, called: boolean, queryID?: string }
 ];

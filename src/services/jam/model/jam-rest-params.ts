@@ -1125,6 +1125,8 @@ export declare namespace JamParameters {
 	export interface ListArgs {
 		/** filter by special list */
 		list?: JamEnums.ListType;
+		/** seed for random list */
+		seed?: string;
 	}
 
 	export interface LyricsOVHSearchArgs {

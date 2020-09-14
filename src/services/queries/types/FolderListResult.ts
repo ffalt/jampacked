@@ -33,6 +33,7 @@ export interface FolderListResult {
 
 export interface FolderListResultVariables {
   listType: ListType;
+  seed?: string | null;
   albumTypes?: AlbumType[] | null;
   take: number;
   skip: number;

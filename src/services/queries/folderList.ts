@@ -6,8 +6,8 @@ import {FolderListResult, FolderListResultVariables} from './types/FolderListRes
 import {useCacheOrLazyQuery} from '../data';
 
 const GET_FOLDERLIST = gql`
-    query FolderListResult($listType: ListType!, $albumTypes: [AlbumType!], $take: Int!, $skip: Int!) {
-        folders(list: $listType, filter: {albumTypes: $albumTypes}, page: {take: $take, skip: $skip}) {
+    query FolderListResult($listType: ListType!, $seed: String, $albumTypes: [AlbumType!], $take: Int!, $skip: Int!) {
+        folders(list: $listType, seed: $seed, filter: {albumTypes: $albumTypes}, page: {take: $take, skip: $skip}) {
             total
             skip
             take
@@ -49,9 +49,9 @@ function transformData(data?: FolderListResult, variables?: FolderListResultVari
 }
 
 export const useLazyFolderListQuery: useListFunction = () => {
-	const [query, {loading, error, data, called}] = useCacheOrLazyQuery<FolderListResult, FolderListResultVariables, BaseEntryList>(GET_FOLDERLIST, transformData);
-	const get = useCallback((albumTypes: Array<AlbumType>, listType: ListType, take: number, skip: number, forceRefresh?: boolean): void => {
-		query({variables: {albumTypes, listType, skip, take}}, forceRefresh);
+	const [query, {loading, error, data, called, queryID}] = useCacheOrLazyQuery<FolderListResult, FolderListResultVariables, BaseEntryList>(GET_FOLDERLIST, transformData);
+	const get = useCallback((albumTypes: Array<AlbumType>, listType: ListType, seed: string | undefined, take: number, skip: number, forceRefresh?: boolean): void => {
+		query({variables: {albumTypes, listType, skip, take, seed}}, forceRefresh);
 	}, [query]);
-	return [get, {loading, called, error, data}];
+	return [get, {loading, called, error, data, queryID}];
 };

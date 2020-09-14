@@ -54,6 +54,13 @@ class DataService implements PersistentStorage<unknown> {
 		await this.clearDoc(id);
 	}
 
+	async removeItemsKeyStartWith(prefix: string): Promise<void> {
+		if (!prefix || !this.db) {
+			return;
+		}
+		await this.db.query('DELETE FROM jam WHERE key LIKE ?', [`${prefix}%`]);
+	}
+
 	// db
 
 	async open(): Promise<void> {
@@ -472,6 +479,7 @@ class DataService implements PersistentStorage<unknown> {
 		const docs = await this.getPinDocs<PinMedia>();
 		return docs.map(doc => doc.data);
 	}
+
 }
 
 export interface PinMedia {
@@ -491,7 +499,7 @@ const dataService = new DataService(new JamService(configuration));
 export default dataService;
 
 export type QueryFunc<TVariables> = (options?: QueryLazyOptions<TVariables>, forceRefresh?: boolean) => void;
-export type QueryHookData<TResult> = { loading: boolean, error?: ApolloError, data?: TResult, called: boolean };
+export type QueryHookData<TResult> = { loading: boolean, error?: ApolloError, data?: TResult, called: boolean, queryID?: string };
 
 export function useCacheOrLazyQuery<TData, TVariables, TResult>(
 	query: DocumentNode,
@@ -499,6 +507,7 @@ export function useCacheOrLazyQuery<TData, TVariables, TResult>(
 	options?: LazyQueryHookOptions<TData, TVariables>): [QueryFunc<TVariables>, QueryHookData<TResult>] {
 	const [result, setResult] = useState<TResult | undefined>();
 	const [id, setID] = useState<string | undefined>();
+	const [queryData, setQueryData] = useState<any>();
 	const [q, {loading, error, data, variables}] = useLazyQuery<TData, TVariables>(query, options);
 
 	const execute = useCallback((queryOptions?: QueryLazyOptions<TVariables>, forceRefresh?: boolean): void => {
@@ -506,10 +515,11 @@ export function useCacheOrLazyQuery<TData, TVariables, TResult>(
 		if (opDef) {
 			const queryID = (opDef as any).name.value + (queryOptions?.variables ? JSON.stringify(queryOptions.variables) : '');
 			setID(queryID);
+			setResult(undefined);
+			setQueryData(undefined);
 			if (forceRefresh) {
 				q(queryOptions);
 			} else {
-				setResult(undefined);
 				dataService.getItem(queryID).then(r => {
 					if (r) {
 						setResult(r);
@@ -522,15 +532,23 @@ export function useCacheOrLazyQuery<TData, TVariables, TResult>(
 	}, [query, q]);
 
 	useEffect(() => {
-		const r = transform(data, variables);
-		if (id && r) {
-			setResult(r);
-			dataService.setItem(id, r).then(() => {
-				//
-			});
+		if (data) {
+			setQueryData(data);
 		}
-	}, [data, variables, id, transform]);
+	}, [data]);
 
-	return [execute, {loading, error, data: result, called: !!id}];
+	useEffect(() => {
+		if (queryData) {
+			const r = transform(queryData, variables);
+			if (id && r) {
+				setResult(r);
+				dataService.setItem(id, r).then(() => {
+					//
+				});
+			}
+		}
+	}, [variables, id, transform, queryData]);
+
+	return [execute, {loading, error, data: result, called: !!id, queryID: id}];
 }
 

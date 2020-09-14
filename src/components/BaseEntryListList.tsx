@@ -4,6 +4,7 @@ import {BaseEntry, useListFunction} from '../services/types';
 import {BaseEntryList, BaseEntryListInfo} from '../components/BaseEntryList';
 import {AlbumType, ListType} from '../services/jam';
 import {ErrorView} from './ErrorView';
+import dataService from '../services/data';
 
 export interface BaseEntryListListQuery {
 	listType?: ListType;
@@ -20,10 +21,15 @@ export const BaseEntryListList: React.FC<{ query: BaseEntryListListQuery }> = ({
 		icon: ''
 	});
 	const [total, setTotal] = useState<number>(0);
-	const [type, setType] = useState<{ listType?: ListType, albumTypes?: Array<AlbumType>, offset: number } | undefined>();
+	const [type, setType] = useState<{
+		listType?: ListType,
+		seed?: string,
+		albumTypes?: Array<AlbumType>,
+		offset: number
+	} | undefined>();
 	const [entries, setEntries] = useState<Array<BaseEntry> | undefined>();
 	const amount = 10;
-	const [getList, {loading, error, called, data}] = query.useList();
+	const [getList, {loading, error, called, data, queryID}] = query.useList();
 
 	useEffect(() => {
 		setInfo({icon: query.icon, title: query.text, subtitle: ListTypeName[query.listType || '']});
@@ -31,39 +37,48 @@ export const BaseEntryListList: React.FC<{ query: BaseEntryListListQuery }> = ({
 			if (prev?.listType === query.listType) {
 				return prev;
 			}
+			setTotal(0);
 			setEntries(undefined);
-			return {listType: query.listType, albumTypes: query.albumTypes, offset: 0};
+			const seed = query.listType === ListType.random ? Date.now().toString() : undefined;
+			return {listType: query.listType, albumTypes: query.albumTypes, seed, offset: 0};
 		});
 	}, [query]);
 
 	useEffect(() => {
 		if (type && type.listType) {
-			getList(type.albumTypes || [], type.listType, amount, type.offset);
+			getList(type.albumTypes || [], type.listType, type.seed, amount, type.offset);
 		}
 	}, [type, getList]);
 
 	useEffect(() => {
 		if (data) {
+			const items = data.items;
 			setTotal(data.total);
 			setEntries((prev) => {
-				return prev ? prev.concat(data?.items) : data?.items;
+				if (prev) {
+					return prev.concat(items);
+				}
+				return items;
 			});
-		} else {
-			setTotal(0);
-			setEntries(undefined);
 		}
 	}, [data]);
 
 	const reload = useCallback((): void => {
 		setEntries(undefined);
 		setTotal(0);
-		setType((prev) => {
-			return {...prev, offset: 0};
-		});
-	}, []);
+		// TODO: this depends on ordering of graphql variables, FIXME
+		const id = (queryID || '').slice(0, queryID?.indexOf('skip'));
+		dataService.removeItemsKeyStartWith(id)
+			.then(() => {
+				setType((prev) => {
+					const seed = prev?.listType === ListType.random ? Date.now().toString() : undefined;
+					return {...prev, seed, offset: 0};
+				});
+			});
+	}, [queryID]);
 
 	const handleLoadMore = useCallback((): void => {
-		if (entries && total > 0 && total > entries.length) {
+		if (!loading && entries && total > 0 && total > entries.length) {
 			setType((prev) => {
 				const p = prev?.offset || 0;
 				if (p + amount > total) {
@@ -72,7 +87,7 @@ export const BaseEntryListList: React.FC<{ query: BaseEntryListListQuery }> = ({
 				return {...prev, offset: p + amount};
 			});
 		}
-	}, [entries, total]);
+	}, [entries, total, loading]);
 
 	if (error) {
 		return (<ErrorView error={error} onRetry={reload}/>);

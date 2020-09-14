@@ -6,8 +6,8 @@ import {ArtistListResult, ArtistListResultVariables} from './types/ArtistListRes
 import {useCacheOrLazyQuery} from '../data';
 
 const GET_ARTISTLIST = gql`
-    query ArtistListResult($listType: ListType!, $albumTypes: [AlbumType!], $take: Int!, $skip: Int!) {
-        artists(list: $listType, filter: {albumTypes: $albumTypes}, page: {take: $take, skip: $skip}) {
+    query ArtistListResult($listType: ListType!, $seed: String, $albumTypes: [AlbumType!], $take: Int!, $skip: Int!) {
+        artists(list: $listType, seed: $seed, filter: {albumTypes: $albumTypes}, page: {take: $take, skip: $skip}) {
             total
             skip
             take
@@ -44,9 +44,9 @@ function transformData(data?: ArtistListResult, variables?: ArtistListResultVari
 }
 
 export const useLazyArtistListQuery: useListFunction = () => {
-	const [query, {loading, error, data, called}] = useCacheOrLazyQuery<ArtistListResult, ArtistListResultVariables, BaseEntryList>(GET_ARTISTLIST, transformData);
-	const get = useCallback((albumTypes: Array<AlbumType>, listType: ListType, take: number, skip: number, forceRefresh?: boolean): void => {
-		query({variables: {albumTypes, listType, skip, take}}, forceRefresh);
+	const [query, {loading, error, data, called, queryID}] = useCacheOrLazyQuery<ArtistListResult, ArtistListResultVariables, BaseEntryList>(GET_ARTISTLIST, transformData);
+	const get = useCallback((albumTypes: Array<AlbumType>, listType: ListType, seed: string | undefined, take: number, skip: number, forceRefresh?: boolean): void => {
+		query({variables: {albumTypes, listType, skip, take, seed}}, forceRefresh);
 	}, [query]);
-	return [get, {loading, called, error, data}];
+	return [get, {loading, called, error, data, queryID}];
 };

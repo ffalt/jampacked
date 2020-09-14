@@ -1,15 +1,22 @@
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {AlbumIndexScreen} from '../screens/AlbumIndexScreen';
 import {AlbumListAvgHighestScreen, AlbumListFavScreen, AlbumListFrequentScreen, AlbumListHighestScreen, AlbumListRandomScreen, AlbumListRecentScreen} from '../screens/AlbumListScreen';
 import {AlbumsTabNavigatorContext} from './AlbumsNavigatorContext';
 import {AlbumsRoute, HomeRoute, HomeRouteProps} from './Routing';
+import {AlbumType} from '../services/jam';
 
 const Tab = createMaterialTopTabNavigator();
 
 export const AlbumsNavigator: React.FC<HomeRouteProps<HomeRoute.ALBUMS>> = ({route}) => {
+	const [albumType, setAlbumType] = useState<AlbumType | undefined>();
+
+	useEffect(() => {
+		setAlbumType(route.params.albumType);
+	}, [route]);
+
 	return (
-		<AlbumsTabNavigatorContext.Provider value={{albumType: route.params.albumType}}>
+		<AlbumsTabNavigatorContext.Provider value={{albumType}}>
 			<Tab.Navigator
 				initialRouteName={AlbumsRoute.INDEX}
 				lazy={true}
