@@ -3,7 +3,9 @@ import gql from 'graphql-tag';
 import {BaseEntryList, useListFunction} from '../types';
 import {useCallback} from 'react';
 import {FolderListResult, FolderListResultVariables} from './types/FolderListResult';
-import {useCacheOrLazyQuery} from '../data';
+import {getCacheOrQuery, useCacheOrLazyQuery} from '../cache-query';
+import {JamApolloClient} from '../apollo';
+import {titleCase} from '../../utils/format.utils';
 
 const GET_FOLDERLIST = gql`
     query FolderListResult($listType: ListType!, $seed: String, $albumTypes: [AlbumType!], $take: Int!, $skip: Int!) {
@@ -34,10 +36,11 @@ function transformData(data?: FolderListResult, variables?: FolderListResultVari
 		items: []
 	};
 	data.folders.items.forEach(entry => {
-		const desc = (entry.folderType || '') + ' ' + (
-			(entry.tracksCount || 0) > 0 ? `Tracks: ${entry.tracksCount}` :
-				((entry.childrenCount || 0) > 0 ? `Folder: ${entry.childrenCount}` : '')
-		);
+		const desc = `${titleCase(entry.folderType || '')}`;
+		// const desc = (entry.folderType || '') + ' ' + (
+		// 	(entry.tracksCount || 0) > 0 ? `Tracks: ${entry.tracksCount}` :
+		// 		((entry.childrenCount || 0) > 0 ? `Folder: ${entry.childrenCount}` : '')
+		// );
 		result.items.push({
 			id: entry.id,
 			objType: JamObjectType.folder,
@@ -46,6 +49,12 @@ function transformData(data?: FolderListResult, variables?: FolderListResultVari
 		});
 	});
 	return result;
+}
+
+export async function getFolderList(
+	albumTypes: Array<AlbumType>, listType: ListType, seed: string | undefined, take: number, skip: number, client: JamApolloClient
+): Promise<BaseEntryList | undefined> {
+	return getCacheOrQuery<FolderListResult, FolderListResultVariables, BaseEntryList>(client, GET_FOLDERLIST, {albumTypes, listType, skip, take, seed}, transformData);
 }
 
 export const useLazyFolderListQuery: useListFunction = () => {

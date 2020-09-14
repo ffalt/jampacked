@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 import {ApolloError} from 'apollo-client';
 import {useCallback} from 'react';
 import {TrackLyricsResult, TrackLyricsResultVariables} from './types/TrackLyricsResult';
-import {useCacheOrLazyQuery} from '../data';
+import {useCacheOrLazyQuery} from '../cache-query';
 
 const GET_TRACKLYRICS = gql`
     query TrackLyricsResult($id: ID!) {

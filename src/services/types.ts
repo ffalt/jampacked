@@ -98,3 +98,15 @@ export type useListFunction = () => [
 	UseListCallFunction,
 	{ loading: boolean, error?: ApolloError, data?: BaseEntryList, called: boolean, queryID?: string }
 ];
+
+export interface PinMedia {
+	id: string;
+	name: string;
+	objType: JamObjectType;
+	tracks: Array<TrackEntry>;
+}
+
+export interface PinState {
+	active: boolean;
+	pinned: boolean;
+}

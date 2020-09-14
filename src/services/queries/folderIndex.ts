@@ -4,7 +4,9 @@ import {ApolloError} from 'apollo-client';
 import {Index} from '../types';
 import {useCallback} from 'react';
 import {FolderIndexResult, FolderIndexResultVariables} from './types/FolderIndexResult';
-import {useCacheOrLazyQuery} from '../data';
+import {getCacheOrQuery, useCacheOrLazyQuery} from '../cache-query';
+import {titleCase} from '../../utils/format.utils';
+import {JamApolloClient} from '../apollo';
 
 const GET_FOLDERINDEX = gql`
     query FolderIndexResult($level: Int) {
@@ -22,10 +24,6 @@ const GET_FOLDERINDEX = gql`
         }
     }
 `;
-
-function titleCase(s: string): string {
-	return s[0].toUpperCase() + s.slice(1);
-}
 
 function transformData(data?: FolderIndexResult): Index | undefined {
 	if (!data) {
@@ -47,6 +45,10 @@ function transformData(data?: FolderIndexResult): Index | undefined {
 		});
 	});
 	return index;
+}
+
+export async function getFolderIndex(level: number, client: JamApolloClient): Promise<Index | undefined> {
+	return getCacheOrQuery<FolderIndexResult, FolderIndexResultVariables, Index>(client, GET_FOLDERINDEX, {level}, transformData);
 }
 
 export const useLazyFolderIndexQuery = (): [(level: number, forceRefresh?: boolean) => void,

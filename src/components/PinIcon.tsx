@@ -23,9 +23,9 @@ export const PinIcon: React.FC<{ id?: string; objType: JamObjectType; style?: St
 		const handleTogglePin = useCallback((): void => {
 			if (pinned && id && objType) {
 				if (pinned.pinned) {
-					dataService.unpin(id);
+					dataService.pin.unpin(id);
 				} else {
-					dataService.pin(id, objType);
+					dataService.pin.pin(id, objType);
 				}
 			}
 		}, [pinned, id, objType]);

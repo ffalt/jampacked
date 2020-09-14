@@ -4,7 +4,7 @@ import {ApolloError} from 'apollo-client';
 import {formatDuration} from '../../utils/duration.utils';
 import {useCallback} from 'react';
 import {PlaylistResult, PlaylistResult_playlist_entries_episode, PlaylistResult_playlist_entries_track, PlaylistResultVariables} from './types/PlaylistResult';
-import {useCacheOrLazyQuery} from '../data';
+import {useCacheOrLazyQuery} from '../cache-query';
 
 const GET_PLAYLIST = gql`
     query PlaylistResult($id: ID!) {

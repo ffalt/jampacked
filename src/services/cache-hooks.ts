@@ -1,7 +1,8 @@
 import {DownloadProgress, MediaCacheStat} from './media-cache';
 import {useEffect, useState} from 'react';
 import {DownloadTask} from 'react-native-background-downloader';
-import dataService, {PinMedia} from './data';
+import dataService from './data';
+import {PinMedia} from './types';
 
 
 export function useMediaCacheStat(): MediaCacheStat | undefined {
@@ -28,7 +29,7 @@ export function useMediaCacheStat(): MediaCacheStat | undefined {
 		let isSubscribed = true;
 
 		const update = (): void => {
-			dataService.mediaCache.stat()
+			dataService.pin.pinCache.stat()
 				.then(s => {
 					if (isSubscribed) {
 						setStat(s);
@@ -36,11 +37,11 @@ export function useMediaCacheStat(): MediaCacheStat | undefined {
 				});
 		};
 
-		dataService.mediaCache.subscribeCacheChangeUpdates(update);
+		dataService.pin.pinCache.subscribeCacheChangeUpdates(update);
 		update();
 		return (): void => {
 			isSubscribed = false;
-			dataService.mediaCache.unsubscribeCacheChangeUpdates(update);
+			dataService.pin.pinCache.unsubscribeCacheChangeUpdates(update);
 		};
 	}, []);
 
@@ -55,8 +56,8 @@ export function usePinnedMedia(): { media: Array<PinMedia>, loading: boolean } {
 	useEffect(() => {
 		let isSubscribed = true;
 
-		const update = () => {
-			dataService.getPins().then(pins => {
+		const update = (): void => {
+			dataService.pin.getPins().then(pins => {
 				if (isSubscribed) {
 					setMedia(pins);
 					setLoading(false);
@@ -76,7 +77,7 @@ export function usePinnedMedia(): { media: Array<PinMedia>, loading: boolean } {
 }
 
 export function useDownloads(): Array<DownloadTask> {
-	const [tasks, setTasks] = useState<Array<DownloadTask>>(dataService.mediaCache.tasks);
+	const [tasks, setTasks] = useState<Array<DownloadTask>>(dataService.pin.pinCache.tasks);
 
 	useEffect(() => {
 		let isSubscribed = true;
@@ -86,10 +87,10 @@ export function useDownloads(): Array<DownloadTask> {
 			}
 		};
 
-		dataService.mediaCache.subscribeTaskUpdates(update);
+		dataService.pin.pinCache.subscribeTaskUpdates(update);
 		return (): void => {
 			isSubscribed = false;
-			dataService.mediaCache.unsubscribeTaskUpdates(update);
+			dataService.pin.pinCache.unsubscribeTaskUpdates(update);
 		};
 	}, [tasks]);
 
@@ -100,7 +101,7 @@ export function useDownloads(): Array<DownloadTask> {
 export const useDownloadStatus = (id: string): DownloadProgress | undefined => {
 
 	const [downloadProgress, setDownloadProgress] = useState<DownloadProgress | undefined>(
-		dataService.mediaCache.getProgress(id)
+		dataService.pin.pinCache.getProgress(id)
 	);
 
 	useEffect(() => {
@@ -110,10 +111,10 @@ export const useDownloadStatus = (id: string): DownloadProgress | undefined => {
 				setDownloadProgress(progress);
 			}
 		};
-		dataService.mediaCache.subscribeDownloadUpdates(id, update);
+		dataService.pin.pinCache.subscribeDownloadUpdates(id, update);
 		return (): void => {
 			isSubscribed = false;
-			dataService.mediaCache.unsubscribeDownloadUpdates(id, update);
+			dataService.pin.pinCache.unsubscribeDownloadUpdates(id, update);
 		};
 	}, [id]);
 

@@ -1,6 +1,7 @@
 import {useEffect, useState} from 'react';
-import dataService, {PinState} from './data';
+import dataService from './data';
 import {JamObjectType} from './jam';
+import {PinState} from './types';
 
 export function usePinState(id?: string, objType?: JamObjectType): PinState | undefined {
 	const [stat, setStat] = useState<PinState | undefined>();
@@ -15,13 +16,13 @@ export function usePinState(id?: string, objType?: JamObjectType): PinState | un
 		};
 
 		if (id && objType) {
-			dataService.subscribePinChangeUpdates(id, update);
-			dataService.getPinState(id).then(update);
+			dataService.pin.subscribePinChangeUpdates(id, update);
+			dataService.pin.getPinState(id).then(update);
 		}
 		return (): void => {
 			isSubscribed = false;
 			if (id) {
-				dataService.unsubscribePinChangeUpdates(id, update);
+				dataService.pin.unsubscribePinChangeUpdates(id, update);
 			}
 		};
 	}, [id, objType]);

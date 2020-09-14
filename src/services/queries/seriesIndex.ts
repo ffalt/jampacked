@@ -4,7 +4,7 @@ import {JamObjectType} from '../jam';
 import {ApolloError} from 'apollo-client';
 import {useCallback} from 'react';
 import {SeriesIndexResult} from './types/SeriesIndexResult';
-import {useCacheOrLazyQuery} from '../data';
+import {useCacheOrLazyQuery} from '../cache-query';
 
 const GET_SERIESINDEX = gql`
     query SeriesIndexResult {

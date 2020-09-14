@@ -5,8 +5,8 @@ import {AlbumType} from '../jam';
 import {ApolloError} from 'apollo-client';
 import {useCallback} from 'react';
 import {HomeResult} from './types/HomeResult';
-import {useCacheOrLazyQuery} from '../data';
 import {JamRouteLinks} from '../../navigators/Routes';
+import {useCacheOrLazyQuery} from '../cache-query';
 
 const GET_HOMEDATA = gql`
     query HomeResult {

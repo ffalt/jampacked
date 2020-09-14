@@ -4,7 +4,8 @@ import {ApolloError} from 'apollo-client';
 import {Index} from '../types';
 import {useCallback} from 'react';
 import {ArtistIndexResult, ArtistIndexResultVariables} from './types/ArtistIndexResult';
-import {useCacheOrLazyQuery} from '../data';
+import {getCacheOrQuery, useCacheOrLazyQuery} from '../cache-query';
+import {JamApolloClient} from '../apollo';
 
 const GET_ARTISTINDEX = gql`
     query ArtistIndexResult($albumTypes: [AlbumType!]) {
@@ -38,6 +39,10 @@ function transformData(data?: ArtistIndexResult): Index | undefined {
 		});
 	});
 	return index;
+}
+
+export async function getArtistIndex(albumTypes: Array<AlbumType>, client: JamApolloClient): Promise<Index | undefined> {
+	return getCacheOrQuery<ArtistIndexResult, ArtistIndexResultVariables, Index>(client, GET_ARTISTINDEX, {albumTypes}, transformData);
 }
 
 export const useLazyArtistIndexQuery = (): [(albumTypes: Array<AlbumType>, forceRefresh?: boolean) => void,

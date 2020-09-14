@@ -3,7 +3,8 @@ import gql from 'graphql-tag';
 import {BaseEntryList, useListFunction} from '../types';
 import {useCallback} from 'react';
 import {ArtistListResult, ArtistListResultVariables} from './types/ArtistListResult';
-import {useCacheOrLazyQuery} from '../data';
+import {getCacheOrQuery, useCacheOrLazyQuery} from '../cache-query';
+import {JamApolloClient} from '../apollo';
 
 const GET_ARTISTLIST = gql`
     query ArtistListResult($listType: ListType!, $seed: String, $albumTypes: [AlbumType!], $take: Int!, $skip: Int!) {
@@ -41,6 +42,12 @@ function transformData(data?: ArtistListResult, variables?: ArtistListResultVari
 		});
 	});
 	return result;
+}
+
+export async function getArtistList(
+	albumTypes: Array<AlbumType>, listType: ListType, seed: string | undefined, take: number, skip: number, client: JamApolloClient
+): Promise<BaseEntryList | undefined> {
+	return getCacheOrQuery<ArtistListResult, ArtistListResultVariables, BaseEntryList>(client, GET_ARTISTLIST, {albumTypes, listType, skip, take, seed}, transformData);
 }
 
 export const useLazyArtistListQuery: useListFunction = () => {

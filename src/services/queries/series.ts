@@ -5,7 +5,7 @@ import {SectionListData} from 'react-native';
 import {BaseEntry} from '../types';
 import {useCallback} from 'react';
 import {SeriesResult, SeriesResultVariables} from './types/SeriesResult';
-import {useCacheOrLazyQuery} from '../data';
+import {useCacheOrLazyQuery} from '../cache-query';
 
 const GET_SERIES = gql`
     query SeriesResult($id: ID!) {

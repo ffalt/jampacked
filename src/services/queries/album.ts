@@ -5,8 +5,8 @@ import {ApolloError} from 'apollo-client';
 import {useCallback} from 'react';
 import {AlbumResult, AlbumResult_album_tracks, AlbumResultVariables} from './types/AlbumResult';
 import gql from 'graphql-tag';
-import {useCacheOrLazyQuery} from '../data';
-import {apolloClient} from '../apollo';
+import {JamApolloClient} from '../apollo';
+import {getCacheOrQuery, useCacheOrLazyQuery} from '../cache-query';
 
 const GET_ALBUM = gql`
     query AlbumResult($id: ID!) {
@@ -89,9 +89,8 @@ function transformData(data?: AlbumResult): Album | undefined {
 	};
 }
 
-export async function getAlbum(id: string): Promise<Album | undefined> {
-	const result = await apolloClient().query<AlbumResult>({query: GET_ALBUM, variables: {id}});
-	return transformData(result?.data);
+export async function getAlbum(id: string, client: JamApolloClient): Promise<Album | undefined> {
+	return getCacheOrQuery<AlbumResult, AlbumResultVariables, Album>(client, GET_ALBUM, {id}, transformData);
 }
 
 export const useLazyAlbumQuery = (): [(id: string, forceRefresh?: boolean) => void,

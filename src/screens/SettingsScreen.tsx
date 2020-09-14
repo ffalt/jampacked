@@ -38,7 +38,7 @@ export const SettingsScreen: React.FC<BottomTabProps<BottomTabRoute.SETTINGS>> =
 	return (
 		<View style={styles.container}>
 			<ThemedText style={styles.section}>Cache</ThemedText>
-			<CachingView cache={dataService.dataCaching} title="Data & Image Cache"/>
+			<CachingView cache={dataService.cache.dataCaching} title="Data & Image Cache"/>
 			<ThemedText style={styles.section}>Pinned Offline Tracks</ThemedText>
 			<MediaCachingView/>
 			<ThemedText style={styles.section}>Theme</ThemedText>

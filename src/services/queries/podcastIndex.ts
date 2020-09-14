@@ -4,7 +4,7 @@ import {Index} from '../types';
 import {JamObjectType} from '../jam';
 import {useCallback} from 'react';
 import {PodcastIndexResult} from './types/PodcastIndexResult';
-import {useCacheOrLazyQuery} from '../data';
+import {useCacheOrLazyQuery} from '../cache-query';
 
 const GET_PODCASTINDEX = gql`
     query PodcastIndexResult {

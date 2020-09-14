@@ -40,7 +40,8 @@ export const App: React.FC = () => {
 	});
 
 	useEffect(() => {
-		initApolloClient().then(c => {
+		// dataService.initApolloClient();
+		dataService.init().then(c => {
 			setClient(c);
 			setAppAvailable(true);
 		});

@@ -4,7 +4,7 @@ import {formatDuration} from '../../utils/duration.utils';
 import {ApolloError} from 'apollo-client';
 import {useCallback} from 'react';
 import {TrackResult, TrackResultVariables} from './types/TrackResult';
-import {useCacheOrLazyQuery} from '../data';
+import {useCacheOrLazyQuery} from '../cache-query';
 
 const GET_TRACK = gql`
     query TrackResult($id: ID!) {

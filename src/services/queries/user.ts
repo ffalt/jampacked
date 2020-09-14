@@ -1,11 +1,11 @@
 import gql from 'graphql-tag';
 import {ApolloError} from 'apollo-client';
 import {useCallback} from 'react';
-import {useCacheOrLazyQuery} from '../data';
 import {UserResult, UserResult_currentUser_stats_favorite, UserResult_currentUser_stats_played} from './types/UserResult';
 import {HomeStatsData} from '../types';
 import {AlbumType, ListType} from '../jam';
 import {JamRouteLinks} from '../../navigators/Routes';
+import {useCacheOrLazyQuery} from '../cache-query';
 
 const GET_USERDATA = gql`
     query UserResult {

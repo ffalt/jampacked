@@ -4,7 +4,7 @@ import {Index} from '../types';
 import {JamObjectType} from '../jam';
 import {useCallback} from 'react';
 import {PlaylistIndexResult} from './types/PlaylistIndexResult';
-import {useCacheOrLazyQuery} from '../data';
+import {useCacheOrLazyQuery} from '../cache-query';
 
 const GET_PLAYLISTINDEX = gql`
     query PlaylistIndexResult {

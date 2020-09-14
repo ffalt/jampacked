@@ -68,7 +68,7 @@ export const BaseEntryListList: React.FC<{ query: BaseEntryListListQuery }> = ({
 		setTotal(0);
 		// TODO: this depends on ordering of graphql variables, FIXME
 		const id = (queryID || '').slice(0, queryID?.indexOf('skip'));
-		dataService.removeItemsKeyStartWith(id)
+		dataService.cache.removeKeyStartWith(id)
 			.then(() => {
 				setType((prev) => {
 					const seed = prev?.listType === ListType.random ? Date.now().toString() : undefined;

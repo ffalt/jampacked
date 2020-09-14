@@ -4,7 +4,7 @@ import {ApolloError} from 'apollo-client';
 import {formatDuration} from '../../utils/duration.utils';
 import {useCallback} from 'react';
 import {PodcastResult, PodcastResult_podcast_episodes, PodcastResultVariables} from './types/PodcastResult';
-import {useCacheOrLazyQuery} from '../data';
+import {useCacheOrLazyQuery} from '../cache-query';
 
 const GET_PODCAST = gql`
     query PodcastResult($id: ID!) {

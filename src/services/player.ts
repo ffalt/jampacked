@@ -4,13 +4,12 @@ import {TrackPlayer, TrackPlayerEvents, useTrackPlayerEvents} from './player-api
 import dataService from './data';
 import {TrackEntry} from './types';
 
-
 async function buildTrackPlayerTrack(t: TrackEntry): Promise<TrackPlayer.Track> {
 	const headers = dataService.currentUserToken ? {Authorization: `Bearer ${dataService.currentUserToken}`} : undefined;
 	const imageID = t.seriesID ? t.id : (t.albumID || t.id);
-	const local = await dataService.isDownloaded(t.id);
+	const local = await dataService.pin.isDownloaded(t.id);
 	const url = local ?
-		dataService.downloadedPath(t.id) :
+		dataService.pin.pinCache.pathInCache(t.id) :
 		dataService.jam.stream.streamUrl({id: t.id, format: AudioFormatType.mp3}, !headers);
 	return {
 		id: t.id,

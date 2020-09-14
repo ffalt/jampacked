@@ -3,7 +3,9 @@ import gql from 'graphql-tag';
 import {BaseEntryList, useListFunction} from '../types';
 import {useCallback} from 'react';
 import {SeriesListResult, SeriesListResultVariables} from './types/SeriesListResult';
-import {useCacheOrLazyQuery} from '../data';
+import {getCacheOrQuery, useCacheOrLazyQuery} from '../cache-query';
+import {JamApolloClient} from '../apollo';
+import {FolderListResult, FolderListResultVariables} from './types/FolderListResult';
 
 const GET_SERIESLIST = gql`
     query SeriesListResult($listType: ListType!, $seed: String, $albumTypes: [AlbumType!], $take: Int!, $skip: Int!) {
@@ -40,6 +42,12 @@ function transformData(data?: SeriesListResult, variables?: SeriesListResultVari
 		});
 	});
 	return result;
+}
+
+export async function getSeriesList(
+	albumTypes: Array<AlbumType>, listType: ListType, seed: string | undefined, take: number, skip: number, client: JamApolloClient
+): Promise<BaseEntryList | undefined> {
+	return getCacheOrQuery<SeriesListResult, SeriesListResultVariables, BaseEntryList>(client, GET_SERIESLIST, {albumTypes, listType, skip, take, seed}, transformData);
 }
 
 export const useLazySeriesListQuery: useListFunction = () => {

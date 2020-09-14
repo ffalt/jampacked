@@ -5,7 +5,7 @@ import {formatDuration} from '../../utils/duration.utils';
 import {ApolloError} from 'apollo-client';
 import {useCallback} from 'react';
 import {FolderResult, FolderResult_folder_tracks, FolderResultVariables} from './types/FolderResult';
-import {useCacheOrLazyQuery} from '../data';
+import {useCacheOrLazyQuery} from '../cache-query';
 
 const GET_FOLDER = gql`
     query FolderResult($id: ID!) {

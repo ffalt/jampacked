@@ -5,7 +5,10 @@ import {SectionListData} from 'react-native';
 import {BaseEntry} from '../types';
 import {useCallback} from 'react';
 import {ArtistResult, ArtistResultVariables} from './types/ArtistResult';
-import {useCacheOrLazyQuery} from '../data';
+import {getCacheOrQuery, useCacheOrLazyQuery} from '../cache-query';
+import {JamApolloClient} from '../apollo';
+import {AlbumResult, AlbumResultVariables} from './types/AlbumResult';
+import {Album} from './album';
 
 const GET_ARTIST = gql`
     query ArtistResult($id: ID!) {
@@ -81,6 +84,10 @@ function transformData(data?: ArtistResult): Artist | undefined {
 		})),
 		sections
 	};
+}
+
+export async function getArtist(id: string, client: JamApolloClient): Promise<Artist | undefined> {
+	return getCacheOrQuery<ArtistResult, ArtistResultVariables, Artist>(client, GET_ARTIST, {id}, transformData);
 }
 
 export const useLazyArtistQuery = (): [(id: string, forceRefresh?: boolean) => void,
