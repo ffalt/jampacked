@@ -1,11 +1,9 @@
 import {AlbumType, JamObjectType, ListType} from '../jam';
 import gql from 'graphql-tag';
-import {BaseEntryList, useListFunction} from '../types';
-import {useCallback} from 'react';
+import {BaseEntryList} from '../types';
 import {FolderListResult, FolderListResultVariables} from './types/FolderListResult';
-import {getCacheOrQuery, useCacheOrLazyQuery} from '../cache-query';
-import {JamApolloClient} from '../apollo';
 import {titleCase} from '../../utils/format.utils';
+import {DocumentNode} from 'graphql';
 
 const GET_FOLDERLIST = gql`
     query FolderListResult($listType: ListType!, $seed: String, $albumTypes: [AlbumType!], $take: Int!, $skip: Int!) {
@@ -51,16 +49,13 @@ function transformData(data?: FolderListResult, variables?: FolderListResultVari
 	return result;
 }
 
-export async function getFolderList(
-	albumTypes: Array<AlbumType>, listType: ListType, seed: string | undefined, take: number, skip: number, client: JamApolloClient
-): Promise<BaseEntryList | undefined> {
-	return getCacheOrQuery<FolderListResult, FolderListResultVariables, BaseEntryList>(client, GET_FOLDERLIST, {albumTypes, listType, skip, take, seed}, transformData);
+function transformVariables(albumTypes: Array<AlbumType>, listType: ListType, seed: string | undefined, take: number, skip: number): FolderListResultVariables {
+	return {albumTypes, listType, skip, take, seed};
 }
 
-export const useLazyFolderListQuery: useListFunction = () => {
-	const [query, {loading, error, data, called, queryID}] = useCacheOrLazyQuery<FolderListResult, FolderListResultVariables, BaseEntryList>(GET_FOLDERLIST, transformData);
-	const get = useCallback((albumTypes: Array<AlbumType>, listType: ListType, seed: string | undefined, take: number, skip: number, forceRefresh?: boolean): void => {
-		query({variables: {albumTypes, listType, skip, take, seed}}, forceRefresh);
-	}, [query]);
-	return [get, {loading, called, error, data, queryID}];
-};
+export const FolderIndexQuery: {
+	query: DocumentNode;
+	transformData: (d?: FolderListResult, variables?: FolderListResultVariables) => BaseEntryList | undefined;
+	transformVariables: (albumTypes: Array<AlbumType>, listType: ListType, seed: string | undefined, take: number, skip: number) => FolderListResultVariables;
+} = {query: GET_FOLDERLIST, transformData, transformVariables};
+

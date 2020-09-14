@@ -1,8 +1,8 @@
 import React, {useCallback, useEffect} from 'react';
 import {HomeRoute, HomeRouteProps} from '../navigators/Routing';
 import {IndexList} from '../components/IndexList';
-import {useLazyFolderIndexQuery} from '../services/queries/folderIndex';
 import {ErrorView} from '../components/ErrorView';
+import {useLazyFolderIndexQuery} from '../services/queries/folderIndex.hook';
 
 export const FolderIndexScreen: React.FC<HomeRouteProps<HomeRoute.FOLDERS>> = () => {
 	const [getIndex, {loading, error, called, index}] = useLazyFolderIndexQuery();

@@ -1,10 +1,8 @@
 import {AlbumType, JamObjectType, ListType} from '../jam';
 import gql from 'graphql-tag';
-import {BaseEntryList, useListFunction} from '../types';
-import {useCallback} from 'react';
+import {BaseEntryList} from '../types';
 import {AlbumListResult, AlbumListResultVariables} from './types/AlbumListResult';
-import {getCacheOrQuery, useCacheOrLazyQuery} from '../cache-query';
-import {JamApolloClient} from '../apollo';
+import {DocumentNode} from 'graphql';
 
 const GET_ALBUMLIST = gql`
     query AlbumListResult($listType: ListType!, $seed: String, $albumTypes: [AlbumType!], $take: Int!, $skip: Int!) {
@@ -45,16 +43,13 @@ function transformData(data?: AlbumListResult, variables?: AlbumListResultVariab
 	return result;
 }
 
-export async function getAlbumList(
-	albumTypes: Array<AlbumType>, listType: ListType, seed: string | undefined, take: number, skip: number, client: JamApolloClient
-): Promise<BaseEntryList | undefined> {
-	return getCacheOrQuery<AlbumListResult, AlbumListResultVariables, BaseEntryList>(client, GET_ALBUMLIST, {albumTypes, listType, skip, take, seed}, transformData);
+function transformVariables(albumTypes: Array<AlbumType>, listType: ListType, seed: string | undefined, take: number, skip: number): AlbumListResultVariables {
+	return {albumTypes, listType, skip, take, seed};
 }
 
-export const useLazyAlbumListQuery: useListFunction = () => {
-	const [query, {loading, error, data, called, queryID}] = useCacheOrLazyQuery<AlbumListResult, AlbumListResultVariables, BaseEntryList>(GET_ALBUMLIST, transformData);
-	const get = useCallback((albumTypes: Array<AlbumType>, listType: ListType, seed: string | undefined, take: number, skip: number, forceRefresh?: boolean): void => {
-		query({variables: {albumTypes, listType, skip, take, seed}}, forceRefresh);
-	}, [query]);
-	return [get, {loading, called, error, data, queryID}];
-};
+export const AlbumIndexQuery: {
+	query: DocumentNode;
+	transformData: (d?: AlbumListResult, variables?: AlbumListResultVariables) => BaseEntryList | undefined;
+	transformVariables: (albumTypes: Array<AlbumType>, listType: ListType, seed: string | undefined, take: number, skip: number) => AlbumListResultVariables;
+} = {query: GET_ALBUMLIST, transformData, transformVariables};
+

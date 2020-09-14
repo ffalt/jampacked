@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {BaseEntryListList, BaseEntryListListQuery} from '../components/BaseEntryListList';
-import {useLazyFolderListQuery} from '../services/queries/folderList';
 import {JamRouteLinks} from '../navigators/Routes';
 import {AlbumType, ListType} from '../services/jam';
+import {useLazyFolderListQuery} from '../services/queries/folderList.hook';
 
 export const FolderList: React.FC<{ query: { listType?: ListType; albumType?: AlbumType } }> = ({query}) => {
 	const [view, setView] = useState<BaseEntryListListQuery>({

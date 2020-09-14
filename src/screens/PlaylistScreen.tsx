@@ -12,12 +12,12 @@ import {snackError} from '../services/snack';
 import {commonItemLayout} from '../components/AtoZList';
 import {ThemedText} from '../components/ThemedText';
 import {TrackEntry} from '../services/types';
-import {useLazyPlaylistQuery} from '../services/queries/playlist';
 import {useTheme} from '../style/theming';
 import {ErrorView} from '../components/ErrorView';
 import ActionSheet from 'react-native-actions-sheet';
 import {ActionSheetTrack} from '../components/ActionSheetTrack';
 import {ListEmpty} from '../components/ListEmpty';
+import {useLazyPlaylistQuery} from '../services/queries/playlist.hook';
 
 export const PlaylistScreen: React.FC<HomeRouteProps<HomeRoute.PLAYLIST>> = ({route}) => {
 	const actionSheetRef: MutableRefObject<ActionSheet | null> = React.useRef<ActionSheet>(null);

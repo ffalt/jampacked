@@ -2,8 +2,8 @@ import {ActivityIndicator, ScrollView, StyleSheet, TouchableOpacity, View} from 
 import React, {useCallback, useEffect, useState} from 'react';
 import {staticTheme, useTheme} from '../style/theming';
 import {ThemedText} from './ThemedText';
-import {useLazyTrackLyricsQuery} from '../services/queries/lyrics';
 import {ThemedIcon} from './ThemedIcon';
+import {useLazyTrackLyricsQuery} from '../services/queries/lyrics.hook';
 
 const styles = StyleSheet.create({
 	container: {

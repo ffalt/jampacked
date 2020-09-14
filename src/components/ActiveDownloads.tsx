@@ -4,9 +4,9 @@ import {Separator} from '../components/Separator';
 import {commonItemLayout} from '../components/AtoZList';
 import {DownloadTask} from 'react-native-background-downloader';
 import {PageHeader} from '../components/PageHeader';
-import {useDownloads} from '../services/cache-hooks';
 import {ListEmpty} from '../components/ListEmpty';
 import {ActiveDownloadItem} from './ActiveDownloadItem';
+import {useDownloads} from '../services/pin-hooks';
 
 export const ActiveDownloads: React.FC = () => {
 	const downloads = useDownloads();

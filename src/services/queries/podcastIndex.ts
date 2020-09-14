@@ -1,10 +1,8 @@
 import gql from 'graphql-tag';
-import {ApolloError} from 'apollo-client';
 import {Index} from '../types';
 import {JamObjectType} from '../jam';
-import {useCallback} from 'react';
 import {PodcastIndexResult} from './types/PodcastIndexResult';
-import {useCacheOrLazyQuery} from '../cache-query';
+import {DocumentNode} from 'graphql';
 
 const GET_PODCASTINDEX = gql`
     query PodcastIndexResult {
@@ -35,20 +33,12 @@ function transformData(data?: PodcastIndexResult): Index | undefined {
 	return index;
 }
 
-export const useLazyPodcastIndexQuery = (): [(forceRefresh?: boolean) => void,
-	{ loading: boolean, error?: ApolloError, index?: Index, called: boolean }
-] => {
-	const [query, {loading, error, data, called}] = useCacheOrLazyQuery<PodcastIndexResult, void, Index>(GET_PODCASTINDEX, transformData);
-	const get = useCallback((forceRefresh?: boolean): void => {
-		query({}, forceRefresh);
-	}, [query]);
-	return [
-		get,
-		{
-			loading,
-			called,
-			error,
-			index: data
-		}
-	];
-};
+function transformVariables(): void {
+	return;
+}
+
+export const PodcastIndexQuery: {
+	query: DocumentNode;
+	transformData: (d?: PodcastIndexResult, variables?: void) => Index | undefined;
+	transformVariables: () => void;
+} = {query: GET_PODCASTINDEX, transformData, transformVariables};

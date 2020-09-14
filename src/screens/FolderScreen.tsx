@@ -10,10 +10,11 @@ import {Separator} from '../components/Separator';
 import {snackError} from '../services/snack';
 import {Item} from '../components/Item';
 import {FolderType} from '../services/jam';
-import {Folder, FolderItem, useLazyFolderQuery} from '../services/queries/folder';
+import {Folder, FolderItem} from '../services/queries/folder';
 import {useTheme} from '../style/theming';
 import {ErrorView} from '../components/ErrorView';
 import {ListEmpty} from '../components/ListEmpty';
+import {useLazyFolderQuery} from '../services/queries/folder.hook';
 
 const styles = StyleSheet.create({
 	playButton: {

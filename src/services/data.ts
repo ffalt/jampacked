@@ -22,7 +22,7 @@ export class DataService {
 		this.client = await initApolloClient(this);
 		this.cache = new CacheService(this.db, this.client);
 		await this.cache.init();
-		this.pin = new PinService(this.db, this.client);
+		this.pin = new PinService(this);
 		await this.pin.init();
 		return this.client;
 	}

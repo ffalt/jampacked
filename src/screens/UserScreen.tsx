@@ -6,10 +6,10 @@ import {staticTheme, useTheme} from '../style/theming';
 import {JamImage} from '../components/JamImage';
 import {useAuth} from '../services/auth';
 import {ThemedIcon} from '../components/ThemedIcon';
-import {useLazyUserDataQuery} from '../services/queries/user';
 import dataService from '../services/data';
 import {Stats} from '../components/Stats';
 import {ErrorView} from '../components/ErrorView';
+import {useLazyUserDataQuery} from '../services/queries/user.hook';
 
 const styles = StyleSheet.create({
 	container: {

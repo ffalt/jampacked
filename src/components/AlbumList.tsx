@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import {useLazyAlbumListQuery} from '../services/queries/albumList';
 import {BaseEntryListList, BaseEntryListListQuery} from '../components/BaseEntryListList';
 import {AlbumType, ListType} from '../services/jam';
 import {getAlbumTypeInfos} from '../services/jam-lists';
+import {useLazyAlbumListQuery} from '../services/queries/albumList.hook';
 
 export const AlbumList: React.FC<{ query: { listType?: ListType; albumType?: AlbumType } }> = ({query}) => {
 	const [view, setView] = useState<BaseEntryListListQuery>({

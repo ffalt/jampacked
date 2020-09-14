@@ -4,6 +4,8 @@ import {Caching} from './caching';
 import {Doc} from './types';
 import FastImage from 'react-native-fast-image';
 import {snackSuccess} from './snack';
+import {DocumentNode} from 'graphql';
+import {buildCacheID} from './cache-query';
 
 export class CacheService {
 	version = 11;
@@ -193,4 +195,21 @@ export class CacheService {
 		snackSuccess('Cache optimized');
 	*/
 	}
+
+	async getCacheOrQuery<TData, TVariables, TResult>(
+		query: DocumentNode,
+		variables: TVariables,
+		transform: (d?: TData, variables?: TVariables) => TResult | undefined,
+	): Promise<TResult | undefined> {
+		const queryID = buildCacheID<TVariables>(query, variables);
+		if (queryID) {
+			const cache = await this.getData<TResult>(queryID);
+			if (cache) {
+				return cache;
+			}
+			const result = await this.client.query<TData>({query, variables});
+			return transform(result?.data, variables);
+		}
+	}
+
 }

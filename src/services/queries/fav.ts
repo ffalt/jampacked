@@ -53,6 +53,5 @@ const SET_FAV = gql`
     }
 `;
 
-
 export const useFavMutation = (): MutationTuple<SetFavResult, SetFavResultVariables> =>
 	useMutation<SetFavResult, SetFavResultVariables>(SET_FAV);

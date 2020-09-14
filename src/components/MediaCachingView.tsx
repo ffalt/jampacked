@@ -3,7 +3,7 @@ import {ActivityIndicator, Button, StyleSheet, View} from 'react-native';
 import {ThemedText} from './ThemedText';
 import {staticTheme} from '../style/theming';
 import dataService from '../services/data';
-import {useMediaCacheStat} from '../services/cache-hooks';
+import {useMediaCacheStat} from '../services/pin-hooks';
 
 const styles = StyleSheet.create({
 	container: {

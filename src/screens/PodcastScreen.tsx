@@ -12,12 +12,12 @@ import {snackError} from '../services/snack';
 import {commonItemLayout} from '../components/AtoZList';
 import {ThemedText} from '../components/ThemedText';
 import {TrackEntry} from '../services/types';
-import {useLazyPodcastQuery} from '../services/queries/podcast';
 import {useTheme} from '../style/theming';
 import {ErrorView} from '../components/ErrorView';
 import ActionSheet from 'react-native-actions-sheet';
 import {ActionSheetEpisode} from '../components/ActionSheetEpisode';
 import {ListEmpty} from '../components/ListEmpty';
+import {useLazyPodcastQuery} from '../services/queries/podcast.hook';
 
 export const PodcastScreen: React.FC<HomeRouteProps<HomeRoute.PODCAST>> = ({route}) => {
 	const actionSheetRef: MutableRefObject<ActionSheet | null> = React.useRef<ActionSheet>(null);

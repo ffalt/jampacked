@@ -1,10 +1,8 @@
 import gql from 'graphql-tag';
 import {Index} from '../types';
 import {JamObjectType} from '../jam';
-import {ApolloError} from 'apollo-client';
-import {useCallback} from 'react';
 import {SeriesIndexResult} from './types/SeriesIndexResult';
-import {useCacheOrLazyQuery} from '../cache-query';
+import {DocumentNode} from 'graphql';
 
 const GET_SERIESINDEX = gql`
     query SeriesIndexResult {
@@ -40,20 +38,14 @@ function transformData(data?: SeriesIndexResult): Index | undefined {
 	return index;
 }
 
-export const useLazySeriesIndexQuery = (): [(forceRefresh?: boolean) => void,
-	{ loading: boolean, error?: ApolloError, index?: Index, called: boolean }
-] => {
-	const [query, {loading, error, data, called}] = useCacheOrLazyQuery<SeriesIndexResult, void, Index>(GET_SERIESINDEX, transformData);
-	const get = useCallback((forceRefresh?: boolean): void => {
-		query({}, forceRefresh);
-	}, [query]);
-	return [
-		get,
-		{
-			loading,
-			error,
-			called,
-			index: data
-		}
-	];
-};
+
+function transformVariables(): void {
+	return;
+}
+
+export const SeriesIndexQuery: {
+	query: DocumentNode;
+	transformData: (d?: SeriesIndexResult, variables?: void) => Index | undefined;
+	transformVariables: () => void;
+} = {query: GET_SERIESINDEX, transformData, transformVariables};
+

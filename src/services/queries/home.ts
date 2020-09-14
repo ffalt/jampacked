@@ -2,11 +2,9 @@ import gql from 'graphql-tag';
 import {HomeData, HomeStatsData} from '../types';
 import {HomeRoute} from '../../navigators/Routing';
 import {AlbumType} from '../jam';
-import {ApolloError} from 'apollo-client';
-import {useCallback} from 'react';
 import {HomeResult} from './types/HomeResult';
 import {JamRouteLinks} from '../../navigators/Routes';
-import {useCacheOrLazyQuery} from '../cache-query';
+import {DocumentNode} from 'graphql';
 
 const GET_HOMEDATA = gql`
     query HomeResult {
@@ -71,7 +69,7 @@ const GET_HOMEDATA = gql`
     }
 `;
 
-interface HomeDataResult {
+export interface HomeDataResult {
 	stats: HomeStatsData;
 	homeData: HomeData;
 }
@@ -104,20 +102,12 @@ function transformData(data?: HomeResult): HomeDataResult | undefined {
 	return {homeData, stats};
 }
 
-export const useLazyHomeDataQuery = (): [(forceRefresh?: boolean) => void,
-	{ loading: boolean, error?: ApolloError, homeData?: HomeDataResult, called: boolean }
-] => {
-	const [query, {loading, error, data, called}] = useCacheOrLazyQuery<HomeResult, void, HomeDataResult>(GET_HOMEDATA, transformData);
-	const get = useCallback((forceRefresh?: boolean): void => {
-		query({}, forceRefresh);
-	}, [query]);
-	return [
-		get,
-		{
-			loading,
-			called,
-			error,
-			homeData: data
-		}
-	];
-};
+function transformVariables(): void {
+	return;
+}
+
+export const HomeQuery: {
+	query: DocumentNode;
+	transformData: (d?: HomeResult, variables?: void) => HomeDataResult | undefined;
+	transformVariables: () => void;
+} = {query: GET_HOMEDATA, transformData, transformVariables};

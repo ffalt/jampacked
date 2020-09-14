@@ -10,9 +10,9 @@ import {Separator} from '../components/Separator';
 import {FavIcon} from '../components/FavIcon';
 import {JamObjectType} from '../services/jam';
 import {BaseEntry} from '../services/types';
-import {useLazyArtistQuery} from '../services/queries/artist';
 import {ErrorView} from '../components/ErrorView';
 import {ListEmpty} from '../components/ListEmpty';
+import {useLazyArtistQuery} from '../services/queries/artist.hook';
 
 const styles = StyleSheet.create({
 	SectionHeader: {

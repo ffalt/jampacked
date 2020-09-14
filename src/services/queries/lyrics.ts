@@ -1,8 +1,6 @@
 import gql from 'graphql-tag';
-import {ApolloError} from 'apollo-client';
-import {useCallback} from 'react';
 import {TrackLyricsResult, TrackLyricsResultVariables} from './types/TrackLyricsResult';
-import {useCacheOrLazyQuery} from '../cache-query';
+import {DocumentNode} from 'graphql';
 
 const GET_TRACKLYRICS = gql`
     query TrackLyricsResult($id: ID!) {
@@ -16,7 +14,7 @@ const GET_TRACKLYRICS = gql`
     }
 `;
 
-interface TrackLyrics {
+export interface TrackLyrics {
 	lyrics?: string;
 	source?: string;
 }
@@ -28,20 +26,14 @@ export const transformData = (data?: TrackLyricsResult): TrackLyrics | undefined
 	} : undefined;
 };
 
-export const useLazyTrackLyricsQuery = (): [(id: string, forceRefresh?: boolean) => void,
-	{ loading: boolean, error?: ApolloError, lyrics?: TrackLyrics, called: boolean }
-] => {
-	const [query, {loading, error, data, called}] = useCacheOrLazyQuery<TrackLyricsResult, TrackLyricsResultVariables, TrackLyrics>(GET_TRACKLYRICS, transformData);
-	const get = useCallback((id: string, forceRefresh?: boolean): void => {
-		query({variables: {id}}, forceRefresh);
-	}, [query]);
-	return [
-		get,
-		{
-			loading,
-			called,
-			error,
-			lyrics: data
-		}
-	];
-};
+function transformVariables(id: string): TrackLyricsResultVariables {
+	return {id};
+}
+
+export const TrackLyricsQuery: {
+	query: DocumentNode;
+	transformData: (d?: TrackLyricsResult, variables?: TrackLyricsResultVariables) => TrackLyrics | undefined;
+	transformVariables: (id: string) => TrackLyricsResultVariables;
+} = {query: GET_TRACKLYRICS, transformData, transformVariables};
+
+

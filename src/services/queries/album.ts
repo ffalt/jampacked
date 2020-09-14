@@ -1,12 +1,9 @@
 import {TrackEntry} from '../types';
 import {AlbumType} from '../jam';
 import {formatDuration} from '../../utils/duration.utils';
-import {ApolloError} from 'apollo-client';
-import {useCallback} from 'react';
 import {AlbumResult, AlbumResult_album_tracks, AlbumResultVariables} from './types/AlbumResult';
 import gql from 'graphql-tag';
-import {JamApolloClient} from '../apollo';
-import {getCacheOrQuery, useCacheOrLazyQuery} from '../cache-query';
+import {DocumentNode} from 'graphql';
 
 const GET_ALBUM = gql`
     query AlbumResult($id: ID!) {
@@ -89,24 +86,13 @@ function transformData(data?: AlbumResult): Album | undefined {
 	};
 }
 
-export async function getAlbum(id: string, client: JamApolloClient): Promise<Album | undefined> {
-	return getCacheOrQuery<AlbumResult, AlbumResultVariables, Album>(client, GET_ALBUM, {id}, transformData);
+function transformVariables(id: string): AlbumResultVariables {
+	return {id};
 }
 
-export const useLazyAlbumQuery = (): [(id: string, forceRefresh?: boolean) => void,
-	{ loading: boolean, error?: ApolloError, album?: Album, called: boolean }
-] => {
-	const [query, {loading, error, data, called}] = useCacheOrLazyQuery<AlbumResult, AlbumResultVariables, Album>(GET_ALBUM, transformData);
-	const get = useCallback((id: string, forceRefresh?: boolean): void => {
-		query({variables: {id}}, forceRefresh);
-	}, [query]);
-	return [
-		get,
-		{
-			loading,
-			called,
-			error,
-			album: data
-		}
-	];
-};
+export const AlbumQuery: {
+	query: DocumentNode;
+	transformData: (d?: AlbumResult, variables?: AlbumResultVariables) => Album | undefined;
+	transformVariables: (id: string) => AlbumResultVariables;
+} = {query: GET_ALBUM, transformData, transformVariables};
+

@@ -13,13 +13,13 @@ import {snackError} from '../services/snack';
 import {commonItemLayout} from '../components/AtoZList';
 import {NavigationService} from '../navigators/navigation';
 import {TrackEntry} from '../services/types';
-import {useLazyAlbumQuery} from '../services/queries/album';
 import {useTheme} from '../style/theming';
 import {ErrorView} from '../components/ErrorView';
 import ActionSheet from 'react-native-actions-sheet';
 import {ActionSheetTrack} from '../components/ActionSheetTrack';
 import {ListEmpty} from '../components/ListEmpty';
 import {PinIcon} from '../components/PinIcon';
+import {useLazyAlbumQuery} from '../services/queries/album.hook';
 
 const buildDetails = (artist?: string, tracks?: number, genre?: string, click?: () => void): Array<HeaderDetail> => {
 	return [

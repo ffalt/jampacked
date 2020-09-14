@@ -3,10 +3,10 @@ import {FlatList} from 'react-native';
 import {Separator} from '../components/Separator';
 import {commonItemLayout} from '../components/AtoZList';
 import {PageHeader} from '../components/PageHeader';
-import {usePinnedMedia} from '../services/cache-hooks';
 import {ListEmpty} from '../components/ListEmpty';
 import {PinnedMediaItem} from './PinnedMediaItem';
 import {PinMedia} from '../services/types';
+import {usePinnedMedia} from '../services/pin-hooks';
 
 export const PinnedMedia: React.FC = () => {
 	const {media, loading} = usePinnedMedia();

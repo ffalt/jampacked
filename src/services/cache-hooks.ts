@@ -1,122 +1,58 @@
-import {DownloadProgress, MediaCacheStat} from './media-cache';
-import {useEffect, useState} from 'react';
-import {DownloadTask} from 'react-native-background-downloader';
+import {DocumentNode} from 'graphql';
+import {LazyQueryHookOptions, QueryLazyOptions} from '@apollo/client/react/types/types';
+import {useCallback, useEffect, useState} from 'react';
+import {useLazyQuery} from '@apollo/react-hooks';
+import {ApolloError} from 'apollo-client';
 import dataService from './data';
-import {PinMedia} from './types';
+import {buildCacheID} from './cache-query';
 
+export type QueryFunc<TVariables> = (options?: QueryLazyOptions<TVariables>, forceRefresh?: boolean) => void;
+export type QueryHookData<TResult> = { loading: boolean, error?: ApolloError, data?: TResult, called: boolean, queryID?: string };
 
-export function useMediaCacheStat(): MediaCacheStat | undefined {
-	const [stat, setStat] = useState<MediaCacheStat | undefined>();
-	//
-	// useEffect(() => {
-	//
-	// 	let isSubscribed = true;
-	//
-	// 	dataService.mediaCacheStat()
-	// 		.then(result => {
-	// 			if (isSubscribed) {
-	// 				setStat(result);
-	// 			}
-	// 		});
-	//
-	// 	return (): void => {
-	// 		isSubscribed = false;
-	// 	};
-	//
-	// }, []);
+export function useCacheOrLazyQuery<TData, TVariables, TResult>(
+	query: DocumentNode,
+	transform: (d?: TData, variables?: TVariables) => TResult | undefined,
+	options?: LazyQueryHookOptions<TData, TVariables>): [QueryFunc<TVariables>, QueryHookData<TResult>] {
+	const [result, setResult] = useState<TResult | undefined>();
+	const [id, setID] = useState<string | undefined>();
+	const [queryData, setQueryData] = useState<any>();
+	const [q, {loading, error, data, variables}] = useLazyQuery<TData, TVariables>(query, options);
 
-	useEffect(() => {
-		let isSubscribed = true;
-
-		const update = (): void => {
-			dataService.pin.pinCache.stat()
-				.then(s => {
-					if (isSubscribed) {
-						setStat(s);
+	const execute = useCallback((queryOptions?: QueryLazyOptions<TVariables>, forceRefresh?: boolean): void => {
+		const queryID = buildCacheID<TVariables>(query, queryOptions?.variables);
+		if (queryID) {
+			setID(queryID);
+			setResult(undefined);
+			setQueryData(undefined);
+			if (forceRefresh) {
+				q(queryOptions);
+			} else {
+				dataService.cache.getData<TResult>(queryID).then(r => {
+					if (r) {
+						setResult(r);
+					} else {
+						q(queryOptions);
 					}
 				});
-		};
-
-		dataService.pin.pinCache.subscribeCacheChangeUpdates(update);
-		update();
-		return (): void => {
-			isSubscribed = false;
-			dataService.pin.pinCache.unsubscribeCacheChangeUpdates(update);
-		};
-	}, []);
-
-	return stat;
-}
-
-
-export function usePinnedMedia(): { media: Array<PinMedia>, loading: boolean } {
-	const [media, setMedia] = useState<Array<PinMedia>>([]);
-	const [loading, setLoading] = useState<boolean>(true);
-
-	useEffect(() => {
-		let isSubscribed = true;
-
-		const update = (): void => {
-			dataService.pin.getPins().then(pins => {
-				if (isSubscribed) {
-					setMedia(pins);
-					setLoading(false);
-				}
-			});
-		};
-
-		update();
-		// dataService.mediaCache.subscribePinsChanges(update);
-		return (): void => {
-			isSubscribed = false;
-			// dataService.mediaCache.unsubscribePinsChanges(update);
-		};
-	}, []);
-
-	return {media, loading};
-}
-
-export function useDownloads(): Array<DownloadTask> {
-	const [tasks, setTasks] = useState<Array<DownloadTask>>(dataService.pin.pinCache.tasks);
-
-	useEffect(() => {
-		let isSubscribed = true;
-		const update = (list: Array<DownloadTask>): void => {
-			if (isSubscribed) {
-				setTasks(list);
 			}
-		};
-
-		dataService.pin.pinCache.subscribeTaskUpdates(update);
-		return (): void => {
-			isSubscribed = false;
-			dataService.pin.pinCache.unsubscribeTaskUpdates(update);
-		};
-	}, [tasks]);
-
-
-	return tasks;
-}
-
-export const useDownloadStatus = (id: string): DownloadProgress | undefined => {
-
-	const [downloadProgress, setDownloadProgress] = useState<DownloadProgress | undefined>(
-		dataService.pin.pinCache.getProgress(id)
-	);
+		}
+	}, [query, q]);
 
 	useEffect(() => {
-		let isSubscribed = true;
-		const update = (progress: DownloadProgress): void => {
-			if (isSubscribed) {
-				setDownloadProgress(progress);
-			}
-		};
-		dataService.pin.pinCache.subscribeDownloadUpdates(id, update);
-		return (): void => {
-			isSubscribed = false;
-			dataService.pin.pinCache.unsubscribeDownloadUpdates(id, update);
-		};
-	}, [id]);
+		if (data) {
+			setQueryData(data);
+		}
+	}, [data]);
 
-	return downloadProgress;
-};
+	useEffect(() => {
+		if (queryData) {
+			const r = transform(queryData, variables);
+			if (id && r) {
+				setResult(r);
+				dataService.cache.setData(id, r);
+			}
+		}
+	}, [variables, id, transform, queryData]);
+
+	return [execute, {loading, error, data: result, called: !!id, queryID: id}];
+}

@@ -6,7 +6,7 @@ import {ThemedText} from '../components/ThemedText';
 import {formatDuration} from '../utils/duration.utils';
 import {ThemedIcon} from '../components/ThemedIcon';
 import {CircularProgress} from '../components/CircularProgress';
-import {useDownloadStatus} from '../services/cache-hooks';
+import {useDownloadStatus} from '../services/pin-hooks';
 
 const styles = StyleSheet.create({
 	item: {

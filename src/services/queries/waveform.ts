@@ -1,9 +1,7 @@
 import gql from 'graphql-tag';
-import {ApolloError} from 'apollo-client';
-import {useCallback, useEffect, useState} from 'react';
 import {Jam} from '../jam';
 import {WaveformResult, WaveformResultVariables} from './types/WaveformResult';
-import {useLazyQuery} from '@apollo/react-hooks';
+import {DocumentNode} from 'graphql';
 
 const GET_WAVEFORM = gql`
     query WaveformResult($id: ID!) {
@@ -17,27 +15,12 @@ export const transformData = (data?: WaveformResult): Jam.WaveFormData | undefin
 	return data?.waveform?.json ? JSON.parse(data.waveform.json) : undefined;
 };
 
-export const useLazyWaveformQuery = (): [(id: string) => void,
-	{ loading: boolean, error?: ApolloError, waveform?: Jam.WaveFormData, called: boolean }
-] => {
-	const [waveform, setWaveform] = useState<Jam.WaveFormData | undefined>(undefined);
-	const [query, {loading, error, data, called}] = useLazyQuery<WaveformResult, WaveformResultVariables>(GET_WAVEFORM);
+function transformVariables(id: string): WaveformResultVariables {
+	return {id};
+}
 
-	useEffect(() => {
-		setWaveform(transformData(data));
-	}, [data]);
-
-	const get = useCallback((id: string): void => {
-		query({variables: {id}});
-	}, [query]);
-
-	return [
-		get,
-		{
-			loading,
-			called,
-			error,
-			waveform
-		}
-	];
-};
+export const WaveformQuery: {
+	query: DocumentNode;
+	transformData: (d?: WaveformResult, variables?: WaveformResultVariables) => Jam.WaveFormData | undefined;
+	transformVariables: (id: string) => WaveformResultVariables;
+} = {query: GET_WAVEFORM, transformData, transformVariables};

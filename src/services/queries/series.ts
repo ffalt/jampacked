@@ -1,11 +1,9 @@
 import gql from 'graphql-tag';
 import {AlbumType, JamObjectType} from '../jam';
-import {ApolloError} from 'apollo-client';
 import {SectionListData} from 'react-native';
 import {BaseEntry} from '../types';
-import {useCallback} from 'react';
 import {SeriesResult, SeriesResultVariables} from './types/SeriesResult';
-import {useCacheOrLazyQuery} from '../cache-query';
+import {DocumentNode} from 'graphql';
 
 const GET_SERIES = gql`
     query SeriesResult($id: ID!) {
@@ -88,20 +86,12 @@ function transformData(data?: SeriesResult): Series | undefined {
 	};
 }
 
-export const useLazySeriesQuery = (): [(id: string, forceRefresh?: boolean) => void,
-	{ loading: boolean, error?: ApolloError, series?: Series, called: boolean }
-] => {
-	const [query, {loading, error, data, called}] = useCacheOrLazyQuery<SeriesResult, SeriesResultVariables, Series>(GET_SERIES, transformData);
-	const get = useCallback((id: string, forceRefresh?: boolean): void => {
-		query({variables: {id}}, forceRefresh);
-	}, [query]);
-	return [
-		get,
-		{
-			loading,
-			called,
-			error,
-			series: data
-		}
-	];
-};
+function transformVariables(id: string): SeriesResultVariables {
+	return {id};
+}
+
+export const SeriesQuery: {
+	query: DocumentNode;
+	transformData: (d?: SeriesResult, variables?: SeriesResultVariables) => Series | undefined;
+	transformVariables: (id: string) => SeriesResultVariables;
+} = {query: GET_SERIES, transformData, transformVariables};

@@ -1,11 +1,8 @@
 import {AlbumType, JamObjectType, ListType} from '../jam';
 import gql from 'graphql-tag';
-import {BaseEntryList, useListFunction} from '../types';
-import {useCallback} from 'react';
+import {BaseEntryList} from '../types';
 import {SeriesListResult, SeriesListResultVariables} from './types/SeriesListResult';
-import {getCacheOrQuery, useCacheOrLazyQuery} from '../cache-query';
-import {JamApolloClient} from '../apollo';
-import {FolderListResult, FolderListResultVariables} from './types/FolderListResult';
+import {DocumentNode} from 'graphql';
 
 const GET_SERIESLIST = gql`
     query SeriesListResult($listType: ListType!, $seed: String, $albumTypes: [AlbumType!], $take: Int!, $skip: Int!) {
@@ -44,16 +41,13 @@ function transformData(data?: SeriesListResult, variables?: SeriesListResultVari
 	return result;
 }
 
-export async function getSeriesList(
-	albumTypes: Array<AlbumType>, listType: ListType, seed: string | undefined, take: number, skip: number, client: JamApolloClient
-): Promise<BaseEntryList | undefined> {
-	return getCacheOrQuery<SeriesListResult, SeriesListResultVariables, BaseEntryList>(client, GET_SERIESLIST, {albumTypes, listType, skip, take, seed}, transformData);
+function transformVariables(albumTypes: Array<AlbumType>, listType: ListType, seed: string | undefined, take: number, skip: number): SeriesListResultVariables {
+	return {albumTypes, listType, skip, take, seed};
 }
 
-export const useLazySeriesListQuery: useListFunction = () => {
-	const [query, {loading, error, data, called, queryID}] = useCacheOrLazyQuery<SeriesListResult, SeriesListResultVariables, BaseEntryList>(GET_SERIESLIST, transformData);
-	const get = useCallback((albumTypes: Array<AlbumType>, listType: ListType, seed: string | undefined, take: number, skip: number, forceRefresh?: boolean): void => {
-		query({variables: {albumTypes, listType, skip, take, seed}}, forceRefresh);
-	}, [query]);
-	return [get, {loading, called, error, data, queryID}];
-};
+export const SeriesListQuery: {
+	query: DocumentNode;
+	transformData: (d?: SeriesListResult, variables?: SeriesListResultVariables) => BaseEntryList | undefined;
+	transformVariables: (albumTypes: Array<AlbumType>, listType: ListType, seed: string | undefined, take: number, skip: number) => SeriesListResultVariables;
+} = {query: GET_SERIESLIST, transformData, transformVariables};
+

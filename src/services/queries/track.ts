@@ -1,10 +1,8 @@
 import gql from 'graphql-tag';
 import {TrackEntry} from '../types';
 import {formatDuration} from '../../utils/duration.utils';
-import {ApolloError} from 'apollo-client';
-import {useCallback} from 'react';
 import {TrackResult, TrackResultVariables} from './types/TrackResult';
-import {useCacheOrLazyQuery} from '../cache-query';
+import {DocumentNode} from 'graphql';
 
 const GET_TRACK = gql`
     query TrackResult($id: ID!) {
@@ -53,20 +51,13 @@ export const transformData = (data?: TrackResult): TrackEntry | undefined => {
 	};
 };
 
-export const useLazyTrackQuery = (): [(id: string, forceRefresh?: boolean) => void,
-	{ loading: boolean, error?: ApolloError, track?: TrackEntry, called: boolean }
-] => {
-	const [query, {loading, error, data, called}] = useCacheOrLazyQuery<TrackResult, TrackResultVariables, TrackEntry>(GET_TRACK, transformData);
-	const get = useCallback((id: string, forceRefresh?: boolean): void => {
-		query({variables: {id}}, forceRefresh);
-	}, [query]);
-	return [
-		get,
-		{
-			loading,
-			called,
-			error,
-			track: data
-		}
-	];
-};
+function transformVariables(id: string): TrackResultVariables {
+	return {id};
+}
+
+export const TrackQuery: {
+	query: DocumentNode;
+	transformData: (d?: TrackResult, variables?: TrackResultVariables) => TrackEntry | undefined;
+	transformVariables: (id: string) => TrackResultVariables;
+} = {query: GET_TRACK, transformData, transformVariables};
+

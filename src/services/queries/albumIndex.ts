@@ -1,11 +1,8 @@
 import {AlbumType, JamObjectType} from '../jam';
 import gql from 'graphql-tag';
-import {ApolloError} from 'apollo-client';
 import {Index} from '../types';
-import {useCallback} from 'react';
 import {AlbumIndexResult, AlbumIndexResultVariables} from './types/AlbumIndexResult';
-import {getCacheOrQuery, useCacheOrLazyQuery} from '../cache-query';
-import {JamApolloClient} from '../apollo';
+import {DocumentNode} from 'graphql';
 
 const GET_ALBUMINDEX = gql`
     query AlbumIndexResult($albumTypes: [AlbumType!]) {
@@ -43,24 +40,12 @@ function transformData(data?: AlbumIndexResult): Index | undefined {
 	return index;
 }
 
-export async function getAlbumIndex(albumTypes: Array<AlbumType>, client: JamApolloClient): Promise<Index | undefined> {
-	return getCacheOrQuery<AlbumIndexResult, AlbumIndexResultVariables, Index>(client, GET_ALBUMINDEX, {albumTypes}, transformData);
+function transformVariables(albumTypes: Array<AlbumType>): AlbumIndexResultVariables {
+	return {albumTypes};
 }
 
-export const useLazyAlbumIndexQuery = (): [(albumTypes: Array<AlbumType>, forceRefresh?: boolean) => void,
-	{ loading: boolean, error?: ApolloError, index?: Index, called: boolean }
-] => {
-	const [query, {loading, error, data, called}] = useCacheOrLazyQuery<AlbumIndexResult, AlbumIndexResultVariables, Index>(GET_ALBUMINDEX, transformData);
-	const get = useCallback((albumTypes: Array<AlbumType>, forceRefresh?: boolean): void => {
-		query({variables: {albumTypes}}, forceRefresh);
-	}, [query]);
-	return [
-		get,
-		{
-			loading,
-			called,
-			error,
-			index: data
-		}
-	];
-};
+export const AlbumIndexQuery: {
+	query: DocumentNode;
+	transformData: (d?: AlbumIndexResult, variables?: AlbumIndexResultVariables) => Index | undefined;
+	transformVariables: (albumTypes: Array<AlbumType>) => AlbumIndexResultVariables;
+} = {query: GET_ALBUMINDEX, transformData, transformVariables};

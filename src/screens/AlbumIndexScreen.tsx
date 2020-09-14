@@ -1,10 +1,10 @@
 import React, {useCallback, useContext, useEffect, useState} from 'react';
 import {AlbumsRoute, AlbumsRouteProps} from '../navigators/Routing';
 import {IndexList} from '../components/IndexList';
-import {useLazyAlbumIndexQuery} from '../services/queries/albumIndex';
 import {ErrorView} from '../components/ErrorView';
 import {getAlbumTypeInfos} from '../services/jam-lists';
 import {AlbumsTabNavigatorContext} from '../navigators/AlbumsNavigatorContext';
+import {useLazyAlbumIndexQuery} from '../services/queries/albumIndex.hook';
 
 export const AlbumIndexScreen: React.FC<AlbumsRouteProps<AlbumsRoute.INDEX>> = () => {
 	const [title, setTitle] = useState<string>('');

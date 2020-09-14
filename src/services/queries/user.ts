@@ -1,11 +1,9 @@
 import gql from 'graphql-tag';
-import {ApolloError} from 'apollo-client';
-import {useCallback} from 'react';
 import {UserResult, UserResult_currentUser_stats_favorite, UserResult_currentUser_stats_played} from './types/UserResult';
 import {HomeStatsData} from '../types';
 import {AlbumType, ListType} from '../jam';
 import {JamRouteLinks} from '../../navigators/Routes';
-import {useCacheOrLazyQuery} from '../cache-query';
+import {DocumentNode} from 'graphql';
 
 const GET_USERDATA = gql`
     query UserResult {
@@ -101,20 +99,13 @@ function transformData(data?: UserResult): UserDataResult | undefined {
 	return {stats: base, favorites, played};
 }
 
-export const useLazyUserDataQuery = (): [(forceRefresh?: boolean) => void,
-	{ loading: boolean, error?: ApolloError, userData?: UserDataResult, called: boolean }
-] => {
-	const [query, {loading, error, data, called}] = useCacheOrLazyQuery<UserResult, void, UserDataResult>(GET_USERDATA, transformData);
-	const get = useCallback((forceRefresh?: boolean): void => {
-		query({}, forceRefresh);
-	}, [query]);
-	return [
-		get,
-		{
-			loading,
-			called,
-			error,
-			userData: data
-		}
-	];
-};
+function transformVariables(): void {
+	return;
+}
+
+export const UserQuery: {
+	query: DocumentNode;
+	transformData: (d?: UserResult, variables?: void) => UserDataResult | undefined;
+	transformVariables: (id: string) => void;
+} = {query: GET_USERDATA, transformData, transformVariables};
+

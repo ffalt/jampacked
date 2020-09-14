@@ -1,18 +1,16 @@
-import {Database} from './db';
 import {Doc, PinMedia, PinState, TrackEntry} from './types';
 import {MediaCache} from './media-cache';
 import {AudioFormatType, JamObjectType} from './jam';
-import {getAlbum} from './queries/album';
 import {DownloadTask} from 'react-native-background-downloader';
-import {JamApolloClient} from './apollo';
-import dataService from './data';
+import {DataService} from './data';
+import {AlbumQuery} from './queries/album';
 
 export class PinService {
 	private pinSubscriptions = new Map<string, Array<(state: PinState) => void>>();
 	pinCache = new MediaCache();
 	private dataFormatVersion = 1;
 
-	constructor(private db: Database, private client: JamApolloClient) {
+	constructor(private owner: DataService) {
 	}
 
 	async init(): Promise<void> {
@@ -25,11 +23,11 @@ export class PinService {
 	}
 
 	async download(tracks: Array<TrackEntry>): Promise<void> {
-		const headers = dataService.currentUserToken ? {Authorization: `Bearer ${dataService.currentUserToken}`} : undefined;
+		const headers = this.owner.currentUserToken ? {Authorization: `Bearer ${this.owner.currentUserToken}`} : undefined;
 		const downloads = tracks.map(t => {
 			return {
 				id: t.id,
-				url: dataService.jam.stream.streamUrl({id: t.id, format: AudioFormatType.mp3}, !headers),
+				url: this.owner.jam.stream.streamUrl({id: t.id, format: AudioFormatType.mp3}, !headers),
 				destination: this.pinCache.pathInCache(t.id),
 				tag: t.title,
 				headers
@@ -40,18 +38,18 @@ export class PinService {
 
 	private async dropPinCache(): Promise<void> {
 		const dropTableScript = 'DROP TABLE IF EXISTS pin';
-		await this.db.query(dropTableScript);
+		await this.owner.db.query(dropTableScript);
 		await this.checkDB();
 	}
 
 	private async checkDB(): Promise<void> {
 		const createPinTableScript = 'CREATE TABLE if not exists pin(_id INTEGER PRIMARY KEY AUTOINCREMENT, key TEXT, data TEXT, date integer, version integer)';
-		await this.db.query(createPinTableScript);
+		await this.owner.db.query(createPinTableScript);
 	}
 
 	private async getPinDocs<T>(): Promise<Array<Doc<T>>> {
 		try {
-			const results = await this.db.query('SELECT * FROM pin');
+			const results = await this.owner.db.query('SELECT * FROM pin');
 			const list: Array<Doc<T>> = [];
 			for (let i = 0; i < results.rows.length; i++) {
 				const result = results.rows.item(i);
@@ -71,7 +69,7 @@ export class PinService {
 
 	private async getPinDoc<T>(id: string): Promise<Doc<T> | undefined> {
 		try {
-			const results = await this.db.query('SELECT * FROM pin WHERE key=?', [id]);
+			const results = await this.owner.db.query('SELECT * FROM pin WHERE key=?', [id]);
 			const result = results.rows.item(0);
 			if (result) {
 				return {
@@ -88,12 +86,12 @@ export class PinService {
 
 	private async clearPinDoc(key: string): Promise<void> {
 
-		await this.db.delete('pin', {key});
+		await this.owner.db.delete('pin', {key});
 	}
 
 	private async setPinDoc<T>(key: string, data: T): Promise<void> {
 		await this.clearPinDoc(key);
-		await this.db.insert('pin', ['data', 'key', 'date', 'version'], [JSON.stringify(data), key, Date.now(), this.dataFormatVersion]);
+		await this.owner.db.insert('pin', ['data', 'key', 'date', 'version'], [JSON.stringify(data), key, Date.now(), this.dataFormatVersion]);
 	}
 
 	async getPinState(id: string): Promise<PinState> {
@@ -121,7 +119,7 @@ export class PinService {
 	async pin(id: string, objType: JamObjectType): Promise<void> {
 		const key = `pin_${id}`;
 		this.notifyPinChange(id, {active: true, pinned: true});
-		const album = await getAlbum(id, this.client);
+		const album = await this.owner.cache.getCacheOrQuery(AlbumQuery.query, AlbumQuery.transformVariables(id), AlbumQuery.transformData);
 		if (album) {
 			const data: PinMedia = {id, name: album.name, objType, tracks: album.tracks || []};
 			await this.setPinDoc<PinMedia>(key, data);
@@ -135,7 +133,7 @@ export class PinService {
 	private waitForPin(id: string, data: PinMedia): void {
 		const waitForIDs = data.tracks.map(t => t.id);
 		const update = (tasks: Array<DownloadTask>): void => {
-			const task = tasks.find(task => waitForIDs.includes(task.id));
+			const task = tasks.find(t => waitForIDs.includes(t.id));
 			if (!task || tasks.length === 0) {
 				this.pinCache.unsubscribeTaskUpdates(update);
 				this.notifyPinChange(id, {active: false, pinned: true});

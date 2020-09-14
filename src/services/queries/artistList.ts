@@ -1,10 +1,8 @@
 import {AlbumType, JamObjectType, ListType} from '../jam';
 import gql from 'graphql-tag';
-import {BaseEntryList, useListFunction} from '../types';
-import {useCallback} from 'react';
+import {BaseEntryList} from '../types';
 import {ArtistListResult, ArtistListResultVariables} from './types/ArtistListResult';
-import {getCacheOrQuery, useCacheOrLazyQuery} from '../cache-query';
-import {JamApolloClient} from '../apollo';
+import {DocumentNode} from 'graphql';
 
 const GET_ARTISTLIST = gql`
     query ArtistListResult($listType: ListType!, $seed: String, $albumTypes: [AlbumType!], $take: Int!, $skip: Int!) {
@@ -20,7 +18,6 @@ const GET_ARTISTLIST = gql`
         }
     }
 `;
-
 
 function transformData(data?: ArtistListResult, variables?: ArtistListResultVariables): BaseEntryList | undefined {
 	if (!data) {
@@ -44,16 +41,12 @@ function transformData(data?: ArtistListResult, variables?: ArtistListResultVari
 	return result;
 }
 
-export async function getArtistList(
-	albumTypes: Array<AlbumType>, listType: ListType, seed: string | undefined, take: number, skip: number, client: JamApolloClient
-): Promise<BaseEntryList | undefined> {
-	return getCacheOrQuery<ArtistListResult, ArtistListResultVariables, BaseEntryList>(client, GET_ARTISTLIST, {albumTypes, listType, skip, take, seed}, transformData);
+function transformVariables(albumTypes: Array<AlbumType>, listType: ListType, seed: string | undefined, take: number, skip: number): ArtistListResultVariables {
+	return {albumTypes, listType, skip, take, seed};
 }
 
-export const useLazyArtistListQuery: useListFunction = () => {
-	const [query, {loading, error, data, called, queryID}] = useCacheOrLazyQuery<ArtistListResult, ArtistListResultVariables, BaseEntryList>(GET_ARTISTLIST, transformData);
-	const get = useCallback((albumTypes: Array<AlbumType>, listType: ListType, seed: string | undefined, take: number, skip: number, forceRefresh?: boolean): void => {
-		query({variables: {albumTypes, listType, skip, take, seed}}, forceRefresh);
-	}, [query]);
-	return [get, {loading, called, error, data, queryID}];
-};
+export const ArtistIndexQuery: {
+	query: DocumentNode;
+	transformData: (d?: ArtistListResult, variables?: ArtistListResultVariables) => BaseEntryList | undefined;
+	transformVariables: (albumTypes: Array<AlbumType>, listType: ListType, seed: string | undefined, take: number, skip: number) => ArtistListResultVariables;
+} = {query: GET_ARTISTLIST, transformData, transformVariables};
