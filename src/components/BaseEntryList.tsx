@@ -43,7 +43,7 @@ export const BaseEntryList: React.FC<{
 
 	const renderItemRow = useCallback(({item}: { item: BaseEntry }): JSX.Element => (<Item item={item}/>), []);
 	const renderItemTile = useCallback(({item}: { item: BaseEntry }): JSX.Element => (<ImageItem item={item} size={tileSize}/>), [tileSize]);
-	const keyExtractor = (item: BaseEntry): string => item.id;
+	const keyExtractor = useCallback((item: BaseEntry): string => item.id, []);
 	const getItemLayout = React.useMemo(() => commonItemLayout(65), []);
 	const ListHeaderComponent = (<PageHeader title={info.title} titleIcon={info.icon} subtitle={info.subtitle} tiles={tiles} toggleView={toggleView}/>);
 

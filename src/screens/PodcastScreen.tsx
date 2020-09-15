@@ -56,17 +56,9 @@ export const PodcastScreen: React.FC<HomeRouteProps<HomeRoute.PODCAST>> = ({rout
 
 	const customDetails = (<ThemedText style={objHeaderStyles.panel}>{podcast?.description}</ThemedText>);
 
-	const ListHeader = (
-		<ObjHeader
-			id={id}
-			title={name}
-			typeName="Podcast"
-			customDetails={customDetails}
-			headerTitleCmds={headerTitleCmds}
-		/>
-	);
+	const ListHeader = (<ObjHeader id={id} title={name} typeName="Podcast" customDetails={customDetails} headerTitleCmds={headerTitleCmds}/>);
 
-	const keyExtractor = (item: TrackEntry): string => item.id;
+	const keyExtractor = useCallback((item: TrackEntry): string => item.id, []);
 
 	const showMenu = useCallback((item: TrackEntry): void => {
 		setCurrentEpisode(item);

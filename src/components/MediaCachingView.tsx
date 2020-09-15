@@ -1,7 +1,7 @@
 import React, {useCallback, useState} from 'react';
 import {ActivityIndicator, Button, StyleSheet, View} from 'react-native';
 import {ThemedText} from './ThemedText';
-import {staticTheme} from '../style/theming';
+import {staticTheme, useTheme} from '../style/theming';
 import dataService from '../services/data';
 import {useMediaCacheStat} from '../services/pin-hooks';
 
@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
 
 export const MediaCachingView: React.FC = () => {
 	const [running, setRunning] = useState<boolean>(false);
-
+	const theme = useTheme();
 	const stat = useMediaCacheStat();
 
 	const clearMediaCache = useCallback((): void => {
@@ -39,8 +39,7 @@ export const MediaCachingView: React.FC = () => {
 		return (
 			<View style={styles.container}>
 				<View style={styles.text}>
-					<ThemedText>Files: {stat?.files}</ThemedText>
-					<ThemedText>Size: {stat?.humanSize}</ThemedText>
+					<ThemedText>Files: {stat?.files} {(stat?.files || 0) > 0 ? '(' + stat?.humanSize + ')' : ''}</ThemedText>
 				</View>
 				<View style={styles.button}>
 					<Button title="Clear" onPress={clearMediaCache}/>
@@ -51,7 +50,7 @@ export const MediaCachingView: React.FC = () => {
 
 	return (
 		<View style={styles.container}>
-			<ActivityIndicator size="small"/>
+			<ActivityIndicator size="small" color={theme.textColor}/>
 			<View style={styles.text}>
 				<ThemedText>Removing...</ThemedText>
 			</View>

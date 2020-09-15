@@ -18,7 +18,7 @@ export const TracksScreen: React.FC<HomeRouteProps<HomeRoute.TRACKS>> = () => {
 		// TODO: TracksScreen
 	}, []);
 
-	const keyExtractor = (item: TrackEntry): string => item.id;
+	const keyExtractor = useCallback((item: TrackEntry): string => item.id, []);
 
 	const renderItem = useCallback(({item}: { item: TrackEntry }): JSX.Element => (<TrackItem track={item}/>), []);
 

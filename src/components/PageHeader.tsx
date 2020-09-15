@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
 		flexDirection: 'column'
 	},
 	ListHeaderBackground: {
-		height: 140
+		height: 120
 	},
 	ListHeader: {
 		alignItems: 'center',

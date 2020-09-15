@@ -7,19 +7,13 @@ import {staticTheme} from '../style/theming';
 import dataService from '../services/data';
 import {CachingView} from '../components/CachingView';
 import {MediaCachingView} from '../components/MediaCachingView';
+import {PageHeader} from '../components/PageHeader';
 
 const styles = StyleSheet.create({
 	container: {
-		paddingTop: staticTheme.statusBarOffset,
 		paddingBottom: staticTheme.padding,
 		paddingHorizontal: staticTheme.padding,
 		flex: 1
-	},
-	userSection: {
-		flexDirection: 'row'
-	},
-	userImage: {
-		marginRight: staticTheme.margin
 	},
 	section: {
 		paddingVertical: staticTheme.padding,
@@ -36,13 +30,16 @@ const styles = StyleSheet.create({
 
 export const SettingsScreen: React.FC<BottomTabProps<BottomTabRoute.SETTINGS>> = () => {
 	return (
-		<View style={styles.container}>
-			<ThemedText style={styles.section}>Cache</ThemedText>
-			<CachingView cache={dataService.cache.dataCaching} title="Data & Image Cache"/>
-			<ThemedText style={styles.section}>Pinned Offline Tracks</ThemedText>
-			<MediaCachingView/>
-			<ThemedText style={styles.section}>Theme</ThemedText>
-			<ThemesView/>
-		</View>
+		<>
+			<PageHeader title="Settings" titleIcon="settings"/>
+			<View style={styles.container}>
+				<ThemedText style={styles.section}>Cache</ThemedText>
+				<CachingView cache={dataService.cache.dataCaching} title="Data & Image Cache"/>
+				<ThemedText style={styles.section}>Pinned Offline Tracks</ThemedText>
+				<MediaCachingView/>
+				<ThemedText style={styles.section}>Theme</ThemedText>
+				<ThemesView/>
+			</View>
+		</>
 	);
 };

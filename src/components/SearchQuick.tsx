@@ -81,7 +81,7 @@ export const SearchQuick: React.FC<SearchQuickProps> = ({query, setObjType}) => 
 		}
 	}, [getAutocomplete, query]);
 
-	const renderSection =  useCallback(({section}: { section: SectionListData<AutoCompleteEntryData> }): JSX.Element => {
+	const renderSection = useCallback(({section}: { section: SectionListData<AutoCompleteEntryData> }): JSX.Element => {
 		const setType = (): void => {
 			if (setObjType) {
 				const {objType} = section as AutoCompleteDataSection;
@@ -117,9 +117,7 @@ export const SearchQuick: React.FC<SearchQuickProps> = ({query, setObjType}) => 
 			</TouchableOpacity>
 		);
 	}, []);
-
-	const keyExtractor = (item: AutoCompleteEntryData): string => item.id;
-
+	const keyExtractor = useCallback((item: AutoCompleteEntryData): string => item.id, []);
 	return (
 		<SectionList
 			style={styles.list}

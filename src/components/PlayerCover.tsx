@@ -1,8 +1,8 @@
 import {StyleSheet, View} from 'react-native';
 import React from 'react';
 import {useCurrentTrackID} from '../services/player';
-import {JamImage} from './JamImage';
 import {staticTheme, useTheme} from '../style/theming';
+import {JamImage} from './JamImage';
 
 const styles = StyleSheet.create({
 	cover: {
@@ -14,7 +14,9 @@ const styles = StyleSheet.create({
 		justifyContent: 'center'
 	},
 	image: {
-		borderRadius: 4
+		borderRadius: 4,
+		height: '90%',
+		width: '90%'
 	}
 });
 
@@ -26,7 +28,7 @@ export const PlayerCover: React.FC = () => {
 	}
 	return (
 		<View style={[styles.cover, {borderColor: theme.separator}]}>
-			<JamImage id={id} size={staticTheme.cover} requestSize={staticTheme.cover} style={styles.image}/>
+			<JamImage id={id} requestSize={staticTheme.cover} style={styles.image}/>
 		</View>
 	);
 };

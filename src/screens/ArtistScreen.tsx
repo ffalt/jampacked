@@ -68,8 +68,7 @@ export const ArtistScreen: React.FC<HomeRouteProps<HomeRoute.ARTIST>> = ({route}
 	);
 
 	const renderItem = useCallback(({item}: { item: BaseEntry }): JSX.Element => (<Item item={item}/>), []);
-
-	const keyExtractor = (item: BaseEntry): string => item.id;
+	const keyExtractor = useCallback((item: BaseEntry): string => item.id, []);
 
 	const reload = useCallback((): void => {
 		if (id) {

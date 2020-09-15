@@ -1,5 +1,5 @@
 import React, {useCallback, useState} from 'react';
-import {FlatList, RefreshControl, StyleSheet} from 'react-native';
+import {RefreshControl, StyleSheet} from 'react-native';
 import {useTheme} from '../style/theming';
 import {PageHeader} from './PageHeader';
 import {Separator} from './Separator';
@@ -35,34 +35,36 @@ export const IndexList: React.FC<{
 		setTiles(!tiles);
 	}, [tiles]);
 
-	const ListHeaderComponent = (<PageHeader title={title} titleIcon={titleIcon} tiles={tiles} toggleView={toggleView}/>);
 
 	const renderItemRow = useCallback(({item}: { item: IndexEntry }): JSX.Element => (<Item item={item}/>), []);
 	const renderItemTile = useCallback(({item}: { item: IndexEntry }): JSX.Element => (<ImageItem item={item} size={tileSize}/>), [tileSize]);
-	const keyExtractor = (item: IndexEntry): string => item.id;
+	const keyExtractor = useCallback((item: IndexEntry): string => item.id, []);
+
+	const ListHeaderComponent = (<PageHeader title={title} titleIcon={titleIcon} tiles={tiles} toggleView={toggleView}/>);
+	const refreshControl = (
+		<RefreshControl
+			refreshing={refreshing}
+			onRefresh={onRefresh}
+			progressViewOffset={90}
+			progressBackgroundColor={theme.refreshCtrlBackground}
+			colors={theme.refreshCtrlColors}
+		/>
+	);
+	const ListEmptyComponent = (<ListEmpty list={index}/>);
 
 	if (tiles) {
 		return (
 			<AtoZList
 				data={index}
-				contentContainerStyle={{flex:1}}
 				key="tiles"
 				renderItem={renderItemTile}
 				keyExtractor={keyExtractor}
 				numColumns={numColumns}
 				ListHeaderComponent={ListHeaderComponent}
-				ListEmptyComponent={<ListEmpty list={index}/>}
+				ListEmptyComponent={ListEmptyComponent}
 				columnWrapperStyle={style.row}
 				itemHeight={tileSize}
-				refreshControl={(
-					<RefreshControl
-						refreshing={refreshing}
-						onRefresh={onRefresh}
-						progressViewOffset={90}
-						progressBackgroundColor={theme.refreshCtrlBackground}
-						colors={theme.refreshCtrlColors}
-					/>
-				)}
+				refreshControl={refreshControl}
 			/>
 		);
 	}
@@ -74,16 +76,8 @@ export const IndexList: React.FC<{
 			keyExtractor={keyExtractor}
 			ItemSeparatorComponent={Separator}
 			ListHeaderComponent={ListHeaderComponent}
-			ListEmptyComponent={<ListEmpty list={index}/>}
-			refreshControl={(
-				<RefreshControl
-					refreshing={refreshing}
-					onRefresh={onRefresh}
-					progressViewOffset={90}
-					progressBackgroundColor={theme.refreshCtrlBackground}
-					colors={theme.refreshCtrlColors}
-				/>
-			)}
+			ListEmptyComponent={ListEmptyComponent}
+			refreshControl={refreshControl}
 			itemHeight={65}
 		/>
 	);

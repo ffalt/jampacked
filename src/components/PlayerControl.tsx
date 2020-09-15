@@ -3,6 +3,7 @@ import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {JamPlayer} from '../services/player';
 import {ThemedIcon} from './ThemedIcon';
 import {PlayButton} from './PlayButton';
+import {staticTheme} from '../style/theming';
 
 const styles = StyleSheet.create({
 	playerControl: {
@@ -30,17 +31,17 @@ export const PlayerControl: React.FC = () => {
 	return (
 		<View style={styles.playerControl}>
 			<TouchableOpacity onPress={JamPlayer.skipToPrevious} style={styles.button}>
-				<ThemedIcon name="step-backward"/>
+				<ThemedIcon name="step-backward" size={staticTheme.fontSizeLarge}/>
 			</TouchableOpacity>
 			<TouchableOpacity onPress={JamPlayer.skipBackward} style={styles.button}>
-				<ThemedIcon name="backward"/>
+				<ThemedIcon name="backward" size={staticTheme.fontSizeLarge}/>
 			</TouchableOpacity>
 			<PlayButton/>
 			<TouchableOpacity disabled={forwardDisabled} onPress={JamPlayer.skipForward} style={[styles.button,forwardDisabled && styles.disabled]}>
-				<ThemedIcon name="forward"/>
+				<ThemedIcon name="forward" size={staticTheme.fontSizeLarge}/>
 			</TouchableOpacity>
 			<TouchableOpacity onPress={JamPlayer.skipToNext} style={styles.button}>
-				<ThemedIcon name="step-forward"/>
+				<ThemedIcon name="step-forward" size={staticTheme.fontSizeLarge}/>
 			</TouchableOpacity>
 		</View>
 	);

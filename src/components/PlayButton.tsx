@@ -15,7 +15,8 @@ const styles = StyleSheet.create({
 	},
 	playButtonIcon: {
 		color: '#000000',
-		fontSize: 20
+		fontSize: 20,
+		textAlign: 'center'
 	}
 });
 

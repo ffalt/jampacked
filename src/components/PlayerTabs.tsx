@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import {ActivityIndicator, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {SceneMap, TabView} from 'react-native-tab-view';
 import {ThemedText} from './ThemedText';
@@ -40,13 +40,13 @@ const styles = StyleSheet.create({
 });
 
 const LazyPlaceholder: React.FC = () => {
+	const theme = useTheme();
 	return (
 		<View style={styles.scene}>
-			<ActivityIndicator size="large"/>
+			<ActivityIndicator size="large" color={theme.textColor}/>
 		</View>
 	);
 };
-
 
 const renderScene = SceneMap({
 	cover: () => (<PlayerCover/>),
@@ -60,20 +60,22 @@ interface PlayerTabsProps {
 	toQueue?: boolean;
 }
 
+const routes = [
+	{key: 'cover', title: 'Cover'},
+	{key: 'lyrics', title: 'Lyrics'},
+	{key: 'queue', title: 'Queue'}
+];
+
+
 export const PlayerTabs: React.FC<PlayerTabsProps> = ({toQueue}: PlayerTabsProps) => {
 	const initialLayout = {width: useWindowWidth()};
 	const [index, setIndex] = React.useState(toQueue ? 2 : 0);
-	const [routes] = React.useState([
-		{key: 'cover', title: 'Cover'},
-		{key: 'lyrics', title: 'Lyrics'},
-		{key: 'queue', title: 'Queue'}
-	]);
 	const navigation = useNavigation();
 	const theme = useTheme();
 
-	const close = (): void => {
+	const close = useCallback((): void => {
 		navigation.goBack();
-	};
+	},[]);
 
 	const renderTabBar = (tabBarProps: any): JSX.Element => {
 		const buttons = tabBarProps.navigationState.routes.map((route: { title: string }, i: number) => {

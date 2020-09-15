@@ -95,7 +95,7 @@ export const Search: React.FC<SearchProps> = ({objType, query, backToAll}) => {
 	}, [q, getSearch, offset]);
 
 	const getItemLayout = React.useMemo(() => commonItemLayout(65), []);
-	const keyExtractor = (item: BaseEntry): string => item.id;
+	const keyExtractor = useCallback((item: BaseEntry): string => item.id, []);
 	const renderItem = useCallback(({item}: { item: BaseEntry }): JSX.Element => (<Item item={item}/>), []);
 
 	return (

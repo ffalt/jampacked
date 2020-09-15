@@ -16,10 +16,9 @@ const styles = StyleSheet.create({
 	}
 });
 
-export const BackgroundIcon: React.FC<{
-	name: string;
-	style?: StyleProp<ViewStyle>;
-}> = ({name, children, style}) => {
+export const BackgroundIcon: React.FC<{ name: string; style?: StyleProp<ViewStyle>; }> = (
+	{name, children, style}
+) => {
 	const [iconSource, setIconSource] = useState<ImageSourcePropType>(0);
 	const theme = useTheme();
 
@@ -37,17 +36,8 @@ export const BackgroundIcon: React.FC<{
 	}, [name, theme]);
 
 	return (
-		<ImageBackground
-			style={[style]}
-			imageStyle={styles.image}
-			source={iconSource}
-		>
-			<LinearGradient
-				colors={theme.overlayGradient}
-				start={{x: 0, y: 0}}
-				end={{x: 0, y: 1}}
-				style={styles.gradient}
-			>
+		<ImageBackground style={style} imageStyle={styles.image} source={iconSource}>
+			<LinearGradient colors={theme.overlayGradient} start={{x: 0, y: 0}} end={{x: 0, y: 1}} style={styles.gradient}>
 				{children}
 			</LinearGradient>
 		</ImageBackground>

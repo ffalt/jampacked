@@ -40,7 +40,9 @@ const styles = StyleSheet.create({
 		fontSize: staticTheme.fontSizeTiny,
 		paddingHorizontal: staticTheme.paddingSmall,
 		paddingVertical: 2,
-		backgroundColor: 'rgba(255,255,255,0.1)'
+		letterSpacing: 2,
+		textTransform: 'uppercase',
+		fontWeight: 'bold'
 	},
 	drawerTile: {
 		flexDirection: 'column',

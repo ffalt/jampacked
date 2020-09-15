@@ -11,7 +11,7 @@ import {usePinnedMedia} from '../services/pin-hooks';
 export const PinnedMedia: React.FC = () => {
 	const {media, loading} = usePinnedMedia();
 	const getItemLayout = React.useMemo(() => commonItemLayout(65), []);
-	const keyExtractor = (item: PinMedia): string => item.id;
+	const keyExtractor = useCallback((item: PinMedia): string => item.id, []);
 	const renderItem = useCallback(({item}: { item: PinMedia }): JSX.Element => (<PinnedMediaItem item={item}/>), []);
 	const ListHeaderComponent = (<PageHeader title="Albums" subtitle="Pinned Media" titleIcon="album"/>);
 	return (

@@ -102,7 +102,7 @@ export const FolderScreen: React.FC<HomeRouteProps<HomeRoute.FOLDER>> = ({route}
 		/>
 	);
 
-	const keyExtractor = (item: FolderItem): string => item.id;
+	const keyExtractor = useCallback((item: FolderItem): string => item.id, []);
 
 	const renderItem = useCallback(({item}: { item: FolderItem }): JSX.Element => {
 		if (item.track) {

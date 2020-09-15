@@ -12,7 +12,7 @@ import {FavIcon} from '../components/FavIcon';
 import {snackError} from '../services/snack';
 import {commonItemLayout} from '../components/AtoZList';
 import {NavigationService} from '../navigators/navigation';
-import {TrackEntry} from '../services/types';
+import {AutoCompleteEntryData, TrackEntry} from '../services/types';
 import {useTheme} from '../style/theming';
 import {ErrorView} from '../components/ErrorView';
 import ActionSheet from 'react-native-actions-sheet';
@@ -86,7 +86,7 @@ export const AlbumScreen: React.FC<HomeRouteProps<HomeRoute.ALBUM>> = ({route}) 
 		/>
 	);
 
-	const keyExtractor = (item: TrackEntry): string => item.id;
+	const keyExtractor = useCallback((item: TrackEntry): string => item.id, []);
 
 	const showMenu = useCallback((item: TrackEntry): void => {
 		setCurrentTrack(item);

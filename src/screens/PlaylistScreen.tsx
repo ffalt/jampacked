@@ -66,7 +66,7 @@ export const PlaylistScreen: React.FC<HomeRouteProps<HomeRoute.PLAYLIST>> = ({ro
 		/>
 	);
 
-	const keyExtractor = (item: TrackEntry): string => item.id;
+	const keyExtractor = useCallback((item: TrackEntry): string => item.id, []);
 
 	const showMenu = useCallback((item: TrackEntry): void => {
 		setCurrentTrack(item);

@@ -9,7 +9,7 @@ import {setAppAvailable} from './service';
 import {NavigationService} from './src/navigators/navigation';
 import dataService from './src/services/data';
 import {ApolloProvider} from '@apollo/react-hooks';
-import {initApolloClient, JamApolloClient} from './src/services/apollo';
+import {JamApolloClient} from './src/services/apollo';
 
 enableScreens();
 

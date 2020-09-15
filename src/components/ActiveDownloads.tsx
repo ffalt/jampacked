@@ -11,16 +11,17 @@ import {useDownloads} from '../services/pin-hooks';
 export const ActiveDownloads: React.FC = () => {
 	const downloads = useDownloads();
 	const getItemLayout = React.useMemo(() => commonItemLayout(65), []);
-	const keyExtractor = (item: DownloadTask): string => item.id;
+	const keyExtractor = useCallback((item: DownloadTask): string => item.id, []);
 	const renderItem = useCallback(({item}: { item: DownloadTask }): JSX.Element => (<ActiveDownloadItem item={item}/>), []);
 	const ListHeaderComponent = (<PageHeader title="Active Downloads" subtitle="Pinned Media" titleIcon="download"/>);
+	const ListEmptyComponent = (<ListEmpty list={downloads}/>);
 	return (
 		<FlatList
 			data={downloads}
 			key="downloads"
 			renderItem={renderItem}
 			keyExtractor={keyExtractor}
-			ListEmptyComponent={<ListEmpty list={downloads}/>}
+			ListEmptyComponent={ListEmptyComponent}
 			ListHeaderComponent={ListHeaderComponent}
 			ItemSeparatorComponent={Separator}
 			getItemLayout={getItemLayout}

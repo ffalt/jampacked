@@ -36,19 +36,17 @@ export const Queue: React.FC = () => {
 	const theme = useTheme();
 	const current = useCurrentTrackID();
 
-	const renderQueueItem = useCallback(({item, index}: { item: TrackPlayer.Track, index: number }): JSX.Element => (
+	const renderItem = useCallback(({item, index}: { item: TrackPlayer.Track, index: number }): JSX.Element => (
 		<QueueItem item={item} index={index} active={item.id === current}/>
 	), [current]);
-
-	const keyExtractor = (item: TrackPlayer.Track): string => item.id;
-
+	const keyExtractor = useCallback((item: TrackPlayer.Track): string => item.id, []);
 	const getItemLayout = React.useMemo(() => commonItemLayout(56), []);
 
 	return (
 		<>
 			<FlatList
 				data={queue}
-				renderItem={renderQueueItem}
+				renderItem={renderItem}
 				ItemSeparatorComponent={Separator}
 				keyExtractor={keyExtractor}
 				getItemLayout={getItemLayout}

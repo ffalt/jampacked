@@ -7,10 +7,10 @@ import {ThemedIcon} from '../components/ThemedIcon';
 import {JamObjectType} from '../services/jam';
 import {SearchQuick} from '../components/SearchQuick';
 import {Search} from '../components/Search';
+import {PageHeader} from '../components/PageHeader';
 
 const styles = StyleSheet.create({
 	container: {
-		paddingTop: staticTheme.paddingLarge,
 		paddingBottom: staticTheme.padding,
 		paddingHorizontal: staticTheme.padding,
 		flex: 1
@@ -20,8 +20,7 @@ const styles = StyleSheet.create({
 		paddingTop: 10,
 		paddingRight: 10,
 		paddingBottom: 10,
-		paddingLeft: 0,
-		marginTop: 10
+		paddingLeft: 0
 	},
 	inputGroup: {
 		flexDirection: 'row',
@@ -31,14 +30,12 @@ const styles = StyleSheet.create({
 	},
 	inputIcon: {
 		fontSize: 22,
-		paddingRight: staticTheme.padding,
-		paddingTop: 10
+		paddingRight: staticTheme.padding
 	},
 	inputCancelIcon: {
 		fontSize: 22,
 		paddingLeft: staticTheme.padding,
-		paddingRight: staticTheme.paddingLarge,
-		paddingTop: 10
+		paddingRight: staticTheme.paddingLarge
 	},
 	disabled: {
 		opacity: 0.3
@@ -86,7 +83,7 @@ export const SearchScreen: React.FC<BottomTabProps<BottomTabRoute.SEARCH>> = () 
 	const cancel = !isEmpty
 		? (
 			<TouchableOpacity onPress={handleClear} style={styles.inputCancelIcon}>
-				<ThemedIcon name="cancel" size={styles.inputCancelIcon.fontSize} />
+				<ThemedIcon name="cancel" size={styles.inputCancelIcon.fontSize}/>
 			</TouchableOpacity>
 		)
 		: <></>;
@@ -94,23 +91,26 @@ export const SearchScreen: React.FC<BottomTabProps<BottomTabRoute.SEARCH>> = () 
 		? (<SearchQuick query={search} setObjType={setObjectTypeSearch}/>)
 		: (<Search query={search} objType={objType} backToAll={backToAll}/>);
 	return (
-		<View style={styles.container}>
-			<View style={[styles.inputGroup, {borderColor: theme.textColor}]}>
-				<TouchableOpacity onPress={handleSearch} style={[styles.inputIcon, isEmpty && styles.disabled]}>
-					<ThemedIcon name="search" size={styles.inputIcon.fontSize} />
-				</TouchableOpacity>
-				<TextInput
-					style={[styles.input, {color: theme.textColor}]}
-					placeholderTextColor={theme.muted}
-					placeholder="Search"
-					value={query}
-					onChangeText={handleChangeText}
-					returnKeyType="search"
-					autoCapitalize="none"
-				/>
-				{cancel}
+		<>
+			<PageHeader title="Search" titleIcon="search"/>
+			<View style={styles.container}>
+				<View style={[styles.inputGroup, {borderColor: theme.separator}]}>
+					<TouchableOpacity onPress={handleSearch} style={[styles.inputIcon, isEmpty && styles.disabled]}>
+						<ThemedIcon name="search" size={styles.inputIcon.fontSize}/>
+					</TouchableOpacity>
+					<TextInput
+						style={[styles.input, {color: theme.textColor}]}
+						placeholderTextColor={theme.muted}
+						placeholder="Enter Text to Search"
+						value={query}
+						onChangeText={handleChangeText}
+						returnKeyType="search"
+						autoCapitalize="none"
+					/>
+					{cancel}
+				</View>
+				{content}
 			</View>
-			{content}
-		</View>
+		</>
 	);
 };

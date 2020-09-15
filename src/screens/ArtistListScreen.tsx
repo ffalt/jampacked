@@ -3,16 +3,6 @@ import {ArtistsRoute, ArtistsRouteProps} from '../navigators/Routing';
 import {ListType} from '../services/jam';
 import {ArtistList} from '../components/ArtistList';
 
-// export const ArtistListScreen: React.FC<HomeRouteProps<HomeRoute.ARTISTLIST>> = ({route}) => {
-// 	const [view, setView] = useState<{ listType?: ListType; albumType?: AlbumType }>({});
-//
-// 	useEffect(() => {
-// 		setView({...route?.params});
-// 	}, [route]);
-//
-// 	return (<ArtistList query={view}/>);
-// };
-
 export const ArtistListFavScreen: React.FC<ArtistsRouteProps<ArtistsRoute.FAV>> = ({}) => {
 	return (<ArtistList query={{listType: ListType.faved}}/>);
 };

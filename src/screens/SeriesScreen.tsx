@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {FlatList, RefreshControl, SectionList, SectionListData, StyleSheet} from 'react-native';
+import {RefreshControl, SectionList, SectionListData, StyleSheet} from 'react-native';
 import {ThemedText} from '../components/ThemedText';
 import {staticTheme, useTheme} from '../style/theming';
 import {HomeRoute, HomeRouteProps} from '../navigators/Routing';
@@ -82,12 +82,12 @@ export const SeriesScreen: React.FC<HomeRouteProps<HomeRoute.SERIE>> = ({route})
 		/>
 	);
 
-	const renderSection = ({section}: { section: SectionListData<BaseEntry> }): JSX.Element =>
-		(<ThemedText style={[styles.SectionHeader, {borderBottomColor: theme.separator}]}>{section.title}</ThemedText>);
+	const renderSection = useCallback(({section}: { section: SectionListData<BaseEntry> }): JSX.Element =>
+		(<ThemedText style={[styles.SectionHeader, {borderBottomColor: theme.separator}]}>{section.title}</ThemedText>), [theme.separator]);
 
 	const renderItem = useCallback(({item}: { item: BaseEntry }): JSX.Element => (<Item item={item}/>), []);
 
-	const keyExtractor = (item: BaseEntry): string => item.id;
+	const keyExtractor = useCallback((item: BaseEntry): string => item.id, []);
 
 	if (error) {
 		return (<ErrorView error={error} onRetry={reload}/>);

@@ -8,25 +8,25 @@ import {DocumentNode} from 'graphql';
 
 const GET_HOMEDATA = gql`
     query HomeResult {
-        artistsRecent: artists(list: recent, page:{take:5}) {
+        artistsRecent: artists(list: recent, filter:{albumTypes: [album]}, page:{take:5}) {
             items {
                 id
                 name
             }
         }
-        artistsFaved: artists(list: faved, page:{take:5}) {
+        artistsFaved: artists(list: faved, filter:{albumTypes: [album]}, page:{take:5}) {
             items {
                 id
                 name
             }
         }
-        albumsRecent: albums(list: recent, page:{take:5}) {
+        albumsRecent: albums(list: recent, filter:{albumTypes: [album]}, page:{take:5}) {
             items {
                 id
                 name
             }
         }
-        albumsFaved: albums(list: faved, page:{take:5}) {
+        albumsFaved: albums(list: faved, filter:{albumTypes: [album]}, page:{take:5}) {
             items {
                 id
                 name

@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {ActivityIndicator, KeyboardAvoidingView, ScrollView, StyleSheet, Text, TextInput, View} from 'react-native';
 import {staticTheme, useTheme} from '../style/theming';
 import {AppStackProps, Routing} from '../navigators/Routing';
@@ -115,19 +115,19 @@ export const LoginScreen: React.FC<AppStackProps<Routing.AUTH>> = () => {
 	const theme = useTheme();
 
 	useEffect(() => {
-		let didCancel = false;
+		let isSubscribed = true;
 		dataService.getStored('last:server').then(result => {
-			if (result && !didCancel) {
+			if (result && isSubscribed) {
 				setServer(result);
 			}
 		});
 		dataService.getStored('last:user').then(result => {
-			if (result && !didCancel) {
+			if (result && isSubscribed) {
 				setName(result);
 			}
 		});
 		return (): void => {
-			didCancel = true;
+			isSubscribed = false;
 		};
 	}, []);
 
@@ -135,24 +135,26 @@ export const LoginScreen: React.FC<AppStackProps<Routing.AUTH>> = () => {
 		return (!s || s.trim().length === 0);
 	};
 
-	const login = async (): Promise<void> => {
-		if (checkEmpty(server)
-			|| checkEmpty(name)
-			|| checkEmpty(password)) {
+	const loginPress = useCallback((): void => {
+		if (checkEmpty(server) || checkEmpty(name) || checkEmpty(password)) {
 			setError('Please provide all fields to login.');
 			return;
 		}
-		setError(undefined);
-		setLoading(true);
-		try {
+
+
+		const login = async (): Promise<void> => {
 			await auth.login(server, name, password);
 			await dataService.setStored('last:user', name);
 			await dataService.setStored('last:server', server);
-		} catch (e) {
+		};
+
+		setError(undefined);
+		setLoading(true);
+		login().catch(e => {
 			setError(`${e}`);
-		}
-		setLoading(false);
-	};
+			setLoading(false);
+		});
+	}, [auth, server, name, password]);
 
 	const focusUsername = (): void => {
 		userNameRef.current?.focus();
@@ -258,7 +260,7 @@ export const LoginScreen: React.FC<AppStackProps<Routing.AUTH>> = () => {
 				</View>
 				<View style={styles.buttons}>
 					{errorView}
-					<LoginButton style={styles.button} onPress={login}>
+					<LoginButton style={styles.button} onPress={loginPress}>
 						{contentView}
 					</LoginButton>
 				</View>
