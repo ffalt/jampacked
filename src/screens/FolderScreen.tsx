@@ -1,21 +1,18 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {FlatList, RefreshControl, TouchableOpacity} from 'react-native';
+import {TouchableOpacity} from 'react-native';
 import {TrackItem} from '../components/TrackItem';
 import {HomeRoute, HomeRouteProps} from '../navigators/Routing';
 import {JamPlayer} from '../services/player';
 import {ThemedIcon} from '../components/ThemedIcon';
 import {HeaderDetail, ObjHeader, objHeaderStyles} from '../components/ObjHeader';
 import {genreDisplay} from '../utils/genre.utils';
-import {Separator} from '../components/Separator';
 import {snackError} from '../services/snack';
 import {Item} from '../components/Item';
 import {FolderType} from '../services/jam';
 import {Folder, FolderItem} from '../services/queries/folder';
-import {useTheme} from '../style/theming';
 import {ErrorView} from '../components/ErrorView';
-import {ListEmpty} from '../components/ListEmpty';
 import {useLazyFolderQuery} from '../services/queries/folder.hook';
-import {defaultKeyExtractor} from '../utils/list.utils';
+import {DefaultFlatList} from '../components/DefFlatList';
 
 const buildDetails = (folder?: Folder): Array<HeaderDetail> => {
 	let result: Array<HeaderDetail> = [];
@@ -44,7 +41,6 @@ const buildDetails = (folder?: Folder): Array<HeaderDetail> => {
 };
 
 export const FolderScreen: React.FC<HomeRouteProps<HomeRoute.FOLDER>> = ({route}) => {
-	const theme = useTheme();
 	const [details, setDetails] = useState<Array<HeaderDetail>>(buildDetails());
 	const [getFolder, {loading, error, folder}] = useLazyFolderQuery();
 	const {id, name} = route?.params;
@@ -106,22 +102,13 @@ export const FolderScreen: React.FC<HomeRouteProps<HomeRoute.FOLDER>> = ({route}
 	}
 
 	return (
-		<FlatList
-			data={folder?.items || []}
+		<DefaultFlatList
+			items={folder?.items}
 			renderItem={renderItem}
-			keyExtractor={defaultKeyExtractor}
-			ItemSeparatorComponent={Separator}
 			ListHeaderComponent={ListHeaderComponent}
-			ListEmptyComponent={<ListEmpty list={folder?.items}/>}
-			refreshControl={(
-				<RefreshControl
-					refreshing={loading}
-					onRefresh={reload}
-					progressViewOffset={90}
-					progressBackgroundColor={theme.refreshCtrlBackground}
-					colors={theme.refreshCtrlColors}
-				/>
-			)}
+			loading={loading}
+			error={error}
+			reload={reload}
 		/>
 	);
 };

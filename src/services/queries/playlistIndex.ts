@@ -2,7 +2,6 @@ import gql from 'graphql-tag';
 import {Index} from '../types';
 import {JamObjectType} from '../jam';
 import {PlaylistIndexResult} from './types/PlaylistIndexResult';
-import {FolderIndexResultVariables} from './types/FolderIndexResult';
 import {DocumentNode} from 'graphql';
 
 const GET_PLAYLISTINDEX = gql`

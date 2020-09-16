@@ -29,7 +29,7 @@ export const BaseEntryListList: React.FC<{ query: BaseEntryListListQuery }> = ({
 	} | undefined>();
 	const [entries, setEntries] = useState<Array<BaseEntry> | undefined>();
 	const amount = 10;
-	const [getList, {loading, error, called, data, queryID}] = query.useList();
+	const [getList, {loading, error, data, queryID}] = query.useList();
 
 	useEffect(() => {
 		setInfo({icon: query.icon, title: query.text, subtitle: ListTypeName[query.listType || '']});
@@ -99,7 +99,6 @@ export const BaseEntryListList: React.FC<{ query: BaseEntryListListQuery }> = ({
 			onRefresh={reload}
 			onLoadMore={handleLoadMore}
 			refreshing={loading}
-			called={called}
 			info={info}
 		/>);
 };

@@ -8,7 +8,8 @@ import {ImageItem} from './ImageItem';
 import {BaseEntry} from '../services/types';
 import {useWindowWidth} from '../utils/dimension.hook';
 import {ListEmpty} from './ListEmpty';
-import {commonItemLayout, defaultItemLayout, defaultKeyExtractor} from '../utils/list.utils';
+import {commonItemLayout, defaultKeyExtractor} from '../utils/list.utils';
+import {DefaultFlatList} from './DefFlatList';
 
 const style = StyleSheet.create({
 	row: {
@@ -26,11 +27,10 @@ export interface BaseEntryListInfo {
 export const BaseEntryList: React.FC<{
 	entries?: Array<BaseEntry>;
 	info: BaseEntryListInfo;
-	called: boolean;
 	refreshing: boolean;
 	onRefresh: () => void;
 	onLoadMore: () => void;
-}> = ({info, entries, refreshing, called, onRefresh, onLoadMore}) => {
+}> = ({info, entries, refreshing, onRefresh, onLoadMore}) => {
 	const [tiles, setTiles] = useState<boolean>(false);
 	const numColumns = 3;
 	const width = useWindowWidth();
@@ -77,26 +77,15 @@ export const BaseEntryList: React.FC<{
 		);
 	}
 	return (
-		<FlatList
-			data={entries || []}
+		<DefaultFlatList
 			key="rows"
+			items={entries}
 			renderItem={renderItemRow}
-			keyExtractor={defaultKeyExtractor}
-			ItemSeparatorComponent={Separator}
-			getItemLayout={defaultItemLayout}
+			ListHeaderComponent={ListHeaderComponent}
 			onEndReachedThreshold={0.4}
 			onEndReached={onLoadMore}
-			ListHeaderComponent={ListHeaderComponent}
-			ListEmptyComponent={<ListEmpty list={entries}/>}
-			refreshControl={(
-				<RefreshControl
-					refreshing={refreshing}
-					onRefresh={onRefresh}
-					progressViewOffset={80}
-					progressBackgroundColor={theme.refreshCtrlBackground}
-					colors={theme.refreshCtrlColors}
-				/>
-			)}
+			loading={refreshing}
+			reload={onRefresh}
 		/>
 	);
 };

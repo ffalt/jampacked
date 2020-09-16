@@ -1,25 +1,22 @@
 import React, {MutableRefObject, useCallback, useEffect, useState} from 'react';
-import {FlatList, RefreshControl, TouchableOpacity} from 'react-native';
+import {TouchableOpacity} from 'react-native';
 import {TrackItem} from '../components/TrackItem';
 import {HomeRoute, HomeRouteProps} from '../navigators/Routing';
 import {JamPlayer} from '../services/player';
 import {ThemedIcon} from '../components/ThemedIcon';
 import {HeaderDetail, ObjHeader, objHeaderStyles} from '../components/ObjHeader';
 import {genreDisplay} from '../utils/genre.utils';
-import {Separator} from '../components/Separator';
 import {JamObjectType} from '../services/jam';
 import {FavIcon} from '../components/FavIcon';
 import {snackError} from '../services/snack';
 import {NavigationService} from '../navigators/navigation';
 import {TrackEntry} from '../services/types';
 import {useTheme} from '../style/theming';
-import {ErrorView} from '../components/ErrorView';
 import ActionSheet from 'react-native-actions-sheet';
 import {ActionSheetTrack} from '../components/ActionSheetTrack';
-import {ListEmpty} from '../components/ListEmpty';
 import {PinIcon} from '../components/PinIcon';
 import {useLazyAlbumQuery} from '../services/queries/album.hook';
-import {defaultItemLayout, defaultKeyExtractor} from '../utils/list.utils';
+import {DefaultFlatList} from '../components/DefFlatList';
 
 const buildDetails = (artist?: string, tracks?: number, genre?: string, click?: () => void): Array<HeaderDetail> => {
 	return [
@@ -97,10 +94,6 @@ export const AlbumScreen: React.FC<HomeRouteProps<HomeRoute.ALBUM>> = ({route}) 
 	const renderItem = useCallback(({item}: { item: TrackEntry }): JSX.Element => (<TrackItem track={item} showMenu={showMenu}/>),
 		[showMenu]);
 
-	if (error) {
-		return (<ErrorView error={error} onRetry={reload}/>);
-	}
-
 	return (
 		<>
 			<ActionSheet
@@ -113,23 +106,13 @@ export const AlbumScreen: React.FC<HomeRouteProps<HomeRoute.ALBUM>> = ({route}) 
 				defaultOverlayOpacity={0.3}>
 				<ActionSheetTrack item={currentTrack}/>
 			</ActionSheet>
-			<FlatList
-				data={album?.tracks || []}
+			<DefaultFlatList
+				items={album?.tracks}
 				renderItem={renderItem}
-				keyExtractor={defaultKeyExtractor}
-				ItemSeparatorComponent={Separator}
 				ListHeaderComponent={ListHeaderComponent}
-				ListEmptyComponent={<ListEmpty list={album?.tracks}/>}
-				getItemLayout={defaultItemLayout}
-				refreshControl={(
-					<RefreshControl
-						refreshing={loading}
-						onRefresh={reload}
-						progressViewOffset={80}
-						progressBackgroundColor={theme.refreshCtrlBackground}
-						colors={theme.refreshCtrlColors}
-					/>
-				)}
+				loading={loading}
+				error={error}
+				reload={reload}
 			/>
 		</>
 	);

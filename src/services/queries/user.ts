@@ -81,7 +81,7 @@ function transformSectionStats(stats: UserResult_currentUser_stats_played | User
 		{link: JamRouteLinks.albumlist(listType, AlbumType.ep), value: stats.albumTypes.ep},
 		{link: JamRouteLinks.albumlist(listType, AlbumType.single), value: stats.albumTypes.single},
 		{link: JamRouteLinks.folderlist(listType), value: stats.folder},
-		{link: JamRouteLinks.tracklist(listType), value: stats.track},
+		{link: JamRouteLinks.tracklist(listType), value: stats.track}
 	].filter(t => t.value > 0);
 }
 

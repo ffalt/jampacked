@@ -1,4 +1,4 @@
-import {AlbumType, ListType} from './jam';
+import {AlbumType} from './jam';
 
 export interface JamAlbumTypeInfo {
 	albumType: AlbumType;
@@ -50,7 +50,7 @@ const albumTypeInfos: Array<JamAlbumTypeInfo> = [
 ];
 
 export function getAlbumTypeInfos(albumType: AlbumType): JamAlbumTypeInfo {
-	return albumTypeInfos.find(i => i.albumType === albumType) || {title: '[Invalid AlbumType]', icon: 'album', albumType}
+	return albumTypeInfos.find(i => i.albumType === albumType) || {title: '[Invalid AlbumType]', icon: 'album', albumType};
 }
 
 export const ListTypeName: { [key: string]: string } = {

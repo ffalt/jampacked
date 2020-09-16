@@ -199,7 +199,7 @@ export class CacheService {
 	async getCacheOrQuery<TData, TVariables, TResult>(
 		query: DocumentNode,
 		variables: TVariables,
-		transform: (d?: TData, variables?: TVariables) => TResult | undefined,
+		transform: (d?: TData, vars?: TVariables) => TResult | undefined,
 	): Promise<TResult | undefined> {
 		const queryID = buildCacheID<TVariables>(query, variables);
 		if (queryID) {

@@ -1,11 +1,10 @@
 import React, {MutableRefObject, useCallback, useEffect, useState} from 'react';
-import {FlatList, RefreshControl, TouchableOpacity} from 'react-native';
+import {TouchableOpacity} from 'react-native';
 import {TrackItem} from '../components/TrackItem';
 import {HomeRoute, HomeRouteProps} from '../navigators/Routing';
 import {JamPlayer} from '../services/player';
 import {ThemedIcon} from '../components/ThemedIcon';
 import {ObjHeader, objHeaderStyles} from '../components/ObjHeader';
-import {Separator} from '../components/Separator';
 import {JamObjectType} from '../services/jam';
 import {FavIcon} from '../components/FavIcon';
 import {snackError} from '../services/snack';
@@ -15,9 +14,8 @@ import {useTheme} from '../style/theming';
 import {ErrorView} from '../components/ErrorView';
 import ActionSheet from 'react-native-actions-sheet';
 import {ActionSheetEpisode} from '../components/ActionSheetEpisode';
-import {ListEmpty} from '../components/ListEmpty';
 import {useLazyPodcastQuery} from '../services/queries/podcast.hook';
-import {defaultItemLayout, defaultKeyExtractor} from '../utils/list.utils';
+import {DefaultFlatList} from '../components/DefFlatList';
 
 export const PodcastScreen: React.FC<HomeRouteProps<HomeRoute.PODCAST>> = ({route}) => {
 	const actionSheetRef: MutableRefObject<ActionSheet | null> = React.useRef<ActionSheet>(null);
@@ -91,23 +89,13 @@ export const PodcastScreen: React.FC<HomeRouteProps<HomeRoute.PODCAST>> = ({rout
 				defaultOverlayOpacity={0.3}>
 				<ActionSheetEpisode item={currentEpisode}/>
 			</ActionSheet>
-			<FlatList
-				data={podcast?.episodes || []}
+			<DefaultFlatList
+				items={podcast?.episodes}
 				renderItem={renderItem}
-				keyExtractor={defaultKeyExtractor}
-				ItemSeparatorComponent={Separator}
 				ListHeaderComponent={ListHeaderComponent}
-				ListEmptyComponent={<ListEmpty list={podcast?.episodes}/>}
-				getItemLayout={defaultItemLayout}
-				refreshControl={(
-					<RefreshControl
-						refreshing={loading}
-						onRefresh={reload}
-						progressViewOffset={80}
-						progressBackgroundColor={theme.refreshCtrlBackground}
-						colors={theme.refreshCtrlColors}
-					/>
-				)}
+				loading={loading}
+				error={error}
+				reload={reload}
 			/>
 		</>
 	);

@@ -144,7 +144,7 @@ export class JamRouteLinks {
 		return ({title: 'User', icon: 'user', navig: {route: HomeRoute.USER}});
 	}
 
-	static downloads() {
+	static downloads(): RouteLink {
 		return ({title: 'Downloads', icon: 'download', navig: {route: HomeRoute.DOWNLOADS}});
 	}
 }

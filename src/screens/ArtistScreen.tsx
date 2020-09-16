@@ -1,7 +1,7 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {SectionListData, StyleSheet} from 'react-native';
 import {ThemedText} from '../components/ThemedText';
-import {staticTheme, useTheme} from '../style/theming';
+import {staticTheme} from '../style/theming';
 import {HomeRoute, HomeRouteProps} from '../navigators/Routing';
 import {Item} from '../components/Item';
 import {HeaderDetail, ObjHeader, objHeaderStyles} from '../components/ObjHeader';
@@ -30,7 +30,6 @@ const buildDetails = (albums?: number, tracks?: number, genre?: string): Array<H
 };
 
 export const ArtistScreen: React.FC<HomeRouteProps<HomeRoute.ARTIST>> = ({route}) => {
-	const theme = useTheme();
 	const [details, setDetails] = useState<Array<HeaderDetail>>(buildDetails());
 	const [getArtist, {loading, error, artist}] = useLazyArtistQuery();
 	const {id, name} = route?.params;

@@ -1,13 +1,12 @@
-import {FlatList, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import React, {useCallback} from 'react';
 import {TrackPlayer} from '../services/player-api';
 import {JamPlayer, useCurrentTrackID, useQueue} from '../services/player';
 import {staticTheme, useTheme} from '../style/theming';
 import {ThemedText} from './ThemedText';
-import {Separator} from './Separator';
 import {ThemedIcon} from './ThemedIcon';
 import {QueueItem} from './QueueItems';
-import {commonItemLayout, defaultItemLayout, defaultKeyExtractor} from '../utils/list.utils';
+import {DefaultFlatList} from './DefFlatList';
 
 const styles = StyleSheet.create({
 	queueButtons: {
@@ -39,15 +38,17 @@ export const Queue: React.FC = () => {
 	const renderItem = useCallback(({item, index}: { item: TrackPlayer.Track, index: number }): JSX.Element => (
 		<QueueItem item={item} index={index} active={item.id === current}/>
 	), [current]);
+	const reload = useCallback(() => {
+		//TODO reload queue list
+	}, []);
 
 	return (
 		<>
-			<FlatList
-				data={queue}
+			<DefaultFlatList
+				items={queue}
 				renderItem={renderItem}
-				ItemSeparatorComponent={Separator}
-				keyExtractor={defaultKeyExtractor}
-				getItemLayout={defaultItemLayout}
+				loading={false}
+				reload={reload}
 			/>
 			<View style={[styles.queueButtons, {borderColor: theme.separator}]}>
 				<TouchableOpacity style={styles.queueButton} onPress={JamPlayer.clearQueue}>

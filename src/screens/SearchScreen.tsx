@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
 	},
 	inputIcon: {
 		fontSize: 22,
-		paddingHorizontal: staticTheme.padding,
+		paddingHorizontal: staticTheme.padding
 	},
 	inputCancelIcon: {
 		fontSize: 22,

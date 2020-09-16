@@ -75,9 +75,9 @@ export const PlayerTabs: React.FC<PlayerTabsProps> = ({toQueue}: PlayerTabsProps
 
 	const close = useCallback((): void => {
 		navigation.goBack();
-	},[]);
+	}, [navigation]);
 
-	const renderTabBar = (tabBarProps: any): JSX.Element => {
+	const renderTabBar = useCallback((tabBarProps: any): JSX.Element => {
 		const buttons = tabBarProps.navigationState.routes.map((route: { title: string }, i: number) => {
 			const style = [styles.tabItem,
 				i === index && styles.tabItemActive,
@@ -100,7 +100,7 @@ export const PlayerTabs: React.FC<PlayerTabsProps> = ({toQueue}: PlayerTabsProps
 				{buttons}
 			</View>
 		);
-	};
+	}, [close, index, theme]);
 
 	return (
 		<TabView

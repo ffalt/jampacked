@@ -2,7 +2,6 @@ import React from 'react';
 import {useTheme} from '../style/theming';
 import {FontelloIcon} from './FontelloIcon';
 import {StyleProp, StyleSheet} from 'react-native';
-import {IconProps} from 'react-native-vector-icons/Icon';
 
 interface ThemedIconProps {
 	name: string;

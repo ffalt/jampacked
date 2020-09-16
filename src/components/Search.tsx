@@ -1,15 +1,13 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {JamObjectType} from '../services/jam';
-import {FlatList, RefreshControl, StyleSheet, TouchableOpacity} from 'react-native';
+import {StyleSheet, TouchableOpacity} from 'react-native';
 import {ThemedText} from './ThemedText';
 import {Item} from './Item';
-import {staticTheme, useTheme} from '../style/theming';
+import {staticTheme} from '../style/theming';
 import {ThemedIcon} from './ThemedIcon';
 import {BaseEntry} from '../services/types';
 import {useLazySearchQuery} from '../services/queries/search';
-import {snackError} from '../services/snack';
-import {Separator} from './Separator';
-import {defaultItemLayout, defaultKeyExtractor} from '../utils/list.utils';
+import {DefaultFlatList} from './DefFlatList';
 
 const styles = StyleSheet.create({
 	section: {
@@ -42,7 +40,6 @@ export const Search: React.FC<SearchProps> = ({objType, query, backToAll}) => {
 	const [entries, setEntries] = useState<Array<BaseEntry>>([]);
 	const [getSearch, {loading, error, result}] = useLazySearchQuery(objType);
 	const amount = 10;
-	const theme = useTheme();
 
 	useEffect(() => {
 		if (query) {
@@ -66,10 +63,6 @@ export const Search: React.FC<SearchProps> = ({objType, query, backToAll}) => {
 			});
 		}
 	}, [result]);
-
-	if (error) {
-		snackError(error);
-	}
 
 	const handleBack = useCallback((): void => {
 		if (backToAll) {
@@ -95,30 +88,21 @@ export const Search: React.FC<SearchProps> = ({objType, query, backToAll}) => {
 	}, [q, getSearch, offset]);
 
 	const renderItem = useCallback(({item}: { item: BaseEntry }): JSX.Element => (<Item item={item}/>), []);
-	const refreshControl = (
-		<RefreshControl
-			refreshing={loading}
-			onRefresh={reload}
-			progressViewOffset={80}
-			progressBackgroundColor={theme.refreshCtrlBackground}
-			colors={theme.refreshCtrlColors}
-		/>
-	);
+
 	return (
 		<>
 			<TouchableOpacity style={styles.section} onPress={handleBack}>
 				<ThemedIcon size={styles.sectionIcon.fontSize} name="left-open"/>
 				<ThemedText style={styles.sectionText}>{objType}</ThemedText>
 			</TouchableOpacity>
-			<FlatList
-				data={entries}
+			<DefaultFlatList
+				items={entries}
 				renderItem={renderItem}
-				keyExtractor={defaultKeyExtractor}
-				ItemSeparatorComponent={Separator}
-				getItemLayout={defaultItemLayout}
 				onEndReachedThreshold={0.4}
 				onEndReached={handleLoadMore}
-				refreshControl={refreshControl}
+				error={error}
+				loading={loading}
+				reload={reload}
 			/>
 		</>
 	);

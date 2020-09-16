@@ -1,27 +1,24 @@
 import React, {useCallback} from 'react';
-import {FlatList} from 'react-native';
-import {Separator} from '../components/Separator';
 import {PageHeader} from '../components/PageHeader';
-import {ListEmpty} from '../components/ListEmpty';
 import {PinnedMediaItem} from './PinnedMediaItem';
 import {PinMedia} from '../services/types';
 import {usePinnedMedia} from '../services/pin-hooks';
-import {defaultItemLayout, defaultKeyExtractor} from '../utils/list.utils';
+import {DefaultFlatList} from './DefFlatList';
 
 export const PinnedMedia: React.FC = () => {
 	const {media, loading} = usePinnedMedia();
 	const renderItem = useCallback(({item}: { item: PinMedia }): JSX.Element => (<PinnedMediaItem item={item}/>), []);
 	const ListHeaderComponent = useCallback((): JSX.Element => (<PageHeader title="Albums" subtitle="Pinned Media" titleIcon="album"/>), []);
+	const reload = useCallback(() => {
+		//TODO reload pinned download list
+	}, []);
 	return (
-		<FlatList
-			data={media}
-			key="pinned"
+		<DefaultFlatList
+			items={media}
 			renderItem={renderItem}
-			keyExtractor={defaultKeyExtractor}
-			ListEmptyComponent={<ListEmpty list={loading ? undefined : media}/>}
 			ListHeaderComponent={ListHeaderComponent}
-			ItemSeparatorComponent={Separator}
-			getItemLayout={defaultItemLayout}
+			loading={loading}
+			reload={reload}
 		/>
 	);
 };

@@ -1,5 +1,5 @@
 import React, {useCallback, useState} from 'react';
-import {FlatList, RefreshControl, StyleSheet} from 'react-native';
+import {RefreshControl, StyleSheet} from 'react-native';
 import {useTheme} from '../style/theming';
 import {PageHeader} from './PageHeader';
 import {Separator} from './Separator';
@@ -25,7 +25,7 @@ export const IndexList: React.FC<{
 	refreshing: boolean;
 	called: boolean;
 	onRefresh: () => void;
-}> = ({title, titleIcon, index, called, refreshing, onRefresh}) => {
+}> = ({title, titleIcon, index, refreshing, onRefresh}) => {
 	const [tiles, setTiles] = useState<boolean>(false);
 	const numColumns = 3;
 	const width = useWindowWidth();
@@ -35,7 +35,6 @@ export const IndexList: React.FC<{
 	const toggleView = useCallback((): void => {
 		setTiles(!tiles);
 	}, [tiles]);
-
 
 	const renderItemRow = useCallback(({item}: { item: IndexEntry }): JSX.Element => (<Item item={item}/>), []);
 	const renderItemTile = useCallback(({item}: { item: IndexEntry }): JSX.Element => (<ImageItem item={item} size={tileSize}/>), [tileSize]);
