@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {RefreshControl, SectionList, SectionListData, StyleSheet} from 'react-native';
+import {SectionListData, StyleSheet} from 'react-native';
 import {ThemedText} from '../components/ThemedText';
 import {staticTheme, useTheme} from '../style/theming';
 import {HomeRoute, HomeRouteProps} from '../navigators/Routing';
@@ -7,12 +7,10 @@ import {Item} from '../components/Item';
 import {HeaderDetail, ObjHeader, objHeaderStyles} from '../components/ObjHeader';
 import {BaseEntry} from '../services/types';
 import {NavigationService} from '../navigators/navigation';
-import {Separator} from '../components/Separator';
 import {FavIcon} from '../components/FavIcon';
 import {JamObjectType} from '../services/jam';
-import {ErrorView} from '../components/ErrorView';
-import {ListEmpty} from '../components/ListEmpty';
 import {useLazySeriesQuery} from '../services/queries/series.hook';
+import {DefaultSectionList} from '../components/DefSectionList';
 
 const styles = StyleSheet.create({
 	ListHeaderTitle: {
@@ -47,7 +45,7 @@ const buildDetails = (artist?: string, tracks?: number, genre?: string, toArtist
 export const SeriesScreen: React.FC<HomeRouteProps<HomeRoute.SERIE>> = ({route}) => {
 	const theme = useTheme();
 	const [details, setDetails] = useState<Array<HeaderDetail>>(buildDetails());
-	const [getSeries, {loading, error, called, series}] = useLazySeriesQuery();
+	const [getSeries, {loading, error, series}] = useLazySeriesQuery();
 	const {id, name} = route?.params;
 
 	useEffect(() => {
@@ -68,50 +66,35 @@ export const SeriesScreen: React.FC<HomeRouteProps<HomeRoute.SERIE>> = ({route})
 		getSeries(id, true);
 	}, [getSeries, id]);
 
-	const headerTitleCmds = (
-		<FavIcon style={objHeaderStyles.button} objType={JamObjectType.series} id={id}/>
-	);
-
-	const ListHeader = (
-		<ObjHeader
-			id={id}
-			title={name}
-			typeName="Series"
-			details={details}
-			headerTitleCmds={headerTitleCmds}
-		/>
-	);
+	const ListHeaderComponent = useCallback((): JSX.Element => {
+		const headerTitleCmds = (
+			<FavIcon style={objHeaderStyles.button} objType={JamObjectType.series} id={id}/>
+		);
+		return (
+			<ObjHeader
+				id={id}
+				title={name}
+				typeName="Series"
+				details={details}
+				headerTitleCmds={headerTitleCmds}
+			/>
+		);
+	}, [details, id, name]);
 
 	const renderSection = useCallback(({section}: { section: SectionListData<BaseEntry> }): JSX.Element =>
 		(<ThemedText style={[styles.SectionHeader, {borderBottomColor: theme.separator}]}>{section.title}</ThemedText>), [theme.separator]);
 
 	const renderItem = useCallback(({item}: { item: BaseEntry }): JSX.Element => (<Item item={item}/>), []);
 
-	const keyExtractor = useCallback((item: BaseEntry): string => item.id, []);
-
-	if (error) {
-		return (<ErrorView error={error} onRetry={reload}/>);
-	}
-
 	return (
-		<SectionList
-			sections={series?.sections || []}
-			ListHeaderComponent={ListHeader}
-			ListEmptyComponent={<ListEmpty list={series?.sections}/>}
+		<DefaultSectionList
+			sections={series?.sections}
+			ListHeaderComponent={ListHeaderComponent}
 			renderSectionHeader={renderSection}
-			ItemSeparatorComponent={Separator}
-			SectionSeparatorComponent={Separator}
-			keyExtractor={keyExtractor}
 			renderItem={renderItem}
-			refreshControl={(
-				<RefreshControl
-					refreshing={loading}
-					onRefresh={reload}
-					progressViewOffset={90}
-					progressBackgroundColor={theme.refreshCtrlBackground}
-					colors={theme.refreshCtrlColors}
-				/>
-			)}
+			error={error}
+			loading={loading}
+			reload={reload}
 		/>
 	);
 };

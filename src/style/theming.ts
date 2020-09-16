@@ -44,6 +44,7 @@ export interface ITheme {
 	name: string;
 	title: string;
 	textColor: string;
+	muted: string;
 	background: string;
 	itemBackground: string;
 	overlayGradient: Array<string>;
@@ -53,7 +54,6 @@ export interface ITheme {
 	control: string;
 	sidebar: string;
 	warning: string;
-	muted: string;
 	progress: string;
 	sliderHandle: string;
 	activeTintColor: string;

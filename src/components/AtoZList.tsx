@@ -6,19 +6,7 @@
 import React, {MutableRefObject, useCallback} from 'react';
 import {FlatList, FlatListProps, StyleSheet, View} from 'react-native';
 import AtoZPicker from './AtoZPicker';
-
-type commonItemLayoutFunc = (data: unknown, index: number) => { length: number, offset: number, index: number };
-
-export function commonItemLayout(itemHeight?: number): commonItemLayoutFunc | undefined {
-	if (!itemHeight) {
-		return;
-	}
-	return (data: unknown, index: number): { length: number, offset: number, index: number } => ({
-		length: itemHeight,
-		offset: itemHeight * index,
-		index
-	});
-}
+import {commonItemLayout} from '../utils/list.utils';
 
 interface AtoZListProps<T> extends FlatListProps<T> {
 	itemHeight?: number;

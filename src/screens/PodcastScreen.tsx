@@ -1,6 +1,6 @@
 import React, {MutableRefObject, useCallback, useEffect, useState} from 'react';
 import {FlatList, RefreshControl, TouchableOpacity} from 'react-native';
-import {trackEntryHeight, TrackItem} from '../components/TrackItem';
+import {TrackItem} from '../components/TrackItem';
 import {HomeRoute, HomeRouteProps} from '../navigators/Routing';
 import {JamPlayer} from '../services/player';
 import {ThemedIcon} from '../components/ThemedIcon';
@@ -9,7 +9,6 @@ import {Separator} from '../components/Separator';
 import {JamObjectType} from '../services/jam';
 import {FavIcon} from '../components/FavIcon';
 import {snackError} from '../services/snack';
-import {commonItemLayout} from '../components/AtoZList';
 import {ThemedText} from '../components/ThemedText';
 import {TrackEntry} from '../services/types';
 import {useTheme} from '../style/theming';
@@ -18,11 +17,12 @@ import ActionSheet from 'react-native-actions-sheet';
 import {ActionSheetEpisode} from '../components/ActionSheetEpisode';
 import {ListEmpty} from '../components/ListEmpty';
 import {useLazyPodcastQuery} from '../services/queries/podcast.hook';
+import {defaultItemLayout, defaultKeyExtractor} from '../utils/list.utils';
 
 export const PodcastScreen: React.FC<HomeRouteProps<HomeRoute.PODCAST>> = ({route}) => {
 	const actionSheetRef: MutableRefObject<ActionSheet | null> = React.useRef<ActionSheet>(null);
 	const theme = useTheme();
-	const [getPodcast, {loading, error, podcast, called}] = useLazyPodcastQuery();
+	const [getPodcast, {loading, error, podcast}] = useLazyPodcastQuery();
 	const [currentEpisode, setCurrentEpisode] = useState<TrackEntry | undefined>();
 	const {id, name} = route?.params;
 
@@ -36,29 +36,34 @@ export const PodcastScreen: React.FC<HomeRouteProps<HomeRoute.PODCAST>> = ({rout
 		getPodcast(id, true);
 	}, [getPodcast, id]);
 
-	const playTracks = useCallback((): void => {
-		if (podcast?.episodes) {
-			JamPlayer.playTracks(podcast.episodes)
-				.catch(e => {
-					snackError(e);
-				});
-		}
-	}, [podcast]);
-
-	const headerTitleCmds = (
-		<>
-			<TouchableOpacity style={objHeaderStyles.button} onPress={playTracks}>
-				<ThemedIcon name="play" size={objHeaderStyles.buttonIcon.fontSize}/>
-			</TouchableOpacity>
-			<FavIcon style={objHeaderStyles.button} objType={JamObjectType.podcast} id={id}/>
-		</>
-	);
-
-	const customDetails = (<ThemedText style={objHeaderStyles.panel}>{podcast?.description}</ThemedText>);
-
-	const ListHeader = (<ObjHeader id={id} title={name} typeName="Podcast" customDetails={customDetails} headerTitleCmds={headerTitleCmds}/>);
-
-	const keyExtractor = useCallback((item: TrackEntry): string => item.id, []);
+	const ListHeaderComponent = useCallback((): JSX.Element => {
+		const playTracks = (): void => {
+			if (podcast?.episodes) {
+				JamPlayer.playTracks(podcast.episodes)
+					.catch(e => {
+						snackError(e);
+					});
+			}
+		};
+		const customDetails = (<ThemedText style={objHeaderStyles.panel}>{podcast?.description}</ThemedText>);
+		const headerTitleCmds = (
+			<>
+				<TouchableOpacity style={objHeaderStyles.button} onPress={playTracks}>
+					<ThemedIcon name="play" size={objHeaderStyles.buttonIcon.fontSize}/>
+				</TouchableOpacity>
+				<FavIcon style={objHeaderStyles.button} objType={JamObjectType.podcast} id={id}/>
+			</>
+		);
+		return (
+			<ObjHeader
+				id={id}
+				title={name}
+				typeName="Podcast"
+				customDetails={customDetails}
+				headerTitleCmds={headerTitleCmds}
+			/>
+		);
+	}, [podcast, id, name]);
 
 	const showMenu = useCallback((item: TrackEntry): void => {
 		setCurrentEpisode(item);
@@ -69,8 +74,6 @@ export const PodcastScreen: React.FC<HomeRouteProps<HomeRoute.PODCAST>> = ({rout
 
 	const renderItem = useCallback(({item}: { item: TrackEntry }): JSX.Element => (<TrackItem track={item} showMenu={showMenu}/>),
 		[showMenu]);
-
-	const getItemLayout = React.useMemo(() => commonItemLayout(trackEntryHeight), []);
 
 	if (error) {
 		return (<ErrorView error={error} onRetry={reload}/>);
@@ -91,11 +94,11 @@ export const PodcastScreen: React.FC<HomeRouteProps<HomeRoute.PODCAST>> = ({rout
 			<FlatList
 				data={podcast?.episodes || []}
 				renderItem={renderItem}
-				keyExtractor={keyExtractor}
+				keyExtractor={defaultKeyExtractor}
 				ItemSeparatorComponent={Separator}
-				ListHeaderComponent={ListHeader}
+				ListHeaderComponent={ListHeaderComponent}
 				ListEmptyComponent={<ListEmpty list={podcast?.episodes}/>}
-				getItemLayout={getItemLayout}
+				getItemLayout={defaultItemLayout}
 				refreshControl={(
 					<RefreshControl
 						refreshing={loading}

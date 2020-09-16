@@ -1,41 +1,14 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import {TouchableOpacity, View} from 'react-native';
 import {DownloadTask} from 'react-native-background-downloader';
-import {staticTheme, useTheme} from '../style/theming';
 import {ThemedText} from '../components/ThemedText';
 import {formatDuration} from '../utils/duration.utils';
 import {ThemedIcon} from '../components/ThemedIcon';
 import {CircularProgress} from '../components/CircularProgress';
 import {useDownloadStatus} from '../services/pin-hooks';
-
-const styles = StyleSheet.create({
-	item: {
-		paddingHorizontal: staticTheme.padding,
-		flexDirection: 'row',
-		flex: 1,
-		height: 45,
-		marginRight: 5,
-		alignItems: 'center'
-	},
-	itemContent: {
-		flex: 1,
-		flexDirection: 'column',
-		marginHorizontal: 10
-	},
-	itemFooterText: {
-		fontSize: staticTheme.fontSizeTiny
-	},
-	itemFooter: {
-		flexDirection: 'row',
-		justifyContent: 'space-between'
-	},
-	itemText: {
-		fontSize: staticTheme.fontSizeSmall
-	},
-});
+import {sharedStyles} from '../style/shared';
 
 export const ActiveDownloadItem: React.FC<{ item: DownloadTask }> = React.memo(({item}) => {
-	const theme = useTheme();
 	const [state, setState] = useState<{ indeterminate: boolean, text: string, state: string, duration: string, icon: string, percent: number }>({
 		text: '',
 		state: '',
@@ -74,21 +47,23 @@ export const ActiveDownloadItem: React.FC<{ item: DownloadTask }> = React.memo((
 	}, [progress]);
 
 	return (
-		<View style={[styles.item, {backgroundColor: theme.background}]}>
-			<CircularProgress
-				indeterminate={state.indeterminate}
-				size={26}
-				strokeWidth={2}
-				progress={state.percent}
-			/>
-			<View style={styles.itemContent}>
-				<ThemedText style={styles.itemText}>{state.text}</ThemedText>
-				<View style={styles.itemFooter}>
-					<ThemedText style={styles.itemFooterText}>{state.state}</ThemedText>
-					<ThemedText style={styles.itemFooterText}>{state.duration}</ThemedText>
+		<View style={sharedStyles.item}>
+			<View style={sharedStyles.itemSectionLeft}>
+				<CircularProgress
+					indeterminate={state.indeterminate}
+					size={26}
+					strokeWidth={2}
+					progress={state.percent}
+				/>
+			</View>
+			<View style={sharedStyles.itemContent}>
+				<ThemedText style={sharedStyles.itemText}>{state.text}</ThemedText>
+				<View style={sharedStyles.itemFooter}>
+					<ThemedText style={sharedStyles.itemFooterText}>{state.state}</ThemedText>
+					<ThemedText style={sharedStyles.itemFooterText}>{state.duration}</ThemedText>
 				</View>
 			</View>
-			<TouchableOpacity onPress={handlePress}>
+			<TouchableOpacity onPress={handlePress} style={sharedStyles.itemSectionRight}>
 				<ThemedIcon name={state.icon}/>
 			</TouchableOpacity>
 		</View>

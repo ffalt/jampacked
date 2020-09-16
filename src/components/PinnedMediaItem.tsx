@@ -1,40 +1,12 @@
-import React, {useCallback, useEffect, useState} from 'react';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {DownloadTask} from 'react-native-background-downloader';
+import React, {useCallback, useEffect} from 'react';
+import {TouchableOpacity, View} from 'react-native';
 import {staticTheme, useTheme} from '../style/theming';
 import {ThemedText} from '../components/ThemedText';
-import {formatDuration} from '../utils/duration.utils';
 import {ThemedIcon} from '../components/ThemedIcon';
-import {CircularProgress} from '../components/CircularProgress';
 import {JamImage} from './JamImage';
 import {PinMedia} from '../services/types';
-import {useDownloadStatus} from '../services/pin-hooks';
-
-const styles = StyleSheet.create({
-	item: {
-		paddingHorizontal: staticTheme.padding,
-		flexDirection: 'row',
-		flex: 1,
-		height: 45,
-		marginRight: 5,
-		alignItems: 'center'
-	},
-	itemContent: {
-		flex: 1,
-		flexDirection: 'column',
-		marginHorizontal: 10
-	},
-	itemFooterText: {
-		fontSize: staticTheme.fontSizeTiny
-	},
-	itemFooter: {
-		flexDirection: 'row',
-		justifyContent: 'space-between'
-	},
-	itemText: {
-		fontSize: staticTheme.fontSizeSmall
-	},
-});
+import {sharedStyles} from '../style/shared';
+import {titleCase} from '../utils/format.utils';
 
 export const PinnedMediaItem: React.FC<{ item: PinMedia }> = React.memo(({item}) => {
 	const theme = useTheme();
@@ -76,18 +48,18 @@ export const PinnedMediaItem: React.FC<{ item: PinMedia }> = React.memo(({item})
 	}, []);
 
 	return (
-		<View style={[styles.item, {backgroundColor: theme.background}]}>
-			<JamImage id={item.id} size={staticTheme.thumb}/>
-			<View style={styles.itemContent}>
-				<ThemedText style={styles.itemText}>{item.name}</ThemedText>
-				<View style={styles.itemFooter}>
-					<ThemedText style={styles.itemFooterText}>{item.objType}</ThemedText>
-					<ThemedText style={styles.itemFooterText}>Tracks: {item.tracks.length}</ThemedText>
+		<View style={[sharedStyles.item, {backgroundColor: theme.background}]}>
+			<JamImage id={item.id} size={staticTheme.thumb} style={sharedStyles.itemSectionLeft}/>
+			<View style={sharedStyles.itemContent}>
+				<ThemedText style={sharedStyles.itemText}>{item.name}</ThemedText>
+				<View style={sharedStyles.itemFooter}>
+					<ThemedText style={sharedStyles.itemFooterText}>{titleCase(item.objType)}</ThemedText>
+					<ThemedText style={sharedStyles.itemFooterText}>Tracks: {item.tracks.length}</ThemedText>
 				</View>
 			</View>
-			<TouchableOpacity onPress={handlePress}>
-				<ThemedIcon name="pin"/>
-			</TouchableOpacity>
+			{/*<TouchableOpacity onPress={handlePress} style={sharedStyles.itemImageRight}>*/}
+			{/*	<ThemedIcon name="pin" size={26}/>*/}
+			{/*</TouchableOpacity>*/}
 		</View>
 	);
 });

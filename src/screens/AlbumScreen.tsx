@@ -1,6 +1,6 @@
 import React, {MutableRefObject, useCallback, useEffect, useState} from 'react';
 import {FlatList, RefreshControl, TouchableOpacity} from 'react-native';
-import {trackEntryHeight, TrackItem} from '../components/TrackItem';
+import {TrackItem} from '../components/TrackItem';
 import {HomeRoute, HomeRouteProps} from '../navigators/Routing';
 import {JamPlayer} from '../services/player';
 import {ThemedIcon} from '../components/ThemedIcon';
@@ -10,9 +10,8 @@ import {Separator} from '../components/Separator';
 import {JamObjectType} from '../services/jam';
 import {FavIcon} from '../components/FavIcon';
 import {snackError} from '../services/snack';
-import {commonItemLayout} from '../components/AtoZList';
 import {NavigationService} from '../navigators/navigation';
-import {AutoCompleteEntryData, TrackEntry} from '../services/types';
+import {TrackEntry} from '../services/types';
 import {useTheme} from '../style/theming';
 import {ErrorView} from '../components/ErrorView';
 import ActionSheet from 'react-native-actions-sheet';
@@ -20,6 +19,7 @@ import {ActionSheetTrack} from '../components/ActionSheetTrack';
 import {ListEmpty} from '../components/ListEmpty';
 import {PinIcon} from '../components/PinIcon';
 import {useLazyAlbumQuery} from '../services/queries/album.hook';
+import {defaultItemLayout, defaultKeyExtractor} from '../utils/list.utils';
 
 const buildDetails = (artist?: string, tracks?: number, genre?: string, click?: () => void): Array<HeaderDetail> => {
 	return [
@@ -57,36 +57,35 @@ export const AlbumScreen: React.FC<HomeRouteProps<HomeRoute.ALBUM>> = ({route}) 
 		getAlbum(id, true);
 	}, [getAlbum, id]);
 
-	const playTracks = useCallback((): void => {
-		if (album) {
-			JamPlayer.playTracks(album.tracks)
-				.catch(e => {
-					snackError(e);
-				});
-		}
-	}, [album]);
+	const ListHeaderComponent = useCallback((): JSX.Element => {
+		const playTracks = (): void => {
+			if (album) {
+				JamPlayer.playTracks(album.tracks)
+					.catch(e => {
+						snackError(e);
+					});
+			}
+		};
 
-	const headerTitleCmds = (
-		<>
-			<TouchableOpacity style={objHeaderStyles.button} onPress={playTracks}>
-				<ThemedIcon name="play" size={objHeaderStyles.buttonIcon.fontSize}/>
-			</TouchableOpacity>
-			<PinIcon style={objHeaderStyles.button} objType={JamObjectType.album} id={id}/>
-			<FavIcon style={objHeaderStyles.button} objType={JamObjectType.album} id={id}/>
-		</>
-	);
-
-	const ListHeader = (
-		<ObjHeader
-			id={id}
-			title={name}
-			typeName={album?.albumType}
-			details={details}
-			headerTitleCmds={headerTitleCmds}
-		/>
-	);
-
-	const keyExtractor = useCallback((item: TrackEntry): string => item.id, []);
+		const headerTitleCmds = (
+			<>
+				<TouchableOpacity style={objHeaderStyles.button} onPress={playTracks}>
+					<ThemedIcon name="play" size={objHeaderStyles.buttonIcon.fontSize}/>
+				</TouchableOpacity>
+				<PinIcon style={objHeaderStyles.button} objType={JamObjectType.album} id={id}/>
+				<FavIcon style={objHeaderStyles.button} objType={JamObjectType.album} id={id}/>
+			</>
+		);
+		return (
+			<ObjHeader
+				id={id}
+				title={name}
+				typeName={album?.albumType}
+				details={details}
+				headerTitleCmds={headerTitleCmds}
+			/>
+		);
+	}, [album, details, id, name]);
 
 	const showMenu = useCallback((item: TrackEntry): void => {
 		setCurrentTrack(item);
@@ -97,8 +96,6 @@ export const AlbumScreen: React.FC<HomeRouteProps<HomeRoute.ALBUM>> = ({route}) 
 
 	const renderItem = useCallback(({item}: { item: TrackEntry }): JSX.Element => (<TrackItem track={item} showMenu={showMenu}/>),
 		[showMenu]);
-
-	const getItemLayout = React.useMemo(() => commonItemLayout(trackEntryHeight), []);
 
 	if (error) {
 		return (<ErrorView error={error} onRetry={reload}/>);
@@ -119,11 +116,11 @@ export const AlbumScreen: React.FC<HomeRouteProps<HomeRoute.ALBUM>> = ({route}) 
 			<FlatList
 				data={album?.tracks || []}
 				renderItem={renderItem}
-				keyExtractor={keyExtractor}
+				keyExtractor={defaultKeyExtractor}
 				ItemSeparatorComponent={Separator}
-				ListHeaderComponent={ListHeader}
+				ListHeaderComponent={ListHeaderComponent}
 				ListEmptyComponent={<ListEmpty list={album?.tracks}/>}
-				getItemLayout={getItemLayout}
+				getItemLayout={defaultItemLayout}
 				refreshControl={(
 					<RefreshControl
 						refreshing={loading}

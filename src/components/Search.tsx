@@ -2,7 +2,6 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {JamObjectType} from '../services/jam';
 import {FlatList, RefreshControl, StyleSheet, TouchableOpacity} from 'react-native';
 import {ThemedText} from './ThemedText';
-import {commonItemLayout} from './AtoZList';
 import {Item} from './Item';
 import {staticTheme, useTheme} from '../style/theming';
 import {ThemedIcon} from './ThemedIcon';
@@ -10,6 +9,7 @@ import {BaseEntry} from '../services/types';
 import {useLazySearchQuery} from '../services/queries/search';
 import {snackError} from '../services/snack';
 import {Separator} from './Separator';
+import {defaultItemLayout, defaultKeyExtractor} from '../utils/list.utils';
 
 const styles = StyleSheet.create({
 	section: {
@@ -94,10 +94,16 @@ export const Search: React.FC<SearchProps> = ({objType, query, backToAll}) => {
 		}
 	}, [q, getSearch, offset]);
 
-	const getItemLayout = React.useMemo(() => commonItemLayout(65), []);
-	const keyExtractor = useCallback((item: BaseEntry): string => item.id, []);
 	const renderItem = useCallback(({item}: { item: BaseEntry }): JSX.Element => (<Item item={item}/>), []);
-
+	const refreshControl = (
+		<RefreshControl
+			refreshing={loading}
+			onRefresh={reload}
+			progressViewOffset={80}
+			progressBackgroundColor={theme.refreshCtrlBackground}
+			colors={theme.refreshCtrlColors}
+		/>
+	);
 	return (
 		<>
 			<TouchableOpacity style={styles.section} onPress={handleBack}>
@@ -107,20 +113,12 @@ export const Search: React.FC<SearchProps> = ({objType, query, backToAll}) => {
 			<FlatList
 				data={entries}
 				renderItem={renderItem}
-				keyExtractor={keyExtractor}
+				keyExtractor={defaultKeyExtractor}
 				ItemSeparatorComponent={Separator}
-				getItemLayout={getItemLayout}
+				getItemLayout={defaultItemLayout}
 				onEndReachedThreshold={0.4}
 				onEndReached={handleLoadMore}
-				refreshControl={(
-					<RefreshControl
-						refreshing={loading}
-						onRefresh={reload}
-						progressViewOffset={80}
-						progressBackgroundColor={theme.refreshCtrlBackground}
-						colors={theme.refreshCtrlColors}
-					/>
-				)}
+				refreshControl={refreshControl}
 			/>
 		</>
 	);

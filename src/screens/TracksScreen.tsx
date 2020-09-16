@@ -3,11 +3,11 @@ import {HomeRoute, HomeRouteProps} from '../navigators/Routing';
 import {PageHeader} from '../components/PageHeader';
 import {FlatList, RefreshControl} from 'react-native';
 import {Separator} from '../components/Separator';
-import {trackEntryHeight, TrackItem} from '../components/TrackItem';
-import {commonItemLayout} from '../components/AtoZList';
+import {TrackItem} from '../components/TrackItem';
 import {TrackEntry} from '../services/types';
 import {useTheme} from '../style/theming';
 import {ListEmpty} from '../components/ListEmpty';
+import {defaultItemLayout, defaultKeyExtractor} from '../utils/list.utils';
 
 export const TracksScreen: React.FC<HomeRouteProps<HomeRoute.TRACKS>> = () => {
 	const theme = useTheme();
@@ -18,23 +18,19 @@ export const TracksScreen: React.FC<HomeRouteProps<HomeRoute.TRACKS>> = () => {
 		// TODO: TracksScreen
 	}, []);
 
-	const keyExtractor = useCallback((item: TrackEntry): string => item.id, []);
-
 	const renderItem = useCallback(({item}: { item: TrackEntry }): JSX.Element => (<TrackItem track={item}/>), []);
 
-	const renderHeader = useCallback((): JSX.Element => (<PageHeader title="Tracks" titleIcon="track"/>), []);
-
-	const getItemLayout = React.useMemo(() => commonItemLayout(trackEntryHeight), []);
+	const ListHeaderComponent = useCallback((): JSX.Element => (<PageHeader title="Tracks" titleIcon="track"/>), []);
 
 	return (
 		<FlatList
 			data={tracks || []}
 			renderItem={renderItem}
-			keyExtractor={keyExtractor}
-			ItemSeparatorComponent={Separator}
-			ListHeaderComponent={renderHeader}
+			ListHeaderComponent={ListHeaderComponent}
 			ListEmptyComponent={<ListEmpty list={tracks}/>}
-			getItemLayout={getItemLayout}
+			keyExtractor={defaultKeyExtractor}
+			ItemSeparatorComponent={Separator}
+			getItemLayout={defaultItemLayout}
 			refreshControl={(
 				<RefreshControl
 					refreshing={refreshing}

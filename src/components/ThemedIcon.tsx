@@ -1,12 +1,18 @@
 import React from 'react';
 import {useTheme} from '../style/theming';
 import {FontelloIcon} from './FontelloIcon';
-import {StyleSheet} from 'react-native';
+import {StyleProp, StyleSheet} from 'react-native';
+import {IconProps} from 'react-native-vector-icons/Icon';
 
 interface ThemedIconProps {
 	name: string;
 	color?: string;
 	size?: number;
+	style?: StyleProp<{
+		color?: string;
+		size?: number;
+		fontSize?: number;
+	}>;
 }
 
 const styles = StyleSheet.create({
@@ -15,11 +21,10 @@ const styles = StyleSheet.create({
 	}
 });
 
-export const ThemedIcon: React.FC<ThemedIconProps> = React.memo(({name, size, color}) => {
+export const ThemedIcon: React.FC<ThemedIconProps> = React.memo(({name, size, color, style}) => {
 	const theme = useTheme();
-	const iconStyle = [styles.icon, {color: color || theme.textColor, fontSize: size}];
 	return (
-		<FontelloIcon name={name} style={iconStyle}/>
+		<FontelloIcon name={name} style={[styles.icon, {color: color || theme.textColor, fontSize: size}, style]}/>
 	);
 });
 

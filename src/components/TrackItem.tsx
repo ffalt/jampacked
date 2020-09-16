@@ -1,42 +1,19 @@
 import React, {useCallback} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {staticTheme} from '../style/theming';
 import {JamPlayer} from '../services/player';
 import {ThemedText} from './ThemedText';
 import {TrackEntry} from '../services/types';
-
-export const trackEntryHeight = 46;
+import {sharedStyles} from '../style/shared';
 
 const styles = StyleSheet.create({
-	trackListContainer: {
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		alignItems: 'center',
-		marginRight: staticTheme.marginLarge,
-		marginLeft: staticTheme.marginLarge,
-		height: trackEntryHeight
-	},
 	trackListNumber: {
 		flex: 1
 	},
 	trackListTitle: {
-		flex: 5
+		flex: 7
 	},
 	trackListRuntime: {
 		flex: 1
-	},
-	trackNumberStyle: {
-		fontSize: staticTheme.fontSizeSmall
-	},
-	trackSubStyle: {
-		fontSize: staticTheme.fontSizeSmall
-	},
-	trackTitleStyle: {
-		fontSize: staticTheme.fontSize
-	},
-	trackRuntimeStyle: {
-		textAlign: 'right',
-		fontSize: staticTheme.fontSizeSmall
 	}
 });
 
@@ -57,16 +34,16 @@ export const TrackItem: React.FC<{ track: TrackEntry, showMenu?: (item: TrackEnt
 		<TouchableOpacity
 			onPress={playTrack}
 			onLongPress={popupMenu}
-			style={styles.trackListContainer}
+			style={sharedStyles.item}
 		>
-			<View style={styles.trackListNumber}>
-				<ThemedText style={styles.trackNumberStyle}>{track.trackNr}</ThemedText>
+			<View style={[sharedStyles.itemSectionLeft, styles.trackListNumber]}>
+				<ThemedText style={sharedStyles.itemFooterText}>{track.trackNr}</ThemedText>
 			</View>
-			<View style={styles.trackListTitle}>
-				<ThemedText style={styles.trackTitleStyle} numberOfLines={2}>{track.title}</ThemedText>
+			<View style={[sharedStyles.itemContent, styles.trackListTitle]}>
+				<ThemedText style={sharedStyles.itemText} numberOfLines={2}>{track.title}</ThemedText>
 			</View>
-			<View style={styles.trackListRuntime}>
-				<ThemedText style={styles.trackRuntimeStyle}>{track.duration}</ThemedText>
+			<View style={[sharedStyles.itemSectionRight, styles.trackListRuntime]}>
+				<ThemedText style={sharedStyles.itemFooterText}>{track.duration}</ThemedText>
 			</View>
 		</TouchableOpacity>
 	);

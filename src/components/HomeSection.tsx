@@ -6,6 +6,7 @@ import {ThemedText} from './ThemedText';
 import {HomeSectionEntry} from './HomeSectionEntry';
 import {NavigationService} from '../navigators/navigation';
 import {ThemedIcon} from './ThemedIcon';
+import {sharedStyles} from '../style/shared';
 
 const styles = StyleSheet.create({
 	headline: {
@@ -37,9 +38,9 @@ export const HomeSection: React.FC<{ title: string; section?: Array<HomeEntry>; 
 	const entries = section.map(entry => <HomeSectionEntry key={entry.id} entry={entry}/>);
 	return (
 		<>
-			<TouchableOpacity style={styles.sectionHeader} onPress={click}>
-				<ThemedText style={styles.headline}>{title}</ThemedText>
-				<ThemedIcon size={staticTheme.fontSizeSmall} name="right-open"/>
+			<TouchableOpacity style={sharedStyles.sectionHeader} onPress={click}>
+				<ThemedText style={sharedStyles.sectionHeaderText}>{title}</ThemedText>
+				<ThemedIcon style={sharedStyles.sectionHeaderIcon} name="right-open"/>
 			</TouchableOpacity>
 			<ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
 				{entries}

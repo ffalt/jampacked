@@ -1,10 +1,10 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {FlatList, RefreshControl, StyleSheet, TouchableOpacity} from 'react-native';
+import {FlatList, RefreshControl, TouchableOpacity} from 'react-native';
 import {TrackItem} from '../components/TrackItem';
 import {HomeRoute, HomeRouteProps} from '../navigators/Routing';
 import {JamPlayer} from '../services/player';
 import {ThemedIcon} from '../components/ThemedIcon';
-import {HeaderDetail, ObjHeader} from '../components/ObjHeader';
+import {HeaderDetail, ObjHeader, objHeaderStyles} from '../components/ObjHeader';
 import {genreDisplay} from '../utils/genre.utils';
 import {Separator} from '../components/Separator';
 import {snackError} from '../services/snack';
@@ -15,20 +15,7 @@ import {useTheme} from '../style/theming';
 import {ErrorView} from '../components/ErrorView';
 import {ListEmpty} from '../components/ListEmpty';
 import {useLazyFolderQuery} from '../services/queries/folder.hook';
-
-const styles = StyleSheet.create({
-	playButton: {
-		height: 24,
-		width: 24,
-		borderWidth: 1,
-		borderRadius: 30 / 2,
-		alignItems: 'center',
-		justifyContent: 'center'
-	},
-	playButtonIcon: {
-		fontSize: 10
-	}
-});
+import {defaultKeyExtractor} from '../utils/list.utils';
 
 const buildDetails = (folder?: Folder): Array<HeaderDetail> => {
 	let result: Array<HeaderDetail> = [];
@@ -59,7 +46,7 @@ const buildDetails = (folder?: Folder): Array<HeaderDetail> => {
 export const FolderScreen: React.FC<HomeRouteProps<HomeRoute.FOLDER>> = ({route}) => {
 	const theme = useTheme();
 	const [details, setDetails] = useState<Array<HeaderDetail>>(buildDetails());
-	const [getFolder, {loading, error, folder, called}] = useLazyFolderQuery();
+	const [getFolder, {loading, error, folder}] = useLazyFolderQuery();
 	const {id, name} = route?.params;
 
 	useEffect(() => {
@@ -74,35 +61,31 @@ export const FolderScreen: React.FC<HomeRouteProps<HomeRoute.FOLDER>> = ({route}
 		}
 	}, [folder]);
 
-	const playTracks = useCallback((): void => {
-		if (folder) {
-			JamPlayer.playTracks(folder.tracks)
-				.catch(e => {
-					snackError(e);
-				});
-		}
-	}, [folder]);
+	const ListHeaderComponent = useCallback((): JSX.Element => {
+		const playTracks = (): void => {
+			if (folder) {
+				JamPlayer.playTracks(folder.tracks)
+					.catch(e => {
+						snackError(e);
+					});
+			}
+		};
 
-	const headerTitleCmds = folder?.tracks?.length ? (
-		<TouchableOpacity
-			style={[styles.playButton, {borderColor: theme.textColor}]}
-			onPress={playTracks}
-		>
-			<ThemedIcon name="play" size={styles.playButtonIcon.fontSize}/>
-		</TouchableOpacity>
-	) : undefined;
-
-	const ListHeader = (
-		<ObjHeader
-			id={id}
-			title={name}
-			typeName={folder?.type}
-			details={details}
-			headerTitleCmds={headerTitleCmds}
-		/>
-	);
-
-	const keyExtractor = useCallback((item: FolderItem): string => item.id, []);
+		const headerTitleCmds = folder?.tracks?.length ? (
+			<TouchableOpacity style={objHeaderStyles.button} onPress={playTracks}>
+				<ThemedIcon name="play" size={objHeaderStyles.buttonIcon.fontSize}/>
+			</TouchableOpacity>
+		) : undefined;
+		return (
+			<ObjHeader
+				id={id}
+				title={name}
+				typeName={folder?.type}
+				details={details}
+				headerTitleCmds={headerTitleCmds}
+			/>
+		);
+	}, [folder, id, name, details]);
 
 	const renderItem = useCallback(({item}: { item: FolderItem }): JSX.Element => {
 		if (item.track) {
@@ -126,9 +109,9 @@ export const FolderScreen: React.FC<HomeRouteProps<HomeRoute.FOLDER>> = ({route}
 		<FlatList
 			data={folder?.items || []}
 			renderItem={renderItem}
-			keyExtractor={keyExtractor}
+			keyExtractor={defaultKeyExtractor}
 			ItemSeparatorComponent={Separator}
-			ListHeaderComponent={ListHeader}
+			ListHeaderComponent={ListHeaderComponent}
 			ListEmptyComponent={<ListEmpty list={folder?.items}/>}
 			refreshControl={(
 				<RefreshControl

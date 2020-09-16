@@ -1,5 +1,5 @@
 import React, {useCallback, useState} from 'react';
-import {RefreshControl, StyleSheet} from 'react-native';
+import {FlatList, RefreshControl, StyleSheet} from 'react-native';
 import {useTheme} from '../style/theming';
 import {PageHeader} from './PageHeader';
 import {Separator} from './Separator';
@@ -9,6 +9,7 @@ import {ImageItem} from './ImageItem';
 import {Index, IndexEntry} from '../services/types';
 import {useWindowWidth} from '../utils/dimension.hook';
 import {ListEmpty} from './ListEmpty';
+import {defaultKeyExtractor} from '../utils/list.utils';
 
 const style = StyleSheet.create({
 	row: {
@@ -38,7 +39,6 @@ export const IndexList: React.FC<{
 
 	const renderItemRow = useCallback(({item}: { item: IndexEntry }): JSX.Element => (<Item item={item}/>), []);
 	const renderItemTile = useCallback(({item}: { item: IndexEntry }): JSX.Element => (<ImageItem item={item} size={tileSize}/>), [tileSize]);
-	const keyExtractor = useCallback((item: IndexEntry): string => item.id, []);
 
 	const ListHeaderComponent = (<PageHeader title={title} titleIcon={titleIcon} tiles={tiles} toggleView={toggleView}/>);
 	const refreshControl = (
@@ -58,7 +58,7 @@ export const IndexList: React.FC<{
 				data={index}
 				key="tiles"
 				renderItem={renderItemTile}
-				keyExtractor={keyExtractor}
+				keyExtractor={defaultKeyExtractor}
 				numColumns={numColumns}
 				ListHeaderComponent={ListHeaderComponent}
 				ListEmptyComponent={ListEmptyComponent}
@@ -73,7 +73,7 @@ export const IndexList: React.FC<{
 			data={index}
 			key="rows"
 			renderItem={renderItemRow}
-			keyExtractor={keyExtractor}
+			keyExtractor={defaultKeyExtractor}
 			ItemSeparatorComponent={Separator}
 			ListHeaderComponent={ListHeaderComponent}
 			ListEmptyComponent={ListEmptyComponent}

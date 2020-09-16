@@ -1,6 +1,6 @@
 import React, {MutableRefObject, useCallback, useEffect, useState} from 'react';
 import {FlatList, RefreshControl, TouchableOpacity} from 'react-native';
-import {trackEntryHeight, TrackItem} from '../components/TrackItem';
+import {TrackItem} from '../components/TrackItem';
 import {HomeRoute, HomeRouteProps} from '../navigators/Routing';
 import {JamPlayer} from '../services/player';
 import {ThemedIcon} from '../components/ThemedIcon';
@@ -9,7 +9,6 @@ import {Separator} from '../components/Separator';
 import {JamObjectType} from '../services/jam';
 import {FavIcon} from '../components/FavIcon';
 import {snackError} from '../services/snack';
-import {commonItemLayout} from '../components/AtoZList';
 import {ThemedText} from '../components/ThemedText';
 import {TrackEntry} from '../services/types';
 import {useTheme} from '../style/theming';
@@ -18,12 +17,13 @@ import ActionSheet from 'react-native-actions-sheet';
 import {ActionSheetTrack} from '../components/ActionSheetTrack';
 import {ListEmpty} from '../components/ListEmpty';
 import {useLazyPlaylistQuery} from '../services/queries/playlist.hook';
+import {defaultItemLayout, defaultKeyExtractor} from '../utils/list.utils';
 
 export const PlaylistScreen: React.FC<HomeRouteProps<HomeRoute.PLAYLIST>> = ({route}) => {
 	const actionSheetRef: MutableRefObject<ActionSheet | null> = React.useRef<ActionSheet>(null);
 	const theme = useTheme();
 	const [currentTrack, setCurrentTrack] = useState<TrackEntry | undefined>();
-	const [getPlaylist, {loading, error, playlist, called}] = useLazyPlaylistQuery();
+	const [getPlaylist, {loading, error, playlist}] = useLazyPlaylistQuery();
 	const {id, name} = route?.params;
 
 	useEffect(() => {
@@ -36,37 +36,36 @@ export const PlaylistScreen: React.FC<HomeRouteProps<HomeRoute.PLAYLIST>> = ({ro
 		getPlaylist(id, true);
 	}, [getPlaylist, id]);
 
-	const playTracks = useCallback((): void => {
-		if (playlist?.tracks) {
-			JamPlayer.playTracks(playlist.tracks)
-				.catch(e => {
-					snackError(e);
-				});
-		}
-	}, [playlist]);
+	const ListHeaderComponent = useCallback((): JSX.Element => {
+		const playTracks = (): void => {
+			if (playlist?.tracks) {
+				JamPlayer.playTracks(playlist.tracks)
+					.catch(e => {
+						snackError(e);
+					});
+			}
+		};
+		const customDetails = (<ThemedText style={objHeaderStyles.panel}>{playlist?.comment}</ThemedText>);
 
-	const headerTitleCmds = (
-		<>
-			<TouchableOpacity style={objHeaderStyles.button} onPress={playTracks}>
-				<ThemedIcon name="play" size={objHeaderStyles.buttonIcon.fontSize}/>
-			</TouchableOpacity>
-			<FavIcon style={objHeaderStyles.button} objType={JamObjectType.playlist} id={id}/>
-		</>
-	);
+		const headerTitleCmds = (
+			<>
+				<TouchableOpacity style={objHeaderStyles.button} onPress={playTracks}>
+					<ThemedIcon name="play" size={objHeaderStyles.buttonIcon.fontSize}/>
+				</TouchableOpacity>
+				<FavIcon style={objHeaderStyles.button} objType={JamObjectType.playlist} id={id}/>
+			</>
+		);
+		return (
+			<ObjHeader
+				id={id}
+				title={name}
+				typeName="Playlist"
+				customDetails={customDetails}
+				headerTitleCmds={headerTitleCmds}
+			/>
+		);
+	}, [playlist, id, name]);
 
-	const customDetails = (<ThemedText style={objHeaderStyles.panel}>{playlist?.comment}</ThemedText>);
-
-	const ListHeader = (
-		<ObjHeader
-			id={id}
-			title={name}
-			typeName="Playlist"
-			customDetails={customDetails}
-			headerTitleCmds={headerTitleCmds}
-		/>
-	);
-
-	const keyExtractor = useCallback((item: TrackEntry): string => item.id, []);
 
 	const showMenu = useCallback((item: TrackEntry): void => {
 		setCurrentTrack(item);
@@ -77,8 +76,6 @@ export const PlaylistScreen: React.FC<HomeRouteProps<HomeRoute.PLAYLIST>> = ({ro
 
 	const renderItem = useCallback(({item}: { item: TrackEntry }): JSX.Element => (<TrackItem track={item} showMenu={showMenu}/>),
 		[showMenu]);
-
-	const getItemLayout = React.useMemo(() => commonItemLayout(trackEntryHeight), []);
 
 	if (error) {
 		return (<ErrorView error={error} onRetry={reload}/>);
@@ -99,11 +96,11 @@ export const PlaylistScreen: React.FC<HomeRouteProps<HomeRoute.PLAYLIST>> = ({ro
 			<FlatList
 				data={playlist?.tracks || []}
 				renderItem={renderItem}
-				keyExtractor={keyExtractor}
+				keyExtractor={defaultKeyExtractor}
 				ItemSeparatorComponent={Separator}
-				ListHeaderComponent={ListHeader}
+				ListHeaderComponent={ListHeaderComponent}
 				ListEmptyComponent={<ListEmpty list={playlist?.tracks}/>}
-				getItemLayout={getItemLayout}
+				getItemLayout={defaultItemLayout}
 				refreshControl={(
 					<RefreshControl
 						refreshing={loading}

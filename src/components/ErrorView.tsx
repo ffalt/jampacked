@@ -3,6 +3,7 @@ import {ThemedText} from './ThemedText';
 import {snackError} from '../services/snack';
 import {Button, Image, StyleSheet, View} from 'react-native';
 import {IMAGE_ERROR} from '../style/images';
+import {staticTheme} from '../style/theming';
 
 const styles = StyleSheet.create({
 	container: {
@@ -12,9 +13,12 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'center'
 	},
+	text: {
+		marginVertical: staticTheme.margin
+	},
 	image: {
-		height: 200,
-		width: 200
+		height: 140,
+		width: 140
 	}
 });
 
@@ -37,7 +41,7 @@ export const ErrorView: React.FC<{ error: Error, onRetry: () => void }> = ({erro
 	return (
 		<View style={styles.container}>
 			<Image style={styles.image} source={IMAGE_ERROR}/>
-			<ThemedText>{value}</ThemedText>
+			<ThemedText style={styles.text}>{value}</ThemedText>
 			<Button onPress={onRetry} title="Retry"/>
 		</View>
 	);

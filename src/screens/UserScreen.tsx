@@ -10,16 +10,21 @@ import dataService from '../services/data';
 import {Stats} from '../components/Stats';
 import {ErrorView} from '../components/ErrorView';
 import {useLazyUserDataQuery} from '../services/queries/user.hook';
+import {sharedStyles} from '../style/shared';
+import {PageHeader} from '../components/PageHeader';
 
 const styles = StyleSheet.create({
 	container: {
-		paddingTop: staticTheme.statusBarOffset,
-		paddingBottom: staticTheme.padding,
-		paddingHorizontal: staticTheme.padding,
-		flex: 1
+		flex: 1,
+		paddingHorizontal: staticTheme.padding
+	},
+	permissionSection: {
+		paddingTop: staticTheme.padding
 	},
 	userSection: {
-		flexDirection: 'row'
+		flexDirection: 'row',
+		paddingTop: staticTheme.padding,
+		paddingBottom: staticTheme.paddingLarge
 	},
 	userImage: {
 		marginRight: staticTheme.margin
@@ -29,17 +34,6 @@ const styles = StyleSheet.create({
 	},
 	permissionText: {
 		paddingHorizontal: staticTheme.paddingSmall
-	},
-	section: {
-		paddingVertical: staticTheme.padding,
-		letterSpacing: 2,
-		textTransform: 'uppercase',
-		fontSize: staticTheme.fontSizeSmall,
-		fontWeight: 'bold',
-		marginTop: staticTheme.margin,
-		borderBottomColor: 'rgba(0,0,0,0.7)',
-		borderBottomWidth: 1,
-		marginBottom: staticTheme.marginSmall
 	}
 });
 
@@ -98,22 +92,27 @@ export const UserScreen: React.FC<BottomTabProps<BottomTabRoute.SETTINGS>> = () 
 				/>
 			)}
 		>
+			<PageHeader title="User" titleIcon="user"/>
 			<View style={styles.container}>
-				<ThemedText style={styles.section}>User</ThemedText>
+				<View style={sharedStyles.sectionHeader}>
+					<ThemedText style={sharedStyles.sectionHeaderText}>User</ThemedText>
+				</View>
 				<View style={styles.userSection}>
 					<JamImage id={auth.currentUserID()} size={staticTheme.thumbMedium} style={styles.userImage}/>
 					<View>
-						<View>
-							<ThemedText>{auth.currentUserName()}</ThemedText>
-							<Button title="Logout" onPress={logout}/>
-						</View>
+						<ThemedText>{auth.currentUserName()}</ThemedText>
+						<Button title="Logout" onPress={logout}/>
 					</View>
 				</View>
-				<ThemedText style={styles.section}>Permissions</ThemedText>
-				{auth?.user?.roles.stream && <UserPermission text="Stream Audio"/>}
-				{auth?.user?.roles.podcast && <UserPermission text="Manage Podcasts"/>}
-				{auth?.user?.roles.upload && <UserPermission text="Upload Audio"/>}
-				{auth?.user?.roles.admin && <UserPermission text="Server Administration"/>}
+				<View style={sharedStyles.sectionHeader}>
+					<ThemedText style={sharedStyles.sectionHeaderText}>Permissions</ThemedText>
+				</View>
+				<View style={styles.permissionSection}>
+					{auth?.user?.roles.stream && <UserPermission text="Stream Audio"/>}
+					{auth?.user?.roles.podcast && <UserPermission text="Manage Podcasts"/>}
+					{auth?.user?.roles.upload && <UserPermission text="Upload Audio"/>}
+					{auth?.user?.roles.admin && <UserPermission text="Server Administration"/>}
+				</View>
 			</View>
 			{userData?.stats && <Stats stats={userData.stats} label="Library"/>}
 			{userData?.favorites && <Stats stats={userData.favorites} label="Favorites"/>}

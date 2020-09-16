@@ -11,8 +11,6 @@ import {PageHeader} from '../components/PageHeader';
 
 const styles = StyleSheet.create({
 	container: {
-		paddingBottom: staticTheme.padding,
-		paddingHorizontal: staticTheme.padding,
 		flex: 1
 	},
 	input: {
@@ -30,12 +28,11 @@ const styles = StyleSheet.create({
 	},
 	inputIcon: {
 		fontSize: 22,
-		paddingRight: staticTheme.padding
+		paddingHorizontal: staticTheme.padding,
 	},
 	inputCancelIcon: {
 		fontSize: 22,
-		paddingLeft: staticTheme.padding,
-		paddingRight: staticTheme.paddingLarge
+		paddingHorizontal: staticTheme.padding
 	},
 	disabled: {
 		opacity: 0.3

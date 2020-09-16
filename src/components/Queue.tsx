@@ -4,10 +4,10 @@ import {TrackPlayer} from '../services/player-api';
 import {JamPlayer, useCurrentTrackID, useQueue} from '../services/player';
 import {staticTheme, useTheme} from '../style/theming';
 import {ThemedText} from './ThemedText';
-import {commonItemLayout} from './AtoZList';
 import {Separator} from './Separator';
 import {ThemedIcon} from './ThemedIcon';
 import {QueueItem} from './QueueItems';
+import {commonItemLayout, defaultItemLayout, defaultKeyExtractor} from '../utils/list.utils';
 
 const styles = StyleSheet.create({
 	queueButtons: {
@@ -39,8 +39,6 @@ export const Queue: React.FC = () => {
 	const renderItem = useCallback(({item, index}: { item: TrackPlayer.Track, index: number }): JSX.Element => (
 		<QueueItem item={item} index={index} active={item.id === current}/>
 	), [current]);
-	const keyExtractor = useCallback((item: TrackPlayer.Track): string => item.id, []);
-	const getItemLayout = React.useMemo(() => commonItemLayout(56), []);
 
 	return (
 		<>
@@ -48,8 +46,8 @@ export const Queue: React.FC = () => {
 				data={queue}
 				renderItem={renderItem}
 				ItemSeparatorComponent={Separator}
-				keyExtractor={keyExtractor}
-				getItemLayout={getItemLayout}
+				keyExtractor={defaultKeyExtractor}
+				getItemLayout={defaultItemLayout}
 			/>
 			<View style={[styles.queueButtons, {borderColor: theme.separator}]}>
 				<TouchableOpacity style={styles.queueButton} onPress={JamPlayer.clearQueue}>
