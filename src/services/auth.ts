@@ -1,7 +1,7 @@
 import React, {useContext} from 'react';
 import dataService from './data';
 import {Jam} from './jam';
-import FastImage, {FastImageSource} from 'react-native-fast-image';
+import FastImage, {Source} from 'react-native-fast-image';
 
 export interface Auth {
 	hasUser: boolean,
@@ -9,7 +9,7 @@ export interface Auth {
 	isLoading: boolean,
 	currentUserID: () => string;
 	currentUserName: () => string;
-	imgSource: (id: string, size: number) => FastImageSource | undefined;
+	imgSource: (id: string, size: number) => Source | undefined;
 	login: (server: string, name: string, password: string) => Promise<void>;
 	logout: () => Promise<void>;
 }
@@ -20,7 +20,7 @@ export const defaultAuth: Auth = {
 	isLoading: true,
 	currentUserID: (): string => dataService.currentUserID,
 	currentUserName: (): string => dataService.currentUserName,
-	imgSource: (id: string, size: number): FastImageSource | undefined => {
+	imgSource: (id: string, size: number): Source | undefined => {
 		if (!id || !dataService.jam.auth.isLoggedIn()) {
 			return;
 		}

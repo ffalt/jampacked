@@ -87,12 +87,10 @@ export class CacheService {
 		await this.db.query('DELETE FROM jam WHERE key LIKE ?', [`${prefix}%`]);
 	}
 
-
 	private async clearCache(caller: Caching): Promise<void> {
-
 		caller.updateText('1/2 Clearing Image Cache');
-		FastImage.clearDiskCache();
-		FastImage.clearMemoryCache();
+		await FastImage.clearDiskCache();
+		await FastImage.clearMemoryCache();
 		caller.updateText('2/2 Clearing Data Cache');
 		await this.dropJamCache();
 		snackSuccess('Cache cleared');

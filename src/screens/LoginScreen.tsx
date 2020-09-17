@@ -23,6 +23,15 @@ const styles = StyleSheet.create({
 	headline: {
 		alignItems: 'center'
 	},
+	name: {
+		marginTop: -90,
+		fontSize: 40,
+		letterSpacing: 17,
+		fontWeight: 'bold',
+		textShadowColor: 'black',
+		textShadowRadius: 10,
+		textShadowOffset: {width: 5, height: 5}
+	},
 	content: {
 		paddingRight: staticTheme.paddingLarge,
 		paddingLeft: staticTheme.paddingLarge,
@@ -191,7 +200,7 @@ export const LoginScreen: React.FC<AppStackProps<Routing.AUTH>> = () => {
 			<View style={styles.container}>
 				<View style={styles.headline}>
 					<Logo size={140}/>
-					<ThemedText>JAM</ThemedText>
+					<ThemedText style={styles.name}>JAM</ThemedText>
 				</View>
 				<View style={styles.loginBlock}>
 					<KeyboardAvoidingView style={styles.content}>
