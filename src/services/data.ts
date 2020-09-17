@@ -2,7 +2,6 @@ import AsyncStorage from '@react-native-community/async-storage';
 import {Database} from './db';
 import {JamService} from './jam';
 import {JamConfigurationService} from './jam-configuration';
-import {Subject} from 'rxjs';
 import {initApolloClient, JamApolloClient} from './apollo';
 import {PinService} from './pin';
 import {CacheService} from './cache';
@@ -12,7 +11,6 @@ export class DataService {
 	client!: JamApolloClient;
 	pin!: PinService;
 	cache!: CacheService;
-	homeDataUpdate = new Subject();
 
 	constructor(public jam: JamService) {
 	}
@@ -29,11 +27,6 @@ export class DataService {
 
 	async close(): Promise<void> {
 		await this.db.disconnect();
-	}
-
-	async notifyHomeDataChange(): Promise<void> {
-		await this.cache.remove('HomeResult');
-		this.homeDataUpdate.next();
 	}
 
 	// auth
@@ -54,7 +47,7 @@ export class DataService {
 
 	async scrobble(id: string): Promise<void> {
 		await this.jam.nowplaying.scrobble({id});
-		this.notifyHomeDataChange().catch(e => console.error(e));
+		await this.cache.updateHomeData();
 	}
 
 	// user dependent settings

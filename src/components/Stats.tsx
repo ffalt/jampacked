@@ -1,23 +1,15 @@
 import {StyleSheet, View} from 'react-native';
-import {staticTheme} from '../style/theming';
 import {HomeStatData} from '../services/types';
 import React from 'react';
 import {ThemedText} from './ThemedText';
 import {Stat} from './Stat';
+import {sharedStyles} from '../style/shared';
 
 const styles = StyleSheet.create({
 	homeStatContainer: {
 		width: '100%',
 		flexDirection: 'row',
 		flexWrap: 'wrap'
-	},
-	headline: {
-		letterSpacing: 2,
-		textTransform: 'uppercase',
-		fontSize: staticTheme.fontSizeSmall,
-		fontWeight: 'bold',
-		padding: staticTheme.padding,
-		marginTop: staticTheme.margin
 	}
 });
 
@@ -27,7 +19,9 @@ export const Stats: React.FC<{ stats?: Array<HomeStatData>; label: string }> = R
 		: [];
 	return (
 		<>
-			<ThemedText style={styles.headline}>{label}</ThemedText>
+			<View style={sharedStyles.sectionHeader}>
+				<ThemedText style={sharedStyles.sectionHeaderText}>{label}</ThemedText>
+			</View>
 			<View style={styles.homeStatContainer}>{entries}</View>
 		</>
 	);

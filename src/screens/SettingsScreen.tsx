@@ -3,7 +3,6 @@ import {StyleSheet, View} from 'react-native';
 import {BottomTabProps, BottomTabRoute} from '../navigators/Routing';
 import {ThemesView} from '../components/ThemesView';
 import {ThemedText} from '../components/ThemedText';
-import dataService from '../services/data';
 import {CachingView} from '../components/CachingView';
 import {MediaCachingView} from '../components/MediaCachingView';
 import {PageHeader} from '../components/PageHeader';
@@ -16,11 +15,13 @@ const styles = StyleSheet.create({
 		flex: 1
 	},
 	sectionFirst: {
-		paddingBottom: staticTheme.paddingSmall
+		paddingBottom: staticTheme.paddingSmall,
+		paddingHorizontal: 0
 	},
 	section: {
 		paddingTop: staticTheme.paddingLarge,
-		paddingBottom: staticTheme.paddingSmall
+		paddingBottom: staticTheme.paddingSmall,
+		paddingHorizontal: 0
 	}
 });
 
@@ -32,7 +33,7 @@ export const SettingsScreen: React.FC<BottomTabProps<BottomTabRoute.SETTINGS>> =
 				<View style={[sharedStyles.sectionHeader, styles.sectionFirst]}>
 					<ThemedText style={sharedStyles.sectionHeaderText}>Cache</ThemedText>
 				</View>
-				<CachingView cache={dataService.cache.dataCaching} title="Data & Image Cache"/>
+				<CachingView title="Data & Image Cache"/>
 				<View style={[sharedStyles.sectionHeader, styles.section]}>
 					<ThemedText style={sharedStyles.sectionHeaderText}>Pinned Offline Tracks</ThemedText>
 				</View>

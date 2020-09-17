@@ -32,46 +32,6 @@ const styles = StyleSheet.create({
 		flex: 1,
 		flexWrap: 'wrap'
 	},
-	homeStatContainer: {
-		width: '100%',
-		flexDirection: 'row',
-		flexWrap: 'wrap'
-	},
-	homeStat: {
-		margin: '1%',
-		width: '31%',
-		alignItems: 'center',
-		padding: staticTheme.padding,
-		borderRadius: 4
-	},
-	homeStatValue: {
-		fontWeight: 'bold',
-		fontSize: staticTheme.fontSizeLarge
-	},
-	homeStatDesc: {
-		fontSize: staticTheme.fontSizeSmall
-	},
-	HomeSectionEntryText: {
-		fontSize: staticTheme.fontSizeSmall,
-		marginTop: staticTheme.marginSmall,
-		marginBottom: staticTheme.marginSmall
-	},
-	HomeSectionEntry: {
-		width: 120,
-		paddingTop: staticTheme.padding,
-		marginRight: staticTheme.margin,
-		alignItems: 'center',
-		borderRadius: 4,
-		backgroundColor: 'rgba(0,0,0,0.2)'
-	},
-	headline: {
-		letterSpacing: 2,
-		textTransform: 'uppercase',
-		fontSize: staticTheme.fontSizeSmall,
-		fontWeight: 'bold',
-		padding: staticTheme.padding,
-		marginTop: staticTheme.margin
-	},
 	userImage: {
 		borderRadius: 20
 	}
@@ -89,10 +49,19 @@ export const HomeScreen: React.FC<HomeRouteProps<HomeRoute.START>> = () => {
 	}, [getHomeData, called]);
 
 	useEffect(() => {
-		const subscription = dataService.homeDataUpdate.subscribe(() => {
-			getHomeData();
-		});
-		return (): void => subscription.unsubscribe();
+		let isSubscribed = true;
+
+		const update = (): void => {
+			if (isSubscribed) {
+				getHomeData();
+			}
+		};
+
+		dataService.cache.subscribeHomeDataChangeUpdates(update);
+		return (): void => {
+			isSubscribed = false;
+			dataService.cache.unsubscribeHomeDataChangeUpdates(update);
+		};
 	}, [getHomeData]);
 
 	const reload = useCallback((): void => {

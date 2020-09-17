@@ -1,8 +1,8 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback} from 'react';
 import {ActivityIndicator, Button, StyleSheet, View} from 'react-native';
 import {ThemedText} from './ThemedText';
-import {Caching, CachingState} from '../services/caching';
 import {staticTheme} from '../style/theming';
+import {useCacheManagement} from '../services/cache-hooks';
 
 const styles = StyleSheet.create({
 	container: {
@@ -18,37 +18,30 @@ const styles = StyleSheet.create({
 	}
 });
 
-export const CachingView: React.FC<{ cache: Caching, title: string }> = ({cache, title}: { cache: Caching, title: string }) => {
-	const [status, setStatus] = useState<CachingState>(cache.cachingData);
+export const CachingView: React.FC<{ title: string }> = ({title}) => {
+	const [fill, clear, stop, state] = useCacheManagement();
 
-	useEffect(() => {
-		const subscription = cache.cachingChange.subscribe(data => {
-			setStatus({running: data.running, current: data.current});
-		});
-		return (): void => subscription.unsubscribe();
-	}, [status, cache.cachingChange]);
+	const startCache = useCallback((): void => {
+		fill();
+	}, [fill]);
 
-	const startCaching = (): void => {
-		cache.startCaching();
-	};
+	const stopCache = useCallback((): void => {
+		stop();
+	}, [stop]);
 
-	const stop = (): void => {
-		cache.stop();
-	};
+	const clearCache = useCallback((): void => {
+		clear();
+	}, [clear]);
 
-	const startClearingCache = (): void => {
-		cache.startClearing();
-	};
-
-	if (!status.running) {
+	if (!state.isRunning) {
 		return (
 			<View style={styles.container}>
 				<ThemedText style={styles.text}>{title}</ThemedText>
 				<View style={styles.button}>
-					<Button title="Optimize" onPress={startCaching}/>
+					<Button title="Optimize" onPress={startCache}/>
 				</View>
 				<View style={styles.button}>
-					<Button title="Clear" onPress={startClearingCache}/>
+					<Button title="Clear" onPress={clearCache}/>
 				</View>
 			</View>
 		);
@@ -56,9 +49,9 @@ export const CachingView: React.FC<{ cache: Caching, title: string }> = ({cache,
 	return (
 		<View style={styles.container}>
 			<ActivityIndicator size="small"/>
-			<ThemedText style={styles.text}>{status.current}</ThemedText>
+			<ThemedText style={styles.text}>{state.message}</ThemedText>
 			<View style={styles.button}>
-				<Button title="Stop" onPress={stop}/>
+				<Button title="Stop" onPress={stopCache}/>
 			</View>
 		</View>
 	);

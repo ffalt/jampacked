@@ -35,6 +35,8 @@ export const sharedStyles = StyleSheet.create({
 	},
 	sectionHeader: {
 		marginTop: staticTheme.margin,
+		paddingHorizontal: staticTheme.padding,
+		paddingVertical: staticTheme.paddingLarge,
 		alignItems: 'center',
 		flexDirection: 'row',
 		justifyContent: 'space-between'

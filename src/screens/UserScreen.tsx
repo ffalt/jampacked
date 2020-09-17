@@ -58,10 +58,19 @@ export const UserScreen: React.FC<BottomTabProps<BottomTabRoute.SETTINGS>> = () 
 	}, [getUserData, called]);
 
 	useEffect(() => {
-		const subscription = dataService.homeDataUpdate.subscribe(() => {
-			getUserData();
-		});
-		return (): void => subscription.unsubscribe();
+		let isSubscribed = true;
+
+		const update = (): void => {
+			if (isSubscribed) {
+				getUserData();
+			}
+		};
+
+		dataService.cache.subscribeHomeDataChangeUpdates(update);
+		return (): void => {
+			isSubscribed = false;
+			dataService.cache.unsubscribeHomeDataChangeUpdates(update);
+		};
 	}, [getUserData]);
 
 	const reload = useCallback((): void => {
