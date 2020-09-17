@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">jam</string>
+    <string name="app_name">Jam Music Streamer</string>
+    <string name="app_name_shortcuts">Jam</string>
 </resources>
