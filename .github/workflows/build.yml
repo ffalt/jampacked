@@ -14,5 +14,17 @@ jobs:
       - name: Envinfo
         run: npx envinfo
 
-      - name: Build application
-        run: yarn install && npx jetify && cd android && chmod +x gradlew && ./gradlew assembleRelease
+      - name: Install Dependencies
+        run: yarn install
+
+      - name: Jettify
+        run: npx jetify
+
+      - name: Gradle chmod Setup
+        run: cd android && chmod +x gradlew
+
+      - name: Build application apks
+        run: cd android && ./gradlew assembleRelease
+
+      - name: Build application aab
+        run: cd android && ./gradlew bundleRelease
