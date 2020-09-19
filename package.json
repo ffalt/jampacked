@@ -5,7 +5,8 @@
   "scripts": {
     "android": "react-native run-android && react-native log-android",
     "android:release": "react-native run-android --variant=release && react-native log-android",
-    "android:build:release": "jetify && cd android && ./gradlew assembleRelease",
+    "android:build:release:apk": "jetify && cd android && ./gradlew assembleRelease",
+    "android:build:release:aap": "jetify && cd android && ./gradlew bundleRelease",
     "ios": "react-native run-ios && react-native log-ios",
     "start": "react-native start",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
