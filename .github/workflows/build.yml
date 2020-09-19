@@ -15,4 +15,4 @@ jobs:
         run: npx envinfo
 
       - name: Build application
-        run: yarn install && jetify && cd android && chmod +x gradlew && ./gradlew assembleRelease
+        run: yarn install && npx jetify && cd android && chmod +x gradlew && ./gradlew assembleRelease
