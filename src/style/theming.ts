@@ -177,7 +177,7 @@ const black: ITheme = {
 	activeBackgroundColor: '#053e62',
 	separator: '#0b2932',
 	control: '#191f2b',
-	sidebar: '#0d0d13',
+	sidebar: '#000715',
 	progress: '#6c6c6e',
 	sliderHandle: '#ffffff',
 	activeTintColor: '#5bbcd3',

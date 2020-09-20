@@ -8,14 +8,14 @@ const styles = StyleSheet.create({
 		flex: 1,
 		alignItems: 'center',
 		justifyContent: 'center',
-		paddingBottom: 22
+		paddingBottom: 8
 	}
 });
 
 export const LoadingScreen: React.FC<AppStackProps<Routing.LOAD>> = React.memo(() =>
 	(
 		<View style={styles.container}>
-			<Logo size={100}/>
+			<Logo size={104}/>
 		</View>
 	)
 );
