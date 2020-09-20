@@ -28,7 +28,7 @@ export const BaseEntryListList: React.FC<{ query: BaseEntryListListQuery }> = ({
 		offset: number
 	} | undefined>();
 	const [entries, setEntries] = useState<Array<BaseEntry> | undefined>();
-	const amount = 10;
+	const amount = 20;
 	const [getList, {loading, error, data, queryID}] = query.useList();
 
 	useEffect(() => {

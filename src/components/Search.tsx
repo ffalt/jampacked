@@ -39,7 +39,7 @@ export const Search: React.FC<SearchProps> = ({objType, query, backToAll}) => {
 	const [offset, setOffset] = useState<number>(0);
 	const [entries, setEntries] = useState<Array<BaseEntry>>([]);
 	const [getSearch, {loading, error, result}] = useLazySearchQuery(objType);
-	const amount = 10;
+	const amount = 20;
 
 	useEffect(() => {
 		if (query) {
