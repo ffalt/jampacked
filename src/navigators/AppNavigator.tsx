@@ -1,6 +1,5 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
-import SplashScreen from 'react-native-splash-screen';
 import {LoadingScreen} from '../screens/LoadingScreen';
 import {AppStackNavigatorParamList, Routing} from './Routing';
 import {LoginScreen} from '../screens/LoginScreen';
@@ -8,6 +7,7 @@ import dataService from '../services/data';
 import {AuthContext, defaultAuth} from '../services/auth';
 import {Jam} from '../services/jam';
 import {DrawerNavigator} from './DrawerNavigator';
+import RNBootSplash from 'react-native-bootsplash';
 
 const Stack = createStackNavigator<AppStackNavigatorParamList>();
 
@@ -21,7 +21,7 @@ export class AppNavigator extends React.PureComponent {
 			console.error(e);
 		}
 		this.setState({hasUser: dataService.jam.auth.isLoggedIn(), user: dataService.jam.auth.user, isLoading: false});
-		SplashScreen.hide();
+		RNBootSplash.hide({fade: true});
 	}
 
 	private loginHandler = async (server: string, name: string, password: string): Promise<void> => {

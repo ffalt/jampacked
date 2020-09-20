@@ -11,6 +11,7 @@
     "start": "react-native start",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "test": "jest",
+    "logos": "react-native generate-bootsplash src/assets/images/logo.png --background-color=0b1821 --logo-width=100 --assets-path=assets",
     "clean:gradle": "cd android && rm -Rf .gradle && rm -Rf app/build && ./gradlew clean",
     "clean": "rm -Rf node_modules && yarn install && yarn clean:gradle",
     "build:query-types": "apollo codegen:generate --localSchemaFile=schema.graphql --no-addTypename --target=typescript --includes=src/**/*.ts --tagName=gql --globalTypesFile=src/services/queries/types/graphql-types.ts types"
@@ -48,6 +49,7 @@
     "react-native-actions-sheet": "^0.3.5",
     "react-native-background-downloader": "ffalt/react-native-background-downloader",
     "react-native-background-timer": "2.4.0",
+    "react-native-bootsplash": "3.0.0-alpha.2",
     "react-native-fast-image": "ffalt/react-native-fast-image",
     "react-native-fs": "2.16.6",
     "react-native-gesture-handler": "1.8.0",
@@ -57,7 +59,6 @@
     "react-native-screens": "2.11.0",
     "react-native-sensitive-info": "6.0.0-alpha.5",
     "react-native-snackbar": "2.2.3",
-    "react-native-splash-screen": "3.2.0",
     "react-native-sqlite-storage": "5.0.0",
     "react-native-svg": "^12.1.0",
     "react-native-swift": "1.2.3",

@@ -89,7 +89,7 @@ const light: ITheme = {
 	separator: '#a3a3a3',
 	activeBackgroundColor: '#dff8ff',
 	control: '#f3f3f3',
-	sidebar: '#f3f3f3',
+	sidebar: '#ffffff',
 	progress: '#6c6c6e',
 	sliderHandle: '#000000',
 	activeTintColor: '#5bbcd3',

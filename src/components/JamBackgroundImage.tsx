@@ -26,7 +26,7 @@ export const FastImageBackground: React.FC<{ id: string, style?: any, imageStyle
 		StyleSheet.absoluteFill,
 		{
 			width: style?.width,
-			height: style?.height
+			height: (style?.height || 1) - 1
 		},
 		imageStyle
 	], [imageStyle, style]);

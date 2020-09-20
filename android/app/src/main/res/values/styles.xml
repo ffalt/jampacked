@@ -3,14 +3,8 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:textColor">@color/app_text</item>
         <item name="android:windowBackground">@color/app_bg</item>
-        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:background">@drawable/bootsplash</item>
         <item name="android:windowTranslucentStatus">true</item>
-        <item name="android:windowTranslucentNavigation">true</item>
-        <item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>
-    </style>
-
-    <style name="SplashTheme" parent="AppTheme">
-        <item name="android:background">@drawable/background_splash</item>
     </style>
 
 </resources>
