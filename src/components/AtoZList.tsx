@@ -3,11 +3,10 @@
 	based on https://github.com/rgovindji/react-native-atoz-list
 
  */
-import React, {MutableRefObject, useCallback, useState} from 'react';
+import React, {MutableRefObject, useCallback, useEffect, useState} from 'react';
 import {FlatList, FlatListProps, StyleSheet, View} from 'react-native';
-import AtoZPicker from './AtoZPicker';
+import {AtoZPicker} from './AtoZPicker';
 import {commonItemLayout} from '../utils/list.utils';
-import {SearchBar} from './SearchBar';
 
 interface AtoZListProps<T> extends FlatListProps<T> {
 	itemHeight?: number;
@@ -30,6 +29,7 @@ export const AtoZList: React.FC<AtoZListProps<any>> = <T extends SectionItem, >(
 	const containerRef: MutableRefObject<FlatList<T> | null> = React.useRef<FlatList<T>>(null);
 	const {itemHeight, data, numColumns} = props;
 	const [activeLetter, setActiveLetter] = useState<string | undefined>();
+	const [letters, setLetters] = useState<Array<string>>([]);
 
 	const onTouchLetter = useCallback((letter: string): void => {
 		if (containerRef.current) {
@@ -42,12 +42,6 @@ export const AtoZList: React.FC<AtoZListProps<any>> = <T extends SectionItem, >(
 	}, [data, numColumns]);
 
 	const getItemLayout = React.useMemo(() => commonItemLayout(itemHeight), [itemHeight]);
-	const Header = (
-		<>
-			{props.ListHeaderComponent}
-			<SearchBar style={styles.searchBar}/>
-		</>
-	);
 
 	const onScroll = useCallback((event) => {
 		const offset = event.nativeEvent.contentOffset.y;
@@ -58,17 +52,29 @@ export const AtoZList: React.FC<AtoZListProps<any>> = <T extends SectionItem, >(
 		}
 	}, [data, itemHeight]);
 
+	useEffect(() => {
+		const list: Array<string> = [];
+		const items = (data || []);
+		if (items.length > 20) {
+			items.forEach(item => {
+				if (!list.includes(item.letter)) {
+					list.push(item.letter);
+				}
+			});
+		}
+		setLetters(list);
+	}, [data]);
+
 	return (
 		<View style={styles.container}>
 			<FlatList
 				ref={containerRef}
 				{...props}
-				ListHeaderComponent={Header}
 				getItemLayout={getItemLayout}
 				onScroll={onScroll}
 			/>
 			<AtoZPicker
-				data={data}
+				letters={letters}
 				activeLetter={activeLetter}
 				onTouchLetter={onTouchLetter}
 			/>

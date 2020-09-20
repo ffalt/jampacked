@@ -1,7 +1,7 @@
-import React from 'react';
+import React, {useCallback, useMemo, useRef, useState} from 'react';
 import {PanResponder, StyleSheet, Text, View} from 'react-native';
 import {AtoZLetter} from './AtoZLetter';
-import {ITheme, staticTheme, withTheme} from '../style/theming';
+import {staticTheme, useTheme} from '../style/theming';
 
 const styles = StyleSheet.create({
 	outerContainer: {
@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center'
 	},
 	letters: {
-		padding: 10,
+		paddingHorizontal: 10,
 		paddingVertical: 20
 	},
 	letterBubble: {
@@ -49,166 +49,118 @@ const styles = StyleSheet.create({
 	}
 });
 
-interface SectionItem {
-	letter: string;
-}
-
-interface AtoZPickerProps<T> {
-	data: ReadonlyArray<T> | null | undefined;
+interface AtoZPickerProps {
 	onTouchStart?: () => void;
 	onTouchEnd?: () => void;
 	onTouchLetter?: (letter: string) => void;
 	activeLetter?: string;
-	theme: ITheme;
+	letters: Array<string>;
 }
 
-class AtoZPicker<T extends SectionItem> extends React.PureComponent<AtoZPickerProps<T>> {
-	panResponder = PanResponder.create({
-		onStartShouldSetPanResponder: () => true,
-		onMoveShouldSetPanResponder: () => true,
-		onPanResponderGrant: (e, gestureState) => {
-			const {onTouchStart} = this.props;
-			if (onTouchStart) {
-				onTouchStart();
-			}
-			const y = gestureState.y0;
-			this.tapTimeout = setTimeout(() => {
-				this.check(y);
-			}, 250);
-		},
-		onPanResponderMove: (evt, gestureState) => {
-			if (this.tapTimeout) {
-				clearTimeout(this.tapTimeout);
-			}
-			this.check(gestureState.moveY);
-		},
-		onPanResponderTerminate: this.onPanResponderEnd.bind(this),
-		onPanResponderRelease: this.onPanResponderEnd.bind(this)
-	});
-	tapTimeout?: any;
-	absContainerTop?: number;
-	containerHeight: number = 1;
-	containerRef: React.RefObject<View> = React.createRef();
-	state: {
-		letters: Array<string>;
-		// letter?: string | null;
-		yPosition: number;
-		currentLetter: string | null;
-	} = {
-		letters: [],
-		// letter: null,
-		yPosition: 0,
-		currentLetter: null
-	};
+export const AtoZPickerBubble: React.FC<{ yPosition: number, letter: string }> = ({yPosition, letter}) =>
+	(
+		<View style={[styles.letterBubble, {top: yPosition}]}>
+			<View style={styles.letterBubbleContainer}>
+				<Text style={styles.letterBubbleText}>{letter}</Text>
+			</View>
+			<View style={styles.letterBubbleArrow}/>
+		</View>
+	);
 
-	componentDidMount(): void {
-		this.build();
-	}
+export const AtoZPicker: React.FC<AtoZPickerProps> = (
+	{
+		letters, activeLetter, onTouchStart, onTouchEnd, onTouchLetter
+	}) => {
+	const theme = useTheme();
+	const containerRef = useRef<View | null>(null);
+	const [containerState, setContainerState] = useState<{ absContainerTop: number; containerHeight: number }>({absContainerTop: 0, containerHeight: 0});
+	const [current, setCurrent] = useState<{ letter: string, yPosition: number }>();
 
-	componentDidUpdate(prevProps: AtoZPickerProps<T>): void {
-		const newProps = this.props;
-		if (prevProps.data !== newProps.data) {
-			this.build();
+	const check = useCallback((y: number) => {
+		if (letters.length === 0) {
+			return;
 		}
-	}
-
-	private build(): void {
-		const {data} = this.props;
-		const letters: Array<string> = [];
-		const items = (data || []);
-		if (items.length > 20) {
-			items.forEach(item => {
-				if (!letters.includes(item.letter)) {
-					letters.push(item.letter);
-				}
-			});
-		}
-		if (this.state.letters.length + letters.length > 0) {
-			this.setState({letters});
-		}
-	}
-
-	private check(y: number): void {
-		const {letters} = this.state;
-		const letter = this.findTouchedLetter(y);
+		const h = containerState.containerHeight - (styles.letters.paddingVertical * 2);
+		const top = y - containerState.absContainerTop - styles.letters.paddingVertical * 1.5;
+		const index = Math.round((top / h) * letters.length);
+		const letter = letters[index];
 		if (letter !== undefined) {
-			let top = y - (this.absContainerTop || 0);
-			top = (Math.round((top / this.containerHeight) * letters.length) - 1) * (this.containerHeight / letters.length);
-			this.onTouchLetter(letter);
-			this.setState({currentLetter: letter, yPosition: top});
+			const yPosition = index * (h / letters.length) + (top / h);
+			setCurrent({letter, yPosition});
+			if (onTouchLetter) {
+				onTouchLetter(letter);
+			}
 		}
-	}
+	}, [containerState, letters, onTouchLetter]);
 
-	private onTouchLetter(letter?: string): void {
-		const {onTouchLetter} = this.props;
-		if (letter && onTouchLetter) {
-			onTouchLetter(letter);
+	const start = useCallback((y: number) => {
+		if (onTouchStart) {
+			onTouchStart();
 		}
-	}
+		// this.tapTimeout = setTimeout(() => {
+		check(y);
+		// }, 250);
+	}, [check, onTouchStart]);
 
-	private onPanResponderEnd(): void {
-		const {onTouchEnd} = this.props;
+	const move = useCallback((y: number) => {
+		// if (this.tapTimeout) {
+		// 	clearTimeout(this.tapTimeout);
+		// }
+		check(y);
+	}, [check]);
+
+	const stop = useCallback(() => {
 		setTimeout(() => {
-			this.setState({currentLetter: null});
+			setCurrent(undefined);
+			// 	this.setState({currentLetter: null});
 		}, 150);
 		if (onTouchEnd) {
 			requestAnimationFrame(() => {
 				onTouchEnd();
 			});
 		}
-	}
+	}, [onTouchEnd]);
 
-	private findTouchedLetter(y: number): string | undefined {
-		const top = y - (this.absContainerTop || 0);
-		const {letters} = this.state;
-		if (top >= 1 && top <= this.containerHeight) {
-			return letters[Math.round((top / this.containerHeight) * letters.length)];
+	const panResponder = useMemo(() => PanResponder.create({
+		onStartShouldSetPanResponder: () => true,
+		onMoveShouldSetPanResponder: () => true,
+		onPanResponderGrant: (event, gestureState) => {
+			start(gestureState.y0);
+		},
+		onPanResponderMove: (event, gestureState) => {
+			move(gestureState.moveY);
+		},
+		onPanResponderTerminate: () => {
+			stop();
+		},
+		onPanResponderRelease: () => {
+			stop();
 		}
-	}
+	}), [start, move, stop]);
 
-	private onLayout = (): void => {
-		if (!this.containerRef.current) {
+	const onLayout = (): void => {
+		if (!containerRef.current) {
 			return;
 		}
-		this.containerRef.current.measure((x1, y1, width, height, px, py) => {
-			this.absContainerTop = py;
-			this.containerHeight = height;
+		containerRef.current.measure((x1, y1, width, height, px, py) => {
+			setContainerState({absContainerTop: py, containerHeight: height});
 		});
 	};
 
-	private renderLetterBubble(): JSX.Element {
-		const {currentLetter, yPosition} = this.state;
-		return (
-			<View style={[styles.letterBubble, {top: yPosition}]}>
-				<View style={styles.letterBubbleContainer}>
-					<Text style={styles.letterBubbleText}>{currentLetter}</Text>
-				</View>
-				<View style={styles.letterBubbleArrow}/>
+	const letterPicks = letters.map(letter => <AtoZLetter letter={letter} key={letter} active={activeLetter === letter}/>);
+	return (
+		<View style={[styles.outerContainer, {backgroundColor: theme.overlay}]}>
+			<View
+				ref={containerRef}
+				{...panResponder.panHandlers}
+				onLayout={onLayout}
+				style={styles.letters}
+			>
+				{current && <AtoZPickerBubble yPosition={current.yPosition} letter={current.letter}/>}
+				{letterPicks}
 			</View>
-		);
-	}
+		</View>
+	);
 
-	render(): React.ReactElement {
-		const {letters, currentLetter} = this.state;
-		if (letters.length === 0) {
-			return <></>;
-		}
-		const {theme, activeLetter} = this.props;
-		const letterPicks = letters.map(letter => <AtoZLetter letter={letter} key={letter} active={activeLetter === letter}/>);
-		return (
-			<View style={[styles.outerContainer, {backgroundColor: theme.overlay}]}>
-				<View
-					ref={this.containerRef}
-					{...this.panResponder.panHandlers}
-					onLayout={this.onLayout}
-					style={styles.letters}
-				>
-					{!!currentLetter && this.renderLetterBubble()}
-					{letterPicks}
-				</View>
-			</View>
-		);
-	}
-}
+};
 
-export default withTheme(AtoZPicker);
