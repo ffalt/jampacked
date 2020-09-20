@@ -147,6 +147,10 @@ export const AtoZPicker: React.FC<AtoZPickerProps> = (
 		});
 	};
 
+	if (letters.length === 0) {
+		return (<></>);
+	}
+
 	const letterPicks = letters.map(letter => <AtoZLetter letter={letter} key={letter} active={activeLetter === letter}/>);
 	return (
 		<View style={[styles.outerContainer, {backgroundColor: theme.overlay}]}>

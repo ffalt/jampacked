@@ -8,7 +8,7 @@ import {ErrorView} from './ErrorView';
 
 interface DefaultFlatListParams<T> {
 	style?: StyleProp<ViewStyle>;
-	key?: string;
+	id?: string;
 	error?: Error;
 	onEndReachedThreshold?: number;
 	onEndReached?: ((info: { distanceFromEnd: number }) => void) | null;
@@ -21,7 +21,7 @@ interface DefaultFlatListParams<T> {
 
 export const DefaultFlatList: React.FC<DefaultFlatListParams<any>> = (
 	{
-		items, key, error, reload,
+		items, id, error, reload,
 		renderItem, loading, style,
 		ListHeaderComponent, onEndReachedThreshold, onEndReached
 	}
@@ -32,7 +32,7 @@ export const DefaultFlatList: React.FC<DefaultFlatListParams<any>> = (
 	}
 	return (
 		<FlatList
-			key={key}
+			key={id}
 			style={style}
 			data={items || []}
 			renderItem={renderItem}

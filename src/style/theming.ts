@@ -252,5 +252,5 @@ export const ThemeContext = React.createContext<ThemeSettings>(
 	}
 );
 
-export const {ThemeProvider, withTheme, useTheme} = createTheming(getAutoTheme());
+export const {ThemeProvider, useTheme} = createTheming(getAutoTheme());
 export const useThemeContext = (): ThemeSettings => useContext<ThemeSettings>(ThemeContext);

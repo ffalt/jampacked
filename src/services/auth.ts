@@ -6,7 +6,6 @@ import FastImage, {Source} from 'react-native-fast-image';
 export interface Auth {
 	hasUser: boolean,
 	user?: Jam.SessionUser,
-	isLoading: boolean,
 	currentUserID: () => string;
 	currentUserName: () => string;
 	imgSource: (id: string, size: number) => Source | undefined;
@@ -17,7 +16,6 @@ export interface Auth {
 export const defaultAuth: Auth = {
 	hasUser: false,
 	user: undefined,
-	isLoading: true,
 	currentUserID: (): string => dataService.currentUserID,
 	currentUserName: (): string => dataService.currentUserName,
 	imgSource: (id: string, size: number): Source | undefined => {

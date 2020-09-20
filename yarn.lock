@@ -8418,7 +8418,7 @@ react-native-background-timer@2.4.0:
   resolved "https://registry.yarnpkg.com/react-native-background-timer/-/react-native-background-timer-2.4.0.tgz#b659fdc8ce8ddbed04fbb296e2ec9f4ad8e1659f"
   integrity sha512-00DphusbzXUuJDP+SSRe7FJczFWzrCErr+2TdRxYfbQjpDaRk3rXw8nhlQXI5U6KthquEQOrCRMq2F2hi/HKLg==
 
-react-native-bootsplash@^3.0.0-alpha.2:
+react-native-bootsplash@3.0.0-alpha.2:
   version "3.0.0-alpha.2"
   resolved "https://registry.yarnpkg.com/react-native-bootsplash/-/react-native-bootsplash-3.0.0-alpha.2.tgz#ee2ca8e3adf70d746a0c0bcf73ac59a6a95ea28e"
   integrity sha512-5xxexevQYtLCuOkzYwJ8JFNXQooVYA2zHV8QTZGOIrvwwA/f7wGey+3Q7VKn4nIis3GwHYV2b54z8Sn7CD8R3Q==
@@ -8506,11 +8506,6 @@ react-native-swift@1.2.3:
   dependencies:
     "@raydeck/xcode" "^2.2.0"
     glob "^7.1.2"
-
-react-native-swipe-item@0.4.0:
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/react-native-swipe-item/-/react-native-swipe-item-0.4.0.tgz#228c346d4f63c213d7849c5faf7fc262d6290c96"
-  integrity sha512-peCdR26NCES/ZBLiHBcpUxz53uzolOs6KmnsG6MKoujZtG36qDmwyUWZSUM5l4vd7/kUpQK2GwL/9uHiLeRVXw==
 
 react-native-tab-view@2.15.1:
   version "2.15.1"

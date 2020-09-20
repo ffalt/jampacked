@@ -76,7 +76,7 @@ export const BaseEntryList: React.FC<{
 	}
 	return (
 		<DefaultFlatList
-			key="rows"
+			id="rows"
 			items={entries}
 			renderItem={renderItemRow}
 			ListHeaderComponent={ListHeaderComponent}
