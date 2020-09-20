@@ -8,7 +8,7 @@ import {DefaultFlatList} from './DefFlatList';
 export const ActiveDownloads: React.FC = () => {
 	const downloads = useDownloads();
 	const renderItem = useCallback(({item}: { item: DownloadTask }): JSX.Element => (<ActiveDownloadItem item={item}/>), []);
-	const ListHeaderComponent = useCallback((): JSX.Element => (<PageHeader title="Active Downloads" subtitle="Pinned Media" titleIcon="download"/>), []);
+	const ListHeaderComponent = (<PageHeader title="Active Downloads" subtitle="Pinned Media" titleIcon="download"/>);
 	const reload = useCallback(() => {
 		//TODO reload active download list
 	}, []);

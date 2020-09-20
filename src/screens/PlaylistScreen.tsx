@@ -34,36 +34,27 @@ export const PlaylistScreen: React.FC<HomeRouteProps<HomeRoute.PLAYLIST>> = ({ro
 		getPlaylist(id, true);
 	}, [getPlaylist, id]);
 
-	const ListHeaderComponent = useCallback((): JSX.Element => {
-		const playTracks = (): void => {
-			if (playlist?.tracks) {
-				JamPlayer.playTracks(playlist.tracks)
-					.catch(e => {
-						snackError(e);
-					});
-			}
-		};
-		const customDetails = (<ThemedText style={objHeaderStyles.panel}>{playlist?.comment}</ThemedText>);
+	const playTracks = (): void => {
+		if (playlist?.tracks) {
+			JamPlayer.playTracks(playlist.tracks)
+				.catch(e => {
+					snackError(e);
+				});
+		}
+	};
 
-		const headerTitleCmds = (
-			<>
-				<TouchableOpacity style={objHeaderStyles.button} onPress={playTracks}>
-					<ThemedIcon name="play" size={objHeaderStyles.buttonIcon.fontSize}/>
-				</TouchableOpacity>
-				<FavIcon style={objHeaderStyles.button} objType={JamObjectType.playlist} id={id}/>
-			</>
-		);
-		return (
-			<ObjHeader
-				id={id}
-				title={name}
-				typeName="Playlist"
-				customDetails={customDetails}
-				headerTitleCmds={headerTitleCmds}
-			/>
-		);
-	}, [playlist, id, name]);
-
+	const ListHeaderComponent = (<ObjHeader
+		id={id}
+		title={name}
+		typeName="Playlist"
+		customDetails={<ThemedText style={objHeaderStyles.panel}>{playlist?.comment}</ThemedText>}
+		headerTitleCmds={<>
+			<TouchableOpacity style={objHeaderStyles.button} onPress={playTracks}>
+				<ThemedIcon name="play" size={objHeaderStyles.buttonIcon.fontSize}/>
+			</TouchableOpacity>
+			<FavIcon style={objHeaderStyles.button} objType={JamObjectType.playlist} id={id}/>
+		</>}
+	/>);
 
 	const showMenu = useCallback((item: TrackEntry): void => {
 		setCurrentTrack(item);

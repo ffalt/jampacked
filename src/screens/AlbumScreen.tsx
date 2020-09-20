@@ -54,17 +54,20 @@ export const AlbumScreen: React.FC<HomeRouteProps<HomeRoute.ALBUM>> = ({route}) 
 		getAlbum(id, true);
 	}, [getAlbum, id]);
 
-	const ListHeaderComponent = useCallback((): JSX.Element => {
-		const playTracks = (): void => {
-			if (album) {
-				JamPlayer.playTracks(album.tracks)
-					.catch(e => {
-						snackError(e);
-					});
-			}
-		};
-
-		const headerTitleCmds = (
+	const playTracks = (): void => {
+		if (album) {
+			JamPlayer.playTracks(album.tracks)
+				.catch(e => {
+					snackError(e);
+				});
+		}
+	};
+	const ListHeaderComponent = (<ObjHeader
+		id={id}
+		title={name}
+		typeName={album?.albumType}
+		details={details}
+		headerTitleCmds={
 			<>
 				<TouchableOpacity style={objHeaderStyles.button} onPress={playTracks}>
 					<ThemedIcon name="play" size={objHeaderStyles.buttonIcon.fontSize}/>
@@ -72,17 +75,8 @@ export const AlbumScreen: React.FC<HomeRouteProps<HomeRoute.ALBUM>> = ({route}) 
 				<PinIcon style={objHeaderStyles.button} objType={JamObjectType.album} id={id}/>
 				<FavIcon style={objHeaderStyles.button} objType={JamObjectType.album} id={id}/>
 			</>
-		);
-		return (
-			<ObjHeader
-				id={id}
-				title={name}
-				typeName={album?.albumType}
-				details={details}
-				headerTitleCmds={headerTitleCmds}
-			/>
-		);
-	}, [album, details, id, name]);
+		}
+	/>);
 
 	const showMenu = useCallback((item: TrackEntry): void => {
 		setCurrentTrack(item);

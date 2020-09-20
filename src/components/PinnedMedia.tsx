@@ -8,7 +8,7 @@ import {DefaultFlatList} from './DefFlatList';
 export const PinnedMedia: React.FC = () => {
 	const {media, loading} = usePinnedMedia();
 	const renderItem = useCallback(({item}: { item: PinMedia }): JSX.Element => (<PinnedMediaItem item={item}/>), []);
-	const ListHeaderComponent = useCallback((): JSX.Element => (<PageHeader title="Albums" subtitle="Pinned Media" titleIcon="album"/>), []);
+	const ListHeaderComponent = (<PageHeader title="Albums" subtitle="Pinned Media" titleIcon="album"/>);
 	const reload = useCallback(() => {
 		//TODO reload pinned download list
 	}, []);

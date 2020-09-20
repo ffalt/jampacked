@@ -16,7 +16,7 @@ export const TracksScreen: React.FC<HomeRouteProps<HomeRoute.TRACKS>> = () => {
 
 	const renderItem = useCallback(({item}: { item: TrackEntry }): JSX.Element => (<TrackItem track={item}/>), []);
 
-	const ListHeaderComponent = useCallback((): JSX.Element => (<PageHeader title="Tracks" titleIcon="track"/>), []);
+	const ListHeaderComponent = (<PageHeader title="Tracks" titleIcon="track"/>);
 
 	return (
 		<DefaultFlatList

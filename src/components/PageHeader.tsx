@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
 		flexDirection: 'column'
 	},
 	ListHeaderBackground: {
-		height: 120
+		height: staticTheme.iconHeaderHeight
 	},
 	ListHeader: {
 		alignItems: 'center',
@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
 		flex: 1
 	},
 	button: {
-		marginRight: staticTheme.marginLarge + 15,
+		marginRight: staticTheme.marginLarge * 2,
 		width: 40,
 		height: 40,
 		justifyContent: 'center',

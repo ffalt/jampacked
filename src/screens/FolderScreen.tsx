@@ -57,31 +57,26 @@ export const FolderScreen: React.FC<HomeRouteProps<HomeRoute.FOLDER>> = ({route}
 		}
 	}, [folder]);
 
-	const ListHeaderComponent = useCallback((): JSX.Element => {
-		const playTracks = (): void => {
-			if (folder) {
-				JamPlayer.playTracks(folder.tracks)
-					.catch(e => {
-						snackError(e);
-					});
-			}
-		};
+	const playTracks = (): void => {
+		if (folder) {
+			JamPlayer.playTracks(folder.tracks)
+				.catch(e => {
+					snackError(e);
+				});
+		}
+	};
 
-		const headerTitleCmds = folder?.tracks?.length ? (
+	const ListHeaderComponent = (<ObjHeader
+		id={id}
+		title={name}
+		typeName={folder?.type}
+		details={details}
+		headerTitleCmds={folder?.tracks?.length ? (
 			<TouchableOpacity style={objHeaderStyles.button} onPress={playTracks}>
 				<ThemedIcon name="play" size={objHeaderStyles.buttonIcon.fontSize}/>
 			</TouchableOpacity>
-		) : undefined;
-		return (
-			<ObjHeader
-				id={id}
-				title={name}
-				typeName={folder?.type}
-				details={details}
-				headerTitleCmds={headerTitleCmds}
-			/>
-		);
-	}, [folder, id, name, details]);
+		) : undefined}
+	/>);
 
 	const renderItem = useCallback(({item}: { item: FolderItem }): JSX.Element => {
 		if (item.track) {

@@ -34,34 +34,27 @@ export const PodcastScreen: React.FC<HomeRouteProps<HomeRoute.PODCAST>> = ({rout
 		getPodcast(id, true);
 	}, [getPodcast, id]);
 
-	const ListHeaderComponent = useCallback((): JSX.Element => {
-		const playTracks = (): void => {
-			if (podcast?.episodes) {
-				JamPlayer.playTracks(podcast.episodes)
-					.catch(e => {
-						snackError(e);
-					});
-			}
-		};
-		const customDetails = (<ThemedText style={objHeaderStyles.panel}>{podcast?.description}</ThemedText>);
-		const headerTitleCmds = (
-			<>
-				<TouchableOpacity style={objHeaderStyles.button} onPress={playTracks}>
-					<ThemedIcon name="play" size={objHeaderStyles.buttonIcon.fontSize}/>
-				</TouchableOpacity>
-				<FavIcon style={objHeaderStyles.button} objType={JamObjectType.podcast} id={id}/>
-			</>
-		);
-		return (
-			<ObjHeader
-				id={id}
-				title={name}
-				typeName="Podcast"
-				customDetails={customDetails}
-				headerTitleCmds={headerTitleCmds}
-			/>
-		);
-	}, [podcast, id, name]);
+	const playTracks = (): void => {
+		if (podcast?.episodes) {
+			JamPlayer.playTracks(podcast.episodes)
+				.catch(e => {
+					snackError(e);
+				});
+		}
+	};
+
+	const ListHeaderComponent = (<ObjHeader
+		id={id}
+		title={name}
+		typeName="Podcast"
+		customDetails={<ThemedText style={objHeaderStyles.panel}>{podcast?.description}</ThemedText>}
+		headerTitleCmds={<>
+			<TouchableOpacity style={objHeaderStyles.button} onPress={playTracks}>
+				<ThemedIcon name="play" size={objHeaderStyles.buttonIcon.fontSize}/>
+			</TouchableOpacity>
+			<FavIcon style={objHeaderStyles.button} objType={JamObjectType.podcast} id={id}/>
+		</>}
+	/>);
 
 	const showMenu = useCallback((item: TrackEntry): void => {
 		setCurrentEpisode(item);

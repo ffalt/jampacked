@@ -43,20 +43,13 @@ export const SeriesScreen: React.FC<HomeRouteProps<HomeRoute.SERIE>> = ({route})
 		getSeries(id, true);
 	}, [getSeries, id]);
 
-	const ListHeaderComponent = useCallback((): JSX.Element => {
-		const headerTitleCmds = (
-			<FavIcon style={objHeaderStyles.button} objType={JamObjectType.series} id={id}/>
-		);
-		return (
-			<ObjHeader
-				id={id}
-				title={name}
-				typeName="Series"
-				details={details}
-				headerTitleCmds={headerTitleCmds}
-			/>
-		);
-	}, [details, id, name]);
+	const ListHeaderComponent = (<ObjHeader
+		id={id}
+		title={name}
+		typeName="Series"
+		details={details}
+		headerTitleCmds={<FavIcon style={objHeaderStyles.button} objType={JamObjectType.series} id={id}/>}
+	/>);
 
 	const renderSection = useCallback(({section}: { section: SectionListData<BaseEntry> }): JSX.Element => (
 		<View style={sharedStyles.sectionHeader}>

@@ -37,20 +37,13 @@ export const ArtistScreen: React.FC<HomeRouteProps<HomeRoute.ARTIST>> = ({route}
 		}
 	}, [artist]);
 
-	const ListHeaderComponent = useCallback((): JSX.Element => {
-		const headerTitleCmds = (
-			<FavIcon style={objHeaderStyles.button} objType={JamObjectType.artist} id={id}/>
-		);
-		return (
-			<ObjHeader
-				id={id}
-				title={name}
-				typeName="Artist"
-				details={details}
-				headerTitleCmds={headerTitleCmds}
-			/>
-		);
-	}, [details, id, name]);
+	const ListHeaderComponent = (<ObjHeader
+		id={id}
+		title={name}
+		typeName="Artist"
+		details={details}
+		headerTitleCmds={<FavIcon style={objHeaderStyles.button} objType={JamObjectType.artist} id={id}/>}
+	/>);
 
 	const renderSection = useCallback(({section}: { section: SectionListData<BaseEntry> }): JSX.Element => (
 		<View style={sharedStyles.sectionHeader}>

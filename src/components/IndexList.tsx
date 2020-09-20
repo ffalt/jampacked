@@ -11,7 +11,7 @@ import {useWindowWidth} from '../utils/dimension.hook';
 import {ListEmpty} from './ListEmpty';
 import {defaultKeyExtractor} from '../utils/list.utils';
 
-const style = StyleSheet.create({
+const styles = StyleSheet.create({
 	row: {
 		flex: 1,
 		justifyContent: 'flex-start'
@@ -61,7 +61,7 @@ export const IndexList: React.FC<{
 				numColumns={numColumns}
 				ListHeaderComponent={ListHeaderComponent}
 				ListEmptyComponent={ListEmptyComponent}
-				columnWrapperStyle={style.row}
+				columnWrapperStyle={styles.row}
 				itemHeight={tileSize}
 				refreshControl={refreshControl}
 			/>
