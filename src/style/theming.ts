@@ -33,6 +33,7 @@ export const staticTheme = {
 
 	statusBarOffset: 25,
 	a2zWidth: 40,
+	iconHeaderHeight: 140,
 
 	cover: 300,
 	userImage: 40,
@@ -43,7 +44,6 @@ export const staticTheme = {
 // export type ITheme = ReturnType<typeof useTheme>;
 export interface ITheme {
 	name: string;
-	title: string;
 	textColor: string;
 	muted: string;
 	background: string;
@@ -62,6 +62,7 @@ export interface ITheme {
 	barStyle: 'default' | 'light-content' | 'dark-content';
 	overlay: string;
 	overlayText: string;
+	overlayTextActive: string;
 	navigation: NavigationTheme;
 	waveform: {
 		active: string;
@@ -78,7 +79,6 @@ export interface ITheme {
 
 const light: ITheme = {
 	name: 'light',
-	title: 'Light',
 	barStyle: 'dark-content',
 	textColor: '#000000',
 	muted: '#202020',
@@ -99,6 +99,7 @@ const light: ITheme = {
 	refreshCtrlColors: ['#00a9e0', '#309712'],
 	overlay: 'rgba(255,255,255,0.3)',
 	overlayText: '#000000',
+	overlayTextActive: '#062456',
 	statusBar: 'rgba(255,255,255,0.7)',
 	navigation: {
 		dark: false,
@@ -121,7 +122,6 @@ const light: ITheme = {
 
 const dark: ITheme = {
 	name: 'dark',
-	title: 'Dark',
 	textColor: '#eeeeee',
 	barStyle: 'light-content',
 	muted: '#808080',
@@ -142,6 +142,7 @@ const dark: ITheme = {
 	refreshCtrlColors: ['#00a9e0', '#309712'],
 	overlay: 'rgba(0,0,0,0.5)',
 	overlayText: '#ffffff',
+	overlayTextActive: '#93aed0',
 	statusBar: 'rgba(0,0,0,0.5)',
 	navigation: {
 		dark: true,
@@ -166,7 +167,6 @@ const dark: ITheme = {
 
 const black: ITheme = {
 	name: 'black',
-	title: 'Black',
 	textColor: '#eeeeee',
 	barStyle: 'light-content',
 	muted: '#808080',
@@ -187,6 +187,7 @@ const black: ITheme = {
 	refreshCtrlColors: ['#00a9e0', '#309712'],
 	overlay: 'rgba(0,0,0,0.5)',
 	overlayText: '#ffffff',
+	overlayTextActive: '#87a7d6',
 	statusBar: 'rgba(0,0,0,0.5)',
 	navigation: {
 		dark: true,
@@ -219,7 +220,7 @@ export const themeList: Array<{ key: string, label: string }> = [
 	{key: 'auto', label: 'System Theme'},
 	{key: 'light', label: 'Light'},
 	{key: 'dark', label: 'Dark'},
-	{key: 'black', label: 'Black'},
+	{key: 'black', label: 'Black'}
 ];
 
 export interface ThemeSettings {

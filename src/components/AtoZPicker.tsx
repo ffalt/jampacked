@@ -1,19 +1,20 @@
 import React from 'react';
-import {PanResponder, StyleSheet, Text, TouchableWithoutFeedback, View} from 'react-native';
+import {PanResponder, StyleSheet, Text, View} from 'react-native';
 import {AtoZLetter} from './AtoZLetter';
-import {ITheme, withTheme} from '../style/theming';
+import {ITheme, staticTheme, withTheme} from '../style/theming';
 
 const styles = StyleSheet.create({
 	outerContainer: {
 		position: 'absolute',
-		top: 24,
+		top: staticTheme.statusBarOffset - 1,
 		bottom: 0,
 		right: 0,
 		justifyContent: 'center',
 		alignItems: 'center'
 	},
 	letters: {
-		paddingHorizontal: 10
+		padding: 10,
+		paddingVertical: 20
 	},
 	letterBubble: {
 		position: 'absolute',
@@ -57,6 +58,7 @@ interface AtoZPickerProps<T> {
 	onTouchStart?: () => void;
 	onTouchEnd?: () => void;
 	onTouchLetter?: (letter: string) => void;
+	activeLetter?: string;
 	theme: ITheme;
 }
 
@@ -69,8 +71,9 @@ class AtoZPicker<T extends SectionItem> extends React.PureComponent<AtoZPickerPr
 			if (onTouchStart) {
 				onTouchStart();
 			}
+			const y = gestureState.y0;
 			this.tapTimeout = setTimeout(() => {
-				this.check(gestureState.y0);
+				this.check(y);
 			}, 250);
 		},
 		onPanResponderMove: (evt, gestureState) => {
@@ -185,31 +188,25 @@ class AtoZPicker<T extends SectionItem> extends React.PureComponent<AtoZPickerPr
 		);
 	}
 
-	private nopPress = (): void => {
-		// nop
-	};
-
 	render(): React.ReactElement {
 		const {letters, currentLetter} = this.state;
 		if (letters.length === 0) {
 			return <></>;
 		}
-		const {theme} = this.props;
-		const letterPicks = letters.map(letter => <AtoZLetter letter={letter} key={letter}/>);
+		const {theme, activeLetter} = this.props;
+		const letterPicks = letters.map(letter => <AtoZLetter letter={letter} key={letter} active={activeLetter === letter}/>);
 		return (
-			<TouchableWithoutFeedback onPress={this.nopPress}>
-				<View style={[styles.outerContainer, {backgroundColor: theme.overlay}]}>
-					<View
-						ref={this.containerRef}
-						{...this.panResponder.panHandlers}
-						onLayout={this.onLayout}
-						style={styles.letters}
-					>
-						{!!currentLetter && this.renderLetterBubble()}
-						{letterPicks}
-					</View>
+			<View style={[styles.outerContainer, {backgroundColor: theme.overlay}]}>
+				<View
+					ref={this.containerRef}
+					{...this.panResponder.panHandlers}
+					onLayout={this.onLayout}
+					style={styles.letters}
+				>
+					{!!currentLetter && this.renderLetterBubble()}
+					{letterPicks}
 				</View>
-			</TouchableWithoutFeedback>
+			</View>
 		);
 	}
 }
