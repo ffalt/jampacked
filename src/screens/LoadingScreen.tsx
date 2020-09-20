@@ -7,14 +7,15 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		alignItems: 'center',
-		justifyContent: 'center'
+		justifyContent: 'center',
+		paddingBottom: 22
 	}
 });
 
 export const LoadingScreen: React.FC<AppStackProps<Routing.LOAD>> = React.memo(() =>
 	(
 		<View style={styles.container}>
-			<Logo size={94}/>
+			<Logo size={100}/>
 		</View>
 	)
 );

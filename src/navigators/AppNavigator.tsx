@@ -5,31 +5,22 @@ import {LoadingScreen} from '../screens/LoadingScreen';
 import {AppStackNavigatorParamList, Routing} from './Routing';
 import {LoginScreen} from '../screens/LoginScreen';
 import dataService from '../services/data';
-import {ThemeContext} from '../style/theming';
-import {defaultAuth, AuthContext} from '../services/auth';
+import {AuthContext, defaultAuth} from '../services/auth';
 import {Jam} from '../services/jam';
 import {DrawerNavigator} from './DrawerNavigator';
 
 const Stack = createStackNavigator<AppStackNavigatorParamList>();
 
 export class AppNavigator extends React.PureComponent {
-	static contextType = ThemeContext;
 	state: { hasUser: boolean; isLoading: boolean; user?: Jam.SessionUser } = {hasUser: false, isLoading: true, user: undefined};
 
 	async componentDidMount(): Promise<void> {
-		const themeSettings = this.context;
-		await dataService.jam.auth.load();
 		try {
 			await dataService.jam.auth.check();
 		} catch (e) {
 			console.error(e);
 		}
 		this.setState({hasUser: dataService.jam.auth.isLoggedIn(), user: dataService.jam.auth.user, isLoading: false});
-		try {
-			await themeSettings.loadUserTheme();
-		} catch (e) {
-			console.error(e);
-		}
 		SplashScreen.hide();
 	}
 

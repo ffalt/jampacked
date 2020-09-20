@@ -51,8 +51,7 @@ const styles = StyleSheet.create({
 		paddingVertical: staticTheme.padding,
 		marginRight: staticTheme.marginSmall,
 		marginBottom: staticTheme.marginSmall,
-		borderRadius: 4,
-		backgroundColor: 'rgba(0,0,0,0.2)'
+		borderRadius: 4
 	},
 	drawerTileText: {
 		fontSize: staticTheme.fontSizeSmall
@@ -94,7 +93,7 @@ export const AppDrawerLinkTile: React.FC<{ link: RouteLink }> = ({link}) => {
 	}, [link]);
 
 	return (
-		<TouchableOpacity style={[styles.drawerTile, {borderColor: theme.separator}]} onPress={goToRoute}>
+		<TouchableOpacity style={[styles.drawerTile, {borderColor: theme.separator, backgroundColor: theme.itemBackground}]} onPress={goToRoute}>
 			<ThemedIcon name={link.icon} size={18} color={theme.muted}/>
 			<ThemedText style={styles.drawerTileText} numberOfLines={1}>{link.title}</ThemedText>
 		</TouchableOpacity>

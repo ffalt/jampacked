@@ -1,6 +1,7 @@
 import {createTheming} from '@callstack/react-theme-provider';
 import {DefaultTheme} from '@react-navigation/native';
 import React, {useContext} from 'react';
+import {Appearance} from 'react-native';
 
 export declare type NavigationTheme = {
 	dark: boolean;
@@ -208,9 +209,18 @@ const black: ITheme = {
 	}
 };
 
-export const themes: { light: ITheme, dark: ITheme, black: ITheme, [name: string]: ITheme } = {light, dark, black};
+const themes: {
+	light: ITheme,
+	dark: ITheme,
+	black: ITheme, [name: string]: ITheme
+} = {light, dark, black};
 
-export const themeList: Array<ITheme> = [light, dark, black];
+export const themeList: Array<{ key: string, label: string }> = [
+	{key: 'auto', label: 'System Theme'},
+	{key: 'light', label: 'Light'},
+	{key: 'dark', label: 'Dark'},
+	{key: 'black', label: 'Black'},
+];
 
 export interface ThemeSettings {
 	theme: ITheme;
@@ -218,9 +228,20 @@ export interface ThemeSettings {
 	loadUserTheme: () => Promise<void>;
 }
 
+export function getAutoTheme(): ITheme {
+	return {...(Appearance.getColorScheme() === 'dark' ? dark : light), name: 'auto'};
+}
+
+export function getTheme(name?: string | null): ITheme {
+	if (!name || name === 'auto') {
+		return getAutoTheme();
+	}
+	return themes[name] || themes.light;
+}
+
 export const ThemeContext = React.createContext<ThemeSettings>(
 	{
-		theme: themes.dark,
+		theme: getAutoTheme(),
 		loadUserTheme: async (): Promise<void> => {
 			// nope
 		},
@@ -230,5 +251,5 @@ export const ThemeContext = React.createContext<ThemeSettings>(
 	}
 );
 
-export const {ThemeProvider, withTheme, useTheme} = createTheming(themes.dark);
+export const {ThemeProvider, withTheme, useTheme} = createTheming(getAutoTheme());
 export const useThemeContext = (): ThemeSettings => useContext<ThemeSettings>(ThemeContext);

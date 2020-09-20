@@ -77,7 +77,7 @@ export const IndexList: React.FC<{
 			ListHeaderComponent={ListHeaderComponent}
 			ListEmptyComponent={ListEmptyComponent}
 			refreshControl={refreshControl}
-			itemHeight={65}
+			itemHeight={66}
 		/>
 	);
 };
