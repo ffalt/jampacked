@@ -19,7 +19,13 @@ function transformData(data: FavResult | undefined): { timestamp?: number } {
 }
 
 export const useLazyFavQuery = (): [(id: string) => void,
-	{ loading: boolean, error?: ApolloError, faved?: { timestamp?: number }, called: boolean }
+	{
+		loading: boolean,
+		error?: ApolloError,
+		faved?: { timestamp?: number },
+		called: boolean,
+		setFav: (fav: { timestamp?: number } | undefined) => void
+	}
 ] => {
 	const [faved, setFaved] = useState<{ timestamp?: number } | undefined>(undefined);
 	const [query, {loading, error, called, data}] = useLazyQuery<FavResult, FavResultVariables>(GET_FAV);
@@ -33,13 +39,18 @@ export const useLazyFavQuery = (): [(id: string) => void,
 	}, [query]);
 
 
+	const setFav = useCallback((fav: { timestamp?: number } | undefined): void => {
+		setFaved(fav);
+	}, []);
+
 	return [
 		get,
 		{
 			loading,
 			called,
 			error,
-			faved
+			faved,
+			setFav
 		}
 	];
 };

@@ -16,46 +16,62 @@ const styles = StyleSheet.create({
 	}
 });
 
+function transformState(faved?: { timestamp?: number }): { isFaved: boolean, iconName: string } {
+	const isFaved = (faved?.timestamp || 0) > 0;
+	const iconName = isFaved ? 'heart-full' : 'heart-empty';
+	return {isFaved, iconName};
+}
+
 export const FavIcon: React.FC<{ id?: string; objType: JamObjectType; style?: StyleProp<ViewStyle> }> = ({id, style}) => {
-	const [fav, setFav] = useState<{ timestamp?: number } | undefined>();
-	const [getFaved, {faved, loading}] = useLazyFavQuery();
+	const [state, setState] = useState<{ id?: string, isFaved: boolean, iconName: string }>(transformState());
+	const [getFaved, {faved, loading, setFav}] = useLazyFavQuery();
 	const [toggleFav] = useFavMutation();
 	const theme = useTheme();
 
 	useEffect(() => {
 		if (id) {
-			getFaved(id);
+			setState(prev => {
+				if (prev.id !== id) {
+					getFaved(id);
+					return {id, ...transformState()};
+				}
+				return prev;
+			});
 		}
 	}, [getFaved, id]);
 
 	useEffect(() => {
-		setFav(faved);
+		if (faved) {
+			setState(prev => {
+				return {id: prev.id, ...transformState(faved)};
+			});
+		}
 	}, [faved]);
 
-	const isFaved = (fav?.timestamp || 0) > 0;
-	const iconName = isFaved ? 'heart-full' : 'heart-empty';
-
 	const handleToggleFav = useCallback((): void => {
-		if (id && fav) {
+		if (!loading && id) {
+			const isFaved = (faved?.timestamp || 0) > 0;
 			toggleFav({variables: {id, remove: isFaved}})
 				.then(result => {
-					setFav({timestamp: result.data?.fav?.faved ? (new Date(result.data.fav.faved)).valueOf() : undefined});
-					snackSuccess(result.data?.fav?.faved ? 'Added to Favorites' : 'Removed from Favorites');
+					const fav = {timestamp: result.data?.fav?.faved ? (new Date(result.data.fav.faved)).valueOf() : undefined};
+					setState({id, ...transformState(fav)});
+					setFav(fav);
+					snackSuccess(!isFaved ? 'Added to Favorites' : 'Removed from Favorites');
 					dataService.cache.updateHomeData();
 				});
 		}
-	}, [id, fav, toggleFav, isFaved]);
+	}, [id, setFav, loading, faved, toggleFav]);
 
-	if (loading || !fav) {
+	if (loading || !faved) {
 		return (
 			<View style={[styles.button, style]}>
-				<ThemedIcon name={iconName} size={styles.buttonIcon.fontSize} color={theme.muted}/>
+				<ThemedIcon name={state.iconName} size={styles.buttonIcon.fontSize} color={theme.muted}/>
 			</View>
 		);
 	}
 	return (
 		<TouchableOpacity style={[styles.button, style]} onPress={handleToggleFav}>
-			<ThemedIcon name={iconName} size={styles.buttonIcon.fontSize}/>
+			<ThemedIcon name={state.iconName} size={styles.buttonIcon.fontSize}/>
 		</TouchableOpacity>
 	);
 
