@@ -7,7 +7,7 @@ import {NavigationService} from '../navigators/navigation';
 import {BaseEntry} from '../services/types';
 import {sharedStyles} from '../style/shared';
 
-export const Item: React.FC<{ item: BaseEntry }> = React.memo(({item}) => {
+export const Item: React.FC<{ item: BaseEntry }> = ({item}) => {
 
 	const handlePress = useCallback((): void => {
 		NavigationService.navigateObj(item.objType, item.id, item.title);
@@ -22,4 +22,4 @@ export const Item: React.FC<{ item: BaseEntry }> = React.memo(({item}) => {
 			</View>
 		</TouchableOpacity>
 	);
-});
+};

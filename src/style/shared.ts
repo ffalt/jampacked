@@ -7,8 +7,9 @@ export const sharedStyles = StyleSheet.create({
 		flexDirection: 'row',
 		flex: 1,
 		alignItems: 'center',
-		height: 60
-		// backgroundColor: 'red'
+		height: 60,
+		maxHeight: 60,
+		minHeight: 60
 	},
 	itemSectionLeft: {
 		marginRight: staticTheme.margin

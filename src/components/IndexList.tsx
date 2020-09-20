@@ -10,6 +10,7 @@ import {Index, IndexEntry} from '../services/types';
 import {useWindowWidth} from '../utils/dimension.hook';
 import {ListEmpty} from './ListEmpty';
 import {defaultKeyExtractor} from '../utils/list.utils';
+import {sharedStyles} from '../style/shared';
 
 const styles = StyleSheet.create({
 	row: {
@@ -77,7 +78,7 @@ export const IndexList: React.FC<{
 			ListHeaderComponent={ListHeaderComponent}
 			ListEmptyComponent={ListEmptyComponent}
 			refreshControl={refreshControl}
-			itemHeight={66}
+			itemHeight={sharedStyles.item.height + 1}
 		/>
 	);
 };
