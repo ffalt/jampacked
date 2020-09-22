@@ -14,6 +14,11 @@ export interface AlbumResult_album_artist {
   name: string;
 }
 
+export interface AlbumResult_album_genres {
+  id: string;
+  name: string;
+}
+
 export interface AlbumResult_album_tracks_album {
   id: string;
 }
@@ -51,7 +56,7 @@ export interface AlbumResult_album {
   albumType: AlbumType;
   artist: AlbumResult_album_artist;
   tracksCount: number;
-  genres: string[];
+  genres: AlbumResult_album_genres[];
   tracks: AlbumResult_album_tracks[];
 }
 

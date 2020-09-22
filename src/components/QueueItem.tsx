@@ -7,6 +7,7 @@ import {ThemedText} from './ThemedText';
 import {SwipeableListItem} from './SwipeItem';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {DurationText} from './DurationText';
+import {sharedStyles} from '../style/shared';
 
 const styles = StyleSheet.create({
 	trackListContainer: {
@@ -68,7 +69,7 @@ export const QueueItem: React.FC<{ active: boolean; index: number; item: TrackPl
 
 	return (
 		<SwipeableListItem
-			height={56}
+			height={sharedStyles.item.height}
 			right={right}
 			leftWidth={0}
 			rightWidth={64}
@@ -80,6 +81,7 @@ export const QueueItem: React.FC<{ active: boolean; index: number; item: TrackPl
 				</View>
 				<View style={styles.trackListTitle}>
 					<ThemedText style={styles.trackTitleStyle}>{item.title}</ThemedText>
+					<ThemedText style={styles.trackSubStyle}>{item.artist}</ThemedText>
 				</View>
 				<View style={styles.trackListRuntime}>
 					<DurationText style={styles.trackRuntimeStyle} duration={item.duration} ms={true}/>

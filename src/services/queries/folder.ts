@@ -14,7 +14,10 @@ const GET_FOLDER = gql`
             tracksCount
             folderType
             artist
-            genres
+            genres {
+                id
+                name
+            }
             children {
                 id
                 title
@@ -97,7 +100,7 @@ function transformData(data?: FolderResult): Folder | undefined {
 		trackCount: data.folder.tracksCount,
 		type: data.folder.folderType,
 		artist: data.folder.artist || undefined,
-		genres: data.folder.genres,
+		genres: (data.folder.genres || []).map(g => g.name),
 		items: folders.concat(trackItems),
 		tracks
 	};

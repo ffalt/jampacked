@@ -84,7 +84,8 @@ export enum HomeRoute {
 	TRACKS = 'Tracks',
 	USER = 'User',
 	DOWNLOADS = 'Downloads',
-	BOOKMARKS = 'Bookmarks'
+	BOOKMARKS = 'Bookmarks',
+	GENRES = 'Genres'
 }
 
 export type HomeRouteParamList = {
@@ -93,6 +94,7 @@ export type HomeRouteParamList = {
 	Series: undefined;
 	Albums: { albumType: AlbumType };
 	Folders: { albumType: AlbumType };
+	Genres: undefined;
 	Tracks: undefined;
 	Podcasts: undefined;
 	Downloads: undefined;
@@ -222,7 +224,7 @@ export type FoldersRouteProps<T extends keyof FoldersRouteParamList> = {
 	route: RouteProp<FoldersRouteParamList, T>;
 };
 
-// Folders Routes
+// Downloads Routes
 
 export enum DownloadsRoute {
 	ACTIVE = 'DownloadsActive',
@@ -237,4 +239,19 @@ export type DownloadsRouteParamList = {
 export type DownloadsRouteProps<T extends keyof DownloadsRouteParamList> = {
 	navigation: StackNavigationProp<DownloadsRouteParamList, T>;
 	route: RouteProp<DownloadsRouteParamList, T>;
+};
+
+// Genre Routes
+
+export enum GenresRoute {
+	INDEX = 'GenreIndex'
+}
+
+export type GenresRouteParamList = {
+	GenreIndex: undefined;
+};
+
+export type GenresRouteProps<T extends keyof GenresRouteParamList> = {
+	navigation: StackNavigationProp<GenresRouteParamList, T>;
+	route: RouteProp<GenresRouteParamList, T>;
 };

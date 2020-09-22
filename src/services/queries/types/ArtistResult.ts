@@ -9,6 +9,11 @@ import { AlbumType } from "./graphql-types";
 // GraphQL query operation: ArtistResult
 // ====================================================
 
+export interface ArtistResult_artist_genres {
+  id: string;
+  name: string;
+}
+
 export interface ArtistResult_artist_albums {
   id: string;
   name: string;
@@ -22,7 +27,7 @@ export interface ArtistResult_artist {
   name: string;
   albumsCount: number;
   tracksCount: number;
-  genres: string[];
+  genres: ArtistResult_artist_genres[];
   albums: ArtistResult_artist_albums[];
 }
 

@@ -18,6 +18,7 @@ import {AlbumsNavigator} from './AlbumsNavigator';
 import {SeriesNavigator} from './SeriesNavigator';
 import {FoldersNavigator} from './FoldersNavigator';
 import {DownloadsNavigator} from './DownloadsNavigator';
+import {GenresNavigator} from './GenresNavigator';
 
 const Stack = createStackNavigator<HomeRouteParamList>();
 
@@ -40,5 +41,6 @@ export const HomeStackNavigator: React.FC = () => (
 		<Stack.Screen name={HomeRoute.ALBUM} component={AlbumScreen}/>
 		<Stack.Screen name={HomeRoute.USER} component={UserScreen}/>
 		<Stack.Screen name={HomeRoute.DOWNLOADS} component={DownloadsNavigator}/>
+		<Stack.Screen name={HomeRoute.GENRES} component={GenresNavigator}/>
 	</Stack.Navigator>
 );

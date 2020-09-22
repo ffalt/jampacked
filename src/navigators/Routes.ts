@@ -98,6 +98,10 @@ export class JamRouteLinks {
 		return ({title: 'Tracks', icon: 'track', navig: {route: HomeRoute.TRACKS}});
 	}
 
+	static genres(): RouteLink {
+		return ({title: 'Genres', icon: 'genre', navig: {route: HomeRoute.GENRES}});
+	}
+
 	static podcasts(): RouteLink {
 		return ({title: 'Podcasts', icon: 'podcast', navig: {route: HomeRoute.PODCASTS}});
 	}

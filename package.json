@@ -1,6 +1,6 @@
 {
   "name": "jam",
-  "version": "0.4.0",
+  "version": "0.4.2",
   "private": true,
   "scripts": {
     "android": "react-native run-android && react-native log-android",
@@ -17,6 +17,8 @@
     "build:query-types": "apollo codegen:generate --localSchemaFile=schema.graphql --no-addTypename --target=typescript --includes=src/**/*.ts --tagName=gql --globalTypesFile=src/services/queries/types/graphql-types.ts types"
   },
   "resolutions": {
+    "@types/react-native": "0.63.18",
+    "@types/react": "16.9.49",
     "graphql": "15.3.0"
   },
   "dependencies": {

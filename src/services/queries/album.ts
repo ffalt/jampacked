@@ -16,7 +16,10 @@ const GET_ALBUM = gql`
                 name
             }
             tracksCount
-            genres
+            genres {
+                id
+                name
+            }
             tracks {
                 id
                 name
@@ -81,7 +84,7 @@ function transformData(data?: AlbumResult): Album | undefined {
 		artistName: data.album.artist?.name || '',
 		artistID: data.album.artist?.id || '',
 		trackCount: data.album.tracksCount,
-		genres: data.album.genres,
+		genres: (data.album.genres || []).map(g => g.name),
 		tracks: data.album.tracks.map(track => formatTrack(track))
 	};
 }

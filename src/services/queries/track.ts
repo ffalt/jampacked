@@ -18,11 +18,14 @@ const GET_TRACK = gql`
             series {
                 id
             }
+            genres {
+                id
+                name
+            }
             tag {
                 mediaDuration
                 title
                 artist
-                genres
                 album
                 disc
                 trackNr
@@ -40,7 +43,7 @@ export const transformData = (data?: TrackResult): TrackEntry | undefined => {
 		id: track.id,
 		title: track.tag?.title || track.name,
 		artist: track.tag?.artist || '?',
-		genre: track.tag?.genres ? track.tag?.genres.join(' / ') : undefined,
+		genre: track.genres?.length ? (track.genres || []).map(g => g.name).join(' / ') : undefined,
 		album: track.tag?.album || '?',
 		albumID: track.album?.id,
 		artistID: track.artist?.id,

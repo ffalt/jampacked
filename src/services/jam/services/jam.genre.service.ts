@@ -11,17 +11,45 @@ export class JamGenreService {
 	}
 
 	/**
-	 * Get a list of genres found in the library // Rights needed: stream
+	 * Get a Genre by Id // Rights needed: stream
 	 */
-	async list(params: JamParameters.GenreListArgs): Promise<Jam.GenrePage> {
-		return this.base.requestData<Jam.GenrePage>('/genre/list', params);
+	async id(params: JamParameters.GenreIdArgs): Promise<Jam.Genre> {
+		return this.base.requestData<Jam.Genre>('/genre/id', params);
+	}
+
+	/**
+	 * Search genres // Rights needed: stream
+	 */
+	async search(params: JamParameters.GenreSearchArgs): Promise<Jam.GenrePage> {
+		return this.base.requestData<Jam.GenrePage>('/genre/search', params);
 	}
 
 	/**
 	 * Get the Navigation Index for Genres // Rights needed: stream
 	 */
-	async index(): Promise<Jam.GenreIndex> {
-		return this.base.requestData<Jam.GenreIndex>('/genre/index', {});
+	async index(params: JamParameters.GenreFilterArgs): Promise<Jam.GenreIndex> {
+		return this.base.requestData<Jam.GenreIndex>('/genre/index', params);
+	}
+
+	/**
+	 * Get Tracks of Genres // Rights needed: stream
+	 */
+	async tracks(params: JamParameters.GenreTracksArgs): Promise<Jam.TrackPage> {
+		return this.base.requestData<Jam.TrackPage>('/genre/tracks', params);
+	}
+
+	/**
+	 * Get Albums of Genres // Rights needed: stream
+	 */
+	async albums(params: JamParameters.GenreAlbumsArgs): Promise<Jam.AlbumPage> {
+		return this.base.requestData<Jam.AlbumPage>('/genre/albums', params);
+	}
+
+	/**
+	 * Get Artists of Genres // Rights needed: stream
+	 */
+	async artists(params: JamParameters.GenreArtistsArgs): Promise<Jam.ArtistPage> {
+		return this.base.requestData<Jam.ArtistPage>('/genre/artists', params);
 	}
 
 }

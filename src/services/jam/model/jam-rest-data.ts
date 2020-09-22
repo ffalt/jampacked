@@ -130,8 +130,8 @@ export declare namespace Jam {
 		trackCount?: number;
 		/** List of Track Ids */
 		trackIDs?: Array<string>;
-		/** List of Genres */
-		genres?: Array<string>;
+		/** Genres */
+		genres?: Array<GenreBase>;
 		/**
 		 * Album Release Year
 		 * @TJS-type integer
@@ -172,7 +172,7 @@ export declare namespace Jam {
 		id: string;
 		/** Name */
 		name: string;
-		/** Name */
+		/** Artist */
 		artist: string;
 		/** Artist Id */
 		artistID: string;
@@ -221,8 +221,8 @@ export declare namespace Jam {
 	export interface ArtistBase extends Base {
 		/** List of Album Type */
 		albumTypes: Array<JamEnums.AlbumType>;
-		/** List of Genres */
-		genres?: Array<string>;
+		/** Genres */
+		genres?: Array<GenreBase>;
 		/** MusicBrainz Artist Id */
 		mbArtistID?: string;
 		/**
@@ -606,6 +606,8 @@ export declare namespace Jam {
 		 * @minimum 0
 		 */
 		artworkCount?: number;
+		/** Genres */
+		genres?: Array<GenreBase>;
 		/** Folder Meta Information */
 		tag?: FolderTag;
 		/** List of Track Ids */
@@ -724,9 +726,7 @@ export declare namespace Jam {
 	/*
 	 * Genre
 	 */
-	export interface Genre {
-		/** Name */
-		name: string;
+	export interface Genre extends GenreBase {
 		/**
 		 * Album Count
 		 * @TJS-type integer
@@ -746,17 +746,17 @@ export declare namespace Jam {
 		 */
 		artistCount: number;
 		/**
-		 * Series Count
-		 * @TJS-type integer
-		 * @minimum 0
-		 */
-		seriesCount: number;
-		/**
 		 * Folder Count
 		 * @TJS-type integer
 		 * @minimum 0
 		 */
 		folderCount: number;
+	}
+
+	/*
+	 * Genre
+	 */
+	export interface GenreBase extends Base {
 	}
 
 	/*
@@ -773,12 +773,46 @@ export declare namespace Jam {
 	}
 
 	/*
-	 * Playlist Index Group
+	 * Genre Index Entry
+	 */
+	export interface GenreIndexEntry {
+		/** ID */
+		id: string;
+		/** Name */
+		name: string;
+		/**
+		 * Track Count
+		 * @TJS-type integer
+		 * @minimum 0
+		 */
+		trackCount: number;
+		/**
+		 * Artist Count
+		 * @TJS-type integer
+		 * @minimum 0
+		 */
+		artistCount: number;
+		/**
+		 * Album Count
+		 * @TJS-type integer
+		 * @minimum 0
+		 */
+		albumCount: number;
+		/**
+		 * Folder Count
+		 * @TJS-type integer
+		 * @minimum 0
+		 */
+		folderCount: number;
+	}
+
+	/*
+	 * Genre Index Group
 	 */
 	export interface GenreIndexGroup {
 		/** Genre Group Name */
 		name: string;
-		items: Array<Genre>;
+		items: Array<GenreIndexEntry>;
 	}
 
 	/*
@@ -837,6 +871,8 @@ export declare namespace Jam {
 		albumID?: string;
 		/** Series Id */
 		seriesID?: string;
+		/** Genres */
+		genres?: Array<GenreBase>;
 	}
 
 	/*

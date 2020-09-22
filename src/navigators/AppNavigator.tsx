@@ -20,7 +20,7 @@ export const AppNavigator: React.FC = () => {
 		login: async (server: string, name: string, password: string): Promise<void> => {
 			await dataService.jam.auth.login(server, name, password);
 			await theme.loadUserTheme();
-			setAuth(prev => ({...prev, hasUser: dataService.jam.auth.isLoggedIn(), user: dataService.jam.auth.user}))
+			setAuth(prev => ({...prev, hasUser: dataService.jam.auth.isLoggedIn(), user: dataService.jam.auth.user}));
 		},
 		logout: async (): Promise<void> => {
 			try {
@@ -28,7 +28,7 @@ export const AppNavigator: React.FC = () => {
 			} catch (e) {
 				console.error(e);
 			}
-			setAuth(prev => ({...prev, hasUser: false, user: undefined}))
+			setAuth(prev => ({...prev, hasUser: false, user: undefined}));
 		}
 	});
 
@@ -39,7 +39,7 @@ export const AppNavigator: React.FC = () => {
 				.then(() => {
 					if (isSubscribed) {
 						setIsLoading(false);
-						setAuth(prev => ({...prev, hasUser: dataService.jam.auth.isLoggedIn(), user: dataService.jam.auth.user}))
+						setAuth(prev => ({...prev, hasUser: dataService.jam.auth.isLoggedIn(), user: dataService.jam.auth.user}));
 					}
 				})
 				.catch(() => {

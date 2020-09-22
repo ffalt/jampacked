@@ -5,7 +5,7 @@ import {JamPlayer, useCurrentTrackID, useQueue} from '../services/player';
 import {staticTheme, useTheme} from '../style/theming';
 import {ThemedText} from './ThemedText';
 import {ThemedIcon} from './ThemedIcon';
-import {QueueItem} from './QueueItems';
+import {QueueItem} from './QueueItem';
 import {DefaultFlatList} from './DefFlatList';
 
 const styles = StyleSheet.create({

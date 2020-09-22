@@ -66,23 +66,23 @@ const styles = StyleSheet.create({
 	userHeaderText: {}
 });
 
-export const AppDrawerLink: React.FC<{ link: RouteLink }> = ({link}) => {
-	const theme = useTheme();
-
-	const goToRoute = useCallback((): void => {
-		NavigationService.closeSideBar();
-		NavigationService.navigate(link.navig.route, link.navig.params);
-	}, [link]);
-
-	return (
-		<TouchableOpacity style={[styles.drawerRow, {borderColor: theme.separator}]} onPress={goToRoute}>
-			<View style={styles.iconView}>
-				<ThemedIcon name={link.icon} size={18} color={theme.muted}/>
-			</View>
-			<ThemedText style={styles.drawerRowText}>{link.title}</ThemedText>
-		</TouchableOpacity>
-	);
-};
+// export const AppDrawerLink: React.FC<{ link: RouteLink }> = ({link}) => {
+// 	const theme = useTheme();
+//
+// 	const goToRoute = useCallback((): void => {
+// 		NavigationService.closeSideBar();
+// 		NavigationService.navigate(link.navig.route, link.navig.params);
+// 	}, [link]);
+//
+// 	return (
+// 		<TouchableOpacity style={[styles.drawerRow, {borderColor: theme.separator}]} onPress={goToRoute}>
+// 			<View style={styles.iconView}>
+// 				<ThemedIcon name={link.icon} size={18} color={theme.muted}/>
+// 			</View>
+// 			<ThemedText style={styles.drawerRowText}>{link.title}</ThemedText>
+// 		</TouchableOpacity>
+// 	);
+// };
 
 export const AppDrawerLinkTile: React.FC<{ link: RouteLink }> = ({link}) => {
 	const theme = useTheme();
@@ -126,7 +126,8 @@ const sections = [
 		name: 'Library', items: [
 			JamRouteLinks.artists(),
 			JamRouteLinks.folders(),
-			JamRouteLinks.tracks()
+			// JamRouteLinks.tracks(),
+			JamRouteLinks.genres()
 		]
 	},
 	{
@@ -140,10 +141,6 @@ const sections = [
 		]
 	}
 ];
-//
-// const routes = [
-// 	JamRouteLinks.home()
-// ];
 
 export const AppDrawer: React.FC = () => {
 	const theme = useTheme();

@@ -114,6 +114,8 @@ export declare namespace JamParameters {
 		notMbArtistID?: string;
 		/** filter by Genres */
 		genres?: Array<string>;
+		/** filter by Genre Ids */
+		genreIDs?: Array<string>;
 		/**
 		 * filter by Creation timestamp
 		 * @TJS-type integer
@@ -162,6 +164,8 @@ export declare namespace JamParameters {
 		folderIDs?: Array<string>;
 		/** filter by Genres */
 		genres?: Array<string>;
+		/** filter by Genre Ids */
+		genreIDs?: Array<string>;
 		/** filter by Album Types */
 		albumTypes?: Array<JamEnums.AlbumType>;
 		/** filter by MusicBrainz Artist Ids */
@@ -555,8 +559,25 @@ export declare namespace JamParameters {
 	}
 
 	export interface GenreFilterArgs {
-		/** filter genre by Root Id */
-		rootID?: string;
+		/** filter by Search Query */
+		query?: string;
+		/** filter by Genre Name */
+		name?: string;
+		/** filter by Genre Ids */
+		ids?: Array<string>;
+		/** filter by Track Ids */
+		trackIDs?: Array<string>;
+		/**
+		 * filter by Creation timestamp
+		 * @TJS-type integer
+		 * @minimum 0
+		 */
+		since?: number;
+	}
+
+	export interface GenreOrderArgs extends OrderByArgs {
+		/** order by field */
+		orderBy?: JamEnums.GenreOrderFields;
 	}
 
 	export interface ImageArgs extends ImageSizeArgs {
@@ -606,6 +627,12 @@ export declare namespace JamParameters {
 		 * @default false
 		 */
 		albumIncInfo?: boolean;
+		/**
+		 * include genre on album(s)
+		 * @TJS-type boolean
+		 * @default false
+		 */
+		albumIncGenres?: boolean;
 	}
 
 	export interface IncludesAlbumChildrenArgs {
@@ -672,6 +699,12 @@ export declare namespace JamParameters {
 		 * @default false
 		 */
 		artistIncInfo?: boolean;
+		/**
+		 * include genre on artist(s)
+		 * @TJS-type boolean
+		 * @default false
+		 */
+		artistIncGenres?: boolean;
 	}
 
 	export interface IncludesArtistChildrenArgs {
@@ -789,6 +822,12 @@ export declare namespace JamParameters {
 		 * @default false
 		 */
 		folderIncTrackCount?: boolean;
+		/**
+		 * include genre on folder(s)
+		 * @TJS-type boolean
+		 * @default false
+		 */
+		folderIncGenres?: boolean;
 		/**
 		 * include artwork count on folder(s)
 		 * @TJS-type boolean
@@ -924,6 +963,15 @@ export declare namespace JamParameters {
 		 * @default false
 		 */
 		folderChildIncFolderIDs?: boolean;
+	}
+
+	export interface IncludesGenreArgs {
+		/**
+		 * include state (fav,rate) on genre(s)
+		 * @TJS-type boolean
+		 * @default false
+		 */
+		genreState?: boolean;
 	}
 
 	export interface IncludesNowPlayingArgs {
@@ -1104,6 +1152,12 @@ export declare namespace JamParameters {
 		 * @default false
 		 */
 		trackIncRawTag?: boolean;
+		/**
+		 * include genre on track(s)
+		 * @TJS-type boolean
+		 * @default false
+		 */
+		trackIncGenres?: boolean;
 		/**
 		 * include user states (fav,rate) on track(s)
 		 * @TJS-type boolean
@@ -1546,6 +1600,8 @@ export declare namespace JamParameters {
 		album?: string;
 		/** filter by genres */
 		genres?: Array<string>;
+		/** filter by Genre Ids */
+		genreIDs?: Array<string>;
 		/**
 		 * filter by Creation timestamp
 		 * @TJS-type integer
@@ -1825,7 +1881,15 @@ export declare namespace JamParameters {
 
 	export type PlaylistEntriesArgs = PlaylistEntryOrderArgs & PlaylistFilterArgs & IncludesEpisodeArgs & IncludesTrackArgs & PageArgs;
 
-	export type GenreListArgs = GenreFilterArgs & PageArgs;
+	export type GenreIdArgs = IncludesGenreArgs & ID;
+
+	export type GenreSearchArgs = GenreOrderArgs & ListArgs & GenreFilterArgs & IncludesGenreArgs & PageArgs;
+
+	export type GenreTracksArgs = TrackOrderArgs & GenreFilterArgs & IncludesTrackArgs & PageArgs;
+
+	export type GenreAlbumsArgs = AlbumOrderArgs & GenreFilterArgs & IncludesAlbumArgs & PageArgs;
+
+	export type GenreArtistsArgs = ArtistOrderArgs & GenreFilterArgs & IncludesArtistArgs & PageArgs;
 
 	export type DownloadDownloadArgs = DownloadArgs & ID;
 

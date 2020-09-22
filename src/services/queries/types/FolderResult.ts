@@ -9,6 +9,11 @@ import { FolderType } from "./graphql-types";
 // GraphQL query operation: FolderResult
 // ====================================================
 
+export interface FolderResult_folder_genres {
+  id: string;
+  name: string;
+}
+
 export interface FolderResult_folder_children {
   id: string;
   title: string | null;
@@ -53,7 +58,7 @@ export interface FolderResult_folder {
   tracksCount: number;
   folderType: FolderType;
   artist: string | null;
-  genres: string[];
+  genres: FolderResult_folder_genres[];
   children: FolderResult_folder_children[];
   tracks: FolderResult_folder_tracks[] | null;
 }

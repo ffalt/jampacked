@@ -1,8 +1,8 @@
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import React from 'react';
-import {ActiveDownloads} from '../components/ActiveDownloads';
+import {DownloadsActiveScreen} from '../screens/DownloadsActiveScreen';
 import {DownloadsRoute} from './Routing';
-import {PinnedMedia} from '../components/PinnedMedia';
+import {DownloadsPinnedScreen} from '../screens/DownloadsPinnedScreen';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -13,8 +13,8 @@ export const DownloadsNavigator: React.FC = () => {
 			lazy={true}
 			tabBar={(): JSX.Element => (<></>)}
 		>
-			<Tab.Screen name={DownloadsRoute.PINNED} component={PinnedMedia}/>
-			<Tab.Screen name={DownloadsRoute.ACTIVE} component={ActiveDownloads}/>
+			<Tab.Screen name={DownloadsRoute.PINNED} component={DownloadsPinnedScreen}/>
+			<Tab.Screen name={DownloadsRoute.ACTIVE} component={DownloadsActiveScreen}/>
 		</Tab.Navigator>
 	);
 };

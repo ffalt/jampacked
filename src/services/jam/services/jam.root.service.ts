@@ -53,10 +53,17 @@ export class JamRootService {
 	}
 
 	/**
-	 * Check podcast feeds for new episodes // Rights needed: stream
+	 * Check & update a root folder for file system changes // Rights needed: stream
 	 */
 	async refresh(params: JamParameters.RootRefreshArgs): Promise<Jam.AdminChangeQueueInfo> {
 		return this.base.requestPostData<Jam.AdminChangeQueueInfo>('/root/refresh', params);
+	}
+
+	/**
+	 * Rebuild all metadata (Artists/Albums/...) for a root folder // Rights needed: stream
+	 */
+	async refreshMeta(params: JamParameters.RootRefreshArgs): Promise<Jam.AdminChangeQueueInfo> {
+		return this.base.requestPostData<Jam.AdminChangeQueueInfo>('/root/refreshMeta', params);
 	}
 
 }

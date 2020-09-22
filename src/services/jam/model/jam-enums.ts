@@ -83,6 +83,13 @@ export enum EpisodeOrderFields {
 	date = 'date'
 }
 
+export enum GenreOrderFields {
+	default = 'default',
+	created = 'created',
+	updated = 'updated',
+	name = 'name'
+}
+
 export enum AlbumOrderFields {
 	default = 'default',
 	created = 'created',
@@ -110,7 +117,8 @@ export enum JamObjectType {
 	album = 'album',
 	artist = 'artist',
 	playqueue = 'playqueue',
-	radio = 'radio'
+	radio = 'radio',
+	genre = 'genre'
 }
 
 export enum FolderHealthID {

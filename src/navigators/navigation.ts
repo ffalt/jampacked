@@ -1,6 +1,6 @@
 import {CommonActions, DrawerActions, NavigationContainerRef} from '@react-navigation/core';
 import {JamObjectType} from '../services/jam';
-import {AlbumsRoute, ArtistsRoute, FoldersRoute, HomeRoute, SeriesRoute} from './Routing';
+import {AlbumsRoute, ArtistsRoute, FoldersRoute, GenresRoute, HomeRoute, SeriesRoute} from './Routing';
 import {Navig, NavigParams} from '../services/types';
 import {RouteLink} from './Routes';
 
@@ -58,6 +58,10 @@ export class NavigationService {
 		}
 		if (routeName.startsWith('Folders')) {
 			this.navigateToChild(HomeRoute.FOLDERS, routeName, FoldersRoute.INDEX, params);
+			return;
+		}
+		if (routeName.startsWith('Genres')) {
+			this.navigateToChild(HomeRoute.GENRES, routeName, GenresRoute.INDEX, params);
 			return;
 		}
 		if (navigator) {
