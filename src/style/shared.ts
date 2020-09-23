@@ -15,7 +15,7 @@ export const sharedStyles = StyleSheet.create({
 		marginRight: staticTheme.margin
 	},
 	itemSectionRight: {
-		marginLeft: staticTheme.margin
+		marginLeft: staticTheme.margin,
 	},
 	itemContent: {
 		alignSelf: 'stretch',
@@ -26,6 +26,9 @@ export const sharedStyles = StyleSheet.create({
 	itemFooterText: {
 		fontSize: staticTheme.fontSizeSmall,
 		opacity: 0.8
+	},
+	itemFooterTextRight: {
+		textAlign: 'right',
 	},
 	itemFooter: {
 		flexDirection: 'row',

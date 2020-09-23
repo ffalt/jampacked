@@ -4,7 +4,7 @@
         <item name="android:textColor">@color/app_text</item>
         <item name="android:windowBackground">@color/app_bg</item>
         <item name="android:background">@drawable/bootsplash</item>
-        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:statusBarColor">@color/app_bg</item>
     </style>
 
 </resources>

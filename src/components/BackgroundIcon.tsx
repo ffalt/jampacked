@@ -24,7 +24,7 @@ export const BackgroundIcon: React.FC<{ name: string; style?: StyleProp<ViewStyl
 
 	useEffect(() => {
 		let isSubscribed = true;
-		FontelloIcon.getImageSource(name, 50, theme.muted)
+		FontelloIcon.getImageSource(name, 50, theme.separator)
 			.then((src: ImageSourcePropType) => {
 				if (isSubscribed) {
 					setIconSource(src);
