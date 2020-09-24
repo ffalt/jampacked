@@ -8,6 +8,7 @@
 // ====================================================
 
 export interface GenreIndexResult_genreIndex_groups_items {
+  id: string;
   name: string;
   albumCount: number;
   artistCount: number;

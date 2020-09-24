@@ -10,6 +10,7 @@ const GET_GENREINDEX = gql`
             groups {
                 name
                 items {
+					id
                     name
                     albumCount
                     artistCount
@@ -28,7 +29,7 @@ function transformData(data?: GenreIndexResult): Index | undefined {
 	data.genreIndex.groups.forEach(group => {
 		group.items.forEach(entry => {
 			index.push({
-				id: entry.name,
+				id: entry.id,
 				objType: JamObjectType.genre,
 				desc: `Albums: ${entry.albumCount} - Artists: ${entry.artistCount} - Tracks: ${entry.trackCount}`,
 				title: entry.name,

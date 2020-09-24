@@ -46,6 +46,34 @@ export class JamPodcastService {
 	}
 
 	/**
+	 * Discover Podcasts via gpodder.net // Rights needed: stream
+	 */
+	async discover(params: JamParameters.PodcastDiscoverArgs): Promise<Array<Jam.PodcastDiscover>> {
+		return this.base.requestData<Array<Jam.PodcastDiscover>>('/podcast/discover', params);
+	}
+
+	/**
+	 * Discover Podcast Tags via gpodder.net // Rights needed: stream
+	 */
+	async podcastsDiscoverTags(params: JamParameters.PageArgs): Promise<Jam.PodcastDiscoverTagPage> {
+		return this.base.requestData<Jam.PodcastDiscoverTagPage>('/podcast/discover/tags', params);
+	}
+
+	/**
+	 * Discover Podcasts by Tag via gpodder.net // Rights needed: stream
+	 */
+	async podcastsDiscoverByTag(params: JamParameters.PodcastPodcastsDiscoverByTagArgs): Promise<Jam.PodcastDiscoverTagPage> {
+		return this.base.requestData<Jam.PodcastDiscoverTagPage>('/podcast/discover/byTag', params);
+	}
+
+	/**
+	 * Discover Top Podcasts via gpodder.net // Rights needed: stream
+	 */
+	async podcastsDiscoverTop(params: JamParameters.PageArgs): Promise<Jam.PodcastDiscoverTagPage> {
+		return this.base.requestData<Jam.PodcastDiscoverTagPage>('/podcast/discover/top', params);
+	}
+
+	/**
 	 * Create a Podcast // Rights needed: stream
 	 */
 	async create(params: JamParameters.PodcastCreateArgs): Promise<Jam.Podcast> {

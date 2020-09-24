@@ -1342,6 +1342,16 @@ export declare namespace JamParameters {
 		url: string;
 	}
 
+	export interface PodcastDiscoverArgs {
+		/** search podcast by name */
+		query: string;
+	}
+
+	export interface PodcastDiscoverByTagArgs {
+		/** search podcast by tag */
+		tag: string;
+	}
+
 	export interface PodcastFilterArgs {
 		/** filter by Search Query */
 		query?: string;
@@ -1848,6 +1858,8 @@ export declare namespace JamParameters {
 	export type PodcastSearchArgs = ListArgs & PodcastOrderArgs & PodcastFilterArgs & IncludesEpisodeArgs & IncludesPodcastChildrenArgs & IncludesPodcastArgs & PageArgs;
 
 	export type PodcastEpisodesArgs = EpisodeOrderArgs & PodcastFilterArgs & IncludesEpisodeArgs & PageArgs;
+
+	export type PodcastPodcastsDiscoverByTagArgs = PageArgs & PodcastDiscoverByTagArgs;
 
 	export type RadioIdArgs = IncludesRadioArgs & ID;
 

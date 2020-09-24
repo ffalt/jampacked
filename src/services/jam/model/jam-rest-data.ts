@@ -467,7 +467,7 @@ export declare namespace Jam {
 	 * Episode
 	 */
 	export interface Episode extends EpisodeBase {
-		/** Podcast Id */
+		/** Podcast */
 		podcast?: PodcastBase;
 	}
 
@@ -1215,6 +1215,50 @@ export declare namespace Jam {
 		 * @minimum 0
 		 */
 		episodeCount?: number;
+	}
+
+	/*
+	 * Podcast Discover Result
+	 */
+	export interface PodcastDiscover {
+		url: string;
+		title: string;
+		author: string;
+		description: string;
+		/** @TJS-type integer */
+		subscribers: number;
+		/** @TJS-type integer */
+		subscribers_last_week: number;
+		logo_url: string;
+		scaled_logo_url: string;
+		website: string;
+		mygpo_link: string;
+	}
+
+	/*
+	 * Podcast Discover Page
+	 */
+	export interface PodcastDiscoverPage extends Page {
+		/** List of Podcasts */
+		items: Array<PodcastDiscover>;
+	}
+
+	/*
+	 * Podcast Discover Tag
+	 */
+	export interface PodcastDiscoverTag {
+		title: string;
+		tag: string;
+		/** @TJS-type integer */
+		usage: number;
+	}
+
+	/*
+	 * Podcast Discover Tags Page
+	 */
+	export interface PodcastDiscoverTagPage extends Page {
+		/** List of Podcast Tags */
+		items: Array<PodcastDiscoverTag>;
 	}
 
 	/*
