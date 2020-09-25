@@ -1,8 +1,8 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {useTrackPlayerProgressMS} from '../services/player-api';
 import {DurationText} from './DurationText';
 import {staticTheme} from '../style/theming';
+import {useTrackPlayerProgressMS} from '../services/player';
 
 const styles = StyleSheet.create({
 	times: {

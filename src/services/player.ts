@@ -1,8 +1,9 @@
 import {useEffect, useState} from 'react';
 import {AudioFormatType} from './jam';
-import {TrackPlayer, TrackPlayerEvents, useTrackPlayerEvents} from './player-api';
+import {TrackPlayerEvents, useTrackPlayerEvents, useTrackPlayerProgress} from './player-api';
 import dataService from './data';
 import {TrackEntry} from './types';
+import TrackPlayer from 'react-native-track-player';
 
 async function buildTrackPlayerTrack(t: TrackEntry): Promise<TrackPlayer.Track> {
 	const headers = dataService.currentUserToken ? {Authorization: `Bearer ${dataService.currentUserToken}`} : undefined;
@@ -325,4 +326,57 @@ export const usePlaybackStateIsPlaying = (): boolean => {
 		setIs(state === TrackPlayer.STATE_PLAYING);
 	});
 	return is;
+};
+
+export const useTrackPlayerProgressPercent = (interval = 1000): { progress: number, bufferProgress: number } => {
+	const [percent, setPercent] = useState<{ progress: number, bufferProgress: number }>({progress: 0, bufferProgress: 0});
+	const {position, bufferedPosition, duration} = useTrackPlayerProgress(interval);
+
+	useWhenPlaybackStateChanges(state => {
+		if (state === TrackPlayer.STATE_STOPPED) {
+			setPercent({progress: 0, bufferProgress: 0});
+		}
+	});
+
+	useEffect(() => {
+		const progress = duration ? (position / duration) : 0;
+		const bufferProgress = duration ? (bufferedPosition / duration) : 0;
+		setPercent({progress, bufferProgress});
+	}, [position, bufferedPosition, duration]);
+
+	return percent;
+};
+
+export const useTrackPlayerProgressMS = (): { duration: number, position: number } => {
+	const [now, setNow] = useState<{ duration: number, position: number }>({duration: 0, position: 0});
+	const {duration, position} = useTrackPlayerProgress();
+
+	useWhenPlaybackStateChanges(state => {
+		if (state === TrackPlayer.STATE_STOPPED) {
+			setNow({duration: 0, position: 0});
+		}
+	});
+
+	useEffect(() => {
+		let isSubscribed = true;
+
+		async function fetchData(): Promise<void> {
+			const d = await TrackPlayer.getDuration();
+			const p = await TrackPlayer.getPosition();
+			if (isSubscribed) {
+				setNow({duration: d * 1000, position: p * 1000});
+			}
+		}
+
+		fetchData();
+		return (): void => {
+			isSubscribed = false;
+		};
+	}, []);
+
+	useEffect(() => {
+		setNow({duration: duration * 1000, position: position * 1000});
+	}, [duration, position]);
+
+	return now;
 };
