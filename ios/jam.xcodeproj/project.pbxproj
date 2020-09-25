@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* jamTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* jamTests.m */; };
+		1120C13A251E518A00B51442 /* BootSplash.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1120C139251E518A00B51442 /* BootSplash.storyboard */; };
 		11CEA97323E376A3003A2F25 /* jam.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 11CEA97223E376A3003A2F25 /* jam.ttf */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
@@ -17,7 +18,6 @@
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2DCD954D1E0B4F2C00145EB5 /* jamTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* jamTests.m */; };
 		42A708367090043165534D70 /* libPods-jam.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 770C78A044A05817F4EAEA82 /* libPods-jam.a */; };
-		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		93D264DEC92B1FDA5CAFD3C2 /* libPods-jam-jamTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ABD058A4AE28F4A912CADB4A /* libPods-jam-jamTests.a */; };
 		B4ABEE7995CE38C219CD31D2 /* libPods-jam-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 56B2E931378F98A52E3B8D78 /* libPods-jam-tvOS.a */; };
 		E48ABDF4974FA35FB43A1DD9 /* libPods-jam-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B0B7A69676B37F3020FE90FF /* libPods-jam-tvOSTests.a */; };
@@ -45,8 +45,9 @@
 		00E356EE1AD99517003FC87E /* jamTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = jamTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* jamTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = jamTests.m; sourceTree = "<group>"; };
-		12DA805F7360FF5EDB17470D /* Pods-jam.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-jam.debug.xcconfig"; path = "Target Support Files/Pods-jam/Pods-jam.debug.xcconfig"; sourceTree = "<group>"; };
+		1120C139251E518A00B51442 /* BootSplash.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = BootSplash.storyboard; path = jam/BootSplash.storyboard; sourceTree = "<group>"; };
 		11CEA97223E376A3003A2F25 /* jam.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = jam.ttf; path = ../src/assets/fonts/jam.ttf; sourceTree = "<group>"; };
+		12DA805F7360FF5EDB17470D /* Pods-jam.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-jam.debug.xcconfig"; path = "Target Support Files/Pods-jam/Pods-jam.debug.xcconfig"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* jam.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = jam.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = jam/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = jam/AppDelegate.m; sourceTree = "<group>"; };
@@ -60,7 +61,6 @@
 		56B2E931378F98A52E3B8D78 /* libPods-jam-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-jam-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6B029D0EBC43372F0929CF5B /* Pods-jam-jamTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-jam-jamTests.debug.xcconfig"; path = "Target Support Files/Pods-jam-jamTests/Pods-jam-jamTests.debug.xcconfig"; sourceTree = "<group>"; };
 		770C78A044A05817F4EAEA82 /* libPods-jam.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-jam.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = jam/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		ABD058A4AE28F4A912CADB4A /* libPods-jam-jamTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-jam-jamTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ADF3B92D710BED6CD1390A88 /* Pods-jam.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-jam.release.xcconfig"; path = "Target Support Files/Pods-jam/Pods-jam.release.xcconfig"; sourceTree = "<group>"; };
 		B0B7A69676B37F3020FE90FF /* libPods-jam-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-jam-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -124,23 +124,23 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		11CEA97123E3766A003A2F25 /* Fonts */ = {
+		1120C138251E513A00B51442 /* Recovered References */ = {
 			isa = PBXGroup;
 			children = (
 				11CEA97223E376A3003A2F25 /* jam.ttf */,
 			);
-			path = Fonts;
+			name = "Recovered References";
 			sourceTree = "<group>";
 		};
 		13B07FAE1A68108700A75B9A /* jam */ = {
 			isa = PBXGroup;
 			children = (
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
+				1120C139251E518A00B51442 /* BootSplash.storyboard */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
-				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
 			);
 			name = jam;
@@ -171,7 +171,6 @@
 				EEFCA40B52C19639F5FB2264 /* Pods-jam-tvOSTests.debug.xcconfig */,
 				E7B00CFDF2D304920344AA77 /* Pods-jam-tvOSTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -191,6 +190,7 @@
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				58C697F55DDBB1D95674C622 /* Pods */,
+				1120C138251E513A00B51442 /* Recovered References */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -343,7 +343,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				11CEA97423E376A3003A2F25 /* jam.ttf in Resources */,
+				1120C13B251E518A00B51442 /* BootSplash.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -352,8 +352,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				11CEA97323E376A3003A2F25 /* jam.ttf in Resources */,
-				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				1120C13A251E518A00B51442 /* BootSplash.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -362,7 +362,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */,
-				11CEA97523E376A3003A2F25 /* jam.ttf in Resources */,
+				1120C13C251E518A00B51442 /* BootSplash.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -370,7 +370,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				11CEA97623E376A3003A2F25 /* jam.ttf in Resources */,
+				1120C13D251E518A00B51442 /* BootSplash.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
