@@ -1,5 +1,5 @@
 import React, {useCallback} from 'react';
-import {TrackPlayer} from '../services/player-api';
+import {TrackPlayerTrack} from '../services/player-api';
 import {staticTheme, useTheme} from '../style/theming';
 import {JamPlayer} from '../services/player';
 import {ThemedIcon} from './ThemedIcon';
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-export const QueueItem: React.FC<{ active: boolean; index: number; item: TrackPlayer.Track; }> = React.memo(({index, active, item}) => {
+export const QueueItem: React.FC<{ active: boolean; index: number; item: TrackPlayerTrack; }> = React.memo(({index, active, item}) => {
 	const theme = useTheme();
 
 	const playItem = useCallback((): void => {
@@ -63,7 +63,7 @@ export const QueueItem: React.FC<{ active: boolean; index: number; item: TrackPl
 	}, []);
 
 	const rightPress = useCallback((): void => {
-		JamPlayer.removeTrackFromQueue(item.id)
+		JamPlayer.removeTrackFromQueue(item)
 			.catch(e => console.error(e));
 	}, [item]);
 

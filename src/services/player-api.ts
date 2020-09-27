@@ -1,31 +1,30 @@
-import TrackPlayer from 'react-native-track-player';
+import TrackPlayer, {Capability, Event, Track, State} from 'react-native-track-player';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-const {TrackPlayerEvents, Track, useTrackPlayerEvents, useTrackPlayerProgress} = TrackPlayer;
+// const {TrackPlayerEvents, Track, useTrackPlayerEvents, useTrackPlayerProgress} = TrackPlayer;
 
 export async function initPlayer(): Promise<void> {
 	await TrackPlayer.setupPlayer();
 	await TrackPlayer.updateOptions({
 		stopWithApp: false,
 		capabilities: [
-			TrackPlayer.CAPABILITY_PLAY,
-			TrackPlayer.CAPABILITY_PAUSE,
-			TrackPlayer.CAPABILITY_JUMP_BACKWARD,
-			TrackPlayer.CAPABILITY_JUMP_FORWARD,
-			TrackPlayer.CAPABILITY_SKIP_TO_NEXT,
-			// TrackPlayer.CAPABILITY_SKIP_TO_PREVIOUS,
-			TrackPlayer.CAPABILITY_STOP
+			Capability.Play,
+			Capability.Pause,
+			Capability.JumpBackward,
+			Capability.JumpForward,
+			Capability.SkipToNext,
+			Capability.Stop
 		],
 		compactCapabilities: [
-			// TrackPlayer.CAPABILITY_JUMP_BACKWARD,
-			TrackPlayer.CAPABILITY_SKIP_TO_NEXT,
-			// TrackPlayer.CAPABILITY_JUMP_FORWARD,
-			TrackPlayer.CAPABILITY_STOP,
-			TrackPlayer.CAPABILITY_PLAY,
-			TrackPlayer.CAPABILITY_PAUSE
+			Capability.Play,
+			Capability.Pause,
+			Capability.SkipToNext,
+			Capability.Stop
 		]
 	});
 }
 
-export {TrackPlayer, Track, TrackPlayerEvents, useTrackPlayerEvents, useTrackPlayerProgress};
+export type TrackPlayerTrack = Track;
+
+export {TrackPlayer, Event, State};

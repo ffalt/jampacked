@@ -1,5 +1,5 @@
 import {JamPlayer} from './src/services/player';
-import {TrackPlayer} from './src/services/player-api';
+import {Event, State, TrackPlayer} from './src/services/player-api';
 import {snackError} from './src/services/snack';
 import {ScrobbleWatch} from './src/services/scrobble';
 
@@ -9,52 +9,37 @@ export function setAppAvailable(available: boolean): void {
 	hasApp = available;
 }
 
-// | "playback-state"
-// | "playback-queue-ended"
-// | "playback-track-changed"
-// | "remote-play-id"
-// | "remote-play-search"
-// | "remote-skip"
-// | "remote-seek"
-// | "remote-set-rating"
-// | "remote-like"
-// | "remote-dislike"
-// | "remote-bookmark";
-
 export default async function service(): Promise<void> {
-	TrackPlayer.addEventListener('playback-state', ({state}: { state: number }) => {
-		if (state === TrackPlayer.STATE_PLAYING) {
+	TrackPlayer.addEventListener(Event.PlaybackState, ({state}: { state: number }) => {
+		if (state === State.Playing) {
 			ScrobbleWatch.start();
-		} else if (state === TrackPlayer.STATE_PAUSED) {
+		} else if (state === State.Paused) {
 			ScrobbleWatch.pause();
-		} else if (state === TrackPlayer.STATE_STOPPED) {
+		} else if (state === State.Stopped) {
 			ScrobbleWatch.stop();
 		}
 	});
-	TrackPlayer.addEventListener('remote-play', () => JamPlayer.play());
-	TrackPlayer.addEventListener('remote-pause', () => JamPlayer.pause());
-	TrackPlayer.addEventListener('remote-next', () => JamPlayer.skipToNext());
-	TrackPlayer.addEventListener('remote-previous', () => JamPlayer.skipToPrevious());
-	TrackPlayer.addEventListener('remote-jump-forward', () => JamPlayer.skipForward());
-	TrackPlayer.addEventListener('remote-jump-backward', () => JamPlayer.skipBackward());
-	TrackPlayer.addEventListener('remote-stop', () => {
+	TrackPlayer.addEventListener(Event.RemotePlay, () => JamPlayer.play());
+	TrackPlayer.addEventListener(Event.RemotePause, () => JamPlayer.pause());
+	TrackPlayer.addEventListener(Event.RemoteNext, () => JamPlayer.skipToNext());
+	TrackPlayer.addEventListener(Event.RemotePrevious, () => JamPlayer.skipToPrevious());
+	TrackPlayer.addEventListener(Event.RemoteJumpForward, () => JamPlayer.skipForward());
+	TrackPlayer.addEventListener(Event.RemoteJumpBackward, () => JamPlayer.skipBackward());
+	TrackPlayer.addEventListener(Event.RemoteStop, () => {
 		if (hasApp) {
 			JamPlayer.stop();
 		} else {
 			JamPlayer.destroy();
 		}
 	});
-	TrackPlayer.addEventListener('remote-duck', (data) => {
+	TrackPlayer.addEventListener(Event.RemoteDuck, (data) => {
 		// if (data.paused || data.permanent)
 		TrackPlayer.setVolume(data.ducking ? 0.5 : 1);
 	});
-	TrackPlayer.addEventListener('playback-error', error => {
+	TrackPlayer.addEventListener(Event.PlaybackError, error => {
 		if (hasApp) {
 			snackError(error);
 		}
 	});
-	TrackPlayer.addEventListener('remote-seek', (data) => {
-		TrackPlayer.seekTo(data.position);
-	});
-
+	TrackPlayer.addEventListener(Event.RemoteSeek, (data) => TrackPlayer.seekTo(data.position));
 }

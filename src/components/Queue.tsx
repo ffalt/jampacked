@@ -1,12 +1,12 @@
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import React, {useCallback} from 'react';
-import {TrackPlayer} from '../services/player-api';
 import {JamPlayer, useCurrentTrackID, useQueue} from '../services/player';
 import {staticTheme, useTheme} from '../style/theming';
 import {ThemedText} from './ThemedText';
 import {ThemedIcon} from './ThemedIcon';
 import {QueueItem} from './QueueItem';
 import {DefaultFlatList} from './DefFlatList';
+import {TrackPlayerTrack} from '../services/player-api';
 
 const styles = StyleSheet.create({
 	queueButtons: {
@@ -35,14 +35,14 @@ export const Queue: React.FC = () => {
 	const theme = useTheme();
 	const current = useCurrentTrackID();
 
-	const renderItem = useCallback(({item, index}: { item: TrackPlayer.Track, index: number }): JSX.Element => (
+	const renderItem = useCallback(({item, index}: { item: TrackPlayerTrack, index: number }): JSX.Element => (
 		<QueueItem item={item} index={index} active={item.id === current}/>
 	), [current]);
 	const reload = useCallback(() => {
 		//TODO reload queue list
 	}, []);
 
-	const keyExtractor = useCallback((item: TrackPlayer.Track, index: number): string => `${index}:${item.id}`, []);
+	const keyExtractor = useCallback((item: TrackPlayerTrack, index: number): string => `${index}:${item.id}`, []);
 
 	return (
 		<>

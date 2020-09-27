@@ -1,11 +1,12 @@
 import {useEffect, useState} from 'react';
 import {AudioFormatType} from './jam';
-import {TrackPlayerEvents, useTrackPlayerEvents, useTrackPlayerProgress} from './player-api';
+// import {TrackPlayerEvents, useTrackPlayerEvents, useTrackPlayerProgress} from './player-api';
 import dataService from './data';
 import {TrackEntry} from './types';
-import TrackPlayer from 'react-native-track-player';
+import TrackPlayer, {Event, State, useProgress, useTrackPlayerEvents} from 'react-native-track-player';
+import {TrackPlayerTrack} from './player-api';
 
-async function buildTrackPlayerTrack(t: TrackEntry): Promise<TrackPlayer.Track> {
+async function buildTrackPlayerTrack(t: TrackEntry): Promise<TrackPlayerTrack> {
 	const headers = dataService.currentUserToken ? {Authorization: `Bearer ${dataService.currentUserToken}`} : undefined;
 	const imageID = t.seriesID ? t.id : (t.albumID || t.id);
 	const local = await dataService.pin.isDownloaded(t.id);
@@ -37,9 +38,9 @@ export class JamPlayer {
 	static async clearQueue(): Promise<void> {
 		const fetched = await TrackPlayer.getQueue();
 		const current = await TrackPlayer.getCurrentTrack();
-		const ids = fetched.map(track => track.id).filter(id => id !== current);
-		await TrackPlayer.remove(ids);
-		if (ids.length === 0) {
+		const tracks = fetched.filter(track => track.id !== current);
+		await TrackPlayer.remove(tracks);
+		if (tracks.length === 0) {
 			await JamPlayer.stop();
 		}
 	}
@@ -48,8 +49,8 @@ export class JamPlayer {
 		await TrackPlayer.add(await buildTrackPlayerTrack(track));
 	}
 
-	static async removeTrackFromQueue(trackID: string): Promise<void> {
-		await TrackPlayer.remove(trackID);
+	static async removeTrackFromQueue(track: TrackPlayerTrack): Promise<void> {
+		await TrackPlayer.remove(track);
 	}
 
 	static async addTracksToQueue(tracks: Array<TrackEntry>): Promise<void> {
@@ -97,7 +98,7 @@ export class JamPlayer {
 
 	static async toggle(): Promise<void> {
 		try {
-			if (await TrackPlayer.getState() === TrackPlayer.STATE_PAUSED) {
+			if (await TrackPlayer.getState() === State.Paused) {
 				await TrackPlayer.play();
 			} else {
 				await TrackPlayer.pause();
@@ -162,8 +163,8 @@ export class JamPlayer {
 	}
 }
 
-export function useQueue(): Array<TrackPlayer.Track> {
-	const [queue, setQueueState] = useState<Array<TrackPlayer.Track>>([]);
+export function useQueue(): Array<TrackPlayerTrack> {
+	const [queue, setQueueState] = useState<Array<TrackPlayerTrack>>([]);
 
 	useEffect(() => {
 		let didCancel = false;
@@ -191,19 +192,20 @@ export function useQueue(): Array<TrackPlayer.Track> {
 	return queue;
 }
 
-export function useCurrentTrack(): TrackPlayer.Track | undefined {
+export function useCurrentTrack(): TrackPlayerTrack | undefined {
 	const [trackId, setTrackId] = useState<string | undefined>(undefined);
-	const [track, setTrack] = useState<TrackPlayer.Track | undefined>(undefined);
+	const [track, setTrack] = useState<TrackPlayerTrack | undefined>(undefined);
 
-	async function getTrack(tId: string | undefined): Promise<TrackPlayer.Track | undefined> {
+	async function getTrack(tId: string | undefined): Promise<TrackPlayerTrack | undefined> {
 		const q = await TrackPlayer.getQueue();
 		return q.find(({id}) => id === tId) || undefined;
 	}
 
 	useTrackPlayerEvents(
-		[TrackPlayerEvents.PLAYBACK_TRACK_CHANGED],
-		({nextTrack}: { nextTrack: string | undefined }) => {
-			setTrackId(nextTrack);
+		[Event.PlaybackTrackChanged], event => {
+			if (trackId !== event.nextTrack) {
+				setTrackId(event.nextTrack);
+			}
 		}
 	);
 
@@ -227,10 +229,9 @@ export function useCurrentTrackID(): string | undefined {
 	const [trackId, setTrackId] = useState<string | undefined>(undefined);
 
 	useTrackPlayerEvents(
-		[TrackPlayerEvents.PLAYBACK_TRACK_CHANGED],
-		({nextTrack}: { nextTrack: string | undefined }) => {
-			if (trackId !== nextTrack) {
-				setTrackId(nextTrack);
+		[Event.PlaybackTrackChanged], event => {
+			if (trackId !== event.nextTrack) {
+				setTrackId(event.nextTrack);
 			}
 		}
 	);
@@ -250,12 +251,12 @@ export function useCurrentTrackID(): string | undefined {
 	return trackId;
 }
 
-const getQueueIndex = (track: TrackPlayer.Track, queue: Array<TrackPlayer.Track>): number => queue.findIndex(({id}) => id === track.id);
+const getQueueIndex = (track: TrackPlayerTrack, queue: Array<TrackPlayerTrack>): number => queue.findIndex(({id}) => id === track.id);
 
-export function useNextTrack(): TrackPlayer.Track | undefined {
+export function useNextTrack(): TrackPlayerTrack | undefined {
 	const queue = useQueue();
 	const currentTrack = useCurrentTrack();
-	const [nextTrack, setNextTrack] = useState<TrackPlayer.Track | undefined>(undefined);
+	const [nextTrack, setNextTrack] = useState<TrackPlayerTrack | undefined>(undefined);
 	useEffect(() => {
 		if (!currentTrack) {
 			return;
@@ -267,10 +268,10 @@ export function useNextTrack(): TrackPlayer.Track | undefined {
 	return nextTrack;
 }
 
-export function usePreviousTrack(): TrackPlayer.Track | undefined {
+export function usePreviousTrack(): TrackPlayerTrack | undefined {
 	const queue = useQueue();
 	const currentTrack = useCurrentTrack();
-	const [previousTrack, setPreviousTrack] = useState<TrackPlayer.Track | undefined>(undefined);
+	const [previousTrack, setPreviousTrack] = useState<TrackPlayerTrack | undefined>(undefined);
 	useEffect(() => {
 		if (!currentTrack) {
 			return;
@@ -282,13 +283,10 @@ export function usePreviousTrack(): TrackPlayer.Track | undefined {
 	return previousTrack;
 }
 
-function useWhenPlaybackStateChanges(callback: (state: TrackPlayer.State) => void): void {
-	useTrackPlayerEvents(
-		[TrackPlayerEvents.PLAYBACK_STATE],
-		({state}: { state: TrackPlayer.State }) => {
-			callback(state);
-		}
-	);
+function useWhenPlaybackStateChanges(callback: (state: State) => void): void {
+
+	useTrackPlayerEvents([Event.PlaybackState], event => callback(event.state));
+
 	useEffect(() => {
 		let didCancel = false;
 
@@ -306,13 +304,13 @@ function useWhenPlaybackStateChanges(callback: (state: TrackPlayer.State) => voi
 	}, [callback]);
 }
 
-export function usePlaybackState(): TrackPlayer.State | undefined {
-	const [playbackState, setPlaybackState] = useState<TrackPlayer.State | undefined>();
+export function usePlaybackState(): State | undefined {
+	const [playbackState, setPlaybackState] = useState<State | undefined>();
 	useWhenPlaybackStateChanges(setPlaybackState);
 	return playbackState;
 }
 
-export const usePlaybackStateIs = (...states: Array<TrackPlayer.State>): boolean => {
+export const usePlaybackStateIs = (...states: Array<State>): boolean => {
 	const [is, setIs] = useState<boolean>(false);
 	useWhenPlaybackStateChanges(state => {
 		setIs(states.includes(state));
@@ -323,36 +321,36 @@ export const usePlaybackStateIs = (...states: Array<TrackPlayer.State>): boolean
 export const usePlaybackStateIsPlaying = (): boolean => {
 	const [is, setIs] = useState<boolean>(false);
 	useWhenPlaybackStateChanges(state => {
-		setIs(state === TrackPlayer.STATE_PLAYING);
+		setIs(state === State.Playing);
 	});
 	return is;
 };
 
 export const useTrackPlayerProgressPercent = (interval = 1000): { progress: number, bufferProgress: number } => {
 	const [percent, setPercent] = useState<{ progress: number, bufferProgress: number }>({progress: 0, bufferProgress: 0});
-	const {position, bufferedPosition, duration} = useTrackPlayerProgress(interval);
+	const {position, buffered, duration} = useProgress(interval);
 
 	useWhenPlaybackStateChanges(state => {
-		if (state === TrackPlayer.STATE_STOPPED) {
+		if (state === State.Stopped) {
 			setPercent({progress: 0, bufferProgress: 0});
 		}
 	});
 
 	useEffect(() => {
 		const progress = duration ? (position / duration) : 0;
-		const bufferProgress = duration ? (bufferedPosition / duration) : 0;
+		const bufferProgress = duration ? (buffered / duration) : 0;
 		setPercent({progress, bufferProgress});
-	}, [position, bufferedPosition, duration]);
+	}, [position, buffered, duration]);
 
 	return percent;
 };
 
 export const useTrackPlayerProgressMS = (): { duration: number, position: number } => {
 	const [now, setNow] = useState<{ duration: number, position: number }>({duration: 0, position: 0});
-	const {duration, position} = useTrackPlayerProgress();
+	const {duration, position} = useProgress();
 
 	useWhenPlaybackStateChanges(state => {
-		if (state === TrackPlayer.STATE_STOPPED) {
+		if (state === State.Stopped) {
 			setNow({duration: 0, position: 0});
 		}
 	});
