@@ -85,6 +85,12 @@ export const AlbumScreen: React.FC<HomeRouteProps<HomeRoute.ALBUM>> = ({route}) 
 		}
 	}, [actionSheetRef]);
 
+	const closeMenu = useCallback((): void => {
+		if (actionSheetRef.current) {
+			actionSheetRef.current.setModalVisible();
+		}
+	}, [actionSheetRef]);
+
 	const renderItem = useCallback(({item}: { item: TrackEntry }): JSX.Element => (<TrackItem track={item} showMenu={showMenu}/>),
 		[showMenu]);
 
@@ -98,7 +104,7 @@ export const AlbumScreen: React.FC<HomeRouteProps<HomeRoute.ALBUM>> = ({route}) 
 				gestureEnabled={true}
 				containerStyle={{backgroundColor: theme.background}}
 				defaultOverlayOpacity={0.3}>
-				<ActionSheetTrack item={currentTrack}/>
+				<ActionSheetTrack item={currentTrack} close={closeMenu}/>
 			</ActionSheet>
 			<DefaultFlatList
 				items={album?.tracks}

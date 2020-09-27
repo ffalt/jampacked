@@ -63,6 +63,12 @@ export const PlaylistScreen: React.FC<HomeRouteProps<HomeRoute.PLAYLIST>> = ({ro
 		}
 	}, [actionSheetRef]);
 
+	const closeMenu = useCallback((): void => {
+		if (actionSheetRef.current) {
+			actionSheetRef.current.setModalVisible();
+		}
+	}, [actionSheetRef]);
+
 	const renderItem = useCallback(({item}: { item: TrackEntry }): JSX.Element => (<TrackItem track={item} showMenu={showMenu}/>),
 		[showMenu]);
 
@@ -80,7 +86,7 @@ export const PlaylistScreen: React.FC<HomeRouteProps<HomeRoute.PLAYLIST>> = ({ro
 				gestureEnabled={true}
 				containerStyle={{backgroundColor: theme.background}}
 				defaultOverlayOpacity={0.3}>
-				<ActionSheetTrack item={currentTrack}/>
+				<ActionSheetTrack item={currentTrack} close={closeMenu}/>
 			</ActionSheet>
 			<DefaultFlatList
 				items={playlist?.tracks}

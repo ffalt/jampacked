@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
 
 type ClickFunc = () => void;
 
-export const ActionSheetTrack: React.FC<{ item?: TrackEntry }> = ({item}) => {
+export const ActionSheetTrack: React.FC<{ item?: TrackEntry; close: () => void }> = ({item, close}) => {
 	const [actions, setActions] = useState<Array<{ title: string; click: ClickFunc }>>([]);
 
 	useEffect(() => {
@@ -35,6 +35,7 @@ export const ActionSheetTrack: React.FC<{ item?: TrackEntry }> = ({item}) => {
 				click: (): void => {
 					JamPlayer.playTrack(item)
 						.catch(e => console.error(e));
+					close();
 				}
 			},
 			{
@@ -42,6 +43,7 @@ export const ActionSheetTrack: React.FC<{ item?: TrackEntry }> = ({item}) => {
 				click: (): void => {
 					JamPlayer.addTrackToQueue(item)
 						.catch(e => console.error(e));
+					close();
 				}
 			},
 			// {
@@ -60,10 +62,11 @@ export const ActionSheetTrack: React.FC<{ item?: TrackEntry }> = ({item}) => {
 				title: 'Open Track Profile',
 				click: (): void => {
 					NavigationService.navigateObj(JamObjectType.track, item.id, item.title);
+					close();
 				}
 			}
 		]);
-	}, [item]);
+	}, [item, close]);
 
 	return (
 		<ScrollView
