@@ -42,11 +42,14 @@ export const Queue: React.FC = () => {
 		//TODO reload queue list
 	}, []);
 
+	const keyExtractor = useCallback((item: TrackPlayer.Track, index: number): string => `${index}:${item.id}`, []);
+
 	return (
 		<>
 			<DefaultFlatList
 				items={queue}
 				renderItem={renderItem}
+				keyExtractor={keyExtractor}
 				loading={false}
 				reload={reload}
 			/>

@@ -15,6 +15,7 @@ interface DefaultFlatListParams<T> {
 	ListHeaderComponent?: React.ComponentType<any> | React.ReactElement | null;
 	renderItem: ListRenderItem<T> | null | undefined;
 	items?: Array<T>;
+	keyExtractor?: (item: T, index: number) => string;
 	reload: () => void;
 	loading: boolean;
 }
@@ -22,7 +23,7 @@ interface DefaultFlatListParams<T> {
 export const DefaultFlatList: React.FC<DefaultFlatListParams<any>> = (
 	{
 		items, id, error, reload,
-		renderItem, loading, style,
+		renderItem, loading, style, keyExtractor,
 		ListHeaderComponent, onEndReachedThreshold, onEndReached
 	}
 ) => {
@@ -38,7 +39,7 @@ export const DefaultFlatList: React.FC<DefaultFlatListParams<any>> = (
 			renderItem={renderItem}
 			onEndReachedThreshold={onEndReachedThreshold}
 			onEndReached={onEndReached}
-			keyExtractor={defaultKeyExtractor}
+			keyExtractor={keyExtractor || defaultKeyExtractor}
 			ItemSeparatorComponent={Separator}
 			ListHeaderComponent={ListHeaderComponent}
 			ListEmptyComponent={<ListEmpty list={items}/>}
