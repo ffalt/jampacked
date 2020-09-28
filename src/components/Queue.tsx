@@ -1,6 +1,6 @@
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import React, {useCallback} from 'react';
-import {JamPlayer, useCurrentTrackID, useQueue} from '../services/player';
+import {JamPlayer, useCurrentTrackIndex, useQueue} from '../services/player';
 import {staticTheme, useTheme} from '../style/theming';
 import {ThemedText} from './ThemedText';
 import {ThemedIcon} from './ThemedIcon';
@@ -11,6 +11,7 @@ import {TrackPlayerTrack} from '../services/player-api';
 const styles = StyleSheet.create({
 	queueButtons: {
 		borderBottomWidth: 1,
+		borderTopWidth: 1,
 		paddingRight: staticTheme.paddingLarge,
 		paddingLeft: staticTheme.paddingLarge,
 		flexDirection: 'row',
@@ -18,14 +19,16 @@ const styles = StyleSheet.create({
 		alignItems: 'center'
 	},
 	queueButton: {
+		flex: 1,
 		paddingRight: staticTheme.paddingLarge,
 		paddingLeft: staticTheme.paddingLarge,
 		flexDirection: 'row',
 		alignItems: 'center',
+		justifyContent: 'center',
 		height: 32
 	},
 	queueButtonText: {
-		paddingLeft: staticTheme.paddingSmall
+		paddingHorizontal: staticTheme.paddingSmall
 	}
 });
 
@@ -33,13 +36,13 @@ const styles = StyleSheet.create({
 export const Queue: React.FC = () => {
 	const queue = useQueue();
 	const theme = useTheme();
-	const current = useCurrentTrackID();
+	const current = useCurrentTrackIndex();
 
 	const renderItem = useCallback(({item, index}: { item: TrackPlayerTrack, index: number }): JSX.Element => (
-		<QueueItem item={item} index={index} active={item.id === current}/>
+		<QueueItem item={item} index={index} active={index === current}/>
 	), [current]);
 	const reload = useCallback(() => {
-		//TODO reload queue list
+		 
 	}, []);
 
 	const keyExtractor = useCallback((item: TrackPlayerTrack, index: number): string => `${index}:${item.id}`, []);
@@ -57,6 +60,10 @@ export const Queue: React.FC = () => {
 				<TouchableOpacity style={styles.queueButton} onPress={JamPlayer.clearQueue}>
 					<ThemedIcon name="trash"/>
 					<ThemedText style={styles.queueButtonText}>Clear</ThemedText>
+				</TouchableOpacity>
+				<TouchableOpacity style={styles.queueButton} onPress={JamPlayer.shuffleQueue}>
+					<ThemedIcon name="shuffle"/>
+					<ThemedText style={styles.queueButtonText}>Shuffle</ThemedText>
 				</TouchableOpacity>
 			</View>
 		</>

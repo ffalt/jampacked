@@ -11,6 +11,7 @@ const styles = StyleSheet.create({
 	trackListNumber: {
 		flex: 1,
 		maxWidth: 90,
+		minWidth: 10,
 		paddingRight: staticTheme.paddingLarge
 	},
 	trackListTitle: {
@@ -18,6 +19,7 @@ const styles = StyleSheet.create({
 	},
 	trackListRuntime: {
 		maxWidth: 90,
+		minWidth: 90,
 		flexDirection: 'column',
 		justifyContent: 'center',
 		paddingLeft: staticTheme.paddingLarge,

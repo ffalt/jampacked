@@ -47,9 +47,9 @@ export const QueueItem: React.FC<{ active: boolean; index: number; item: TrackPl
 	const theme = useTheme();
 
 	const playItem = useCallback((): void => {
-		JamPlayer.skipToTrack(item.id)
+		JamPlayer.skipToTrack(index)
 			.catch(e => console.error(e));
-	}, [item]);
+	}, [index]);
 
 	const renderTrackNr = useCallback((): JSX.Element => {
 		if (active) {
@@ -63,9 +63,9 @@ export const QueueItem: React.FC<{ active: boolean; index: number; item: TrackPl
 	}, []);
 
 	const rightPress = useCallback((): void => {
-		JamPlayer.removeTrackFromQueue(item)
+		JamPlayer.removeTrackFromQueue(index)
 			.catch(e => console.error(e));
-	}, [item]);
+	}, [index]);
 
 	return (
 		<SwipeableListItem

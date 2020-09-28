@@ -1,6 +1,5 @@
 import {useEffect, useState} from 'react';
 import {AudioFormatType} from './jam';
-// import {TrackPlayerEvents, useTrackPlayerEvents, useTrackPlayerProgress} from './player-api';
 import dataService from './data';
 import {TrackEntry} from './types';
 import TrackPlayer, {Event, State, useProgress, useTrackPlayerEvents} from 'react-native-track-player';
@@ -35,22 +34,20 @@ async function buildTrackPlayerTrack(t: TrackEntry): Promise<TrackPlayerTrack> {
 
 export class JamPlayer {
 
+	static async shuffleQueue(): Promise<void> {
+		await TrackPlayer.shuffle();
+	}
+
 	static async clearQueue(): Promise<void> {
-		const fetched = await TrackPlayer.getQueue();
-		const current = await TrackPlayer.getCurrentTrack();
-		const tracks = fetched.filter(track => track.id !== current);
-		await TrackPlayer.remove(tracks);
-		if (tracks.length === 0) {
-			await JamPlayer.stop();
-		}
+		await TrackPlayer.clear();
 	}
 
 	static async addTrackToQueue(track: TrackEntry): Promise<void> {
 		await TrackPlayer.add(await buildTrackPlayerTrack(track));
 	}
 
-	static async removeTrackFromQueue(track: TrackPlayerTrack): Promise<void> {
-		await TrackPlayer.remove(track);
+	static async removeTrackFromQueue(index: number): Promise<void> {
+		await TrackPlayer.remove(index);
 	}
 
 	static async addTracksToQueue(tracks: Array<TrackEntry>): Promise<void> {
@@ -58,9 +55,9 @@ export class JamPlayer {
 	}
 
 	static async playTrack(track: TrackEntry): Promise<void> {
-		const queueItem = (await TrackPlayer.getQueue()).find(t => t.id === track.id);
-		if (queueItem) {
-			await TrackPlayer.skip(track.id);
+		const queueItem = (await TrackPlayer.getQueue()).findIndex(t => t.id === track.id);
+		if (queueItem >= 0) {
+			await TrackPlayer.skip(queueItem);
 		} else {
 			await JamPlayer.playTracks([track]);
 		}
@@ -72,9 +69,9 @@ export class JamPlayer {
 		await TrackPlayer.play();
 	}
 
-	static async skipToTrack(id: string): Promise<void> {
+	static async skipToTrack(index: number): Promise<void> {
 		try {
-			await TrackPlayer.skip(id);
+			await TrackPlayer.skip(index);
 		} catch (e) {
 			console.error(e);
 		}
@@ -163,24 +160,15 @@ export class JamPlayer {
 	}
 }
 
-export function useQueue(): Array<TrackPlayerTrack> {
-	const [queue, setQueueState] = useState<Array<TrackPlayerTrack>>([]);
+export function useQueue(): Array<TrackPlayerTrack> | undefined {
+	const [queue, setQueueState] = useState<Array<TrackPlayerTrack> | undefined>();
 
 	useEffect(() => {
 		let didCancel = false;
 		const fetchQueue = async (): Promise<void> => {
 			const fetched = await TrackPlayer.getQueue();
 			if (!didCancel) {
-				if (fetched?.length !== queue?.length) {
-					setQueueState(fetched);
-				} else if (queue) {
-					for (let i = 0; i < fetched.length; i++) {
-						if (queue[i].id !== fetched[i].id) {
-							setQueueState(fetched);
-							return;
-						}
-					}
-				}
+				setQueueState(fetched);
 			}
 		};
 		fetchQueue().catch(e => console.error(e));
@@ -188,6 +176,12 @@ export function useQueue(): Array<TrackPlayerTrack> {
 			didCancel = true;
 		};
 	}, [queue]);
+
+	useTrackPlayerEvents(
+		[Event.QueueChanged], async () => {
+			setQueueState(await TrackPlayer.getQueue());
+		}
+	);
 
 	return queue;
 }
@@ -251,6 +245,32 @@ export function useCurrentTrackID(): string | undefined {
 	return trackId;
 }
 
+export function useCurrentTrackIndex(): number | undefined {
+	const [trackIndex, setTrackIndex] = useState<number | undefined>(undefined);
+
+	useTrackPlayerEvents(
+		[Event.PlaybackTrackChanged], event => {
+			if (trackIndex !== event.nextTrack) {
+				setTrackIndex(event.nextTrack);
+			}
+		}
+	);
+
+	useEffect(() => {
+		let isSubscribed = true;
+		TrackPlayer.getCurrentTrackIndex().then(i => {
+			if (isSubscribed && trackIndex !== i) {
+				setTrackIndex(i);
+			}
+		});
+		return (): void => {
+			isSubscribed = false;
+		};
+	}, [trackIndex]);
+
+	return trackIndex;
+}
+
 const getQueueIndex = (track: TrackPlayerTrack, queue: Array<TrackPlayerTrack>): number => queue.findIndex(({id}) => id === track.id);
 
 export function useNextTrack(): TrackPlayerTrack | undefined {
@@ -258,7 +278,7 @@ export function useNextTrack(): TrackPlayerTrack | undefined {
 	const currentTrack = useCurrentTrack();
 	const [nextTrack, setNextTrack] = useState<TrackPlayerTrack | undefined>(undefined);
 	useEffect(() => {
-		if (!currentTrack) {
+		if (!currentTrack || !queue) {
 			return;
 		}
 		const index = getQueueIndex(currentTrack, queue);
@@ -273,7 +293,7 @@ export function usePreviousTrack(): TrackPlayerTrack | undefined {
 	const currentTrack = useCurrentTrack();
 	const [previousTrack, setPreviousTrack] = useState<TrackPlayerTrack | undefined>(undefined);
 	useEffect(() => {
-		if (!currentTrack) {
+		if (!currentTrack || !queue) {
 			return;
 		}
 		const index = getQueueIndex(currentTrack, queue);
