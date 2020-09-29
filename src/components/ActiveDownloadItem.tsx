@@ -57,7 +57,7 @@ export const ActiveDownloadItem: React.FC<{ item: DownloadTask }> = React.memo((
 				/>
 			</View>
 			<View style={sharedStyles.itemContent}>
-				<ThemedText style={sharedStyles.itemText}>{state.text}</ThemedText>
+				<ThemedText style={sharedStyles.itemText} numberOfLines={1}>{state.text}</ThemedText>
 				<View style={sharedStyles.itemFooter}>
 					<ThemedText style={sharedStyles.itemFooterText}>{state.state}</ThemedText>
 					<ThemedText style={sharedStyles.itemFooterText}>{state.duration}</ThemedText>

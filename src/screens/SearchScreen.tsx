@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {StyleSheet, TextInput, TouchableOpacity, View} from 'react-native';
 import throttle from 'lodash.throttle';
 import {BottomTabProps, BottomTabRoute} from '../navigators/Routing';
@@ -64,13 +64,14 @@ export const SearchScreen: React.FC<BottomTabProps<BottomTabRoute.SEARCH>> = () 
 		handleInput(search);
 	};
 
-	const handleClear = (): void => {
+	const handleClear = useCallback((): void => {
+		setQuery(undefined);
 		setSearch(undefined);
-	};
+	}, []);
 
-	const setObjectTypeSearch = (ot?: JamObjectType): void => {
+	const setObjectTypeSearch = useCallback((ot?: JamObjectType): void => {
 		setObjType(ot);
-	};
+	}, []);
 
 	const backToAll = (): void => {
 		setObjType(undefined);
