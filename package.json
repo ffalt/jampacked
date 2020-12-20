@@ -24,7 +24,7 @@
   "dependencies": {
     "@apollo/react-hooks": "4.0.0",
     "@callstack/react-theme-provider": "2.1.0",
-    "@react-native-community/async-storage": "1.12.0",
+    "@react-native-async-storage/async-storage": "1.13.2",
     "@react-native-community/masked-view": "0.1.10",
     "@react-native-community/slider": "3.0.3",
     "@react-navigation/bottom-tabs": "5.9.0",
@@ -65,7 +65,7 @@
     "react-native-svg": "12.1.0",
     "react-native-swift": "1.2.3",
     "react-native-tab-view": "2.15.1",
-    "react-native-track-player": "ffalt/react-native-track-player",
+    "react-native-track-player": "ffalt/react-native-track-player#8b5efa1cebb3593a8e7caa8b825c85b3f362c186",
     "react-native-vector-icons": "7.1.0",
     "waveform-data": "3.3.4"
   },
