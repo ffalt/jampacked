@@ -47,7 +47,7 @@
     "lodash.debounce": "4.0.8",
     "lodash.throttle": "4.1.1",
     "react": "16.13.1",
-    "react-native": "0.63.2",
+    "react-native": "0.63.4",
     "react-native-actions-sheet": "0.3.5",
     "react-native-background-downloader": "ffalt/react-native-background-downloader",
     "react-native-background-timer": "2.4.1",
@@ -70,8 +70,8 @@
     "waveform-data": "3.3.4"
   },
   "devDependencies": {
-    "@babel/core": "7.11.6",
-    "@babel/runtime": "7.11.2",
+    "@babel/core": "7.12.10",
+    "@babel/runtime": "7.12.5",
     "@react-native-community/eslint-config": "2.0.0",
     "@types/d3-array": "2.8.0",
     "@types/d3-scale": "3.2.2",
@@ -80,7 +80,7 @@
     "@types/lodash.debounce": "4.0.6",
     "@types/lodash.throttle": "4.1.6",
     "@types/react": "16.9.49",
-    "@types/react-native": "0.63.18",
+    "@types/react-native": "0.63.42",
     "@types/react-native-background-timer": "2.0.0",
     "@types/react-native-sqlite-storage": "5.0.0",
     "@types/react-native-vector-icons": "6.4.6",
