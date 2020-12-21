@@ -25,7 +25,7 @@ export class JamAlbumService {
 	}
 
 	/**
-	 * Search albums // Rights needed: stream
+	 * Search Albums // Rights needed: stream
 	 */
 	async search(params: JamParameters.AlbumSearchArgs): Promise<Jam.AlbumPage> {
 		return this.base.requestData<Jam.AlbumPage>('/album/search', params);

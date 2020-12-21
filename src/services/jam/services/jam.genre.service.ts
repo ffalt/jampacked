@@ -18,7 +18,7 @@ export class JamGenreService {
 	}
 
 	/**
-	 * Search genres // Rights needed: stream
+	 * Search Genres // Rights needed: stream
 	 */
 	async search(params: JamParameters.GenreSearchArgs): Promise<Jam.GenrePage> {
 		return this.base.requestData<Jam.GenrePage>('/genre/search', params);

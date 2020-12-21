@@ -388,6 +388,11 @@ export declare namespace JamParameters {
 		time: number;
 	}
 
+	export interface CoverArtArchiveImageArgs {
+		/** Coverart URL */
+		url: string;
+	}
+
 	export interface CoverArtArchiveLookupArgs {
 		/** MusicBrainz ID */
 		mbID: string;
@@ -1221,16 +1226,16 @@ export declare namespace JamParameters {
 	export interface MusicBrainzSearchArgs {
 		/** MusicBrainz Search Type */
 		type: JamEnums.MusicBrainzSearchType;
-		/** Search by recording name */
+		/** Search by Recording Name */
 		recording?: string;
-		/** Search by releasegroup name */
+		/** Search by Releasegroup Name */
 		releasegroup?: string;
-		/** Search by release name */
+		/** Search by Release Name */
 		release?: string;
-		/** Search by artist name */
+		/** Search by Artist Name */
 		artist?: string;
 		/**
-		 * Search by number of release tracks
+		 * Search by Number of Release Tracks
 		 * @TJS-type integer
 		 * @minimum 0
 		 */
@@ -1343,12 +1348,12 @@ export declare namespace JamParameters {
 	}
 
 	export interface PodcastDiscoverArgs {
-		/** search podcast by name */
+		/** Search Podcast by Name */
 		query: string;
 	}
 
 	export interface PodcastDiscoverByTagArgs {
-		/** search podcast by tag */
+		/** Search Podcast by Tag */
 		tag: string;
 	}
 

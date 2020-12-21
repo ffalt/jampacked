@@ -35,7 +35,7 @@ export class JamWaveformService {
 	/**
 	 * Get Peaks Waveform Data [Episode, Track] // Rights needed: stream
 	 */
-	async waveformBinary(params: JamParameters.WaveformWaveformArgs): Promise<ArrayBuffer> {
+	async waveformBinary(params: JamParameters.WaveformWaveformArgs): Promise<{buffer: ArrayBuffer; contentType: string}> {
 		if (!params.id) { throw new Error('Invalid Parameter'); }
 		return this.base.binary(`/waveform/${params.id}${params.width ? `_${params.width}` : ''}${params.format ? `.${params.format}` : ''}`, {});
 	}

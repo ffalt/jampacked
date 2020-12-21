@@ -20,7 +20,7 @@ export class JamStreamService {
 	/**
 	 * Stream a media file in a format [Episode, Track] // Rights needed: stream
 	 */
-	async streamBinary(params: JamParameters.StreamStreamArgs): Promise<ArrayBuffer> {
+	async streamBinary(params: JamParameters.StreamStreamArgs): Promise<{buffer: ArrayBuffer; contentType: string}> {
 		if (!params.id) { throw new Error('Invalid Parameter'); }
 		return this.base.binary(`/stream/${params.id}${params.maxBitRate ? `_${params.maxBitRate}` : ''}${params.format ? `.${params.format}` : ''}`, {});
 	}

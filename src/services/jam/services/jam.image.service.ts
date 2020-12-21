@@ -20,7 +20,7 @@ export class JamImageService {
 	/**
 	 * Image Binary [Album, Artist, Artwork, Episode, Folder, Root, Playlist, Podcast, Radio, Series, Track, User] // Rights needed: stream
 	 */
-	async imageBinary(params: JamParameters.ImageArgs): Promise<ArrayBuffer> {
+	async imageBinary(params: JamParameters.ImageArgs): Promise<{buffer: ArrayBuffer; contentType: string}> {
 		if (!params.id) { throw new Error('Invalid Parameter'); }
 		return this.base.binary(`/image/${params.id}${params.size ? `_${params.size}` : ''}${params.format ? `.${params.format}` : ''}`, {});
 	}

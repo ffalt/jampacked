@@ -1040,7 +1040,15 @@ export declare namespace Jam {
 	/*
 	 * Playlist
 	 */
-	export interface Playlist extends Base {
+	export interface Playlist extends PlaylistBase {
+		/** List of Media Base Entries */
+		entries?: Array<MediaBase>;
+	}
+
+	/*
+	 * Playlist
+	 */
+	export interface PlaylistBase extends Base {
 		/** Owner User Id */
 		userID: string;
 		/** Owner User Name */
@@ -1078,8 +1086,6 @@ export declare namespace Jam {
 		entriesCount: number;
 		/** List of Media Base IDs */
 		entriesIDs: Array<string>;
-		/** List of Media Base Entries */
-		entries?: Array<MediaBase>;
 	}
 
 	/*
@@ -1137,9 +1143,17 @@ export declare namespace Jam {
 	}
 
 	/*
-	 * PlayQueue Data
+	 * PlayQueue
 	 */
-	export interface PlayQueue {
+	export interface PlayQueue extends PlayQueueBase {
+		/** List of Media Entries */
+		entries?: Array<MediaBase>;
+	}
+
+	/*
+	 * PlayQueue
+	 */
+	export interface PlayQueueBase {
 		/** User Name */
 		userName: string;
 		/** User Id */
@@ -1152,8 +1166,6 @@ export declare namespace Jam {
 		entriesCount: number;
 		/** List of Media IDs */
 		entriesIDs?: Array<string>;
-		/** List of Media Entries */
-		entries?: Array<MediaBase>;
 		/**
 		 * Current Entry Index in PlayQueue
 		 * @TJS-type integer
