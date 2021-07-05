@@ -35,7 +35,7 @@
     "apollo-link-http": "1.5.17",
     "axios": "0.21.1",
     "d3-array": "2.12.1",
-    "d3-scale": "3.3.0",
+    "d3-scale": "4.0.0",
     "graphql": "15.5.0",
     "graphql-tag": "2.11.0",
     "lodash.chunk": "4.2.0",
