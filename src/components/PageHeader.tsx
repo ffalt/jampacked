@@ -4,6 +4,7 @@ import {ThemedText} from './ThemedText';
 import {staticTheme} from '../style/theming';
 import {ThemedIcon} from './ThemedIcon';
 import {BackgroundIcon} from './BackgroundIcon';
+import {getStatusBarHeight} from 'react-native-status-bar-height';
 
 const styles = StyleSheet.create({
 	ListHeaderTitle: {
@@ -22,7 +23,7 @@ const styles = StyleSheet.create({
 		flexDirection: 'column'
 	},
 	ListHeaderBackground: {
-		marginTop: staticTheme.statusBarOffset,
+//		marginTop: staticTheme.statusBarOffset,
 		height: staticTheme.iconHeaderHeight
 	},
 	ListHeader: {
@@ -74,9 +75,10 @@ export const PageHeader: React.FC<{
 		undefined;
 
 	const paddingRight = toggleView ? 0 : 75;
+	const statusBarHeight = getStatusBarHeight();
 
 	return (
-		<BackgroundIcon name={titleIcon} style={styles.ListHeaderBackground}>
+		<BackgroundIcon name={titleIcon} style={[styles.ListHeaderBackground, {marginTop: statusBarHeight}]}>
 			<View style={styles.ListHeader}>
 				<View style={[styles.ListHeaderTitleContainer, {paddingRight}]}>
 					{subtitleView}

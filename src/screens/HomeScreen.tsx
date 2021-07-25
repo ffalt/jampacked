@@ -12,11 +12,12 @@ import dataService from '../services/data';
 import {NavigationService} from '../navigators/navigation';
 import {ErrorView} from '../components/ErrorView';
 import {useLazyHomeDataQuery} from '../services/queries/home.hook';
+import {getStatusBarHeight} from 'react-native-status-bar-height';
 
 const styles = StyleSheet.create({
 	container: {
 		padding: staticTheme.padding,
-		marginTop: staticTheme.statusBarOffset
+		// marginTop: staticTheme.statusBarOffset
 	},
 	userHeader: {
 		flexDirection: 'row',
@@ -41,6 +42,7 @@ export const HomeScreen: React.FC<HomeRouteProps<HomeRoute.START>> = () => {
 	const theme = useTheme();
 	const auth = useAuth();
 	const [getHomeData, {loading, error, called, homeData}] = useLazyHomeDataQuery();
+	const statusBarHeight = getStatusBarHeight();
 
 	useEffect(() => {
 		if (!called) {
@@ -91,7 +93,7 @@ export const HomeScreen: React.FC<HomeRouteProps<HomeRoute.START>> = () => {
 				/>
 			)}
 		>
-			<View style={styles.container}>
+			<View style={[styles.container, {paddingTop: statusBarHeight}]}>
 				<View style={styles.userHeader}>
 					<TouchableOpacity onPress={NavigationService.openSideBar}>
 						<Logo size={staticTheme.userImage}/>

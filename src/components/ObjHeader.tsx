@@ -4,6 +4,7 @@ import {ThemedText} from './ThemedText';
 import {staticTheme, useTheme} from '../style/theming';
 import {JamImage} from './JamImage';
 import {FastImageBackground} from './JamBackgroundImage';
+import {getStatusBarHeight} from 'react-native-status-bar-height';
 
 export const objHeaderStyles = StyleSheet.create({
 	button: {
@@ -22,7 +23,7 @@ export const objHeaderStyles = StyleSheet.create({
 const styles = StyleSheet.create({
 	header: {
 		flexDirection: 'column',
-		paddingTop: staticTheme.statusBarOffset + staticTheme.padding,
+		// paddingTop: staticTheme.statusBarOffset + staticTheme.padding,
 		height: 320
 	},
 	headerTitleType: {
@@ -105,6 +106,7 @@ export const ObjHeader: React.FC<{
 	customDetails?: ReactNode | Array<ReactNode>;
 }> = ({id, typeName, title, headerTitleCmds, details, customDetails}) => {
 	const theme = useTheme();
+	const statusBarHeight = getStatusBarHeight() + staticTheme.padding;
 
 	const renderDetails = (): JSX.Element | undefined => {
 		if (customDetails) {
@@ -151,7 +153,7 @@ export const ObjHeader: React.FC<{
 	};
 
 	return (
-		<FastImageBackground id={id} style={styles.header}>
+		<FastImageBackground id={id} style={[styles.header, {paddingTop: statusBarHeight}]}>
 			<View style={styles.headerTop}>
 				<JamImage id={id} size={173} requestSize={staticTheme.cover}/>
 				<View style={styles.headerTitleContainer}>

@@ -9,11 +9,12 @@ import {PlayerLyrics} from './PlayerLyrics';
 import {PlayerCover} from './PlayerCover';
 import {useWindowWidth} from '../utils/dimension.hook';
 import {useNavigation} from '@react-navigation/native';
+import {getStatusBarHeight} from 'react-native-status-bar-height';
 
 const styles = StyleSheet.create({
-	container: {
-		paddingTop: staticTheme.statusBarOffset
-	},
+	// container: {
+	// 	paddingTop: staticTheme.statusBarOffset
+	// },
 	scene: {
 		flex: 1
 	},
@@ -72,6 +73,7 @@ export const PlayerTabs: React.FC<PlayerTabsProps> = ({toQueue}: PlayerTabsProps
 	const [index, setIndex] = React.useState(toQueue ? 2 : 0);
 	const navigation = useNavigation();
 	const theme = useTheme();
+	const statusBarHeight = getStatusBarHeight();
 
 	const close = useCallback((): void => {
 		navigation.goBack();
@@ -105,7 +107,7 @@ export const PlayerTabs: React.FC<PlayerTabsProps> = ({toQueue}: PlayerTabsProps
 	return (
 		<TabView
 			lazy={true}
-			style={styles.container}
+			style={[{paddingTop:statusBarHeight}]}
 			swipeEnabled={true}
 			renderLazyPlaceholder={renderLazyPlaceholder}
 			renderTabBar={renderTabBar}

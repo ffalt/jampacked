@@ -1,12 +1,13 @@
 import React, {useCallback, useMemo, useRef, useState} from 'react';
 import {PanResponder, StyleSheet, Text, View} from 'react-native';
 import {AtoZLetter} from './AtoZLetter';
-import {staticTheme, useTheme} from '../style/theming';
+import {useTheme} from '../style/theming';
+import {getStatusBarHeight} from 'react-native-status-bar-height';
 
 const styles = StyleSheet.create({
 	outerContainer: {
 		position: 'absolute',
-		top: staticTheme.statusBarOffset - 1,
+		// top: staticTheme.statusBarOffset - 1,
 		bottom: 0,
 		right: 0,
 		justifyContent: 'center',
@@ -146,14 +147,13 @@ export const AtoZPicker: React.FC<AtoZPickerProps> = (
 			setContainerState({absContainerTop: py, containerHeight: height});
 		});
 	};
-
+	const statusBarHeight = getStatusBarHeight();
 	if (letters.length === 0) {
 		return (<></>);
 	}
-
 	const letterPicks = letters.map(letter => <AtoZLetter letter={letter} key={letter} active={activeLetter === letter}/>);
 	return (
-		<View style={[styles.outerContainer, {backgroundColor: theme.overlay}]}>
+		<View style={[styles.outerContainer, {backgroundColor: theme.overlay, top: statusBarHeight}]}>
 			<View
 				ref={containerRef}
 				{...panResponder.panHandlers}

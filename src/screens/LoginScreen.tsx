@@ -7,11 +7,12 @@ import {ThemedIcon} from '../components/ThemedIcon';
 import {Logo} from '../components/Logo';
 import dataService from '../services/data';
 import {useAuth} from '../services/auth';
+import {getStatusBarHeight} from 'react-native-status-bar-height';
 
 const styles = StyleSheet.create({
 	container: {
 		padding: staticTheme.padding,
-		paddingTop: staticTheme.statusBarOffset + staticTheme.padding,
+	// 	paddingTop: staticTheme.statusBarOffset + staticTheme.padding,
 		flexDirection: 'column',
 		justifyContent: 'space-between',
 		flex: 1
@@ -112,6 +113,7 @@ export const LoginScreen: React.FC<AppStackProps<Routing.AUTH>> = () => {
 	const userNameRef = useRef<TextInput | null>(null);
 	const passwordRef = useRef<TextInput | null>(null);
 	const theme = useTheme();
+	const statusBarHeight = getStatusBarHeight() + staticTheme.padding;
 
 	useEffect(() => {
 		let isSubscribed = true;
@@ -187,7 +189,7 @@ export const LoginScreen: React.FC<AppStackProps<Routing.AUTH>> = () => {
 
 	return (
 		<ScrollView contentContainerStyle={styles.scrollContainer}>
-			<View style={styles.container}>
+			<View style={[styles.container, {paddingTop:statusBarHeight}]}>
 				<View style={styles.headline}>
 					<Logo size={140}/>
 				</View>
