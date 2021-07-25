@@ -13,6 +13,7 @@ const Stack = createStackNavigator<AppStackNavigatorParamList>();
 
 export const AppNavigator: React.FC = () => {
 	const [isLoading, setIsLoading] = useState<boolean>(true);
+	const [isChecking, setIsChecking] = useState<boolean>(true);
 	const theme = useThemeContext();
 
 	const [auth, setAuth] = useState({
@@ -41,11 +42,13 @@ export const AppNavigator: React.FC = () => {
 						setIsLoading(false);
 						setAuth(prev => ({...prev, hasUser: dataService.jam.auth.isLoggedIn(), user: dataService.jam.auth.user}));
 					}
+					setIsChecking(false);
 				})
 				.catch(() => {
 					if (isSubscribed) {
 						setIsLoading(false);
 					}
+					setIsChecking(false);
 				});
 		};
 		check();
@@ -55,13 +58,13 @@ export const AppNavigator: React.FC = () => {
 	}, []);
 
 	useEffect(() => {
-		if (!isLoading) {
+		if (!isLoading && !isChecking) {
 			RNBootSplash.hide({fade: true});
 		}
-	}, [isLoading]);
+	}, [isLoading, isChecking]);
 
 	let screen: JSX.Element;
-	if (isLoading) {
+	if (isLoading || isChecking) {
 		screen = <Stack.Screen name={Routing.LOAD} component={LoadingScreen}/>;
 	} else if (auth.hasUser) {
 		screen = <Stack.Screen name={Routing.APP} component={DrawerNavigator}/>;
