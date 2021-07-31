@@ -201,7 +201,8 @@ export enum DownloadFormatType {
 export enum ImageFormatType {
 	png = 'png',
 	jpeg = 'jpeg',
-	tiff = 'tiff'
+	tiff = 'tiff',
+	webp = 'webp'
 }
 
 export enum PodcastStatus {
