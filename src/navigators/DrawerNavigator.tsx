@@ -9,6 +9,7 @@ export const DrawerNavigator: React.FC = () => {
 	return (
 		<Drawer.Navigator
 			initialRouteName="Drawer"
+			screenOptions={{headerShown: false}}
 			drawerContent={(_): JSX.Element => <AppDrawer/>}
 		>
 			<Drawer.Screen name="Drawer" component={ModalNavigator}/>

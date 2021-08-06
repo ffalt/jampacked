@@ -58,10 +58,10 @@ export const AppNavigator: React.FC = () => {
 	}, []);
 
 	useEffect(() => {
-		if (!isLoading && !isChecking) {
+		if (!isLoading) {
 			RNBootSplash.hide({fade: true});
 		}
-	}, [isLoading, isChecking]);
+	}, [isLoading]);
 
 	let screen: JSX.Element;
 	if (isLoading || isChecking) {
@@ -73,7 +73,9 @@ export const AppNavigator: React.FC = () => {
 	}
 	return (
 		<AuthContext.Provider value={auth}>
-			<Stack.Navigator headerMode="none">{screen}</Stack.Navigator>
+			<Stack.Navigator screenOptions={{
+				headerShown: false
+			}}>{screen}</Stack.Navigator>
 		</AuthContext.Provider>
 	);
 };

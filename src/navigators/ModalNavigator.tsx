@@ -37,7 +37,10 @@ export const ModalNavigator: React.FC = () => {
 
 
 	return (
-		<ModalStack.Navigator mode="modal" headerMode="none">
+		<ModalStack.Navigator screenOptions={{
+			headerShown: false,
+			presentation: 'modal'
+		}}>
 			<ModalStack.Screen name="Main" component={BottomTabNavigator}/>
 			<ModalStack.Screen name="Player" component={PlayerScreen} options={{gestureEnabled: true}}/>
 		</ModalStack.Navigator>

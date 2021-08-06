@@ -12,7 +12,7 @@ export const FoldersNavigator: React.FC<HomeRouteProps<HomeRoute.FOLDERS>> = ({r
 		<FoldersTabNavigatorContext.Provider value={{albumType: route.params?.albumType}}>
 			<Tab.Navigator
 				initialRouteName={FoldersRoute.INDEX}
-				lazy={true}
+				screenOptions={{lazy: true}}
 				tabBar={(): JSX.Element => (<></>)}
 			>
 				<Tab.Screen name={FoldersRoute.INDEX} component={FolderIndexScreen}/>

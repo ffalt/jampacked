@@ -3,6 +3,8 @@ import {DefaultTheme} from '@react-navigation/native';
 import React, {useContext} from 'react';
 import {Appearance} from 'react-native';
 
+const getColorScheme = Appearance.getColorScheme || ((): string => '');
+
 export declare type NavigationTheme = {
 	dark: boolean;
 	colors: {
@@ -84,7 +86,7 @@ const light: ITheme = {
 	background: '#ffffff',
 	itemBackground: '#f3f3f3',
 	overlayGradient: ['rgba(255, 255, 255, 0.7)', '#ffffff'],
-	gradient: ['#cfcfcf','#e9e9e9', '#ffffff'],
+	gradient: ['#cfcfcf', '#e9e9e9', '#ffffff'],
 	separator: '#a3a3a3',
 	activeBackgroundColor: '#dff8ff',
 	control: '#f3f3f3',
@@ -229,7 +231,7 @@ export interface ThemeSettings {
 }
 
 export function getAutoTheme(): ITheme {
-	return {...(Appearance.getColorScheme() === 'dark' ? dark : light), name: 'auto'};
+	return {...(getColorScheme() === 'dark' ? dark : light), name: 'auto'};
 }
 
 export function getTheme(name?: string | null): ITheme {

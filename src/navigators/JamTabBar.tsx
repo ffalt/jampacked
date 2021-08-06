@@ -6,6 +6,6 @@ import {BottomTabBar, BottomTabBarProps} from '@react-navigation/bottom-tabs';
 export const JamTabBar: React.FC<BottomTabBarProps> = (props: BottomTabBarProps) => (
 	<View>
 		<PlayerStrip/>
-		<BottomTabBar {...props} showLabel={false}/>
+		<BottomTabBar {...props} />
 	</View>
 );

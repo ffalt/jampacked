@@ -10,7 +10,12 @@ import {JamTabBar} from './JamTabBar';
 const BottomTabs = createBottomTabNavigator<BottomTabParams>();
 
 export const BottomTabNavigator: React.FC = () => (
-	<BottomTabs.Navigator tabBar={JamTabBar}>
+	<BottomTabs.Navigator
+		screenOptions={{
+			headerShown: false,
+			tabBarShowLabel: false
+		}}
+		tabBar={JamTabBar}>
 		<BottomTabs.Screen
 			name={BottomTabRoute.HOME}
 			component={HomeStackNavigator}

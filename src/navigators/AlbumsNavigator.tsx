@@ -19,7 +19,7 @@ export const AlbumsNavigator: React.FC<HomeRouteProps<HomeRoute.ALBUMS>> = ({rou
 		<AlbumsTabNavigatorContext.Provider value={{albumType}}>
 			<Tab.Navigator
 				initialRouteName={AlbumsRoute.INDEX}
-				lazy={true}
+				screenOptions={{lazy: true}}
 				tabBar={(): JSX.Element => (<></>)}
 			>
 				<Tab.Screen name={AlbumsRoute.INDEX} component={AlbumIndexScreen}/>

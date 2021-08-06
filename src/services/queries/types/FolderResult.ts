@@ -16,7 +16,7 @@ export interface FolderResult_folder_genres {
 
 export interface FolderResult_folder_children {
   id: string;
-  title: string | null;
+  title: string;
   folderType: FolderType;
 }
 
@@ -53,7 +53,7 @@ export interface FolderResult_folder_tracks {
 
 export interface FolderResult_folder {
   id: string;
-  title: string | null;
+  title: string;
   childrenCount: number;
   tracksCount: number;
   folderType: FolderType;

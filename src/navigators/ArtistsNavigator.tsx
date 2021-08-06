@@ -10,7 +10,7 @@ export const ArtistsNavigator: React.FC = () => {
 	return (
 		<Tab.Navigator
 			initialRouteName={ArtistsRoute.INDEX}
-			lazy={true}
+			screenOptions={{lazy: true}}
 			tabBar={(): JSX.Element => (<></>)}
 		>
 			<Tab.Screen name={ArtistsRoute.INDEX} component={ArtistIndexScreen}/>

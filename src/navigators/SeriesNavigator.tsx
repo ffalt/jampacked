@@ -10,7 +10,7 @@ export const SeriesNavigator: React.FC<HomeRouteProps<HomeRoute.SERIES>> = () =>
 	return (
 		<Tab.Navigator
 			initialRouteName={SeriesRoute.INDEX}
-			lazy={true}
+			screenOptions={{lazy: true}}
 			tabBar={(): JSX.Element => (<></>)}
 		>
 			<Tab.Screen name={SeriesRoute.INDEX} component={SeriesIndexScreen}/>

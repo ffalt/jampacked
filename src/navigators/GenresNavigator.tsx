@@ -10,7 +10,7 @@ export const GenresNavigator: React.FC<HomeRouteProps<HomeRoute.GENRES>> = () =>
 	return (
 		<Tab.Navigator
 			initialRouteName={GenresRoute.INDEX}
-			lazy={true}
+			screenOptions={{lazy: true}}
 			tabBar={(): JSX.Element => (<></>)}
 		>
 			<Tab.Screen name={GenresRoute.INDEX} component={GenreIndexScreen}/>

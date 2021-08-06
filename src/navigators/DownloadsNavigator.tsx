@@ -10,7 +10,7 @@ export const DownloadsNavigator: React.FC = () => {
 	return (
 		<Tab.Navigator
 			initialRouteName={DownloadsRoute.PINNED}
-			lazy={true}
+			screenOptions={{lazy: true}}
 			tabBar={(): JSX.Element => (<></>)}
 		>
 			<Tab.Screen name={DownloadsRoute.PINNED} component={DownloadsPinnedScreen}/>
