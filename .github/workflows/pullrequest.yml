@@ -11,17 +11,7 @@ jobs:
     container: reactnativecommunity/react-native-android
     steps:
       - uses: actions/checkout@v2
-      - name: Envinfo
-        run: npx envinfo
       - name: Install Dependencies
         run: yarn install
-      - name: Gradle chmod Setup
-        run: cd android && chmod +x gradlew
-      - name: Jettify
-        run: yarn run android:build:prepare
       - name: Test
         run: yarn run test
-      - name: Build application apks
-        run: yarn run android:build:release:apk
-      - name: Build application aab
-        run: yarn run android:build:release:aab
