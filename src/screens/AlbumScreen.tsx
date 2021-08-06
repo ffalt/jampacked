@@ -18,6 +18,8 @@ import {PinIcon} from '../components/PinIcon';
 import {useLazyAlbumQuery} from '../services/queries/album.hook';
 import {DefaultFlatList} from '../components/DefFlatList';
 
+export const MUSICBRAINZ_VARIOUS_ARTISTS_NAME = 'Various Artists';
+
 const buildDetails = (artist?: string, tracks?: number, genre?: string, click?: () => void): Array<HeaderDetail> => {
 	return [
 		{title: 'Artist', value: artist || '', click: artist ? click : undefined},
@@ -29,6 +31,7 @@ const buildDetails = (artist?: string, tracks?: number, genre?: string, click?: 
 export const AlbumScreen: React.FC<HomeRouteProps<HomeRoute.ALBUM>> = ({route}) => {
 	const actionSheetRef: MutableRefObject<ActionSheet | null> = React.useRef<ActionSheet>(null);
 	const theme = useTheme();
+	const [isVariousArtist, setIsVariousArtist] = useState<boolean>(false);
 	const [details, setDetails] = useState<Array<HeaderDetail>>(buildDetails());
 	const [currentTrack, setCurrentTrack] = useState<TrackEntry | undefined>();
 	const [getAlbum, {loading, error, album}] = useLazyAlbumQuery();
@@ -42,6 +45,7 @@ export const AlbumScreen: React.FC<HomeRouteProps<HomeRoute.ALBUM>> = ({route}) 
 
 	useEffect(() => {
 		if (album) {
+			setIsVariousArtist(album.artistName === MUSICBRAINZ_VARIOUS_ARTISTS_NAME);
 			setDetails(buildDetails(album.artistName, album.trackCount, genreDisplay(album.genres), (): void => {
 				if (album && album.artistID) {
 					NavigationService.navigate(HomeRoute.ARTIST, {id: album.artistID, name: album.artistName || ''});
@@ -91,8 +95,8 @@ export const AlbumScreen: React.FC<HomeRouteProps<HomeRoute.ALBUM>> = ({route}) 
 		}
 	}, [actionSheetRef]);
 
-	const renderItem = useCallback(({item}: { item: TrackEntry }): JSX.Element => (<TrackItem track={item} showMenu={showMenu}/>),
-		[showMenu]);
+	const renderItem = useCallback(({item}: { item: TrackEntry }): JSX.Element => (<TrackItem track={item} showMenu={showMenu} showArtist={isVariousArtist}/>),
+		[showMenu, isVariousArtist]);
 
 	return (
 		<>

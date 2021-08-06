@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-export const TrackItem: React.FC<{ track: TrackEntry, showMenu?: (item: TrackEntry) => void; }> = React.memo(({track, showMenu}) => {
+export const TrackItem: React.FC<{ track: TrackEntry, showArtist: boolean; showMenu?: (item: TrackEntry) => void; }> = React.memo(({track, showArtist, showMenu}) => {
 	const doubleTap = React.useRef(React.createRef<TapGestureHandler>().current);
 
 	const onSingleTapped = useCallback((event: TapGestureHandlerStateChangeEvent): void => {
@@ -45,6 +45,9 @@ export const TrackItem: React.FC<{ track: TrackEntry, showMenu?: (item: TrackEnt
 				.catch(e => console.error(e));
 		}
 	}, [track]);
+
+	const artistView = showArtist && (<ThemedText style={sharedStyles.itemFooterText} numberOfLines={1}>{track.artist}</ThemedText>);
+
 	//TODO: implement opacity on press
 	return (
 		<TapGestureHandler
@@ -60,6 +63,7 @@ export const TrackItem: React.FC<{ track: TrackEntry, showMenu?: (item: TrackEnt
 					</View>
 					<View style={[sharedStyles.itemContent, styles.trackListTitle]}>
 						<ThemedText style={sharedStyles.itemText} numberOfLines={2}>{track.title}</ThemedText>
+						{artistView}
 					</View>
 					<View style={[sharedStyles.itemSectionRight, styles.trackListRuntime]}>
 						<ThemedText style={[sharedStyles.itemFooterText, sharedStyles.itemFooterTextRight]} numberOfLines={1}>{track.duration}</ThemedText>
