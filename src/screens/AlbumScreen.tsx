@@ -85,13 +85,13 @@ export const AlbumScreen: React.FC<HomeRouteProps<HomeRoute.ALBUM>> = ({route}) 
 	const showMenu = useCallback((item: TrackEntry): void => {
 		setCurrentTrack(item);
 		if (actionSheetRef.current) {
-			actionSheetRef.current.setModalVisible();
+			actionSheetRef.current.setModalVisible(true);
 		}
 	}, [actionSheetRef]);
 
 	const closeMenu = useCallback((): void => {
 		if (actionSheetRef.current) {
-			actionSheetRef.current.setModalVisible();
+			actionSheetRef.current.setModalVisible(false);
 		}
 	}, [actionSheetRef]);
 

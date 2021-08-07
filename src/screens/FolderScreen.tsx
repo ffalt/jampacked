@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {MutableRefObject, useCallback, useEffect, useState} from 'react';
 import {TouchableOpacity} from 'react-native';
 import {TrackItem} from '../components/TrackItem';
 import {HomeRoute, HomeRouteProps} from '../navigators/Routing';
@@ -13,6 +13,11 @@ import {Folder, FolderItem} from '../services/queries/folder';
 import {ErrorView} from '../components/ErrorView';
 import {useLazyFolderQuery} from '../services/queries/folder.hook';
 import {DefaultFlatList} from '../components/DefFlatList';
+import {MUSICBRAINZ_VARIOUS_ARTISTS_NAME} from './AlbumScreen';
+import {TrackEntry} from '../services/types';
+import ActionSheet from 'react-native-actions-sheet/index';
+import {ActionSheetTrack} from '../components/ActionSheetTrack';
+import {useTheme} from '../style/theming';
 
 const buildDetails = (folder?: Folder): Array<HeaderDetail> => {
 	let result: Array<HeaderDetail> = [];
@@ -41,9 +46,13 @@ const buildDetails = (folder?: Folder): Array<HeaderDetail> => {
 };
 
 export const FolderScreen: React.FC<HomeRouteProps<HomeRoute.FOLDER>> = ({route}) => {
+	const actionSheetRef: MutableRefObject<ActionSheet | null> = React.useRef<ActionSheet>(null);
+	const [currentTrack, setCurrentTrack] = useState<TrackEntry | undefined>();
 	const [details, setDetails] = useState<Array<HeaderDetail>>(buildDetails());
+	const [isVariousArtist, setIsVariousArtist] = useState<boolean>(false);
 	const [getFolder, {loading, error, folder}] = useLazyFolderQuery();
 	const {id, name} = route?.params;
+	const theme = useTheme();
 
 	useEffect(() => {
 		if (id) {
@@ -53,6 +62,7 @@ export const FolderScreen: React.FC<HomeRouteProps<HomeRoute.FOLDER>> = ({route}
 
 	useEffect(() => {
 		if (folder) {
+			setIsVariousArtist(folder.artist === MUSICBRAINZ_VARIOUS_ARTISTS_NAME);
 			setDetails(buildDetails(folder));
 		}
 	}, [folder]);
@@ -78,15 +88,28 @@ export const FolderScreen: React.FC<HomeRouteProps<HomeRoute.FOLDER>> = ({route}
 		) : undefined}
 	/>);
 
+	const showMenu = useCallback((item: TrackEntry): void => {
+		setCurrentTrack(item);
+		if (actionSheetRef.current) {
+			actionSheetRef.current.setModalVisible(true);
+		}
+	}, [actionSheetRef]);
+
+	const closeMenu = useCallback((): void => {
+		if (actionSheetRef.current) {
+			actionSheetRef.current.setModalVisible(false);
+		}
+	}, [actionSheetRef]);
+
 	const renderItem = useCallback(({item}: { item: FolderItem }): JSX.Element => {
 		if (item.track) {
-			return <TrackItem track={item.track}/>;
+			return <TrackItem track={item.track} showArtist={isVariousArtist} showMenu={showMenu}/>;
 		}
 		if (item.folder) {
 			return <Item item={item.folder}/>;
 		}
 		return <></>;
-	}, []);
+	}, [isVariousArtist, showMenu]);
 
 	const reload = useCallback((): void => {
 		getFolder(id, true);
@@ -97,13 +120,25 @@ export const FolderScreen: React.FC<HomeRouteProps<HomeRoute.FOLDER>> = ({route}
 	}
 
 	return (
-		<DefaultFlatList
-			items={folder?.items}
-			renderItem={renderItem}
-			ListHeaderComponent={ListHeaderComponent}
-			loading={loading}
-			error={error}
-			reload={reload}
-		/>
+		<>
+			<ActionSheet
+				initialOffsetFromBottom={1}
+				ref={actionSheetRef}
+				bounceOnOpen={true}
+				bounciness={8}
+				gestureEnabled={true}
+				containerStyle={{backgroundColor: theme.background}}
+				defaultOverlayOpacity={0.3}>
+				<ActionSheetTrack item={currentTrack} close={closeMenu}/>
+			</ActionSheet>
+			<DefaultFlatList
+				items={folder?.items}
+				renderItem={renderItem}
+				ListHeaderComponent={ListHeaderComponent}
+				loading={loading}
+				error={error}
+				reload={reload}
+			/>
+		</>
 	);
 };

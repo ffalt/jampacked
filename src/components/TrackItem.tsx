@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-export const TrackItem: React.FC<{ track: TrackEntry, showArtist: boolean; showMenu?: (item: TrackEntry) => void; }> = React.memo(({track, showArtist, showMenu}) => {
+export const TrackItem: React.FC<{ track: TrackEntry, showArtist?: boolean; showMenu?: (item: TrackEntry) => void; }> = React.memo(({track, showArtist, showMenu}) => {
 	const doubleTap = React.useRef(React.createRef<TapGestureHandler>().current);
 
 	const onSingleTapped = useCallback((event: TapGestureHandlerStateChangeEvent): void => {
@@ -52,6 +52,7 @@ export const TrackItem: React.FC<{ track: TrackEntry, showArtist: boolean; showM
 	return (
 		<TapGestureHandler
 			waitFor={doubleTap}
+			maxDelayMs={200}
 			onHandlerStateChange={onSingleTapped}>
 			<TapGestureHandler
 				ref={doubleTap}
