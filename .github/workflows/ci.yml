@@ -32,8 +32,16 @@ jobs:
           echo $ENCODED_STRING | base64 -di > android/app/jam_keystore.jks
       - name: Build application apks
         run: yarn run android:build:release:apk
+        env:
+          SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
+          SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
+          SIGNING_STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
       - name: Build application aab
         run: yarn run android:build:release:aab
+        env:
+          SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
+          SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
+          SIGNING_STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
       - name: Generate Releaselog
         if: startsWith(github.ref, 'refs/tags/')
         run: yarn run releaselog
