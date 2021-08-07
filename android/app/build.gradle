@@ -94,7 +94,7 @@ def gitVer = getGitVersion()
 
 project.ext.react = [
     entryFile: "index.js",
-    enableHermes: true,  // clean and rebuild if changing
+    enableHermes: true  // clean and rebuild if changing
 ]
 
 apply from: "../../node_modules/react-native/react.gradle"
@@ -166,25 +166,32 @@ android {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
         }
+        release {
+            storeFile = file("jam_keystore.jks")
+            storePassword System.getenv("SIGNING_STORE_PASSWORD")
+            keyAlias System.getenv("SIGNING_KEY_ALIAS")
+            keyPassword System.getenv("SIGNING_KEY_PASSWORD")
+         }
     }
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
         }
         release {
-            // Caution! In production, you need to generate your own keystore file.
-            // see https://facebook.github.io/react-native/docs/signed-apk-android.
-            signingConfig signingConfigs.debug
+             // see https://facebook.github.io/react-native/docs/signed-apk-android.
+            signingConfig signingConfigs.release
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
     }
       packagingOptions {
             exclude 'okhttp3/internal/publicsuffix/publicsuffixes.gz'
-//            pickFirst "lib/armeabi-v7a/libc++_shared.so"
-//            pickFirst "lib/arm64-v8a/libc++_shared.so"
-//            pickFirst "lib/x86/libc++_shared.so"
-//            pickFirst "lib/x86_64/libc++_shared.so"
+            //pickFirst '**/armeabi-v7a/libc++_shared.so'
+            //pickFirst '**/x86/libc++_shared.so'
+            //pickFirst '**/arm64-v8a/libc++_shared.so'
+            //pickFirst '**/x86_64/libc++_shared.so'
+            //pickFirst '**/x86/libjsc.so'
+            //pickFirst '**/armeabi-v7a/libjsc.so'
         }
 
     // applicationVariants are e.g. debug, release
