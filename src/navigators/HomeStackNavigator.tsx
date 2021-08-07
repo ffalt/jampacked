@@ -6,7 +6,6 @@ import {AlbumScreen} from '../screens/AlbumScreen';
 import {HomeRoute, HomeRouteParamList} from './Routing';
 import {SeriesScreen} from '../screens/SeriesScreen';
 import {FolderScreen} from '../screens/FolderScreen';
-import {TracksScreen} from '../screens/TracksScreen';
 import {PodcastIndexScreen} from '../screens/PodcastIndexScreen';
 import {PodcastScreen} from '../screens/PodcastScreen';
 import {TrackScreen} from '../screens/TrackScreen';
@@ -19,6 +18,7 @@ import {SeriesNavigator} from './SeriesNavigator';
 import {FoldersNavigator} from './FoldersNavigator';
 import {DownloadsNavigator} from './DownloadsNavigator';
 import {GenresNavigator} from './GenresNavigator';
+import {TracksNavigator} from './TracksNavigator';
 
 const Stack = createStackNavigator<HomeRouteParamList>();
 
@@ -35,7 +35,7 @@ export const HomeStackNavigator: React.FC = () => (
 		<Stack.Screen name={HomeRoute.PLAYLISTS} component={PlaylistIndexScreen}/>
 		<Stack.Screen name={HomeRoute.PODCASTS} component={PodcastIndexScreen}/>
 		<Stack.Screen name={HomeRoute.PODCAST} component={PodcastScreen}/>
-		<Stack.Screen name={HomeRoute.TRACKS} component={TracksScreen}/>
+		<Stack.Screen name={HomeRoute.TRACKS} component={TracksNavigator}/>
 		<Stack.Screen name={HomeRoute.TRACK} component={TrackScreen}/>
 		<Stack.Screen name={HomeRoute.ARTIST} component={ArtistScreen}/>
 		<Stack.Screen name={HomeRoute.ALBUM} component={AlbumScreen}/>

@@ -59,7 +59,7 @@ export const PodcastScreen: React.FC<HomeRouteProps<HomeRoute.PODCAST>> = ({rout
 	const showMenu = useCallback((item: TrackEntry): void => {
 		setCurrentEpisode(item);
 		if (actionSheetRef.current) {
-			actionSheetRef.current.setModalVisible();
+			actionSheetRef.current.setModalVisible(true);
 		}
 	}, [actionSheetRef]);
 

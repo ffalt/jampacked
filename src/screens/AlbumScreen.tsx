@@ -1,6 +1,5 @@
-import React, {MutableRefObject, useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {TouchableOpacity} from 'react-native';
-import {TrackItem} from '../components/TrackItem';
 import {HomeRoute, HomeRouteProps} from '../navigators/Routing';
 import {JamPlayer} from '../services/player';
 import {ThemedIcon} from '../components/ThemedIcon';
@@ -10,13 +9,9 @@ import {JamObjectType} from '../services/jam';
 import {FavIcon} from '../components/FavIcon';
 import {snackError} from '../services/snack';
 import {NavigationService} from '../navigators/navigation';
-import {TrackEntry} from '../services/types';
-import {useTheme} from '../style/theming';
-import ActionSheet from 'react-native-actions-sheet';
-import {ActionSheetTrack} from '../components/ActionSheetTrack';
 import {PinIcon} from '../components/PinIcon';
 import {useLazyAlbumQuery} from '../services/queries/album.hook';
-import {DefaultFlatList} from '../components/DefFlatList';
+import {Tracks} from '../components/Tracks';
 
 export const MUSICBRAINZ_VARIOUS_ARTISTS_NAME = 'Various Artists';
 
@@ -29,11 +24,7 @@ const buildDetails = (artist?: string, tracks?: number, genre?: string, click?: 
 };
 
 export const AlbumScreen: React.FC<HomeRouteProps<HomeRoute.ALBUM>> = ({route}) => {
-	const actionSheetRef: MutableRefObject<ActionSheet | null> = React.useRef<ActionSheet>(null);
-	const theme = useTheme();
-	const [isVariousArtist, setIsVariousArtist] = useState<boolean>(false);
 	const [details, setDetails] = useState<Array<HeaderDetail>>(buildDetails());
-	const [currentTrack, setCurrentTrack] = useState<TrackEntry | undefined>();
 	const [getAlbum, {loading, error, album}] = useLazyAlbumQuery();
 	const {id, name} = route?.params;
 
@@ -45,7 +36,6 @@ export const AlbumScreen: React.FC<HomeRouteProps<HomeRoute.ALBUM>> = ({route}) 
 
 	useEffect(() => {
 		if (album) {
-			setIsVariousArtist(album.artistName === MUSICBRAINZ_VARIOUS_ARTISTS_NAME);
 			setDetails(buildDetails(album.artistName, album.trackCount, genreDisplay(album.genres), (): void => {
 				if (album && album.artistID) {
 					NavigationService.navigate(HomeRoute.ARTIST, {id: album.artistID, name: album.artistName || ''});
@@ -81,43 +71,14 @@ export const AlbumScreen: React.FC<HomeRouteProps<HomeRoute.ALBUM>> = ({route}) 
 			</>
 		}
 	/>);
-
-	const showMenu = useCallback((item: TrackEntry): void => {
-		setCurrentTrack(item);
-		if (actionSheetRef.current) {
-			actionSheetRef.current.setModalVisible(true);
-		}
-	}, [actionSheetRef]);
-
-	const closeMenu = useCallback((): void => {
-		if (actionSheetRef.current) {
-			actionSheetRef.current.setModalVisible(false);
-		}
-	}, [actionSheetRef]);
-
-	const renderItem = useCallback(({item}: { item: TrackEntry }): JSX.Element => (<TrackItem track={item} showMenu={showMenu} showArtist={isVariousArtist}/>),
-		[showMenu, isVariousArtist]);
-
 	return (
-		<>
-			<ActionSheet
-				initialOffsetFromBottom={1}
-				ref={actionSheetRef}
-				bounceOnOpen={true}
-				bounciness={8}
-				gestureEnabled={true}
-				containerStyle={{backgroundColor: theme.background}}
-				defaultOverlayOpacity={0.3}>
-				<ActionSheetTrack item={currentTrack} close={closeMenu}/>
-			</ActionSheet>
-			<DefaultFlatList
-				items={album?.tracks}
-				renderItem={renderItem}
-				ListHeaderComponent={ListHeaderComponent}
-				loading={loading}
-				error={error}
-				reload={reload}
-			/>
-		</>
+		<Tracks
+			tracks={album?.tracks}
+			ListHeaderComponent={ListHeaderComponent}
+			refreshing={loading}
+			error={error}
+			onRefresh={reload}
+			showArtist={album?.artistName === MUSICBRAINZ_VARIOUS_ARTISTS_NAME}
+		/>
 	);
 };

@@ -1,5 +1,5 @@
 import {AlbumType, ListType} from '../services/jam';
-import {AlbumsRoute, ArtistsRoute, BottomTabRoute, FoldersRoute, HomeRoute, SeriesRoute} from './Routing';
+import {AlbumsRoute, ArtistsRoute, BottomTabRoute, FoldersRoute, HomeRoute, SeriesRoute, TracksRoute} from './Routing';
 import {Navig} from '../services/types';
 import {getAlbumTypeInfos} from '../services/jam-lists';
 
@@ -65,6 +65,23 @@ export class JamRouteLinks {
 		}
 	}
 
+	static tracklistRoute(listType: ListType): TracksRoute {
+		switch (listType) {
+			case ListType.random:
+				return TracksRoute.RANDOM;
+			case ListType.highest:
+				return TracksRoute.HIGHEST;
+			case ListType.avghighest:
+				return TracksRoute.AVGHIGHEST;
+			case ListType.frequent:
+				return TracksRoute.FREQUENT;
+			case ListType.faved:
+				return TracksRoute.FAV;
+			case ListType.recent:
+				return TracksRoute.RECENT;
+		}
+	}
+
 	static folderlistRoute(listType: ListType): FoldersRoute {
 		switch (listType) {
 			case ListType.random:
@@ -125,7 +142,7 @@ export class JamRouteLinks {
 	}
 
 	static tracklist(listType: ListType): RouteLink {
-		return ({title: 'Tracks', icon: 'track', navig: {route: HomeRoute.TRACKS, params: {listType}}});
+		return ({title: 'Tracks', icon: 'track', navig: {route: JamRouteLinks.tracklistRoute(listType)}});
 	}
 
 	static bookmarks(): RouteLink {

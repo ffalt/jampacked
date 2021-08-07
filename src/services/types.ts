@@ -93,10 +93,23 @@ export type BaseEntryList = {
 	take?: number;
 };
 
+export type TrackEntryList = {
+	listType?: ListType;
+	items: Array<TrackEntry>;
+	total: number;
+	skip?: number;
+	take?: number;
+};
+
 export type UseListCallFunction = (albumTypes: Array<AlbumType>, listType: ListType, seed: string | undefined, take: number, skip: number, forceRefresh?: boolean) => void;
 export type useListFunction = () => [
 	UseListCallFunction,
 	{ loading: boolean, error?: ApolloError, data?: BaseEntryList, called: boolean, queryID?: string }
+];
+export type UseTrackListCallFunction = (listType: ListType, seed: string | undefined, take: number, skip: number, forceRefresh?: boolean) => void;
+export type useTrackListFunction = () => [
+	UseTrackListCallFunction,
+	{ loading: boolean, error?: ApolloError, data?: TrackEntryList, called: boolean, queryID?: string }
 ];
 
 export interface PinMedia {

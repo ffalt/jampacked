@@ -143,6 +143,31 @@ export type ArtistsRouteProps<T extends keyof ArtistsRouteParamList> = {
 	route: RouteProp<ArtistsRouteParamList, T>;
 };
 
+// Tracks Routes
+
+export enum TracksRoute {
+	FAV = 'TracksFav',
+	RECENT = 'TracksRecent',
+	RANDOM = 'TracksRandom',
+	HIGHEST = 'TracksHighest',
+	AVGHIGHEST = 'TracksAvgHighest',
+	FREQUENT = 'TracksFrequent'
+}
+
+export type TracksRouteParamList = {
+	TracksFav: undefined;
+	TracksRecent: undefined;
+	TracksRandom: undefined;
+	TracksHighest: undefined;
+	TracksAvgHighest: undefined;
+	TracksFrequent: undefined;
+};
+
+export type TracksRouteProps<T extends keyof TracksRouteParamList> = {
+	navigation: StackNavigationProp<TracksRouteParamList, T>;
+	route: RouteProp<TracksRouteParamList, T>;
+};
+
 // Albums Routes
 
 export enum AlbumsRoute {

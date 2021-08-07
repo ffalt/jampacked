@@ -1,7 +1,7 @@
 import gql from 'graphql-tag';
 import {TrackEntry} from '../types';
 import {formatDuration} from '../../utils/duration.utils';
-import {TrackResult, TrackResultVariables} from './types/TrackResult';
+import {TrackResult, TrackResult_track, TrackResultVariables} from './types/TrackResult';
 import {DocumentNode} from 'graphql';
 
 const GET_TRACK = gql`
@@ -34,11 +34,7 @@ const GET_TRACK = gql`
     }
 `;
 
-export const transformData = (data?: TrackResult): TrackEntry | undefined => {
-	if (!data) {
-		return;
-	}
-	const {track} = data;
+export const transformTrack = (track: TrackResult_track): TrackEntry => {
 	return {
 		id: track.id,
 		title: track.tag?.title || track.name,
@@ -52,6 +48,14 @@ export const transformData = (data?: TrackResult): TrackEntry | undefined => {
 		durationMS: track.tag?.mediaDuration || 0,
 		duration: formatDuration(track.tag?.mediaDuration || undefined)
 	};
+};
+
+export const transformData = (data?: TrackResult): TrackEntry | undefined => {
+	if (!data) {
+		return;
+	}
+	const {track} = data;
+	return transformTrack(track);
 };
 
 function transformVariables(id: string): TrackResultVariables {
