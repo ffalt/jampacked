@@ -10,6 +10,7 @@ import {snackError} from '../services/snack';
 import {ThemedText} from '../components/ThemedText';
 import {useLazyPlaylistQuery} from '../services/queries/playlist.hook';
 import {Tracks} from '../components/Tracks';
+import {defaultShowArtistTrackDisplay, defaultTrackDisplay} from '../components/TrackItem';
 
 export const PlaylistScreen: React.FC<HomeRouteProps<HomeRoute.PLAYLIST>> = ({route}) => {
 	const [getPlaylist, {loading, error, playlist}] = useLazyPlaylistQuery();
@@ -54,7 +55,7 @@ export const PlaylistScreen: React.FC<HomeRouteProps<HomeRoute.PLAYLIST>> = ({ro
 			refreshing={loading}
 			error={error}
 			onRefresh={reload}
-			showArtist={true}
+			displayFunc={defaultShowArtistTrackDisplay}
 		/>
 	);
 };

@@ -12,6 +12,7 @@ import {NavigationService} from '../navigators/navigation';
 import {PinIcon} from '../components/PinIcon';
 import {useLazyAlbumQuery} from '../services/queries/album.hook';
 import {Tracks} from '../components/Tracks';
+import {defaultShowArtistTrackDisplay, defaultTrackDisplay} from '../components/TrackItem';
 
 export const MUSICBRAINZ_VARIOUS_ARTISTS_NAME = 'Various Artists';
 
@@ -78,7 +79,7 @@ export const AlbumScreen: React.FC<HomeRouteProps<HomeRoute.ALBUM>> = ({route}) 
 			refreshing={loading}
 			error={error}
 			onRefresh={reload}
-			showArtist={album?.artistName === MUSICBRAINZ_VARIOUS_ARTISTS_NAME}
+			displayFunc={album?.artistName === MUSICBRAINZ_VARIOUS_ARTISTS_NAME ? defaultShowArtistTrackDisplay : defaultTrackDisplay}
 		/>
 	);
 };

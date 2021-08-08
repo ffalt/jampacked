@@ -5,6 +5,7 @@ import {TrackEntryList, TrackEntryListInfo} from './TrackEntryList';
 import {ListType} from '../services/jam';
 import {ErrorView} from './ErrorView';
 import dataService from '../services/data';
+import {defaultListTrackDisplay, TrackDisplayFunction} from './TrackItem';
 
 export interface TrackEntryListListQuery {
 	listType?: ListType;
@@ -22,6 +23,7 @@ export const TrackEntryListList: React.FC<{ query: TrackEntryListListQuery }> = 
 	const [total, setTotal] = useState<number>(0);
 	const [type, setType] = useState<{
 		listType?: ListType,
+		displayFunc?: TrackDisplayFunction;
 		seed?: string,
 		offset: number
 	} | undefined>();
@@ -37,8 +39,19 @@ export const TrackEntryListList: React.FC<{ query: TrackEntryListListQuery }> = 
 			}
 			setTotal(0);
 			setEntries(undefined);
+			let displayFunc: TrackDisplayFunction | undefined;
+			switch (query.listType) {
+				case ListType.random:
+				case ListType.highest:
+				case ListType.avghighest:
+				case ListType.frequent:
+				case ListType.faved:
+				case ListType.recent:
+					displayFunc = defaultListTrackDisplay;
+					break;
+			}
 			const seed = query.listType === ListType.random ? Date.now().toString() : undefined;
-			return {listType: query.listType, seed, offset: 0};
+			return {listType: query.listType, seed, offset: 0, displayFunc};
 		});
 	}, [query]);
 
@@ -91,5 +104,14 @@ export const TrackEntryListList: React.FC<{ query: TrackEntryListListQuery }> = 
 		return (<ErrorView error={error} onRetry={reload}/>);
 	}
 
-	return (<TrackEntryList entries={entries} onRefresh={reload} onLoadMore={handleLoadMore} refreshing={loading} info={info}/>);
+	return (
+		<TrackEntryList
+			entries={entries}
+			onRefresh={reload}
+			onLoadMore={handleLoadMore}
+			refreshing={loading}
+			info={info}
+			displayFunc={type?.displayFunc}
+		/>
+	);
 };

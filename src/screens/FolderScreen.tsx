@@ -1,6 +1,6 @@
 import React, {MutableRefObject, useCallback, useEffect, useState} from 'react';
 import {TouchableOpacity} from 'react-native';
-import {TrackItem} from '../components/TrackItem';
+import {defaultShowArtistTrackDisplay, defaultTrackDisplay, TrackItem} from '../components/TrackItem';
 import {HomeRoute, HomeRouteProps} from '../navigators/Routing';
 import {JamPlayer} from '../services/player';
 import {ThemedIcon} from '../components/ThemedIcon';
@@ -49,7 +49,6 @@ export const FolderScreen: React.FC<HomeRouteProps<HomeRoute.FOLDER>> = ({route}
 	const actionSheetRef: MutableRefObject<ActionSheet | null> = React.useRef<ActionSheet>(null);
 	const [currentTrack, setCurrentTrack] = useState<TrackEntry | undefined>();
 	const [details, setDetails] = useState<Array<HeaderDetail>>(buildDetails());
-	const [isVariousArtist, setIsVariousArtist] = useState<boolean>(false);
 	const [getFolder, {loading, error, folder}] = useLazyFolderQuery();
 	const {id, name} = route?.params;
 	const theme = useTheme();
@@ -62,7 +61,6 @@ export const FolderScreen: React.FC<HomeRouteProps<HomeRoute.FOLDER>> = ({route}
 
 	useEffect(() => {
 		if (folder) {
-			setIsVariousArtist(folder.artist === MUSICBRAINZ_VARIOUS_ARTISTS_NAME);
 			setDetails(buildDetails(folder));
 		}
 	}, [folder]);
@@ -101,9 +99,14 @@ export const FolderScreen: React.FC<HomeRouteProps<HomeRoute.FOLDER>> = ({route}
 		}
 	}, [actionSheetRef]);
 
+	const isVariousArtist = folder?.artist === MUSICBRAINZ_VARIOUS_ARTISTS_NAME;
+
 	const renderItem = useCallback(({item}: { item: FolderItem }): JSX.Element => {
 		if (item.track) {
-			return <TrackItem track={item.track} showArtist={isVariousArtist} showMenu={showMenu}/>;
+			return <TrackItem
+				track={item.track}
+				displayFunc={isVariousArtist ? defaultShowArtistTrackDisplay : defaultTrackDisplay}
+				showMenu={showMenu}/>;
 		}
 		if (item.folder) {
 			return <Item item={item.folder}/>;

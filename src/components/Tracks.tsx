@@ -1,7 +1,7 @@
 import React, {MutableRefObject, useCallback, useState} from 'react';
 import {DefaultFlatList} from './DefFlatList';
 import {TrackEntry} from '../services/types';
-import {TrackItem} from './TrackItem';
+import {TrackDisplayFunction, TrackItem} from './TrackItem';
 import ActionSheet from 'react-native-actions-sheet/index';
 import {ActionSheetTrack} from './ActionSheetTrack';
 import {useTheme} from '../style/theming';
@@ -12,11 +12,11 @@ export const Tracks: React.FC<{
 	ListHeaderComponent: React.ComponentType<any> | React.ReactElement | null;
 	error?: Error;
 	refreshing: boolean;
-	showArtist?: boolean;
+	displayFunc?: TrackDisplayFunction;
 	onRefresh: () => void;
 	onLoadMore?: () => void;
 }> =
-	({tracks, refreshing, showArtist, onRefresh, onLoadMore, error, ListHeaderComponent}) => {
+	({tracks, refreshing, displayFunc, onRefresh, onLoadMore, error, ListHeaderComponent}) => {
 		const actionSheetRef: MutableRefObject<ActionSheet | null> = React.useRef<ActionSheet>(null);
 		const theme = useTheme();
 		const [currentTrack, setCurrentTrack] = useState<TrackEntry | undefined>();
@@ -32,7 +32,8 @@ export const Tracks: React.FC<{
 				actionSheetRef.current.setModalVisible(false);
 			}
 		}, [actionSheetRef]);
-		const renderItemRow = useCallback(({item}: { item: TrackEntry }): JSX.Element => (<TrackItem track={item} showMenu={showMenu} showArtist={showArtist}/>), [showArtist]);
+		const renderItemRow = useCallback(({item}: { item: TrackEntry }): JSX.Element => (<TrackItem track={item} showMenu={showMenu} displayFunc={displayFunc}/>),
+			[displayFunc, showMenu]);
 		if (error) {
 			return (<ErrorView error={error} onRetry={onRefresh}/>);
 		}
