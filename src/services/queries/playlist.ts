@@ -3,6 +3,7 @@ import {TrackEntry} from '../types';
 import {formatDuration} from '../../utils/duration.utils';
 import {PlaylistResult, PlaylistResult_playlist_entries_episode, PlaylistResult_playlist_entries_track, PlaylistResultVariables} from './types/PlaylistResult';
 import {DocumentNode} from 'graphql';
+import {transformTrack} from './track';
 
 const GET_PLAYLIST = gql`
     query PlaylistResult($id: ID!) {
@@ -12,26 +13,30 @@ const GET_PLAYLIST = gql`
             comment
             entries {
                 track {
-                    id
-                    name
-                    album {
-                        id
-                    }
-                    artist {
-                        id
-                    }
-                    series {
-                        id
-                    }
-                    tag {
-                        mediaDuration
-                        title
-                        artist
-                        genres
-                        album
-                        disc
-                        trackNr
-                    }
+					id
+					name
+					album {
+						id
+						name
+					}
+					artist {
+						id
+						name
+					}
+					series {
+						id
+						name
+					}
+					genres {
+						id
+						name
+					}
+					tag {
+						mediaDuration
+						title
+						disc
+						trackNr
+					}
                 }
                 episode {
                     id
@@ -53,22 +58,6 @@ const GET_PLAYLIST = gql`
         }
     }
 `;
-
-export const formatTrack = (track: PlaylistResult_playlist_entries_track): TrackEntry => {
-	return {
-		id: track.id,
-		title: track.tag?.title || track.name,
-		artist: track.tag?.artist || '?',
-		genre: track.tag?.genres ? track.tag?.genres.join(' / ') : undefined,
-		album: track.tag?.album || '?',
-		albumID: track.album?.id,
-		artistID: track.artist?.id,
-		seriesID: track.series?.id,
-		trackNr: (track.tag?.disc && track.tag?.disc > 1 ? `${track.tag?.disc}-` : '') + (track.tag?.trackNr || ''),
-		durationMS: track.tag?.mediaDuration || 0,
-		duration: formatDuration(track.tag?.mediaDuration || undefined)
-	};
-};
 
 export const formatEpisode = (episode: PlaylistResult_playlist_entries_episode): TrackEntry => {
 	return {
@@ -97,7 +86,7 @@ function transformData(data?: PlaylistResult): Playlist | undefined {
 	}
 	const tracks: Array<TrackEntry> = [];
 	(data.playlist.entries || []).map(entry => {
-		const item = entry.track ? formatTrack(entry.track) : (entry.episode ? formatEpisode(entry.episode) : undefined);
+		const item = entry.track ? transformTrack(entry.track) : (entry.episode ? formatEpisode(entry.episode) : undefined);
 		if (item) {
 			tracks.push(item);
 		}

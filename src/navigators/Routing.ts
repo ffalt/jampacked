@@ -85,7 +85,8 @@ export enum HomeRoute {
 	USER = 'User',
 	DOWNLOADS = 'Downloads',
 	BOOKMARKS = 'Bookmarks',
-	GENRES = 'Genres'
+	GENRES = 'Genres',
+	GENRE = 'Genre'
 }
 
 export type HomeRouteParamList = {
@@ -109,6 +110,7 @@ export type HomeRouteParamList = {
 	Serie: { id: string, name: string };
 	Artist: { id: string, name: string };
 	Album: { id: string, name: string };
+	Genre: { id: string, name: string };
 };
 
 export type HomeRouteProps<T extends keyof HomeRouteParamList> = {
@@ -166,6 +168,23 @@ export type TracksRouteParamList = {
 export type TracksRouteProps<T extends keyof TracksRouteParamList> = {
 	navigation: StackNavigationProp<TracksRouteParamList, T>;
 	route: RouteProp<TracksRouteParamList, T>;
+};
+
+// Album Routes
+
+export enum AlbumRoute {
+	MAIN = 'AlbumMain',
+	INFO = 'AlbumInfo',
+}
+
+export type AlbumRouteParamList = {
+	AlbumMain: { id?: string; name?: string };
+	AlbumInfo: { id?: string; name?: string };
+};
+
+export type AlbumRouteProps<T extends keyof AlbumRouteParamList> = {
+	navigation: StackNavigationProp<AlbumRouteParamList, T>;
+	route: RouteProp<AlbumRouteParamList, T>;
 };
 
 // Albums Routes
@@ -266,7 +285,7 @@ export type DownloadsRouteProps<T extends keyof DownloadsRouteParamList> = {
 	route: RouteProp<DownloadsRouteParamList, T>;
 };
 
-// Genre Routes
+// Genres Routes
 
 export enum GenresRoute {
 	INDEX = 'GenreIndex'
@@ -280,3 +299,23 @@ export type GenresRouteProps<T extends keyof GenresRouteParamList> = {
 	navigation: StackNavigationProp<GenresRouteParamList, T>;
 	route: RouteProp<GenresRouteParamList, T>;
 };
+
+// Genre Routes
+
+export enum GenreRoute {
+	ALBUMS = 'GenreAlbums',
+	ARTISTS = 'GenreArtists',
+	TRACKS = 'GenreTracks'
+}
+
+export type GenreRouteParamList = {
+	GenreAlbums: { id: string, name: string };
+	GenreArtists: { id: string, name: string };
+	GenreTracks: { id: string, name: string };
+};
+
+export type GenreRouteProps<T extends keyof GenreRouteParamList> = {
+	navigation: StackNavigationProp<GenreRouteParamList, T>;
+	route: RouteProp<GenreRouteParamList, T>;
+};
+

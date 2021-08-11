@@ -9,22 +9,27 @@
 
 export interface PlaylistResult_playlist_entries_track_album {
   id: string;
+  name: string;
 }
 
 export interface PlaylistResult_playlist_entries_track_artist {
   id: string;
+  name: string;
 }
 
 export interface PlaylistResult_playlist_entries_track_series {
   id: string;
+  name: string;
+}
+
+export interface PlaylistResult_playlist_entries_track_genres {
+  id: string;
+  name: string;
 }
 
 export interface PlaylistResult_playlist_entries_track_tag {
   mediaDuration: number | null;
   title: string | null;
-  artist: string | null;
-  genres: string[] | null;
-  album: string | null;
   disc: number | null;
   trackNr: number | null;
 }
@@ -35,6 +40,7 @@ export interface PlaylistResult_playlist_entries_track {
   album: PlaylistResult_playlist_entries_track_album | null;
   artist: PlaylistResult_playlist_entries_track_artist | null;
   series: PlaylistResult_playlist_entries_track_series | null;
+  genres: PlaylistResult_playlist_entries_track_genres[];
   tag: PlaylistResult_playlist_entries_track_tag | null;
 }
 

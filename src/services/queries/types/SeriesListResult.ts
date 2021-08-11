@@ -30,9 +30,10 @@ export interface SeriesListResult {
 }
 
 export interface SeriesListResultVariables {
-  listType: ListType;
+  listType?: ListType | null;
   seed?: string | null;
   albumTypes?: AlbumType[] | null;
+  genreIDs?: string[] | null;
   take: number;
   skip: number;
 }

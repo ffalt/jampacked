@@ -1,12 +1,12 @@
-import {AlbumType, JamObjectType, ListType} from '../jam';
+import {JamObjectType} from '../jam';
 import gql from 'graphql-tag';
-import {BaseEntryList} from '../types';
+import {BaseEntryList, UseListCallFunctionTransform} from '../types';
 import {ArtistListResult, ArtistListResultVariables} from './types/ArtistListResult';
 import {DocumentNode} from 'graphql';
 
 const GET_ARTISTLIST = gql`
-    query ArtistListResult($listType: ListType!, $seed: String, $albumTypes: [AlbumType!], $take: Int!, $skip: Int!) {
-        artists(list: $listType, seed: $seed, filter: {albumTypes: $albumTypes}, page: {take: $take, skip: $skip}) {
+    query ArtistListResult($listType: ListType, $seed: String, $albumTypes: [AlbumType!], $genreIDs: [ID!], $take: Int!, $skip: Int!) {
+        artists(list: $listType, seed: $seed, filter: {albumTypes: $albumTypes, genreIDs: $genreIDs}, page: {take: $take, skip: $skip}) {
             total
             skip
             take
@@ -41,12 +41,12 @@ function transformData(data?: ArtistListResult, variables?: ArtistListResultVari
 	return result;
 }
 
-function transformVariables(albumTypes: Array<AlbumType>, listType: ListType, seed: string | undefined, take: number, skip: number): ArtistListResultVariables {
-	return {albumTypes, listType, skip, take, seed};
-}
+const transformVariables: UseListCallFunctionTransform<ArtistListResultVariables> = (albumTypes, listType, genreIDs, seed, take, skip) => {
+	return {albumTypes, listType, genreIDs, skip, take, seed};
+};
 
-export const ArtistIndexQuery: {
+export const ArtistListQuery: {
 	query: DocumentNode;
 	transformData: (d?: ArtistListResult, variables?: ArtistListResultVariables) => BaseEntryList | undefined;
-	transformVariables: (albumTypes: Array<AlbumType>, listType: ListType, seed: string | undefined, take: number, skip: number) => ArtistListResultVariables;
+	transformVariables: UseListCallFunctionTransform<ArtistListResultVariables>;
 } = {query: GET_ARTISTLIST, transformData, transformVariables};

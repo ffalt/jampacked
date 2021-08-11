@@ -7,29 +7,30 @@ import {DocumentNode} from 'graphql';
 const GET_TRACK = gql`
     query TrackResult($id: ID!) {
         track(id:$id) {
-            id
-            name
-            album {
-                id
-            }
-            artist {
-                id
-            }
-            series {
-                id
-            }
-            genres {
                 id
                 name
-            }
-            tag {
-                mediaDuration
-                title
-                artist
-                album
-                disc
-                trackNr
-            }
+                album {
+                    id
+                    name
+                }
+                artist {
+                    id
+                    name
+                }
+                series {
+                    id
+                    name
+                }
+                genres {
+                    id
+                    name
+                }
+                tag {
+                    mediaDuration
+                    title
+                    disc
+                    trackNr
+                }
         }
     }
 `;
@@ -38,9 +39,9 @@ export const transformTrack = (track: TrackResult_track): TrackEntry => {
 	return {
 		id: track.id,
 		title: track.tag?.title || track.name,
-		artist: track.tag?.artist || '?',
+		artist: track.artist?.name || '?',
 		genre: track.genres?.length ? (track.genres || []).map(g => g.name).join(' / ') : undefined,
-		album: track.tag?.album || '?',
+		album: track.album?.name || '?',
 		albumID: track.album?.id,
 		artistID: track.artist?.id,
 		seriesID: track.series?.id,

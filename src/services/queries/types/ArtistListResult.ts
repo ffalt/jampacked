@@ -30,9 +30,10 @@ export interface ArtistListResult {
 }
 
 export interface ArtistListResultVariables {
-  listType: ListType;
+  listType?: ListType | null;
   seed?: string | null;
   albumTypes?: AlbumType[] | null;
+  genreIDs?: string[] | null;
   take: number;
   skip: number;
 }

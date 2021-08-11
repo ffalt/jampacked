@@ -21,22 +21,27 @@ export interface AlbumResult_album_genres {
 
 export interface AlbumResult_album_tracks_album {
   id: string;
+  name: string;
 }
 
 export interface AlbumResult_album_tracks_artist {
   id: string;
+  name: string;
 }
 
 export interface AlbumResult_album_tracks_series {
   id: string;
+  name: string;
+}
+
+export interface AlbumResult_album_tracks_genres {
+  id: string;
+  name: string;
 }
 
 export interface AlbumResult_album_tracks_tag {
   mediaDuration: number | null;
   title: string | null;
-  artist: string | null;
-  genres: string[] | null;
-  album: string | null;
   disc: number | null;
   trackNr: number | null;
 }
@@ -47,6 +52,7 @@ export interface AlbumResult_album_tracks {
   album: AlbumResult_album_tracks_album | null;
   artist: AlbumResult_album_tracks_artist | null;
   series: AlbumResult_album_tracks_series | null;
+  genres: AlbumResult_album_tracks_genres[];
   tag: AlbumResult_album_tracks_tag | null;
 }
 

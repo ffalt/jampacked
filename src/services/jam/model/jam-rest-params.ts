@@ -542,6 +542,8 @@ export declare namespace JamParameters {
 		artistIDs?: Array<string>;
 		/** filter by Series Ids */
 		seriesIDs?: Array<string>;
+		/** filter by Genre Ids */
+		genreIDs?: Array<string>;
 	}
 
 	export interface FolderMoveArgs {
@@ -1539,6 +1541,8 @@ export declare namespace JamParameters {
 		rootIDs?: Array<string>;
 		/** filter by Folder Ids */
 		folderIDs?: Array<string>;
+		/** filter by Genre Ids */
+		genreIDs?: Array<string>;
 	}
 
 	export interface SeriesOrderArgs extends DefaultOrderArgs {

@@ -7,10 +7,12 @@ import {ErrorView} from './ErrorView';
 import dataService from '../services/data';
 
 export interface BaseEntryListListQuery {
-	listType?: ListType;
 	icon: string;
 	text: string;
-	albumTypes: Array<AlbumType>;
+	subtitle?: string;
+	listType?: ListType;
+	albumTypes?: Array<AlbumType>;
+	genreIDs?: Array<string>;
 	useList: useListFunction
 }
 
@@ -25,6 +27,7 @@ export const BaseEntryListList: React.FC<{ query: BaseEntryListListQuery }> = ({
 		listType?: ListType,
 		seed?: string,
 		albumTypes?: Array<AlbumType>,
+		genreIDs?: Array<string>,
 		offset: number
 	} | undefined>();
 	const [entries, setEntries] = useState<Array<BaseEntry> | undefined>();
@@ -32,21 +35,32 @@ export const BaseEntryListList: React.FC<{ query: BaseEntryListListQuery }> = ({
 	const [getList, {loading, error, data, queryID}] = query.useList();
 
 	useEffect(() => {
-		setInfo({icon: query.icon, title: query.text, subtitle: ListTypeName[query.listType || '']});
+		setInfo({icon: query.icon, title: query.text, subtitle: query.subtitle || ListTypeName[query.listType || '']});
 		setType((prev) => {
-			if (prev?.listType === query.listType) {
-				return prev;
+			if (query.genreIDs) {
+				const prev_genres = prev?.genreIDs ? prev.genreIDs.join('/') : '';
+				const query_genres = query?.genreIDs ? query.genreIDs.join('/') : '';
+				if (prev_genres === query_genres) {
+					return prev;
+				}
+				setTotal(0);
+				setEntries(undefined);
+				return {genreIDs: query.genreIDs, albumTypes: query.albumTypes, offset: 0};
+			} else {
+				if (prev?.listType === query.listType) {
+					return prev;
+				}
+				setTotal(0);
+				setEntries(undefined);
+				const seed = query.listType === ListType.random ? Date.now().toString() : undefined;
+				return {listType: query.listType, albumTypes: query.albumTypes, genreIDs: query.genreIDs, seed, offset: 0};
 			}
-			setTotal(0);
-			setEntries(undefined);
-			const seed = query.listType === ListType.random ? Date.now().toString() : undefined;
-			return {listType: query.listType, albumTypes: query.albumTypes, seed, offset: 0};
 		});
 	}, [query]);
 
 	useEffect(() => {
-		if (type && type.listType) {
-			getList(type.albumTypes || [], type.listType, type.seed, amount, type.offset);
+		if (type && (type.listType || (type.genreIDs && type.genreIDs.length > 0))) {
+			getList(type.albumTypes || [], type.listType, type.genreIDs || [], type.seed, amount, type.offset);
 		}
 	}, [type, getList]);
 

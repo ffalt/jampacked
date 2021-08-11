@@ -2,7 +2,6 @@ import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import {HomeScreen} from '../screens/HomeScreen';
 import {ArtistScreen} from '../screens/ArtistScreen';
-import {AlbumScreen} from '../screens/AlbumScreen';
 import {HomeRoute, HomeRouteParamList} from './Routing';
 import {SeriesScreen} from '../screens/SeriesScreen';
 import {FolderScreen} from '../screens/FolderScreen';
@@ -19,6 +18,8 @@ import {FoldersNavigator} from './FoldersNavigator';
 import {DownloadsNavigator} from './DownloadsNavigator';
 import {GenresNavigator} from './GenresNavigator';
 import {TracksNavigator} from './TracksNavigator';
+import {GenreNavigator} from './GenreNavigator';
+import {AlbumNavigator} from './AlbumNavigator';
 
 const Stack = createStackNavigator<HomeRouteParamList>();
 
@@ -38,9 +39,10 @@ export const HomeStackNavigator: React.FC = () => (
 		<Stack.Screen name={HomeRoute.TRACKS} component={TracksNavigator}/>
 		<Stack.Screen name={HomeRoute.TRACK} component={TrackScreen}/>
 		<Stack.Screen name={HomeRoute.ARTIST} component={ArtistScreen}/>
-		<Stack.Screen name={HomeRoute.ALBUM} component={AlbumScreen}/>
+		<Stack.Screen name={HomeRoute.ALBUM} component={AlbumNavigator}/>
 		<Stack.Screen name={HomeRoute.USER} component={UserScreen}/>
 		<Stack.Screen name={HomeRoute.DOWNLOADS} component={DownloadsNavigator}/>
 		<Stack.Screen name={HomeRoute.GENRES} component={GenresNavigator}/>
+		<Stack.Screen name={HomeRoute.GENRE} component={GenreNavigator}/>
 	</Stack.Navigator>
 );

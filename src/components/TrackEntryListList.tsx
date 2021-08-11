@@ -9,8 +9,10 @@ import {defaultListTrackDisplay, TrackDisplayFunction} from './TrackItem';
 
 export interface TrackEntryListListQuery {
 	listType?: ListType;
+	genreIDs?: Array<string>;
 	icon: string;
 	text: string;
+	subtitle?: string;
 	useList: useTrackListFunction
 }
 
@@ -22,42 +24,43 @@ export const TrackEntryListList: React.FC<{ query: TrackEntryListListQuery }> = 
 	});
 	const [total, setTotal] = useState<number>(0);
 	const [type, setType] = useState<{
-		listType?: ListType,
+		listType?: ListType;
+		genreIDs?: Array<string>;
 		displayFunc?: TrackDisplayFunction;
-		seed?: string,
-		offset: number
+		seed?: string;
+		offset: number;
 	} | undefined>();
 	const [entries, setEntries] = useState<Array<TrackEntry> | undefined>();
 	const amount = 20;
 	const [getList, {loading, error, data, queryID}] = query.useList();
 
 	useEffect(() => {
-		setInfo({icon: query.icon, title: query.text, subtitle: ListTypeName[query.listType || '']});
+		setInfo({icon: query.icon, title: query.text, subtitle: query.subtitle || ListTypeName[query.listType || '']});
 		setType((prev) => {
-			if (prev?.listType === query.listType) {
-				return prev;
+			if (query.genreIDs) {
+				const prev_genres = prev?.genreIDs ? prev.genreIDs.join('/') : '';
+				const query_genres = query?.genreIDs ? query.genreIDs.join('/') : '';
+				if (prev_genres === query_genres) {
+					return prev;
+				}
+				setTotal(0);
+				setEntries(undefined);
+				return {genreIDs: query.genreIDs, offset: 0, displayFunc: defaultListTrackDisplay};
+			} else {
+				if (prev?.listType === query.listType) {
+					return prev;
+				}
+				setTotal(0);
+				setEntries(undefined);
+				const seed = query.listType === ListType.random ? Date.now().toString() : undefined;
+				return {listType: query.listType, seed, offset: 0, displayFunc: defaultListTrackDisplay};
 			}
-			setTotal(0);
-			setEntries(undefined);
-			let displayFunc: TrackDisplayFunction | undefined;
-			switch (query.listType) {
-				case ListType.random:
-				case ListType.highest:
-				case ListType.avghighest:
-				case ListType.frequent:
-				case ListType.faved:
-				case ListType.recent:
-					displayFunc = defaultListTrackDisplay;
-					break;
-			}
-			const seed = query.listType === ListType.random ? Date.now().toString() : undefined;
-			return {listType: query.listType, seed, offset: 0, displayFunc};
 		});
 	}, [query]);
 
 	useEffect(() => {
-		if (type && type.listType) {
-			getList(type.listType, type.seed, amount, type.offset);
+		if (type && (type.genreIDs || type.listType)) {
+			getList(type.listType, type.genreIDs || [], type.seed, amount, type.offset);
 		}
 	}, [type, getList]);
 

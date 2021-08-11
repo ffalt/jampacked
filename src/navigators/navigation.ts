@@ -1,14 +1,14 @@
 import {CommonActions, DrawerActions, NavigationContainerRef} from '@react-navigation/core';
 import {JamObjectType} from '../services/jam';
-import {AlbumsRoute, ArtistsRoute, FoldersRoute, GenresRoute, HomeRoute, SeriesRoute, TracksRoute} from './Routing';
+import {AlbumRoute, AlbumsRoute, ArtistsRoute, FoldersRoute, GenreRoute, GenresRoute, HomeRoute, SeriesRoute, TracksRoute} from './Routing';
 import {Navig, NavigParams} from '../services/types';
 import {RouteLink} from './Routes';
 
-let navigator: NavigationContainerRef;
+let navigator: NavigationContainerRef<any>;
 
 export class NavigationService {
 
-	static setTopLevelNavigator(navigatorRef: NavigationContainerRef): void {
+	static setTopLevelNavigator(navigatorRef: NavigationContainerRef<any>): void {
 		navigator = navigatorRef;
 	}
 
@@ -52,6 +52,10 @@ export class NavigationService {
 			this.navigateToChild(HomeRoute.ALBUMS, routeName, AlbumsRoute.INDEX, params);
 			return;
 		}
+		if (routeName.startsWith('Album')) {
+			this.navigateToChild(HomeRoute.ALBUM, routeName, AlbumRoute.MAIN, params);
+			return;
+		}
 		if (routeName.startsWith('Series')) {
 			this.navigateToChild(HomeRoute.SERIES, routeName, SeriesRoute.INDEX, params);
 			return;
@@ -66,6 +70,10 @@ export class NavigationService {
 		}
 		if (routeName.startsWith('Genres')) {
 			this.navigateToChild(HomeRoute.GENRES, routeName, GenresRoute.INDEX, params);
+			return;
+		}
+		if (routeName.startsWith('Genre')) {
+			this.navigateToChild(HomeRoute.GENRE, routeName, GenreRoute.ARTISTS, params);
 			return;
 		}
 		if (navigator) {
@@ -101,6 +109,8 @@ export class NavigationService {
 				return HomeRoute.PLAYLIST;
 			case JamObjectType.series:
 				return HomeRoute.SERIE;
+			case JamObjectType.genre:
+				return HomeRoute.GENRE;
 			default:
 		}
 	}

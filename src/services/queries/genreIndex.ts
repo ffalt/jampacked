@@ -33,7 +33,7 @@ function transformData(data?: GenreIndexResult): Index | undefined {
 				objType: JamObjectType.genre,
 				desc: `Albums: ${entry.albumCount} - Artists: ${entry.artistCount} - Tracks: ${entry.trackCount}`,
 				title: entry.name,
-				letter: group.name
+				letter: group.name,
 			});
 		});
 	});

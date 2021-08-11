@@ -101,12 +101,28 @@ export type TrackEntryList = {
 	take?: number;
 };
 
-export type UseListCallFunction = (albumTypes: Array<AlbumType>, listType: ListType, seed: string | undefined, take: number, skip: number, forceRefresh?: boolean) => void;
+export type UseListCallFunctionTransform<T> = (
+	albumTypes: Array<AlbumType>,
+	listType: ListType | undefined,
+	genreIDs: Array<string>,
+	seed: string | undefined,
+	take: number,
+	skip: number,
+	forceRefresh?: boolean) => T;
+
+export type UseListCallFunction = (
+	albumTypes: Array<AlbumType>,
+	listType: ListType | undefined,
+	genreIDs: Array<string>,
+	seed: string | undefined,
+	take: number,
+	skip: number,
+	forceRefresh?: boolean) => void;
 export type useListFunction = () => [
 	UseListCallFunction,
 	{ loading: boolean, error?: ApolloError, data?: BaseEntryList, called: boolean, queryID?: string }
 ];
-export type UseTrackListCallFunction = (listType: ListType, seed: string | undefined, take: number, skip: number, forceRefresh?: boolean) => void;
+export type UseTrackListCallFunction = (listType: ListType | undefined, genreIDs: Array<string>, seed: string | undefined, take: number, skip: number, forceRefresh?: boolean) => void;
 export type useTrackListFunction = () => [
 	UseTrackListCallFunction,
 	{ loading: boolean, error?: ApolloError, data?: TrackEntryList, called: boolean, queryID?: string }

@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useContext, useEffect, useState} from 'react';
 import {TouchableOpacity} from 'react-native';
 import {HomeRoute, HomeRouteProps} from '../navigators/Routing';
 import {JamPlayer} from '../services/player';
@@ -13,6 +13,7 @@ import {PinIcon} from '../components/PinIcon';
 import {useLazyAlbumQuery} from '../services/queries/album.hook';
 import {Tracks} from '../components/Tracks';
 import {defaultShowArtistTrackDisplay, defaultTrackDisplay} from '../components/TrackItem';
+import {AlbumTabNavigatorContext} from '../navigators/AlbumNavigatorContext';
 
 export const MUSICBRAINZ_VARIOUS_ARTISTS_NAME = 'Various Artists';
 
@@ -24,16 +25,18 @@ const buildDetails = (artist?: string, tracks?: number, genre?: string, click?: 
 	];
 };
 
-export const AlbumScreen: React.FC<HomeRouteProps<HomeRoute.ALBUM>> = ({route}) => {
+export const AlbumScreen: React.FC<HomeRouteProps<HomeRoute.ALBUM>> = () => {
+	const state = useContext(AlbumTabNavigatorContext);
 	const [details, setDetails] = useState<Array<HeaderDetail>>(buildDetails());
 	const [getAlbum, {loading, error, album}] = useLazyAlbumQuery();
-	const {id, name} = route?.params;
+	const id = state.id || '';
+	const name = state.name || '';
 
 	useEffect(() => {
 		if (id) {
 			getAlbum(id);
 		}
-	}, [id, getAlbum]);
+	}, [state, getAlbum]);
 
 	useEffect(() => {
 		if (album) {

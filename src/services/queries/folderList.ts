@@ -1,13 +1,13 @@
-import {AlbumType, JamObjectType, ListType} from '../jam';
+import {JamObjectType} from '../jam';
 import gql from 'graphql-tag';
-import {BaseEntryList} from '../types';
+import {BaseEntryList, UseListCallFunctionTransform} from '../types';
 import {FolderListResult, FolderListResultVariables} from './types/FolderListResult';
 import {titleCase} from '../../utils/format.utils';
 import {DocumentNode} from 'graphql';
 
 const GET_FOLDERLIST = gql`
-    query FolderListResult($listType: ListType!, $seed: String, $albumTypes: [AlbumType!], $take: Int!, $skip: Int!) {
-        folders(list: $listType, seed: $seed, filter: {albumTypes: $albumTypes}, page: {take: $take, skip: $skip}) {
+    query FolderListResult($listType: ListType, $seed: String, $albumTypes: [AlbumType!], $genreIDs: [ID!], $take: Int!, $skip: Int!) {
+        folders(list: $listType, seed: $seed, filter: {albumTypes: $albumTypes, genreIDs: $genreIDs}, page: {take: $take, skip: $skip}) {
             total
             skip
             take
@@ -49,13 +49,13 @@ function transformData(data?: FolderListResult, variables?: FolderListResultVari
 	return result;
 }
 
-function transformVariables(albumTypes: Array<AlbumType>, listType: ListType, seed: string | undefined, take: number, skip: number): FolderListResultVariables {
-	return {albumTypes, listType, skip, take, seed};
-}
+const transformVariables: UseListCallFunctionTransform<FolderListResultVariables> = (albumTypes, listType, genreIDs, seed, take, skip) => {
+	return {albumTypes, listType, genreIDs, skip, take, seed};
+};
 
 export const FolderIndexQuery: {
 	query: DocumentNode;
 	transformData: (d?: FolderListResult, variables?: FolderListResultVariables) => BaseEntryList | undefined;
-	transformVariables: (albumTypes: Array<AlbumType>, listType: ListType, seed: string | undefined, take: number, skip: number) => FolderListResultVariables;
+	transformVariables: UseListCallFunctionTransform<FolderListResultVariables>;
 } = {query: GET_FOLDERLIST, transformData, transformVariables};
 

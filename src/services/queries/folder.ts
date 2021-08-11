@@ -4,6 +4,7 @@ import {BaseEntry, TrackEntry} from '../types';
 import {formatDuration} from '../../utils/duration.utils';
 import {FolderResult, FolderResult_folder_tracks, FolderResultVariables} from './types/FolderResult';
 import {DocumentNode} from 'graphql';
+import {transformTrack} from './track';
 
 const GET_FOLDER = gql`
     query FolderResult($id: ID!) {
@@ -28,19 +29,23 @@ const GET_FOLDER = gql`
                 name
                 album {
                     id
+                    name
                 }
                 artist {
                     id
+                    name
                 }
                 series {
                     id
+                    name
+                }
+                genres {
+                    id
+                    name
                 }
                 tag {
                     mediaDuration
                     title
-                    artist
-                    genres
-                    album
                     disc
                     trackNr
                 }
@@ -67,21 +72,6 @@ export interface Folder {
 	tracks: Array<TrackEntry>;
 }
 
-export const formatTrack = (track: FolderResult_folder_tracks): TrackEntry => {
-	return {
-		id: track.id,
-		title: track.tag?.title || track.name,
-		artist: track.tag?.artist || '?',
-		genre: track.tag?.genres ? track.tag?.genres.join(' / ') : undefined,
-		album: track.tag?.album || '?',
-		albumID: track.album?.id,
-		artistID: track.artist?.id,
-		seriesID: track.series?.id,
-		trackNr: (track.tag?.disc && track.tag?.disc > 1 ? `${track.tag?.disc}-` : '') + (track.tag?.trackNr || ''),
-		durationMS: track.tag?.mediaDuration || 0,
-		duration: formatDuration(track.tag?.mediaDuration || undefined)
-	};
-};
 
 function transformData(data?: FolderResult): Folder | undefined {
 	if (!data) {
@@ -90,7 +80,7 @@ function transformData(data?: FolderResult): Folder | undefined {
 	const folders: Array<FolderItem> = (data.folder.children || [])
 		.map(f => ({id: f.id, folder: {id: f.id, objType: JamObjectType.folder, title: f.title || '', desc: f.folderType || ''}}));
 
-	const tracks = (data.folder.tracks || []).map(track => formatTrack(track));
+	const tracks = (data.folder.tracks || []).map(track => transformTrack(track));
 	const trackItems: Array<FolderItem> = tracks.map(track => ({track, id: track.id}));
 
 	return {

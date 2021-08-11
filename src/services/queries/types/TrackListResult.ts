@@ -11,14 +11,17 @@ import { ListType } from "./graphql-types";
 
 export interface TrackListResult_tracks_items_album {
   id: string;
+  name: string;
 }
 
 export interface TrackListResult_tracks_items_artist {
   id: string;
+  name: string;
 }
 
 export interface TrackListResult_tracks_items_series {
   id: string;
+  name: string;
 }
 
 export interface TrackListResult_tracks_items_genres {
@@ -29,8 +32,6 @@ export interface TrackListResult_tracks_items_genres {
 export interface TrackListResult_tracks_items_tag {
   mediaDuration: number | null;
   title: string | null;
-  artist: string | null;
-  album: string | null;
   disc: number | null;
   trackNr: number | null;
 }
@@ -57,7 +58,8 @@ export interface TrackListResult {
 }
 
 export interface TrackListResultVariables {
-  listType: ListType;
+  listType?: ListType | null;
+  genreIDs?: string[] | null;
   seed?: string | null;
   take: number;
   skip: number;

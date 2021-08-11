@@ -22,22 +22,27 @@ export interface FolderResult_folder_children {
 
 export interface FolderResult_folder_tracks_album {
   id: string;
+  name: string;
 }
 
 export interface FolderResult_folder_tracks_artist {
   id: string;
+  name: string;
 }
 
 export interface FolderResult_folder_tracks_series {
   id: string;
+  name: string;
+}
+
+export interface FolderResult_folder_tracks_genres {
+  id: string;
+  name: string;
 }
 
 export interface FolderResult_folder_tracks_tag {
   mediaDuration: number | null;
   title: string | null;
-  artist: string | null;
-  genres: string[] | null;
-  album: string | null;
   disc: number | null;
   trackNr: number | null;
 }
@@ -48,6 +53,7 @@ export interface FolderResult_folder_tracks {
   album: FolderResult_folder_tracks_album | null;
   artist: FolderResult_folder_tracks_artist | null;
   series: FolderResult_folder_tracks_series | null;
+  genres: FolderResult_folder_tracks_genres[];
   tag: FolderResult_folder_tracks_tag | null;
 }
 

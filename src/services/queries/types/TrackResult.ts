@@ -9,14 +9,17 @@
 
 export interface TrackResult_track_album {
   id: string;
+  name: string;
 }
 
 export interface TrackResult_track_artist {
   id: string;
+  name: string;
 }
 
 export interface TrackResult_track_series {
   id: string;
+  name: string;
 }
 
 export interface TrackResult_track_genres {
@@ -27,8 +30,6 @@ export interface TrackResult_track_genres {
 export interface TrackResult_track_tag {
   mediaDuration: number | null;
   title: string | null;
-  artist: string | null;
-  album: string | null;
   disc: number | null;
   trackNr: number | null;
 }
