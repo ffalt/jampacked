@@ -42,7 +42,7 @@
     "apollo-client": "2.6.10",
     "apollo-link-context": "1.0.20",
     "apollo-link-http": "1.5.17",
-    "axios": "0.21.1",
+    "axios": "0.21.3",
     "d3-array": "2.3.3",
     "d3-scale": "3.3.0",
     "graphql": "15.5.1",
