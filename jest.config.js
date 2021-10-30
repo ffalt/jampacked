@@ -3,6 +3,8 @@ module.exports = {
 	moduleFileExtensions: [
 		'ts',
 		'tsx',
+		'json',
+		'jsx',
 		'js'
 	],
 	transform: {
