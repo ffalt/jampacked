@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import {LoadingScreen} from '../screens/LoadingScreen';
-import {AppStackNavigatorParamList, Routing} from './Routing';
+import {AppStackNavigatorParamList, AppRouting} from './Routing';
 import {LoginScreen} from '../screens/LoginScreen';
 import dataService from '../services/data';
 import {AuthContext, defaultAuth} from '../services/auth';
@@ -65,11 +65,11 @@ export const AppNavigator: React.FC = () => {
 
 	let screen: JSX.Element;
 	if (isLoading || isChecking) {
-		screen = <Stack.Screen name={Routing.LOAD} component={LoadingScreen}/>;
+		screen = <Stack.Screen name={AppRouting.LOAD} component={LoadingScreen}/>;
 	} else if (auth.hasUser) {
-		screen = <Stack.Screen name={Routing.APP} component={DrawerNavigator}/>;
+		screen = <Stack.Screen name={AppRouting.APP} component={DrawerNavigator}/>;
 	} else {
-		screen = <Stack.Screen name={Routing.AUTH} component={LoginScreen}/>;
+		screen = <Stack.Screen name={AppRouting.AUTH} component={LoginScreen}/>;
 	}
 	return (
 		<AuthContext.Provider value={auth}>

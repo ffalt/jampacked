@@ -1,4 +1,4 @@
-import {ApolloError} from 'apollo-client';
+import {ApolloError} from '@apollo/client';
 import {Index} from '../types';
 import {useCacheOrLazyQuery} from '../cache-hooks';
 import {useCallback} from 'react';

@@ -42,7 +42,7 @@ export const Queue: React.FC = () => {
 		<QueueItem item={item} index={index} active={index === current}/>
 	), [current]);
 	const reload = useCallback(() => {
-		 
+		// nop
 	}, []);
 
 	const keyExtractor = useCallback((item: TrackPlayerTrack, index: number): string => `${index}:${item.id}`, []);

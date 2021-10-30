@@ -1,6 +1,5 @@
 import React from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {useNavigation} from '@react-navigation/native';
 import {JamPlayer, useCurrentTrack} from '../services/player';
 import {JamImage} from './JamImage';
 import {ThemedText} from './ThemedText';
@@ -9,6 +8,7 @@ import {ThemedIcon} from './ThemedIcon';
 import {PlayButton} from './PlayButton';
 import {ModalRouting} from '../navigators/Routing';
 import {MiniProgressBar} from './PlayerProgressMini';
+import {NavigationService} from '../navigators/navigation';
 
 const styles = StyleSheet.create({
 	disabled: {
@@ -63,17 +63,17 @@ const styles = StyleSheet.create({
 
 export const PlayerStrip: React.FC = () => {
 	const track = useCurrentTrack();
-	const navigation = useNavigation();
+	//const navigation = useNavigation();
 	const theme = useTheme();
 	if (!track) {
 		return (<></>);
 	}
 	const forwardDisabled = false;
 	const showPlayer = (): void => {
-		navigation.navigate(ModalRouting.PLAYER);
+		NavigationService.navigate(ModalRouting.PLAYER);
 	};
 	const showQueue = (): void => {
-		navigation.navigate(ModalRouting.PLAYER, {toQueue: true});
+		NavigationService.navigate(ModalRouting.PLAYER, {toQueue: true});
 	};
 	return (
 		<View style={[styles.playerStrip, {borderTopColor: theme.separator, backgroundColor: theme.control}]}>

@@ -1,4 +1,4 @@
-import {ApolloError} from 'apollo-client';
+import {ApolloError} from '@apollo/client';
 import {Playlist, PlaylistQuery} from './playlist';
 import {useCacheOrLazyQuery} from '../cache-hooks';
 import {PlaylistResult, PlaylistResultVariables} from './types/PlaylistResult';

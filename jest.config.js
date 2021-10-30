@@ -18,20 +18,20 @@ module.exports = {
 	// 	'<rootDir>/node_modules/'
 	// ],
 	transformIgnorePatterns: [
-		"node_modules/(?!(@react-native"
-		+ "|react-native"
-		+ "|react-navigation-tabs"
-		+ "|react-native-splash-screen"
-		+ "|react-native-screens"
-		+ "|react-native-reanimated"
-		+ "|react-native-snackbar"
-		+ "|react-native-fs"
-		+ "|react-native-status-bar-height"
-		+ "|react-native-linear-gradient"
-		+ "|react-native-actions-sheet"
-		+ "|react-native-background-downloader"
-		+ "|react-native-background-timer"
-		+ ")/)"],
+		'node_modules/(?!(@react-native'
+		+ '|react-native'
+		+ '|react-navigation-tabs'
+		+ '|react-native-splash-screen'
+		+ '|react-native-screens'
+		+ '|react-native-reanimated'
+		+ '|react-native-snackbar'
+		+ '|react-native-fs'
+		+ '|react-native-status-bar-height'
+		+ '|react-native-linear-gradient'
+		+ '|react-native-actions-sheet'
+		+ '|react-native-background-downloader'
+		+ '|react-native-background-timer'
+		+ ')/)'],
 	setupFiles: [
 		'./node_modules/react-native-gesture-handler/jestSetup.js',
 		'./__mocks__/jestSetup.js'

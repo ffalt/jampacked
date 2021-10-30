@@ -1,5 +1,5 @@
 import {AlbumType} from '../jam';
-import {ApolloError} from 'apollo-client';
+import {ApolloError} from '@apollo/client';
 import {Index} from '../types';
 import {useCacheOrLazyQuery} from '../cache-hooks';
 import {ArtistIndexResult, ArtistIndexResultVariables} from './types/ArtistIndexResult';

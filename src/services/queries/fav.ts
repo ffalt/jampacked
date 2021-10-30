@@ -1,6 +1,5 @@
 import gql from 'graphql-tag';
-import {MutationTuple, useLazyQuery, useMutation} from '@apollo/react-hooks';
-import {ApolloError} from 'apollo-client';
+import {ApolloError, MutationTuple, useLazyQuery, useMutation} from '@apollo/client';
 import {useCallback, useEffect, useState} from 'react';
 import {FavResult, FavResultVariables} from './types/FavResult';
 import {SetFavResult, SetFavResultVariables} from './types/SetFavResult';

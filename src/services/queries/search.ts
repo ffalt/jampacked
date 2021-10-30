@@ -1,7 +1,6 @@
 import gql from 'graphql-tag';
-import {DocumentNode, useLazyQuery} from '@apollo/react-hooks';
+import {DocumentNode, useLazyQuery, ApolloError} from '@apollo/client';
 import {JamObjectType} from '../jam';
-import {ApolloError} from 'apollo-client';
 import {useCallback, useEffect, useState} from 'react';
 import {SearchResultData} from '../types';
 import {SearchAlbumsResult, SearchAlbumsResult_albums_items, SearchAlbumsResultVariables} from './types/SearchAlbumsResult';

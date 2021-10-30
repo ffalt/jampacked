@@ -1,4 +1,4 @@
-import {ApolloError} from 'apollo-client';
+import {ApolloError} from '@apollo/client';
 import {useCacheOrLazyQuery} from '../cache-hooks';
 import {TrackLyricsResult, TrackLyricsResultVariables} from './types/TrackLyricsResult';
 import {useCallback} from 'react';

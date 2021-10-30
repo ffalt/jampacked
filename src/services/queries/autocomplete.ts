@@ -1,7 +1,6 @@
 import gql from 'graphql-tag';
-import {useLazyQuery} from '@apollo/react-hooks';
+import {ApolloError, useLazyQuery} from '@apollo/client';
 import {JamObjectType} from '../jam';
-import {ApolloError} from 'apollo-client';
 import {useCallback, useEffect, useState} from 'react';
 import {AutoCompleteData, AutoCompleteDataSection} from '../types';
 import {AutocompleteResult, AutocompleteResultVariables} from './types/AutocompleteResult';

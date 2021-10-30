@@ -1,8 +1,7 @@
 import gql from 'graphql-tag';
 import {FolderType, JamObjectType} from '../jam';
 import {BaseEntry, TrackEntry} from '../types';
-import {formatDuration} from '../../utils/duration.utils';
-import {FolderResult, FolderResult_folder_tracks, FolderResultVariables} from './types/FolderResult';
+import {FolderResult, FolderResultVariables} from './types/FolderResult';
 import {DocumentNode} from 'graphql';
 import {transformTrack} from './track';
 

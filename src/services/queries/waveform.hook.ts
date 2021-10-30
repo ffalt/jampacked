@@ -1,7 +1,6 @@
-import {ApolloError} from 'apollo-client';
 import {Jam} from '../jam';
 import {useCallback, useEffect, useState} from 'react';
-import {useLazyQuery} from '@apollo/react-hooks';
+import {useLazyQuery, ApolloError} from '@apollo/client';
 import {WaveformResult, WaveformResultVariables} from './types/WaveformResult';
 import {WaveformQuery} from './waveform';
 

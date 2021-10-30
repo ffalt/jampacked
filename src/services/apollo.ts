@@ -1,6 +1,5 @@
-import {ApolloClient, ApolloLink, DefaultOptions, InMemoryCache} from '@apollo/client';
-import {HttpLink} from 'apollo-link-http';
-import {setContext} from 'apollo-link-context';
+import {ApolloClient, ApolloLink, DefaultOptions, InMemoryCache, HttpLink} from '@apollo/client';
+import {setContext} from '@apollo/client/link/context';
 import {DataService} from './data';
 import {onError} from 'apollo-link-error';
 

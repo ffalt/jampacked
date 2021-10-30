@@ -2,14 +2,17 @@ import React, {useEffect, useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import 'react-native-gesture-handler';
 import {enableScreens} from 'react-native-screens';
-import {StatusBar} from 'react-native';
+import {LogBox, StatusBar} from 'react-native';
 import {AppNavigator} from './src/navigators/AppNavigator';
 import {getAutoTheme, getTheme, ThemeContext, ThemeProvider, ThemeSettings} from './src/style/theming';
 import {setAppAvailable} from './service';
 import {NavigationService} from './src/navigators/navigation';
 import dataService from './src/services/data';
-import {ApolloProvider} from '@apollo/react-hooks';
+import {ApolloProvider} from '@apollo/client';
 import {JamApolloClient} from './src/services/apollo';
+
+LogBox.ignoreLogs(['new NativeEventEmitter']); // Ignore log notification by message
+LogBox.ignoreLogs(['EventEmitter.removeListener']); // Ignore log notification by message
 
 enableScreens();
 

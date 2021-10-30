@@ -53,6 +53,7 @@ module.exports = {
 			// enable the rule specifically for TypeScript files
 			"files": ["*.ts", "*.tsx"],
 			"rules": {
+				"no-shadow": "off",
 				"react/destructuring-assignment": [0, "always", {"ignoreClassFields": true}],
 				"react/jsx-no-undef": 1,
 				"react/jsx-indent": [1, 'tab'],
@@ -60,6 +61,7 @@ module.exports = {
 				"react/no-did-mount-set-state": "off",
 				"react/no-did-update-set-state": "off",
 				"react/state-in-constructor": "off",
+				"@typescript-eslint/no-shadow": "error",
 				"@typescript-eslint/indent": ["error", "tab"],
 				"@typescript-eslint/no-inferrable-types": "off",
 				"@typescript-eslint/no-explicit-any": "off",

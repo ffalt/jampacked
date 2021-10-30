@@ -1,4 +1,4 @@
-import {AlbumType, JamObjectType, ListType} from '../jam';
+import {JamObjectType} from '../jam';
 import gql from 'graphql-tag';
 import {BaseEntryList, UseListCallFunctionTransform} from '../types';
 import {SeriesListResult, SeriesListResultVariables} from './types/SeriesListResult';

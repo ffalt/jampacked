@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {AppStackProps, Routing} from '../navigators/Routing';
+import {AppStackProps, AppRouting} from '../navigators/Routing';
 import {Logo} from '../components/Logo';
 
 const styles = StyleSheet.create({
@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-export const LoadingScreen: React.FC<AppStackProps<Routing.LOAD>> = React.memo(() =>
+export const LoadingScreen: React.FC<AppStackProps<AppRouting.LOAD>> = React.memo(() =>
 	(
 		<View style={styles.container}>
 			<Logo size={104}/>

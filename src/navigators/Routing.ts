@@ -4,7 +4,7 @@ import {AlbumType} from '../services/jam';
 
 // App Routes
 
-export enum Routing {
+export enum AppRouting {
 	AUTH = 'Auth',
 	APP = 'App',
 	LOAD = 'Load',

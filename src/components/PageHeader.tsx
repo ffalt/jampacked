@@ -23,7 +23,6 @@ const styles = StyleSheet.create({
 		flexDirection: 'column'
 	},
 	ListHeaderBackground: {
-//		marginTop: staticTheme.statusBarOffset,
 		height: staticTheme.iconHeaderHeight
 	},
 	ListHeader: {

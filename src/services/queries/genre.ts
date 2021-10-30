@@ -22,7 +22,7 @@ function transformData(data?: GenreResult): Genre | undefined {
 	}
 	return {
 		id: data.genre.id,
-		name: data.genre.name,
+		name: data.genre.name
 	};
 }
 

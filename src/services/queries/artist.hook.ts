@@ -1,4 +1,4 @@
-import {ApolloError} from 'apollo-client';
+import {ApolloError} from '@apollo/client';
 import {Artist, ArtistQuery} from './artist';
 import {useCacheOrLazyQuery} from '../cache-hooks';
 import {ArtistResult, ArtistResultVariables} from './types/ArtistResult';

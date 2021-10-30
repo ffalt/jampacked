@@ -1,4 +1,4 @@
-import {ApolloError} from 'apollo-client';
+import {ApolloError} from '@apollo/client';
 import {useCacheOrLazyQuery} from '../cache-hooks';
 import {SeriesResult, SeriesResultVariables} from './types/SeriesResult';
 import {useCallback} from 'react';

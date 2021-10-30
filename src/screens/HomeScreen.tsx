@@ -16,8 +16,7 @@ import {getStatusBarHeight} from 'react-native-status-bar-height';
 
 const styles = StyleSheet.create({
 	container: {
-		padding: staticTheme.padding,
-		// marginTop: staticTheme.statusBarOffset
+		padding: staticTheme.padding
 	},
 	userHeader: {
 		flexDirection: 'row',

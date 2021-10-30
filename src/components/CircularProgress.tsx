@@ -36,10 +36,7 @@ export const CircularProgress: React.FC<CircularProgressProps> = React.memo((
 		const cx = size / 2;
 		const cy = size / 2;
 		const circumference = r * 2 * PI;
-		const a = interpolate(1 - progress, {
-			inputRange: [0, 1],
-			outputRange: [0, PI * 2]
-		});
+		const a = interpolate(1 - progress, [0, 1], [0, PI * 2]);
 		const strokeDashoffset = multiply(a, r);
 		const strokeDasharray = `${circumference}, ${circumference}`;
 		setState({cx, cy, strokeDashoffset, r, strokeDasharray});

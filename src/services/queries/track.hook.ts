@@ -1,4 +1,4 @@
-import {ApolloError} from 'apollo-client';
+import {ApolloError} from '@apollo/client';
 import {TrackEntry} from '../types';
 import {useCacheOrLazyQuery} from '../cache-hooks';
 import {TrackResult, TrackResultVariables} from './types/TrackResult';

@@ -126,7 +126,7 @@ const sections = [
 		name: 'Library', items: [
 			JamRouteLinks.artists(),
 			JamRouteLinks.folders(),
-			// JamRouteLinks.tracks(),
+			JamRouteLinks.tracks(),
 			JamRouteLinks.genres()
 		]
 	},

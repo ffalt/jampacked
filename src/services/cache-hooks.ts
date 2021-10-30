@@ -1,8 +1,7 @@
 import {DocumentNode} from 'graphql';
 import {LazyQueryHookOptions, QueryLazyOptions} from '@apollo/client/react/types/types';
 import {useCallback, useEffect, useState} from 'react';
-import {useLazyQuery} from '@apollo/react-hooks';
-import {ApolloError} from 'apollo-client';
+import {ApolloError, useLazyQuery} from '@apollo/client';
 import dataService from './data';
 import {buildCacheID} from './cache-query';
 import {CacheState} from './cache';

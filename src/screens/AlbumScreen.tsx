@@ -36,7 +36,7 @@ export const AlbumScreen: React.FC<HomeRouteProps<HomeRoute.ALBUM>> = () => {
 		if (id) {
 			getAlbum(id);
 		}
-	}, [state, getAlbum]);
+	}, [id, getAlbum]);
 
 	useEffect(() => {
 		if (album) {

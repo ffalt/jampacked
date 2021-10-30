@@ -1,6 +1,6 @@
 import {SectionListData} from 'react-native';
 import {AlbumType, Jam, JamObjectType, ListType} from './jam';
-import {ApolloError} from 'apollo-client';
+import {ApolloError} from '@apollo/client';
 import {RouteLink} from '../navigators/Routes';
 
 export interface NavigParams {
@@ -8,6 +8,7 @@ export interface NavigParams {
 	name?: string;
 	albumType?: AlbumType;
 	listType?: string;
+	toQueue?: boolean;
 }
 
 export interface Navig {

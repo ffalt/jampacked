@@ -1,7 +1,7 @@
 import gql from 'graphql-tag';
 import {TrackEntry} from '../types';
 import {formatDuration} from '../../utils/duration.utils';
-import {PlaylistResult, PlaylistResult_playlist_entries_episode, PlaylistResult_playlist_entries_track, PlaylistResultVariables} from './types/PlaylistResult';
+import {PlaylistResult, PlaylistResult_playlist_entries_episode, PlaylistResultVariables} from './types/PlaylistResult';
 import {DocumentNode} from 'graphql';
 import {transformTrack} from './track';
 

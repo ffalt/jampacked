@@ -1,7 +1,7 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {ActivityIndicator, KeyboardAvoidingView, ScrollView, StyleSheet, Text, TextInput, View} from 'react-native';
 import {staticTheme, useTheme} from '../style/theming';
-import {AppStackProps, Routing} from '../navigators/Routing';
+import {AppStackProps, AppRouting} from '../navigators/Routing';
 import {LoginButton} from '../components/LoginButton';
 import {ThemedIcon} from '../components/ThemedIcon';
 import {Logo} from '../components/Logo';
@@ -12,7 +12,6 @@ import {getStatusBarHeight} from 'react-native-status-bar-height';
 const styles = StyleSheet.create({
 	container: {
 		padding: staticTheme.padding,
-	// 	paddingTop: staticTheme.statusBarOffset + staticTheme.padding,
 		flexDirection: 'column',
 		justifyContent: 'space-between',
 		flex: 1
@@ -103,7 +102,7 @@ const defaultState = (__DEV__)
 		password: ''
 	};
 
-export const LoginScreen: React.FC<AppStackProps<Routing.AUTH>> = () => {
+export const LoginScreen: React.FC<AppStackProps<AppRouting.AUTH>> = () => {
 	const [server, setServer] = useState<string>(defaultState.server);
 	const [name, setName] = useState<string>(defaultState.name);
 	const [password, setPassword] = useState<string>(defaultState.password);
@@ -207,7 +206,7 @@ export const LoginScreen: React.FC<AppStackProps<Routing.AUTH>> = () => {
 								value={server}
 								returnKeyType="next"
 								autoCapitalize="none"
-								autoCompleteType="name"
+								autoComplete="name"
 								textContentType="URL"
 								importantForAutofill="yes"
 								onSubmitEditing={focusUsername}
@@ -227,7 +226,7 @@ export const LoginScreen: React.FC<AppStackProps<Routing.AUTH>> = () => {
 								autoCorrect={false}
 								value={name}
 								importantForAutofill="yes"
-								autoCompleteType="username"
+								autoComplete="username"
 								textContentType="username"
 								returnKeyType="next"
 								autoCapitalize="none"
@@ -245,7 +244,7 @@ export const LoginScreen: React.FC<AppStackProps<Routing.AUTH>> = () => {
 								style={[styles.input, {color: theme.textColor}]}
 								placeholderTextColor={theme.muted}
 								placeholder="Password"
-								autoCompleteType="password"
+								autoComplete="password"
 								returnKeyType="done"
 								textContentType="password"
 								importantForAutofill="yes"
