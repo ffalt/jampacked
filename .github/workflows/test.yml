@@ -23,6 +23,11 @@ jobs:
         run: yarn run android:build:prepare
       - name: Gradle chmod Setup
         run: cd android && chmod +x gradlew
+      - name: Decode Keystore
+        env:
+          ENCODED_STRING: ${{ secrets.KEYSTORE }}
+        run: |
+          echo $ENCODED_STRING | base64 -di > android/app/jam_keystore.jks
       - name: Build application aab
         run: yarn run android:build:release:aab
         env:
