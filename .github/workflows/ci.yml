@@ -1,58 +1,17 @@
-name: Continuous Integration
+name: ci
 
 on:
   workflow_dispatch:
-  push:
+  pull_request:
     branches: [ main ]
-    tags-ignore:
-      - '**'
-    paths-ignore:
-      - 'README.md'
 
 jobs:
-  ci:
+  test:
     runs-on: ubuntu-latest
     container: reactnativecommunity/react-native-android
     steps:
       - uses: actions/checkout@v2
-      - name: Envinfo
-        run: npx envinfo
       - name: Install Dependencies
         run: yarn install
       - name: Test
-        run: yarn test
-      - name: Jettify
-        run: yarn run android:build:prepare
-      - name: Gradle chmod Setup
-        run: cd android && chmod +x gradlew
-      - name: Decode Keystore
-        env:
-          ENCODED_STRING: ${{ secrets.KEYSTORE }}
-        run: |
-          echo $ENCODED_STRING | base64 -di > android/app/jam_keystore.jks
-      - name: Build application apks
-        run: yarn run android:build:release:apk
-        env:
-          SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
-          SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
-          SIGNING_STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
-      - name: Build application aab
-        run: yarn run android:build:release:aab
-        env:
-          SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
-          SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
-          SIGNING_STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
-      - name: Generate Releaselog
-        if: startsWith(github.ref, 'refs/tags/')
-        run: yarn run releaselog
-      - name: Release
-        if: startsWith(github.ref, 'refs/tags/')
-        uses: softprops/action-gh-release@v1
-        with:
-          body_path: RELEASELOG.md
-          files: |
-            ./android/app/build/outputs/apk/release/app-arm64-v8a-release.apk
-            ./android/app/build/outputs/apk/release/app-armeabi-v7a-release.apk
-            ./android/app/build/outputs/apk/release/app-x86-release.apk
-            ./android/app/build/outputs/apk/release/app-x86_64-release.apk
-            ./android/app/build/outputs/bundle/release/app-release.aab
+        run: yarn run test

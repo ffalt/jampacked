@@ -1,0 +1,31 @@
+name: test
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+    tags-ignore:
+      - '**'
+    paths-ignore:
+      - 'README.md'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    container: reactnativecommunity/react-native-android
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install Dependencies
+        run: yarn install
+      - name: Test
+        run: yarn run test
+      - name: Jettify
+        run: yarn run android:build:prepare
+      - name: Gradle chmod Setup
+        run: cd android && chmod +x gradlew
+      - name: Build application aab
+        run: yarn run android:build:release:aab
+        env:
+          SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
+          SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
+          SIGNING_STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
