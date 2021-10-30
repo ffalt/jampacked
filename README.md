@@ -28,7 +28,7 @@ Note: You must provide your own `android/app/jam_keystore.jks`
 
 Run `yarn run android:build:release:apk` to build the app as multiple apk per platform. 
 
-Run `yarn run android:build:release:apk` to build the app as on multi platform aab.
+Run `yarn run android:build:release:aab` to build the app as on multi platform aab.
 
 Run `yarn run clean` to clean out the gradle cache & reinstall node modules.
 
