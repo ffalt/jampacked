@@ -2,7 +2,7 @@ import React, {MutableRefObject, useCallback, useState} from 'react';
 import {DefaultFlatList} from './DefFlatList';
 import {TrackEntry} from '../services/types';
 import {TrackDisplayFunction, TrackItem} from './TrackItem';
-import ActionSheet from 'react-native-actions-sheet/index';
+import ActionSheet from 'react-native-actions-sheet';
 import {ActionSheetTrack} from './ActionSheetTrack';
 import {useTheme} from '../style/theming';
 import {ErrorView} from './ErrorView';

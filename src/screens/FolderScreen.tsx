@@ -15,7 +15,7 @@ import {useLazyFolderQuery} from '../services/queries/folder.hook';
 import {DefaultFlatList} from '../components/DefFlatList';
 import {MUSICBRAINZ_VARIOUS_ARTISTS_NAME} from './AlbumScreen';
 import {TrackEntry} from '../services/types';
-import ActionSheet from 'react-native-actions-sheet/index';
+import ActionSheet from 'react-native-actions-sheet';
 import {ActionSheetTrack} from '../components/ActionSheetTrack';
 import {useTheme} from '../style/theming';
 
