@@ -1916,7 +1916,7 @@ export declare namespace JamParameters {
 
 	export type WaveformWaveformArgs = WaveformArgs & ID;
 
-	export type StreamStreamArgs = ID & StreamArgs;
+	export type StreamStreamArgs = StreamArgs & ID;
 
 	export type ArtworkIdArgs = IncludesFolderArgs & IncludesArtworkChildrenArgs & IncludesArtworkArgs & ID;
 

@@ -22,10 +22,11 @@
     "build:query-types": "apollo codegen:generate --localSchemaFile=schema.graphql --no-addTypename --target=typescript --includes=src/**/*.ts --tagName=gql --globalTypesFile=src/services/queries/types/graphql-types.ts types"
   },
   "resolutions": {
+    "apollo-language-server": "1.26.8",
     "graphql": "15.7.2"
   },
   "dependencies": {
-    "@apollo/client": "3.4.17",
+    "@apollo/client": "3.5.5",
     "@babel/preset-typescript": "7.16.7",
     "@callstack/react-theme-provider": "3.0.7",
     "@react-native-async-storage/async-storage": "1.17.0",
@@ -90,10 +91,11 @@
     "@typescript-eslint/eslint-plugin": "5.16.0",
     "@typescript-eslint/parser": "5.16.0",
     "@welldone-software/why-did-you-render": "6.2.3",
-    "apollo": "2.33.9",
+    "apollo": "2.33.10",
+    "apollo-language-server": "1.26.8",
     "babel-jest": "27.5.1",
     "conventional-changelog-cli": "2.2.2",
-    "eslint": "8.12.0",
+    "eslint": "7.32.0",
     "eslint-plugin-import": "2.25.4",
     "eslint-plugin-jsx-a11y": "6.5.1",
     "eslint-plugin-react-hooks": "next",

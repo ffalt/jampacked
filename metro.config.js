@@ -1,9 +1,8 @@
-const {getDefaultConfig} = require('metro-config')
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const {getDefaultConfig} = require('metro-config');
 
 module.exports = (async () => {
-	const {
-		resolver: { sourceExts },
-	} = await getDefaultConfig()
+	const {resolver: {sourceExts}} = await getDefaultConfig();
 	return {
 		transformer: {
 			getTransformOptions: async () => ({
@@ -14,7 +13,7 @@ module.exports = (async () => {
 			})
 		},
 		resolver: {
-			sourceExts: [...sourceExts, 'cjs'],
-		},
-	}
+			sourceExts: [...sourceExts, 'cjs']
+		}
+	};
 })();
