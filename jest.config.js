@@ -33,7 +33,16 @@ module.exports = {
 		+ '|react-native-actions-sheet'
 		+ '|react-native-background-downloader'
 		+ '|react-native-background-timer'
-		+ ')/)'],
+		+ '|d3-scale'
+		+ '|d3-array'
+		+ '|d3-color'
+		+ '|d3-format'
+		+ '|d3-time'
+		+ '|d3-time-format'
+		+ '|d3-interpolate'
+		+ '|internmap'
+		+ ')/)',
+	],
 	setupFiles: [
 		'./node_modules/react-native-gesture-handler/jestSetup.js',
 		'./__mocks__/jestSetup.js'
