@@ -19,7 +19,13 @@ const scrobble: {
 };
 
 async function monitorProgress(): Promise<void> {
-	const id = await TrackPlayer.getCurrentTrack();
+	const index = await TrackPlayer.getCurrentTrack();
+	const q = await TrackPlayer.getQueue();
+	const id = q[index]?.id;
+	if (!id) {
+		scrobble.done = false;
+		return;
+	}
 	if (id !== scrobble.id) {
 		scrobble.time = MONITOR_INTERVAL;
 		scrobble.id = id;
@@ -33,7 +39,7 @@ async function monitorProgress(): Promise<void> {
 	}
 	if (!scrobble.done && scrobble.trigger > 0 && scrobble.time > scrobble.trigger) {
 		scrobble.done = true;
-		dataService.scrobble(scrobble.id)
+		dataService.scrobble(id)
 			.catch(e => {
 				console.error(e);
 			});

@@ -1,6 +1,5 @@
 package org.ffalt.jam;
 
-import android.os.Bundle;
 import android.content.res.Configuration;
 
 import com.facebook.react.ReactActivity;
@@ -21,23 +20,19 @@ public class MainActivity extends ReactActivity {
   }
 
   @Override
-  protected void onCreate(Bundle savedInstanceState) {
-     // RNBootSplash.init(this, R.style.AppTheme);
-     super.onCreate(null);
-     int drawableId = (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
-                     ? R.drawable.bootsplash_dark
-                     : R.drawable.bootsplash_light; //Default light theme
+  protected ReactActivityDelegate createReactActivityDelegate() {
+	return new ReactActivityDelegate(this, getMainComponentName()) {
+	    @Override
+		protected ReactRootView createRootView() {
+		    return new RNGestureHandlerEnabledRootView(MainActivity.this);
+		}
 
-     RNBootSplash.init(drawableId, MainActivity.this);
- }
+          @Override
+          protected void loadApp(String appKey) {
+             RNBootSplash.init(getPlainActivity());
+             super.loadApp(appKey);
+          }
+	};
+  }
 
-  @Override
-	protected ReactActivityDelegate createReactActivityDelegate() {
-		return new ReactActivityDelegate(this, getMainComponentName()) {
-			@Override
-			protected ReactRootView createRootView() {
-				return new RNGestureHandlerEnabledRootView(MainActivity.this);
-			}
-		};
-	}
 }

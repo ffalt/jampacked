@@ -186,41 +186,14 @@ export function useQueue(): Array<TrackPlayerTrack> | undefined {
 	return queue;
 }
 
-export function useCurrentTrack(): TrackPlayerTrack | undefined {
-	const [trackId, setTrackId] = useState<string | undefined>(undefined);
-	const [track, setTrack] = useState<TrackPlayerTrack | undefined>(undefined);
-
-	async function getTrack(tId: string | undefined): Promise<TrackPlayerTrack | undefined> {
-		const q = await TrackPlayer.getQueue();
-		return q.find(({id}) => id === tId) || undefined;
-	}
-
-	useTrackPlayerEvents(
-		[Event.PlaybackTrackChanged], event => {
-			if (trackId !== event.nextTrack) {
-				setTrackId(event.nextTrack);
-			}
-		}
-	);
-
-	useEffect(() => {
-		let didCancel = false;
-		TrackPlayer.getCurrentTrack().then(tId => {
-			if (!didCancel) {
-				setTrackId(tId);
-				getTrack(tId).then(t => setTrack(t));
-			}
-		});
-		return (): void => {
-			didCancel = true;
-		};
-	}, [trackId]);
-
-	return track;
-}
 
 export function useCurrentTrackID(): string | undefined {
 	const [trackId, setTrackId] = useState<string | undefined>(undefined);
+
+	async function getTrack(tnr: number | undefined): Promise<TrackPlayerTrack | undefined> {
+		const q = await TrackPlayer.getQueue();
+		return tnr !== undefined ? q[tnr] : undefined;
+	}
 
 	useTrackPlayerEvents(
 		[Event.PlaybackTrackChanged], event => {
@@ -233,9 +206,11 @@ export function useCurrentTrackID(): string | undefined {
 	useEffect(() => {
 		let isSubscribed = true;
 		TrackPlayer.getCurrentTrack().then(tId => {
-			if (isSubscribed && trackId !== tId) {
-				setTrackId(tId);
-			}
+			getTrack(tId).then(t => {
+				if (isSubscribed && t && trackId !== t.id) {
+					setTrackId(t.id);
+				}
+			});
 		});
 		return (): void => {
 			isSubscribed = false;
@@ -243,6 +218,43 @@ export function useCurrentTrackID(): string | undefined {
 	}, [trackId]);
 
 	return trackId;
+}
+
+export function useCurrentTrack(): TrackPlayerTrack | undefined {
+	const [trackNr, setTrackNr] = useState<number | undefined>(undefined);
+	const [track, setTrack] = useState<TrackPlayerTrack | undefined>(undefined);
+
+	async function getTrack(tnr: number | undefined): Promise<TrackPlayerTrack | undefined> {
+		const q = await TrackPlayer.getQueue();
+		return tnr !== undefined ? q[tnr] : undefined;
+	}
+
+	useTrackPlayerEvents(
+		[Event.PlaybackTrackChanged], event => {
+			if (trackNr !== event.nextTrack) {
+				setTrackNr(event.nextTrack);
+			}
+		}
+	);
+
+	useEffect(() => {
+		let didCancel = false;
+		TrackPlayer.getCurrentTrack().then(tnr => {
+			if (!didCancel) {
+				setTrackNr(tnr);
+				getTrack(tnr).then(t => {
+					if (!didCancel) {
+						setTrack(t);
+					}
+				});
+			}
+		});
+		return (): void => {
+			didCancel = true;
+		};
+	}, [trackNr]);
+
+	return track;
 }
 
 export function useCurrentTrackIndex(): number | undefined {
@@ -258,7 +270,7 @@ export function useCurrentTrackIndex(): number | undefined {
 
 	useEffect(() => {
 		let isSubscribed = true;
-		TrackPlayer.getCurrentTrackIndex().then(i => {
+		TrackPlayer.getCurrentTrack().then(i => {
 			if (isSubscribed && trackIndex !== i) {
 				setTrackIndex(i);
 			}
