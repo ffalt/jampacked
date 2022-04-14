@@ -16,7 +16,7 @@ def getGitVersion() {
      def process = "git rev-list main --first-parent --count".execute()
      return process.text.toInteger()
    } catch (Exception e) {
-     return 0;
+     return 1;
    }
 }
 
