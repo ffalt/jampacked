@@ -11,7 +11,6 @@ jobs:
     container: reactnativecommunity/react-native-android
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-python@v3
       - name: Install Dependencies
         run: yarn install
       - name: Test
