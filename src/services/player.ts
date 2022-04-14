@@ -188,6 +188,7 @@ export function useQueue(): Array<TrackPlayerTrack> | undefined {
 
 
 export function useCurrentTrackID(): string | undefined {
+	const [trackNr, setTrackNr] = useState<number | undefined>(undefined);
 	const [trackId, setTrackId] = useState<string | undefined>(undefined);
 
 	async function getTrack(tnr: number | undefined): Promise<TrackPlayerTrack | undefined> {
@@ -197,16 +198,19 @@ export function useCurrentTrackID(): string | undefined {
 
 	useTrackPlayerEvents(
 		[Event.PlaybackTrackChanged], event => {
-			if (trackId !== event.nextTrack) {
-				setTrackId(event.nextTrack);
+			if (trackNr !== event.nextTrack) {
+				setTrackNr(event.nextTrack);
 			}
 		}
 	);
 
 	useEffect(() => {
 		let isSubscribed = true;
-		TrackPlayer.getCurrentTrack().then(tId => {
-			getTrack(tId).then(t => {
+		TrackPlayer.getCurrentTrack().then(tNr => {
+			if (isSubscribed && trackNr !== tNr) {
+				setTrackNr(tNr);
+			}
+			getTrack(tNr).then(t => {
 				if (isSubscribed && t && trackId !== t.id) {
 					setTrackId(t.id);
 				}
@@ -215,7 +219,7 @@ export function useCurrentTrackID(): string | undefined {
 		return (): void => {
 			isSubscribed = false;
 		};
-	}, [trackId]);
+	}, [trackNr, trackId]);
 
 	return trackId;
 }

@@ -47,7 +47,7 @@ export async function initApolloClient(dataService: DataService): Promise<JamApo
 	const errorLink = onError(({graphQLErrors, networkError}) => {
 		if (graphQLErrors) {
 			graphQLErrors.map(({message, locations, path}) =>
-				console.error(`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`),
+				console.error(`[GraphQL error]: Message: ${message}, Location: ${JSON.stringify(locations)}, Path: ${path}`),
 			);
 		}
 		if (networkError) {

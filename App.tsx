@@ -15,10 +15,9 @@ LogBox.ignoreLogs([
 	"[react-native-gesture-handler] Seems like you're using an old API with gesture components, check out new Gestures system!",
 	'[GESTURE HANDLER] Gesture handler is already enabled for a parent view',
 	'new NativeEventEmitter',
-	'EventEmitter.removeListener'
+	'EventEmitter.removeListener',
+	'Require cycle: node_modules/d3-interpolate'
 ]);
-// LogBox.ignoreLogs(['new NativeEventEmitter']); // Ignore log notification by message
-// LogBox.ignoreLogs(['EventEmitter.removeListener']); // Ignore log notification by message
 
 enableScreens();
 
