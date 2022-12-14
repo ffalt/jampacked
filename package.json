@@ -26,7 +26,7 @@
     "graphql": "15.7.2"
   },
   "dependencies": {
-    "@apollo/client": "3.5.5",
+    "@apollo/client": "3.7.2",
     "@babel/preset-typescript": "7.16.7",
     "@callstack/react-theme-provider": "3.0.7",
     "@react-native-async-storage/async-storage": "1.17.10",
@@ -52,7 +52,7 @@
     "react-native-background-downloader": "ffalt/react-native-background-downloader",
     "react-native-background-timer": "2.4.1",
     "react-native-bootsplash": "4.3.2",
-    "react-native-fast-image": "ffalt/react-native-fast-image",
+    "react-native-fast-image": "8.6.3",
     "react-native-fs": "2.20.0",
     "react-native-gesture-handler": "2.6.0",
     "react-native-linear-gradient": "2.6.2",
