@@ -9,9 +9,8 @@ export const useScreenDimensions = (): (ScaledSize & { isLandscape: boolean }) =
 			setScreenData(result.screen);
 		};
 
-		Dimensions.addEventListener('change', onChange);
-
-		return (): void => Dimensions.removeEventListener('change', onChange);
+		const dimensionsSubscription = Dimensions.addEventListener('change', onChange);
+		return (): void => dimensionsSubscription.remove();
 	});
 
 	return {
@@ -28,9 +27,8 @@ export const useWindowDimensions = (): (ScaledSize & { isLandscape: boolean }) =
 			setWindowData(result.window);
 		};
 
-		Dimensions.addEventListener('change', onChange);
-
-		return (): void => Dimensions.removeEventListener('change', onChange);
+		const dimensionsSubscription = Dimensions.addEventListener('change', onChange);
+		return (): void => dimensionsSubscription.remove();
 	});
 
 	return {
@@ -47,9 +45,8 @@ export const useWindowWidth = (): number => {
 			setWidth(result.window.width);
 		};
 
-		Dimensions.addEventListener('change', onChange);
-
-		return (): void => Dimensions.removeEventListener('change', onChange);
+		const dimensionsSubscription = Dimensions.addEventListener('change', onChange);
+		return (): void => dimensionsSubscription.remove();
 	});
 
 	return width;
