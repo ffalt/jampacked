@@ -1,0 +1,12 @@
+query FavResult($id: ID!) {
+    state(id: $id) {
+        id
+        faved
+    }
+}
+mutation SetFavResult($id: ID!, $remove: Boolean) {
+    fav(id: $id, remove: $remove ) {
+        id
+        faved
+    }
+}

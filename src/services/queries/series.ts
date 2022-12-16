@@ -1,27 +1,11 @@
-import gql from 'graphql-tag';
 import {AlbumType, JamObjectType} from '../jam';
 import {SectionListData} from 'react-native';
 import {BaseEntry} from '../types';
-import {SeriesResult, SeriesResultVariables} from './types/SeriesResult';
 import {DocumentNode} from 'graphql';
-
-const GET_SERIES = gql`
-    query SeriesResult($id: ID!) {
-        series(id:$id) {
-            id
-            name
-            artist {id name}
-            tracksCount
-            albums{
-                id
-                name
-                albumType
-                seriesNr
-                year
-            }
-        }
-    }
-`;
+import {ApolloError} from '@apollo/client';
+import {useCacheOrLazyQuery} from '../cache-hooks';
+import {useCallback} from 'react';
+import {SeriesResultDocument, SeriesResultQuery, SeriesResultQueryVariables} from './series.api';
 
 export interface AlbumEntry {
 	id: string;
@@ -41,7 +25,7 @@ export interface Series {
 	sections: Array<SectionListData<BaseEntry>>;
 }
 
-function transformData(data?: SeriesResult): Series | undefined {
+function transformData(data?: SeriesResultQuery): Series | undefined {
 	if (!data) {
 		return;
 	}
@@ -86,12 +70,23 @@ function transformData(data?: SeriesResult): Series | undefined {
 	};
 }
 
-function transformVariables(id: string): SeriesResultVariables {
+function transformVariables(id: string): SeriesResultQueryVariables {
 	return {id};
 }
 
 export const SeriesQuery: {
 	query: DocumentNode;
-	transformData: (d?: SeriesResult, variables?: SeriesResultVariables) => Series | undefined;
-	transformVariables: (id: string) => SeriesResultVariables;
-} = {query: GET_SERIES, transformData, transformVariables};
+	transformData: (d?: SeriesResultQuery, variables?: SeriesResultQueryVariables) => Series | undefined;
+	transformVariables: (id: string) => SeriesResultQueryVariables;
+} = {query: SeriesResultDocument, transformData, transformVariables};
+
+export const useLazySeriesQuery = (): [(id: string, forceRefresh?: boolean) => void,
+	{ loading: boolean, error?: ApolloError, series?: Series, called: boolean }
+] => {
+	const [query, {loading, error, data, called}] =
+		useCacheOrLazyQuery<SeriesResultQuery, SeriesResultQueryVariables, Series>(SeriesQuery.query, SeriesQuery.transformData);
+	const get = useCallback((id: string, forceRefresh?: boolean): void => {
+		query({variables: SeriesQuery.transformVariables(id)}, forceRefresh);
+	}, [query]);
+	return [get, {loading, called, error, series: data}];
+};

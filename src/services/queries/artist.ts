@@ -1,31 +1,11 @@
-import gql from 'graphql-tag';
 import {AlbumType, JamObjectType} from '../jam';
 import {SectionListData} from 'react-native';
 import {BaseEntry} from '../types';
-import {ArtistResult, ArtistResultVariables} from './types/ArtistResult';
 import {DocumentNode} from 'graphql';
-
-const GET_ARTIST = gql`
-    query ArtistResult($id: ID!) {
-        artist(id:$id) {
-            id
-            name
-            albumsCount
-            tracksCount
-            genres {
-                id
-                name
-            }
-            albums {
-                id
-                name
-                albumType
-                seriesNr
-                year
-            }
-        }
-    }
-`;
+import {ApolloError} from '@apollo/client';
+import {useCacheOrLazyQuery} from '../cache-hooks';
+import {useCallback} from 'react';
+import {ArtistResultDocument, ArtistResultQuery, ArtistResultQueryVariables} from './artist.api';
 
 export interface AlbumEntry {
 	id: string;
@@ -45,7 +25,7 @@ export interface Artist {
 	sections: Array<SectionListData<BaseEntry>>;
 }
 
-function transformData(data?: ArtistResult): Artist | undefined {
+function transformData(data?: ArtistResultQuery): Artist | undefined {
 	if (!data) {
 		return;
 	}
@@ -85,12 +65,23 @@ function transformData(data?: ArtistResult): Artist | undefined {
 	};
 }
 
-function transformVariables(id: string): ArtistResultVariables {
+function transformVariables(id: string): ArtistResultQueryVariables {
 	return {id};
 }
 
 export const ArtistQuery: {
 	query: DocumentNode;
-	transformData: (d?: ArtistResult, variables?: ArtistResultVariables) => Artist | undefined;
-	transformVariables: (id: string) => ArtistResultVariables;
-} = {query: GET_ARTIST, transformData, transformVariables};
+	transformData: (d?: ArtistResultQuery, variables?: ArtistResultQueryVariables) => Artist | undefined;
+	transformVariables: (id: string) => ArtistResultQueryVariables;
+} = {query: ArtistResultDocument, transformData, transformVariables};
+
+export const useLazyArtistQuery = (): [(id: string, forceRefresh?: boolean) => void,
+	{ loading: boolean, error?: ApolloError, artist?: Artist, called: boolean }
+] => {
+	const [query, {loading, error, data, called}] =
+		useCacheOrLazyQuery<ArtistResultQuery, ArtistResultQueryVariables, Artist>(ArtistQuery.query, ArtistQuery.transformData);
+	const get = useCallback((id: string, forceRefresh?: boolean): void => {
+		query({variables: ArtistQuery.transformVariables(id)}, forceRefresh);
+	}, [query]);
+	return [get, {loading, called, error, artist: data}];
+};

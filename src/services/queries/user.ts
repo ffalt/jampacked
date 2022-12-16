@@ -1,72 +1,21 @@
-import gql from 'graphql-tag';
-import {UserResult, UserResult_currentUser_stats_favorite, UserResult_currentUser_stats_played} from './types/UserResult';
 import {HomeStatsData} from '../types';
 import {AlbumType, ListType} from '../jam';
 import {JamRouteLinks} from '../../navigators/Routes';
 import {DocumentNode} from 'graphql';
-
-const GET_USERDATA = gql`
-    query UserResult {
-        currentUser {
-            stats {
-                bookmark
-                playlist
-                favorite {
-                    album
-                    albumTypes {
-                        album
-                        artistCompilation
-                        audiobook
-                        compilation
-                        series
-                        single
-                        soundtrack
-                        ep
-                        live
-                        bootleg
-                        unknown
-                    }
-                    artist
-                    artistTypes {
-                        album
-                    }
-                    folder
-                    series
-                    track
-                }
-                played {
-                    album
-                    albumTypes {
-                        album
-                        artistCompilation
-                        audiobook
-                        compilation
-                        series
-                        single
-                        soundtrack
-                        ep
-                        live
-                        bootleg
-                        unknown
-                    }
-                    artist
-                    artistTypes {
-                        album
-                    }
-                    folder
-                    series
-                    track
-                }
-            }
-        }
-    }
-`;
+import {ApolloError} from '@apollo/client';
+import {useCacheOrLazyQuery} from '../cache-hooks';
+import {useCallback} from 'react';
+import {UserResultDocument, UserResultQuery, UserResultQueryVariables} from './user.api';
 
 export interface UserDataResult {
 	stats: HomeStatsData;
 	favorites: HomeStatsData;
 	played: HomeStatsData;
 }
+
+export type UserResult_currentUser_stats = NonNullable<UserResultQuery>['currentUser']['stats'];
+export type UserResult_currentUser_stats_favorite = NonNullable<UserResult_currentUser_stats>['favorite'];
+export type UserResult_currentUser_stats_played = NonNullable<UserResult_currentUser_stats>['played'];
 
 function transformSectionStats(stats: UserResult_currentUser_stats_played | UserResult_currentUser_stats_favorite, listType: ListType): HomeStatsData {
 	return [
@@ -85,7 +34,7 @@ function transformSectionStats(stats: UserResult_currentUser_stats_played | User
 	].filter(t => t.value > 0);
 }
 
-function transformData(data?: UserResult): UserDataResult | undefined {
+function transformData(data?: UserResultQuery): UserDataResult | undefined {
 	if (!data?.currentUser) {
 		return;
 	}
@@ -99,13 +48,24 @@ function transformData(data?: UserResult): UserDataResult | undefined {
 	return {stats: base, favorites, played};
 }
 
-function transformVariables(): void {
-	return;
+function transformVariables(): UserResultQueryVariables {
+	return {};
 }
 
 export const UserQuery: {
 	query: DocumentNode;
-	transformData: (d?: UserResult, variables?: void) => UserDataResult | undefined;
-	transformVariables: (id: string) => void;
-} = {query: GET_USERDATA, transformData, transformVariables};
+	transformData: (d?: UserResultQuery, variables?: UserResultQueryVariables) => UserDataResult | undefined;
+	transformVariables: (id: string) => UserResultQueryVariables;
+} = {query: UserResultDocument, transformData, transformVariables};
 
+
+export const useLazyUserDataQuery = (): [(forceRefresh?: boolean) => void,
+	{ loading: boolean, error?: ApolloError, userData?: UserDataResult, called: boolean }
+] => {
+	const [query, {loading, error, data, called}] =
+		useCacheOrLazyQuery<UserResultQuery, UserResultQueryVariables, UserDataResult>(UserQuery.query, UserQuery.transformData);
+	const get = useCallback((forceRefresh?: boolean): void => {
+		query({}, forceRefresh);
+	}, [query]);
+	return [get, {loading, called, error, userData: data}];
+};

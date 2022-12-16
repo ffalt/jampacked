@@ -1,0 +1,15 @@
+query SeriesResult($id: ID!) {
+    series(id:$id) {
+        id
+        name
+        artist {id name}
+        tracksCount
+        albums{
+            id
+            name
+            albumType
+            seriesNr
+            year
+        }
+    }
+}

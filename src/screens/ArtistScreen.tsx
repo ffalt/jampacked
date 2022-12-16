@@ -8,7 +8,7 @@ import {genreDisplay} from '../utils/genre.utils';
 import {FavIcon} from '../components/FavIcon';
 import {JamObjectType} from '../services/jam';
 import {BaseEntry} from '../services/types';
-import {useLazyArtistQuery} from '../services/queries/artist.hook';
+import {useLazyArtistQuery} from '../services/queries/artist';
 import {DefaultSectionList} from '../components/DefSectionList';
 import {sharedStyles} from '../style/shared';
 
@@ -23,7 +23,7 @@ const buildDetails = (albums?: number, tracks?: number, genre?: string): Array<H
 export const ArtistScreen: React.FC<HomeRouteProps<HomeRoute.ARTIST>> = ({route}) => {
 	const [details, setDetails] = useState<Array<HeaderDetail>>(buildDetails());
 	const [getArtist, {loading, error, artist}] = useLazyArtistQuery();
-	const {id, name} = route?.params;
+	const {id, name} = (route?.params || {});
 
 	useEffect(() => {
 		if (id) {

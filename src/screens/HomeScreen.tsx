@@ -11,7 +11,7 @@ import {useAuth} from '../services/auth';
 import dataService from '../services/data';
 import {NavigationService} from '../navigators/navigation';
 import {ErrorView} from '../components/ErrorView';
-import {useLazyHomeDataQuery} from '../services/queries/home.hook';
+import {useLazyHomeDataQuery} from '../services/queries/home';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
 
 const styles = StyleSheet.create({

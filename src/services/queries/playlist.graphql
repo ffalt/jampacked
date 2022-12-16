@@ -1,0 +1,51 @@
+query PlaylistResult($id: ID!) {
+    playlist(id:$id) {
+        id
+        name
+        comment
+        entries {
+            track {
+                id
+                name
+                album {
+                    id
+                    name
+                }
+                artist {
+                    id
+                    name
+                }
+                series {
+                    id
+                    name
+                }
+                genres {
+                    id
+                    name
+                }
+                tag {
+                    mediaDuration
+                    title
+                    disc
+                    trackNr
+                }
+            }
+            episode {
+                id
+                name
+                podcast {
+                    id
+                }
+                tag {
+                    mediaDuration
+                    title
+                    artist
+                    genres
+                    album
+                    disc
+                    trackNr
+                }
+            }
+        }
+    }
+}

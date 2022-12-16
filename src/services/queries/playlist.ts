@@ -1,65 +1,22 @@
-import gql from 'graphql-tag';
 import {TrackEntry} from '../types';
 import {formatDuration} from '../../utils/duration.utils';
-import {PlaylistResult, PlaylistResult_playlist_entries_episode, PlaylistResultVariables} from './types/PlaylistResult';
 import {DocumentNode} from 'graphql';
 import {transformTrack} from './track';
+import {ApolloError} from '@apollo/client';
+import {useCacheOrLazyQuery} from '../cache-hooks';
+import {useCallback} from 'react';
+import {PlaylistResultDocument, PlaylistResultQuery, PlaylistResultQueryVariables} from './playlist.api';
 
-const GET_PLAYLIST = gql`
-    query PlaylistResult($id: ID!) {
-        playlist(id:$id) {
-            id
-            name
-            comment
-            entries {
-                track {
-					id
-					name
-					album {
-						id
-						name
-					}
-					artist {
-						id
-						name
-					}
-					series {
-						id
-						name
-					}
-					genres {
-						id
-						name
-					}
-					tag {
-						mediaDuration
-						title
-						disc
-						trackNr
-					}
-                }
-                episode {
-                    id
-                    name
-                    podcast {
-                        id
-                    }
-                    tag {
-                        mediaDuration
-                        title
-                        artist
-                        genres
-                        album
-                        disc
-                        trackNr
-                    }
-                }
-            }
-        }
-    }
-`;
+export type PlaylistResult_playlist_entries_episode = NonNullable<PlaylistResultQuery>['playlist']['entries'][number]['episode'];
 
-export const formatEpisode = (episode: PlaylistResult_playlist_entries_episode): TrackEntry => {
+export interface Playlist {
+	id: string;
+	name: string;
+	comment?: string;
+	tracks: Array<TrackEntry>;
+}
+
+export const transformEpisode = (episode: PlaylistResult_playlist_entries_episode): TrackEntry => {
 	return {
 		id: episode.id,
 		title: episode.tag?.title || episode.name,
@@ -73,20 +30,13 @@ export const formatEpisode = (episode: PlaylistResult_playlist_entries_episode):
 	};
 };
 
-export interface Playlist {
-	id: string;
-	name: string;
-	comment?: string;
-	tracks: Array<TrackEntry>;
-}
-
-function transformData(data?: PlaylistResult): Playlist | undefined {
+function transformData(data?: PlaylistResultQuery): Playlist | undefined {
 	if (!data) {
 		return;
 	}
 	const tracks: Array<TrackEntry> = [];
 	(data.playlist.entries || []).map(entry => {
-		const item = entry.track ? transformTrack(entry.track) : (entry.episode ? formatEpisode(entry.episode) : undefined);
+		const item = entry.track ? transformTrack(entry.track) : (entry.episode ? transformEpisode(entry.episode) : undefined);
 		if (item) {
 			tracks.push(item);
 		}
@@ -98,12 +48,22 @@ function transformData(data?: PlaylistResult): Playlist | undefined {
 	};
 }
 
-function transformVariables(id: string): PlaylistResultVariables {
+function transformVariables(id: string): PlaylistResultQueryVariables {
 	return {id};
 }
 
 export const PlaylistQuery: {
 	query: DocumentNode;
-	transformData: (d?: PlaylistResult, variables?: PlaylistResultVariables) => Playlist | undefined;
-	transformVariables: (id: string) => PlaylistResultVariables;
-} = {query: GET_PLAYLIST, transformData, transformVariables};
+	transformData: (d?: PlaylistResultQuery, variables?: PlaylistResultQueryVariables) => Playlist | undefined;
+	transformVariables: (id: string) => PlaylistResultQueryVariables;
+} = {query: PlaylistResultDocument, transformData, transformVariables};
+
+export const useLazyPlaylistQuery = (): [(id: string, forceRefresh?: boolean) => void,
+	{ loading: boolean, error?: ApolloError, playlist?: Playlist, called: boolean }] => {
+	const [query, {loading, error, data, called}] =
+		useCacheOrLazyQuery<PlaylistResultQuery, PlaylistResultQueryVariables, Playlist>(PlaylistQuery.query, PlaylistQuery.transformData);
+	const get = useCallback((id: string, forceRefresh?: boolean): void => {
+		query({variables: PlaylistQuery.transformVariables(id)}, forceRefresh);
+	}, [query]);
+	return [get, {loading, error, called, playlist: data}];
+};

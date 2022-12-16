@@ -1,0 +1,28 @@
+query TrackResult($id: ID!) {
+    track(id:$id) {
+        id
+        name
+        album {
+            id
+            name
+        }
+        artist {
+            id
+            name
+        }
+        series {
+            id
+            name
+        }
+        genres {
+            id
+            name
+        }
+        tag {
+            mediaDuration
+            title
+            disc
+            trackNr
+        }
+    }
+}

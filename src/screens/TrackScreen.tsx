@@ -10,7 +10,7 @@ import {FavIcon} from '../components/FavIcon';
 import {Lyrics} from '../components/Lyrics';
 import {useTheme} from '../style/theming';
 import {ErrorView} from '../components/ErrorView';
-import {useLazyTrackQuery} from '../services/queries/track.hook';
+import {useLazyTrackQuery} from '../services/queries/track';
 
 const buildDetails = (artist?: string, album?: string, genre?: string): Array<HeaderDetail> => {
 	return [
@@ -24,7 +24,7 @@ export const TrackScreen: React.FC<HomeRouteProps<HomeRoute.TRACK>> = ({route}) 
 	const theme = useTheme();
 	const [details, setDetails] = useState<Array<HeaderDetail>>(buildDetails());
 	const [getTrack, {loading, error, track}] = useLazyTrackQuery();
-	const {id, name} = route?.params;
+	const {id, name} = (route?.params || {});
 
 	useEffect(() => {
 		if (id) {

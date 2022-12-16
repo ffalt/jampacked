@@ -1,80 +1,19 @@
-import gql from 'graphql-tag';
 import {HomeData, HomeStatsData} from '../types';
 import {HomeRoute} from '../../navigators/Routing';
 import {AlbumType} from '../jam';
-import {HomeResult} from './types/HomeResult';
 import {JamRouteLinks} from '../../navigators/Routes';
 import {DocumentNode} from 'graphql';
-
-const GET_HOMEDATA = gql`
-    query HomeResult {
-        artistsRecent: artists(list: recent, filter:{albumTypes: [album]}, page:{take:5}) {
-            items {
-                id
-                name
-            }
-        }
-        artistsFaved: artists(list: faved, filter:{albumTypes: [album]}, page:{take:5}) {
-            items {
-                id
-                name
-            }
-        }
-        albumsRecent: albums(list: recent, filter:{albumTypes: [album]}, page:{take:5}) {
-            items {
-                id
-                name
-            }
-        }
-        albumsFaved: albums(list: faved, filter:{albumTypes: [album]}, page:{take:5}) {
-            items {
-                id
-                name
-            }
-        }
-        podcasts(page:{take:0}) {
-            total
-        }
-        stats {
-            track
-            folder
-            series
-            artist
-            artistTypes {
-                album
-                compilation
-                artistCompilation
-                unknown
-                live
-                audiobook
-                soundtrack
-                bootleg
-                ep
-                single
-            }
-            album
-            albumTypes {
-                album
-                compilation
-                artistCompilation
-                unknown
-                live
-                audiobook
-                soundtrack
-                bootleg
-                ep
-                single
-            }
-        }
-    }
-`;
+import {ApolloError} from '@apollo/client';
+import {useCacheOrLazyQuery} from '../cache-hooks';
+import {useCallback} from 'react';
+import {HomeResultDocument, HomeResultQuery} from './home.api';
 
 export interface HomeDataResult {
 	stats: HomeStatsData;
 	homeData: HomeData;
 }
 
-function transformData(data?: HomeResult): HomeDataResult | undefined {
+function transformData(data?: HomeResultQuery): HomeDataResult | undefined {
 	if (!data) {
 		return;
 	}
@@ -108,6 +47,17 @@ function transformVariables(): void {
 
 export const HomeQuery: {
 	query: DocumentNode;
-	transformData: (d?: HomeResult, variables?: void) => HomeDataResult | undefined;
+	transformData: (d?: HomeResultQuery, variables?: void) => HomeDataResult | undefined;
 	transformVariables: () => void;
-} = {query: GET_HOMEDATA, transformData, transformVariables};
+} = {query: HomeResultDocument, transformData, transformVariables};
+
+export const useLazyHomeDataQuery = (): [(forceRefresh?: boolean) => void,
+	{ loading: boolean, error?: ApolloError, homeData?: HomeDataResult, called: boolean }
+] => {
+	const [query, {loading, error, data, called}] =
+		useCacheOrLazyQuery<HomeResultQuery, void, HomeDataResult>(HomeQuery.query, HomeQuery.transformData);
+	const get = useCallback((forceRefresh?: boolean): void => {
+		query({}, forceRefresh);
+	}, [query]);
+	return [get, {loading, called, error, homeData: data}];
+};

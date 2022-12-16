@@ -1,39 +1,12 @@
-import gql from 'graphql-tag';
 import {TrackEntry} from '../types';
 import {formatDuration} from '../../utils/duration.utils';
-import {TrackResult, TrackResult_track, TrackResultVariables} from './types/TrackResult';
 import {DocumentNode} from 'graphql';
+import {ApolloError} from '@apollo/client';
+import {useCacheOrLazyQuery} from '../cache-hooks';
+import {useCallback} from 'react';
+import {TrackResultDocument, TrackResultQuery, TrackResultQueryVariables} from './track.api';
 
-const GET_TRACK = gql`
-    query TrackResult($id: ID!) {
-        track(id:$id) {
-                id
-                name
-                album {
-                    id
-                    name
-                }
-                artist {
-                    id
-                    name
-                }
-                series {
-                    id
-                    name
-                }
-                genres {
-                    id
-                    name
-                }
-                tag {
-                    mediaDuration
-                    title
-                    disc
-                    trackNr
-                }
-        }
-    }
-`;
+export type TrackResult_track = NonNullable<TrackResultQuery>['track'];
 
 export const transformTrack = (track: TrackResult_track): TrackEntry => {
 	return {
@@ -51,7 +24,7 @@ export const transformTrack = (track: TrackResult_track): TrackEntry => {
 	};
 };
 
-export const transformData = (data?: TrackResult): TrackEntry | undefined => {
+export const transformData = (data?: TrackResultQuery): TrackEntry | undefined => {
 	if (!data) {
 		return;
 	}
@@ -59,13 +32,23 @@ export const transformData = (data?: TrackResult): TrackEntry | undefined => {
 	return transformTrack(track);
 };
 
-function transformVariables(id: string): TrackResultVariables {
+function transformVariables(id: string): TrackResultQueryVariables {
 	return {id};
 }
 
 export const TrackQuery: {
 	query: DocumentNode;
-	transformData: (d?: TrackResult, variables?: TrackResultVariables) => TrackEntry | undefined;
-	transformVariables: (id: string) => TrackResultVariables;
-} = {query: GET_TRACK, transformData, transformVariables};
+	transformData: (d?: TrackResultQuery, variables?: TrackResultQueryVariables) => TrackEntry | undefined;
+	transformVariables: (id: string) => TrackResultQueryVariables;
+} = {query: TrackResultDocument, transformData, transformVariables};
 
+export const useLazyTrackQuery = (): [(id: string, forceRefresh?: boolean) => void,
+	{ loading: boolean, error?: ApolloError, track?: TrackEntry, called: boolean }
+] => {
+	const [query, {loading, error, data, called}] =
+		useCacheOrLazyQuery<TrackResultQuery, TrackResultQueryVariables, TrackEntry>(TrackQuery.query, TrackQuery.transformData);
+	const get = useCallback((id: string, forceRefresh?: boolean): void => {
+		query({variables: TrackQuery.transformVariables(id)}, forceRefresh);
+	}, [query]);
+	return [get, {loading, called, error, track: data}];
+};

@@ -14,7 +14,7 @@ import {useTheme} from '../style/theming';
 import {ErrorView} from '../components/ErrorView';
 import ActionSheet from 'react-native-actions-sheet';
 import {ActionSheetEpisode} from '../components/ActionSheetEpisode';
-import {useLazyPodcastQuery} from '../services/queries/podcast.hook';
+import {useLazyPodcastQuery} from '../services/queries/podcast';
 import {DefaultFlatList} from '../components/DefFlatList';
 
 export const PodcastScreen: React.FC<HomeRouteProps<HomeRoute.PODCAST>> = ({route}) => {
@@ -22,7 +22,7 @@ export const PodcastScreen: React.FC<HomeRouteProps<HomeRoute.PODCAST>> = ({rout
 	const theme = useTheme();
 	const [getPodcast, {loading, error, podcast}] = useLazyPodcastQuery();
 	const [currentEpisode, setCurrentEpisode] = useState<TrackEntry | undefined>();
-	const {id, name} = route?.params;
+	const {id, name} = (route?.params || {});
 
 	useEffect(() => {
 		if (id) {

@@ -1,0 +1,12 @@
+query ArtistIndexResult($albumTypes: [AlbumType!]) {
+    artistIndex(filter: {albumTypes: $albumTypes}) {
+        groups {
+            name
+            items {
+                id
+                name
+                albumsCount
+            }
+        }
+    }
+}

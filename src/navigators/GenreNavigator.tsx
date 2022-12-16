@@ -7,6 +7,7 @@ import {GenreTracksScreen} from '../screens/GenreTracksScreen';
 import {GenreTabNavigatorContext} from './GenreNavigatorContext';
 
 const Tab = createMaterialTopTabNavigator();
+const emptyComponent = (): JSX.Element => (<></>);
 
 export const GenreNavigator: React.FC<HomeRouteProps<HomeRoute.GENRE>> = ({route}) => {
 	const [state, setState] = useState<{ id?: string, name?: string }>({});
@@ -19,7 +20,7 @@ export const GenreNavigator: React.FC<HomeRouteProps<HomeRoute.GENRE>> = ({route
 			<Tab.Navigator
 				initialRouteName={GenreRoute.ARTISTS}
 				screenOptions={{lazy: true}}
-				tabBar={(): JSX.Element => (<></>)}
+				tabBar={emptyComponent}
 			>
 				<Tab.Screen name={GenreRoute.ARTISTS} component={GenreArtistsScreen}/>
 				<Tab.Screen name={GenreRoute.ALBUMS} component={GenreAlbumsScreen}/>

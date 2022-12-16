@@ -1,25 +1,11 @@
-import {JamObjectType} from '../jam';
-import gql from 'graphql-tag';
-import {BaseEntryList, UseListCallFunctionTransform} from '../types';
-import {ArtistListResult, ArtistListResultVariables} from './types/ArtistListResult';
+import {AlbumType, JamObjectType, ListType} from '../jam';
+import {BaseEntryList, UseListCallFunctionTransform, useListFunction} from '../types';
 import {DocumentNode} from 'graphql';
+import {useCacheOrLazyQuery} from '../cache-hooks';
+import {useCallback} from 'react';
+import {ArtistListResultDocument, ArtistListResultQuery, ArtistListResultQueryVariables} from './artistList.api';
 
-const GET_ARTISTLIST = gql`
-    query ArtistListResult($listType: ListType, $seed: String, $albumTypes: [AlbumType!], $genreIDs: [ID!], $take: Int!, $skip: Int!) {
-        artists(list: $listType, seed: $seed, filter: {albumTypes: $albumTypes, genreIDs: $genreIDs}, page: {take: $take, skip: $skip}) {
-            total
-            skip
-            take
-            items {
-                id
-                name
-                albumsCount
-            }
-        }
-    }
-`;
-
-function transformData(data?: ArtistListResult, variables?: ArtistListResultVariables): BaseEntryList | undefined {
+function transformData(data?: ArtistListResultQuery, variables?: ArtistListResultQueryVariables): BaseEntryList | undefined {
 	if (!data) {
 		return;
 	}
@@ -41,12 +27,29 @@ function transformData(data?: ArtistListResult, variables?: ArtistListResultVari
 	return result;
 }
 
-const transformVariables: UseListCallFunctionTransform<ArtistListResultVariables> = (albumTypes, listType, genreIDs, seed, take, skip) => {
+const transformVariables: UseListCallFunctionTransform<ArtistListResultQueryVariables> = (albumTypes, listType, genreIDs, seed, take, skip) => {
 	return {albumTypes, listType, genreIDs, skip, take, seed};
 };
 
 export const ArtistListQuery: {
 	query: DocumentNode;
-	transformData: (d?: ArtistListResult, variables?: ArtistListResultVariables) => BaseEntryList | undefined;
-	transformVariables: UseListCallFunctionTransform<ArtistListResultVariables>;
-} = {query: GET_ARTISTLIST, transformData, transformVariables};
+	transformData: (d?: ArtistListResultQuery, variables?: ArtistListResultQueryVariables) => BaseEntryList | undefined;
+	transformVariables: UseListCallFunctionTransform<ArtistListResultQueryVariables>;
+} = {query: ArtistListResultDocument, transformData, transformVariables};
+
+export const useLazyArtistListQuery: useListFunction = () => {
+	const [query, {loading, error, data, called, queryID}] =
+		useCacheOrLazyQuery<ArtistListResultQuery, ArtistListResultQueryVariables, BaseEntryList>(ArtistListQuery.query, ArtistListQuery.transformData);
+	const get = useCallback((
+		albumTypes: Array<AlbumType>,
+		listType: ListType | undefined,
+		genreIDs: Array<string>,
+		seed: string | undefined,
+		take: number,
+		skip: number,
+		forceRefresh?: boolean
+	): void => {
+		query({variables: ArtistListQuery.transformVariables(albumTypes, listType, genreIDs, seed, take, skip)}, forceRefresh);
+	}, [query]);
+	return [get, {loading, called, error, data, queryID}];
+};

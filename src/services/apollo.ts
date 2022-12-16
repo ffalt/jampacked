@@ -1,7 +1,7 @@
 import {ApolloClient, ApolloLink, DefaultOptions, InMemoryCache, HttpLink} from '@apollo/client';
 import {setContext} from '@apollo/client/link/context';
 import {DataService} from './data';
-import {onError} from 'apollo-link-error';
+import {onError} from '@apollo/client/link/error';
 
 const defaultOptions: DefaultOptions = {
 	watchQuery: {

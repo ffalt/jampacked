@@ -2,7 +2,7 @@ import React, {useCallback, useEffect} from 'react';
 import {HomeRoute, HomeRouteProps} from '../navigators/Routing';
 import {IndexList} from '../components/IndexList';
 import {ErrorView} from '../components/ErrorView';
-import {useLazyPodcastIndexQuery} from '../services/queries/podcastIndex.hook';
+import {useLazyPodcastIndexQuery} from '../services/queries/podcastIndex';
 
 export const PodcastIndexScreen: React.FC<HomeRouteProps<HomeRoute.PODCASTS>> = () => {
 	const [getIndex, {loading, error, called, index}] = useLazyPodcastIndexQuery();

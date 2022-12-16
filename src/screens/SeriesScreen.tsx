@@ -8,7 +8,7 @@ import {BaseEntry} from '../services/types';
 import {NavigationService} from '../navigators/navigation';
 import {FavIcon} from '../components/FavIcon';
 import {JamObjectType} from '../services/jam';
-import {useLazySeriesQuery} from '../services/queries/series.hook';
+import {useLazySeriesQuery} from '../services/queries/series';
 import {DefaultSectionList} from '../components/DefSectionList';
 import {sharedStyles} from '../style/shared';
 
@@ -23,7 +23,7 @@ const buildDetails = (artist?: string, tracks?: number, genre?: string, toArtist
 export const SeriesScreen: React.FC<HomeRouteProps<HomeRoute.SERIE>> = ({route}) => {
 	const [details, setDetails] = useState<Array<HeaderDetail>>(buildDetails());
 	const [getSeries, {loading, error, series}] = useLazySeriesQuery();
-	const {id, name} = route?.params;
+	const {id, name} = (route?.params || {});
 
 	useEffect(() => {
 		if (id) {

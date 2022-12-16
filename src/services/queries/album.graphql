@@ -1,0 +1,42 @@
+query AlbumResult($id: ID!) {
+    album(id:$id) {
+        id
+        name
+        albumType
+        artist {
+            id
+            name
+        }
+        tracksCount
+        genres {
+            id
+            name
+        }
+        tracks {
+            id
+            name
+            album {
+                id
+                name
+            }
+            artist {
+                id
+                name
+            }
+            series {
+                id
+                name
+            }
+            genres {
+                id
+                name
+            }
+            tag {
+                mediaDuration
+                title
+                disc
+                trackNr
+            }
+        }
+    }
+}

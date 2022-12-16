@@ -1,0 +1,14 @@
+query GenreIndexResult {
+    genreIndex {
+        groups {
+            name
+            items {
+                id
+                name
+                albumCount
+                artistCount
+                trackCount
+            }
+        }
+    }
+}

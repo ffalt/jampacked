@@ -7,6 +7,7 @@ import {AlbumsRoute, HomeRoute, HomeRouteProps} from './Routing';
 import {AlbumType} from '../services/jam';
 
 const Tab = createMaterialTopTabNavigator();
+const emptyComponent = (): JSX.Element => (<></>);
 
 export const AlbumsNavigator: React.FC<HomeRouteProps<HomeRoute.ALBUMS>> = ({route}) => {
 	const [albumType, setAlbumType] = useState<AlbumType | undefined>();
@@ -20,7 +21,7 @@ export const AlbumsNavigator: React.FC<HomeRouteProps<HomeRoute.ALBUMS>> = ({rou
 			<Tab.Navigator
 				initialRouteName={AlbumsRoute.INDEX}
 				screenOptions={{lazy: true}}
-				tabBar={(): JSX.Element => (<></>)}
+				tabBar={emptyComponent}
 			>
 				<Tab.Screen name={AlbumsRoute.INDEX} component={AlbumIndexScreen}/>
 				<Tab.Screen name={AlbumsRoute.FAV} component={AlbumListFavScreen}/>

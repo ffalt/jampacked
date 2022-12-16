@@ -6,6 +6,7 @@ import {FoldersTabNavigatorContext} from './FoldersNavigatorContext';
 import {FoldersRoute, HomeRoute, HomeRouteProps} from './Routing';
 
 const Tab = createMaterialTopTabNavigator();
+const emptyComponent = (): JSX.Element => (<></>);
 
 export const FoldersNavigator: React.FC<HomeRouteProps<HomeRoute.FOLDERS>> = ({route}) => {
 	return (
@@ -13,7 +14,7 @@ export const FoldersNavigator: React.FC<HomeRouteProps<HomeRoute.FOLDERS>> = ({r
 			<Tab.Navigator
 				initialRouteName={FoldersRoute.INDEX}
 				screenOptions={{lazy: true}}
-				tabBar={(): JSX.Element => (<></>)}
+				tabBar={emptyComponent}
 			>
 				<Tab.Screen name={FoldersRoute.INDEX} component={FolderIndexScreen}/>
 				<Tab.Screen name={FoldersRoute.FAV} component={FolderListFavScreen}/>

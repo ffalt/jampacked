@@ -4,13 +4,14 @@ import {ModalNavigator} from './ModalNavigator';
 import {AppDrawer} from '../components/AppDrawer';
 
 const Drawer = createDrawerNavigator();
+const AppDrawerComponent = (_): JSX.Element => <AppDrawer/>;
 
 export const DrawerNavigator: React.FC = () => {
 	return (
 		<Drawer.Navigator
 			initialRouteName="Drawer"
 			screenOptions={{headerShown: false}}
-			drawerContent={(_): JSX.Element => <AppDrawer/>}
+			drawerContent={AppDrawerComponent}
 		>
 			<Drawer.Screen name="Drawer" component={ModalNavigator}/>
 		</Drawer.Navigator>

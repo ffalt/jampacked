@@ -11,7 +11,7 @@ import {Item} from '../components/Item';
 import {FolderType} from '../services/jam';
 import {Folder, FolderItem} from '../services/queries/folder';
 import {ErrorView} from '../components/ErrorView';
-import {useLazyFolderQuery} from '../services/queries/folder.hook';
+import {useLazyFolderQuery} from '../services/queries/folder';
 import {DefaultFlatList} from '../components/DefFlatList';
 import {MUSICBRAINZ_VARIOUS_ARTISTS_NAME} from './AlbumScreen';
 import {TrackEntry} from '../services/types';
@@ -50,7 +50,7 @@ export const FolderScreen: React.FC<HomeRouteProps<HomeRoute.FOLDER>> = ({route}
 	const [currentTrack, setCurrentTrack] = useState<TrackEntry | undefined>();
 	const [details, setDetails] = useState<Array<HeaderDetail>>(buildDetails());
 	const [getFolder, {loading, error, folder}] = useLazyFolderQuery();
-	const {id, name} = route?.params;
+	const {id, name} = (route?.params || {});
 	const theme = useTheme();
 
 	useEffect(() => {

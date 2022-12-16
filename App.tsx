@@ -10,6 +10,7 @@ import {NavigationService} from './src/navigators/navigation';
 import dataService from './src/services/data';
 import {ApolloProvider} from '@apollo/client';
 import {JamApolloClient} from './src/services/apollo';
+import {sharedStyles} from './src/style/shared';
 
 LogBox.ignoreLogs([
 	'[react-native-gesture-handler] Seems like you\'re using an old API with gesture components, check out new Gestures system!',
@@ -71,7 +72,7 @@ export const App: React.FC = () => {
 		return <></>;
 	}
 	return (
-		<GestureHandlerRootView style={{flex: 1}}>
+		<GestureHandlerRootView style={sharedStyles.flex}>
 			<ApolloProvider client={client}>
 				<ThemeContext.Provider value={themeSettings}>
 					<ThemeProvider theme={themeSettings.theme}>

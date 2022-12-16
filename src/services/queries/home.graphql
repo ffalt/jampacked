@@ -1,0 +1,60 @@
+query HomeResult {
+    artistsRecent: artists(list: recent, filter:{albumTypes: [album]}, page:{take:5}) {
+        items {
+            id
+            name
+        }
+    }
+    artistsFaved: artists(list: faved, filter:{albumTypes: [album]}, page:{take:5}) {
+        items {
+            id
+            name
+        }
+    }
+    albumsRecent: albums(list: recent, filter:{albumTypes: [album]}, page:{take:5}) {
+        items {
+            id
+            name
+        }
+    }
+    albumsFaved: albums(list: faved, filter:{albumTypes: [album]}, page:{take:5}) {
+        items {
+            id
+            name
+        }
+    }
+    podcasts(page:{take:0}) {
+        total
+    }
+    stats {
+        track
+        folder
+        series
+        artist
+        artistTypes {
+            album
+            compilation
+            artistCompilation
+            unknown
+            live
+            audiobook
+            soundtrack
+            bootleg
+            ep
+            single
+        }
+        album
+        albumTypes {
+            album
+            compilation
+            artistCompilation
+            unknown
+            live
+            audiobook
+            soundtrack
+            bootleg
+            ep
+            single
+        }
+    }
+}

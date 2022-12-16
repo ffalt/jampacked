@@ -1,54 +1,11 @@
 import {TrackEntry} from '../types';
 import {AlbumType} from '../jam';
-import {AlbumResult, AlbumResultVariables} from './types/AlbumResult';
-import gql from 'graphql-tag';
 import {DocumentNode} from 'graphql';
 import {transformTrack} from './track';
-
-const GET_ALBUM = gql`
-    query AlbumResult($id: ID!) {
-        album(id:$id) {
-            id
-            name
-            albumType
-            artist {
-                id
-                name
-            }
-            tracksCount
-            genres {
-                id
-                name
-            }
-            tracks {
-                id
-                name
-                album {
-                    id
-                    name
-                }
-                artist {
-                    id
-                    name
-                }
-                series {
-                    id
-                    name
-                }
-                genres {
-                    id
-                    name
-                }
-                tag {
-                    mediaDuration
-                    title
-                    disc
-                    trackNr
-                }
-            }
-        }
-    }
-`;
+import {ApolloError} from '@apollo/client';
+import {useCacheOrLazyQuery} from '../cache-hooks';
+import {useCallback} from 'react';
+import {AlbumResultDocument, AlbumResultQuery, AlbumResultQueryVariables} from './album.api';
 
 export interface Album {
 	id: string;
@@ -61,7 +18,7 @@ export interface Album {
 	tracks: Array<TrackEntry>;
 }
 
-function transformData(data?: AlbumResult): Album | undefined {
+function transformData(data?: AlbumResultQuery): Album | undefined {
 	if (!data || !data.album) {
 		return;
 	}
@@ -77,13 +34,24 @@ function transformData(data?: AlbumResult): Album | undefined {
 	};
 }
 
-function transformVariables(id: string): AlbumResultVariables {
+function transformVariables(id: string): AlbumResultQueryVariables {
 	return {id};
 }
 
 export const AlbumQuery: {
 	query: DocumentNode;
-	transformData: (d?: AlbumResult, variables?: AlbumResultVariables) => Album | undefined;
-	transformVariables: (id: string) => AlbumResultVariables;
-} = {query: GET_ALBUM, transformData, transformVariables};
+	transformData: (d?: AlbumResultQuery, variables?: AlbumResultQueryVariables) => Album | undefined;
+	transformVariables: (id: string) => AlbumResultQueryVariables;
+} = {query: AlbumResultDocument, transformData, transformVariables};
 
+export const useLazyAlbumQuery = (): [
+	(id: string, forceRefresh?: boolean) => void,
+	{ loading: boolean, error?: ApolloError, called: boolean, album?: Album }
+] => {
+	const [query, {loading, error, data, called}] =
+		useCacheOrLazyQuery<AlbumResultQuery, AlbumResultQueryVariables, Album>(AlbumQuery.query, AlbumQuery.transformData);
+	const get = useCallback((id: string, forceRefresh?: boolean): void => {
+		query({variables: AlbumQuery.transformVariables(id)}, forceRefresh);
+	}, [query]);
+	return [get, {loading, called, error, album: data}];
+};

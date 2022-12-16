@@ -1,27 +1,12 @@
 import {JamObjectType} from '../jam';
-import gql from 'graphql-tag';
 import {Index} from '../types';
-import {GenreIndexResult} from './types/GenreIndexResult';
 import {DocumentNode} from 'graphql';
+import {ApolloError} from '@apollo/client';
+import {useCacheOrLazyQuery} from '../cache-hooks';
+import {useCallback} from 'react';
+import {GenreIndexResultDocument, GenreIndexResultQuery} from './genreIndex.api';
 
-const GET_GENREINDEX = gql`
-    query GenreIndexResult {
-        genreIndex {
-            groups {
-                name
-                items {
-					id
-                    name
-                    albumCount
-                    artistCount
-                    trackCount
-                }
-            }
-        }
-    }
-`;
-
-function transformData(data?: GenreIndexResult): Index | undefined {
+function transformData(data?: GenreIndexResultQuery): Index | undefined {
 	if (!data) {
 		return;
 	}
@@ -46,6 +31,25 @@ function transformVariables(): void {
 
 export const GenreIndexQuery: {
 	query: DocumentNode;
-	transformData: (d?: GenreIndexResult, variables?: void) => Index | undefined;
+	transformData: (d?: GenreIndexResultQuery, variables?: void) => Index | undefined;
 	transformVariables: () => void;
-} = {query: GET_GENREINDEX, transformData, transformVariables};
+} = {query: GenreIndexResultDocument, transformData, transformVariables};
+
+export const useLazyGenreIndexQuery = (): [(forceRefresh?: boolean) => void,
+	{ loading: boolean, error?: ApolloError, index?: Index, called: boolean }
+] => {
+	const [query, {loading, error, data, called}] =
+		useCacheOrLazyQuery<GenreIndexResultQuery, void, Index>(GenreIndexQuery.query, GenreIndexQuery.transformData);
+	const get = useCallback((forceRefresh?: boolean): void => {
+		query({}, forceRefresh);
+	}, [query]);
+	return [
+		get,
+		{
+			loading,
+			called,
+			error,
+			index: data
+		}
+	];
+};

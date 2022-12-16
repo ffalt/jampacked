@@ -1,134 +1,15 @@
-import gql from 'graphql-tag';
 import {DocumentNode, useLazyQuery, ApolloError} from '@apollo/client';
 import {JamObjectType} from '../jam';
 import {useCallback, useEffect, useState} from 'react';
 import {SearchResultData} from '../types';
-import {SearchAlbumsResult, SearchAlbumsResult_albums_items, SearchAlbumsResultVariables} from './types/SearchAlbumsResult';
-import {SearchArtistsResult, SearchArtistsResult_artists_items, SearchArtistsResultVariables} from './types/SearchArtistsResult';
-import {SearchSeriesResult, SearchSeriesResult_serieses_items, SearchSeriesResultVariables} from './types/SearchSeriesResult';
-import {SearchPodcastsResult, SearchPodcastsResult_podcasts_items, SearchPodcastsResultVariables} from './types/SearchPodcastsResult';
-import {SearchEpisodesResult, SearchEpisodesResult_episodes_items, SearchEpisodesResultVariables} from './types/SearchEpisodesResult';
-import {SearchPlaylistsResult, SearchPlaylistsResult_playlists_items, SearchPlaylistsResultVariables} from './types/SearchPlaylistsResult';
-import {SearchFoldersResult, SearchFoldersResult_folders_items, SearchFoldersResultVariables} from './types/SearchFoldersResult';
-import {SearchTracksResult, SearchTracksResult_tracks_items, SearchTracksResultVariables} from './types/SearchTracksResult';
-
-const GET_SEARCH_TRACK = gql`
-    query SearchTracksResult($query: String!, $take: Int, $skip: Int) {
-        tracks(page:{take: $take, skip: $skip}, filter:{query:$query}) {
-            total
-            skip
-            items {
-                id
-                name
-                tag {
-                    artist
-                }
-            }
-        }
-    }
-`;
-
-const GET_SEARCH_SERIES = gql`
-    query SearchSeriesResult($query: String!, $take: Int, $skip: Int) {
-        serieses(page:{take: $take, skip: $skip},filter:{query:$query}) {
-            total
-            skip
-            items {
-                id
-                name
-                albumsCount
-            }
-        }
-    }
-`;
-
-const GET_SEARCH_PODCAST = gql`
-    query SearchPodcastsResult($query: String!, $take: Int, $skip: Int) {
-        podcasts(page:{take: $take, skip: $skip}, filter:{query:$query}) {
-            total
-            skip
-            items {
-                id
-                name
-                episodesCount
-            }
-        }
-    }
-`;
-
-const GET_SEARCH_PLAYLIST = gql`
-    query SearchPlaylistsResult($query: String!, $take: Int, $skip: Int) {
-        playlists(page:{take: $take, skip: $skip}, filter:{query:$query}) {
-            total
-            skip
-            items {
-                id
-                name
-                entriesCount
-            }
-        }
-    }
-`;
-
-const GET_SEARCH_FOLDERS = gql`
-    query SearchFoldersResult($query: String!, $take: Int, $skip: Int) {
-        folders(page:{take: $take, skip: $skip}, filter:{query:$query}) {
-            total
-            skip
-            items {
-                id
-                name
-                folderType
-                childrenCount
-                tracksCount
-            }
-        }
-    }
-`;
-
-const GET_SEARCH_EPISODES = gql`
-    query SearchEpisodesResult($query: String!, $take: Int, $skip: Int) {
-        episodes(page:{take: $take, skip: $skip}, filter:{query:$query}) {
-            total
-            skip
-            items {
-                id
-                name
-                date
-            }
-        }
-    }
-`;
-
-const GET_SEARCH_ARTIST = gql`
-    query SearchArtistsResult($query: String!, $take: Int, $skip: Int) {
-        artists(page:{take: $take, skip: $skip}, filter:{query:$query}) {
-            total
-            skip
-            items {
-                id
-                name
-                albumsCount
-            }
-        }
-    }
-`;
-
-const GET_SEARCH_ALBUM = gql`
-    query SearchAlbumsResult($query: String!, $take: Int, $skip: Int) {
-        albums(page:{take: $take, skip: $skip}, filter:{query:$query}) {
-            total
-            skip
-            items {
-                id
-                name
-                artist {
-                    name
-                }
-            }
-        }
-    }
-`;
+import {SearchAlbumsResultDocument, SearchAlbumsResultQuery, SearchAlbumsResultQueryVariables,
+	SearchArtistsResultDocument, SearchArtistsResultQuery, SearchArtistsResultQueryVariables,
+	SearchEpisodesResultDocument, SearchEpisodesResultQuery, SearchEpisodesResultQueryVariables,
+	SearchFoldersResultDocument, SearchFoldersResultQuery, SearchFoldersResultQueryVariables,
+	SearchPlaylistsResultDocument, SearchPlaylistsResultQuery, SearchPlaylistsResultQueryVariables,
+	SearchPodcastsResultDocument, SearchPodcastsResultQuery, SearchPodcastsResultQueryVariables,
+	SearchSeriesResultDocument, SearchSeriesResultQuery, SearchSeriesResultQueryVariables,
+	SearchTracksResultDocument, SearchTracksResultQuery, SearchTracksResultQueryVariables} from './search.api';
 
 interface SearchPage<T> {
 	total: number;
@@ -141,6 +22,23 @@ interface SearchQueryResult {
 	name: string;
 }
 
+type SearchVariable =
+	SearchAlbumsResultQueryVariables & SearchArtistsResultQueryVariables & SearchSeriesResultQueryVariables & SearchEpisodesResultQueryVariables &
+	SearchPodcastsResultQueryVariables & SearchPlaylistsResultQueryVariables & SearchFoldersResultQueryVariables & SearchTracksResultQueryVariables;
+
+type SearchQueryResults =
+	SearchAlbumsResultQuery & SearchArtistsResultQuery & SearchSeriesResultQuery & SearchEpisodesResultQuery & SearchPodcastsResultQuery &
+	SearchPlaylistsResultQuery & SearchFoldersResultQuery & SearchTracksResultQuery;
+
+type SearchAlbumsResult_albums_items = NonNullable<SearchAlbumsResultQuery>['albums']['items'][number];
+type SearchArtistsResult_artists_items = NonNullable<SearchArtistsResultQuery>['artists']['items'][number];
+type SearchSeriesResult_serieses_items = NonNullable<SearchSeriesResultQuery>['serieses']['items'][number];
+type SearchFoldersResult_folders_items = NonNullable<SearchFoldersResultQuery>['folders']['items'][number];
+type SearchPodcastsResult_podcasts_items = NonNullable<SearchPodcastsResultQuery>['podcasts']['items'][number];
+type SearchTracksResult_tracks_items = NonNullable<SearchTracksResultQuery>['tracks']['items'][number];
+type SearchEpisodesResult_episodes_items = NonNullable<SearchEpisodesResultQuery>['episodes']['items'][number];
+type SearchPlaylistsResult_playlists_items = NonNullable<SearchPlaylistsResultQuery>['playlists']['items'][number];
+
 function buildPage<T extends SearchQueryResult>(data: SearchPage<T>, objType: JamObjectType, query: string, getDesc: (item: T) => string | undefined): SearchResultData {
 	return {
 		query,
@@ -149,14 +47,6 @@ function buildPage<T extends SearchQueryResult>(data: SearchPage<T>, objType: Ja
 		entries: data.items.map(o => ({id: o.id, title: o.name, desc: getDesc(o) || '', objType}))
 	};
 }
-
-type SearchVariable =
-	SearchAlbumsResultVariables & SearchArtistsResultVariables & SearchSeriesResultVariables & SearchEpisodesResultVariables &
-	SearchPodcastsResultVariables & SearchPlaylistsResultVariables & SearchFoldersResultVariables & SearchTracksResultVariables;
-
-type SearchQueryResults =
-	SearchAlbumsResult & SearchArtistsResult & SearchSeriesResult & SearchEpisodesResult & SearchPodcastsResult &
-	SearchPlaylistsResult & SearchFoldersResult & SearchTracksResult;
 
 function transformData(data: SearchQueryResults | undefined, variables: SearchVariable): SearchResultData | undefined {
 	if (!data) {
@@ -196,21 +86,21 @@ function transformData(data: SearchQueryResults | undefined, variables: SearchVa
 function getSearchQuery(objType: JamObjectType): DocumentNode {
 	switch (objType) {
 		case JamObjectType.folder:
-			return GET_SEARCH_FOLDERS;
+			return SearchFoldersResultDocument;
 		case JamObjectType.track:
-			return GET_SEARCH_TRACK;
+			return SearchTracksResultDocument;
 		case JamObjectType.playlist:
-			return GET_SEARCH_PLAYLIST;
+			return SearchPlaylistsResultDocument;
 		case JamObjectType.podcast:
-			return GET_SEARCH_PODCAST;
+			return SearchPodcastsResultDocument;
 		case JamObjectType.episode:
-			return GET_SEARCH_EPISODES;
+			return SearchEpisodesResultDocument;
 		case JamObjectType.series:
-			return GET_SEARCH_SERIES;
+			return SearchSeriesResultDocument;
 		case JamObjectType.album:
-			return GET_SEARCH_ALBUM;
+			return SearchAlbumsResultDocument;
 		case JamObjectType.artist:
-			return GET_SEARCH_ARTIST;
+			return SearchArtistsResultDocument;
 	}
 	throw new Error('Invalid Search Type');
 }

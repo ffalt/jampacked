@@ -3,7 +3,7 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {staticTheme, useTheme} from '../style/theming';
 import {ThemedText} from './ThemedText';
 import {ThemedIcon} from './ThemedIcon';
-import {useLazyTrackLyricsQuery} from '../services/queries/lyrics.hook';
+import {useLazyTrackLyricsQuery} from '../services/queries/lyrics';
 
 const styles = StyleSheet.create({
 	container: {

@@ -9,8 +9,9 @@ module.exports = {
 	parser: "@typescript-eslint/parser",
 	plugins: ["@typescript-eslint"],
 	ignorePatterns: [
-		'src/services/queries/types',
+		'src/services/queries/*.api.ts',
 		'src/services/jam',
+		'codegen.ts',
 		'wdyr.js',
 		'.eslintrc.js'
 	],
@@ -42,7 +43,7 @@ module.exports = {
 	},
 	rules: {
 		"comma-dangle": ["error", {"functions": "ignore"}],
-		"max-len": ["error", 200],
+		"max-len": ["warn", 200],
 		// "no-console": "off",
 		"no-console": ["error", {allow: ["warn", "error"]}],
 		"object-curly-newline": ["error", {ImportDeclaration: "never"}],

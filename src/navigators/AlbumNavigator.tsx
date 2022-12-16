@@ -5,6 +5,7 @@ import {AlbumRoute, HomeRoute, HomeRouteProps} from './Routing';
 import {AlbumScreen} from '../screens/AlbumScreen';
 
 const Tab = createMaterialTopTabNavigator();
+const emptyComponent = (): JSX.Element => (<></>);
 
 export const AlbumNavigator: React.FC<HomeRouteProps<HomeRoute.ALBUM>> = ({route}) => {
 	return (
@@ -12,7 +13,7 @@ export const AlbumNavigator: React.FC<HomeRouteProps<HomeRoute.ALBUM>> = ({route
 			<Tab.Navigator
 				initialRouteName={AlbumRoute.MAIN}
 				screenOptions={{lazy: true}}
-				tabBar={(): JSX.Element => (<></>)}
+				tabBar={emptyComponent}
 			>
 				<Tab.Screen name={AlbumRoute.MAIN} component={AlbumScreen}/>
 			</Tab.Navigator>

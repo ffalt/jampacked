@@ -58,13 +58,7 @@ export class SwipeableListItem extends React.PureComponent<SwipeableListItemProp
 		swipeState: number,
 		swipeDirection: null | number,
 		swipeInitialValue: null | number,
-	} = {
-		swipeValueLeft: new Animated.Value(0),
-		swipeValueRight: new Animated.Value(0),
-		swipeState: SWIPE.STATE.CLOSED,
-		swipeDirection: null,
-		swipeInitialValue: null
-	};
+	} = {swipeValueLeft: new Animated.Value(0), swipeValueRight: new Animated.Value(0), swipeState: SWIPE.STATE.CLOSED, swipeDirection: null, swipeInitialValue: null};
 	panResponder = PanResponder.create({
 		onMoveShouldSetPanResponder: (event, gestureState) => this.handleMoveShouldSetPanResponder(event, gestureState),
 		onPanResponderGrant: (event, gestureState) => this.handlePanResponderGrant(event, gestureState),

@@ -5,13 +5,14 @@ import {ArtistListAvgHighestScreen, ArtistListFavScreen, ArtistListFrequentScree
 import {ArtistsRoute} from './Routing';
 
 const Tab = createMaterialTopTabNavigator();
+const emptyComponent = (): JSX.Element => (<></>);
 
 export const ArtistsNavigator: React.FC = () => {
 	return (
 		<Tab.Navigator
 			initialRouteName={ArtistsRoute.INDEX}
 			screenOptions={{lazy: true}}
-			tabBar={(): JSX.Element => (<></>)}
+			tabBar={emptyComponent}
 		>
 			<Tab.Screen name={ArtistsRoute.INDEX} component={ArtistIndexScreen}/>
 			<Tab.Screen name={ArtistsRoute.FAV} component={ArtistListFavScreen}/>

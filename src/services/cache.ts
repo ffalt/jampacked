@@ -20,7 +20,7 @@ export class CacheService {
 		isRunning: false,
 		isStopped: false,
 		message: ''
-	}
+	};
 
 	constructor(private db: Database, private client: JamApolloClient) {
 

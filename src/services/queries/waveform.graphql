@@ -1,0 +1,5 @@
+query WaveformResult($id: ID!) {
+    waveform(id:$id) {
+        json
+    }
+}

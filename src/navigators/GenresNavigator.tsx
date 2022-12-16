@@ -4,6 +4,7 @@ import {GenresRoute, HomeRoute, HomeRouteProps} from './Routing';
 import {GenreIndexScreen} from '../screens/GenreIndexScreen';
 
 const Tab = createMaterialTopTabNavigator();
+const emptyComponent = (): JSX.Element => (<></>);
 
 export const GenresNavigator: React.FC<HomeRouteProps<HomeRoute.GENRES>> = () => {
 
@@ -11,7 +12,7 @@ export const GenresNavigator: React.FC<HomeRouteProps<HomeRoute.GENRES>> = () =>
 		<Tab.Navigator
 			initialRouteName={GenresRoute.INDEX}
 			screenOptions={{lazy: true}}
-			tabBar={(): JSX.Element => (<></>)}
+			tabBar={emptyComponent}
 		>
 			<Tab.Screen name={GenresRoute.INDEX} component={GenreIndexScreen}/>
 		</Tab.Navigator>

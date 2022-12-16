@@ -2,7 +2,7 @@ import React, {useCallback, useEffect} from 'react';
 import {GenresRoute, GenresRouteProps} from '../navigators/Routing';
 import {IndexList} from '../components/IndexList';
 import {ErrorView} from '../components/ErrorView';
-import {useLazyGenreIndexQuery} from '../services/queries/genreIndex.hook';
+import {useLazyGenreIndexQuery} from '../services/queries/genreIndex';
 
 export const GenreIndexScreen: React.FC<GenresRouteProps<GenresRoute.INDEX>> = () => {
 	const [getIndex, {loading, error, called, index}] = useLazyGenreIndexQuery();

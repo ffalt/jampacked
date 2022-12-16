@@ -1,28 +1,12 @@
-import {JamObjectType} from '../jam';
-import gql from 'graphql-tag';
-import {BaseEntryList, UseListCallFunctionTransform} from '../types';
-import {FolderListResult, FolderListResultVariables} from './types/FolderListResult';
+import {AlbumType, JamObjectType, ListType} from '../jam';
+import {BaseEntryList, UseListCallFunctionTransform, useListFunction} from '../types';
 import {titleCase} from '../../utils/format.utils';
 import {DocumentNode} from 'graphql';
+import {useCacheOrLazyQuery} from '../cache-hooks';
+import {useCallback} from 'react';
+import {FolderListResultDocument, FolderListResultQuery, FolderListResultQueryVariables} from './folderList.api';
 
-const GET_FOLDERLIST = gql`
-    query FolderListResult($listType: ListType, $seed: String, $albumTypes: [AlbumType!], $genreIDs: [ID!], $take: Int!, $skip: Int!) {
-        folders(list: $listType, seed: $seed, filter: {albumTypes: $albumTypes, genreIDs: $genreIDs}, page: {take: $take, skip: $skip}) {
-            total
-            skip
-            take
-            items {
-                id
-                name
-                folderType
-                tracksCount
-                childrenCount
-            }
-        }
-    }
-`;
-
-function transformData(data?: FolderListResult, variables?: FolderListResultVariables): BaseEntryList | undefined {
+function transformData(data?: FolderListResultQuery, variables?: FolderListResultQueryVariables): BaseEntryList | undefined {
 	if (!data) {
 		return;
 	}
@@ -49,13 +33,30 @@ function transformData(data?: FolderListResult, variables?: FolderListResultVari
 	return result;
 }
 
-const transformVariables: UseListCallFunctionTransform<FolderListResultVariables> = (albumTypes, listType, genreIDs, seed, take, skip) => {
+const transformVariables: UseListCallFunctionTransform<FolderListResultQueryVariables> = (albumTypes, listType, genreIDs, seed, take, skip) => {
 	return {albumTypes, listType, genreIDs, skip, take, seed};
 };
 
 export const FolderIndexQuery: {
 	query: DocumentNode;
-	transformData: (d?: FolderListResult, variables?: FolderListResultVariables) => BaseEntryList | undefined;
-	transformVariables: UseListCallFunctionTransform<FolderListResultVariables>;
-} = {query: GET_FOLDERLIST, transformData, transformVariables};
+	transformData: (d?: FolderListResultQuery, variables?: FolderListResultQueryVariables) => BaseEntryList | undefined;
+	transformVariables: UseListCallFunctionTransform<FolderListResultQueryVariables>;
+} = {query: FolderListResultDocument, transformData, transformVariables};
 
+
+export const useLazyFolderListQuery: useListFunction = () => {
+	const [query, {loading, error, data, called, queryID}] =
+		useCacheOrLazyQuery<FolderListResultQuery, FolderListResultQueryVariables, BaseEntryList>(FolderIndexQuery.query, FolderIndexQuery.transformData);
+	const get = useCallback((
+		albumTypes: Array<AlbumType>,
+		listType: ListType | undefined,
+		genreIDs: Array<string>,
+		seed: string | undefined,
+		take: number,
+		skip: number,
+		forceRefresh?: boolean
+	): void => {
+		query({variables: FolderIndexQuery.transformVariables(albumTypes, listType, genreIDs, seed, take, skip)}, forceRefresh);
+	}, [query]);
+	return [get, {loading, called, error, data, queryID}];
+};

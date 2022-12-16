@@ -10,7 +10,7 @@ import {FavIcon} from '../components/FavIcon';
 import {snackError} from '../services/snack';
 import {NavigationService} from '../navigators/navigation';
 import {PinIcon} from '../components/PinIcon';
-import {useLazyAlbumQuery} from '../services/queries/album.hook';
+import {useLazyAlbumQuery} from '../services/queries/album';
 import {Tracks} from '../components/Tracks';
 import {defaultShowArtistTrackDisplay, defaultTrackDisplay} from '../components/TrackItem';
 import {AlbumTabNavigatorContext} from '../navigators/AlbumNavigatorContext';

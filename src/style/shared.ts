@@ -2,6 +2,9 @@ import {StyleSheet} from 'react-native';
 import {staticTheme} from './theming';
 
 export const sharedStyles = StyleSheet.create({
+	flex: {
+		flex: 1
+	},
 	item: {
 		paddingHorizontal: staticTheme.padding,
 		flexDirection: 'row',

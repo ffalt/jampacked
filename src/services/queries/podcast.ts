@@ -1,28 +1,10 @@
-import gql from 'graphql-tag';
 import {TrackEntry} from '../types';
 import {formatDuration} from '../../utils/duration.utils';
-import {PodcastResult, PodcastResult_podcast_episodes, PodcastResultVariables} from './types/PodcastResult';
 import {DocumentNode} from 'graphql';
-
-const GET_PODCAST = gql`
-    query PodcastResult($id: ID!) {
-        podcast(id:$id) {
-            id
-            name
-            description
-            episodes {
-                id
-                name
-                date
-                duration
-                tag {
-                    title
-                    artist
-                }
-            }
-        }
-    }
-`;
+import {ApolloError} from '@apollo/client';
+import {useCacheOrLazyQuery} from '../cache-hooks';
+import {useCallback} from 'react';
+import {PodcastResultDocument, PodcastResultQuery, PodcastResultQueryVariables} from './podcast.api';
 
 export interface Podcast {
 	id: string;
@@ -31,12 +13,14 @@ export interface Podcast {
 	episodes: Array<TrackEntry>;
 }
 
-const formatTrack = (parent: PodcastResult, track: PodcastResult_podcast_episodes): TrackEntry => {
+type PodcastResult_podcast_episodes = NonNullable<PodcastResultQuery>['podcast']['episodes'][number];
+
+export const transformPodcastEpisode = (parent: PodcastResultQuery, track: PodcastResult_podcast_episodes): TrackEntry => {
 	return {
 		id: track.id,
 		title: track.tag?.title || track.name,
 		artist: track.tag?.artist || '?',
-		genre: 'Podcast',
+		genre: track.tag?.genres ? track.tag?.genres.join(' / ') : 'Podcast',
 		album: parent.podcast.name || '?',
 		podcastID: parent.podcast.id,
 		trackNr: track.date ? new Date(track.date).toDateString() : '',
@@ -45,24 +29,34 @@ const formatTrack = (parent: PodcastResult, track: PodcastResult_podcast_episode
 	};
 };
 
-function transformData(data?: PodcastResult): Podcast | undefined {
+function transformData(data?: PodcastResultQuery): Podcast | undefined {
 	if (!data) {
 		return;
 	}
 	return {
 		...data.podcast,
 		description: data.podcast.description || undefined,
-		episodes: (data.podcast.episodes || []).map(episode => formatTrack(data, episode))
+		episodes: (data.podcast.episodes || []).map(episode => transformPodcastEpisode(data, episode))
 	};
 }
 
-function transformVariables(id: string): PodcastResultVariables {
+function transformVariables(id: string): PodcastResultQueryVariables {
 	return {id};
 }
 
 export const PodcastQuery: {
 	query: DocumentNode;
-	transformData: (d?: PodcastResult, variables?: PodcastResultVariables) => Podcast | undefined;
-	transformVariables: (id: string) => PodcastResultVariables;
-} = {query: GET_PODCAST, transformData, transformVariables};
+	transformData: (d?: PodcastResultQuery, variables?: PodcastResultQueryVariables) => Podcast | undefined;
+	transformVariables: (id: string) => PodcastResultQueryVariables;
+} = {query: PodcastResultDocument, transformData, transformVariables};
 
+export const useLazyPodcastQuery = (): [(id: string, forceRefresh?: boolean) => void,
+	{ loading: boolean, error?: ApolloError, podcast?: Podcast, called: boolean }
+] => {
+	const [query, {loading, error, data, called}] =
+		useCacheOrLazyQuery<PodcastResultQuery, PodcastResultQueryVariables, Podcast>(PodcastQuery.query, PodcastQuery.transformData);
+	const get = useCallback((id: string, forceRefresh?: boolean): void => {
+		query({variables: {id}}, forceRefresh);
+	}, [query]);
+	return [get, {loading, called, error, podcast: data}];
+};

@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {ListType} from '../services/jam';
 import {TrackEntryListList, TrackEntryListListQuery} from './TrackEntryListList';
-import {useLazyTrackListQuery} from '../services/queries/trackList.hook';
+import {useLazyTrackListQuery} from '../services/queries/trackList';
 
 export const TrackList: React.FC<{ query: { listType?: ListType } }> = ({query}) => {
 	const [view, setView] = useState<TrackEntryListListQuery>({

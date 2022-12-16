@@ -9,7 +9,7 @@ import {ThemedIcon} from '../components/ThemedIcon';
 import dataService from '../services/data';
 import {Stats} from '../components/Stats';
 import {ErrorView} from '../components/ErrorView';
-import {useLazyUserDataQuery} from '../services/queries/user.hook';
+import {useLazyUserDataQuery} from '../services/queries/user';
 import {sharedStyles} from '../style/shared';
 import {PageHeader} from '../components/PageHeader';
 

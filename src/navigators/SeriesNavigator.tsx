@@ -5,13 +5,14 @@ import {SeriesListAvgHighestScreen, SeriesListFavScreen, SeriesListFrequentScree
 import {HomeRoute, HomeRouteProps, SeriesRoute} from './Routing';
 
 const Tab = createMaterialTopTabNavigator();
+const emptyComponent = (): JSX.Element => (<></>);
 
 export const SeriesNavigator: React.FC<HomeRouteProps<HomeRoute.SERIES>> = () => {
 	return (
 		<Tab.Navigator
 			initialRouteName={SeriesRoute.INDEX}
 			screenOptions={{lazy: true}}
-			tabBar={(): JSX.Element => (<></>)}
+			tabBar={emptyComponent}
 		>
 			<Tab.Screen name={SeriesRoute.INDEX} component={SeriesIndexScreen}/>
 			<Tab.Screen name={SeriesRoute.FAV} component={SeriesListFavScreen}/>

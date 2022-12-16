@@ -1,57 +1,11 @@
-import gql from 'graphql-tag';
 import {FolderType, JamObjectType} from '../jam';
 import {BaseEntry, TrackEntry} from '../types';
-import {FolderResult, FolderResultVariables} from './types/FolderResult';
 import {DocumentNode} from 'graphql';
 import {transformTrack} from './track';
-
-const GET_FOLDER = gql`
-    query FolderResult($id: ID!) {
-        folder(id:$id) {
-            id
-            title
-            childrenCount
-            tracksCount
-            folderType
-            artist
-            genres {
-                id
-                name
-            }
-            children {
-                id
-                title
-                folderType
-            }
-            tracks {
-                id
-                name
-                album {
-                    id
-                    name
-                }
-                artist {
-                    id
-                    name
-                }
-                series {
-                    id
-                    name
-                }
-                genres {
-                    id
-                    name
-                }
-                tag {
-                    mediaDuration
-                    title
-                    disc
-                    trackNr
-                }
-            }
-        }
-    }
-`;
+import {ApolloError} from '@apollo/client';
+import {useCacheOrLazyQuery} from '../cache-hooks';
+import {useCallback} from 'react';
+import {FolderResultDocument, FolderResultQuery, FolderResultQueryVariables} from './folder.api';
 
 export interface FolderItem {
 	id: string;
@@ -72,7 +26,7 @@ export interface Folder {
 }
 
 
-function transformData(data?: FolderResult): Folder | undefined {
+function transformData(data?: FolderResultQuery): Folder | undefined {
 	if (!data) {
 		return;
 	}
@@ -95,12 +49,23 @@ function transformData(data?: FolderResult): Folder | undefined {
 	};
 }
 
-function transformVariables(id: string): FolderResultVariables {
+function transformVariables(id: string): FolderResultQueryVariables {
 	return {id};
 }
 
 export const FolderQuery: {
 	query: DocumentNode;
-	transformData: (d?: FolderResult, variables?: FolderResultVariables) => Folder | undefined;
-	transformVariables: (id: string) => FolderResultVariables;
-} = {query: GET_FOLDER, transformData, transformVariables};
+	transformData: (d?: FolderResultQuery, variables?: FolderResultQueryVariables) => Folder | undefined;
+	transformVariables: (id: string) => FolderResultQueryVariables;
+} = {query: FolderResultDocument, transformData, transformVariables};
+
+export const useLazyFolderQuery = (): [(id: string, forceRefresh?: boolean) => void,
+	{ loading: boolean, error?: ApolloError, folder?: Folder, called: boolean }
+] => {
+	const [query, {loading, error, data, called}] =
+		useCacheOrLazyQuery<FolderResultQuery, FolderResultQueryVariables, Folder>(FolderQuery.query, FolderQuery.transformData);
+	const get = useCallback((id: string, forceRefresh?: boolean): void => {
+		query({variables: FolderQuery.transformVariables(id)}, forceRefresh);
+	}, [query]);
+	return [get, {loading, called, error, folder: data}];
+};

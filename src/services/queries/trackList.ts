@@ -1,47 +1,12 @@
 import {ListType} from '../jam';
-import gql from 'graphql-tag';
-import {TrackEntryList} from '../types';
-import {TrackListResult, TrackListResultVariables} from './types/TrackListResult';
+import {TrackEntryList, useTrackListFunction} from '../types';
 import {DocumentNode} from 'graphql';
 import {transformTrack} from './track';
+import {useCacheOrLazyQuery} from '../cache-hooks';
+import {useCallback} from 'react';
+import {TrackListResultDocument, TrackListResultQuery, TrackListResultQueryVariables} from './trackList.api';
 
-const GET_TRACKLIST = gql`
-    query TrackListResult($listType: ListType, $genreIDs: [ID!], $seed: String, $take: Int!, $skip: Int!) {
-        tracks(list: $listType, filter: {genreIDs: $genreIDs}, seed: $seed, page: {take: $take, skip: $skip}) {
-            total
-            skip
-            take
-            items {
-                id
-                name
-                album {
-                    id
-                    name
-                }
-                artist {
-                    id
-                    name
-                }
-                series {
-                    id
-                    name
-                }
-                genres {
-                    id
-                    name
-                }
-                tag {
-                    mediaDuration
-                    title
-                    disc
-                    trackNr
-                }
-            }
-        }
-    }
-`;
-
-function transformData(data?: TrackListResult, variables?: TrackListResultVariables): TrackEntryList | undefined {
+function transformData(data?: TrackListResultQuery, variables?: TrackListResultQueryVariables): TrackEntryList | undefined {
 	if (!data) {
 		return;
 	}
@@ -58,13 +23,21 @@ function transformData(data?: TrackListResult, variables?: TrackListResultVariab
 	return result;
 }
 
-function transformVariables(listType: ListType | undefined, genreIDs: Array<string>, seed: string | undefined, take: number, skip: number): TrackListResultVariables {
+function transformVariables(listType: ListType | undefined, genreIDs: Array<string>, seed: string | undefined, take: number, skip: number): TrackListResultQueryVariables {
 	return {listType, genreIDs, skip, take, seed};
 }
 
 export const TrackListQuery: {
 	query: DocumentNode;
-	transformData: (d?: TrackListResult, variables?: TrackListResultVariables) => TrackEntryList | undefined;
-	transformVariables: (listType: ListType | undefined, genreIDs: Array<string>, seed: string | undefined, take: number, skip: number) => TrackListResultVariables;
-} = {query: GET_TRACKLIST, transformData, transformVariables};
+	transformData: (d?: TrackListResultQuery, variables?: TrackListResultQueryVariables) => TrackEntryList | undefined;
+	transformVariables: (listType: ListType | undefined, genreIDs: Array<string>, seed: string | undefined, take: number, skip: number) => TrackListResultQueryVariables;
+} = {query: TrackListResultDocument, transformData, transformVariables};
 
+export const useLazyTrackListQuery: useTrackListFunction = () => {
+	const [query, {loading, error, data, called, queryID}] =
+		useCacheOrLazyQuery<TrackListResultQuery, TrackListResultQueryVariables, TrackEntryList>(TrackListQuery.query, TrackListQuery.transformData);
+	const get = useCallback((listType: ListType | undefined, genreIDs: Array<string>, seed: string | undefined, take: number, skip: number, forceRefresh?: boolean): void => {
+		query({variables: TrackListQuery.transformVariables(listType, genreIDs, seed, take, skip)}, forceRefresh);
+	}, [query]);
+	return [get, {loading, called, error, data, queryID}];
+};

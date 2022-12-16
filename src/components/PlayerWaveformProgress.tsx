@@ -3,7 +3,7 @@ import {useCurrentTrackID} from '../services/player';
 import {WaveformProgress} from './WaveformProgress';
 import {snackError} from '../services/snack';
 import {StyleSheet, View} from 'react-native';
-import {useLazyWaveformQuery} from '../services/queries/waveform.hook';
+import {useLazyWaveformQuery} from '../services/queries/waveform';
 
 const styles = StyleSheet.create({
 	container: {

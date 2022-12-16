@@ -1,26 +1,36 @@
-import gql from 'graphql-tag';
 import {Jam} from '../jam';
-import {WaveformResult, WaveformResultVariables} from './types/WaveformResult';
 import {DocumentNode} from 'graphql';
+import {ApolloError, useLazyQuery} from '@apollo/client';
+import {useCallback, useEffect, useState} from 'react';
+import {WaveformResultDocument, WaveformResultQuery, WaveformResultQueryVariables} from './waveform.api';
 
-const GET_WAVEFORM = gql`
-    query WaveformResult($id: ID!) {
-        waveform(id:$id) {
-            json
-        }
-    }
-`;
-
-export const transformData = (data?: WaveformResult): Jam.WaveFormData | undefined => {
+export const transformData = (data?: WaveformResultQuery): Jam.WaveFormData | undefined => {
 	return data?.waveform?.json ? JSON.parse(data.waveform.json) : undefined;
 };
 
-function transformVariables(id: string): WaveformResultVariables {
+function transformVariables(id: string): WaveformResultQueryVariables {
 	return {id};
 }
 
 export const WaveformQuery: {
 	query: DocumentNode;
-	transformData: (d?: WaveformResult, variables?: WaveformResultVariables) => Jam.WaveFormData | undefined;
-	transformVariables: (id: string) => WaveformResultVariables;
-} = {query: GET_WAVEFORM, transformData, transformVariables};
+	transformData: (d?: WaveformResultQuery, variables?: WaveformResultQueryVariables) => Jam.WaveFormData | undefined;
+	transformVariables: (id: string) => WaveformResultQueryVariables;
+} = {query: WaveformResultDocument, transformData, transformVariables};
+
+export const useLazyWaveformQuery = (): [(id: string) => void,
+	{ loading: boolean, error?: ApolloError, waveform?: Jam.WaveFormData, called: boolean }
+] => {
+	const [waveform, setWaveform] = useState<Jam.WaveFormData | undefined>(undefined);
+	const [query, {loading, error, data, called}] = useLazyQuery<WaveformResultQuery, WaveformResultQueryVariables>(WaveformQuery.query);
+
+	useEffect(() => {
+		setWaveform(WaveformQuery.transformData(data));
+	}, [data]);
+
+	const get = useCallback((id: string): void => {
+		query({variables: WaveformQuery.transformVariables(id)});
+	}, [query]);
+
+	return [get, {loading, called, error, waveform}];
+};

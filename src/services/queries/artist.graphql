@@ -1,0 +1,19 @@
+query ArtistResult($id: ID!) {
+    artist(id:$id) {
+        id
+        name
+        albumsCount
+        tracksCount
+        genres {
+            id
+            name
+        }
+        albums {
+            id
+            name
+            albumType
+            seriesNr
+            year
+        }
+    }
+}

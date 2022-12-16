@@ -4,13 +4,14 @@ import {TracksRoute} from './Routing';
 import {TrackListAvgHighestScreen, TrackListFavScreen, TrackListFrequentScreen, TrackListHighestScreen, TrackListRandomScreen, TrackListRecentScreen} from '../screens/TrackListScreen';
 
 const Tab = createMaterialTopTabNavigator();
+const emptyComponent = (): JSX.Element => (<></>);
 
 export const TracksNavigator: React.FC = () => {
 	return (
 		<Tab.Navigator
 			initialRouteName={TracksRoute.FAV}
 			screenOptions={{lazy: true}}
-			tabBar={(): JSX.Element => (<></>)}
+			tabBar={emptyComponent}
 		>
 			<Tab.Screen name={TracksRoute.FAV} component={TrackListFavScreen}/>
 			<Tab.Screen name={TracksRoute.RECENT} component={TrackListRecentScreen}/>

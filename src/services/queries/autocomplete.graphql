@@ -1,0 +1,58 @@
+query AutocompleteResult($query: String!) {
+    albums(page:{take:5}, filter:{query:$query}) {
+        total
+        items {
+            id
+            name
+        }
+    }
+    artists(page:{take:5}, filter:{query:$query}) {
+        total
+        items {
+            id
+            name
+        }
+    }
+    serieses(page:{take:5}, filter:{query:$query}) {
+        total
+        items {
+            id
+            name
+        }
+    }
+    podcasts(page:{take:5}, filter:{query:$query}) {
+        total
+        items {
+            id
+            name
+        }
+    }
+    episodes(page:{take:5}, filter:{query:$query}) {
+        total
+        items {
+            id
+            name
+        }
+    }
+    folders(page:{take:5}, filter:{query:$query}) {
+        total
+        items {
+            id
+            name
+        }
+    }
+    playlists(page:{take:5}, filter:{query:$query}) {
+        total
+        items {
+            id
+            name
+        }
+    }
+    tracks(page:{take:5}, filter:{query:$query}) {
+        total
+        items {
+            id
+            name
+        }
+    }
+}

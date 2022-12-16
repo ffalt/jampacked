@@ -41,7 +41,7 @@ module.exports = {
 		+ '|d3-time-format'
 		+ '|d3-interpolate'
 		+ '|internmap'
-		+ ')/)',
+		+ ')/)'
 	],
 	setupFiles: [
 		'./node_modules/react-native-gesture-handler/jestSetup.js',

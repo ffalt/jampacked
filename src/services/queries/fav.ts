@@ -1,19 +1,8 @@
-import gql from 'graphql-tag';
 import {ApolloError, MutationTuple, useLazyQuery, useMutation} from '@apollo/client';
 import {useCallback, useEffect, useState} from 'react';
-import {FavResult, FavResultVariables} from './types/FavResult';
-import {SetFavResult, SetFavResultVariables} from './types/SetFavResult';
+import {FavResultDocument, FavResultQuery, FavResultQueryVariables, SetFavResultDocument, SetFavResultMutation, SetFavResultMutationVariables} from './fav.api';
 
-const GET_FAV = gql`
-    query FavResult($id: ID!) {
-        state(id: $id) {
-            id
-            faved
-        }
-    }
-`;
-
-function transformData(data: FavResult | undefined): { timestamp?: number } {
+function transformData(data: FavResultQuery | undefined): { timestamp?: number } {
 	return {timestamp: data?.state?.faved ? (new Date(data.state.faved)).valueOf() : undefined};
 }
 
@@ -27,7 +16,7 @@ export const useLazyFavQuery = (): [(id: string) => void,
 	}
 ] => {
 	const [faved, setFaved] = useState<{ timestamp?: number } | undefined>(undefined);
-	const [query, {loading, error, called, data}] = useLazyQuery<FavResult, FavResultVariables>(GET_FAV);
+	const [query, {loading, error, called, data}] = useLazyQuery<FavResultQuery, FavResultQueryVariables>(FavResultDocument);
 
 	useEffect(() => {
 		setFaved(transformData(data));
@@ -54,14 +43,5 @@ export const useLazyFavQuery = (): [(id: string) => void,
 	];
 };
 
-const SET_FAV = gql`
-    mutation SetFavResult($id: ID!, $remove: Boolean) {
-        fav(id: $id, remove: $remove ) {
-            id
-            faved
-        }
-    }
-`;
-
-export const useFavMutation = (): MutationTuple<SetFavResult, SetFavResultVariables> =>
-	useMutation<SetFavResult, SetFavResultVariables>(SET_FAV);
+export const useFavMutation = (): MutationTuple<SetFavResultMutation, SetFavResultMutationVariables> =>
+	useMutation<SetFavResultMutation, SetFavResultMutationVariables>(SetFavResultDocument);

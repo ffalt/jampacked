@@ -5,13 +5,14 @@ import {DownloadsRoute} from './Routing';
 import {DownloadsPinnedScreen} from '../screens/DownloadsPinnedScreen';
 
 const Tab = createMaterialTopTabNavigator();
+const emptyComponent = (): JSX.Element => (<></>);
 
 export const DownloadsNavigator: React.FC = () => {
 	return (
 		<Tab.Navigator
 			initialRouteName={DownloadsRoute.PINNED}
 			screenOptions={{lazy: true}}
-			tabBar={(): JSX.Element => (<></>)}
+			tabBar={emptyComponent}
 		>
 			<Tab.Screen name={DownloadsRoute.PINNED} component={DownloadsPinnedScreen}/>
 			<Tab.Screen name={DownloadsRoute.ACTIVE} component={DownloadsActiveScreen}/>

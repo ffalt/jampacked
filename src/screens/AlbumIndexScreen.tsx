@@ -4,7 +4,7 @@ import {IndexList} from '../components/IndexList';
 import {ErrorView} from '../components/ErrorView';
 import {getAlbumTypeInfos} from '../services/jam-lists';
 import {AlbumsTabNavigatorContext} from '../navigators/AlbumsNavigatorContext';
-import {useLazyAlbumIndexQuery} from '../services/queries/albumIndex.hook';
+import {useLazyAlbumIndexQuery} from '../services/queries/albumIndex';
 
 export const AlbumIndexScreen: React.FC<AlbumsRouteProps<AlbumsRoute.INDEX>> = () => {
 	const [title, setTitle] = useState<string>('');

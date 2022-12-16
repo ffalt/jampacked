@@ -1,25 +1,12 @@
-import gql from 'graphql-tag';
 import {Index} from '../types';
 import {JamObjectType} from '../jam';
-import {SeriesIndexResult} from './types/SeriesIndexResult';
 import {DocumentNode} from 'graphql';
+import {ApolloError} from '@apollo/client';
+import {useCacheOrLazyQuery} from '../cache-hooks';
+import {useCallback} from 'react';
+import {SeriesIndexResultDocument, SeriesIndexResultQuery} from './seriesIndex.api';
 
-const GET_SERIESINDEX = gql`
-    query SeriesIndexResult {
-        seriesIndex {
-            groups {
-                name
-                items {
-                    id
-                    name
-                    albumsCount
-                }
-            }
-        }
-    }
-`;
-
-function transformData(data?: SeriesIndexResult): Index | undefined {
+function transformData(data?: SeriesIndexResultQuery): Index | undefined {
 	if (!data) {
 		return;
 	}
@@ -45,7 +32,25 @@ function transformVariables(): void {
 
 export const SeriesIndexQuery: {
 	query: DocumentNode;
-	transformData: (d?: SeriesIndexResult, variables?: void) => Index | undefined;
+	transformData: (d?: SeriesIndexResultQuery, variables?: void) => Index | undefined;
 	transformVariables: () => void;
-} = {query: GET_SERIESINDEX, transformData, transformVariables};
+} = {query: SeriesIndexResultDocument, transformData, transformVariables};
 
+
+export const useLazySeriesIndexQuery = (): [(forceRefresh?: boolean) => void,
+	{ loading: boolean, error?: ApolloError, index?: Index, called: boolean }
+] => {
+	const [query, {loading, error, data, called}] = useCacheOrLazyQuery<SeriesIndexResultQuery, void, Index>(SeriesIndexQuery.query, SeriesIndexQuery.transformData);
+	const get = useCallback((forceRefresh?: boolean): void => {
+		query({}, forceRefresh);
+	}, [query]);
+	return [
+		get,
+		{
+			loading,
+			error,
+			called,
+			index: data
+		}
+	];
+};

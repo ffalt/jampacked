@@ -1,28 +1,13 @@
-import gql from 'graphql-tag';
 import {JamObjectType} from '../jam';
 import {Index} from '../types';
-import {FolderIndexResult, FolderIndexResultVariables} from './types/FolderIndexResult';
 import {titleCase} from '../../utils/format.utils';
 import {DocumentNode} from 'graphql';
+import {ApolloError} from '@apollo/client';
+import {useCacheOrLazyQuery} from '../cache-hooks';
+import {useCallback} from 'react';
+import {FolderIndexResultDocument, FolderIndexResultQuery, FolderIndexResultQueryVariables} from './folderIndex.api';
 
-const GET_FOLDERINDEX = gql`
-    query FolderIndexResult($level: Int) {
-        folderIndex(filter: {level: $level}) {
-            groups {
-                name
-                items {
-                    id
-                    name
-                    tracksCount
-                    folderType
-                    childrenCount
-                }
-            }
-        }
-    }
-`;
-
-function transformData(data?: FolderIndexResult): Index | undefined {
+function transformData(data?: FolderIndexResultQuery): Index | undefined {
 	if (!data) {
 		return;
 	}
@@ -44,13 +29,23 @@ function transformData(data?: FolderIndexResult): Index | undefined {
 	return index;
 }
 
-function transformVariables(level: number): FolderIndexResultVariables {
+function transformVariables(level: number): FolderIndexResultQueryVariables {
 	return {level};
 }
 
 export const FolderIndexQuery: {
 	query: DocumentNode;
-	transformData: (d?: FolderIndexResult, variables?: FolderIndexResultVariables) => Index | undefined;
-	transformVariables: (level: number) => FolderIndexResultVariables;
-} = {query: GET_FOLDERINDEX, transformData, transformVariables};
+	transformData: (d?: FolderIndexResultQuery, variables?: FolderIndexResultQueryVariables) => Index | undefined;
+	transformVariables: (level: number) => FolderIndexResultQueryVariables;
+} = {query: FolderIndexResultDocument, transformData, transformVariables};
 
+export const useLazyFolderIndexQuery = (): [(level: number, forceRefresh?: boolean) => void,
+	{ loading: boolean, error?: ApolloError, index?: Index, called: boolean }
+] => {
+	const [query, {loading, error, data, called}] =
+		useCacheOrLazyQuery<FolderIndexResultQuery, FolderIndexResultQueryVariables, Index>(FolderIndexQuery.query, FolderIndexQuery.transformData);
+	const get = useCallback((level: number, forceRefresh?: boolean): void => {
+		query({variables: FolderIndexQuery.transformVariables(level)}, forceRefresh);
+	}, [query]);
+	return [get, {loading, called, error, index: data}];
+};

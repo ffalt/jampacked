@@ -1,27 +1,12 @@
 import {AlbumType, JamObjectType} from '../jam';
-import gql from 'graphql-tag';
 import {Index} from '../types';
-import {AlbumIndexResult, AlbumIndexResultVariables} from './types/AlbumIndexResult';
 import {DocumentNode} from 'graphql';
+import {ApolloError} from '@apollo/client';
+import {useCacheOrLazyQuery} from '../cache-hooks';
+import {useCallback} from 'react';
+import {AlbumIndexResultDocument, AlbumIndexResultQuery, AlbumIndexResultQueryVariables} from './albumIndex.api';
 
-const GET_ALBUMINDEX = gql`
-    query AlbumIndexResult($albumTypes: [AlbumType!]) {
-        albumIndex(filter: {albumTypes: $albumTypes}) {
-            groups {
-                name
-                items {
-                    id
-                    name
-                    artist {
-                        name
-                    }
-                }
-            }
-        }
-    }
-`;
-
-function transformData(data?: AlbumIndexResult): Index | undefined {
+function transformData(data?: AlbumIndexResultQuery): Index | undefined {
 	if (!data) {
 		return;
 	}
@@ -40,12 +25,23 @@ function transformData(data?: AlbumIndexResult): Index | undefined {
 	return index;
 }
 
-function transformVariables(albumTypes: Array<AlbumType>): AlbumIndexResultVariables {
+function transformVariables(albumTypes: Array<AlbumType>): AlbumIndexResultQueryVariables {
 	return {albumTypes};
 }
 
 export const AlbumIndexQuery: {
 	query: DocumentNode;
-	transformData: (d?: AlbumIndexResult, variables?: AlbumIndexResultVariables) => Index | undefined;
-	transformVariables: (albumTypes: Array<AlbumType>) => AlbumIndexResultVariables;
-} = {query: GET_ALBUMINDEX, transformData, transformVariables};
+	transformData: (d?: AlbumIndexResultQuery, variables?: AlbumIndexResultQueryVariables) => Index | undefined;
+	transformVariables: (albumTypes: Array<AlbumType>) => AlbumIndexResultQueryVariables;
+} = {query: AlbumIndexResultDocument, transformData, transformVariables};
+
+export const useLazyAlbumIndexQuery = (): [(albumTypes: Array<AlbumType>, forceRefresh?: boolean) => void,
+	{ loading: boolean, error?: ApolloError, index?: Index, called: boolean }
+] => {
+	const [query, {loading, error, data, called}] =
+		useCacheOrLazyQuery<AlbumIndexResultQuery, AlbumIndexResultQueryVariables, Index>(AlbumIndexQuery.query, AlbumIndexQuery.transformData);
+	const get = useCallback((albumTypes: Array<AlbumType>, forceRefresh?: boolean): void => {
+		query({variables: AlbumIndexQuery.transformVariables(albumTypes)}, forceRefresh);
+	}, [query]);
+	return [get, {loading, called, error, index: data}];
+};

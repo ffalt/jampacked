@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {useLazyTrackListQuery} from '../services/queries/trackList.hook';
+import {useLazyTrackListQuery} from '../services/queries/trackList';
 import {TrackEntryListList, TrackEntryListListQuery} from '../components/TrackEntryListList';
 import {HomeRoute, HomeRouteProps} from '../navigators/Routing';
 import {GenreTabNavigatorContext} from '../navigators/GenreNavigatorContext';

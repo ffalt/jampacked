@@ -1,22 +1,15 @@
-import {GenreResult, GenreResultVariables} from './types/GenreResult';
-import gql from 'graphql-tag';
 import {DocumentNode} from 'graphql';
-
-const GET_GENRE = gql`
-    query GenreResult($id: ID!) {
-        genre(id:$id) {
-            id
-            name
-        }
-    }
-`;
+import {ApolloError} from '@apollo/client';
+import {useCacheOrLazyQuery} from '../cache-hooks';
+import {useCallback} from 'react';
+import {GenreResultDocument, GenreResultQuery, GenreResultQueryVariables} from './genre.api';
 
 export interface Genre {
 	id: string;
 	name: string;
 }
 
-function transformData(data?: GenreResult): Genre | undefined {
+function transformData(data?: GenreResultQuery): Genre | undefined {
 	if (!data || !data.genre) {
 		return;
 	}
@@ -26,13 +19,24 @@ function transformData(data?: GenreResult): Genre | undefined {
 	};
 }
 
-function transformVariables(id: string): GenreResultVariables {
+function transformVariables(id: string): GenreResultQueryVariables {
 	return {id};
 }
 
 export const GenreQuery: {
 	query: DocumentNode;
-	transformData: (d?: GenreResult, variables?: GenreResultVariables) => Genre | undefined;
-	transformVariables: (id: string) => GenreResultVariables;
-} = {query: GET_GENRE, transformData, transformVariables};
+	transformData: (d?: GenreResultQuery, variables?: GenreResultQueryVariables) => Genre | undefined;
+	transformVariables: (id: string) => GenreResultQueryVariables;
+} = {query: GenreResultDocument, transformData, transformVariables};
 
+
+export const useLazyGenreQuery = (): [
+	(id: string, forceRefresh?: boolean) => void,
+	{ loading: boolean, error?: ApolloError, called: boolean, genre?: Genre }
+] => {
+	const [query, {loading, error, data, called}] = useCacheOrLazyQuery<GenreResultQuery, GenreResultQueryVariables, Genre>(GenreQuery.query, GenreQuery.transformData);
+	const get = useCallback((id: string, forceRefresh?: boolean): void => {
+		query({variables: GenreQuery.transformVariables(id)}, forceRefresh);
+	}, [query]);
+	return [get, {loading, called, error, genre: data}];
+};

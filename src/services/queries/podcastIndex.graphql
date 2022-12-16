@@ -1,0 +1,9 @@
+query PodcastIndexResult {
+    podcasts {
+        items {
+            id
+            name
+            episodesCount
+        }
+    }
+}

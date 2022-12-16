@@ -1,70 +1,8 @@
-import gql from 'graphql-tag';
 import {ApolloError, useLazyQuery} from '@apollo/client';
 import {JamObjectType} from '../jam';
 import {useCallback, useEffect, useState} from 'react';
 import {AutoCompleteData, AutoCompleteDataSection} from '../types';
-import {AutocompleteResult, AutocompleteResultVariables} from './types/AutocompleteResult';
-
-const GET_AUTOCOMPLETE = gql`
-    query AutocompleteResult($query: String!) {
-        albums(page:{take:5}, filter:{query:$query}) {
-            total
-            items {
-                id
-                name
-            }
-        }
-        artists(page:{take:5}, filter:{query:$query}) {
-            total
-            items {
-                id
-                name
-            }
-        }
-        serieses(page:{take:5}, filter:{query:$query}) {
-            total
-            items {
-                id
-                name
-            }
-        }
-        podcasts(page:{take:5}, filter:{query:$query}) {
-            total
-            items {
-                id
-                name
-            }
-        }
-        episodes(page:{take:5}, filter:{query:$query}) {
-            total
-            items {
-                id
-                name
-            }
-        }
-        folders(page:{take:5}, filter:{query:$query}) {
-            total
-            items {
-                id
-                name
-            }
-        }
-        playlists(page:{take:5}, filter:{query:$query}) {
-            total
-            items {
-                id
-                name
-            }
-        }
-        tracks(page:{take:5}, filter:{query:$query}) {
-            total
-            items {
-                id
-                name
-            }
-        }
-    }
-`;
+import {AutocompleteResultDocument, AutocompleteResultQuery, AutocompleteResultQueryVariables} from './autocomplete.api';
 
 type Autocomplete = Array<AutoCompleteDataSection>;
 
@@ -77,7 +15,7 @@ function buildSection(key: string, objType: JamObjectType, page: { total: number
 	};
 }
 
-function transformData(data?: AutocompleteResult): Autocomplete {
+function transformData(data?: AutocompleteResultQuery): Autocomplete {
 	if (!data) {
 		return [];
 	}
@@ -113,7 +51,8 @@ export const useLazyAutocompleteQuery = (): [(query: string) => void,
 	{ loading: boolean, error?: ApolloError, sections?: Autocomplete, called: boolean }
 ] => {
 	const [sections, setSections] = useState<Autocomplete | undefined>(undefined);
-	const [getAutocomplete, {loading, error, data, called}] = useLazyQuery<AutocompleteResult, AutocompleteResultVariables>(GET_AUTOCOMPLETE);
+	const [getAutocomplete, {loading, error, data, called}]
+		= useLazyQuery<AutocompleteResultQuery, AutocompleteResultQueryVariables>(AutocompleteResultDocument);
 
 	useEffect(() => {
 		if (data) {

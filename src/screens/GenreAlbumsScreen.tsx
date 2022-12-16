@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {BaseEntryListList, BaseEntryListListQuery} from '../components/BaseEntryListList';
-import {useLazyAlbumListQuery} from '../services/queries/albumList.hook';
+import {useLazyAlbumListQuery} from '../services/queries/albumList';
 import {HomeRoute, HomeRouteProps} from '../navigators/Routing';
 import {GenreTabNavigatorContext} from '../navigators/GenreNavigatorContext';
 

@@ -8,13 +8,13 @@ import {JamObjectType} from '../services/jam';
 import {FavIcon} from '../components/FavIcon';
 import {snackError} from '../services/snack';
 import {ThemedText} from '../components/ThemedText';
-import {useLazyPlaylistQuery} from '../services/queries/playlist.hook';
+import {useLazyPlaylistQuery} from '../services/queries/playlist';
 import {Tracks} from '../components/Tracks';
 import {defaultShowArtistTrackDisplay} from '../components/TrackItem';
 
 export const PlaylistScreen: React.FC<HomeRouteProps<HomeRoute.PLAYLIST>> = ({route}) => {
 	const [getPlaylist, {loading, error, playlist}] = useLazyPlaylistQuery();
-	const {id, name} = route?.params;
+	const {id, name} = (route?.params || {});
 
 	useEffect(() => {
 		if (id) {

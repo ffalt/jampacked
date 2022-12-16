@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {BaseEntryListList, BaseEntryListListQuery} from '../components/BaseEntryListList';
 import {JamRouteLinks} from '../navigators/Routes';
 import {AlbumType, ListType} from '../services/jam';
-import {useLazySeriesListQuery} from '../services/queries/seriesList.hook';
+import {useLazySeriesListQuery} from '../services/queries/seriesList';
 
 export const SeriesList: React.FC<{ query: { listType?: ListType; albumType?: AlbumType } }> = ({query}) => {
 	const [view, setView] = useState<BaseEntryListListQuery>({

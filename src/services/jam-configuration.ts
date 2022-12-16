@@ -8,7 +8,7 @@ export class JamConfigurationService implements JamConfiguration {
 	public storeConfig = {
 		sharedPreferencesName: 'jam',
 		keychainService: 'jam'
-	}
+	};
 
 	public domain(): string {
 		return '';

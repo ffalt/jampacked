@@ -1,0 +1,14 @@
+query AlbumListResult($listType: ListType, $seed: String, $albumTypes: [AlbumType!], $genreIDs: [ID!], $take: Int!, $skip: Int!) {
+    albums(list: $listType, seed: $seed, filter: {albumTypes: $albumTypes, genreIDs: $genreIDs}, page: {take: $take, skip: $skip}) {
+        total
+        skip
+        take
+        items {
+            id
+            name
+            artist {
+                name
+            }
+        }
+    }
+}
