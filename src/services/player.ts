@@ -35,11 +35,11 @@ async function buildTrackPlayerTrack(t: TrackEntry): Promise<TrackPlayerTrack> {
 export class JamPlayer {
 
 	static async shuffleQueue(): Promise<void> {
-		await TrackPlayer.shuffle();
+		// await TrackPlayer.shuffle();
 	}
 
 	static async clearQueue(): Promise<void> {
-		await TrackPlayer.clear();
+		await TrackPlayer.reset();
 	}
 
 	static async addTrackToQueue(track: TrackEntry): Promise<void> {
@@ -107,16 +107,8 @@ export class JamPlayer {
 
 	static async stop(): Promise<void> {
 		try {
-			await TrackPlayer.stop();
+			await TrackPlayer.pause();
 			await TrackPlayer.reset();
-		} catch (e) {
-			console.error(e);
-		}
-	}
-
-	static async destroy(): Promise<void> {
-		try {
-			await TrackPlayer.destroy();
 		} catch (e) {
 			console.error(e);
 		}
@@ -178,7 +170,7 @@ export function useQueue(): Array<TrackPlayerTrack> | undefined {
 	}, [queue]);
 
 	useTrackPlayerEvents(
-		[Event.QueueChanged], async () => {
+		[Event.PlaybackState, Event.PlaybackTrackChanged, Event.PlaybackQueueEnded], async () => {
 			setQueueState(await TrackPlayer.getQueue());
 		}
 	);
@@ -188,12 +180,12 @@ export function useQueue(): Array<TrackPlayerTrack> | undefined {
 
 
 export function useCurrentTrackID(): string | undefined {
-	const [trackNr, setTrackNr] = useState<number | undefined>(undefined);
+	const [trackNr, setTrackNr] = useState<number | null>(null);
 	const [trackId, setTrackId] = useState<string | undefined>(undefined);
 
-	async function getTrack(tnr: number | undefined): Promise<TrackPlayerTrack | undefined> {
+	async function getTrack(tnr: number | null): Promise<TrackPlayerTrack | undefined> {
 		const q = await TrackPlayer.getQueue();
-		return tnr !== undefined ? q[tnr] : undefined;
+		return tnr !== null ? q[tnr] : undefined;
 	}
 
 	useTrackPlayerEvents(
@@ -225,18 +217,18 @@ export function useCurrentTrackID(): string | undefined {
 }
 
 export function useCurrentTrack(): TrackPlayerTrack | undefined {
-	const [trackNr, setTrackNr] = useState<number | undefined>(undefined);
+	const [trackNr, setTrackNr] = useState<number | null>(null);
 	const [track, setTrack] = useState<TrackPlayerTrack | undefined>(undefined);
 
-	async function getTrack(tnr: number | undefined): Promise<TrackPlayerTrack | undefined> {
+	async function getTrack(tnr: number | null): Promise<TrackPlayerTrack | undefined> {
 		const q = await TrackPlayer.getQueue();
-		return tnr !== undefined ? q[tnr] : undefined;
+		return tnr !== null ? q[tnr] : undefined;
 	}
 
 	useTrackPlayerEvents(
 		[Event.PlaybackTrackChanged], event => {
-			if (trackNr !== event.nextTrack) {
-				setTrackNr(event.nextTrack);
+			if (trackNr !== event.track) {
+				setTrackNr(event.track);
 			}
 		}
 	);
@@ -276,7 +268,7 @@ export function useCurrentTrackIndex(): number | undefined {
 		let isSubscribed = true;
 		TrackPlayer.getCurrentTrack().then(i => {
 			if (isSubscribed && trackIndex !== i) {
-				setTrackIndex(i);
+				setTrackIndex(i === null ? undefined : i);
 			}
 		});
 		return (): void => {

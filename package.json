@@ -68,7 +68,7 @@
     "react-native-svg": "13.6.0",
     "react-native-swift": "1.2.3",
     "react-native-tab-view": "3.3.4",
-    "react-native-track-player": "ffalt/react-native-track-player",
+    "react-native-track-player": "3.2.0",
     "react-native-vector-icons": "9.2.0",
     "waveform-data": "4.3.0"
   },
