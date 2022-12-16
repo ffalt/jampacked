@@ -33,6 +33,7 @@ module.exports = {
 		+ '|react-native-actions-sheet'
 		+ '|react-native-background-downloader'
 		+ '|react-native-background-timer'
+		+ '|react-native-track-player'
 		+ '|d3-scale'
 		+ '|d3-array'
 		+ '|d3-color'
