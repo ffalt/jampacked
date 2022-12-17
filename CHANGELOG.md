@@ -2,8 +2,6 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
-### [0.0.3](https://github.com-ffalt/ffalt/jampacked/compare/v0.0.2...v0.0.3) (2022-12-17)
-
 ### [0.0.2](https://github.com-ffalt/ffalt/jampacked/compare/v0.0.1...v0.0.2) (2021-10-30)
 
 
