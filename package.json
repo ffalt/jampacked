@@ -1,6 +1,6 @@
 {
   "name": "jam",
-  "version": "0.0.3",
+  "version": "0.0.2",
   "private": true,
   "scripts": {
     "android": "react-native run-android && react-native log-android",
