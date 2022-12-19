@@ -22,7 +22,10 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'space-between',
-		padding: staticTheme.padding
+		paddingLeft: staticTheme.padding,
+		paddingRight: staticTheme.padding,
+		paddingBottom: staticTheme.padding,
+		paddingTop: staticTheme.padding * 2
 	},
 	userHeaderText: {
 		paddingLeft: staticTheme.padding,

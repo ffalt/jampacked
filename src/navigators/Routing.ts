@@ -1,6 +1,6 @@
 import {Route, RouteProp} from '@react-navigation/core';
-import {StackNavigationProp} from '@react-navigation/stack';
 import {AlbumType} from '../services/jam';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 
 // App Routes
 
@@ -17,7 +17,7 @@ export type AppStackNavigatorParamList = {
 };
 
 export type AppStackProps<T extends keyof AppStackNavigatorParamList> = {
-	navigation: StackNavigationProp<AppStackNavigatorParamList, T>;
+	navigation: NativeStackNavigationProp<AppStackNavigatorParamList, T>;
 	route: Route<T>;
 };
 
@@ -34,7 +34,7 @@ export type ModalStackNavigatorParamList = {
 };
 
 export type ModalStackProps<T extends keyof ModalStackNavigatorParamList> = {
-	navigation: StackNavigationProp<ModalStackNavigatorParamList, T>;
+	navigation: NativeStackNavigationProp<ModalStackNavigatorParamList, T>;
 	route: RouteProp<ModalStackNavigatorParamList, T>;
 };
 
@@ -53,7 +53,7 @@ export type BottomTabNavigatorParamList = {
 };
 
 export type BottomTabProps<T extends keyof BottomTabNavigatorParamList> = {
-	navigation: StackNavigationProp<BottomTabNavigatorParamList, T>;
+	navigation: NativeStackNavigationProp<BottomTabNavigatorParamList, T>;
 	route: Route<T>;
 };
 
@@ -114,7 +114,7 @@ export type HomeRouteParamList = {
 };
 
 export type HomeRouteProps<T extends keyof HomeRouteParamList> = {
-	navigation: StackNavigationProp<HomeRouteParamList, T>;
+	navigation: NativeStackNavigationProp<HomeRouteParamList, T>;
 	route: RouteProp<HomeRouteParamList, T>;
 };
 
@@ -141,7 +141,7 @@ export type ArtistsRouteParamList = {
 };
 
 export type ArtistsRouteProps<T extends keyof ArtistsRouteParamList> = {
-	navigation: StackNavigationProp<ArtistsRouteParamList, T>;
+	navigation: NativeStackNavigationProp<ArtistsRouteParamList, T>;
 	route: RouteProp<ArtistsRouteParamList, T>;
 };
 
@@ -166,7 +166,7 @@ export type TracksRouteParamList = {
 };
 
 export type TracksRouteProps<T extends keyof TracksRouteParamList> = {
-	navigation: StackNavigationProp<TracksRouteParamList, T>;
+	navigation: NativeStackNavigationProp<TracksRouteParamList, T>;
 	route: RouteProp<TracksRouteParamList, T>;
 };
 
@@ -183,7 +183,7 @@ export type AlbumRouteParamList = {
 };
 
 export type AlbumRouteProps<T extends keyof AlbumRouteParamList> = {
-	navigation: StackNavigationProp<AlbumRouteParamList, T>;
+	navigation: NativeStackNavigationProp<AlbumRouteParamList, T>;
 	route: RouteProp<AlbumRouteParamList, T>;
 };
 
@@ -210,7 +210,7 @@ export type AlbumsRouteParamList = {
 };
 
 export type AlbumsRouteProps<T extends keyof AlbumsRouteParamList> = {
-	navigation: StackNavigationProp<AlbumsRouteParamList, T>;
+	navigation: NativeStackNavigationProp<AlbumsRouteParamList, T>;
 	route: RouteProp<AlbumsRouteParamList, T>;
 };
 
@@ -237,7 +237,7 @@ export type SeriesRouteParamList = {
 };
 
 export type SeriesRouteProps<T extends keyof SeriesRouteParamList> = {
-	navigation: StackNavigationProp<SeriesRouteParamList, T>;
+	navigation: NativeStackNavigationProp<SeriesRouteParamList, T>;
 	route: RouteProp<SeriesRouteParamList, T>;
 };
 
@@ -264,7 +264,7 @@ export type FoldersRouteParamList = {
 };
 
 export type FoldersRouteProps<T extends keyof FoldersRouteParamList> = {
-	navigation: StackNavigationProp<FoldersRouteParamList, T>;
+	navigation: NativeStackNavigationProp<FoldersRouteParamList, T>;
 	route: RouteProp<FoldersRouteParamList, T>;
 };
 
@@ -281,7 +281,7 @@ export type DownloadsRouteParamList = {
 };
 
 export type DownloadsRouteProps<T extends keyof DownloadsRouteParamList> = {
-	navigation: StackNavigationProp<DownloadsRouteParamList, T>;
+	navigation: NativeStackNavigationProp<DownloadsRouteParamList, T>;
 	route: RouteProp<DownloadsRouteParamList, T>;
 };
 
@@ -296,7 +296,7 @@ export type GenresRouteParamList = {
 };
 
 export type GenresRouteProps<T extends keyof GenresRouteParamList> = {
-	navigation: StackNavigationProp<GenresRouteParamList, T>;
+	navigation: NativeStackNavigationProp<GenresRouteParamList, T>;
 	route: RouteProp<GenresRouteParamList, T>;
 };
 
@@ -315,7 +315,7 @@ export type GenreRouteParamList = {
 };
 
 export type GenreRouteProps<T extends keyof GenreRouteParamList> = {
-	navigation: StackNavigationProp<GenreRouteParamList, T>;
+	navigation: NativeStackNavigationProp<GenreRouteParamList, T>;
 	route: RouteProp<GenreRouteParamList, T>;
 };
 

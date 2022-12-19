@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {createStackNavigator} from '@react-navigation/stack';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {LoadingScreen} from '../screens/LoadingScreen';
 import {AppStackNavigatorParamList, AppRouting} from './Routing';
 import {LoginScreen} from '../screens/LoginScreen';
@@ -9,7 +9,7 @@ import {DrawerNavigator} from './DrawerNavigator';
 import RNBootSplash from 'react-native-bootsplash';
 import {useThemeContext} from '../style/theming';
 
-const Stack = createStackNavigator<AppStackNavigatorParamList>();
+const Stack = createNativeStackNavigator<AppStackNavigatorParamList>();
 
 export const AppNavigator: React.FC = () => {
 	const [isLoading, setIsLoading] = useState<boolean>(true);

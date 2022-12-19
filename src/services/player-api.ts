@@ -6,6 +6,7 @@ export async function initPlayer(): Promise<void> {
 	if (!isRunning) {
 		await TrackPlayer.setupPlayer();
 		await TrackPlayer.updateOptions({
+			progressUpdateEventInterval: 2,
 			capabilities: [
 				Capability.Play,
 				Capability.Pause,

@@ -1,5 +1,5 @@
 import React from 'react';
-import {createStackNavigator} from '@react-navigation/stack';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {HomeScreen} from '../screens/HomeScreen';
 import {ArtistScreen} from '../screens/ArtistScreen';
 import {HomeRoute, HomeRouteParamList} from './Routing';
@@ -21,7 +21,7 @@ import {TracksNavigator} from './TracksNavigator';
 import {GenreNavigator} from './GenreNavigator';
 import {AlbumNavigator} from './AlbumNavigator';
 
-const Stack = createStackNavigator<HomeRouteParamList>();
+const Stack = createNativeStackNavigator<HomeRouteParamList>();
 
 export const HomeStackNavigator: React.FC = () => (
 	<Stack.Navigator screenOptions={{headerShown: false}}>

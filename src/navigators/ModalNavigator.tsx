@@ -1,12 +1,12 @@
 import React, {useEffect} from 'react';
-import {createStackNavigator} from '@react-navigation/stack';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {BottomTabNavigator} from './BottomTabNavigator';
 import {PlayerScreen} from '../screens/PlayerScreen';
 import {ModalRouting} from './Routing';
 import {NavigationService} from './navigation';
 import {Linking} from 'react-native';
 
-const ModalStack = createStackNavigator();
+const ModalStack = createNativeStackNavigator();
 
 export const ModalNavigator: React.FC = () => {
 	useEffect(() => {

@@ -204,6 +204,7 @@ export const LoginScreen: React.FC<AppStackProps<AppRouting.AUTH>> = () => {
 								placeholder="Server"
 								autoCorrect={false}
 								value={server}
+								editable={!loading}
 								returnKeyType="next"
 								autoCapitalize="none"
 								autoComplete="name"
@@ -225,6 +226,7 @@ export const LoginScreen: React.FC<AppStackProps<AppRouting.AUTH>> = () => {
 								placeholder="User"
 								autoCorrect={false}
 								value={name}
+								editable={!loading}
 								importantForAutofill="yes"
 								autoComplete="username"
 								textContentType="username"
@@ -244,6 +246,7 @@ export const LoginScreen: React.FC<AppStackProps<AppRouting.AUTH>> = () => {
 								style={[styles.input, {color: theme.textColor}]}
 								placeholderTextColor={theme.muted}
 								placeholder="Password"
+								editable={!loading}
 								autoComplete="password"
 								returnKeyType="done"
 								textContentType="password"

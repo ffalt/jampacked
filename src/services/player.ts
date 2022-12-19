@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react';
-import {AudioFormatType} from './jam';
+import {AudioFormatType, ImageFormatType} from './jam';
 import dataService from './data';
 import {TrackEntry} from './types';
 import TrackPlayer, {Event, State, useProgress, useTrackPlayerEvents} from 'react-native-track-player';
@@ -12,6 +12,7 @@ async function buildTrackPlayerTrack(t: TrackEntry): Promise<TrackPlayerTrack> {
 	const url = local ?
 		dataService.pin.pinCache.pathInCache(t.id) :
 		dataService.jam.stream.streamUrl({id: t.id, format: AudioFormatType.mp3}, !headers);
+	const artwork = dataService.jam.image.imageUrl({id: imageID, size: 300, format: ImageFormatType.png}, !headers);
 	return {
 		id: t.id,
 		url,
@@ -20,7 +21,7 @@ async function buildTrackPlayerTrack(t: TrackEntry): Promise<TrackPlayerTrack> {
 		album: t.album,
 		genre: t.genre,
 		duration: t.durationMS / 1000,
-		artwork: dataService.jam.image.imageUrl({id: imageID, size: 300}, !headers),
+		artwork,
 		headers
 		// type: TrackType.default;
 		// date: t.tag?.year,

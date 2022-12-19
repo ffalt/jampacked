@@ -1,6 +1,7 @@
 import React, {useCallback} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {State, TapGestureHandler, TapGestureHandlerStateChangeEvent} from 'react-native-gesture-handler';
+import {State, TapGestureHandler, TapGestureHandlerStateChangeEvent, TouchableNativeFeedback} from 'react-native-gesture-handler';
+import CheckBox from '@react-native-community/checkbox';
 import {JamPlayer} from '../services/player';
 import {ThemedText} from './ThemedText';
 import {TrackEntry} from '../services/types';
@@ -8,6 +9,11 @@ import {sharedStyles} from '../style/shared';
 import {staticTheme} from '../style/theming';
 
 const styles = StyleSheet.create({
+	trackListCheck: {
+		flex: 1,
+		maxWidth: 90,
+		minWidth: 10,
+	},
 	trackListNumber: {
 		flex: 1,
 		maxWidth: 90,
@@ -17,6 +23,7 @@ const styles = StyleSheet.create({
 	trackListTitle: {
 		flex: 8
 	},
+	trackListCheckBox: {},
 	trackListRuntime: {
 		maxWidth: 90,
 		minWidth: 90,
@@ -59,9 +66,20 @@ export const defaultListTrackDisplay = (track: TrackEntry): TrackDisplay => {
 		column3: track.duration
 	};
 };
-export const TrackItem: React.FC<{ track: TrackEntry, displayFunc?: TrackDisplayFunction; showMenu?: (item: TrackEntry) => void; }> = React.memo(({track, displayFunc, showMenu}) => {
+export const TrackItem: React.FC<{
+	track: TrackEntry, displayFunc?: TrackDisplayFunction;
+	isSelected?: boolean;
+	showMenu?: (item: TrackEntry) => void;
+	setSelected?: (item: TrackEntry,) => void;
+}> = React.memo(({track, displayFunc, showMenu, isSelected, setSelected}) => {
 	const doubleTap = React.useRef(React.createRef<TapGestureHandler>().current);
 	const display = displayFunc ? displayFunc(track) : defaultTrackDisplay(track);
+
+	const setItemSelected = () => {
+		if (setSelected) {
+			setSelected(track);
+		}
+	};
 
 	const onSingleTapped = useCallback((event: TapGestureHandlerStateChangeEvent): void => {
 		if (event.nativeEvent.state === State.ACTIVE) {
@@ -89,25 +107,38 @@ export const TrackItem: React.FC<{ track: TrackEntry, displayFunc?: TrackDisplay
 			<ThemedText style={[sharedStyles.itemFooterText, sharedStyles.itemFooterTextRight]} numberOfLines={1}>{display.column3}</ThemedText>
 		</View>
 	);
-	//TODO: implement opacity on press
+
+	const onLongPress = () => {
+		if (showMenu) {
+			showMenu(track);
+		}
+	};
+
 	return (
-		<TapGestureHandler
-			waitFor={doubleTap}
-			maxDelayMs={200}
-			onHandlerStateChange={onSingleTapped}>
-			<TapGestureHandler
-				ref={doubleTap}
-				onHandlerStateChange={onDoubleTapped}
-				numberOfTaps={2}>
-				<View style={sharedStyles.item}>
-					{column1}
+		<TouchableNativeFeedback
+			onPress={setItemSelected}
+			onLongPress={onLongPress}
+		>
+			<View style={sharedStyles.item}>
+				<View style={styles.trackListCheck}>
+					<CheckBox
+						value={isSelected}
+						onValueChange={setItemSelected}
+						style={styles.trackListCheckBox}
+					/>
+				</View>
+				{column1}
+				<TapGestureHandler
+					ref={doubleTap}
+					onHandlerStateChange={onDoubleTapped}
+					numberOfTaps={2}>
 					<View style={[sharedStyles.itemContent, styles.trackListTitle]}>
 						<ThemedText style={sharedStyles.itemText} numberOfLines={2}>{display.column2title}</ThemedText>
 						{subtitle}
 					</View>
-					{column3}
-				</View>
-			</TapGestureHandler>
-		</TapGestureHandler>
+				</TapGestureHandler>
+				{column3}
+			</View>
+		</TouchableNativeFeedback>
 	);
 });

@@ -13,11 +13,11 @@ import {JamApolloClient} from './src/services/apollo';
 import {sharedStyles} from './src/style/shared';
 
 LogBox.ignoreLogs([
-	'[react-native-gesture-handler] Seems like you\'re using an old API with gesture components, check out new Gestures system!',
-	'[GESTURE HANDLER] Gesture handler is already enabled for a parent view',
-	'new NativeEventEmitter',
-	'EventEmitter.removeListener',
-	'Require cycle: node_modules/d3-interpolate'
+	// '[react-native-gesture-handler] Seems like you\'re using an old API with gesture components, check out new Gestures system!',
+	// '[GESTURE HANDLER] Gesture handler is already enabled for a parent view',
+	// 'EventEmitter.removeListener',
+	// 'Require cycle: node_modules/d3-interpolate'
+	'new NativeEventEmitter'
 ]);
 
 enableScreens();
