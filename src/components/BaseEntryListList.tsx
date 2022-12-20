@@ -1,7 +1,7 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {ListTypeName} from '../services/jam-lists';
 import {BaseEntry, useListFunction} from '../services/types';
-import {BaseEntryList, BaseEntryListInfo} from '../components/BaseEntryList';
+import {BaseEntryList, BaseEntryListInfo} from './BaseEntryList';
 import {AlbumType, ListType} from '../services/jam';
 import {ErrorView} from './ErrorView';
 import dataService from '../services/data';

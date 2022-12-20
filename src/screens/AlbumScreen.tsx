@@ -1,6 +1,6 @@
 import React, {useCallback, useContext, useEffect, useState} from 'react';
 import {TouchableOpacity} from 'react-native';
-import {HomeRoute, HomeRouteProps} from '../navigators/Routing';
+import {AlbumRoute, AlbumRouteProps, HomeRoute} from '../navigators/Routing';
 import {JamPlayer} from '../services/player';
 import {ThemedIcon} from '../components/ThemedIcon';
 import {HeaderDetail, ObjHeader, objHeaderStyles} from '../components/ObjHeader';
@@ -25,7 +25,7 @@ const buildDetails = (artist?: string, tracks?: number, genre?: string, click?: 
 	];
 };
 
-export const AlbumScreen: React.FC<HomeRouteProps<HomeRoute.ALBUM>> = () => {
+export const AlbumScreen: React.FC<AlbumRouteProps<AlbumRoute.MAIN>> = () => {
 	const state = useContext(AlbumTabNavigatorContext);
 	const [details, setDetails] = useState<Array<HeaderDetail>>(buildDetails());
 	const [getAlbum, {loading, error, album}] = useLazyAlbumQuery();

@@ -2,14 +2,14 @@ import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {HomeStackNavigator} from './HomeStackNavigator';
 import {SettingsScreen} from '../screens/SettingsScreen';
-import {BottomTabParams, BottomTabRoute} from './Routing';
+import {BottomTabNavigatorParamList, BottomTabRoute, ModalRouting, ModalStackProps} from './Routing';
 import {SearchScreen} from '../screens/SearchScreen';
 import {getTabBarIcon} from '../components/ThemedIcon';
 import {JamTabBar} from './JamTabBar';
 
-const BottomTabs = createBottomTabNavigator<BottomTabParams>();
+const BottomTabs = createBottomTabNavigator<BottomTabNavigatorParamList>();
 
-export const BottomTabNavigator: React.FC = () => (
+export const BottomTabNavigator: React.FC<ModalStackProps<ModalRouting.MAIN>> = () => (
 	<BottomTabs.Navigator
 		screenOptions={{
 			headerShown: false,

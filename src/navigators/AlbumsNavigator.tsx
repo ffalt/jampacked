@@ -3,10 +3,10 @@ import React, {useEffect, useState} from 'react';
 import {AlbumIndexScreen} from '../screens/AlbumIndexScreen';
 import {AlbumListAvgHighestScreen, AlbumListFavScreen, AlbumListFrequentScreen, AlbumListHighestScreen, AlbumListRandomScreen, AlbumListRecentScreen} from '../screens/AlbumListScreen';
 import {AlbumsTabNavigatorContext} from './AlbumsNavigatorContext';
-import {AlbumsRoute, HomeRoute, HomeRouteProps} from './Routing';
+import {AlbumsRoute, AlbumsRouteParamList, HomeRoute, HomeRouteProps} from './Routing';
 import {AlbumType} from '../services/jam';
 
-const Tab = createMaterialTopTabNavigator();
+const Tab = createMaterialTopTabNavigator<AlbumsRouteParamList>();
 const emptyComponent = (): JSX.Element => (<></>);
 
 export const AlbumsNavigator: React.FC<HomeRouteProps<HomeRoute.ALBUMS>> = ({route}) => {

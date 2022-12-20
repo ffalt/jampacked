@@ -5,6 +5,7 @@ import FastImage from 'react-native-fast-image';
 import {snackSuccess} from './snack';
 import {DocumentNode} from 'graphql';
 import {buildCacheID} from './cache-query';
+import {OperationVariables} from '@apollo/client/core/types';
 
 export interface CacheState {
 	isRunning: boolean;
@@ -101,7 +102,7 @@ export class CacheService {
 		await this.checkDB();
 	}
 
-	async getCacheOrQuery<TData, TVariables, TResult>(
+	async getCacheOrQuery<TData, TVariables extends OperationVariables, TResult>(
 		query: DocumentNode,
 		variables: TVariables,
 		transform: (d?: TData, vars?: TVariables) => TResult | undefined,

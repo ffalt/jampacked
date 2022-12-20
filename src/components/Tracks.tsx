@@ -2,7 +2,7 @@ import React, {MutableRefObject, useCallback, useState} from 'react';
 import {DefaultFlatList} from './DefFlatList';
 import {TrackEntry} from '../services/types';
 import {TrackDisplayFunction, TrackItem} from './TrackItem';
-import ActionSheet from 'react-native-actions-sheet';
+import ActionSheet, {ActionSheetRef} from 'react-native-actions-sheet';
 import {ActionSheetTrack} from './ActionSheetTrack';
 import {useTheme} from '../style/theming';
 import {ErrorView} from './ErrorView';
@@ -13,7 +13,7 @@ import {StyleSheet} from 'react-native';
 
 const styles = StyleSheet.create({
 	playButton: {
-		color: '#ffffff',
+		color: '#ffffff'
 	}
 });
 
@@ -44,7 +44,7 @@ export const Tracks: React.FC<{
 	onLoadMore?: () => void;
 }> =
 	({tracks, refreshing, displayFunc, onRefresh, onLoadMore, error, ListHeaderComponent}) => {
-		const actionSheetRef: MutableRefObject<ActionSheet | null> = React.useRef<ActionSheet>(null);
+		const actionSheetRef: MutableRefObject<ActionSheetRef | null> = React.useRef<ActionSheetRef>(null);
 		const floatingActionRef: MutableRefObject<FloatingAction | null> = React.useRef<FloatingAction>(null);
 		const theme = useTheme();
 		const [currentTrack, setCurrentTrack] = useState<TrackEntry | undefined>();

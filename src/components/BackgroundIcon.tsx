@@ -1,5 +1,5 @@
 import {ImageBackground, ImageSourcePropType, StyleProp, StyleSheet, ViewStyle} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {PropsWithChildren, useEffect, useState} from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import {useTheme} from '../style/theming';
 import {FontelloIcon} from './FontelloIcon';
@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-export const BackgroundIcon: React.FC<{ name: string; style?: StyleProp<ViewStyle>; }> = (
+export const BackgroundIcon: React.FC<PropsWithChildren<{ name: string; style?: StyleProp<ViewStyle>; }>> = (
 	{name, children, style}
 ) => {
 	const [iconSource, setIconSource] = useState<ImageSourcePropType>(0);

@@ -21,7 +21,7 @@ const scrobble: {
 async function monitorProgress(): Promise<void> {
 	const index = await TrackPlayer.getCurrentTrack();
 	const q = await TrackPlayer.getQueue();
-	const id = q[index]?.id;
+	const id = index === null ? undefined : q[index]?.id;
 	if (!id) {
 		scrobble.done = false;
 		return;

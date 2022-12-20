@@ -1,10 +1,10 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {useLazyTrackListQuery} from '../services/queries/trackList';
 import {TrackEntryListList, TrackEntryListListQuery} from '../components/TrackEntryListList';
-import {HomeRoute, HomeRouteProps} from '../navigators/Routing';
+import {GenreRoute, GenreRouteProps} from '../navigators/Routing';
 import {GenreTabNavigatorContext} from '../navigators/GenreNavigatorContext';
 
-export const GenreTracksScreen: React.FC<HomeRouteProps<HomeRoute.GENRE>> = () => {
+export const GenreTracksScreen: React.FC<GenreRouteProps<GenreRoute.TRACKS>> = () => {
 	const state = useContext(GenreTabNavigatorContext);
 	const [view, setView] = useState<TrackEntryListListQuery>({
 		text: '',

@@ -1,10 +1,10 @@
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import React from 'react';
-import { AlbumTabNavigatorContext } from './AlbumNavigatorContext';
-import {AlbumRoute, HomeRoute, HomeRouteProps} from './Routing';
+import {AlbumTabNavigatorContext} from './AlbumNavigatorContext';
+import {AlbumRoute, AlbumRouteParamList, HomeRoute, HomeRouteProps} from './Routing';
 import {AlbumScreen} from '../screens/AlbumScreen';
 
-const Tab = createMaterialTopTabNavigator();
+const Tab = createMaterialTopTabNavigator<AlbumRouteParamList>();
 const emptyComponent = (): JSX.Element => (<></>);
 
 export const AlbumNavigator: React.FC<HomeRouteProps<HomeRoute.ALBUM>> = ({route}) => {

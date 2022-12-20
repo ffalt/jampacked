@@ -2,7 +2,7 @@ import React, {useCallback, useState} from 'react';
 import {StyleSheet, TextInput, TouchableOpacity, View, ViewStyle} from 'react-native';
 import throttle from 'lodash.throttle';
 import {staticTheme, useTheme} from '../style/theming';
-import {ThemedIcon} from '../components/ThemedIcon';
+import {ThemedIcon} from './ThemedIcon';
 
 const styles = StyleSheet.create({
 	container: {

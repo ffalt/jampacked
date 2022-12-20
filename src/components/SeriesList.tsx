@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {BaseEntryListList, BaseEntryListListQuery} from '../components/BaseEntryListList';
+import {BaseEntryListList, BaseEntryListListQuery} from './BaseEntryListList';
 import {JamRouteLinks} from '../navigators/Routes';
 import {AlbumType, ListType} from '../services/jam';
 import {useLazySeriesListQuery} from '../services/queries/seriesList';

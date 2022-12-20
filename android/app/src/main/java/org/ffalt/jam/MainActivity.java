@@ -1,7 +1,5 @@
 package org.ffalt.jam;
 
-import android.content.res.Configuration;
-
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.ReactRootView;
@@ -20,15 +18,14 @@ public class MainActivity extends ReactActivity {
 
   /**
    * Returns the instance of the {@link ReactActivityDelegate}. There the RootView is created and
-   * you can specify the renderer you wish to use - the new renderer (Fabric) or the old renderer
-   * (Paper).
+   * you can specify the rendered you wish to use (Fabric or the older renderer).
    */
   @Override
   protected ReactActivityDelegate createReactActivityDelegate() {
     return new MainActivityDelegate(this, getMainComponentName());
   }
 
- public static class MainActivityDelegate extends ReactActivityDelegate {
+  public static class MainActivityDelegate extends ReactActivityDelegate {
     public MainActivityDelegate(ReactActivity activity, String mainComponentName) {
       super(activity, mainComponentName);
     }

@@ -1,7 +1,7 @@
 import {useEffect, useRef, useState} from 'react';
 import {Animated, Easing} from 'react-native';
 
-export const useScaleAnimate = (inverted = false, avoidFirst = true): Animated.AnimatedInterpolation => {
+export const useScaleAnimate = (inverted = false, avoidFirst = true): Animated.AnimatedInterpolation<number> => {
 	const scaleValue = useRef(new Animated.Value(0)).current;
 
 	const scale = scaleValue.interpolate({

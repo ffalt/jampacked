@@ -15,7 +15,7 @@ import {useLazyFolderQuery} from '../services/queries/folder';
 import {DefaultFlatList} from '../components/DefFlatList';
 import {MUSICBRAINZ_VARIOUS_ARTISTS_NAME} from './AlbumScreen';
 import {TrackEntry} from '../services/types';
-import ActionSheet from 'react-native-actions-sheet';
+import ActionSheet, {ActionSheetRef} from 'react-native-actions-sheet';
 import {ActionSheetTrack} from '../components/ActionSheetTrack';
 import {useTheme} from '../style/theming';
 
@@ -46,7 +46,7 @@ const buildDetails = (folder?: Folder): Array<HeaderDetail> => {
 };
 
 export const FolderScreen: React.FC<HomeRouteProps<HomeRoute.FOLDER>> = ({route}) => {
-	const actionSheetRef: MutableRefObject<ActionSheet | null> = React.useRef<ActionSheet>(null);
+	const actionSheetRef: MutableRefObject<ActionSheetRef | null> = React.useRef<ActionSheetRef>(null);
 	const [currentTrack, setCurrentTrack] = useState<TrackEntry | undefined>();
 	const [details, setDetails] = useState<Array<HeaderDetail>>(buildDetails());
 	const [getFolder, {loading, error, folder}] = useLazyFolderQuery();
@@ -125,10 +125,7 @@ export const FolderScreen: React.FC<HomeRouteProps<HomeRoute.FOLDER>> = ({route}
 	return (
 		<>
 			<ActionSheet
-				initialOffsetFromBottom={1}
 				ref={actionSheetRef}
-				bounceOnOpen={true}
-				bounciness={8}
 				gestureEnabled={true}
 				containerStyle={{backgroundColor: theme.background}}
 				defaultOverlayOpacity={0.3}>

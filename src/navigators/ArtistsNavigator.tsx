@@ -2,9 +2,9 @@ import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs
 import React from 'react';
 import {ArtistIndexScreen} from '../screens/ArtistIndexScreen';
 import {ArtistListAvgHighestScreen, ArtistListFavScreen, ArtistListFrequentScreen, ArtistListHighestScreen, ArtistListRandomScreen, ArtistListRecentScreen} from '../screens/ArtistListScreen';
-import {ArtistsRoute} from './Routing';
+import {ArtistsRoute, ArtistsRouteParamList} from './Routing';
 
-const Tab = createMaterialTopTabNavigator();
+const Tab = createMaterialTopTabNavigator<ArtistsRouteParamList>();
 const emptyComponent = (): JSX.Element => (<></>);
 
 export const ArtistsNavigator: React.FC = () => {

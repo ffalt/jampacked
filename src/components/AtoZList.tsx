@@ -4,7 +4,7 @@
 
  */
 import React, {MutableRefObject, useCallback, useEffect, useState} from 'react';
-import {FlatList, FlatListProps, StyleSheet, View} from 'react-native';
+import {FlatList, FlatListProps, NativeScrollEvent, NativeSyntheticEvent, StyleSheet, View} from 'react-native';
 import {AtoZPicker} from './AtoZPicker';
 import {commonItemLayout} from '../utils/list.utils';
 
@@ -43,7 +43,7 @@ export const AtoZList: React.FC<AtoZListProps<any>> = <T extends SectionItem, >(
 
 	const getItemLayout = React.useMemo(() => commonItemLayout(itemHeight), [itemHeight]);
 
-	const onScroll = useCallback((event) => {
+	const onScroll = useCallback((event: NativeSyntheticEvent<NativeScrollEvent>) => {
 		const offset = event.nativeEvent.contentOffset.y;
 		if (itemHeight) {
 			const index = Math.floor(offset / itemHeight);

@@ -1,10 +1,10 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {TouchableOpacity, View} from 'react-native';
 import {DownloadTask} from 'react-native-background-downloader';
-import {ThemedText} from '../components/ThemedText';
+import {ThemedText} from './ThemedText';
 import {formatDuration} from '../utils/duration.utils';
-import {ThemedIcon} from '../components/ThemedIcon';
-import {CircularProgress} from '../components/CircularProgress';
+import {ThemedIcon} from './ThemedIcon';
+import {CircularProgress} from './CircularProgress';
 import {useDownloadStatus} from '../services/pin-hooks';
 import {sharedStyles} from '../style/shared';
 

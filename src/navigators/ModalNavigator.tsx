@@ -2,11 +2,11 @@ import React, {useEffect} from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {BottomTabNavigator} from './BottomTabNavigator';
 import {PlayerScreen} from '../screens/PlayerScreen';
-import {ModalRouting} from './Routing';
+import {ModalRouting, ModalStackNavigatorParamList} from './Routing';
 import {NavigationService} from './navigation';
 import {Linking} from 'react-native';
 
-const ModalStack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator<ModalStackNavigatorParamList>();
 
 export const ModalNavigator: React.FC = () => {
 	useEffect(() => {
@@ -23,7 +23,8 @@ export const ModalNavigator: React.FC = () => {
 				handleUrl({url});
 			}
 		});
-		Linking.addEventListener('url', data => {
+
+		const subscription = Linking.addEventListener('url', data => {
 			if (isSubscribed) {
 				handleUrl(data);
 			}
@@ -31,19 +32,18 @@ export const ModalNavigator: React.FC = () => {
 
 		return (): void => {
 			isSubscribed = false;
-			Linking.removeEventListener('url', handleUrl);
+			subscription.remove(); // Linking.removeEventListener('url', handleUrl);
 		};
 	}, []);
 
-
 	return (
-		<ModalStack.Navigator screenOptions={{
+		<Stack.Navigator screenOptions={{
 			headerShown: false,
 			presentation: 'modal'
 		}}>
-			<ModalStack.Screen name="Main" component={BottomTabNavigator}/>
-			<ModalStack.Screen name="Player" component={PlayerScreen} options={{gestureEnabled: true}}/>
-		</ModalStack.Navigator>
+			<Stack.Screen name={ModalRouting.MAIN} component={BottomTabNavigator}/>
+			<Stack.Screen name={ModalRouting.PLAYER} component={PlayerScreen} options={{gestureEnabled: true}}/>
+		</Stack.Navigator>
 	);
 
 };

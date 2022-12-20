@@ -3,9 +3,9 @@ import React from 'react';
 import {FolderIndexScreen} from '../screens/FolderIndexScreen';
 import {FolderListAvgHighestScreen, FolderListFavScreen, FolderListFrequentScreen, FolderListHighestScreen, FolderListRandomScreen, FolderListRecentScreen} from '../screens/FolderListScreen';
 import {FoldersTabNavigatorContext} from './FoldersNavigatorContext';
-import {FoldersRoute, HomeRoute, HomeRouteProps} from './Routing';
+import {FoldersRoute, FoldersRouteParamList, HomeRoute, HomeRouteProps} from './Routing';
 
-const Tab = createMaterialTopTabNavigator();
+const Tab = createMaterialTopTabNavigator<FoldersRouteParamList>();
 const emptyComponent = (): JSX.Element => (<></>);
 
 export const FoldersNavigator: React.FC<HomeRouteProps<HomeRoute.FOLDERS>> = ({route}) => {

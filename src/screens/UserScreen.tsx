@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect} from 'react';
 import {Button, RefreshControl, ScrollView, StyleSheet, View} from 'react-native';
-import {BottomTabProps, BottomTabRoute} from '../navigators/Routing';
+import {HomeRoute, HomeRouteProps} from '../navigators/Routing';
 import {ThemedText} from '../components/ThemedText';
 import {staticTheme, useTheme} from '../style/theming';
 import {JamImage} from '../components/JamImage';
@@ -46,7 +46,7 @@ export const UserPermission: React.FC<{ text: string }> = ({text}) => {
 	);
 };
 
-export const UserScreen: React.FC<BottomTabProps<BottomTabRoute.SETTINGS>> = () => {
+export const UserScreen: React.FC<HomeRouteProps<HomeRoute.USER>> = () => {
 	const auth = useAuth();
 	const theme = useTheme();
 	const [getUserData, {loading, error, called, userData}] = useLazyUserDataQuery();

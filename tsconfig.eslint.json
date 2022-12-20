@@ -5,6 +5,7 @@
     "./index.js",
     "./jest.transformer.js",
     "./jest.config.js",
+    "./jest.setup.js",
     "./babel.config.js",
     "./metro.config.js",
     "./src/**/*.js",

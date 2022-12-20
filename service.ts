@@ -28,17 +28,14 @@ export default async function service(): Promise<void> {
 	TrackPlayer.addEventListener(Event.RemoteStop, () => {
 		if (hasApp) {
 			JamPlayer.stop();
-		} else {
-			JamPlayer.destroy();
 		}
 	});
 	TrackPlayer.addEventListener(Event.RemoteDuck, (data) => {
-		// if (data.paused || data.permanent)
-		TrackPlayer.setVolume(data.ducking ? 0.5 : 1);
+		TrackPlayer.setVolume((data.paused || data.permanent) ? 0.5 : 1);
 	});
 	TrackPlayer.addEventListener(Event.PlaybackError, error => {
 		if (hasApp) {
-			snackError(error);
+			snackError(new Error(`${error.code}: ${error.message}`));
 		}
 	});
 	TrackPlayer.addEventListener(Event.RemoteSeek, (data) => TrackPlayer.seekTo(data.position));

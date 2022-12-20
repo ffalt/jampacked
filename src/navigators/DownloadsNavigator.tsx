@@ -1,10 +1,10 @@
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import React from 'react';
 import {DownloadsActiveScreen} from '../screens/DownloadsActiveScreen';
-import {DownloadsRoute} from './Routing';
+import {DownloadsRoute, DownloadsRouteParamList} from './Routing';
 import {DownloadsPinnedScreen} from '../screens/DownloadsPinnedScreen';
 
-const Tab = createMaterialTopTabNavigator();
+const Tab = createMaterialTopTabNavigator<DownloadsRouteParamList>();
 const emptyComponent = (): JSX.Element => (<></>);
 
 export const DownloadsNavigator: React.FC = () => {

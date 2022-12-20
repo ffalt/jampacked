@@ -1,10 +1,10 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {BaseEntryListList, BaseEntryListListQuery} from '../components/BaseEntryListList';
 import {useLazyArtistListQuery} from '../services/queries/artistList';
-import {HomeRoute, HomeRouteProps} from '../navigators/Routing';
+import {GenreRoute, GenreRouteProps} from '../navigators/Routing';
 import {GenreTabNavigatorContext} from '../navigators/GenreNavigatorContext';
 
-export const GenreArtistsScreen: React.FC<HomeRouteProps<HomeRoute.GENRE>> = () => {
+export const GenreArtistsScreen: React.FC<GenreRouteProps<GenreRoute.ARTISTS>> = () => {
 	const state = useContext(GenreTabNavigatorContext);
 	const [view, setView] = useState<BaseEntryListListQuery>({
 		text: '',

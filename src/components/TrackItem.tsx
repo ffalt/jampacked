@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
 	trackListCheck: {
 		flex: 1,
 		maxWidth: 90,
-		minWidth: 10,
+		minWidth: 10
 	},
 	trackListNumber: {
 		flex: 1,
@@ -75,19 +75,19 @@ export const TrackItem: React.FC<{
 	const doubleTap = React.useRef(React.createRef<TapGestureHandler>().current);
 	const display = displayFunc ? displayFunc(track) : defaultTrackDisplay(track);
 
-	const setItemSelected = () => {
+	const setItemSelected = (): void => {
 		if (setSelected) {
 			setSelected(track);
 		}
 	};
 
-	const onSingleTapped = useCallback((event: TapGestureHandlerStateChangeEvent): void => {
-		if (event.nativeEvent.state === State.ACTIVE) {
-			if (showMenu) {
-				showMenu(track);
-			}
-		}
-	}, [showMenu, track]);
+	// const onSingleTapped = useCallback((event: TapGestureHandlerStateChangeEvent): void => {
+	// 	if (event.nativeEvent.state === State.ACTIVE) {
+	// 		if (showMenu) {
+	// 			showMenu(track);
+	// 		}
+	// 	}
+	// }, [showMenu, track]);
 
 	const onDoubleTapped = useCallback((event: TapGestureHandlerStateChangeEvent): void => {
 		if (event.nativeEvent.state === State.ACTIVE) {
@@ -108,7 +108,7 @@ export const TrackItem: React.FC<{
 		</View>
 	);
 
-	const onLongPress = () => {
+	const onLongPress = (): void => {
 		if (showMenu) {
 			showMenu(track);
 		}

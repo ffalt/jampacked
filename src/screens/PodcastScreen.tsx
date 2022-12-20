@@ -12,13 +12,13 @@ import {ThemedText} from '../components/ThemedText';
 import {TrackEntry} from '../services/types';
 import {useTheme} from '../style/theming';
 import {ErrorView} from '../components/ErrorView';
-import ActionSheet from 'react-native-actions-sheet';
+import ActionSheet, {ActionSheetRef} from 'react-native-actions-sheet';
 import {ActionSheetEpisode} from '../components/ActionSheetEpisode';
 import {useLazyPodcastQuery} from '../services/queries/podcast';
 import {DefaultFlatList} from '../components/DefFlatList';
 
 export const PodcastScreen: React.FC<HomeRouteProps<HomeRoute.PODCAST>> = ({route}) => {
-	const actionSheetRef: MutableRefObject<ActionSheet | null> = React.useRef<ActionSheet>(null);
+	const actionSheetRef: MutableRefObject<ActionSheetRef | null> = React.useRef<ActionSheetRef>(null);
 	const theme = useTheme();
 	const [getPodcast, {loading, error, podcast}] = useLazyPodcastQuery();
 	const [currentEpisode, setCurrentEpisode] = useState<TrackEntry | undefined>();
@@ -73,10 +73,7 @@ export const PodcastScreen: React.FC<HomeRouteProps<HomeRoute.PODCAST>> = ({rout
 	return (
 		<>
 			<ActionSheet
-				initialOffsetFromBottom={1}
 				ref={actionSheetRef}
-				bounceOnOpen={true}
-				bounciness={8}
 				gestureEnabled={true}
 				containerStyle={{backgroundColor: theme.background}}
 				defaultOverlayOpacity={0.3}>

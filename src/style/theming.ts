@@ -1,6 +1,6 @@
 import {createTheming} from '@callstack/react-theme-provider';
 import {DefaultTheme} from '@react-navigation/native';
-import React, {useContext} from 'react';
+import React, {PropsWithChildren, useContext} from 'react';
 import {Appearance} from 'react-native';
 
 const getColorScheme = Appearance.getColorScheme || ((): string => '');
@@ -253,5 +253,9 @@ export const ThemeContext = React.createContext<ThemeSettings>(
 	}
 );
 
-export const {ThemeProvider, useTheme} = createTheming(getAutoTheme());
+const {ThemeProvider: ThemeProviderIntern, useTheme: useThemeIntern} = createTheming(getAutoTheme());
+
+export const ThemeProvider: React.ComponentType<PropsWithChildren<{ theme?: ITheme }>> = ThemeProviderIntern;
+export const useTheme = useThemeIntern;
+
 export const useThemeContext = (): ThemeSettings => useContext<ThemeSettings>(ThemeContext);

@@ -2,7 +2,7 @@ import * as React from 'react';
 import {useEffect, useState} from 'react';
 import {StyleSheet} from 'react-native';
 import Svg, {Circle, Defs, LinearGradient, Stop} from 'react-native-svg';
-import Animated from 'react-native-reanimated';
+import Animated, {interpolate, multiply} from 'react-native-reanimated';
 
 interface CircularProgressProps {
 	progress: number;
@@ -31,7 +31,6 @@ export const CircularProgress: React.FC<CircularProgressProps> = React.memo((
 	});
 
 	useEffect(() => {
-		const {interpolate, multiply} = Animated;
 		const r = (size - strokeWidth) / 2;
 		const cx = size / 2;
 		const cy = size / 2;

@@ -1,12 +1,12 @@
-import React, {useState} from 'react';
+import React, {PropsWithChildren, useState} from 'react';
 import {Animated, StyleProp, Text, TouchableWithoutFeedback, ViewStyle} from 'react-native';
 import {useScaleAnimate} from '../utils/scale.animate.hook';
 
-export const LoginButton: React.FC<{
+export const LoginButton: React.FC<PropsWithChildren<{
 	style: StyleProp<ViewStyle>;
 	onPress: () => void;
 	label?: string;
-}> = ({children, label, onPress, style}) => {
+}>> = ({children, label, onPress, style}) => {
 	const [inverted, setInverted] = useState(false);
 	const scale = useScaleAnimate(inverted);
 

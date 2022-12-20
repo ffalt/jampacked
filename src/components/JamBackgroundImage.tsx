@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {PropsWithChildren} from 'react';
 import {StyleSheet, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import LinearGradient from 'react-native-linear-gradient';
@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-export const FastImageBackground: React.FC<{ id: string, style?: any, imageStyle?: any }> = ({id, children, style, imageStyle}) => {
+export const FastImageBackground: React.FC<PropsWithChildren<{ id: string, style?: any, imageStyle?: any }>> = ({id, children, style, imageStyle}) => {
 	const auth = useAuth();
 	const theme = useTheme();
 

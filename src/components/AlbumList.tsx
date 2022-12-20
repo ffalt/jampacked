@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {BaseEntryListList, BaseEntryListListQuery} from '../components/BaseEntryListList';
+import {BaseEntryListList, BaseEntryListListQuery} from './BaseEntryListList';
 import {AlbumType, ListType} from '../services/jam';
 import {getAlbumTypeInfos} from '../services/jam-lists';
 import {useLazyAlbumListQuery} from '../services/queries/albumList';

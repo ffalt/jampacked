@@ -1,9 +1,9 @@
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import React from 'react';
-import {GenresRoute, HomeRoute, HomeRouteProps} from './Routing';
+import {GenresRoute, GenresRouteParamList, HomeRoute, HomeRouteProps} from './Routing';
 import {GenreIndexScreen} from '../screens/GenreIndexScreen';
 
-const Tab = createMaterialTopTabNavigator();
+const Tab = createMaterialTopTabNavigator<GenresRouteParamList>();
 const emptyComponent = (): JSX.Element => (<></>);
 
 export const GenresNavigator: React.FC<HomeRouteProps<HomeRoute.GENRES>> = () => {

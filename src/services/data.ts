@@ -1,16 +1,17 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Database} from './db';
 import {JamService} from './jam';
 import {JamConfigurationService} from './jam-configuration';
 import {initApolloClient, JamApolloClient} from './apollo';
 import {PinService} from './pin';
 import {CacheService} from './cache';
+import {MMKV} from 'react-native-mmkv';
 
 export class DataService {
 	db!: Database;
 	client!: JamApolloClient;
 	pin!: PinService;
 	cache!: CacheService;
+	storage = new MMKV();
 
 	constructor(public jam: JamService) {
 	}
@@ -52,29 +53,29 @@ export class DataService {
 
 	// user dependent settings
 
-	public async getSetting(key: string): Promise<string | null> {
-		return AsyncStorage.getItem(`jam:${this.currentUserID}:${key}`);
+	public async getSetting(key: string): Promise<string | undefined> {
+		return this.storage.getString(`jam:${this.currentUserID}:${key}`);
 	}
 
 	public async setSetting(key: string, value?: string): Promise<void> {
 		if (!value) {
-			await AsyncStorage.removeItem(`jam:${this.currentUserID}:${key}`);
+			this.storage.delete(`jam:${this.currentUserID}:${key}`);
 		} else {
-			await AsyncStorage.setItem(`jam:${this.currentUserID}:${key}`, value);
+			this.storage.set(`jam:${this.currentUserID}:${key}`, value);
 		}
 	}
 
 	// user independent settings
 
-	public async getStored(key: string): Promise<string | null> {
-		return AsyncStorage.getItem(`jam-store:${key}`);
+	public async getStored(key: string): Promise<string | undefined> {
+		return this.storage.getString(`jam-store:${key}`);
 	}
 
 	public async setStored(key: string, value?: string): Promise<void> {
 		if (!value) {
-			await AsyncStorage.removeItem(`jam-store:${key}`);
+			await this.storage.delete(`jam-store:${key}`);
 		} else {
-			await AsyncStorage.setItem(`jam-store:${key}`, value);
+			await this.storage.set(`jam-store:${key}`, value);
 		}
 	}
 }

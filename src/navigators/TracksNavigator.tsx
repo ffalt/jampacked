@@ -1,9 +1,9 @@
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import React from 'react';
-import {TracksRoute} from './Routing';
+import {TracksRoute, TracksRouteParamList} from './Routing';
 import {TrackListAvgHighestScreen, TrackListFavScreen, TrackListFrequentScreen, TrackListHighestScreen, TrackListRandomScreen, TrackListRecentScreen} from '../screens/TrackListScreen';
 
-const Tab = createMaterialTopTabNavigator();
+const Tab = createMaterialTopTabNavigator<TracksRouteParamList>();
 const emptyComponent = (): JSX.Element => (<></>);
 
 export const TracksNavigator: React.FC = () => {

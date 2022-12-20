@@ -2,9 +2,9 @@ import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs
 import React from 'react';
 import {SeriesIndexScreen} from '../screens/SeriesIndexScreen';
 import {SeriesListAvgHighestScreen, SeriesListFavScreen, SeriesListFrequentScreen, SeriesListHighestScreen, SeriesListRandomScreen, SeriesListRecentScreen} from '../screens/SeriesListScreen';
-import {HomeRoute, HomeRouteProps, SeriesRoute} from './Routing';
+import {HomeRoute, HomeRouteProps, SeriesRoute, SeriesRouteParamList} from './Routing';
 
-const Tab = createMaterialTopTabNavigator();
+const Tab = createMaterialTopTabNavigator<SeriesRouteParamList>();
 const emptyComponent = (): JSX.Element => (<></>);
 
 export const SeriesNavigator: React.FC<HomeRouteProps<HomeRoute.SERIES>> = () => {
