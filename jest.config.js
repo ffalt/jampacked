@@ -10,7 +10,6 @@ module.exports = {
 		'|react-native-status-bar-height' +
 		'|react-native-linear-gradient' +
 		'|react-native-track-player' +
-		'|react-native-actions-sheet' +
 		'|react-native-floating-action' +
 		'|react-native-background-timer' +
 		'|d3-array' +

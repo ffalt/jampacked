@@ -70,3 +70,7 @@
 -dontwarn java.nio.file.*
 -dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement
 -dontwarn okio.**
+
+# reanimated
+
+-keep class com.swmansion.reanimated.** { *; }

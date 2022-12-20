@@ -11,27 +11,21 @@ import {staticTheme} from '../style/theming';
 const styles = StyleSheet.create({
 	trackListCheck: {
 		flex: 1,
-		maxWidth: 90,
-		minWidth: 10
+		maxWidth: 30
 	},
 	trackListNumber: {
 		flex: 1,
-		maxWidth: 90,
-		minWidth: 10,
-		paddingRight: staticTheme.paddingLarge
+		paddingRight: staticTheme.paddingLarge,
+		fontSize: staticTheme.fontSizeSmall
 	},
 	trackListTitle: {
-		flex: 8
+		flex: 7
 	},
 	trackListCheckBox: {},
 	trackListRuntime: {
-		maxWidth: 90,
-		minWidth: 90,
-		flexDirection: 'column',
-		justifyContent: 'center',
-		paddingLeft: staticTheme.paddingLarge,
-		paddingRight: staticTheme.paddingLarge,
-		flex: 1
+		flex: 1,
+		textAlign: 'right',
+		fontSize: staticTheme.fontSizeSmall
 	}
 });
 
@@ -103,7 +97,7 @@ export const TrackItem: React.FC<{
 		</View>
 	);
 	const column3 = display.column3 && (
-		<View style={[sharedStyles.itemSectionRight, styles.trackListRuntime]}>
+		<View style={[styles.trackListRuntime]}>
 			<ThemedText style={[sharedStyles.itemFooterText, sharedStyles.itemFooterTextRight]} numberOfLines={1}>{display.column3}</ThemedText>
 		</View>
 	);

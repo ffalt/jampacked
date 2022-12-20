@@ -1,6 +1,5 @@
-import React, {MutableRefObject, useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {TouchableOpacity} from 'react-native';
-import {TrackItem} from '../components/TrackItem';
 import {HomeRoute, HomeRouteProps} from '../navigators/Routing';
 import {JamPlayer} from '../services/player';
 import {ThemedIcon} from '../components/ThemedIcon';
@@ -9,19 +8,12 @@ import {JamObjectType} from '../services/jam';
 import {FavIcon} from '../components/FavIcon';
 import {snackError} from '../services/snack';
 import {ThemedText} from '../components/ThemedText';
-import {TrackEntry} from '../services/types';
-import {useTheme} from '../style/theming';
 import {ErrorView} from '../components/ErrorView';
-import ActionSheet, {ActionSheetRef} from 'react-native-actions-sheet';
-import {ActionSheetEpisode} from '../components/ActionSheetEpisode';
 import {useLazyPodcastQuery} from '../services/queries/podcast';
-import {DefaultFlatList} from '../components/DefFlatList';
+import {Tracks} from '../components/Tracks';
 
 export const PodcastScreen: React.FC<HomeRouteProps<HomeRoute.PODCAST>> = ({route}) => {
-	const actionSheetRef: MutableRefObject<ActionSheetRef | null> = React.useRef<ActionSheetRef>(null);
-	const theme = useTheme();
 	const [getPodcast, {loading, error, podcast}] = useLazyPodcastQuery();
-	const [currentEpisode, setCurrentEpisode] = useState<TrackEntry | undefined>();
 	const {id, name} = (route?.params || {});
 
 	useEffect(() => {
@@ -56,38 +48,12 @@ export const PodcastScreen: React.FC<HomeRouteProps<HomeRoute.PODCAST>> = ({rout
 		</>}
 	/>);
 
-	const showMenu = useCallback((item: TrackEntry): void => {
-		setCurrentEpisode(item);
-		if (actionSheetRef.current) {
-			actionSheetRef.current.setModalVisible(true);
-		}
-	}, [actionSheetRef]);
-
-	const renderItem = useCallback(({item}: { item: TrackEntry }): JSX.Element => (<TrackItem track={item} showMenu={showMenu}/>),
-		[showMenu]);
-
 	if (error) {
 		return (<ErrorView error={error} onRetry={reload}/>);
 	}
 
 	return (
-		<>
-			<ActionSheet
-				ref={actionSheetRef}
-				gestureEnabled={true}
-				containerStyle={{backgroundColor: theme.background}}
-				defaultOverlayOpacity={0.3}>
-				<ActionSheetEpisode item={currentEpisode}/>
-			</ActionSheet>
-			<DefaultFlatList
-				items={podcast?.episodes}
-				renderItem={renderItem}
-				ListHeaderComponent={ListHeaderComponent}
-				loading={loading}
-				error={error}
-				reload={reload}
-			/>
-		</>
+		<Tracks tracks={podcast?.episodes} ListHeaderComponent={ListHeaderComponent} refreshing={loading} onRefresh={reload}/>
 	);
 };
 

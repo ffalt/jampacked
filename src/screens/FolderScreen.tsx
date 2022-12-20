@@ -15,9 +15,8 @@ import {useLazyFolderQuery} from '../services/queries/folder';
 import {DefaultFlatList} from '../components/DefFlatList';
 import {MUSICBRAINZ_VARIOUS_ARTISTS_NAME} from './AlbumScreen';
 import {TrackEntry} from '../services/types';
-import ActionSheet, {ActionSheetRef} from 'react-native-actions-sheet';
-import {ActionSheetTrack} from '../components/ActionSheetTrack';
-import {useTheme} from '../style/theming';
+import {FloatingAction} from 'react-native-floating-action';
+import {executeTrackMenuAction, trackMenuIcon, trackMenuMultiSelectActions, trackMenuSingleSelectActions} from '../components/ActionMenuTrack';
 
 const buildDetails = (folder?: Folder): Array<HeaderDetail> => {
 	let result: Array<HeaderDetail> = [];
@@ -46,12 +45,11 @@ const buildDetails = (folder?: Folder): Array<HeaderDetail> => {
 };
 
 export const FolderScreen: React.FC<HomeRouteProps<HomeRoute.FOLDER>> = ({route}) => {
-	const actionSheetRef: MutableRefObject<ActionSheetRef | null> = React.useRef<ActionSheetRef>(null);
-	const [currentTrack, setCurrentTrack] = useState<TrackEntry | undefined>();
 	const [details, setDetails] = useState<Array<HeaderDetail>>(buildDetails());
 	const [getFolder, {loading, error, folder}] = useLazyFolderQuery();
 	const {id, name} = (route?.params || {});
-	const theme = useTheme();
+	const selectActionRef: MutableRefObject<FloatingAction | null> = React.useRef<FloatingAction>(null);
+	const [selection, setSelection] = useState<Array<TrackEntry>>([]);
 
 	useEffect(() => {
 		if (id) {
@@ -86,33 +84,38 @@ export const FolderScreen: React.FC<HomeRouteProps<HomeRoute.FOLDER>> = ({route}
 		) : undefined}
 	/>);
 
-	const showMenu = useCallback((item: TrackEntry): void => {
-		setCurrentTrack(item);
-		if (actionSheetRef.current) {
-			actionSheetRef.current.setModalVisible(true);
-		}
-	}, [actionSheetRef]);
-
-	const closeMenu = useCallback((): void => {
-		if (actionSheetRef.current) {
-			actionSheetRef.current.setModalVisible(false);
-		}
-	}, [actionSheetRef]);
-
 	const isVariousArtist = folder?.artist === MUSICBRAINZ_VARIOUS_ARTISTS_NAME;
+
+	const setSelected = useCallback((item: TrackEntry): void => {
+		if (selection.includes(item)) {
+			setSelection(selection.filter(t => t !== item));
+		} else {
+			setSelection(selection.concat([item]));
+		}
+	}, [selection, setSelection]);
+
+	const pressFloatingAction = useCallback((buttonName?: string): void => {
+		executeTrackMenuAction(selection, buttonName).then(result => {
+			if (result) {
+				setSelection([]);
+			}
+		});
+	}, [selection, setSelection]);
 
 	const renderItem = useCallback(({item}: { item: FolderItem }): JSX.Element => {
 		if (item.track) {
-			return <TrackItem
+			return (<TrackItem
 				track={item.track}
+				isSelected={selection.includes(item.track)}
+				setSelected={setSelected}
 				displayFunc={isVariousArtist ? defaultShowArtistTrackDisplay : defaultTrackDisplay}
-				showMenu={showMenu}/>;
+			/>);
 		}
 		if (item.folder) {
 			return <Item item={item.folder}/>;
 		}
 		return <></>;
-	}, [isVariousArtist, showMenu]);
+	}, [isVariousArtist, selection, setSelected]);
 
 	const reload = useCallback((): void => {
 		getFolder(id, true);
@@ -124,13 +127,6 @@ export const FolderScreen: React.FC<HomeRouteProps<HomeRoute.FOLDER>> = ({route}
 
 	return (
 		<>
-			<ActionSheet
-				ref={actionSheetRef}
-				gestureEnabled={true}
-				containerStyle={{backgroundColor: theme.background}}
-				defaultOverlayOpacity={0.3}>
-				<ActionSheetTrack item={currentTrack} close={closeMenu}/>
-			</ActionSheet>
 			<DefaultFlatList
 				items={folder?.items}
 				renderItem={renderItem}
@@ -138,6 +134,15 @@ export const FolderScreen: React.FC<HomeRouteProps<HomeRoute.FOLDER>> = ({route}
 				loading={loading}
 				error={error}
 				reload={reload}
+			/>
+			<FloatingAction
+				ref={selectActionRef}
+				visible={selection.length > 0}
+				animated={false}
+				showBackground={false}
+				floatingIcon={trackMenuIcon}
+				actions={selection.length === 1 ? trackMenuSingleSelectActions : trackMenuMultiSelectActions}
+				onPressItem={pressFloatingAction}
 			/>
 		</>
 	);
