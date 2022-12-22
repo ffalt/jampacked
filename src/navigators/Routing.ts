@@ -26,7 +26,7 @@ export enum ModalRouting {
 
 export type ModalStackNavigatorParamList = {
 	Main: undefined;
-	Player: { toQueue: boolean; };
+	Player: undefined;
 };
 
 export type ModalStackProps<T extends keyof ModalStackNavigatorParamList> = StackScreenProps<ModalStackNavigatorParamList, T>;
@@ -36,12 +36,14 @@ export type ModalStackProps<T extends keyof ModalStackNavigatorParamList> = Stac
 export enum BottomTabRoute {
 	HOME = 'Home',
 	SEARCH = 'Search',
+	QUEUE = 'Queue',
 	SETTINGS = 'Settings'
 }
 
 export type BottomTabNavigatorParamList = {
 	Home: undefined;
 	Search: undefined;
+	Queue: undefined;
 	Settings: undefined;
 };
 

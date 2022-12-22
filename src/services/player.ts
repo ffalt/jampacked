@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react';
-import {AudioFormatType, ImageFormatType} from './jam';
+import {AudioFormatType} from './jam';
 import dataService from './data';
 import {TrackEntry} from './types';
 import TrackPlayer, {Event, State, useProgress, useTrackPlayerEvents} from 'react-native-track-player';
@@ -12,7 +12,6 @@ async function buildTrackPlayerTrack(t: TrackEntry): Promise<TrackPlayerTrack> {
 	const url = local ?
 		dataService.pin.pinCache.pathInCache(t.id) :
 		dataService.jam.stream.streamUrl({id: t.id, format: AudioFormatType.mp3}, !headers);
-	const artwork = dataService.jam.image.imageUrl({id: imageID, size: 300, format: ImageFormatType.png}, !headers);
 	return {
 		id: t.id,
 		url,
@@ -21,7 +20,7 @@ async function buildTrackPlayerTrack(t: TrackEntry): Promise<TrackPlayerTrack> {
 		album: t.album,
 		genre: t.genre,
 		duration: t.durationMS / 1000,
-		artwork,
+		artwork: dataService.jam.image.imageUrl({id: imageID, size: 300}, !headers),
 		headers
 		// type: TrackType.default;
 		// date: t.tag?.year,
@@ -36,11 +35,11 @@ async function buildTrackPlayerTrack(t: TrackEntry): Promise<TrackPlayerTrack> {
 export class JamPlayer {
 
 	static async shuffleQueue(): Promise<void> {
-		// await TrackPlayer.shuffle();
+		await TrackPlayer.shuffle();
 	}
 
 	static async clearQueue(): Promise<void> {
-		await TrackPlayer.reset();
+		await TrackPlayer.clear();
 	}
 
 	static async addTrackToQueue(track: TrackEntry): Promise<void> {
@@ -63,6 +62,7 @@ export class JamPlayer {
 			await JamPlayer.playTracks([track]);
 		}
 	}
+
 
 	static async playTracks(tracks: Array<TrackEntry>): Promise<void> {
 		await TrackPlayer.reset();
@@ -108,8 +108,16 @@ export class JamPlayer {
 
 	static async stop(): Promise<void> {
 		try {
-			await TrackPlayer.pause();
+			await TrackPlayer.stop();
 			await TrackPlayer.reset();
+		} catch (e) {
+			console.error(e);
+		}
+	}
+
+	static async destroy(): Promise<void> {
+		try {
+			await TrackPlayer.destroy();
 		} catch (e) {
 			console.error(e);
 		}
@@ -151,6 +159,10 @@ export class JamPlayer {
 		const duration = (await TrackPlayer.getDuration());
 		await TrackPlayer.seekTo(duration * percent);
 	}
+
+	static async setVolume(number: number): Promise<void> {
+		await TrackPlayer.setVolume(number);
+	}
 }
 
 export function useQueue(): Array<TrackPlayerTrack> | undefined {
@@ -171,7 +183,7 @@ export function useQueue(): Array<TrackPlayerTrack> | undefined {
 	}, [queue]);
 
 	useTrackPlayerEvents(
-		[Event.PlaybackState, Event.PlaybackTrackChanged, Event.PlaybackQueueEnded], async () => {
+		[Event.QueueChanged], async () => {
 			setQueueState(await TrackPlayer.getQueue());
 		}
 	);
@@ -181,12 +193,12 @@ export function useQueue(): Array<TrackPlayerTrack> | undefined {
 
 
 export function useCurrentTrackID(): string | undefined {
-	const [trackNr, setTrackNr] = useState<number | null>(null);
+	const [trackNr, setTrackNr] = useState<number | undefined>(undefined);
 	const [trackId, setTrackId] = useState<string | undefined>(undefined);
 
-	async function getTrack(tnr: number | null): Promise<TrackPlayerTrack | undefined> {
+	async function getTrack(tnr: number | undefined): Promise<TrackPlayerTrack | undefined> {
 		const q = await TrackPlayer.getQueue();
-		return tnr !== null ? q[tnr] : undefined;
+		return tnr !== undefined ? q[tnr] : undefined;
 	}
 
 	useTrackPlayerEvents(
@@ -218,18 +230,18 @@ export function useCurrentTrackID(): string | undefined {
 }
 
 export function useCurrentTrack(): TrackPlayerTrack | undefined {
-	const [trackNr, setTrackNr] = useState<number | null>(null);
+	const [trackNr, setTrackNr] = useState<number | undefined>(undefined);
 	const [track, setTrack] = useState<TrackPlayerTrack | undefined>(undefined);
 
-	async function getTrack(tnr: number | null): Promise<TrackPlayerTrack | undefined> {
+	async function getTrack(tnr: number | undefined): Promise<TrackPlayerTrack | undefined> {
 		const q = await TrackPlayer.getQueue();
-		return tnr !== null ? q[tnr] : undefined;
+		return tnr !== undefined ? q[tnr] : undefined;
 	}
 
 	useTrackPlayerEvents(
 		[Event.PlaybackTrackChanged], event => {
-			if (trackNr !== event.track) {
-				setTrackNr(event.track);
+			if (trackNr !== event.nextTrack) {
+				setTrackNr(event.nextTrack);
 			}
 		}
 	);
@@ -269,7 +281,7 @@ export function useCurrentTrackIndex(): number | undefined {
 		let isSubscribed = true;
 		TrackPlayer.getCurrentTrack().then(i => {
 			if (isSubscribed && trackIndex !== i) {
-				setTrackIndex(i === null ? undefined : i);
+				setTrackIndex(i);
 			}
 		});
 		return (): void => {

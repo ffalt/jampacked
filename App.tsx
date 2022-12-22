@@ -5,18 +5,15 @@ import {enableScreens} from 'react-native-screens';
 import {LogBox, StatusBar} from 'react-native';
 import {AppNavigator} from './src/navigators/AppNavigator';
 import {getAutoTheme, getTheme, ThemeContext, ThemeProvider, ThemeSettings} from './src/style/theming';
-import {setAppAvailable} from './service';
 import {NavigationService} from './src/navigators/navigation';
 import dataService from './src/services/data';
 import {ApolloProvider} from '@apollo/client';
 import {JamApolloClient} from './src/services/apollo';
 import {sharedStyles} from './src/style/shared';
+import {setAppAvailable} from './src/services/playback';
 
 LogBox.ignoreLogs([
-	// '[react-native-gesture-handler] Seems like you\'re using an old API with gesture components, check out new Gestures system!',
 	// '[GESTURE HANDLER] Gesture handler is already enabled for a parent view',
-	// 'EventEmitter.removeListener',
-	// 'Require cycle: node_modules/d3-interpolate'
 	'new NativeEventEmitter'
 ]);
 

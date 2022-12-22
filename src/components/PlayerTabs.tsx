@@ -3,7 +3,6 @@ import {ActivityIndicator, StyleSheet, TouchableOpacity, View} from 'react-nativ
 import {SceneMap, TabView} from 'react-native-tab-view';
 import {ThemedText} from './ThemedText';
 import {ThemedIcon} from './ThemedIcon';
-import {Queue} from './Queue';
 import {staticTheme, useTheme} from '../style/theming';
 import {PlayerLyrics} from './PlayerLyrics';
 import {PlayerCover} from './PlayerCover';
@@ -51,26 +50,19 @@ const LazyPlaceholder: React.FC = () => {
 
 const renderScene = SceneMap({
 	cover: () => (<PlayerCover/>),
-	lyrics: () => (<PlayerLyrics/>),
-	queue: () => (<Queue/>)
+	lyrics: () => (<PlayerLyrics/>)
 });
 
 const renderLazyPlaceholder: React.FC<{ route: { title: string } }> = () => <LazyPlaceholder/>;
 
-interface PlayerTabsProps {
-	toQueue?: boolean;
-}
-
 const routes = [
 	{key: 'cover', title: 'Cover'},
-	{key: 'lyrics', title: 'Lyrics'},
-	{key: 'queue', title: 'Queue'}
+	{key: 'lyrics', title: 'Lyrics'}
 ];
 
-
-export const PlayerTabs: React.FC<PlayerTabsProps> = ({toQueue}: PlayerTabsProps) => {
+export const PlayerTabs: React.FC = () => {
 	const initialLayout = {width: useWindowWidth()};
-	const [index, setIndex] = React.useState(toQueue ? 2 : 0);
+	const [index, setIndex] = React.useState(0);
 	const navigation = useNavigation();
 	const theme = useTheme();
 	const statusBarHeight = getStatusBarHeight();

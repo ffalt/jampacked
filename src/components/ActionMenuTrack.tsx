@@ -18,10 +18,10 @@ export const executeTrackMenuAction = async (selection: Array<TrackEntry>, name?
 			await JamPlayer.playTracks(selection);
 			return true;
 		} else if (name === 'bt_m_queue') {
-			await JamPlayer.addTracksToQueue(selection)
+			await JamPlayer.addTracksToQueue(selection);
 			return true;
 		} else if (name === 'bt_s_play') {
-			await JamPlayer.playTrack(selection[0])
+			await JamPlayer.playTrack(selection[0]);
 			return true;
 		} else if (name === 'bt_s_queue') {
 			await JamPlayer.addTrackToQueue(selection[0]);

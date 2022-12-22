@@ -17,11 +17,10 @@ const styles = StyleSheet.create({
 	}
 });
 
-export const PlayerScreen: React.FC<ModalStackProps<ModalRouting.PLAYER>> = ({route}) => {
-	const toQueue = route?.params?.toQueue;
+export const PlayerScreen: React.FC<ModalStackProps<ModalRouting.PLAYER>> = () => {
 	return (
 		<View style={styles.player}>
-			<PlayerTabs toQueue={toQueue}/>
+			<PlayerTabs/>
 			<PlayerTrack/>
 			<PlayerWaveformProgress/>
 			<PlayerProgress/>

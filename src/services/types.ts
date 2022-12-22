@@ -8,7 +8,6 @@ export interface NavigParams {
 	name?: string;
 	albumType?: AlbumType;
 	listType?: string;
-	toQueue?: boolean;
 }
 
 export interface Navig {

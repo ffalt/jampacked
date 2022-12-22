@@ -63,7 +63,6 @@ const styles = StyleSheet.create({
 
 export const PlayerStrip: React.FC = () => {
 	const track = useCurrentTrack();
-	//const navigation = useNavigation();
 	const theme = useTheme();
 	if (!track) {
 		return (<></>);
@@ -71,9 +70,6 @@ export const PlayerStrip: React.FC = () => {
 	const forwardDisabled = false;
 	const showPlayer = (): void => {
 		NavigationService.navigate(ModalRouting.PLAYER);
-	};
-	const showQueue = (): void => {
-		NavigationService.navigate(ModalRouting.PLAYER, {toQueue: true});
 	};
 	return (
 		<View style={[styles.playerStrip, {borderTopColor: theme.separator, backgroundColor: theme.control}]}>
@@ -96,9 +92,6 @@ export const PlayerStrip: React.FC = () => {
 						<ThemedIcon name="forward"/>
 					</TouchableOpacity>
 				</View>
-				<TouchableOpacity onPress={showQueue} style={styles.button}>
-					<ThemedIcon name="queue"/>
-				</TouchableOpacity>
 			</View>
 			<MiniProgressBar/>
 		</View>

@@ -6,6 +6,7 @@ import {BottomTabNavigatorParamList, BottomTabRoute, ModalRouting, ModalStackPro
 import {SearchScreen} from '../screens/SearchScreen';
 import {getTabBarIcon} from '../components/ThemedIcon';
 import {JamTabBar} from './JamTabBar';
+import {QueueScreen} from '../screens/QueueScreen';
 
 const BottomTabs = createBottomTabNavigator<BottomTabNavigatorParamList>();
 
@@ -25,6 +26,11 @@ export const BottomTabNavigator: React.FC<ModalStackProps<ModalRouting.MAIN>> = 
 			name={BottomTabRoute.SEARCH}
 			component={SearchScreen}
 			options={{tabBarIcon: getTabBarIcon('search')}}
+		/>
+		<BottomTabs.Screen
+			name={BottomTabRoute.QUEUE}
+			component={QueueScreen}
+			options={{tabBarIcon: getTabBarIcon('queue')}}
 		/>
 		<BottomTabs.Screen
 			name={BottomTabRoute.SETTINGS}

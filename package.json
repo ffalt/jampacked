@@ -17,9 +17,10 @@
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 1",
     "releaselog": "conventional-changelog -p angular -r 2 -o RELEASELOG.md",
     "logos": "react-native generate-bootsplash src/assets/images/logo.png --background-color=0b1821 --logo-width=100 --assets-path=assets",
+    "clean:yarn": "rm -Rf node_modules && yarn install",
     "clean:project": "react-native-clean-project",
     "clean:gradle": "cd android && rm -Rf .gradle && rm -Rf app/build && ./gradlew clean",
-    "clean": "rm -Rf node_modules && yarn install && yarn clean:gradle",
+    "clean": "yarn clean:yarn && yarn clean:gradle",
     "codegen": "graphql-codegen --config codegen.ts -v",
     "codegen:add-header": "sed -i '' '1s/^/\\/\\/ @generated\\n\\/\\/ This file was automatically generated and should not be edited.\\n\\n/'"
   },
@@ -49,6 +50,7 @@
     "lodash.chunk": "4.2.0",
     "lodash.debounce": "4.0.8",
     "lodash.throttle": "4.1.1",
+    "prop-types": "15.8.1",
     "react": "18.1.0",
     "react-native": "0.70.6",
     "react-native-background-downloader": "ffalt/react-native-background-downloader",
@@ -71,15 +73,15 @@
     "react-native-svg": "13.6.0",
     "react-native-swift": "1.2.3",
     "react-native-tab-view": "3.3.4",
-    "react-native-track-player": "3.2.0",
+    "react-native-track-player": "ffalt/react-native-track-player",
     "react-native-vector-icons": "9.2.0",
     "waveform-data": "4.3.0"
   },
   "devDependencies": {
     "@babel/core": "7.20.5",
     "@babel/eslint-parser": "7.19.1",
-    "@babel/preset-env": "^7.20.2",
-    "@babel/preset-react": "^7.18.6",
+    "@babel/preset-env": "7.20.2",
+    "@babel/preset-react": "7.18.6",
     "@babel/runtime": "7.20.6",
     "@graphql-codegen/cli": "2.16.1",
     "@graphql-codegen/client-preset": "1.2.3",
@@ -101,7 +103,7 @@
     "@types/react-native-background-timer": "2.0.0",
     "@types/react-native-sqlite-storage": "5.0.2",
     "@types/react-native-vector-icons": "6.4.12",
-    "@types/react-test-renderer": "^18.0.0",
+    "@types/react-test-renderer": "18.0.0",
     "@typescript-eslint/eslint-plugin": "5.46.1",
     "@typescript-eslint/parser": "5.46.1",
     "@welldone-software/why-did-you-render": "7.0.1",
@@ -118,9 +120,10 @@
     "jest": "^29.3.1",
     "jetifier": "2.0.0",
     "metro-react-native-babel-preset": "0.73.6",
+    "prettier": "^2.8.1",
     "react-native-clean-project": "4.0.1",
-    "react-test-renderer": "^18.2.0",
+    "react-test-renderer": "18.1.0",
     "ts-node": "10.9.1",
-    "typescript": "^4.9.4"
+    "typescript": "4.9.4"
   }
 }
