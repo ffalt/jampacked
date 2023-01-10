@@ -16,7 +16,7 @@ export class Database {
 			return database;
 		}
 		database = new Database();
-		await database.connect();
+		await database.connect('jam.db');
 		return database;
 	}
 
@@ -24,14 +24,14 @@ export class Database {
 	 * Start database connection
 	 * Only used in getInstance() method
 	 */
-	async connect(): Promise<SQLite.SQLiteDatabase> {
+	async connect(name: string): Promise<SQLite.SQLiteDatabase> {
 		if (this.db) {
 			return this.db;
 		}
 		this.db = await new Promise<SQLite.SQLiteDatabase>((resolve, reject) => {
 			const db: SQLite.SQLiteDatabase = SQLite.openDatabase(
 				{
-					name: 'jam.db', location: 'Library'
+					name, location: 'Library'
 				},
 				() => resolve(db),
 				err => reject(err)

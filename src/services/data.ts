@@ -4,14 +4,13 @@ import {JamConfigurationService} from './jam-configuration';
 import {initApolloClient, JamApolloClient} from './apollo';
 import {PinService} from './pin';
 import {CacheService} from './cache';
-import {MMKV} from 'react-native-mmkv';
 
 export class DataService {
 	db!: Database;
 	client!: JamApolloClient;
 	pin!: PinService;
 	cache!: CacheService;
-	storage = new MMKV();
+	storage!: Database;
 
 	constructor(public jam: JamService) {
 	}
@@ -23,11 +22,20 @@ export class DataService {
 		await this.cache.init();
 		this.pin = new PinService(this);
 		await this.pin.init();
+		this.storage = new Database();
+		await this.storage.connect('settings.db');
+		await this.checkDB();
 		return this.client;
+	}
+
+	async checkDB(): Promise<void> {
+		const createJamTableScript = 'CREATE TABLE if not exists jam(_id INTEGER PRIMARY KEY AUTOINCREMENT, key TEXT, data TEXT, date integer, version integer)';
+		await this.storage.query(createJamTableScript);
 	}
 
 	async close(): Promise<void> {
 		await this.db.disconnect();
+		await this.storage.disconnect();
 	}
 
 	// auth
@@ -54,28 +62,34 @@ export class DataService {
 	// user dependent settings
 
 	public async getSetting(key: string): Promise<string | undefined> {
-		return this.storage.getString(`jam:${this.currentUserID}:${key}`);
+		const id = `jam:${this.currentUserID}:${key}`;
+		const results = await this.storage.query('SELECT * FROM jam WHERE key=?', [id]);
+		const result = results.rows.length > 0 ? results.rows.item(0) : undefined;
+		return result?.data;
 	}
 
 	public async setSetting(key: string, value?: string): Promise<void> {
-		if (!value) {
-			this.storage.delete(`jam:${this.currentUserID}:${key}`);
-		} else {
-			this.storage.set(`jam:${this.currentUserID}:${key}`, value);
+		const id = `jam:${this.currentUserID}:${key}`;
+		await this.storage.delete('jam', {key: id});
+		if (value) {
+			await this.storage.insert('jam', ['data', 'key', 'date', 'version'], [value, id, Date.now(), 1]);
 		}
 	}
 
 	// user independent settings
 
 	public async getStored(key: string): Promise<string | undefined> {
-		return this.storage.getString(`jam-store:${key}`);
+		const id = `jam-store:${key}`;
+		const results = await this.storage.query('SELECT * FROM jam WHERE key=?', [id]);
+		const result = results.rows.length > 0 ? results.rows.item(0) : undefined;
+		return result?.data;
 	}
 
 	public async setStored(key: string, value?: string): Promise<void> {
-		if (!value) {
-			await this.storage.delete(`jam-store:${key}`);
-		} else {
-			await this.storage.set(`jam-store:${key}`, value);
+		const id = `jam-store:${key}`;
+		await this.storage.delete('jam', {key: id});
+		if (value) {
+			await this.storage.insert('jam', ['data', 'key', 'date', 'version'], [value, id, Date.now(), 1]);
 		}
 	}
 }
