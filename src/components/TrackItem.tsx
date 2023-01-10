@@ -10,18 +10,16 @@ import {staticTheme} from '../style/theming';
 
 const styles = StyleSheet.create({
 	trackListCheck: {
-		flex: 1,
-		maxWidth: 30
+		width: 32
 	},
 	trackListNumber: {
 		flex: 1,
-		paddingRight: staticTheme.paddingLarge,
+		paddingRight: staticTheme.paddingSmall,
 		fontSize: staticTheme.fontSizeSmall
 	},
 	trackListTitle: {
 		flex: 7
 	},
-	trackListCheckBox: {},
 	trackListRuntime: {
 		flex: 1,
 		textAlign: 'right',
@@ -63,9 +61,9 @@ export const defaultListTrackDisplay = (track: TrackEntry): TrackDisplay => {
 export const TrackItem: React.FC<{
 	track: TrackEntry, displayFunc?: TrackDisplayFunction;
 	isSelected?: boolean;
-	showMenu?: (item: TrackEntry) => void;
-	setSelected?: (item: TrackEntry,) => void;
-}> = React.memo(({track, displayFunc, showMenu, isSelected, setSelected}) => {
+	setSelected?: (item: TrackEntry) => void;
+	doubleTab?: (item: TrackEntry) => void;
+}> = React.memo(({track, displayFunc, isSelected, setSelected, doubleTab}) => {
 	const doubleTap = React.useRef(React.createRef<TapGestureHandler>().current);
 	const display = displayFunc ? displayFunc(track) : defaultTrackDisplay(track);
 
@@ -75,20 +73,11 @@ export const TrackItem: React.FC<{
 		}
 	};
 
-	// const onSingleTapped = useCallback((event: TapGestureHandlerStateChangeEvent): void => {
-	// 	if (event.nativeEvent.state === State.ACTIVE) {
-	// 		if (showMenu) {
-	// 			showMenu(track);
-	// 		}
-	// 	}
-	// }, [showMenu, track]);
-
 	const onDoubleTapped = useCallback((event: TapGestureHandlerStateChangeEvent): void => {
-		if (event.nativeEvent.state === State.ACTIVE) {
-			JamPlayer.playTrack(track)
-				.catch(e => console.error(e));
+		if (event.nativeEvent.state === State.ACTIVE && doubleTab) {
+			doubleTab(track);
 		}
-	}, [track]);
+	}, [track, doubleTab]);
 
 	const subtitle = display.column2sub && (<ThemedText style={sharedStyles.itemFooterText} numberOfLines={1}>{display.column2sub}</ThemedText>);
 	const column1 = display.column1 && (
@@ -102,17 +91,8 @@ export const TrackItem: React.FC<{
 		</View>
 	);
 
-	const onLongPress = (): void => {
-		if (showMenu) {
-			showMenu(track);
-		}
-	};
-
 	return (
-		<TouchableNativeFeedback
-			onPress={setItemSelected}
-			onLongPress={onLongPress}
-		>
+		<TouchableNativeFeedback onPress={setItemSelected}>
 			<View style={sharedStyles.item}>
 				<View style={styles.trackListCheck}>
 					<CheckBox

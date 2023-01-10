@@ -5,6 +5,7 @@ import {TrackDisplayFunction, TrackItem} from './TrackItem';
 import {ErrorView} from './ErrorView';
 import {FloatingAction} from 'react-native-floating-action';
 import {executeTrackMenuAction, trackMenuIcon, trackMenuMultiSelectActions, trackMenuSingleSelectActions} from './ActionMenuTrack';
+import {JamPlayer} from '../services/player';
 
 export const Tracks: React.FC<{
 	tracks?: Array<TrackEntry>;
@@ -26,6 +27,12 @@ export const Tracks: React.FC<{
 		}
 	}, [selection, setSelection]);
 
+	const doubleTab = useCallback((track: TrackEntry): void => {
+		JamPlayer.playTrack(track)
+			.catch(e => console.error(e));
+		setSelection([]);
+	}, [setSelection]);
+
 	const pressFloatingAction = useCallback((name?: string): void => {
 		executeTrackMenuAction(selection, name).then(result => {
 			if (result) {
@@ -35,7 +42,7 @@ export const Tracks: React.FC<{
 	}, [selection, setSelection]);
 
 	const renderItemRow = useCallback(({item}: { item: TrackEntry }): JSX.Element => {
-		return (<TrackItem track={item} isSelected={selection.includes(item)} setSelected={setSelected} displayFunc={displayFunc}/>);
+		return (<TrackItem track={item} isSelected={selection.includes(item)} setSelected={setSelected}  doubleTab={doubleTab} displayFunc={displayFunc}/>);
 	}, [displayFunc, selection, setSelected]);
 
 

@@ -102,11 +102,18 @@ export const FolderScreen: React.FC<HomeRouteProps<HomeRoute.FOLDER>> = ({route}
 		});
 	}, [selection, setSelection]);
 
+	const doubleTab = useCallback((track: TrackEntry): void => {
+		JamPlayer.playTrack(track)
+			.catch(e => console.error(e));
+		setSelection([]);
+	}, [setSelection]);
+
 	const renderItem = useCallback(({item}: { item: FolderItem }): JSX.Element => {
 		if (item.track) {
 			return (<TrackItem
 				track={item.track}
 				isSelected={selection.includes(item.track)}
+				doubleTab={doubleTab}
 				setSelected={setSelected}
 				displayFunc={isVariousArtist ? defaultShowArtistTrackDisplay : defaultTrackDisplay}
 			/>);
