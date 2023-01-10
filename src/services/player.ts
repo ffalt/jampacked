@@ -65,9 +65,11 @@ export class JamPlayer {
 
 
 	static async playTracks(tracks: Array<TrackEntry>): Promise<void> {
+		const entries = await Promise.all(tracks.map(t => buildTrackPlayerTrack(t)));
+		await TrackPlayer.stop();
 		await TrackPlayer.reset();
-		await TrackPlayer.add(await Promise.all(tracks.map(t => buildTrackPlayerTrack(t))));
-		await TrackPlayer.play();
+		await TrackPlayer.add(entries);
+		return TrackPlayer.play();
 	}
 
 	static async skipToTrack(index: number): Promise<void> {
@@ -96,7 +98,7 @@ export class JamPlayer {
 
 	static async toggle(): Promise<void> {
 		try {
-			if (await TrackPlayer.getState() === State.Paused) {
+			if (await TrackPlayer.getState() !== State.Playing) {
 				await TrackPlayer.play();
 			} else {
 				await TrackPlayer.pause();
