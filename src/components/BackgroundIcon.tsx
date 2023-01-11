@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
 export const BackgroundIcon: React.FC<PropsWithChildren<{ name: string; style?: StyleProp<ViewStyle>; }>> = (
 	{name, children, style}
 ) => {
-	const [iconSource, setIconSource] = useState<ImageSourcePropType>(0);
+	const [iconSource, setIconSource] = useState<ImageSourcePropType>(1);
 	const theme = useTheme();
 
 	useEffect(() => {

@@ -14,7 +14,6 @@ import {setAppAvailable} from './src/services/playback';
 
 LogBox.ignoreLogs([
 	// '[GESTURE HANDLER] Gesture handler is already enabled for a parent view',
-	'new NativeEventEmitter'
 ]);
 
 enableScreens();
