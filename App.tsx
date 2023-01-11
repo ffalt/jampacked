@@ -50,9 +50,8 @@ export const App: React.FC = () => {
 	useEffect(() => {
 
 		const init = async (): Promise<void> => {
-			await dataService.jam.auth.load();
-			await themeSettings.loadUserTheme();
 			const c = await dataService.init();
+			await themeSettings.loadUserTheme();
 			setClient(c);
 		};
 
