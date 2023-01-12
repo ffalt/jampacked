@@ -6,7 +6,7 @@ import * as Types from './_types';
 import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
 export type WaveformResultQueryVariables = Types.Exact<{
-	id: Types.Scalars['ID'];
+  id: Types.Scalars['ID'];
 }>;
 
 

@@ -188,7 +188,7 @@ export const LoginScreen: React.FC<AppStackProps<AppRouting.AUTH>> = () => {
 
 	return (
 		<ScrollView contentContainerStyle={styles.scrollContainer}>
-			<View style={[styles.container, {paddingTop:statusBarHeight}]}>
+			<View style={[styles.container, {paddingTop: statusBarHeight}]}>
 				<View style={styles.headline}>
 					<Logo size={140}/>
 				</View>

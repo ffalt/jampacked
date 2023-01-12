@@ -713,11 +713,11 @@ export type PlayQueueQL = {
 
 export type PlaylistEntryQL = {
 	createdAt: Scalars['DateTime'];
-	episode: EpisodeQL;
+	episode?: Maybe<EpisodeQL>;
 	id: Scalars['ID'];
 	playlist: PlaylistQL;
 	position: Scalars['Float'];
-	track: TrackQL;
+	track?: Maybe<TrackQL>;
 	updatedAt: Scalars['DateTime'];
 };
 

@@ -6,15 +6,15 @@ import * as Types from './_types';
 import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
 export type FavResultQueryVariables = Types.Exact<{
-	id: Types.Scalars['ID'];
+  id: Types.Scalars['ID'];
 }>;
 
 
 export type FavResultQuery = { state: { id: string, faved?: any | null } };
 
 export type SetFavResultMutationVariables = Types.Exact<{
-	id: Types.Scalars['ID'];
-	remove?: Types.InputMaybe<Types.Scalars['Boolean']>;
+  id: Types.Scalars['ID'];
+  remove?: Types.InputMaybe<Types.Scalars['Boolean']>;
 }>;
 
 

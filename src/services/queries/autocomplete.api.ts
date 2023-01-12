@@ -6,7 +6,7 @@ import * as Types from './_types';
 import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
 export type AutocompleteResultQueryVariables = Types.Exact<{
-	query: Types.Scalars['String'];
+  query: Types.Scalars['String'];
 }>;
 
 

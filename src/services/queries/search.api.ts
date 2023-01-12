@@ -6,72 +6,72 @@ import * as Types from './_types';
 import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
 export type SearchTracksResultQueryVariables = Types.Exact<{
-	query: Types.Scalars['String'];
-	take?: Types.InputMaybe<Types.Scalars['Int']>;
-	skip?: Types.InputMaybe<Types.Scalars['Int']>;
+  query: Types.Scalars['String'];
+  take?: Types.InputMaybe<Types.Scalars['Int']>;
+  skip?: Types.InputMaybe<Types.Scalars['Int']>;
 }>;
 
 
 export type SearchTracksResultQuery = { tracks: { total: number, skip?: number | null, items: Array<{ id: string, name: string, tag?: { artist?: string | null } | null }> } };
 
 export type SearchSeriesResultQueryVariables = Types.Exact<{
-	query: Types.Scalars['String'];
-	take?: Types.InputMaybe<Types.Scalars['Int']>;
-	skip?: Types.InputMaybe<Types.Scalars['Int']>;
+  query: Types.Scalars['String'];
+  take?: Types.InputMaybe<Types.Scalars['Int']>;
+  skip?: Types.InputMaybe<Types.Scalars['Int']>;
 }>;
 
 
 export type SearchSeriesResultQuery = { serieses: { total: number, skip?: number | null, items: Array<{ id: string, name: string, albumsCount: number }> } };
 
 export type SearchPodcastsResultQueryVariables = Types.Exact<{
-	query: Types.Scalars['String'];
-	take?: Types.InputMaybe<Types.Scalars['Int']>;
-	skip?: Types.InputMaybe<Types.Scalars['Int']>;
+  query: Types.Scalars['String'];
+  take?: Types.InputMaybe<Types.Scalars['Int']>;
+  skip?: Types.InputMaybe<Types.Scalars['Int']>;
 }>;
 
 
 export type SearchPodcastsResultQuery = { podcasts: { total: number, skip?: number | null, items: Array<{ id: string, name: string, episodesCount: number }> } };
 
 export type SearchPlaylistsResultQueryVariables = Types.Exact<{
-	query: Types.Scalars['String'];
-	take?: Types.InputMaybe<Types.Scalars['Int']>;
-	skip?: Types.InputMaybe<Types.Scalars['Int']>;
+  query: Types.Scalars['String'];
+  take?: Types.InputMaybe<Types.Scalars['Int']>;
+  skip?: Types.InputMaybe<Types.Scalars['Int']>;
 }>;
 
 
 export type SearchPlaylistsResultQuery = { playlists: { total: number, skip?: number | null, items: Array<{ id: string, name: string, entriesCount: number }> } };
 
 export type SearchFoldersResultQueryVariables = Types.Exact<{
-	query: Types.Scalars['String'];
-	take?: Types.InputMaybe<Types.Scalars['Int']>;
-	skip?: Types.InputMaybe<Types.Scalars['Int']>;
+  query: Types.Scalars['String'];
+  take?: Types.InputMaybe<Types.Scalars['Int']>;
+  skip?: Types.InputMaybe<Types.Scalars['Int']>;
 }>;
 
 
 export type SearchFoldersResultQuery = { folders: { total: number, skip?: number | null, items: Array<{ id: string, name: string, folderType: Types.FolderType, childrenCount: number, tracksCount: number }> } };
 
 export type SearchEpisodesResultQueryVariables = Types.Exact<{
-	query: Types.Scalars['String'];
-	take?: Types.InputMaybe<Types.Scalars['Int']>;
-	skip?: Types.InputMaybe<Types.Scalars['Int']>;
+  query: Types.Scalars['String'];
+  take?: Types.InputMaybe<Types.Scalars['Int']>;
+  skip?: Types.InputMaybe<Types.Scalars['Int']>;
 }>;
 
 
 export type SearchEpisodesResultQuery = { episodes: { total: number, skip?: number | null, items: Array<{ id: string, name: string, date: any }> } };
 
 export type SearchArtistsResultQueryVariables = Types.Exact<{
-	query: Types.Scalars['String'];
-	take?: Types.InputMaybe<Types.Scalars['Int']>;
-	skip?: Types.InputMaybe<Types.Scalars['Int']>;
+  query: Types.Scalars['String'];
+  take?: Types.InputMaybe<Types.Scalars['Int']>;
+  skip?: Types.InputMaybe<Types.Scalars['Int']>;
 }>;
 
 
 export type SearchArtistsResultQuery = { artists: { total: number, skip?: number | null, items: Array<{ id: string, name: string, albumsCount: number }> } };
 
 export type SearchAlbumsResultQueryVariables = Types.Exact<{
-	query: Types.Scalars['String'];
-	take?: Types.InputMaybe<Types.Scalars['Int']>;
-	skip?: Types.InputMaybe<Types.Scalars['Int']>;
+  query: Types.Scalars['String'];
+  take?: Types.InputMaybe<Types.Scalars['Int']>;
+  skip?: Types.InputMaybe<Types.Scalars['Int']>;
 }>;
 
 

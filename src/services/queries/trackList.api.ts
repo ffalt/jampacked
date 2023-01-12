@@ -6,11 +6,11 @@ import * as Types from './_types';
 import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
 export type TrackListResultQueryVariables = Types.Exact<{
-	listType?: Types.InputMaybe<Types.ListType>;
-	genreIDs?: Types.InputMaybe<Array<Types.Scalars['ID']> | Types.Scalars['ID']>;
-	seed?: Types.InputMaybe<Types.Scalars['String']>;
-	take: Types.Scalars['Int'];
-	skip: Types.Scalars['Int'];
+  listType?: Types.InputMaybe<Types.ListType>;
+  genreIDs?: Types.InputMaybe<Array<Types.Scalars['ID']> | Types.Scalars['ID']>;
+  seed?: Types.InputMaybe<Types.Scalars['String']>;
+  take: Types.Scalars['Int'];
+  skip: Types.Scalars['Int'];
 }>;
 
 

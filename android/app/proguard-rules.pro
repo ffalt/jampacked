@@ -75,6 +75,8 @@
 
 -keep class com.swmansion.reanimated.** { *; }
 
+# fastimage
+
 -keep public class com.dylanvann.fastimage.* {*;}
 -keep public class com.dylanvann.fastimage.** {*;}
 -keep public class * implements com.bumptech.glide.module.GlideModule

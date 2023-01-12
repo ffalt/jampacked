@@ -6,7 +6,7 @@ import * as Types from './_types';
 import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
 export type AlbumIndexResultQueryVariables = Types.Exact<{
-	albumTypes?: Types.InputMaybe<Array<Types.AlbumType> | Types.AlbumType>;
+  albumTypes?: Types.InputMaybe<Array<Types.AlbumType> | Types.AlbumType>;
 }>;
 
 

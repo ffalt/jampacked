@@ -6,11 +6,11 @@ import * as Types from './_types';
 import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
 export type PlaylistResultQueryVariables = Types.Exact<{
-	id: Types.Scalars['ID'];
+  id: Types.Scalars['ID'];
 }>;
 
 
-export type PlaylistResultQuery = { playlist: { id: string, name: string, comment?: string | null, entries: Array<{ track: { id: string, name: string, album?: { id: string, name: string } | null, artist?: { id: string, name: string } | null, series?: { id: string, name: string } | null, genres: Array<{ id: string, name: string }>, tag?: { mediaDuration?: number | null, title?: string | null, disc?: number | null, trackNr?: number | null } | null }, episode: { id: string, name: string, podcast: { id: string }, tag?: { mediaDuration?: number | null, title?: string | null, artist?: string | null, genres?: Array<string> | null, album?: string | null, disc?: number | null, trackNr?: number | null } | null } }> } };
+export type PlaylistResultQuery = { playlist: { id: string, name: string, comment?: string | null, entries: Array<{ track?: { id: string, name: string, album?: { id: string, name: string } | null, artist?: { id: string, name: string } | null, series?: { id: string, name: string } | null, genres: Array<{ id: string, name: string }>, tag?: { mediaDuration?: number | null, title?: string | null, disc?: number | null, trackNr?: number | null } | null } | null, episode?: { id: string, name: string, podcast: { id: string }, tag?: { mediaDuration?: number | null, title?: string | null, artist?: string | null, genres?: Array<string> | null, album?: string | null, disc?: number | null, trackNr?: number | null } | null } | null }> } };
 
 
 export const PlaylistResultDocument = gql`
