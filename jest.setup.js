@@ -124,3 +124,20 @@ jest.mock('react-native-screens', () => ({
 	...jest.requireActual('react-native-screens'),
 	enableScreens: jest.fn()
 }));
+jest.mock('react-native-sqlite-storage', () => ({
+	DEBUG: jest.fn,
+	enablePromise: jest.fn(),
+	openDatabase: (...args) => {
+		return {
+			transaction: (...args) => Promise.resolve({
+				executeSql: (query) => {
+					return Promise.resolve([]);
+				}
+			}),
+			cleanDb: ()=> Promise.resolve(),
+			executeSql: (query) => {
+				return Promise.resolve([]);
+			}
+		};
+	},
+}));

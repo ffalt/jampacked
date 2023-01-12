@@ -21,6 +21,7 @@
     "clean:project": "react-native-clean-project",
     "clean:gradle": "cd android && rm -Rf .gradle && rm -Rf app/build && ./gradlew clean",
     "clean": "yarn clean:yarn && yarn clean:gradle",
+    "reinstall:downloader": "yarn remove react-native-background-downloader && yarn install && yarn add ../react-native-background-downloader  && yarn install",
     "codegen": "graphql-codegen --config codegen.ts -v",
     "codegen:add-header": "sed -i '' '1s/^/\\/\\/ @generated\\n\\/\\/ This file was automatically generated and should not be edited.\\n\\n/'"
   },
@@ -62,7 +63,7 @@
     "react-native-gesture-handler": "2.8.0",
     "react-native-linear-gradient": "2.6.2",
     "react-native-pager-view": "6.1.2",
-    "react-native-reanimated": "3.0.0-rc.10",
+    "react-native-reanimated": "2.14.1",
     "react-native-safe-area-context": "4.4.1",
     "react-native-screens": "3.18.2",
     "react-native-sensitive-info": "6.0.0-alpha.5",

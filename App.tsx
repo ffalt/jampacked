@@ -56,6 +56,8 @@ export const App: React.FC = () => {
 
 		init().then(() => {
 			setAppAvailable(true);
+		}).catch(e => {
+			console.error(e);
 		});
 		return (): void => {
 			setAppAvailable(false);
