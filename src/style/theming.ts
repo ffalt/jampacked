@@ -34,7 +34,7 @@ export const staticTheme = {
 	marginSmall: 5,
 
 	a2zWidth: 40,
-	iconHeaderHeight: 140,
+	pageHeaderHeight: 80,
 
 	cover: 300,
 	userImage: 40,
@@ -72,6 +72,14 @@ export interface ITheme {
 		activePlayableInverse: string;
 		inactive: string;
 		inactiveInverse: string;
+	}
+	checkbox: {
+		checked: string
+		unchecked: string
+	}
+	floating: {
+		color: string;
+		background: string;
 	}
 	refreshCtrlBackground: string;
 	refreshCtrlColors: Array<string>;
@@ -111,6 +119,14 @@ const light: ITheme = {
 			background: '#ffffff'
 		}
 	},
+	checkbox: {
+		checked: '#4a67af',
+		unchecked: '#90948b'
+	},
+	floating: {
+		color: '#000000',
+		background: '#f3f3f3'
+	},
 	waveform: {
 		active: '#005b00',
 		activeInverse: '#005b00',
@@ -145,6 +161,14 @@ const dark: ITheme = {
 	overlayText: '#ffffff',
 	overlayTextActive: '#93aed0',
 	statusBar: 'rgba(0,0,0,0.5)',
+	checkbox: {
+		checked: '#ffffff',
+		unchecked: '#0b2932'
+	},
+	floating: {
+		color: '#ffffff',
+		background: '#0b2932'
+	},
 	navigation: {
 		dark: true,
 		colors: {
@@ -200,6 +224,14 @@ const black: ITheme = {
 			border: '#545456',
 			notification: '#090a12'
 		}
+	},
+	checkbox: {
+		checked: '#ffffff',
+		unchecked: '#0b2932'
+	},
+	floating: {
+		color: '#ffffff',
+		background: '#293146'
 	},
 	waveform: {
 		active: '#006f00',

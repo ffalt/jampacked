@@ -8,6 +8,8 @@ import {MediaCachingView} from '../components/MediaCachingView';
 import {PageHeader} from '../components/PageHeader';
 import {sharedStyles} from '../style/shared';
 import {staticTheme} from '../style/theming';
+import {ThemedIcon} from '../components/ThemedIcon';
+import {UserView} from '../components/UserView';
 
 const styles = StyleSheet.create({
 	container: {
@@ -22,6 +24,15 @@ const styles = StyleSheet.create({
 		paddingTop: staticTheme.paddingLarge,
 		paddingBottom: staticTheme.paddingSmall,
 		paddingHorizontal: 0
+	},
+	permissionSection: {
+		paddingTop: staticTheme.padding
+	},
+	permission: {
+		flexDirection: 'row'
+	},
+	permissionText: {
+		paddingHorizontal: staticTheme.paddingSmall
 	}
 });
 
@@ -42,6 +53,10 @@ export const SettingsScreen: React.FC<BottomTabProps<BottomTabRoute.SETTINGS>> =
 					<ThemedText style={sharedStyles.sectionHeaderText}>Theme</ThemedText>
 				</View>
 				<ThemesView/>
+				<View style={[sharedStyles.sectionHeader, styles.section]}>
+					<ThemedText style={sharedStyles.sectionHeaderText}>User</ThemedText>
+				</View>
+				<UserView/>
 			</View>
 		</>
 	);

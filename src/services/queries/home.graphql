@@ -57,4 +57,56 @@ query HomeResult {
             single
         }
     }
+    currentUser {
+        stats {
+            bookmark
+            playlist
+            favorite {
+                album
+                albumTypes {
+                    album
+                    artistCompilation
+                    audiobook
+                    compilation
+                    series
+                    single
+                    soundtrack
+                    ep
+                    live
+                    bootleg
+                    unknown
+                }
+                artist
+                artistTypes {
+                    album
+                }
+                folder
+                series
+                track
+            }
+            played {
+                album
+                albumTypes {
+                    album
+                    artistCompilation
+                    audiobook
+                    compilation
+                    series
+                    single
+                    soundtrack
+                    ep
+                    live
+                    bootleg
+                    unknown
+                }
+                artist
+                artistTypes {
+                    album
+                }
+                folder
+                series
+                track
+            }
+        }
+    }
 }

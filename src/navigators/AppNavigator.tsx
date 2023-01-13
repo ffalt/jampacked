@@ -5,9 +5,9 @@ import {AppStackNavigatorParamList, AppRouting} from './Routing';
 import {LoginScreen} from '../screens/LoginScreen';
 import dataService from '../services/data';
 import {AuthContext, defaultAuth} from '../services/auth';
-import {DrawerNavigator} from './DrawerNavigator';
 import RNBootSplash from 'react-native-bootsplash';
 import {useThemeContext} from '../style/theming';
+import {ModalNavigator} from './ModalNavigator';
 
 const Stack = createNativeStackNavigator<AppStackNavigatorParamList>();
 
@@ -67,7 +67,7 @@ export const AppNavigator: React.FC = () => {
 	if (isLoading || isChecking) {
 		screen = <Stack.Screen name={AppRouting.LOAD} component={LoadingScreen}/>;
 	} else if (auth.hasUser) {
-		screen = <Stack.Screen name={AppRouting.APP} component={DrawerNavigator}/>;
+		screen = <Stack.Screen name={AppRouting.APP} component={ModalNavigator}/>;
 	} else {
 		screen = <Stack.Screen name={AppRouting.AUTH} component={LoginScreen}/>;
 	}

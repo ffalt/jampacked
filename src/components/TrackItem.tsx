@@ -2,11 +2,10 @@ import React, {useCallback} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {State, TapGestureHandler, TapGestureHandlerStateChangeEvent, TouchableNativeFeedback} from 'react-native-gesture-handler';
 import CheckBox from '@react-native-community/checkbox';
-import {JamPlayer} from '../services/player';
 import {ThemedText} from './ThemedText';
 import {TrackEntry} from '../services/types';
 import {sharedStyles} from '../style/shared';
-import {staticTheme} from '../style/theming';
+import {staticTheme, useTheme} from '../style/theming';
 
 const styles = StyleSheet.create({
 	trackListCheck: {
@@ -64,6 +63,7 @@ export const TrackItem: React.FC<{
 	setSelected?: (item: TrackEntry) => void;
 	doubleTab?: (item: TrackEntry) => void;
 }> = React.memo(({track, displayFunc, isSelected, setSelected, doubleTab}) => {
+	const theme = useTheme();
 	const doubleTap = React.useRef(React.createRef<TapGestureHandler>().current);
 	const display = displayFunc ? displayFunc(track) : defaultTrackDisplay(track);
 
@@ -97,6 +97,7 @@ export const TrackItem: React.FC<{
 				<View style={styles.trackListCheck}>
 					<CheckBox
 						value={isSelected}
+						tintColors={{'true': theme.checkbox.checked, 'false': theme.checkbox.unchecked}}
 						onValueChange={setItemSelected}
 						style={styles.trackListCheckBox}
 					/>

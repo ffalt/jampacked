@@ -5,8 +5,11 @@ import {staticTheme, useTheme} from '../style/theming';
 import {ThemedIcon} from './ThemedIcon';
 
 const styles = StyleSheet.create({
-	container: {
-		flex: 1
+	inputGroup: {
+		flexDirection: 'row',
+		justifyContent: 'center',
+		alignItems: 'center',
+		borderBottomWidth: 1
 	},
 	input: {
 		flex: 1,
@@ -14,12 +17,6 @@ const styles = StyleSheet.create({
 		paddingRight: 10,
 		paddingBottom: 10,
 		paddingLeft: 0
-	},
-	inputGroup: {
-		flexDirection: 'row',
-		justifyContent: 'center',
-		alignItems: 'center',
-		borderBottomWidth: 1
 	},
 	inputIcon: {
 		fontSize: 22,
@@ -34,52 +31,53 @@ const styles = StyleSheet.create({
 	}
 });
 
-export const SearchBar: React.FC<{ style?: ViewStyle }> = (style) => {
+export const SearchBar: React.FC<{ style?: ViewStyle, searchQueryChange?: (searchQuery?: string) => void }> = ({style, searchQueryChange}) => {
 	const [search, setSearch] = useState<string | undefined>();
 	const [query, setQuery] = useState<string | undefined>();
 	const theme = useTheme();
 
-	const handleInput = (s?: string): void => {
+	const handleSearch = useCallback((s?: string): void => {
 		setSearch(s);
-	};
+		if (searchQueryChange) {
+			searchQueryChange(s);
+		}
+	}, [setSearch, searchQueryChange]);
 
-	const handleInputThrottled = throttle(handleInput, 1000);
-
-	const handleChangeText = (q: string): void => {
+	const handleChangeText = useCallback((q: string): void => {
 		setQuery(q);
 		if (q.length === 0) {
-			setSearch(q);
+			handleSearch(q);
 		} else {
-			handleInputThrottled(q);
+			throttle(handleSearch, 1000)(q);
 		}
-	};
+	}, [handleSearch]);
 
-	const handleSearch = useCallback((): void => {
-		setSearch(search);
-	}, [search]);
+	const handleSearchButton = useCallback((): void => {
+		handleSearch(search);
+	}, [handleSearch, search]);
 
-	const handleClear = useCallback((): void => {
+	const handleClearButton = useCallback((): void => {
 		setQuery(undefined);
-		setSearch(undefined);
-	}, []);
+		handleSearch(undefined);
+	}, [handleSearch]);
 
 	const isEmpty = (!query || query.length === 0);
 	const cancel = !isEmpty
 		? (
-			<TouchableOpacity onPress={handleClear} style={styles.inputCancelIcon}>
+			<TouchableOpacity onPress={handleClearButton} style={styles.inputCancelIcon}>
 				<ThemedIcon name="cancel" size={styles.inputCancelIcon.fontSize}/>
 			</TouchableOpacity>
 		)
 		: <></>;
 	return (
-		<View style={[styles.inputGroup, {borderColor: theme.separator}, style?.style]}>
-			<TouchableOpacity onPress={handleSearch} style={[styles.inputIcon, isEmpty && styles.disabled]}>
+		<View style={[styles.inputGroup, {borderColor: theme.separator}, style]}>
+			<TouchableOpacity onPress={handleSearchButton} style={[styles.inputIcon, isEmpty && styles.disabled]}>
 				<ThemedIcon name="search" size={styles.inputIcon.fontSize}/>
 			</TouchableOpacity>
 			<TextInput
 				style={[styles.input, {color: theme.textColor}]}
 				placeholderTextColor={theme.muted}
-				placeholder="Filter"
+				placeholder="Search"
 				value={query}
 				onChangeText={handleChangeText}
 				returnKeyType="search"

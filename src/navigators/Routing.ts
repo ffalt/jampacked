@@ -1,5 +1,5 @@
 import {AlbumType} from '../services/jam';
-import {StackScreenProps} from '@react-navigation/stack';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
 
 // App Routes
 
@@ -15,7 +15,7 @@ export type AppStackNavigatorParamList = {
 	Load: undefined;
 };
 
-export type AppStackProps<T extends keyof AppStackNavigatorParamList> = StackScreenProps<AppStackNavigatorParamList, T>;
+export type AppStackProps<T extends keyof AppStackNavigatorParamList> = NativeStackScreenProps<AppStackNavigatorParamList, T>;
 
 // Modal Routes
 
@@ -29,25 +29,23 @@ export type ModalStackNavigatorParamList = {
 	Player: undefined;
 };
 
-export type ModalStackProps<T extends keyof ModalStackNavigatorParamList> = StackScreenProps<ModalStackNavigatorParamList, T>;
+export type ModalStackProps<T extends keyof ModalStackNavigatorParamList> = NativeStackScreenProps<ModalStackNavigatorParamList, T>;
 
 // Bottom Tab Routes
 
 export enum BottomTabRoute {
 	HOME = 'Home',
-	SEARCH = 'Search',
 	QUEUE = 'Queue',
 	SETTINGS = 'Settings'
 }
 
 export type BottomTabNavigatorParamList = {
 	Home: undefined;
-	Search: undefined;
 	Queue: undefined;
 	Settings: undefined;
 };
 
-export type BottomTabProps<T extends keyof BottomTabNavigatorParamList> = StackScreenProps<BottomTabNavigatorParamList, T>;
+export type BottomTabProps<T extends keyof BottomTabNavigatorParamList> = NativeStackScreenProps<BottomTabNavigatorParamList, T>;
 
 // Home Routes
 
@@ -68,7 +66,6 @@ export enum HomeRoute {
 	TRACK = 'Track',
 	ALBUM = 'Album',
 	TRACKS = 'Tracks',
-	USER = 'User',
 	DOWNLOADS = 'Downloads',
 	BOOKMARKS = 'Bookmarks',
 	GENRES = 'Genres',
@@ -86,7 +83,6 @@ export type HomeRouteParamList = {
 	Podcasts: undefined;
 	Downloads: undefined;
 	Playlists: undefined;
-	User: undefined;
 	Bookmarks: undefined;
 	Playlist: { id: string, name: string };
 	Episode: { id: string, name: string };
@@ -99,8 +95,7 @@ export type HomeRouteParamList = {
 	Genre: { id: string, name: string };
 };
 
-
-export type HomeRouteProps<T extends keyof HomeRouteParamList> = StackScreenProps<HomeRouteParamList, T>;
+export type HomeRouteProps<T extends keyof HomeRouteParamList> = NativeStackScreenProps<HomeRouteParamList, T>;
 
 // Artist Routes
 
@@ -124,7 +119,7 @@ export type ArtistsRouteParamList = {
 	ArtistsFrequent: undefined;
 };
 
-export type ArtistsRouteProps<T extends keyof ArtistsRouteParamList> = StackScreenProps<ArtistsRouteParamList, T>;
+export type ArtistsRouteProps<T extends keyof ArtistsRouteParamList> = NativeStackScreenProps<ArtistsRouteParamList, T>;
 
 // Tracks Routes
 
@@ -146,7 +141,7 @@ export type TracksRouteParamList = {
 	TracksFrequent: undefined;
 };
 
-export type TracksRouteProps<T extends keyof TracksRouteParamList> = StackScreenProps<TracksRouteParamList, T>;
+export type TracksRouteProps<T extends keyof TracksRouteParamList> = NativeStackScreenProps<TracksRouteParamList, T>;
 
 // Album Routes
 
@@ -160,7 +155,7 @@ export type AlbumRouteParamList = {
 	AlbumInfo: { id?: string; name?: string };
 };
 
-export type AlbumRouteProps<T extends keyof AlbumRouteParamList> = StackScreenProps<AlbumRouteParamList, T>;
+export type AlbumRouteProps<T extends keyof AlbumRouteParamList> = NativeStackScreenProps<AlbumRouteParamList, T>;
 
 // Albums Routes
 
@@ -184,7 +179,7 @@ export type AlbumsRouteParamList = {
 	AlbumsFrequent: { albumType?: AlbumType };
 };
 
-export type AlbumsRouteProps<T extends keyof AlbumsRouteParamList> = StackScreenProps<AlbumsRouteParamList, T>;
+export type AlbumsRouteProps<T extends keyof AlbumsRouteParamList> = NativeStackScreenProps<AlbumsRouteParamList, T>;
 
 // Series Routes
 
@@ -208,7 +203,7 @@ export type SeriesRouteParamList = {
 	SeriesFrequent: undefined;
 };
 
-export type SeriesRouteProps<T extends keyof SeriesRouteParamList> = StackScreenProps<SeriesRouteParamList, T>;
+export type SeriesRouteProps<T extends keyof SeriesRouteParamList> = NativeStackScreenProps<SeriesRouteParamList, T>;
 
 // Folders Routes
 
@@ -232,7 +227,7 @@ export type FoldersRouteParamList = {
 	FoldersFrequent: { albumType?: AlbumType };
 };
 
-export type FoldersRouteProps<T extends keyof FoldersRouteParamList> = StackScreenProps<FoldersRouteParamList, T>;
+export type FoldersRouteProps<T extends keyof FoldersRouteParamList> = NativeStackScreenProps<FoldersRouteParamList, T>;
 
 // Downloads Routes
 
@@ -246,7 +241,7 @@ export type DownloadsRouteParamList = {
 	DownloadsPinned: undefined;
 };
 
-export type DownloadsRouteProps<T extends keyof DownloadsRouteParamList> = StackScreenProps<DownloadsRouteParamList, T>;
+export type DownloadsRouteProps<T extends keyof DownloadsRouteParamList> = NativeStackScreenProps<DownloadsRouteParamList, T>;
 
 // Genres Routes
 
@@ -258,7 +253,7 @@ export type GenresRouteParamList = {
 	GenreIndex: undefined;
 };
 
-export type GenresRouteProps<T extends keyof GenresRouteParamList> = StackScreenProps<GenresRouteParamList, T>;
+export type GenresRouteProps<T extends keyof GenresRouteParamList> = NativeStackScreenProps<GenresRouteParamList, T>;
 
 // Genre Routes
 
@@ -274,5 +269,5 @@ export type GenreRouteParamList = {
 	GenreTracks: { id: string, name: string };
 };
 
-export type GenreRouteProps<T extends keyof GenreRouteParamList> = StackScreenProps<GenreRouteParamList, T>;
+export type GenreRouteProps<T extends keyof GenreRouteParamList> = NativeStackScreenProps<GenreRouteParamList, T>;
 

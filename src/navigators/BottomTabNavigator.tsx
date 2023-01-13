@@ -3,7 +3,6 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {HomeStackNavigator} from './HomeStackNavigator';
 import {SettingsScreen} from '../screens/SettingsScreen';
 import {BottomTabNavigatorParamList, BottomTabRoute, ModalRouting, ModalStackProps} from './Routing';
-import {SearchScreen} from '../screens/SearchScreen';
 import {getTabBarIcon} from '../components/ThemedIcon';
 import {JamTabBar} from './JamTabBar';
 import {QueueScreen} from '../screens/QueueScreen';
@@ -21,11 +20,6 @@ export const BottomTabNavigator: React.FC<ModalStackProps<ModalRouting.MAIN>> = 
 			name={BottomTabRoute.HOME}
 			component={HomeStackNavigator}
 			options={{tabBarIcon: getTabBarIcon('home')}}
-		/>
-		<BottomTabs.Screen
-			name={BottomTabRoute.SEARCH}
-			component={SearchScreen}
-			options={{tabBarIcon: getTabBarIcon('search')}}
 		/>
 		<BottomTabs.Screen
 			name={BottomTabRoute.QUEUE}

@@ -1,11 +1,12 @@
-import React, {MutableRefObject, useCallback, useState} from 'react';
+import React, {MutableRefObject, useCallback, useMemo, useState} from 'react';
 import {DefaultFlatList} from './DefFlatList';
 import {TrackEntry} from '../services/types';
 import {TrackDisplayFunction, TrackItem} from './TrackItem';
 import {ErrorView} from './ErrorView';
 import {FloatingAction} from 'react-native-floating-action';
-import {executeTrackMenuAction, trackMenuIcon, trackMenuMultiSelectActions, trackMenuSingleSelectActions} from './ActionMenuTrack';
+import {ActionMenuIten, executeTrackMenuAction, trackMenuIcon, trackMenuMultiSelectActions, trackMenuSingleSelectActions} from './ActionMenuTrack';
 import {JamPlayer} from '../services/player';
+import {useTheme} from '../style/theming';
 
 export const Tracks: React.FC<{
 	tracks?: Array<TrackEntry>;
@@ -16,33 +17,43 @@ export const Tracks: React.FC<{
 	onRefresh: () => void;
 	onLoadMore?: () => void;
 }> = ({tracks, refreshing, displayFunc, onRefresh, onLoadMore, error, ListHeaderComponent}) => {
+	const theme = useTheme();
 	const selectActionRef: MutableRefObject<FloatingAction | null> = React.useRef<FloatingAction>(null);
 	const [selection, setSelection] = useState<Array<TrackEntry>>([]);
+	const [actions, setActions] = useState<Array<ActionMenuIten>>([]);
+	const buttonIcon = React.useMemo(() => trackMenuIcon(theme.floating.color), [theme]);
+	const singleSelectActions = React.useMemo(() => trackMenuSingleSelectActions(theme.floating.background, theme.floating.color), [theme]);
+	const multiSelectActions = React.useMemo(() => trackMenuMultiSelectActions(theme.floating.background, theme.floating.color), [theme]);
+
+	const applySelection = useCallback((list: Array<TrackEntry>): void => {
+		setActions(list.length === 1 ? singleSelectActions : multiSelectActions);
+		setSelection(list);
+	}, [setActions, setSelection]);
 
 	const setSelected = useCallback((item: TrackEntry): void => {
 		if (selection.includes(item)) {
-			setSelection(selection.filter(t => t !== item));
+			applySelection(selection.filter(t => t !== item));
 		} else {
-			setSelection(selection.concat([item]));
+			applySelection(selection.concat([item]));
 		}
-	}, [selection, setSelection]);
+	}, [selection, applySelection]);
 
 	const doubleTab = useCallback((track: TrackEntry): void => {
 		JamPlayer.playTrack(track)
 			.catch(e => console.error(e));
-		setSelection([]);
-	}, [setSelection]);
+		applySelection([]);
+	}, [applySelection]);
 
 	const pressFloatingAction = useCallback((name?: string): void => {
 		executeTrackMenuAction(selection, name).then(result => {
 			if (result) {
-				setSelection([]);
+				applySelection([]);
 			}
 		});
-	}, [selection, setSelection]);
+	}, [selection, applySelection]);
 
 	const renderItemRow = useCallback(({item}: { item: TrackEntry }): JSX.Element => {
-		return (<TrackItem track={item} isSelected={selection.includes(item)} setSelected={setSelected}  doubleTab={doubleTab} displayFunc={displayFunc}/>);
+		return (<TrackItem track={item} isSelected={selection.includes(item)} setSelected={setSelected} doubleTab={doubleTab} displayFunc={displayFunc}/>);
 	}, [displayFunc, selection, setSelected]);
 
 
@@ -67,8 +78,9 @@ export const Tracks: React.FC<{
 				visible={selection.length > 0}
 				animated={false}
 				showBackground={false}
-				floatingIcon={trackMenuIcon}
-				actions={selection.length === 1 ? trackMenuSingleSelectActions : trackMenuMultiSelectActions}
+				color={theme.floating.background}
+				floatingIcon={buttonIcon}
+				actions={actions}
 				onPressItem={pressFloatingAction}
 			/>
 		</>);

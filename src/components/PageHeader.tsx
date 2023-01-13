@@ -3,7 +3,6 @@ import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {ThemedText} from './ThemedText';
 import {staticTheme} from '../style/theming';
 import {ThemedIcon} from './ThemedIcon';
-import {BackgroundIcon} from './BackgroundIcon';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
 
 const styles = StyleSheet.create({
@@ -22,13 +21,10 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		flexDirection: 'column'
 	},
-	ListHeaderBackground: {
-		height: staticTheme.iconHeaderHeight
-	},
 	ListHeader: {
+		height: staticTheme.pageHeaderHeight,
 		alignItems: 'center',
 		flexDirection: 'row',
-		flex: 1
 	},
 	button: {
 		marginRight: staticTheme.marginLarge * 2,
@@ -77,14 +73,12 @@ export const PageHeader: React.FC<{
 	const statusBarHeight = getStatusBarHeight();
 
 	return (
-		<BackgroundIcon name={titleIcon} style={[styles.ListHeaderBackground, {marginTop: statusBarHeight}]}>
-			<View style={styles.ListHeader}>
-				<View style={[styles.ListHeaderTitleContainer, {paddingRight}]}>
-					{subtitleView}
-					<ThemedText style={styles.ListHeaderTitle}>{title}</ThemedText>
-				</View>
-				{toggleViewButton}
+		<View style={[styles.ListHeader, {marginTop: statusBarHeight}]}>
+			<View style={[styles.ListHeaderTitleContainer, {paddingRight}]}>
+				{subtitleView}
+				<ThemedText style={styles.ListHeaderTitle}>{title}</ThemedText>
 			</View>
-		</BackgroundIcon>
+			{toggleViewButton}
+		</View>
 	);
 };

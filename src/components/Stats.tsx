@@ -17,6 +17,9 @@ export const Stats: React.FC<{ stats?: Array<HomeStatData>; label: string }> = R
 	const entries = stats && stats.length > 0
 		? stats.map(stat => <Stat key={stat.link.title} stat={stat}/>)
 		: [];
+	if (entries.length === 0) {
+		return (<></>);
+	}
 	return (
 		<>
 			<View style={sharedStyles.sectionHeader}>

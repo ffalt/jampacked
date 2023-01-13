@@ -1,4 +1,4 @@
-import {CommonActions, DrawerActions, NavigationContainerRef} from '@react-navigation/core';
+import {CommonActions, NavigationContainerRef} from '@react-navigation/core';
 import {JamObjectType} from '../services/jam';
 import {AlbumRoute, AlbumsRoute, ArtistsRoute, FoldersRoute, GenreRoute, GenresRoute, HomeRoute, SeriesRoute, TracksRoute} from './Routing';
 import {Navig, NavigParams} from '../services/types';
@@ -10,22 +10,6 @@ export class NavigationService {
 
 	static setTopLevelNavigator(navigatorRef: NavigationContainerRef<any>): void {
 		navigator = navigatorRef;
-	}
-
-	static closeSideBar(): void {
-		if (navigator) {
-			navigator.dispatch(
-				DrawerActions.closeDrawer()
-			);
-		}
-	}
-
-	static openSideBar(): void {
-		if (navigator) {
-			navigator.dispatch(
-				DrawerActions.openDrawer()
-			);
-		}
 	}
 
 	static navigateToChild(parentRouteName: string, routeName: string, defaultRouteName: string, params?: NavigParams): void {

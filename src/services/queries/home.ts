@@ -1,6 +1,6 @@
 import {HomeData, HomeStatsData} from '../types';
 import {HomeRoute} from '../../navigators/Routing';
-import {AlbumType} from '../jam';
+import {AlbumType, ListType} from '../jam';
 import {JamRouteLinks} from '../../navigators/Routes';
 import {DocumentNode} from 'graphql';
 import {ApolloError} from '@apollo/client';
@@ -8,9 +8,50 @@ import {useCacheOrLazyQuery} from '../cache-hooks';
 import {useCallback} from 'react';
 import {HomeResultDocument, HomeResultQuery} from './home.api';
 
+export interface UserDataResult {
+	stats: HomeStatsData;
+	favorites: HomeStatsData;
+	played: HomeStatsData;
+}
+
 export interface HomeDataResult {
 	stats: HomeStatsData;
 	homeData: HomeData;
+	user: UserDataResult;
+}
+
+
+export type UserResult = NonNullable<HomeResultQuery>['currentUser'];
+export type UserResult_stats = NonNullable<UserResult>['stats'];
+export type UserResult_stats_favorite = NonNullable<UserResult_stats>['favorite'];
+export type UserResult_stats_played = NonNullable<UserResult_stats>['played'];
+
+function transformSectionStats(stats: UserResult_stats_played | UserResult_stats_favorite, listType: ListType): HomeStatsData {
+	return [
+		{link: JamRouteLinks.artistlist(listType), value: stats.artistTypes.album},
+		{link: JamRouteLinks.albumlist(listType, AlbumType.album), value: stats.albumTypes.album},
+		{link: JamRouteLinks.albumlist(listType, AlbumType.compilation), value: stats.albumTypes.compilation},
+		{link: JamRouteLinks.serieslist(listType), value: stats.series},
+		{link: JamRouteLinks.albumlist(listType, AlbumType.audiobook), value: stats.albumTypes.audiobook},
+		{link: JamRouteLinks.albumlist(listType, AlbumType.soundtrack), value: stats.albumTypes.soundtrack},
+		{link: JamRouteLinks.albumlist(listType, AlbumType.live), value: stats.albumTypes.live},
+		{link: JamRouteLinks.albumlist(listType, AlbumType.bootleg), value: stats.albumTypes.bootleg},
+		{link: JamRouteLinks.albumlist(listType, AlbumType.ep), value: stats.albumTypes.ep},
+		{link: JamRouteLinks.albumlist(listType, AlbumType.single), value: stats.albumTypes.single},
+		{link: JamRouteLinks.folderlist(listType), value: stats.folder},
+		{link: JamRouteLinks.tracklist(listType), value: stats.track}
+	].filter(t => t.value > 0);
+}
+
+function transformUserData(currentUser: UserResult): UserDataResult {
+	const stats = currentUser.stats;
+	const base: HomeStatsData = [
+		{link: JamRouteLinks.bookmarks(), value: stats.bookmark},
+		{link: JamRouteLinks.playlists(), value: stats.playlist}
+	].filter(t => t.value !== undefined);
+	const favorites: HomeStatsData = transformSectionStats(stats.favorite, ListType.faved);
+	const played: HomeStatsData = transformSectionStats(stats.played, ListType.recent);
+	return {stats: base, favorites, played};
 }
 
 function transformData(data?: HomeResultQuery): HomeDataResult | undefined {
@@ -38,7 +79,9 @@ function transformData(data?: HomeResultQuery): HomeDataResult | undefined {
 		{link: JamRouteLinks.tracks(), value: data.stats.track},
 		{link: JamRouteLinks.podcasts(), value: data.podcasts?.total}
 	].filter(t => t.value > 0);
-	return {homeData, stats};
+
+	const user = transformUserData(data.currentUser);
+	return {homeData, stats, user};
 }
 
 function transformVariables(): void {

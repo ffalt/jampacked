@@ -10,7 +10,6 @@ import {PodcastScreen} from '../screens/PodcastScreen';
 import {TrackScreen} from '../screens/TrackScreen';
 import {PlaylistScreen} from '../screens/PlaylistScreen';
 import {PlaylistIndexScreen} from '../screens/PlaylistIndexScreen';
-import {UserScreen} from '../screens/UserScreen';
 import {ArtistsNavigator} from './ArtistsNavigator';
 import {AlbumsNavigator} from './AlbumsNavigator';
 import {SeriesNavigator} from './SeriesNavigator';
@@ -40,7 +39,6 @@ export const HomeStackNavigator: React.FC = () => (
 		<Stack.Screen name={HomeRoute.TRACK} component={TrackScreen}/>
 		<Stack.Screen name={HomeRoute.ARTIST} component={ArtistScreen}/>
 		<Stack.Screen name={HomeRoute.ALBUM} component={AlbumNavigator}/>
-		<Stack.Screen name={HomeRoute.USER} component={UserScreen}/>
 		<Stack.Screen name={HomeRoute.DOWNLOADS} component={DownloadsNavigator}/>
 		<Stack.Screen name={HomeRoute.GENRES} component={GenresNavigator}/>
 		<Stack.Screen name={HomeRoute.GENRE} component={GenreNavigator}/>

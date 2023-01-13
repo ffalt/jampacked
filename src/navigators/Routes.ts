@@ -161,10 +161,6 @@ export class JamRouteLinks {
 		return ({title: 'Settings', icon: 'settings', navig: {route: BottomTabRoute.SETTINGS}});
 	}
 
-	static user(): RouteLink {
-		return ({title: 'User', icon: 'user', navig: {route: HomeRoute.USER}});
-	}
-
 	static downloads(): RouteLink {
 		return ({title: 'Downloads', icon: 'download', navig: {route: HomeRoute.DOWNLOADS}});
 	}
