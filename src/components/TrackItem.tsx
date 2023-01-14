@@ -60,18 +60,25 @@ export const defaultListTrackDisplay = (track: TrackEntry): TrackDisplay => {
 export const TrackItem: React.FC<{
 	track: TrackEntry, displayFunc?: TrackDisplayFunction;
 	isSelected?: boolean;
+	showCheck?: boolean;
 	setSelected?: (item: TrackEntry) => void;
 	doubleTab?: (item: TrackEntry) => void;
-}> = React.memo(({track, displayFunc, isSelected, setSelected, doubleTab}) => {
+}> = React.memo(({track, displayFunc, showCheck, isSelected, setSelected, doubleTab}) => {
 	const theme = useTheme();
 	const doubleTap = React.useRef(React.createRef<TapGestureHandler>().current);
 	const display = displayFunc ? displayFunc(track) : defaultTrackDisplay(track);
 
-	const setItemSelected = (): void => {
+	const setItemSelected = useCallback((): void => {
 		if (setSelected) {
 			setSelected(track);
 		}
-	};
+	}, [setSelected, track]);
+
+	const onSingleTapped = useCallback((event: TapGestureHandlerStateChangeEvent): void => {
+		if (event.nativeEvent.state === State.ACTIVE) {
+			setItemSelected();
+		}
+	}, [setItemSelected]);
 
 	const onDoubleTapped = useCallback((event: TapGestureHandlerStateChangeEvent): void => {
 		if (event.nativeEvent.state === State.ACTIVE && doubleTab) {
@@ -91,20 +98,27 @@ export const TrackItem: React.FC<{
 		</View>
 	);
 
+	const columnCheck = showCheck ? (
+		<View style={styles.trackListCheck}>
+			<CheckBox
+				value={isSelected}
+				tintColors={{'true': theme.checkbox.checked, 'false': theme.checkbox.unchecked}}
+				style={styles.trackListCheckBox}
+			/>
+		</View>
+	) : (<></>);
+
 	return (
-		<TouchableNativeFeedback onPress={setItemSelected}>
+		<TapGestureHandler
+			ref={doubleTap}
+			onHandlerStateChange={onSingleTapped}
+			waitFor={doubleTap}>
 			<View style={sharedStyles.item}>
-				<View style={styles.trackListCheck}>
-					<CheckBox
-						value={isSelected}
-						tintColors={{'true': theme.checkbox.checked, 'false': theme.checkbox.unchecked}}
-						onValueChange={setItemSelected}
-						style={styles.trackListCheckBox}
-					/>
-				</View>
+				{columnCheck}
 				{column1}
 				<TapGestureHandler
 					ref={doubleTap}
+					maxDurationMs={300}
 					onHandlerStateChange={onDoubleTapped}
 					numberOfTaps={2}>
 					<View style={[sharedStyles.itemContent, styles.trackListTitle]}>
@@ -114,6 +128,6 @@ export const TrackItem: React.FC<{
 				</TapGestureHandler>
 				{column3}
 			</View>
-		</TouchableNativeFeedback>
+		</TapGestureHandler>
 	);
 });

@@ -19,6 +19,7 @@ export const Tracks: React.FC<{
 }> = ({tracks, refreshing, displayFunc, onRefresh, onLoadMore, error, ListHeaderComponent}) => {
 	const theme = useTheme();
 	const selectActionRef: MutableRefObject<FloatingAction | null> = React.useRef<FloatingAction>(null);
+	const [showCheck, setShowCheck] = useState<boolean>(false);
 	const [selection, setSelection] = useState<Array<TrackEntry>>([]);
 	const [actions, setActions] = useState<Array<ActionMenuIten>>([]);
 	const buttonIcon = React.useMemo(() => trackMenuIcon(theme.floating.color), [theme]);
@@ -27,6 +28,7 @@ export const Tracks: React.FC<{
 
 	const applySelection = useCallback((list: Array<TrackEntry>): void => {
 		setActions(list.length === 1 ? singleSelectActions : multiSelectActions);
+		setShowCheck(list.length > 0);
 		setSelection(list);
 	}, [setActions, setSelection]);
 
@@ -53,8 +55,8 @@ export const Tracks: React.FC<{
 	}, [selection, applySelection]);
 
 	const renderItemRow = useCallback(({item}: { item: TrackEntry }): JSX.Element => {
-		return (<TrackItem track={item} isSelected={selection.includes(item)} setSelected={setSelected} doubleTab={doubleTab} displayFunc={displayFunc}/>);
-	}, [displayFunc, selection, setSelected]);
+		return (<TrackItem track={item} showCheck={showCheck} isSelected={selection.includes(item)} setSelected={setSelected} doubleTab={doubleTab} displayFunc={displayFunc}/>);
+	}, [displayFunc, selection, setSelected, showCheck]);
 
 
 	if (error) {

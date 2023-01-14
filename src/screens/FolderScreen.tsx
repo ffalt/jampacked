@@ -16,7 +16,8 @@ import {DefaultFlatList} from '../components/DefFlatList';
 import {MUSICBRAINZ_VARIOUS_ARTISTS_NAME} from './AlbumScreen';
 import {TrackEntry} from '../services/types';
 import {FloatingAction} from 'react-native-floating-action';
-import {executeTrackMenuAction, trackMenuIcon, trackMenuMultiSelectActions, trackMenuSingleSelectActions} from '../components/ActionMenuTrack';
+import {ActionMenuIten, executeTrackMenuAction, trackMenuIcon, trackMenuMultiSelectActions, trackMenuSingleSelectActions} from '../components/ActionMenuTrack';
+import {useTheme} from '../style/theming';
 
 const buildDetails = (folder?: Folder): Array<HeaderDetail> => {
 	let result: Array<HeaderDetail> = [];
@@ -45,11 +46,24 @@ const buildDetails = (folder?: Folder): Array<HeaderDetail> => {
 };
 
 export const FolderScreen: React.FC<HomeRouteProps<HomeRoute.FOLDER>> = ({route}) => {
+	const theme = useTheme();
 	const [details, setDetails] = useState<Array<HeaderDetail>>(buildDetails());
 	const [getFolder, {loading, error, folder}] = useLazyFolderQuery();
 	const {id, name} = (route?.params || {});
 	const selectActionRef: MutableRefObject<FloatingAction | null> = React.useRef<FloatingAction>(null);
+	const [showCheck, setShowCheck] = useState<boolean>(false);
 	const [selection, setSelection] = useState<Array<TrackEntry>>([]);
+	const [actions, setActions] = useState<Array<ActionMenuIten>>([]);
+	const buttonIcon = React.useMemo(() => trackMenuIcon(theme.floating.color), [theme]);
+	const singleSelectActions = React.useMemo(() => trackMenuSingleSelectActions(theme.floating.background, theme.floating.color), [theme]);
+	const multiSelectActions = React.useMemo(() => trackMenuMultiSelectActions(theme.floating.background, theme.floating.color), [theme]);
+
+	const applySelection = useCallback((list: Array<TrackEntry>): void => {
+		setActions(list.length === 1 ? singleSelectActions : multiSelectActions);
+		console.log(list);
+		setShowCheck(list.length > 0);
+		setSelection(list);
+	}, [setActions, setSelection]);
 
 	useEffect(() => {
 		if (id) {
@@ -88,25 +102,25 @@ export const FolderScreen: React.FC<HomeRouteProps<HomeRoute.FOLDER>> = ({route}
 
 	const setSelected = useCallback((item: TrackEntry): void => {
 		if (selection.includes(item)) {
-			setSelection(selection.filter(t => t !== item));
+			applySelection(selection.filter(t => t !== item));
 		} else {
-			setSelection(selection.concat([item]));
+			applySelection(selection.concat([item]));
 		}
-	}, [selection, setSelection]);
+	}, [selection, applySelection]);
 
 	const pressFloatingAction = useCallback((buttonName?: string): void => {
 		executeTrackMenuAction(selection, buttonName).then(result => {
 			if (result) {
-				setSelection([]);
+				applySelection([]);
 			}
 		});
-	}, [selection, setSelection]);
+	}, [selection, applySelection]);
 
 	const doubleTab = useCallback((track: TrackEntry): void => {
 		JamPlayer.playTrack(track)
 			.catch(e => console.error(e));
-		setSelection([]);
-	}, [setSelection]);
+		applySelection([]);
+	}, [applySelection]);
 
 	const renderItem = useCallback(({item}: { item: FolderItem }): JSX.Element => {
 		if (item.track) {
@@ -114,6 +128,7 @@ export const FolderScreen: React.FC<HomeRouteProps<HomeRoute.FOLDER>> = ({route}
 				track={item.track}
 				isSelected={selection.includes(item.track)}
 				doubleTab={doubleTab}
+				showCheck={showCheck}
 				setSelected={setSelected}
 				displayFunc={isVariousArtist ? defaultShowArtistTrackDisplay : defaultTrackDisplay}
 			/>);
@@ -122,7 +137,7 @@ export const FolderScreen: React.FC<HomeRouteProps<HomeRoute.FOLDER>> = ({route}
 			return <Item item={item.folder}/>;
 		}
 		return <></>;
-	}, [isVariousArtist, selection, setSelected]);
+	}, [isVariousArtist, selection, setSelected, showCheck]);
 
 	const reload = useCallback((): void => {
 		getFolder(id, true);
@@ -147,8 +162,9 @@ export const FolderScreen: React.FC<HomeRouteProps<HomeRoute.FOLDER>> = ({route}
 				visible={selection.length > 0}
 				animated={false}
 				showBackground={false}
-				floatingIcon={trackMenuIcon}
-				actions={selection.length === 1 ? trackMenuSingleSelectActions : trackMenuMultiSelectActions}
+				color={theme.floating.background}
+				floatingIcon={buttonIcon}
+				actions={actions}
 				onPressItem={pressFloatingAction}
 			/>
 		</>
