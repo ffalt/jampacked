@@ -8,10 +8,8 @@ module.exports = {
 		'|react-native-snackbar' +
 		'|react-native-reanimated' +
 		'|react-native-status-bar-height' +
-		'|react-native-linear-gradient' +
 		'|react-native-track-player' +
 		'|react-native-floating-action' +
-		'|react-native-background-timer' +
 		'|d3-array' +
 		'|d3-color' +
 		'|d3-format' +

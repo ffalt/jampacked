@@ -10,7 +10,6 @@ const styles = StyleSheet.create({
 		width: '100%',
 		padding: 0,
 		alignItems: 'center',
-		borderBottomWidth: 1,
 		justifyContent: 'center'
 	},
 	image: {

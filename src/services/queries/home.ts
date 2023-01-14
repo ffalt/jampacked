@@ -77,6 +77,7 @@ function transformData(data?: HomeResultQuery): HomeDataResult | undefined {
 		{link: JamRouteLinks.albums(AlbumType.single), value: data.stats.albumTypes.single},
 		{link: JamRouteLinks.folders(), value: data.stats.folder},
 		{link: JamRouteLinks.tracks(), value: data.stats.track},
+		{link: JamRouteLinks.genres(), value: data.genres?.total},
 		{link: JamRouteLinks.podcasts(), value: data.podcasts?.total}
 	].filter(t => t.value > 0);
 

@@ -8,7 +8,7 @@ import * as Apollo from '@apollo/client';
 export type HomeResultQueryVariables = Types.Exact<{ [key: string]: never; }>;
 
 
-export type HomeResultQuery = { artistsRecent: { items: Array<{ id: string, name: string }> }, artistsFaved: { items: Array<{ id: string, name: string }> }, albumsRecent: { items: Array<{ id: string, name: string }> }, albumsFaved: { items: Array<{ id: string, name: string }> }, podcasts: { total: number }, stats: { track: number, folder: number, series: number, artist: number, album: number, artistTypes: { album: number, compilation: number, artistCompilation: number, unknown: number, live: number, audiobook: number, soundtrack: number, bootleg: number, ep: number, single: number }, albumTypes: { album: number, compilation: number, artistCompilation: number, unknown: number, live: number, audiobook: number, soundtrack: number, bootleg: number, ep: number, single: number } }, currentUser: { stats: { bookmark: number, playlist: number, favorite: { album: number, artist: number, folder: number, series: number, track: number, albumTypes: { album: number, artistCompilation: number, audiobook: number, compilation: number, series: number, single: number, soundtrack: number, ep: number, live: number, bootleg: number, unknown: number }, artistTypes: { album: number } }, played: { album: number, artist: number, folder: number, series: number, track: number, albumTypes: { album: number, artistCompilation: number, audiobook: number, compilation: number, series: number, single: number, soundtrack: number, ep: number, live: number, bootleg: number, unknown: number }, artistTypes: { album: number } } } } };
+export type HomeResultQuery = { artistsRecent: { items: Array<{ id: string, name: string }> }, artistsFaved: { items: Array<{ id: string, name: string }> }, albumsRecent: { items: Array<{ id: string, name: string }> }, albumsFaved: { items: Array<{ id: string, name: string }> }, podcasts: { total: number }, genres: { total: number }, stats: { track: number, folder: number, series: number, artist: number, album: number, artistTypes: { album: number, compilation: number, artistCompilation: number, unknown: number, live: number, audiobook: number, soundtrack: number, bootleg: number, ep: number, single: number }, albumTypes: { album: number, compilation: number, artistCompilation: number, unknown: number, live: number, audiobook: number, soundtrack: number, bootleg: number, ep: number, single: number } }, currentUser: { stats: { bookmark: number, playlist: number, favorite: { album: number, artist: number, folder: number, series: number, track: number, albumTypes: { album: number, artistCompilation: number, audiobook: number, compilation: number, series: number, single: number, soundtrack: number, ep: number, live: number, bootleg: number, unknown: number }, artistTypes: { album: number } }, played: { album: number, artist: number, folder: number, series: number, track: number, albumTypes: { album: number, artistCompilation: number, audiobook: number, compilation: number, series: number, single: number, soundtrack: number, ep: number, live: number, bootleg: number, unknown: number }, artistTypes: { album: number } } } } };
 
 
 export const HomeResultDocument = gql`
@@ -50,6 +50,9 @@ export const HomeResultDocument = gql`
     }
   }
   podcasts(page: {take: 0}) {
+    total
+  }
+  genres {
     total
   }
   stats {

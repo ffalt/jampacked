@@ -1,7 +1,7 @@
+import dataService from './data';
 import {JamPlayer} from './player';
-import {Event, State, TrackPlayer} from './player-api';
+import {Event, TrackPlayer} from './player-api';
 import {snackError} from './snack';
-import {ScrobbleWatch} from './scrobble';
 
 let hasApp: boolean = false;
 
@@ -10,14 +10,16 @@ export function setAppAvailable(available: boolean): void {
 }
 
 export default async function playbackService(): Promise<void> {
-	TrackPlayer.addEventListener(Event.PlaybackState, ({state}: { state: number }) => {
-		if (state === State.Playing) {
-			ScrobbleWatch.start();
-		} else if (state === State.Paused) {
-			ScrobbleWatch.pause();
-		} else if (state === State.Stopped) {
-			ScrobbleWatch.stop();
-		}
+	TrackPlayer.addEventListener(Event.Scrobble, ({trackIndex}) => {
+		TrackPlayer.getTrack(trackIndex)
+			.then(track => {
+				if (track && track.id) {
+					dataService.scrobble(track.id)
+						.catch(e => {
+							console.error(e);
+						});
+				}
+			});
 	});
 	TrackPlayer.addEventListener(Event.RemotePlay, () => JamPlayer.play());
 	TrackPlayer.addEventListener(Event.RemotePause, () => JamPlayer.pause());

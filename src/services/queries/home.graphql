@@ -26,6 +26,9 @@ query HomeResult {
     podcasts(page:{take:0}) {
         total
     }
+    genres {
+        total
+    }
     stats {
         track
         folder

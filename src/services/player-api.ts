@@ -7,7 +7,8 @@ export async function initPlayer(): Promise<void> {
 		await TrackPlayer.setupPlayer();
 		await TrackPlayer.updateOptions({
 			stopWithApp: false,
-			alwaysPauseOnInterruption: false,
+			alwaysPauseOnInterruption: true,
+			scrobble: true,
 			capabilities: [
 				Capability.Play,
 				Capability.Pause,
