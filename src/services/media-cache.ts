@@ -1,4 +1,3 @@
-import RNBackgroundDownloader, {DownloadOption, DownloadTask} from 'react-native-background-downloader';
 import RNFS from 'react-native-fs';
 import {humanFileSize} from '../utils/filesize.utils';
 
@@ -6,6 +5,61 @@ export interface MediaCacheStat {
 	files: number;
 	size: number;
 	humanSize: string;
+}
+
+export class DownloadTask {
+	id: string;
+
+	constructor(public option: DownloadOption) {
+		this.id = option.id;
+	}
+
+	onBegin(callback: () => void): DownloadTask {
+
+		return this;
+	}
+
+	onProgress(callback: () => void): DownloadTask {
+
+		return this;
+	}
+
+	onPause(callback: () => void): DownloadTask {
+
+		return this;
+	}
+
+
+	onResume(callback: () => void): DownloadTask {
+
+		return this;
+	}
+
+
+	onCancelled(callback: () => void): DownloadTask {
+
+		return this;
+	}
+
+	onDone(callback: () => void): DownloadTask {
+
+		return this;
+	}
+
+	onError(callback: (error: Error) => void): DownloadTask {
+
+		return this;
+	}
+
+	stop() {
+
+	}
+
+}
+
+export interface DownloadOption {
+	id: string;
+
 }
 
 export interface DownloadProgress {
@@ -20,7 +74,7 @@ export class MediaCache {
 	private cacheChangeSubscriptions: Array<() => void> = [];
 
 	async init(): Promise<void> {
-		const lostTasks = await RNBackgroundDownloader.checkForExistingDownloads();
+		const lostTasks: Array<DownloadTask> = []; // await RNBackgroundDownloader.checkForExistingDownloads();
 		this.tasks = lostTasks || [];
 		for (const task of this.tasks) {
 			this.connectToTask(task);
@@ -41,7 +95,7 @@ export class MediaCache {
 	}
 
 	cachePath(): string {
-		return `${RNBackgroundDownloader.directories.documents}/mp3`;
+		return `${RNFS.DocumentDirectoryPath}/mp3`;
 	}
 
 	async stat(): Promise<MediaCacheStat> {
@@ -83,7 +137,7 @@ export class MediaCache {
 	async download(downloads: Array<DownloadOption>): Promise<void> {
 		for (const t of downloads) {
 			if (!this.tasks.find(d => d.id === t.id) && !await this.isDownloaded(t.id)) {
-				const task = RNBackgroundDownloader.download(t);
+				const task = new DownloadTask(t);
 				// task.pause();
 				this.connectToTask(task);
 				this.tasks.push(task);

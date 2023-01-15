@@ -9,7 +9,7 @@ import {JamObjectType} from '../services/jam';
 import {FavIcon} from '../components/FavIcon';
 import {snackError} from '../services/snack';
 import {NavigationService} from '../navigators/navigation';
-import {PinIcon} from '../components/PinIcon';
+// import {PinIcon} from '../components/PinIcon';
 import {useLazyAlbumQuery} from '../services/queries/album';
 import {Tracks} from '../components/Tracks';
 import {defaultShowArtistTrackDisplay, defaultTrackDisplay} from '../components/TrackItem';
@@ -70,7 +70,7 @@ export const AlbumScreen: React.FC<AlbumRouteProps<AlbumRoute.MAIN>> = () => {
 				<TouchableOpacity style={objHeaderStyles.button} onPress={playTracks}>
 					<ThemedIcon name="play" size={objHeaderStyles.buttonIcon.fontSize}/>
 				</TouchableOpacity>
-				<PinIcon style={objHeaderStyles.button} objType={JamObjectType.album} id={id}/>
+				{/*<PinIcon style={objHeaderStyles.button} objType={JamObjectType.album} id={id}/>*/}
 				<FavIcon style={objHeaderStyles.button} objType={JamObjectType.album} id={id}/>
 			</>
 		}
