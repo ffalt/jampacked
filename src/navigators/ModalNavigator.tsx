@@ -1,12 +1,12 @@
 import React, {useEffect} from 'react';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {createStackNavigator} from '@react-navigation/stack';
 import {BottomTabNavigator} from './BottomTabNavigator';
 import {PlayerScreen} from '../screens/PlayerScreen';
 import {ModalRouting, ModalStackNavigatorParamList} from './Routing';
 import {NavigationService} from './navigation';
 import {Linking} from 'react-native';
 
-const Stack = createNativeStackNavigator<ModalStackNavigatorParamList>();
+const Stack = createStackNavigator<ModalStackNavigatorParamList>();
 
 export const ModalNavigator: React.FC = () => {
 	useEffect(() => {
@@ -39,6 +39,8 @@ export const ModalNavigator: React.FC = () => {
 	return (
 		<Stack.Navigator screenOptions={{
 			headerShown: false,
+			gestureEnabled: true,
+			gestureDirection: 'vertical',
 			presentation: 'modal'
 		}}>
 			<Stack.Screen name={ModalRouting.MAIN} component={BottomTabNavigator}/>

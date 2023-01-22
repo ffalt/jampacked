@@ -40,6 +40,7 @@
     "@react-navigation/material-top-tabs": "6.5.2",
     "@react-navigation/native": "6.1.2",
     "@react-navigation/native-stack": "6.9.8",
+    "@react-navigation/stack": "^6.3.11",
     "@tsconfig/react-native": "2.0.3",
     "axios": "1.2.3",
     "d3-array": "3.2.2",

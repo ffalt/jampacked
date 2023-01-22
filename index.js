@@ -4,6 +4,7 @@ import {initPlayer, TrackPlayer} from './src/services/player-api';
 import {App} from './App';
 import {name as appName} from './app.json';
 import playbackService from "./src/services/playback";
+import 'react-native-gesture-handler';
 
 // eslint-disable-next-line no-console
 console.reportErrorsAsExceptions = false;

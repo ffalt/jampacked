@@ -9,6 +9,7 @@ import {PlayerCover} from './PlayerCover';
 import {useWindowWidth} from '../utils/dimension.hook';
 import {useNavigation} from '@react-navigation/native';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
+import {Queue} from './Queue';
 
 const styles = StyleSheet.create({
 	// container: {
@@ -50,14 +51,16 @@ const LazyPlaceholder: React.FC = () => {
 
 const renderScene = SceneMap({
 	cover: () => (<PlayerCover/>),
-	lyrics: () => (<PlayerLyrics/>)
+	lyrics: () => (<PlayerLyrics/>),
+	queue: () => (<Queue/>)
 });
 
 const renderLazyPlaceholder: React.FC<{ route: { title: string } }> = () => <LazyPlaceholder/>;
 
 const routes = [
 	{key: 'cover', title: 'Cover'},
-	{key: 'lyrics', title: 'Lyrics'}
+	{key: 'lyrics', title: 'Lyrics'},
+	{key: 'queue', title: 'Queue'}
 ];
 
 export const PlayerTabs: React.FC = () => {
