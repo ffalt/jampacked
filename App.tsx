@@ -12,10 +12,6 @@ import {JamApolloClient} from './src/services/apollo';
 import {sharedStyles} from './src/style/shared';
 import {setAppAvailable} from './src/services/playback';
 
-LogBox.ignoreLogs([
-	// '[GESTURE HANDLER] Gesture handler is already enabled for a parent view',
-]);
-
 enableScreens();
 
 export const App: React.FC = () => {
