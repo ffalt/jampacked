@@ -1,6 +1,5 @@
 import {humanFileSize} from '../utils/filesize.utils';
-import {TrackPlayer, DownloadState, TrackPlayerDownload, TrackPlayerDownloadRequest} from './player-api';
-import {Event} from 'react-native-track-player/src/interfaces';
+import {TrackPlayer, DownloadState, Event, TrackPlayerDownload, TrackPlayerDownloadRequest} from './player-api';
 import {EmitterSubscription} from 'react-native';
 
 export interface MediaCacheStat {
