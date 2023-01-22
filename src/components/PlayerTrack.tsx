@@ -1,8 +1,8 @@
 import {StyleSheet, View} from 'react-native';
 import React from 'react';
-import {useCurrentTrack} from '../services/player';
 import {ThemedText} from './ThemedText';
 import {staticTheme} from '../style/theming';
+import {useTrackPlayerCurrentTrack} from 'react-native-track-player';
 
 const styles = StyleSheet.create({
 	card: {
@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
 });
 
 export const PlayerTrack: React.FC = () => {
-	const currentTrack = useCurrentTrack() || {artwork: undefined, title: undefined, artist: undefined};
+	const currentTrack = useTrackPlayerCurrentTrack() || {artwork: undefined, title: undefined, artist: undefined};
 	return (
 		<View style={styles.card}>
 			<ThemedText style={styles.title}>{currentTrack.title}</ThemedText>

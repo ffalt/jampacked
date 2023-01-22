@@ -1,7 +1,8 @@
 import React from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {JamPlayer, usePlaybackStateIsPlaying} from '../services/player';
+import {JamPlayer} from '../services/player';
 import {ThemedIcon} from './ThemedIcon';
+import {useTrackPlayerPlaybackStateIsPlaying} from 'react-native-track-player';
 
 const styles = StyleSheet.create({
 	playButton: {
@@ -21,7 +22,7 @@ const styles = StyleSheet.create({
 });
 
 export const PlayButton: React.FC = () => {
-	const isPlaying = usePlaybackStateIsPlaying();
+	const isPlaying = useTrackPlayerPlaybackStateIsPlaying();
 	const icon = isPlaying ? 'pause' : 'play';
 	return (
 		<TouchableOpacity onPress={JamPlayer.toggle}>

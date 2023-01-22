@@ -1,5 +1,7 @@
-import RNFS from 'react-native-fs';
 import {humanFileSize} from '../utils/filesize.utils';
+import {TrackPlayer, DownloadState, TrackPlayerDownload, TrackPlayerDownloadRequest} from './player-api';
+import {Event} from 'react-native-track-player/src/interfaces';
+import {EmitterSubscription} from 'react-native';
 
 export interface MediaCacheStat {
 	files: number;
@@ -7,104 +9,76 @@ export interface MediaCacheStat {
 	humanSize: string;
 }
 
-export class DownloadTask {
+export interface DownloadOption extends TrackPlayerDownloadRequest {
 	id: string;
-
-	constructor(public option: DownloadOption) {
-		this.id = option.id;
-	}
-
-	onBegin(callback: () => void): DownloadTask {
-
-		return this;
-	}
-
-	onProgress(callback: () => void): DownloadTask {
-
-		return this;
-	}
-
-	onPause(callback: () => void): DownloadTask {
-
-		return this;
-	}
-
-
-	onResume(callback: () => void): DownloadTask {
-
-		return this;
-	}
-
-
-	onCancelled(callback: () => void): DownloadTask {
-
-		return this;
-	}
-
-	onDone(callback: () => void): DownloadTask {
-
-		return this;
-	}
-
-	onError(callback: (error: Error) => void): DownloadTask {
-
-		return this;
-	}
-
-	stop() {
-
-	}
-
-}
-
-export interface DownloadOption {
-	id: string;
-
-}
-
-export interface DownloadProgress {
-	error?: Error;
-	task: DownloadTask;
+	url: string;
+	headers?: { [key: string]: string };
 }
 
 export class MediaCache {
-	tasks: Array<DownloadTask> = [];
-	private downloadSubscriptions = new Map<string, Array<(progress: DownloadProgress) => void>>();
-	private downloadsSubscriptions: Array<(tasks: Array<DownloadTask>) => void> = [];
+	downloads: Array<TrackPlayerDownload> = [];
+	private downloadSubscriptions = new Map<string, Array<(download: TrackPlayerDownload) => void>>();
+	private downloadsSubscriptions: Array<(downloads: Array<TrackPlayerDownload>) => void> = [];
 	private cacheChangeSubscriptions: Array<() => void> = [];
+	private trackPlayerListener: Array<EmitterSubscription> = [];
 
 	async init(): Promise<void> {
-		const lostTasks: Array<DownloadTask> = []; // await RNBackgroundDownloader.checkForExistingDownloads();
-		this.tasks = lostTasks || [];
-		for (const task of this.tasks) {
-			this.connectToTask(task);
+		this.trackPlayerListener =
+			[
+				TrackPlayer.addEventListener(Event.DownloadsChanged, async () => {
+					await this.updateList();
+				}),
+				TrackPlayer.addEventListener(Event.DownloadProgressChanged, async (event) => {
+					await this.updateItemProgress(event.id, event.percentDownloaded, event.bytesDownloaded, event.contentLength);
+				}),
+				TrackPlayer.addEventListener(Event.DownloadChanged, async (event) => {
+					await this.updateItem(event.id, event.state);
+				})
+			];
+	}
+
+	cleanup(): void {
+		this.trackPlayerListener.forEach(listener => listener.remove());
+	}
+
+	private async updateList(): Promise<void> {
+		this.downloads = await TrackPlayer.getCurrentDownloads();
+	}
+
+	private async updateItem(id: string, _: DownloadState): Promise<void> {
+		const index = this.downloads.findIndex(d => d.id === id);
+		const download = await TrackPlayer.getDownload(id);
+		if (!download) {
+			if (index > 0) {
+				this.downloads.splice(index, 1);
+			}
+			return;
 		}
-		await this.initCachePath();
-	}
-
-	async initCachePath(): Promise<void> {
-		try {
-			await RNFS.mkdir(this.cachePath());
-		} catch (e) {
-			console.error(e);
+		if (index < 0) {
+			this.downloads.push(download);
+		} else {
+			this.downloads[index] = download;
 		}
+		this.notifyTaskChange(download);
 	}
 
-	async isDownloaded(id: string): Promise<boolean> {
-		return await RNFS.exists(this.pathInCache(id));
-	}
-
-	cachePath(): string {
-		return `${RNFS.DocumentDirectoryPath}/mp3`;
+	private async updateItemProgress(id: string, percentDownloaded: number, bytesDownloaded: number, contentLength: number): Promise<void> {
+		const index = this.downloads.findIndex(d => d.id === id);
+		if (index > 0) {
+			this.downloads[index].contentLength = contentLength;
+			this.downloads[index].percentDownloaded = percentDownloaded;
+			this.downloads[index].bytesDownloaded = bytesDownloaded;
+			this.notifyTaskChange(this.downloads[index]);
+		}
 	}
 
 	async stat(): Promise<MediaCacheStat> {
 		let size = 0;
 		let files = 0;
-		const result = await RNFS.readDir(this.cachePath());
-		for (const item of result) {
-			if (item.isFile()) {
-				size += Number(item.size);
+		const downloads = await TrackPlayer.getDownloads();
+		for (const item of downloads) {
+			if (item.state === DownloadState.Completed) {
+				size += Number(item.contentLength);
 				files += 1;
 			}
 		}
@@ -112,138 +86,74 @@ export class MediaCache {
 	}
 
 	async clear(): Promise<void> {
-		await RNFS.unlink(this.cachePath());
-		await this.initCachePath();
+		await TrackPlayer.removeDownloads();
 		this.notifyCacheChange();
 	}
 
 	async removeFromCache(ids: Array<string>): Promise<void> {
 		for (const id of ids) {
-			if (await this.isDownloaded(id)) {
-				await RNFS.unlink(this.pathInCache(id));
-			}
+			await TrackPlayer.removeDownload(id);
 		}
 		this.notifyCacheChange();
 	}
 
-	async list(): Promise<Array<string>> {
-		return RNFS.readdir(this.cachePath());
-	}
-
-	pathInCache(id: string): string {
-		return `${this.cachePath()}/${id}.mp3`;
-	}
-
 	async download(downloads: Array<DownloadOption>): Promise<void> {
-		for (const t of downloads) {
-			if (!this.tasks.find(d => d.id === t.id) && !await this.isDownloaded(t.id)) {
-				const task = new DownloadTask(t);
-				// task.pause();
-				this.connectToTask(task);
-				this.tasks.push(task);
-			}
-		}
+		await TrackPlayer.addDownloads(downloads);
 		this.notifyTasksChange();
 	}
 
-	private connectToTask(task: DownloadTask): void {
-		task
-			.onBegin(() => {
-				// console.log(task.id, `Going to download ${task.totalBytes} bytes!`);
-				this.notifyTaskChange(task);
-			})
-			.onProgress(() => {
-				this.notifyTaskChange(task);
-				// console.log(task.id, `Downloaded: ${task.percent * 100}%, ETA: ${task.etaInMilliSeconds}`);
-			})
-			.onPause(() => {
-				this.notifyTaskChange(task);
-				// console.log(task.id, `Paused`);
-			})
-			.onResume(() => {
-				this.notifyTaskChange(task);
-				// console.log(task.id, `Resumed`);
-			})
-			.onCancelled(() => {
-				this.notifyTaskChange(task);
-				// console.log(task.id, `Resumed`);
-			})
-			.onDone(() => {
-				this.tasks = this.tasks.filter(t => t !== task);
-				this.notifyTasksChange();
-				this.notifyCacheChange();
-				// console.log(task.id, 'Download is done!');
-			})
-			.onError((_: Error) => {
-				this.notifyTaskChange(task);
-				// console.log(task.id, 'Download canceled due to error: ', error);
-			});
+	subscribeTaskUpdates(listen: (tasks: Array<TrackPlayerDownload>) => void): void {
+		this.downloadsSubscriptions.push(listen);
 	}
 
-	subscribeTaskUpdates(update: (tasks: Array<DownloadTask>) => void): void {
-		this.downloadsSubscriptions.push(update);
+	unsubscribeTaskUpdates(listen: (tasks: Array<TrackPlayerDownload>) => void): void {
+		this.downloadsSubscriptions = this.downloadsSubscriptions.filter(u => u !== listen);
 	}
 
-	unsubscribeTaskUpdates(update: (tasks: Array<DownloadTask>) => void): void {
-		this.downloadsSubscriptions = this.downloadsSubscriptions.filter(u => u !== update);
+	subscribeCacheChangeUpdates(listen: () => void): void {
+		this.cacheChangeSubscriptions.push(listen);
 	}
 
-	subscribeCacheChangeUpdates(update: () => void): void {
-		this.cacheChangeSubscriptions.push(update);
+	unsubscribeCacheChangeUpdates(listen: () => void): void {
+		this.cacheChangeSubscriptions = this.cacheChangeSubscriptions.filter(u => u !== listen);
 	}
 
-	unsubscribeCacheChangeUpdates(update: () => void): void {
-		this.cacheChangeSubscriptions = this.cacheChangeSubscriptions.filter(u => u !== update);
+	getDownload(id: string): TrackPlayerDownload | undefined {
+		return this.downloads.find(t => t.id === id);
 	}
 
-	getProgress(id: string): DownloadProgress | undefined {
-		const task = this.tasks.find(t => t.id === id);
-		return task ? {task} : undefined;
+	hasAnyCurrentDownloads(ids: Array<string>): boolean {
+		// const downloads = TrackPlayer.getCurrentDownloads();
+		return !!this.downloads.find(t => ids.includes(t.id));
 	}
 
-	hasDownloadTask(id: string): boolean {
-		return !!this.tasks.find(t => t.id === id);
+	async removeDownloads(ids: Array<string>): Promise<void> {
+		for (const id of ids) {
+			await TrackPlayer.removeDownload(id);
+		}
 	}
 
-	hasAnyDownloadTask(ids: Array<string>): boolean {
-		return !!this.tasks.find(t => ids.includes(t.id));
-	}
-
-	cancelTasks(ids: Array<string>): void {
-		const tasks = this.tasks.filter(t => ids.includes(t.id));
-		tasks.forEach(task => {
-			task.stop();
-		});
-	}
-
-	private notifyTaskChange(task: DownloadTask): void {
+	private notifyTaskChange(task: TrackPlayerDownload): void {
 		const array = this.downloadSubscriptions.get(task.id) || [];
-		const progress = {task};
-		array.forEach(update => {
-			update(progress);
-		});
+		array.forEach(update => update(task));
 	}
 
 	private notifyCacheChange(): void {
-		this.cacheChangeSubscriptions.forEach(update => {
-			update();
-		});
+		this.cacheChangeSubscriptions.forEach(update => update());
 	}
 
 	private notifyTasksChange(): void {
-		const list = this.tasks.slice(0);
-		this.downloadsSubscriptions.forEach(update => {
-			update(list);
-		});
+		const list = this.downloads.slice(0);
+		this.downloadsSubscriptions.forEach(update => update(list));
 	}
 
-	subscribeDownloadUpdates(id: string, update: (progress: DownloadProgress) => void): void {
+	subscribeDownloadUpdates(id: string, update: (download: TrackPlayerDownload) => void): void {
 		const array = this.downloadSubscriptions.get(id) || [];
 		array.push(update);
 		this.downloadSubscriptions.set(id, array);
 	}
 
-	unsubscribeDownloadUpdates(id: string, update: (progress: DownloadProgress) => void): void {
+	unsubscribeDownloadUpdates(id: string, update: (progress: TrackPlayerDownload) => void): void {
 		let array = this.downloadSubscriptions.get(id) || [];
 		array = array.splice(array.indexOf(update), 1);
 		if (array.length === 0) {

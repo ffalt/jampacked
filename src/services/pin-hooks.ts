@@ -2,8 +2,8 @@ import {useEffect, useState} from 'react';
 import dataService from './data';
 import {JamObjectType} from './jam';
 import {PinMedia, PinState} from './types';
-import {DownloadProgress, MediaCacheStat} from './media-cache';
-import {DownloadTask} from 'react-native-background-downloader';
+import {MediaCacheStat} from './media-cache';
+import {TrackPlayerDownload} from './player-api';
 
 export function usePinState(id?: string, objType?: JamObjectType): PinState | undefined {
 	const [stat, setStat] = useState<PinState | undefined>();
@@ -102,14 +102,14 @@ export function usePinnedMedia(): { media: Array<PinMedia>, loading: boolean } {
 	return {media, loading};
 }
 
-export function useDownloads(): Array<DownloadTask> {
-	const [tasks, setTasks] = useState<Array<DownloadTask>>(dataService.pin.pinCache.tasks);
+export function useDownloads(): Array<TrackPlayerDownload> {
+	const [downloads, setDownloads] = useState<Array<TrackPlayerDownload>>(dataService.pin.pinCache.downloads);
 
 	useEffect(() => {
 		let isSubscribed = true;
-		const update = (list: Array<DownloadTask>): void => {
+		const update = (list: Array<TrackPlayerDownload>): void => {
 			if (isSubscribed) {
-				setTasks(list);
+				setDownloads(list);
 			}
 		};
 
@@ -118,23 +118,22 @@ export function useDownloads(): Array<DownloadTask> {
 			isSubscribed = false;
 			dataService.pin.pinCache.unsubscribeTaskUpdates(update);
 		};
-	}, [tasks]);
+	}, [downloads]);
 
-
-	return tasks;
+	return downloads;
 }
 
-export const useDownloadStatus = (id: string): DownloadProgress | undefined => {
+export const useDownloadStatus = (id: string): TrackPlayerDownload | undefined => {
 
-	const [downloadProgress, setDownloadProgress] = useState<DownloadProgress | undefined>(
-		dataService.pin.pinCache.getProgress(id)
+	const [download, setDownload] = useState<TrackPlayerDownload | undefined>(
+		dataService.pin.pinCache.getDownload(id)
 	);
 
 	useEffect(() => {
 		let isSubscribed = true;
-		const update = (progress: DownloadProgress): void => {
+		const update = (d: TrackPlayerDownload): void => {
 			if (isSubscribed) {
-				setDownloadProgress(progress);
+				setDownload(d);
 			}
 		};
 		dataService.pin.pinCache.subscribeDownloadUpdates(id, update);
@@ -144,5 +143,5 @@ export const useDownloadStatus = (id: string): DownloadProgress | undefined => {
 		};
 	}, [id]);
 
-	return downloadProgress;
+	return download;
 };

@@ -1,9 +1,9 @@
 import {Doc, PinMedia, PinState, TrackEntry} from './types';
-import {MediaCache} from './media-cache';
+import {DownloadOption, MediaCache} from './media-cache';
 import {AudioFormatType, JamObjectType} from './jam';
-import {DownloadTask} from 'react-native-background-downloader';
 import {DataService} from './data';
 import {AlbumQuery} from './queries/album';
+import {TrackPlayerDownload} from './player-api';
 
 export class PinService {
 	private pinSubscriptions = new Map<string, Array<(state: PinState) => void>>();
@@ -18,18 +18,12 @@ export class PinService {
 		await this.checkDB();
 	}
 
-	async isDownloaded(id: string): Promise<boolean> {
-		return this.pinCache.isDownloaded(id);
-	}
-
 	async download(tracks: Array<TrackEntry>): Promise<void> {
 		const headers = this.owner.currentUserToken ? {Authorization: `Bearer ${this.owner.currentUserToken}`} : undefined;
-		const downloads = tracks.map(t => {
+		const downloads: Array<DownloadOption> = tracks.map(t => {
 			return {
 				id: t.id,
 				url: this.owner.jam.stream.streamUrl({id: t.id, format: AudioFormatType.mp3}, !headers),
-				destination: this.pinCache.pathInCache(t.id),
-				tag: t.title,
 				headers
 			};
 		});
@@ -103,7 +97,7 @@ export class PinService {
 				pinned: false
 			};
 		}
-		const active = this.pinCache.hasAnyDownloadTask(doc.data.tracks.map(t => t.id));
+		const active = this.pinCache.hasAnyCurrentDownloads(doc.data.tracks.map(t => t.id));
 		if (active) {
 			const array = this.pinSubscriptions.get(id);
 			if (array?.length) {
@@ -132,7 +126,7 @@ export class PinService {
 
 	private waitForPin(id: string, data: PinMedia): void {
 		const waitForIDs = data.tracks.map(t => t.id);
-		const update = (tasks: Array<DownloadTask>): void => {
+		const update = (tasks: Array<TrackPlayerDownload>): void => {
 			const task = tasks.find(t => waitForIDs.includes(t.id));
 			if (!task || tasks.length === 0) {
 				this.pinCache.unsubscribeTaskUpdates(update);
@@ -148,7 +142,7 @@ export class PinService {
 		if (doc) {
 			this.notifyPinChange(id, {active: true, pinned: false});
 			const ids = doc.data.tracks.map(t => t.id);
-			await this.pinCache.cancelTasks(ids);
+			await this.pinCache.removeDownloads(ids);
 			await this.pinCache.removeFromCache(ids);
 			await this.clearPinDoc(key);
 			this.notifyPinChange(id, {active: false, pinned: false});

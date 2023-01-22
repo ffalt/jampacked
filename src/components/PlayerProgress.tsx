@@ -1,8 +1,9 @@
 import {StyleSheet} from 'react-native';
 import Slider from '@react-native-community/slider';
 import React from 'react';
-import {JamPlayer, useTrackPlayerProgressPercent} from '../services/player';
+import {JamPlayer} from '../services/player';
 import {staticTheme, useTheme} from '../style/theming';
+import {useTrackPlayerProgressPercent} from 'react-native-track-player';
 
 const styles = StyleSheet.create({
 	slider: {

@@ -4,7 +4,6 @@ module.exports = {
 		'node_modules/(?!(' +
 		'react-native' +
 		'|@react-native' +
-		'|react-native-background-downloader' +
 		'|react-native-snackbar' +
 		'|react-native-reanimated' +
 		'|react-native-status-bar-height' +

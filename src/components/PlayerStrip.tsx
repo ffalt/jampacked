@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {JamPlayer, useCurrentTrack} from '../services/player';
+import {JamPlayer} from '../services/player';
 import {JamImage} from './JamImage';
 import {ThemedText} from './ThemedText';
 import {staticTheme, useTheme} from '../style/theming';
@@ -9,6 +9,7 @@ import {PlayButton} from './PlayButton';
 import {ModalRouting} from '../navigators/Routing';
 import {MiniProgressBar} from './PlayerProgressMini';
 import {NavigationService} from '../navigators/navigation';
+import {useTrackPlayerCurrentTrack} from 'react-native-track-player';
 
 const styles = StyleSheet.create({
 	disabled: {
@@ -62,7 +63,7 @@ const styles = StyleSheet.create({
 });
 
 export const PlayerStrip: React.FC = () => {
-	const track = useCurrentTrack();
+	const track = useTrackPlayerCurrentTrack();
 	const theme = useTheme();
 	if (!track) {
 		return (<></>);

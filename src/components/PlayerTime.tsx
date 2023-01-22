@@ -2,7 +2,7 @@ import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {DurationText} from './DurationText';
 import {staticTheme} from '../style/theming';
-import {useTrackPlayerProgressMS} from '../services/player';
+import {useTrackPlayerProgressMS} from 'react-native-track-player';
 
 const styles = StyleSheet.create({
 	times: {

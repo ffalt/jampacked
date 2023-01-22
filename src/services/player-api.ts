@@ -1,4 +1,4 @@
-import TrackPlayer, {Capability, Event, State, Track} from 'react-native-track-player';
+import TrackPlayer, {Capability, Event, State, DownloadState, Track, Download, DownloadRequest} from 'react-native-track-player';
 import {Platform} from 'react-native';
 
 export async function initPlayer(): Promise<void> {
@@ -38,6 +38,8 @@ export async function initPlayer(): Promise<void> {
 }
 
 export type TrackPlayerTrack = Track;
+export type TrackPlayerDownload = Download;
+export type TrackPlayerDownloadRequest = DownloadRequest;
 
 export const stateToString = (state: State): string => {
 	switch (state) {
@@ -61,4 +63,4 @@ export const stateToString = (state: State): string => {
 	}
 };
 
-export {TrackPlayer, Event, State};
+export {TrackPlayer, Event, DownloadState, State};
