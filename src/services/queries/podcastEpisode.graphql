@@ -1,0 +1,17 @@
+query PodcastEpisodeResult($id: ID!) {
+    episode(id:$id) {
+        id
+        name
+        date
+        duration
+        tag {
+            title
+            artist
+            genres
+        }
+        podcast {
+            id
+            name
+        }
+    }
+}

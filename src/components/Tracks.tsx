@@ -4,7 +4,7 @@ import {TrackEntry} from '../services/types';
 import {TrackDisplayFunction, TrackItem} from './TrackItem';
 import {ErrorView} from './ErrorView';
 import {FloatingAction} from 'react-native-floating-action';
-import {ActionMenuIten, executeTrackMenuAction, trackMenuIcon, trackMenuMultiSelectActions, trackMenuSingleSelectActions} from './ActionMenuTrack';
+import {ActionMenuItem, executeTrackMenuAction, trackMenuIcon, trackMenuMultiSelectActions, trackMenuSingleSelectActions} from './ActionMenuTrack';
 import {JamPlayer} from '../services/player';
 import {useTheme} from '../style/theming';
 
@@ -21,7 +21,7 @@ export const Tracks: React.FC<{
 	const selectActionRef: MutableRefObject<FloatingAction | null> = React.useRef<FloatingAction>(null);
 	const [showCheck, setShowCheck] = useState<boolean>(false);
 	const [selection, setSelection] = useState<Array<TrackEntry>>([]);
-	const [actions, setActions] = useState<Array<ActionMenuIten>>([]);
+	const [actions, setActions] = useState<Array<ActionMenuItem>>([]);
 	const buttonIcon = React.useMemo(() => trackMenuIcon(theme.floating.color), [theme]);
 	const singleSelectActions = React.useMemo(() => trackMenuSingleSelectActions(theme.floating.background, theme.floating.color), [theme]);
 	const multiSelectActions = React.useMemo(() => trackMenuMultiSelectActions(theme.floating.background, theme.floating.color), [theme]);

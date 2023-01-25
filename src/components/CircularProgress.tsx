@@ -8,7 +8,6 @@ interface CircularProgressProps {
 	progress: number;
 	size: number;
 	strokeWidth: number;
-	indeterminate: boolean;
 }
 
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);
@@ -40,7 +39,6 @@ export const CircularProgress: React.FC<CircularProgressProps> = React.memo((
 		const strokeDasharray = `${circumference}, ${circumference}`;
 		setState({cx, cy, strokeDashoffset, r, strokeDasharray});
 	}, [progress, size, strokeWidth]);
-
 
 	return (
 		<Svg width={size} height={size} style={styles.container}>

@@ -66,7 +66,7 @@ export enum HomeRoute {
 	TRACK = 'Track',
 	ALBUM = 'Album',
 	TRACKS = 'Tracks',
-	DOWNLOADS = 'Downloads',
+	PINNED = 'Pinned',
 	BOOKMARKS = 'Bookmarks',
 	GENRES = 'Genres',
 	GENRE = 'Genre'
@@ -81,7 +81,7 @@ export type HomeRouteParamList = {
 	Genres: undefined;
 	Tracks: undefined;
 	Podcasts: undefined;
-	Downloads: undefined;
+	Pinned: undefined;
 	Playlists: undefined;
 	Bookmarks: undefined;
 	Playlist: { id: string, name: string };
@@ -233,12 +233,14 @@ export type FoldersRouteProps<T extends keyof FoldersRouteParamList> = NativeSta
 
 export enum DownloadsRoute {
 	ACTIVE = 'DownloadsActive',
-	PINNED = 'DownloadsPinned'
+	PINNED = 'DownloadsPinned',
+	ALL = 'DownloadsAll'
 }
 
 export type DownloadsRouteParamList = {
 	DownloadsActive: undefined;
 	DownloadsPinned: undefined;
+	DownloadsAll: undefined;
 };
 
 export type DownloadsRouteProps<T extends keyof DownloadsRouteParamList> = NativeStackScreenProps<DownloadsRouteParamList, T>;

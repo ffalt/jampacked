@@ -8,7 +8,6 @@ import {MediaCachingView} from '../components/MediaCachingView';
 import {PageHeader} from '../components/PageHeader';
 import {sharedStyles} from '../style/shared';
 import {staticTheme} from '../style/theming';
-import {ThemedIcon} from '../components/ThemedIcon';
 import {UserView} from '../components/UserView';
 
 const styles = StyleSheet.create({
@@ -39,7 +38,7 @@ const styles = StyleSheet.create({
 export const SettingsScreen: React.FC<BottomTabProps<BottomTabRoute.SETTINGS>> = () => {
 	return (
 		<>
-			<PageHeader title="Settings" titleIcon="settings"/>
+			<PageHeader title="Settings" />
 			<View style={styles.container}>
 				<View style={[sharedStyles.sectionHeader, styles.sectionFirst]}>
 					<ThemedText style={sharedStyles.sectionHeaderText}>Cache</ThemedText>

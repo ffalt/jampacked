@@ -1,9 +1,10 @@
 import React from 'react';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {JamPlayer} from '../services/player';
-import {ThemedIcon} from './ThemedIcon';
 import {PlayButton} from './PlayButton';
 import {staticTheme} from '../style/theming';
+import {ClickIcon} from './ClickIcon';
+import {useTrackPlayerHasSiblings} from '../services/player-api';
 
 const styles = StyleSheet.create({
 	playerControl: {
@@ -27,22 +28,16 @@ const styles = StyleSheet.create({
 });
 
 export const PlayerControl: React.FC = () => {
-	const forwardDisabled = false;
+	const {hasNext, hasPrevious} = useTrackPlayerHasSiblings();
 	return (
 		<View style={styles.playerControl}>
-			<TouchableOpacity onPress={JamPlayer.skipToPrevious} style={styles.button}>
-				<ThemedIcon name="step-backward" size={staticTheme.fontSizeLarge}/>
-			</TouchableOpacity>
-			<TouchableOpacity onPress={JamPlayer.skipBackward} style={styles.button}>
-				<ThemedIcon name="backward" size={staticTheme.fontSizeLarge}/>
-			</TouchableOpacity>
+			<ClickIcon disabled={!hasNext} fontSize={staticTheme.fontSizeLarge}
+				style={[styles.button, !hasNext && styles.disabled]} iconName="step-backward" onPress={JamPlayer.skipToPrevious}/>
+			<ClickIcon fontSize={staticTheme.fontSizeLarge} style={styles.button} iconName="backward" onPress={JamPlayer.skipBackward}/>
 			<PlayButton/>
-			<TouchableOpacity disabled={forwardDisabled} onPress={JamPlayer.skipForward} style={[styles.button,forwardDisabled && styles.disabled]}>
-				<ThemedIcon name="forward" size={staticTheme.fontSizeLarge}/>
-			</TouchableOpacity>
-			<TouchableOpacity onPress={JamPlayer.skipToNext} style={styles.button}>
-				<ThemedIcon name="step-forward" size={staticTheme.fontSizeLarge}/>
-			</TouchableOpacity>
+			<ClickIcon fontSize={staticTheme.fontSizeLarge} style={styles.button} iconName="forward" onPress={JamPlayer.skipForward}/>
+			<ClickIcon disabled={!hasPrevious} fontSize={staticTheme.fontSizeLarge}
+				style={[styles.button, !hasPrevious && styles.disabled]} iconName="step-forward" onPress={JamPlayer.skipToNext}/>
 		</View>
 	);
 };

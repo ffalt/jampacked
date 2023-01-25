@@ -16,7 +16,10 @@ export interface Playlist {
 	tracks: Array<TrackEntry>;
 }
 
-export const transformEpisode = (episode: PlaylistResult_playlist_entries_episode): TrackEntry => {
+export const transformEpisode = (episode: PlaylistResult_playlist_entries_episode): TrackEntry | undefined => {
+	if (!episode) {
+		return undefined;
+	}
 	return {
 		id: episode.id,
 		title: episode.tag?.title || episode.name,
@@ -36,7 +39,7 @@ function transformData(data?: PlaylistResultQuery): Playlist | undefined {
 	}
 	const tracks: Array<TrackEntry> = [];
 	(data.playlist.entries || []).map(entry => {
-		const item = entry.track ? transformTrack(entry.track) : (entry.episode ? transformEpisode(entry.episode) : undefined);
+		const item = entry.track ? transformTrack(entry.track) : transformEpisode(entry.episode);
 		if (item) {
 			tracks.push(item);
 		}

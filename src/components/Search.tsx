@@ -1,13 +1,12 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {JamObjectType} from '../services/jam';
-import {StyleSheet, TouchableOpacity} from 'react-native';
-import {ThemedText} from './ThemedText';
+import {StyleSheet} from 'react-native';
 import {Item} from './Item';
 import {staticTheme} from '../style/theming';
-import {ThemedIcon} from './ThemedIcon';
 import {BaseEntry} from '../services/types';
 import {useLazySearchQuery} from '../services/queries/search';
 import {DefaultFlatList} from './DefFlatList';
+import {ClickLabelIcon} from './ClickLabelIcon';
 
 const styles = StyleSheet.create({
 	section: {
@@ -91,10 +90,7 @@ export const Search: React.FC<SearchProps> = ({objType, query, backToAll}) => {
 
 	return (
 		<>
-			<TouchableOpacity style={styles.section} onPress={handleBack}>
-				<ThemedIcon size={styles.sectionIcon.fontSize} name="left-open"/>
-				<ThemedText style={styles.sectionText}>{objType}</ThemedText>
-			</TouchableOpacity>
+			<ClickLabelIcon label={objType} iconName="left-open" onPress={handleBack} style={styles.section} fontSize={styles.sectionIcon.fontSize} labelStyle={styles.sectionText}/>
 			<DefaultFlatList
 				items={entries}
 				renderItem={renderItem}

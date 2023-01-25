@@ -1,5 +1,5 @@
 import {AlbumType, ListType} from '../services/jam';
-import {AlbumsRoute, ArtistsRoute, BottomTabRoute, FoldersRoute, HomeRoute, SeriesRoute, TracksRoute} from './Routing';
+import {AlbumsRoute, ArtistsRoute, BottomTabRoute, FoldersRoute, GenreRoute, HomeRoute, SeriesRoute, TracksRoute} from './Routing';
 import {Navig} from '../services/types';
 import {getAlbumTypeInfos} from '../services/jam-lists';
 
@@ -107,8 +107,8 @@ export class JamRouteLinks {
 		return ({title: 'Series', icon: 'series', navig: {route: HomeRoute.SERIES}});
 	}
 
-	static folders(): RouteLink {
-		return ({title: 'Folders', icon: 'folder', navig: {route: HomeRoute.FOLDERS}});
+	static folders(albumType?: AlbumType): RouteLink {
+		return ({title: 'Folders', icon: 'folder', navig: {route: HomeRoute.FOLDERS, params: {albumType}}});
 	}
 
 	static tracks(): RouteLink {
@@ -119,17 +119,29 @@ export class JamRouteLinks {
 		return ({title: 'Genres', icon: 'genre', navig: {route: HomeRoute.GENRES}});
 	}
 
+	static genretracks(): RouteLink {
+		return ({title: 'Genres Tracks', icon: 'genre', navig: {route: GenreRoute.TRACKS}});
+	}
+
+	static genreartists(): RouteLink {
+		return ({title: 'Genres Artists', icon: 'genre', navig: {route: GenreRoute.ARTISTS}});
+	}
+
+	static genrealbums(): RouteLink {
+		return ({title: 'Genres Albums', icon: 'genre', navig: {route: GenreRoute.ALBUMS}});
+	}
+
 	static podcasts(): RouteLink {
 		return ({title: 'Podcasts', icon: 'podcast', navig: {route: HomeRoute.PODCASTS}});
 	}
 
-	static albums(albumType: AlbumType): RouteLink {
-		const t = getAlbumTypeInfos(albumType);
+	static albums(albumType?: AlbumType): RouteLink {
+		const t = albumType ? getAlbumTypeInfos(albumType) : undefined;
 		return ({title: t?.title || 'Albums', icon: t?.icon || 'album', navig: {route: HomeRoute.ALBUMS, params: {albumType}}});
 	}
 
-	static albumlist(listType: ListType, albumType: AlbumType): RouteLink {
-		const t = getAlbumTypeInfos(albumType);
+	static albumlist(listType: ListType, albumType?: AlbumType): RouteLink {
+		const t = albumType ? getAlbumTypeInfos(albumType) : undefined;
 		return ({title: t?.title || 'Albums', icon: t?.icon || 'album', navig: {route: JamRouteLinks.albumlistRoute(listType), params: {albumType}}});
 	}
 
@@ -161,7 +173,8 @@ export class JamRouteLinks {
 		return ({title: 'Settings', icon: 'settings', navig: {route: BottomTabRoute.SETTINGS}});
 	}
 
-	static downloads(): RouteLink {
-		return ({title: 'Downloads', icon: 'download', navig: {route: HomeRoute.DOWNLOADS}});
+	static pinned(): RouteLink {
+		return ({title: 'Pinned', icon: 'download', navig: {route: HomeRoute.PINNED}});
 	}
+
 }

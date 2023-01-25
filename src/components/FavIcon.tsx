@@ -1,20 +1,10 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {StyleProp, StyleSheet, TouchableOpacity, View, ViewStyle} from 'react-native';
-import {staticTheme, useTheme} from '../style/theming';
-import {ThemedIcon} from './ThemedIcon';
+import {StyleProp, ViewStyle} from 'react-native';
 import {JamObjectType} from '../services/jam';
 import {useFavMutation, useLazyFavQuery} from '../services/queries/fav';
 import {snackSuccess} from '../services/snack';
 import dataService from '../services/data';
-
-const styles = StyleSheet.create({
-	button: {
-		marginLeft: staticTheme.margin
-	},
-	buttonIcon: {
-		fontSize: 26
-	}
-});
+import {ClickIcon} from './ClickIcon';
 
 function transformState(faved?: { timestamp?: number }): { isFaved: boolean, iconName: string } {
 	const isFaved = (faved?.timestamp || 0) > 0;
@@ -22,11 +12,10 @@ function transformState(faved?: { timestamp?: number }): { isFaved: boolean, ico
 	return {isFaved, iconName};
 }
 
-export const FavIcon: React.FC<{ id?: string; objType: JamObjectType; style?: StyleProp<ViewStyle> }> = ({id, style}) => {
+export const FavIcon: React.FC<{ id?: string; objType: JamObjectType; style?: StyleProp<ViewStyle>, fontSize?:number }> = ({id, style,fontSize}) => {
 	const [state, setState] = useState<{ id?: string, isFaved: boolean, iconName: string }>(transformState());
 	const [getFaved, {faved, loading, setFav}] = useLazyFavQuery();
 	const [toggleFav] = useFavMutation();
-	const theme = useTheme();
 
 	useEffect(() => {
 		if (id) {
@@ -49,30 +38,18 @@ export const FavIcon: React.FC<{ id?: string; objType: JamObjectType; style?: St
 	}, [faved]);
 
 	const handleToggleFav = useCallback((): void => {
-		if (!loading && id) {
-			const isFaved = (faved?.timestamp || 0) > 0;
+		if (!loading && id && faved) {
+			const isFaved = (faved.timestamp || 0) > 0;
 			toggleFav({variables: {id, remove: isFaved}})
 				.then(result => {
 					const fav = {timestamp: result.data?.fav?.faved ? (new Date(result.data.fav.faved)).valueOf() : undefined};
 					setState({id, ...transformState(fav)});
 					setFav(fav);
 					snackSuccess(!isFaved ? 'Added to Favorites' : 'Removed from Favorites');
-					dataService.cache.updateHomeData();
+					dataService.cache.updateHomeData().catch(console.error);
 				});
 		}
 	}, [id, setFav, loading, faved, toggleFav]);
 
-	if (loading || !faved) {
-		return (
-			<View style={[styles.button, style]}>
-				<ThemedIcon name={state.iconName} size={styles.buttonIcon.fontSize} color={theme.muted}/>
-			</View>
-		);
-	}
-	return (
-		<TouchableOpacity style={[styles.button, style]} onPress={handleToggleFav}>
-			<ThemedIcon name={state.iconName} size={styles.buttonIcon.fontSize}/>
-		</TouchableOpacity>
-	);
-
+	return (<ClickIcon style={style} fontSize={fontSize} iconName={state.iconName} onPress={handleToggleFav} muted={(loading || !faved)}></ClickIcon>);
 };

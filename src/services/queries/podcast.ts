@@ -15,14 +15,14 @@ export interface Podcast {
 
 type PodcastResult_podcast_episodes = NonNullable<PodcastResultQuery>['podcast']['episodes'][number];
 
-export const transformPodcastEpisode = (parent: PodcastResultQuery, track: PodcastResult_podcast_episodes): TrackEntry => {
+export const transformPodcastEpisode = (podcastName: string, podcastID: string, track: PodcastResult_podcast_episodes): TrackEntry => {
 	return {
 		id: track.id,
 		title: track.tag?.title || track.name,
 		artist: track.tag?.artist || '?',
 		genre: track.tag?.genres ? track.tag?.genres.join(' / ') : 'Podcast',
-		album: parent.podcast.name || '?',
-		podcastID: parent.podcast.id,
+		album: podcastName || '?',
+		podcastID,
 		trackNr: track.date ? new Date(track.date).toDateString() : '',
 		durationMS: track.duration || 0,
 		duration: formatDuration(track.duration || undefined)
@@ -36,7 +36,7 @@ function transformData(data?: PodcastResultQuery): Podcast | undefined {
 	return {
 		...data.podcast,
 		description: data.podcast.description || undefined,
-		episodes: (data.podcast.episodes || []).map(episode => transformPodcastEpisode(data, episode))
+		episodes: (data.podcast.episodes || []).map(episode => transformPodcastEpisode(data.podcast.name, data.podcast.id, episode))
 	};
 }
 

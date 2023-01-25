@@ -14,6 +14,17 @@ export const sharedStyles = StyleSheet.create({
 		maxHeight: 60,
 		minHeight: 60
 	},
+	itemButton: {
+		width: 50,
+		height: 50,
+		justifyContent: 'center',
+		alignItems: 'center',
+		borderRadius: 4,
+		padding: staticTheme.padding
+	},
+	itemButtonIcon: {
+		fontSize: 22
+	},
 	itemSectionLeft: {
 		marginRight: staticTheme.margin
 	},
@@ -56,6 +67,26 @@ export const sharedStyles = StyleSheet.create({
 	},
 	sectionHeaderIcon: {
 		fontSize: staticTheme.fontSizeSmall
+	},
+	barButtons: {
+		borderBottomWidth: 1,
+		borderTopWidth: 1,
+		paddingRight: staticTheme.paddingLarge,
+		paddingLeft: staticTheme.paddingLarge,
+		flexDirection: 'row',
+		justifyContent: 'flex-end',
+		alignItems: 'center'
+	},
+	barButton: {
+		flex: 1,
+		paddingRight: staticTheme.paddingLarge,
+		paddingLeft: staticTheme.paddingLarge,
+		flexDirection: 'row',
+		alignItems: 'center',
+		justifyContent: 'center',
+		height: 32
+	},
+	barButtonText: {
+		paddingHorizontal: staticTheme.paddingSmall
 	}
-
 });

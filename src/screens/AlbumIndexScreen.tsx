@@ -5,10 +5,11 @@ import {ErrorView} from '../components/ErrorView';
 import {getAlbumTypeInfos} from '../services/jam-lists';
 import {AlbumsTabNavigatorContext} from '../navigators/AlbumsNavigatorContext';
 import {useLazyAlbumIndexQuery} from '../services/queries/albumIndex';
+import {ListType} from '../services/jam';
+import {JamRouteLinks} from '../navigators/Routes';
 
 export const AlbumIndexScreen: React.FC<AlbumsRouteProps<AlbumsRoute.INDEX>> = () => {
 	const [title, setTitle] = useState<string>('');
-	const [titleIcon, setTitleIcon] = useState<string>('album');
 	const [getIndex, {loading, error, called, index}] = useLazyAlbumIndexQuery();
 	const {albumType} = useContext(AlbumsTabNavigatorContext);
 
@@ -16,7 +17,6 @@ export const AlbumIndexScreen: React.FC<AlbumsRouteProps<AlbumsRoute.INDEX>> = (
 		if (albumType) {
 			const type = getAlbumTypeInfos(albumType);
 			setTitle(type.title);
-			setTitleIcon(type.icon);
 		}
 	}, [albumType]);
 
@@ -40,10 +40,10 @@ export const AlbumIndexScreen: React.FC<AlbumsRouteProps<AlbumsRoute.INDEX>> = (
 		<IndexList
 			index={index}
 			title={title}
-			titleIcon={titleIcon}
 			refreshing={loading}
 			called={called}
 			onRefresh={reload}
+			goRight={JamRouteLinks.albumlist(ListType.faved, albumType)}
 		/>
 	);
 };

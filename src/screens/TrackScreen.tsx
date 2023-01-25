@@ -1,16 +1,16 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {RefreshControl, ScrollView, TouchableOpacity, View} from 'react-native';
+import {RefreshControl, ScrollView, View} from 'react-native';
 import {HomeRoute, HomeRouteProps} from '../navigators/Routing';
 import {HeaderDetail, ObjHeader, objHeaderStyles} from '../components/ObjHeader';
 import {genreDisplay} from '../utils/genre.utils';
 import {JamPlayer} from '../services/player';
 import {JamObjectType} from '../services/jam';
-import {ThemedIcon} from '../components/ThemedIcon';
 import {FavIcon} from '../components/FavIcon';
 import {Lyrics} from '../components/Lyrics';
 import {useTheme} from '../style/theming';
 import {ErrorView} from '../components/ErrorView';
 import {useLazyTrackQuery} from '../services/queries/track';
+import {ClickIcon} from '../components/ClickIcon';
 
 const buildDetails = (artist?: string, album?: string, genre?: string): Array<HeaderDetail> => {
 	return [
@@ -51,9 +51,7 @@ export const TrackScreen: React.FC<HomeRouteProps<HomeRoute.TRACK>> = ({route}) 
 
 	const headerTitleCmds = (
 		<>
-			<TouchableOpacity style={objHeaderStyles.button} onPress={playTrack}>
-				<ThemedIcon name="play" size={objHeaderStyles.buttonIcon.fontSize}/>
-			</TouchableOpacity>
+			<ClickIcon iconName="play" onPress={playTrack} style={objHeaderStyles.button} fontSize={objHeaderStyles.buttonIcon.fontSize}/>
 			<FavIcon style={objHeaderStyles.button} objType={JamObjectType.track} id={id}/>
 		</>
 	);

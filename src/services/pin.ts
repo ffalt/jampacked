@@ -1,33 +1,45 @@
-import {Doc, PinMedia, PinState, TrackEntry} from './types';
-import {DownloadOption, MediaCache} from './media-cache';
+import {Doc, PinMedia, PinState, PinCacheStat, TrackEntry} from './types';
 import {AudioFormatType, JamObjectType} from './jam';
 import {DataService} from './data';
 import {AlbumQuery} from './queries/album';
-import {TrackPlayerDownload} from './player-api';
+import {snackError} from './snack';
+import {TrackQuery} from './queries/track';
+import {FolderQuery} from './queries/folder';
+import {PlaylistQuery} from './queries/playlist';
+import {PodcastEpisodeQuery} from './queries/podcastEpisode';
+import {DownloadRequest, DownloadState, TrackPlayerDownloadManager} from './player-api';
+import {humanFileSize} from '../utils/filesize.utils';
 
 export class PinService {
 	private pinSubscriptions = new Map<string, Array<(state: PinState) => void>>();
-	pinCache = new MediaCache();
+	private pinsChangeSubscriptions: Array<() => void> = [];
+	public manager: TrackPlayerDownloadManager = new TrackPlayerDownloadManager();
 	private dataFormatVersion = 1;
 
 	constructor(private owner: DataService) {
 	}
 
 	async init(): Promise<void> {
-		await this.pinCache.init();
 		await this.checkDB();
+		await this.manager.init();
+		await this.updateHeaders();
+	}
+
+	async updateHeaders(): Promise<void> {
+		const headers = this.owner.currentUserToken ? {Authorization: `Bearer ${this.owner.currentUserToken}`} : undefined;
+		if (headers) {
+			await this.manager.setHeaders(headers);
+		}
 	}
 
 	async download(tracks: Array<TrackEntry>): Promise<void> {
-		const headers = this.owner.currentUserToken ? {Authorization: `Bearer ${this.owner.currentUserToken}`} : undefined;
-		const downloads: Array<DownloadOption> = tracks.map(t => {
+		const requests: Array<DownloadRequest> = tracks.map(t => {
 			return {
 				id: t.id,
-				url: this.owner.jam.stream.streamUrl({id: t.id, format: AudioFormatType.mp3}, !headers),
-				headers
+				url: this.owner.jam.stream.streamUrl({id: t.id, format: AudioFormatType.mp3}, false)
 			};
 		});
-		return this.pinCache.download(downloads);
+		await this.manager.download(requests);
 	}
 
 	private async dropPinCache(): Promise<void> {
@@ -79,13 +91,34 @@ export class PinService {
 	}
 
 	private async clearPinDoc(key: string): Promise<void> {
-
 		await this.owner.db.delete('pin', {key});
 	}
 
-	private async setPinDoc<T>(key: string, data: T): Promise<void> {
+	private async setPinDoc(id: string, data: PinMedia): Promise<void> {
+		await this.setPinDocKey<PinMedia>(`pin_${id}`, data);
+	}
+
+	private async setPinDocKey<T>(key: string, data: T): Promise<void> {
 		await this.clearPinDoc(key);
 		await this.owner.db.insert('pin', ['data', 'key', 'date', 'version'], [JSON.stringify(data), key, Date.now(), this.dataFormatVersion]);
+	}
+
+	async hasAnyCurrentDownloads(ids: Array<string>): Promise<boolean> {
+		const downloads = this.manager.getCurrentDownloads();
+		return !!downloads.find(d => ids.includes(d.id));
+	}
+
+	async stat(): Promise<PinCacheStat> {
+		let size = 0;
+		let files = 0;
+		const downloads = this.manager.getDownloads();
+		for (const item of downloads) {
+			if (item.state === DownloadState.Completed) {
+				size += Number(item.contentLength);
+				files += 1;
+			}
+		}
+		return {files, size, humanSize: humanFileSize(size)};
 	}
 
 	async getPinState(id: string): Promise<PinState> {
@@ -97,43 +130,88 @@ export class PinService {
 				pinned: false
 			};
 		}
-		const active = this.pinCache.hasAnyCurrentDownloads(doc.data.tracks.map(t => t.id));
-		if (active) {
-			const array = this.pinSubscriptions.get(id);
-			if (array?.length) {
-				this.waitForPin(id, doc.data);
-			}
-		}
+		const active = await this.hasAnyCurrentDownloads(doc.data.tracks.map(t => t.id));
 		return {
 			active,
 			pinned: true
 		};
 	}
 
-	async pin(id: string, objType: JamObjectType): Promise<void> {
-		const key = `pin_${id}`;
-		this.notifyPinChange(id, {active: true, pinned: true});
-		const album = await this.owner.cache.getCacheOrQuery(AlbumQuery.query, AlbumQuery.transformVariables(id), AlbumQuery.transformData);
-		if (album) {
-			const data: PinMedia = {id, name: album.name, objType, tracks: album.tracks || []};
-			await this.setPinDoc<PinMedia>(key, data);
-			await this.download(album.tracks || []);
-			this.waitForPin(id, data);
+	async pinObject(id: string, objType: JamObjectType, name: string, tracks: Array<TrackEntry>): Promise<void> {
+		if (tracks.length) {
+			const data: PinMedia = {id, name, objType, tracks};
+			await this.setPinDoc(id, data);
+			await this.download(tracks);
+			this.notifyPinChange(id, {active: false, pinned: true});
 		} else {
-			this.notifyPinChange(id, {active: false, pinned: false});
+			this.notifyPinChange(id, {active: true, pinned: true});
 		}
 	}
 
-	private waitForPin(id: string, data: PinMedia): void {
-		const waitForIDs = data.tracks.map(t => t.id);
-		const update = (tasks: Array<TrackPlayerDownload>): void => {
-			const task = tasks.find(t => waitForIDs.includes(t.id));
-			if (!task || tasks.length === 0) {
-				this.pinCache.unsubscribeTaskUpdates(update);
-				this.notifyPinChange(id, {active: false, pinned: true});
+	async pinAlbum(id: string): Promise<void> {
+		const album = await this.owner.cache.getCacheOrQuery(AlbumQuery.query, AlbumQuery.transformVariables(id), AlbumQuery.transformData);
+		if (album) {
+			await this.pinObject(id, JamObjectType.album, album.name, album.tracks || []);
+		} else {
+			snackError(new Error('Album not found'));
+		}
+	}
+
+	async pinFolder(id: string): Promise<void> {
+		const folder = await this.owner.cache.getCacheOrQuery(FolderQuery.query, FolderQuery.transformVariables(id), FolderQuery.transformData);
+		if (folder) {
+			await this.pinObject(id, JamObjectType.folder, folder.title || id, folder.tracks || []);
+		} else {
+			snackError(new Error('Album not found'));
+		}
+	}
+
+	async pinPlaylist(id: string): Promise<void> {
+		const playlist = await this.owner.cache.getCacheOrQuery(PlaylistQuery.query, PlaylistQuery.transformVariables(id), PlaylistQuery.transformData);
+		if (playlist) {
+			await this.pinObject(id, JamObjectType.playlist, playlist.name || id, playlist.tracks || []);
+		} else {
+			snackError(new Error('Playlist not found'));
+		}
+	}
+
+	async pinTrack(id: string): Promise<void> {
+		const track = await this.owner.cache.getCacheOrQuery(TrackQuery.query, TrackQuery.transformVariables(id), TrackQuery.transformData);
+		if (track) {
+			await this.pinObject(id, JamObjectType.track, track.title || id, [track]);
+		} else {
+			snackError(new Error('Track not found'));
+		}
+	}
+
+	async pinPodcastEpisode(id: string): Promise<void> {
+		const track = await this.owner.cache.getCacheOrQuery(PodcastEpisodeQuery.query, PodcastEpisodeQuery.transformVariables(id), PodcastEpisodeQuery.transformData);
+		if (track) {
+			await this.pinObject(id, JamObjectType.episode, track.title || id, [track]);
+		} else {
+			snackError(new Error('Episode not found'));
+		}
+	}
+
+	async pin(id: string, objType: JamObjectType): Promise<void> {
+		this.notifyPinChange(id, {active: true, pinned: true});
+		switch (objType) {
+			case JamObjectType.album:
+				return this.pinAlbum(id);
+			case JamObjectType.track:
+				return this.pinTrack(id);
+			case JamObjectType.folder:
+				return this.pinFolder(id);
+			case JamObjectType.playlist:
+				return this.pinPlaylist(id);
+			case JamObjectType.episode:
+				return this.pinPodcastEpisode(id);
+			default: {
+				snackError(new Error(`Pinning this object type is not supported: ${objType}`));
+				this.notifyPinChange(id, {active: false, pinned: false});
 			}
-		};
-		this.pinCache.subscribeTaskUpdates(update);
+		}
+		this.notifyPinsChange();
 	}
 
 	async unpin(id: string): Promise<void> {
@@ -141,19 +219,60 @@ export class PinService {
 		const doc = await this.getPinDoc<PinMedia>(key);
 		if (doc) {
 			this.notifyPinChange(id, {active: true, pinned: false});
-			const ids = doc.data.tracks.map(t => t.id);
-			await this.pinCache.removeDownloads(ids);
-			await this.pinCache.removeFromCache(ids);
+			const ids = await this.filterPinnedByOthers(key, doc.data.tracks.map(t => t.id));
+			await this.manager.remove(ids);
 			await this.clearPinDoc(key);
 			this.notifyPinChange(id, {active: false, pinned: false});
 		}
+		this.notifyPinsChange();
+	}
+
+	async getPinCount(): Promise<number> {
+		// TODO: make this more efficient
+		const docs = await this.getPinDocs<PinMedia>();
+		return docs.length;
+	}
+
+	async getPinnedTrack(id: string): Promise<TrackEntry | undefined> {
+		// TODO: make this more efficient
+		const docs = await this.getPinDocs<PinMedia>();
+		for (const doc of docs) {
+			const track = doc.data.tracks.find(t => t.id === id);
+			if (track) {
+				return track;
+			}
+		}
+	}
+
+	async filterPinnedByOthers(currentKey: string, ids: Array<string>): Promise<Array<string>> {
+		const result = ids.slice(0);
+		// TODO: make this more efficient
+		const docs = await this.getPinDocs<PinMedia>();
+		for (const doc of docs) {
+			if (doc.key === currentKey) {
+				continue;
+			}
+			for (const track of doc.data.tracks) {
+				const index = result.findIndex(s => track.id === s);
+				if (index >= 0) {
+					result.splice(index, 1);
+				}
+			}
+		}
+		return result;
 	}
 
 	notifyPinChange(id: string, state: PinState): void {
 		const array = this.pinSubscriptions.get(id) || [];
-		array.forEach(update => {
-			update(state);
-		});
+		array.forEach(update => update(state));
+	}
+
+	subscribeCacheChangeUpdates(listen: () => void): void {
+		this.manager.subscribeDownloadsChanges(listen);
+	}
+
+	unsubscribeCacheChangeUpdates(listen: () => void): void {
+		this.manager.unsubscribeDownloadsChanges(listen);
 	}
 
 	subscribePinChangeUpdates(id: string, update: (state: PinState) => void): void {
@@ -172,8 +291,20 @@ export class PinService {
 		}
 	}
 
+	subscribePinsChangeSubscriptions(listen: () => void): void {
+		this.pinsChangeSubscriptions.push(listen);
+	}
+
+	unsubscribePinsChangeSubscriptions(listen: () => void): void {
+		this.pinsChangeSubscriptions = this.pinsChangeSubscriptions.filter(u => u !== listen);
+	}
+
+	notifyPinsChange(): void {
+		this.pinsChangeSubscriptions.forEach(update => update());
+	}
+
 	async clearPins(): Promise<void> {
-		await this.pinCache.clear();
+		await this.manager.clear();
 		await this.dropPinCache();
 	}
 

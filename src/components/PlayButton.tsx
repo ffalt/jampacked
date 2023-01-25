@@ -1,8 +1,8 @@
 import React from 'react';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {JamPlayer} from '../services/player';
-import {ThemedIcon} from './ThemedIcon';
-import {useTrackPlayerPlaybackStateIsPlaying} from 'react-native-track-player';
+import {useTrackPlayerPlaybackStateIsPlaying} from '../services/player-api';
+import {ClickIcon} from './ClickIcon';
 
 const styles = StyleSheet.create({
 	playButton: {
@@ -24,11 +24,5 @@ const styles = StyleSheet.create({
 export const PlayButton: React.FC = () => {
 	const isPlaying = useTrackPlayerPlaybackStateIsPlaying();
 	const icon = isPlaying ? 'pause' : 'play';
-	return (
-		<TouchableOpacity onPress={JamPlayer.toggle}>
-			<View style={styles.playButton}>
-				<ThemedIcon name={icon} size={styles.playButtonIcon.fontSize} color={styles.playButtonIcon.color}/>
-			</View>
-		</TouchableOpacity>
-	);
+	return (<ClickIcon iconName={icon} onPress={JamPlayer.toggle} style={styles.playButton} color={styles.playButtonIcon.color} fontSize={styles.playButtonIcon.fontSize} />);
 };

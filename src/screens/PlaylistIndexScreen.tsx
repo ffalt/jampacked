@@ -25,7 +25,6 @@ export const PlaylistIndexScreen: React.FC<HomeRouteProps<HomeRoute.PLAYLISTS>> 
 		<IndexList
 			index={index}
 			title="Playlists"
-			titleIcon="playlist"
 			called={called}
 			refreshing={loading}
 			onRefresh={reload}

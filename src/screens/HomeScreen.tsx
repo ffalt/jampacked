@@ -1,14 +1,11 @@
-import React, {useCallback, useEffect, useState} from 'react';
-import {RefreshControl, ScrollView, StyleSheet, TextInput, TouchableOpacity, View} from 'react-native';
+import React, {useState} from 'react';
+import {StyleSheet, View} from 'react-native';
 import {HomeRoute, HomeRouteProps} from '../navigators/Routing';
 import {ThemedText} from '../components/ThemedText';
 import {JamImage} from '../components/JamImage';
-import {staticTheme, useTheme} from '../style/theming';
+import {staticTheme} from '../style/theming';
 import {Logo} from '../components/Logo';
-import {Stats} from '../components/Stats';
-import {HomeDataSection} from '../components/HomeDataSection';
 import {useAuth} from '../services/auth';
-import {NavigationService} from '../navigators/navigation';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
 import {SearchBar} from '../components/SearchBar';
 import {SearchResults} from '../components/SearchResults';

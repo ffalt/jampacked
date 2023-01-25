@@ -3,6 +3,7 @@ import {useLazyTrackListQuery} from '../services/queries/trackList';
 import {TrackEntryListList, TrackEntryListListQuery} from '../components/TrackEntryListList';
 import {GenreRoute, GenreRouteProps} from '../navigators/Routing';
 import {GenreTabNavigatorContext} from '../navigators/GenreNavigatorContext';
+import {JamRouteLinks} from '../navigators/Routes';
 
 export const GenreTracksScreen: React.FC<GenreRouteProps<GenreRoute.TRACKS>> = () => {
 	const state = useContext(GenreTabNavigatorContext);
@@ -20,7 +21,8 @@ export const GenreTracksScreen: React.FC<GenreRouteProps<GenreRoute.TRACKS>> = (
 				subtitle: 'Tracks in Genre',
 				genreIDs: [state.id],
 				icon: 'track',
-				useList: useLazyTrackListQuery
+				useList: useLazyTrackListQuery,
+				goLeft: JamRouteLinks.genrealbums()
 			});
 		}
 	}, [state]);

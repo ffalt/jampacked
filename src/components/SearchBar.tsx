@@ -1,8 +1,8 @@
 import React, {useCallback, useState} from 'react';
-import {StyleSheet, TextInput, TouchableOpacity, View, ViewStyle} from 'react-native';
+import {StyleSheet, TextInput, View, ViewStyle} from 'react-native';
 import throttle from 'lodash.throttle';
 import {staticTheme, useTheme} from '../style/theming';
-import {ThemedIcon} from './ThemedIcon';
+import {ClickIcon} from './ClickIcon';
 
 const styles = StyleSheet.create({
 	inputGroup: {
@@ -63,17 +63,11 @@ export const SearchBar: React.FC<{ style?: ViewStyle, searchQueryChange?: (searc
 
 	const isEmpty = (!query || query.length === 0);
 	const cancel = !isEmpty
-		? (
-			<TouchableOpacity onPress={handleClearButton} style={styles.inputCancelIcon}>
-				<ThemedIcon name="cancel" size={styles.inputCancelIcon.fontSize}/>
-			</TouchableOpacity>
-		)
-		: <></>;
+		? (<ClickIcon iconName="cancel" onPress={handleClearButton} style={styles.inputCancelIcon} fontSize={styles.inputCancelIcon.fontSize}/>)
+		: undefined;
 	return (
 		<View style={[styles.inputGroup, {borderColor: theme.separator}, style]}>
-			<TouchableOpacity onPress={handleSearchButton} style={[styles.inputIcon, isEmpty && styles.disabled]}>
-				<ThemedIcon name="search" size={styles.inputIcon.fontSize}/>
-			</TouchableOpacity>
+			<ClickIcon iconName="search" onPress={handleSearchButton} style={[styles.inputIcon, isEmpty && styles.disabled]} fontSize={styles.inputIcon.fontSize}/>
 			<TextInput
 				style={[styles.input, {color: theme.textColor}]}
 				placeholderTextColor={theme.muted}

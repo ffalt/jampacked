@@ -1,9 +1,10 @@
 import React, {useCallback, useEffect} from 'react';
-import {AlbumType} from '../services/jam';
+import {AlbumType, ListType} from '../services/jam';
 import {ArtistsRoute, ArtistsRouteProps} from '../navigators/Routing';
 import {IndexList} from '../components/IndexList';
 import {ErrorView} from '../components/ErrorView';
 import {useLazyArtistIndexQuery} from '../services/queries/artistIndex';
+import {JamRouteLinks} from '../navigators/Routes';
 
 export const ArtistIndexScreen: React.FC<ArtistsRouteProps<ArtistsRoute.INDEX>> = () => {
 	const [getIndex, {loading, error, called, index}] = useLazyArtistIndexQuery();
@@ -26,10 +27,10 @@ export const ArtistIndexScreen: React.FC<ArtistsRouteProps<ArtistsRoute.INDEX>> 
 		<IndexList
 			index={index}
 			title="Artists"
-			titleIcon="artist"
 			called={called}
 			refreshing={loading}
 			onRefresh={reload}
+			goRight={JamRouteLinks.artistlist(ListType.faved)}
 		/>
 	);
 };

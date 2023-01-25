@@ -10,6 +10,7 @@ import {useWindowWidth} from '../utils/dimension.hook';
 import {ListEmpty} from './ListEmpty';
 import {commonItemLayout, defaultKeyExtractor} from '../utils/list.utils';
 import {DefaultFlatList} from './DefFlatList';
+import {RouteLink} from '../navigators/Routes';
 
 const style = StyleSheet.create({
 	row: {
@@ -27,23 +28,21 @@ export interface BaseEntryListInfo {
 export const BaseEntryList: React.FC<{
 	entries?: Array<BaseEntry>;
 	info: BaseEntryListInfo;
+	goLeft?: RouteLink;
+	goRight?: RouteLink;
 	refreshing: boolean;
 	onRefresh: () => void;
 	onLoadMore: () => void;
-}> = ({info, entries, refreshing, onRefresh, onLoadMore}) => {
+}> = ({info, entries, refreshing, onRefresh, onLoadMore, goLeft, goRight}) => {
 	const [tiles, setTiles] = useState<boolean>(false);
 	const numColumns = 3;
 	const width = useWindowWidth();
 	const tileSize = width / (numColumns || 1);
 	const theme = useTheme();
 
-	const toggleView = useCallback((): void => {
-		setTiles(!tiles);
-	}, [tiles]);
-
 	const renderItemRow = useCallback(({item}: { item: BaseEntry }): JSX.Element => (<Item item={item}/>), []);
 	const renderItemTile = useCallback(({item}: { item: BaseEntry }): JSX.Element => (<ImageItem item={item} size={tileSize}/>), [tileSize]);
-	const ListHeaderComponent = (<PageHeader title={info.title} titleIcon={info.icon} subtitle={info.subtitle} tiles={tiles} toggleView={toggleView}/>);
+	const ListHeaderComponent = (<PageHeader title={info.title} goLeft={goLeft} goRight={goRight} subtitle={info.subtitle}/>);
 
 	const getTileItemLayout = React.useMemo(() => commonItemLayout(tileSize), [tileSize]);
 

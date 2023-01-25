@@ -7,6 +7,7 @@ import dataService from '../services/data';
 import {ErrorView} from './ErrorView';
 import {useTheme} from '../style/theming';
 import {HomeUserSection} from './HomeUserSection';
+import {HomeAppSection} from './HomeAppSection';
 
 export const HomeMain: React.FC = () => {
 	const theme = useTheme();
@@ -53,8 +54,9 @@ export const HomeMain: React.FC = () => {
 			)}
 		>
 			<Stats stats={homeData?.stats} label="Library"/>
+			<HomeAppSection/>
 			<HomeDataSection homeData={homeData?.homeData}/>
 			<HomeUserSection userData={homeData?.user}/>
 		</ScrollView>
 	);
-}
+};

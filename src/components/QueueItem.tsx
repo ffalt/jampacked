@@ -4,9 +4,12 @@ import {staticTheme, useTheme} from '../style/theming';
 import {JamPlayer} from '../services/player';
 import {ThemedIcon} from './ThemedIcon';
 import {ThemedText} from './ThemedText';
-import {SwipeableListItem} from './SwipeItem';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {DurationText} from './DurationText';
+import {PinIcon} from './PinIcon';
+import {FavIcon} from './FavIcon';
+import {ClickIcon} from './ClickIcon';
+import {SwipeableItem} from './SwipeableItem';
 import {sharedStyles} from '../style/shared';
 
 const styles = StyleSheet.create({
@@ -53,29 +56,25 @@ export const QueueItem: React.FC<{ active: boolean; index: number; item: TrackPl
 
 	const renderTrackNr = useCallback((): JSX.Element => {
 		if (active) {
-			return (<ThemedIcon name="play"/>);
+			return (<ThemedIcon name="right-open-mini"/>);
 		}
 		return (<ThemedText style={styles.trackNumberStyle}>{index + 1}</ThemedText>);
 	}, [active, index]);
-
-	const right = useCallback((): JSX.Element => {
-		return (<ThemedIcon name="remove"/>);
-	}, []);
 
 	const rightPress = useCallback((): void => {
 		JamPlayer.removeTrackFromQueue(index)
 			.catch(e => console.error(e));
 	}, [index]);
 
+	const buttons = (<>
+		<PinIcon style={sharedStyles.itemButton} fontSize={sharedStyles.itemButtonIcon.fontSize} objType={item.objType} id={item.id}/>
+		<FavIcon style={sharedStyles.itemButton} fontSize={sharedStyles.itemButtonIcon.fontSize} objType={item.objType} id={item.id}/>
+		<ClickIcon style={sharedStyles.itemButton} fontSize={sharedStyles.itemButtonIcon.fontSize} iconName="remove" onPress={rightPress} clickThrough={true}></ClickIcon>
+	</>);
+
 	return (
-		<SwipeableListItem
-			height={sharedStyles.item.height}
-			right={right}
-			leftWidth={0}
-			rightWidth={64}
-			onPressRight={rightPress}
-		>
-			<TouchableOpacity onPress={playItem} style={[styles.trackListContainer, {backgroundColor: theme.background}]}>
+		<SwipeableItem buttons={buttons}>
+			<TouchableOpacity onPress={playItem} style={[styles.trackListContainer, {height: sharedStyles.item.height, backgroundColor: theme.background}]}>
 				<View style={styles.trackListNumber}>
 					{renderTrackNr()}
 				</View>
@@ -87,6 +86,6 @@ export const QueueItem: React.FC<{ active: boolean; index: number; item: TrackPl
 					<DurationText style={styles.trackRuntimeStyle} duration={item.duration} ms={true}/>
 				</View>
 			</TouchableOpacity>
-		</SwipeableListItem>
+		</SwipeableItem>
 	);
 });

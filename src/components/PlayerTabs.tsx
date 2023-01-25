@@ -2,7 +2,6 @@ import React, {useCallback} from 'react';
 import {ActivityIndicator, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {SceneMap, TabView} from 'react-native-tab-view';
 import {ThemedText} from './ThemedText';
-import {ThemedIcon} from './ThemedIcon';
 import {staticTheme, useTheme} from '../style/theming';
 import {PlayerLyrics} from './PlayerLyrics';
 import {PlayerCover} from './PlayerCover';
@@ -10,11 +9,9 @@ import {useWindowWidth} from '../utils/dimension.hook';
 import {useNavigation} from '@react-navigation/native';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
 import {Queue} from './Queue';
+import {ClickIcon} from './ClickIcon';
 
 const styles = StyleSheet.create({
-	// container: {
-	// 	paddingTop: staticTheme.statusBarOffset
-	// },
 	scene: {
 		flex: 1
 	},
@@ -91,9 +88,7 @@ export const PlayerTabs: React.FC = () => {
 		});
 		return (
 			<View style={styles.tabBar}>
-				<TouchableOpacity style={styles.tabItem} onPress={close}>
-					<ThemedIcon name="down-open-big" size={styles.icon.fontSize}/>
-				</TouchableOpacity>
+				<ClickIcon iconName="down-open-big" style={styles.tabItem} fontSize={styles.icon.fontSize} onPress={close}/>
 				{buttons}
 			</View>
 		);
@@ -102,7 +97,7 @@ export const PlayerTabs: React.FC = () => {
 	return (
 		<TabView
 			lazy={true}
-			style={[{paddingTop:statusBarHeight}]}
+			style={[{paddingTop: statusBarHeight}]}
 			swipeEnabled={true}
 			renderLazyPlaceholder={renderLazyPlaceholder}
 			renderTabBar={renderTabBar}

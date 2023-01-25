@@ -139,3 +139,9 @@ export interface PinState {
 	active: boolean;
 	pinned: boolean;
 }
+
+export interface PinCacheStat {
+	files: number;
+	size: number;
+	humanSize: string;
+}

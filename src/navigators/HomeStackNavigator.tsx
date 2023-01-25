@@ -39,7 +39,7 @@ export const HomeStackNavigator: React.FC = () => (
 		<Stack.Screen name={HomeRoute.TRACK} component={TrackScreen}/>
 		<Stack.Screen name={HomeRoute.ARTIST} component={ArtistScreen}/>
 		<Stack.Screen name={HomeRoute.ALBUM} component={AlbumNavigator}/>
-		<Stack.Screen name={HomeRoute.DOWNLOADS} component={DownloadsNavigator}/>
+		<Stack.Screen name={HomeRoute.PINNED} component={DownloadsNavigator}/>
 		<Stack.Screen name={HomeRoute.GENRES} component={GenresNavigator}/>
 		<Stack.Screen name={HomeRoute.GENRE} component={GenreNavigator}/>
 	</Stack.Navigator>

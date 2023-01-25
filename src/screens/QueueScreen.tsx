@@ -6,7 +6,7 @@ import {Queue} from '../components/Queue';
 export const QueueScreen: React.FC<BottomTabProps<BottomTabRoute.QUEUE>> = () => {
 	return (
 		<>
-			<PageHeader title="Queue" titleIcon="queue"/>
+			<PageHeader title="Queue"/>
 			<Queue/>
 		</>
 	);

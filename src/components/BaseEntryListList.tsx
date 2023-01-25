@@ -5,6 +5,7 @@ import {BaseEntryList, BaseEntryListInfo} from './BaseEntryList';
 import {AlbumType, ListType} from '../services/jam';
 import {ErrorView} from './ErrorView';
 import dataService from '../services/data';
+import {RouteLink} from '../navigators/Routes';
 
 export interface BaseEntryListListQuery {
 	icon: string;
@@ -14,6 +15,8 @@ export interface BaseEntryListListQuery {
 	albumTypes?: Array<AlbumType>;
 	genreIDs?: Array<string>;
 	useList: useListFunction
+	goLeft?: RouteLink;
+	goRight?: RouteLink;
 }
 
 export const BaseEntryListList: React.FC<{ query: BaseEntryListListQuery }> = ({query}) => {
@@ -113,6 +116,8 @@ export const BaseEntryListList: React.FC<{ query: BaseEntryListListQuery }> = ({
 			onRefresh={reload}
 			onLoadMore={handleLoadMore}
 			refreshing={loading}
+			goLeft={query.goLeft}
+			goRight={query.goRight}
 			info={info}
 		/>);
 };

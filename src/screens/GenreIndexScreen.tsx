@@ -25,7 +25,6 @@ export const GenreIndexScreen: React.FC<GenresRouteProps<GenresRoute.INDEX>> = (
 		<IndexList
 			index={index}
 			title="Genres"
-			titleIcon="genre"
 			called={called}
 			refreshing={loading}
 			onRefresh={reload}

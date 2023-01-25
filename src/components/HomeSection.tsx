@@ -6,8 +6,10 @@ import {HomeSectionEntry} from './HomeSectionEntry';
 import {NavigationService} from '../navigators/navigation';
 import {ThemedIcon} from './ThemedIcon';
 import {sharedStyles} from '../style/shared';
+import {useTheme} from '../style/theming';
 
 export const HomeSection: React.FC<{ title: string; section?: Array<HomeEntry>; sectionNavig?: { route: string, params?: any } }> = React.memo(({section, title, sectionNavig}) => {
+	const theme = useTheme();
 	if (!section || section.length === 0) {
 		return (<></>);
 	}
@@ -23,7 +25,7 @@ export const HomeSection: React.FC<{ title: string; section?: Array<HomeEntry>; 
 		<>
 			<TouchableOpacity style={sharedStyles.sectionHeader} onPress={click}>
 				<ThemedText style={sharedStyles.sectionHeaderText}>{title}</ThemedText>
-				<ThemedIcon style={sharedStyles.sectionHeaderIcon} name="right-open"/>
+				<ThemedIcon style={sharedStyles.sectionHeaderIcon} name="right-open" color={theme.muted}/>
 			</TouchableOpacity>
 			<ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
 				{entries}

@@ -11,6 +11,7 @@ import {useWindowWidth} from '../utils/dimension.hook';
 import {ListEmpty} from './ListEmpty';
 import {defaultKeyExtractor} from '../utils/list.utils';
 import {sharedStyles} from '../style/shared';
+import {RouteLink} from '../navigators/Routes';
 
 const styles = StyleSheet.create({
 	row: {
@@ -22,25 +23,22 @@ const styles = StyleSheet.create({
 export const IndexList: React.FC<{
 	index?: Index;
 	title: string;
-	titleIcon: string;
 	refreshing: boolean;
 	called: boolean;
 	onRefresh: () => void;
-}> = ({title, titleIcon, index, refreshing, onRefresh}) => {
-	const [tiles, setTiles] = useState<boolean>(false);
+	goLeft?: RouteLink;
+	goRight?: RouteLink;
+}> = ({title, index, refreshing, onRefresh, goLeft, goRight}) => {
+	const tiles = false;
 	const numColumns = 3;
 	const width = useWindowWidth();
 	const tileSize = width / (numColumns || 1);
 	const theme = useTheme();
 
-	const toggleView = useCallback((): void => {
-		setTiles(!tiles);
-	}, [tiles]);
-
 	const renderItemRow = useCallback(({item}: { item: IndexEntry }): JSX.Element => (<Item item={item}/>), []);
 	const renderItemTile = useCallback(({item}: { item: IndexEntry }): JSX.Element => (<ImageItem item={item} size={tileSize}/>), [tileSize]);
 
-	const ListHeaderComponent = (<PageHeader title={title} titleIcon={titleIcon} tiles={tiles} toggleView={toggleView}/>);
+	const ListHeaderComponent = (<PageHeader title={title} goLeft={goLeft} goRight={goRight}/>);
 	const refreshControl = (
 		<RefreshControl
 			refreshing={refreshing}

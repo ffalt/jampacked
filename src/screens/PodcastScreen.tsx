@@ -11,6 +11,7 @@ import {ThemedText} from '../components/ThemedText';
 import {ErrorView} from '../components/ErrorView';
 import {useLazyPodcastQuery} from '../services/queries/podcast';
 import {Tracks} from '../components/Tracks';
+import {ClickIcon} from '../components/ClickIcon';
 
 export const PodcastScreen: React.FC<HomeRouteProps<HomeRoute.PODCAST>> = ({route}) => {
 	const [getPodcast, {loading, error, podcast}] = useLazyPodcastQuery();
@@ -41,9 +42,7 @@ export const PodcastScreen: React.FC<HomeRouteProps<HomeRoute.PODCAST>> = ({rout
 		typeName="Podcast"
 		customDetails={<ThemedText style={objHeaderStyles.panel}>{podcast?.description}</ThemedText>}
 		headerTitleCmds={<>
-			<TouchableOpacity style={objHeaderStyles.button} onPress={playTracks}>
-				<ThemedIcon name="play" size={objHeaderStyles.buttonIcon.fontSize}/>
-			</TouchableOpacity>
+			<ClickIcon iconName="play" onPress={playTracks} style={objHeaderStyles.button} fontSize={objHeaderStyles.buttonIcon.fontSize}/>
 			<FavIcon style={objHeaderStyles.button} objType={JamObjectType.podcast} id={id}/>
 		</>}
 	/>);

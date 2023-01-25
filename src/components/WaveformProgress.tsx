@@ -5,7 +5,7 @@ import {SoundCloudWave} from './Waveform';
 import {Jam} from '../services/jam';
 import {StyleProp, ViewStyle} from 'react-native';
 import {useWindowWidth} from '../utils/dimension.hook';
-import {useTrackPlayerProgressPercent} from 'react-native-track-player';
+import {useTrackPlayerProgressPercent} from '../services/player-api';
 
 interface WaveformProgressProps {
 	waveform?: Jam.WaveFormData;

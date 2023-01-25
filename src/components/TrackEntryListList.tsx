@@ -6,6 +6,7 @@ import {ListType} from '../services/jam';
 import {ErrorView} from './ErrorView';
 import dataService from '../services/data';
 import {defaultListTrackDisplay, TrackDisplayFunction} from './TrackItem';
+import {RouteLink} from '../navigators/Routes';
 
 export interface TrackEntryListListQuery {
 	listType?: ListType;
@@ -13,7 +14,9 @@ export interface TrackEntryListListQuery {
 	icon: string;
 	text: string;
 	subtitle?: string;
-	useList: useTrackListFunction
+	useList: useTrackListFunction;
+	goLeft?: RouteLink;
+	goRight?: RouteLink;
 }
 
 export const TrackEntryListList: React.FC<{ query: TrackEntryListListQuery }> = ({query}) => {
@@ -113,6 +116,8 @@ export const TrackEntryListList: React.FC<{ query: TrackEntryListListQuery }> = 
 			onRefresh={reload}
 			onLoadMore={handleLoadMore}
 			refreshing={loading}
+			goLeft={query?.goLeft}
+			goRight={query?.goRight}
 			info={info}
 			displayFunc={type?.displayFunc}
 		/>

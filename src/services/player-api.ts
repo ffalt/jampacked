@@ -1,14 +1,34 @@
-import TrackPlayer, {Capability, Event, State, DownloadState, Track, Download, DownloadRequest} from 'react-native-track-player';
+import TrackPlayer, {
+	Capability, State, DownloadState, Track, Event,
+	Download as TrackPlayerDownload,
+	DownloadRequest as TrackPlayerDownloadRequest,
+	TrackPlayerDownloadManager,
+	useTrackPlayerCurrentDownloadsCached,
+	useTrackPlayerDownloadCached,
+	useTrackPlayerDownloadsCached,
+	useTrackPlayerDownloadsPaused,
+	useTrackPlayerCurrentTrack,
+	useTrackPlayerProgressMS,
+	useTrackPlayerHasSiblings,
+	useTrackPlayerProgressPercent,
+	useTrackPlayerCurrentTrackNr,
+	useTrackPlayerQueue,
+	useTrackPlayerPlaybackStateIsPlaying,
+} from 'react-native-track-player';
 import {Platform} from 'react-native';
 
 export async function initPlayer(): Promise<void> {
 	const isRunning = (Platform.OS === 'android') && (await TrackPlayer.isServiceRunning());
 	if (!isRunning) {
-		await TrackPlayer.setupPlayer();
+		await TrackPlayer.setupPlayer({
+			maxCacheSize: 1024 * 4,
+			autoUpdateMetadata: false
+		});
 		await TrackPlayer.updateOptions({
 			stopWithApp: false,
 			alwaysPauseOnInterruption: true,
 			scrobble: true,
+
 			capabilities: [
 				Capability.Play,
 				Capability.Pause,
@@ -37,30 +57,43 @@ export async function initPlayer(): Promise<void> {
 	}
 }
 
-export type TrackPlayerTrack = Track;
-export type TrackPlayerDownload = Download;
-export type TrackPlayerDownloadRequest = DownloadRequest;
-
-export const stateToString = (state: State): string => {
-	switch (state) {
-		case State.Buffering:
-			return 'Buffering';
-		case State.Connecting:
-			return 'Connecting';
-		case State.None:
-			return 'None';
-		case State.Paused:
-			return 'Paused';
-		case State.Playing:
-			return 'Playing';
-		case State.Ready:
-			return 'Ready';
-		case State.Stopped:
+export function downloadStateToString(mode: DownloadState): string {
+	switch (mode) {
+		case DownloadState.Completed:
+			return 'Completed';
+		case DownloadState.Downloading:
+			return 'Downloading';
+		case DownloadState.Failed:
+			return 'Failed';
+		case DownloadState.Queued:
+			return 'Queued';
+		case DownloadState.Removing:
+			return 'Removing';
+		case DownloadState.Restarting:
+			return 'Restarting';
+		case DownloadState.Stopped:
 			return 'Stopped';
 		default:
-			return 'Undefined';
-
+			return 'Unknown';
 	}
-};
+}
 
-export {TrackPlayer, Event, DownloadState, State};
+export type TrackPlayerTrack = Track;
+export type Download = TrackPlayerDownload;
+export type DownloadRequest = TrackPlayerDownloadRequest;
+
+export {
+	TrackPlayer, Event, DownloadState, State,
+	TrackPlayerDownloadManager,
+	useTrackPlayerDownloadsPaused,
+	useTrackPlayerDownloadsCached,
+	useTrackPlayerCurrentTrack,
+	useTrackPlayerProgressMS,
+	useTrackPlayerHasSiblings,
+	useTrackPlayerProgressPercent,
+	useTrackPlayerCurrentTrackNr,
+	useTrackPlayerQueue,
+	useTrackPlayerPlaybackStateIsPlaying,
+	useTrackPlayerCurrentDownloadsCached,
+	useTrackPlayerDownloadCached
+};

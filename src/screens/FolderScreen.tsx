@@ -16,8 +16,9 @@ import {DefaultFlatList} from '../components/DefFlatList';
 import {MUSICBRAINZ_VARIOUS_ARTISTS_NAME} from './AlbumScreen';
 import {TrackEntry} from '../services/types';
 import {FloatingAction} from 'react-native-floating-action';
-import {ActionMenuIten, executeTrackMenuAction, trackMenuIcon, trackMenuMultiSelectActions, trackMenuSingleSelectActions} from '../components/ActionMenuTrack';
+import {ActionMenuItem, executeTrackMenuAction, trackMenuIcon, trackMenuMultiSelectActions, trackMenuSingleSelectActions} from '../components/ActionMenuTrack';
 import {useTheme} from '../style/theming';
+import {ClickIcon} from '../components/ClickIcon';
 
 const buildDetails = (folder?: Folder): Array<HeaderDetail> => {
 	let result: Array<HeaderDetail> = [];
@@ -53,7 +54,7 @@ export const FolderScreen: React.FC<HomeRouteProps<HomeRoute.FOLDER>> = ({route}
 	const selectActionRef: MutableRefObject<FloatingAction | null> = React.useRef<FloatingAction>(null);
 	const [showCheck, setShowCheck] = useState<boolean>(false);
 	const [selection, setSelection] = useState<Array<TrackEntry>>([]);
-	const [actions, setActions] = useState<Array<ActionMenuIten>>([]);
+	const [actions, setActions] = useState<Array<ActionMenuItem>>([]);
 	const buttonIcon = React.useMemo(() => trackMenuIcon(theme.floating.color), [theme]);
 	const singleSelectActions = React.useMemo(() => trackMenuSingleSelectActions(theme.floating.background, theme.floating.color), [theme]);
 	const multiSelectActions = React.useMemo(() => trackMenuMultiSelectActions(theme.floating.background, theme.floating.color), [theme]);
@@ -91,11 +92,9 @@ export const FolderScreen: React.FC<HomeRouteProps<HomeRoute.FOLDER>> = ({route}
 		title={name}
 		typeName={folder?.type}
 		details={details}
-		headerTitleCmds={folder?.tracks?.length ? (
-			<TouchableOpacity style={objHeaderStyles.button} onPress={playTracks}>
-				<ThemedIcon name="play" size={objHeaderStyles.buttonIcon.fontSize}/>
-			</TouchableOpacity>
-		) : undefined}
+		headerTitleCmds={folder?.tracks?.length ?
+			(<ClickIcon iconName="play" onPress={playTracks} style={objHeaderStyles.button} fontSize={objHeaderStyles.buttonIcon.fontSize}/>)
+			: undefined}
 	/>);
 
 	const isVariousArtist = folder?.artist === MUSICBRAINZ_VARIOUS_ARTISTS_NAME;

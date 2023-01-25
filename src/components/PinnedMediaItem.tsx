@@ -6,6 +6,7 @@ import {JamImage} from './JamImage';
 import {PinMedia} from '../services/types';
 import {sharedStyles} from '../style/shared';
 import {titleCase} from '../utils/format.utils';
+import {PinIcon} from './PinIcon';
 
 export const PinnedMediaItem: React.FC<{ item: PinMedia }> = React.memo(({item}) => {
 	return (
@@ -18,6 +19,7 @@ export const PinnedMediaItem: React.FC<{ item: PinMedia }> = React.memo(({item})
 					<ThemedText style={sharedStyles.itemFooterText}>Tracks: {item.tracks.length}</ThemedText>
 				</View>
 			</View>
+			<PinIcon style={sharedStyles.itemButton} fontSize={sharedStyles.itemButtonIcon.fontSize} objType={item.objType} id={item.id}/>
 		</View>
 	);
 });

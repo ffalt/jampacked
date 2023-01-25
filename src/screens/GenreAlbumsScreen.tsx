@@ -3,6 +3,7 @@ import {BaseEntryListList, BaseEntryListListQuery} from '../components/BaseEntry
 import {useLazyAlbumListQuery} from '../services/queries/albumList';
 import {GenreRoute, GenreRouteProps} from '../navigators/Routing';
 import {GenreTabNavigatorContext} from '../navigators/GenreNavigatorContext';
+import {JamRouteLinks} from '../navigators/Routes';
 
 export const GenreAlbumsScreen: React.FC<GenreRouteProps<GenreRoute.ALBUMS>> = () => {
 	const state = useContext(GenreTabNavigatorContext);
@@ -20,7 +21,9 @@ export const GenreAlbumsScreen: React.FC<GenreRouteProps<GenreRoute.ALBUMS>> = (
 				subtitle: 'Albums in Genre',
 				genreIDs: [state.id],
 				icon: 'album',
-				useList: useLazyAlbumListQuery
+				useList: useLazyAlbumListQuery,
+				goLeft: JamRouteLinks.genreartists(),
+				goRight: JamRouteLinks.genretracks()
 			});
 		}
 	}, [state]);

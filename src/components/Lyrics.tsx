@@ -1,9 +1,9 @@
-import {ActivityIndicator, ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {ActivityIndicator, ScrollView, StyleSheet, View} from 'react-native';
 import React, {useCallback, useEffect, useState} from 'react';
 import {staticTheme, useTheme} from '../style/theming';
 import {ThemedText} from './ThemedText';
-import {ThemedIcon} from './ThemedIcon';
 import {useLazyTrackLyricsQuery} from '../services/queries/lyrics';
+import {ClickLabelIcon} from './ClickLabelIcon';
 
 const styles = StyleSheet.create({
 	container: {
@@ -75,10 +75,7 @@ export const Lyrics: React.FC<{ id?: string | null }> = ({id}) => {
 				{error && !loading && (
 					<View>
 						<ThemedText style={styles.none}>{error.message}</ThemedText>
-						<TouchableOpacity style={[styles.button, {borderColor: theme.separator}]} onPress={refresh}>
-							<ThemedIcon name="reload"/>
-							<ThemedText style={styles.buttonText}>Refresh</ThemedText>
-						</TouchableOpacity>
+						<ClickLabelIcon style={[styles.button, {borderColor: theme.separator}]} onPress={refresh} iconName="reload" label="Refresh" labelStyle={styles.buttonText}/>
 					</View>
 				)}
 			</View>

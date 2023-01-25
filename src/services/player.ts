@@ -2,8 +2,7 @@ import {useEffect, useState} from 'react';
 import {AudioFormatType} from './jam';
 import dataService from './data';
 import {TrackEntry} from './types';
-import TrackPlayer, {State, useTrackPlayerCurrentTrack} from 'react-native-track-player';
-import {TrackPlayerTrack} from './player-api';
+import {TrackPlayer, TrackPlayerTrack, State, useTrackPlayerCurrentTrack} from './player-api';
 
 async function buildTrackPlayerTrack(t: TrackEntry): Promise<TrackPlayerTrack> {
 	const headers = dataService.currentUserToken ? {Authorization: `Bearer ${dataService.currentUserToken}`} : undefined;

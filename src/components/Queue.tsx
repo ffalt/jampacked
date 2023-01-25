@@ -1,38 +1,12 @@
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import {View} from 'react-native';
 import React, {useCallback} from 'react';
 import {JamPlayer} from '../services/player';
-import {staticTheme, useTheme} from '../style/theming';
-import {ThemedText} from './ThemedText';
-import {ThemedIcon} from './ThemedIcon';
+import {useTheme} from '../style/theming';
 import {QueueItem} from './QueueItem';
 import {DefaultFlatList} from './DefFlatList';
-import {TrackPlayerTrack} from '../services/player-api';
-import {useTrackPlayerCurrentTrackNr, useTrackPlayerQueue} from 'react-native-track-player';
-
-const styles = StyleSheet.create({
-	queueButtons: {
-		borderBottomWidth: 1,
-		borderTopWidth: 1,
-		paddingRight: staticTheme.paddingLarge,
-		paddingLeft: staticTheme.paddingLarge,
-		flexDirection: 'row',
-		justifyContent: 'flex-end',
-		alignItems: 'center'
-	},
-	queueButton: {
-		flex: 1,
-		paddingRight: staticTheme.paddingLarge,
-		paddingLeft: staticTheme.paddingLarge,
-		flexDirection: 'row',
-		alignItems: 'center',
-		justifyContent: 'center',
-		height: 32
-	},
-	queueButtonText: {
-		paddingHorizontal: staticTheme.paddingSmall
-	}
-});
-
+import {TrackPlayerTrack, useTrackPlayerCurrentTrackNr, useTrackPlayerQueue} from '../services/player-api';
+import {ClickLabelIcon} from './ClickLabelIcon';
+import {sharedStyles} from '../style/shared';
 
 export const Queue: React.FC = () => {
 	const queue = useTrackPlayerQueue();
@@ -49,24 +23,16 @@ export const Queue: React.FC = () => {
 	const keyExtractor = useCallback((item: TrackPlayerTrack, index: number): string => `${index}:${item.id}`, []);
 
 	return (
-		<>
-			<DefaultFlatList
-				items={queue}
-				renderItem={renderItem}
-				keyExtractor={keyExtractor}
-				loading={false}
-				reload={reload}
-			/>
-			<View style={[styles.queueButtons, {borderColor: theme.separator}]}>
-				<TouchableOpacity style={styles.queueButton} onPress={JamPlayer.clearQueue}>
-					<ThemedIcon name="trash"/>
-					<ThemedText style={styles.queueButtonText}>Clear</ThemedText>
-				</TouchableOpacity>
-				<TouchableOpacity style={styles.queueButton} onPress={JamPlayer.shuffleQueue}>
-					<ThemedIcon name="shuffle"/>
-					<ThemedText style={styles.queueButtonText}>Shuffle</ThemedText>
-				</TouchableOpacity>
-			</View>
-		</>
+		<DefaultFlatList
+			items={queue}
+			renderItem={renderItem}
+			keyExtractor={keyExtractor}
+			ListHeaderComponent={(<View style={[sharedStyles.barButtons, {borderColor: theme.separator}]}>
+				<ClickLabelIcon iconName="trash" onPress={JamPlayer.clearQueue} label="Clear" style={sharedStyles.barButton} labelStyle={sharedStyles.barButtonText}/>
+				<ClickLabelIcon iconName="shuffle" onPress={JamPlayer.shuffleQueue} label="Shuffle" style={sharedStyles.barButton} labelStyle={sharedStyles.barButtonText}/>
+			</View>)}
+			loading={false}
+			reload={reload}
+		/>
 	);
 };
