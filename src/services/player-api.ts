@@ -13,7 +13,7 @@ import TrackPlayer, {
 	useTrackPlayerProgressPercent,
 	useTrackPlayerCurrentTrackNr,
 	useTrackPlayerQueue,
-	useTrackPlayerPlaybackStateIsPlaying,
+	useTrackPlayerPlaybackStateIsPlaying
 } from 'react-native-track-player';
 import {Platform} from 'react-native';
 
@@ -22,12 +22,13 @@ export async function initPlayer(): Promise<void> {
 	if (!isRunning) {
 		await TrackPlayer.setupPlayer({
 			maxCacheSize: 1024 * 4,
-			autoUpdateMetadata: false
+			autoUpdateMetadata: true
 		});
 		await TrackPlayer.updateOptions({
 			stopWithApp: false,
 			alwaysPauseOnInterruption: true,
 			scrobble: true,
+			icon: require('../assets/images/logo.png'),
 
 			capabilities: [
 				Capability.Play,

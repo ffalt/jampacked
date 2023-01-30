@@ -10461,9 +10461,9 @@ react-native-tab-view@3.3.4:
   dependencies:
     use-latest-callback "^0.1.5"
 
-react-native-track-player@ffalt/react-native-track-player#a7767601d44897a5645fb509e6585b4d172206f4:
+react-native-track-player@ffalt/react-native-track-player#c337db5f8cec31338b1c49f12d269cca7131c996:
   version "2.1.3"
-  resolved "https://codeload.github.com/ffalt/react-native-track-player/tar.gz/a7767601d44897a5645fb509e6585b4d172206f4"
+  resolved "https://codeload.github.com/ffalt/react-native-track-player/tar.gz/c337db5f8cec31338b1c49f12d269cca7131c996"
 
 react-native-vector-icons@9.2.0:
   version "9.2.0"

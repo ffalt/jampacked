@@ -197,15 +197,20 @@ export class PinService {
 		this.notifyPinChange(id, {active: true, pinned: true});
 		switch (objType) {
 			case JamObjectType.album:
-				return this.pinAlbum(id);
+				await this.pinAlbum(id);
+				break;
 			case JamObjectType.track:
-				return this.pinTrack(id);
+				await this.pinTrack(id);
+				break;
 			case JamObjectType.folder:
-				return this.pinFolder(id);
+				await this.pinFolder(id);
+				break;
 			case JamObjectType.playlist:
-				return this.pinPlaylist(id);
+				await this.pinPlaylist(id);
+				break;
 			case JamObjectType.episode:
-				return this.pinPodcastEpisode(id);
+				await this.pinPodcastEpisode(id);
+				break;
 			default: {
 				snackError(new Error(`Pinning this object type is not supported: ${objType}`));
 				this.notifyPinChange(id, {active: false, pinned: false});
