@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {enableScreens} from 'react-native-screens';
-import {LogBox, StatusBar} from 'react-native';
+import {StatusBar} from 'react-native';
 import {AppNavigator} from './src/navigators/AppNavigator';
 import {getAutoTheme, getTheme, ThemeContext, ThemeProvider, ThemeSettings} from './src/style/theming';
 import {NavigationService} from './src/navigators/navigation';

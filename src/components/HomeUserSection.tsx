@@ -1,8 +1,6 @@
 import React from 'react';
 import {Stats} from '../components/Stats';
 import {UserDataResult} from '../services/queries/home';
-import {View} from 'react-native';
-
 export const HomeUserSection: React.FC<{ userData?: UserDataResult }> = ({userData}) => {
 	return (
 		<>

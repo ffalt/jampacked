@@ -1,6 +1,5 @@
 import React, {useCallback} from 'react';
-import {staticTheme, themeList, useThemeContext} from '../style/theming';
-import {RadioButtons} from './RadioButton';
+import {staticTheme} from '../style/theming';
 import {Button, StyleSheet, View} from 'react-native';
 import {ThemedIcon} from './ThemedIcon';
 import {ThemedText} from './ThemedText';
@@ -25,6 +24,9 @@ const styles = StyleSheet.create({
 	},
 	userImage: {
 		marginRight: staticTheme.margin
+	},
+	flex1: {
+		flex: 1
 	}
 });
 
@@ -53,7 +55,7 @@ export const UserView: React.FC = () => {
 				<View>
 					<JamImage id={auth.currentUserID()} size={staticTheme.thumbMedium} style={styles.userImage}/>
 				</View>
-				<View style={{flex: 1}}>
+				<View style={styles.flex1}>
 					<ThemedText>{auth.currentUserName()}</ThemedText>
 					{auth?.user?.roles.stream && <UserPermission text="Stream Audio"/>}
 					{auth?.user?.roles.podcast && <UserPermission text="Manage Podcasts"/>}

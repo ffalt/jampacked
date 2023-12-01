@@ -34,7 +34,7 @@ export const executeTrackMenuAction = async (selection: Array<TrackEntry>, name?
 };
 
 export const trackMenuIcon: (color: string) => JSX.Element = (color) => {
-	return <ThemedIcon name='menu' color={color}/>;
+	return <ThemedIcon name="menu" color={color}/>;
 };
 
 export const trackMenuMultiSelectActions: (color: string, iconColor: string) => Array<ActionMenuItem> = (color, iconColor) => {

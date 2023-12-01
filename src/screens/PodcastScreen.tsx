@@ -1,8 +1,6 @@
 import React, {useCallback, useEffect} from 'react';
-import {TouchableOpacity} from 'react-native';
 import {HomeRoute, HomeRouteProps} from '../navigators/Routing';
 import {JamPlayer} from '../services/player';
-import {ThemedIcon} from '../components/ThemedIcon';
 import {ObjHeader, objHeaderStyles} from '../components/ObjHeader';
 import {JamObjectType} from '../services/jam';
 import {FavIcon} from '../components/FavIcon';

@@ -1,9 +1,7 @@
 import React, {MutableRefObject, useCallback, useEffect, useState} from 'react';
-import {TouchableOpacity} from 'react-native';
 import {defaultShowArtistTrackDisplay, defaultTrackDisplay, TrackItem} from '../components/TrackItem';
 import {HomeRoute, HomeRouteProps} from '../navigators/Routing';
 import {JamPlayer} from '../services/player';
-import {ThemedIcon} from '../components/ThemedIcon';
 import {HeaderDetail, ObjHeader, objHeaderStyles} from '../components/ObjHeader';
 import {genreDisplay} from '../utils/genre.utils';
 import {snackError} from '../services/snack';
@@ -61,10 +59,9 @@ export const FolderScreen: React.FC<HomeRouteProps<HomeRoute.FOLDER>> = ({route}
 
 	const applySelection = useCallback((list: Array<TrackEntry>): void => {
 		setActions(list.length === 1 ? singleSelectActions : multiSelectActions);
-		console.log(list);
 		setShowCheck(list.length > 0);
 		setSelection(list);
-	}, [setActions, setSelection]);
+	}, [setActions, setSelection, singleSelectActions, multiSelectActions]);
 
 	useEffect(() => {
 		if (id) {
@@ -136,7 +133,7 @@ export const FolderScreen: React.FC<HomeRouteProps<HomeRoute.FOLDER>> = ({route}
 			return <Item item={item.folder}/>;
 		}
 		return <></>;
-	}, [isVariousArtist, selection, setSelected, showCheck]);
+	}, [isVariousArtist, selection, setSelected, showCheck, doubleTab]);
 
 	const reload = useCallback((): void => {
 		getFolder(id, true);

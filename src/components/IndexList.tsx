@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback} from 'react';
 import {RefreshControl, StyleSheet} from 'react-native';
 import {useTheme} from '../style/theming';
 import {PageHeader} from './PageHeader';

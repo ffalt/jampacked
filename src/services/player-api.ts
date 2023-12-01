@@ -1,5 +1,10 @@
-import TrackPlayer, {
-	Capability, State, DownloadState, Track, Event,
+// eslint-disable-next-line object-curly-newline
+import {
+	Capability,
+	State,
+	DownloadState,
+	Track,
+	Event,
 	Download as TrackPlayerDownload,
 	DownloadRequest as TrackPlayerDownloadRequest,
 	TrackPlayerDownloadManager,
@@ -14,7 +19,9 @@ import TrackPlayer, {
 	useTrackPlayerCurrentTrackNr,
 	useTrackPlayerQueue,
 	useTrackPlayerPlaybackStateIsPlaying
+// eslint-disable-next-line object-curly-newline
 } from 'react-native-track-player';
+import TrackPlayer from 'react-native-track-player';
 import {Platform} from 'react-native';
 
 export async function initPlayer(): Promise<void> {

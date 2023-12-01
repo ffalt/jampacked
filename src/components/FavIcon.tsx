@@ -51,5 +51,5 @@ export const FavIcon: React.FC<{ id?: string; objType: JamObjectType; style?: St
 		}
 	}, [id, setFav, loading, faved, toggleFav]);
 
-	return (<ClickIcon style={style} fontSize={fontSize} iconName={state.iconName} onPress={handleToggleFav} muted={(loading || !faved)}></ClickIcon>);
+	return (<ClickIcon style={style} fontSize={fontSize} iconName={state.iconName} onPress={handleToggleFav} muted={(loading || !faved)}/>);
 };

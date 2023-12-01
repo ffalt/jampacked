@@ -7,11 +7,11 @@ import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
 export type SeriesListResultQueryVariables = Types.Exact<{
   listType?: Types.InputMaybe<Types.ListType>;
-  seed?: Types.InputMaybe<Types.Scalars['String']>;
+  seed?: Types.InputMaybe<Types.Scalars['String']['input']>;
   albumTypes?: Types.InputMaybe<Array<Types.AlbumType> | Types.AlbumType>;
-  genreIDs?: Types.InputMaybe<Array<Types.Scalars['ID']> | Types.Scalars['ID']>;
-  take: Types.Scalars['Int'];
-  skip: Types.Scalars['Int'];
+  genreIDs?: Types.InputMaybe<Array<Types.Scalars['ID']['input']> | Types.Scalars['ID']['input']>;
+  take: Types.Scalars['Int']['input'];
+  skip: Types.Scalars['Int']['input'];
 }>;
 
 

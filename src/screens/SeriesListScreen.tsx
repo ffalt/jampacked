@@ -45,6 +45,6 @@ export const SeriesListHighestScreen: React.FC<SeriesRouteProps<SeriesRoute.HIGH
 export const SeriesListAvgHighestScreen: React.FC<SeriesRouteProps<SeriesRoute.AVGHIGHEST>> = () => {
 	return (<SeriesList query={{
 		listType: ListType.avghighest,
-		goLeft: JamRouteLinks.serieslist(ListType.highest),
+		goLeft: JamRouteLinks.serieslist(ListType.highest)
 	}}/>);
 };

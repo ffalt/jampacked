@@ -94,17 +94,37 @@ export const PlayerStrip: React.FC = () => {
 
 				<View style={styles.playerStripControls}>
 					<View style={styles.playerStripControlsColumn}>
-						<ClickIcon disabled={backwardDisabled} fontSize={staticTheme.fontSizeSmall}
-								   style={[styles.button, backwardDisabled && styles.disabled]} iconName="backward" onPress={JamPlayer.skipBackward}/>
-						<ClickIcon disabled={!hasPrevious} fontSize={staticTheme.fontSizeSmall}
-								   style={[styles.button, !hasPrevious && styles.disabled]} iconName="backward" onPress={JamPlayer.skipToPrevious}/>
+						<ClickIcon
+							disabled={backwardDisabled}
+							fontSize={staticTheme.fontSizeSmall}
+							style={[styles.button, backwardDisabled && styles.disabled]}
+							iconName="backward"
+							onPress={JamPlayer.skipBackward}
+						/>
+						<ClickIcon
+							disabled={!hasPrevious}
+							fontSize={staticTheme.fontSizeSmall}
+							style={[styles.button, !hasPrevious && styles.disabled]}
+							iconName="backward"
+							onPress={JamPlayer.skipToPrevious}
+						/>
 					</View>
 					<PlayButton/>
 					<View style={styles.playerStripControlsColumn}>
-						<ClickIcon disabled={forwardDisabled} fontSize={staticTheme.fontSizeSmall}
-								   style={[styles.button, forwardDisabled && styles.disabled]} iconName="forward" onPress={JamPlayer.skipForward}/>
-						<ClickIcon disabled={!hasNext} fontSize={staticTheme.fontSizeSmall}
-								   style={[styles.button, !hasNext && styles.disabled]} iconName="step-forward" onPress={JamPlayer.skipToNext}/>
+						<ClickIcon
+							disabled={forwardDisabled}
+							fontSize={staticTheme.fontSizeSmall}
+							style={[styles.button, forwardDisabled && styles.disabled]}
+							iconName="forward"
+							onPress={JamPlayer.skipForward}
+						/>
+						<ClickIcon
+							disabled={!hasNext}
+							fontSize={staticTheme.fontSizeSmall}
+							style={[styles.button, !hasNext && styles.disabled]}
+							iconName="step-forward"
+							onPress={JamPlayer.skipToNext}
+						/>
 					</View>
 				</View>
 			</View>

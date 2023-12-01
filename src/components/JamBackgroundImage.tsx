@@ -18,7 +18,7 @@ export const FastImageBackground: React.FC<PropsWithChildren<{ id: string, style
 	], [imageStyle, style]);
 
 	const backgroundImage = (id && source && source.uri) && (
-		<FastImage style={imgStyle} source={source}></FastImage>
+		<FastImage style={imgStyle} source={source}/>
 	);
 
 	return (

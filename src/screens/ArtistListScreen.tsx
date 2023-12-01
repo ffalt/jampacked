@@ -49,4 +49,4 @@ export const ArtistListAvgHighestScreen: React.FC<ArtistsRouteProps<ArtistsRoute
 		listType: ListType.avghighest,
 		goLeft: JamRouteLinks.artistlist(ListType.highest)
 	}}/>);
-}
+};

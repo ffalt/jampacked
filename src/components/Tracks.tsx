@@ -1,4 +1,4 @@
-import React, {MutableRefObject, useCallback, useMemo, useState} from 'react';
+import React, {MutableRefObject, useCallback, useState} from 'react';
 import {DefaultFlatList} from './DefFlatList';
 import {TrackEntry} from '../services/types';
 import {TrackDisplayFunction, TrackItem} from './TrackItem';
@@ -30,7 +30,7 @@ export const Tracks: React.FC<{
 		setActions(list.length === 1 ? singleSelectActions : multiSelectActions);
 		setShowCheck(list.length > 0);
 		setSelection(list);
-	}, [setActions, setSelection]);
+	}, [setActions, setSelection, singleSelectActions, multiSelectActions]);
 
 	const setSelected = useCallback((item: TrackEntry): void => {
 		if (selection.includes(item)) {
@@ -55,9 +55,15 @@ export const Tracks: React.FC<{
 	}, [selection, applySelection]);
 
 	const renderItemRow = useCallback(({item}: { item: TrackEntry }): JSX.Element => {
-		return (<TrackItem track={item} showCheck={showCheck} isSelected={selection.includes(item)} setSelected={setSelected} doubleTab={doubleTab} displayFunc={displayFunc}/>);
-	}, [displayFunc, selection, setSelected, showCheck]);
-
+		return (<TrackItem
+			track={item}
+			showCheck={showCheck}
+			isSelected={selection.includes(item)}
+			setSelected={setSelected}
+			doubleTab={doubleTab}
+			displayFunc={displayFunc}
+		/>);
+	}, [displayFunc, selection, setSelected, showCheck, doubleTab]);
 
 	if (error) {
 		return (<ErrorView error={error} onRetry={onRefresh}/>);

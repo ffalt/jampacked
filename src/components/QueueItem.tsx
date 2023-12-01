@@ -69,7 +69,7 @@ export const QueueItem: React.FC<{ active: boolean; index: number; item: TrackPl
 	const buttons = (<>
 		<PinIcon style={sharedStyles.itemButton} fontSize={sharedStyles.itemButtonIcon.fontSize} objType={item.objType} id={item.id}/>
 		<FavIcon style={sharedStyles.itemButton} fontSize={sharedStyles.itemButtonIcon.fontSize} objType={item.objType} id={item.id}/>
-		<ClickIcon style={sharedStyles.itemButton} fontSize={sharedStyles.itemButtonIcon.fontSize} iconName="remove" onPress={rightPress} clickThrough={true}></ClickIcon>
+		<ClickIcon style={sharedStyles.itemButton} fontSize={sharedStyles.itemButtonIcon.fontSize} iconName="remove" onPress={rightPress} clickThrough={true}/>
 	</>);
 
 	return (

@@ -15,7 +15,7 @@ export function usePinState(id?: string): PinState | undefined {
 	}, []);
 
 	useEffect(() => {
-		const refresh = () => {
+		const refresh = (): void => {
 			if (!id) {
 				return;
 			}

@@ -1,4 +1,5 @@
 /* eslint-disable no-undef */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 
 import {NativeModules} from 'react-native';
 
@@ -63,9 +64,9 @@ jest.mock('react-native-screens', () => ({
 jest.mock('react-native-sqlite-storage', () => ({
 	DEBUG: jest.fn,
 	enablePromise: jest.fn(),
-	openDatabase: (...args) => {
+	openDatabase: (...args1) => {
 		return {
-			transaction: (...args) => Promise.resolve({
+			transaction: (...args2) => Promise.resolve({
 				executeSql: (query) => {
 					return Promise.resolve([]);
 				}
@@ -75,5 +76,5 @@ jest.mock('react-native-sqlite-storage', () => ({
 				return Promise.resolve([]);
 			}
 		};
-	},
+	}
 }));

@@ -4,7 +4,7 @@ import {State, TapGestureHandler, TapGestureHandlerStateChangeEvent} from 'react
 import {ThemedText} from './ThemedText';
 import {TrackEntry} from '../services/types';
 import {sharedStyles} from '../style/shared';
-import {staticTheme, useTheme} from '../style/theming';
+import {staticTheme} from '../style/theming';
 import {ThemedCheckbox} from './ThemedCheckbox';
 
 const styles = StyleSheet.create({

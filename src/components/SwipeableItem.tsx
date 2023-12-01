@@ -34,7 +34,7 @@ export const SwipeableItem: React.FC<PropsWithChildren<{ buttons: ReactElement }
 		});
 		const trans = progress.interpolate({
 			inputRange: [0, 1],
-			outputRange: [0, 0],
+			outputRange: [0, 0]
 		});
 		return (
 			<RectButton style={[styles.rightAction, {backgroundColor: theme.control}]} onPress={close}>

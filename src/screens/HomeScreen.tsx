@@ -49,7 +49,7 @@ export const HomeScreen: React.FC<HomeRouteProps<HomeRoute.START>> = () => {
 	const statusBarHeight = getStatusBarHeight();
 	const userName = `Welcome, ${auth.currentUserName()}`;
 	const userId = auth.currentUserID();
-	const content = search ? (<SearchResults search={search}></SearchResults>) : (<HomeMain></HomeMain>);
+	const content = search ? (<SearchResults search={search} />) : (<HomeMain />);
 
 	return (
 		<View style={[styles.container, {paddingTop: statusBarHeight}]}>
@@ -59,7 +59,7 @@ export const HomeScreen: React.FC<HomeRouteProps<HomeRoute.START>> = () => {
 					<ThemedText style={styles.userHeaderText} numberOfLines={2}>{userName}</ThemedText>
 					<JamImage id={userId} size={staticTheme.userImage} style={styles.userImage}/>
 				</View>
-				<SearchBar searchQueryChange={setSearch}></SearchBar>
+				<SearchBar searchQueryChange={setSearch} />
 			</View>
 			{content}
 		</View>
