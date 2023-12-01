@@ -2220,14 +2220,6 @@
     tslib "^2.5.0"
     webcrypto-core "^1.7.7"
 
-"@raydeck/xcode@^2.2.0":
-  version "2.2.1"
-  resolved "https://registry.yarnpkg.com/@raydeck/xcode/-/xcode-2.2.1.tgz#fd94c3b1908ad15ad9a82fde298b87bf08238289"
-  integrity sha512-464tAzmcJLL0A4W5vKP3t3s6mRLnwGWE/cHo+I+0mHJiSzojSwHIZK7i3shFJioyQFHPxYndzRzTu2VOjdpBcQ==
-  dependencies:
-    simple-plist "^0.2.1"
-    uuid "3.0.1"
-
 "@react-native-community/checkbox@0.5.16":
   version "0.5.16"
   resolved "https://registry.yarnpkg.com/@react-native-community/checkbox/-/checkbox-0.5.16.tgz#3265260e5fd961a4f032d0c088bbfbdfa96ee44e"
@@ -3726,20 +3718,10 @@ balanced-match@^1.0.0:
   resolved "https://registry.yarnpkg.com/balanced-match/-/balanced-match-1.0.2.tgz#e83e3a7e3f300b34cb9d87f615fa0cbf357690ee"
   integrity sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==
 
-base64-js@1.1.2:
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/base64-js/-/base64-js-1.1.2.tgz#d6400cac1c4c660976d90d07a04351d89395f5e8"
-  integrity sha512-AIxxJSNK6fMJTnRuY14y/+86h+R4Ybztcchea+Al8aPIPFa6LvDSV90VN5EH81DVXQmh6YjIqpLyG/ljQDoqeQ==
-
 base64-js@^1.1.2, base64-js@^1.3.1:
   version "1.5.1"
   resolved "https://registry.yarnpkg.com/base64-js/-/base64-js-1.5.1.tgz#1b1b440160a5bf7ad40b650f095963481903930a"
   integrity sha512-AKpaYlHn8t4SVbOHCy+b5+KKgvR4vrsD8vbvrbiQJps7fKDTkjkDry6ji0rUJjC0kzbNePLwzxq8iypo41qeWA==
-
-big-integer@^1.6.7:
-  version "1.6.52"
-  resolved "https://registry.yarnpkg.com/big-integer/-/big-integer-1.6.52.tgz#60a887f3047614a8e1bffe5d7173490a97dc8c85"
-  integrity sha512-QxD8cf2eVqJOOz63z6JIN9BzvVs/dlySa5HGSBH5xtR8dPteIRQnBxxKqkNTiT6jbDTF6jAfrd4oMcND9RGbQg==
 
 bl@^4.0.3, bl@^4.1.0:
   version "4.1.0"
@@ -3754,20 +3736,6 @@ boolbase@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/boolbase/-/boolbase-1.0.0.tgz#68dff5fbe60c51eb37725ea9e3ed310dcc1e776e"
   integrity sha512-JZOSA7Mo9sNGB8+UjSgzdLtokWAky1zbztM3WRLCbZ70/3cTANmQmOdR7y2g+J0e2WXywy1yS468tY+IruqEww==
-
-bplist-creator@0.0.7:
-  version "0.0.7"
-  resolved "https://registry.yarnpkg.com/bplist-creator/-/bplist-creator-0.0.7.tgz#37df1536092824b87c42f957b01344117372ae45"
-  integrity sha512-xp/tcaV3T5PCiaY04mXga7o/TE+t95gqeLmADeBI1CvZtdWTbgBt3uLpvh4UWtenKeBhCV6oVxGk38yZr2uYEA==
-  dependencies:
-    stream-buffers "~2.2.0"
-
-bplist-parser@0.1.1:
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/bplist-parser/-/bplist-parser-0.1.1.tgz#d60d5dcc20cba6dc7e1f299b35d3e1f95dafbae6"
-  integrity sha512-2AEM0FXy8ZxVLBuqX0hqt1gDwcnz2zygEkQ6zaD5Wko/sB9paUNwlpawrFtKeHUAQUOzjVy9AO4oeonqIHKA9Q==
-  dependencies:
-    big-integer "^1.6.7"
 
 brace-expansion@^1.1.7:
   version "1.1.11"
@@ -5941,7 +5909,7 @@ glob-parent@^6.0.2:
   dependencies:
     is-glob "^4.0.3"
 
-glob@^7.1.1, glob@^7.1.2, glob@^7.1.3, glob@^7.1.4:
+glob@^7.1.1, glob@^7.1.3, glob@^7.1.4:
   version "7.2.3"
   resolved "https://registry.yarnpkg.com/glob/-/glob-7.2.3.tgz#b8df0fb802bbfa8e89bd1d938b4e16578ed44f2b"
   integrity sha512-nFR0zLpU2YCaRxwoCJvL6UvCH2JFyFVIvwTLsIf21AuHlMskA1hhTdk+LlYJtOlYt9v6dvszD2BGRqBL+iQK9Q==
@@ -8790,15 +8758,6 @@ pkg-dir@^4.2.0:
   dependencies:
     find-up "^4.0.0"
 
-plist@2.0.1:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/plist/-/plist-2.0.1.tgz#0a32ca9481b1c364e92e18dc55c876de9d01da8b"
-  integrity sha512-pLZ1xkqqdO0puqm8g9kHzGb9oPkW32RPprDsNtjyVJ1cAWdglIgq+k+kO3sFAm5fEGIW04B4oa27JsfzncnHkA==
-  dependencies:
-    base64-js "1.1.2"
-    xmlbuilder "8.2.2"
-    xmldom "0.1.x"
-
 prebuild-install@^7.1.1:
   version "7.1.1"
   resolved "https://registry.yarnpkg.com/prebuild-install/-/prebuild-install-7.1.1.tgz#de97d5b34a70a0c81334fd24641f2a1702352e45"
@@ -9104,14 +9063,6 @@ react-native-svg@14.0.0:
   dependencies:
     css-select "^5.1.0"
     css-tree "^1.1.3"
-
-react-native-swift@1.2.3:
-  version "1.2.3"
-  resolved "https://registry.yarnpkg.com/react-native-swift/-/react-native-swift-1.2.3.tgz#c4ae9c2b8c48c1535ea7fb3d9234d5f206ee47cf"
-  integrity sha512-PmPTjpIRRMns+fViOvL23ke9dvh1bJmHoobPhgkEYTMiz7fzOAX67k0A0RNu9L9Wc57XY5MB+rLMYybBtndQ4w==
-  dependencies:
-    "@raydeck/xcode" "^2.2.0"
-    glob "^7.1.2"
 
 react-native-tab-view@3.5.2:
   version "3.5.2"
@@ -9730,15 +9681,6 @@ simple-get@^4.0.0, simple-get@^4.0.1:
     once "^1.3.1"
     simple-concat "^1.0.0"
 
-simple-plist@^0.2.1:
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/simple-plist/-/simple-plist-0.2.1.tgz#71766db352326928cf3a807242ba762322636723"
-  integrity sha512-1xgqR0IwahCZDfwUp36DmxKX0dwoh/KtnxbY8D5cs19BF5889ZlRSViTAknEWO39ND573T2NBBHqP7Qf6spPPQ==
-  dependencies:
-    bplist-creator "0.0.7"
-    bplist-parser "0.1.1"
-    plist "2.0.1"
-
 simple-swizzle@^0.2.2:
   version "0.2.2"
   resolved "https://registry.yarnpkg.com/simple-swizzle/-/simple-swizzle-0.2.2.tgz#a4da6b635ffcccca33f70d17cb92592de95e557a"
@@ -9912,11 +9854,6 @@ statuses@~1.5.0:
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/statuses/-/statuses-1.5.0.tgz#161c7dac177659fd9811f43771fa99381478628c"
   integrity sha512-OpZ3zP+jT1PI7I8nemJX4AKmAX070ZkYPVWV/AaKTJl+tXCTGyVdC1a4SL8RUQYEwk/f34ZX8UTykN68FwrqAA==
-
-stream-buffers@~2.2.0:
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/stream-buffers/-/stream-buffers-2.2.0.tgz#91d5f5130d1cef96dcfa7f726945188741d09ee4"
-  integrity sha512-uyQK/mx5QjHun80FLJTfaWE7JtwfRMKBLkMne6udYOmvH0CawotVa7TfgYHzAnpphn4+TweIx1QKMnRIbipmUg==
 
 streamsearch@^1.1.0:
   version "1.1.0"
@@ -10604,11 +10541,6 @@ utils-merge@1.0.1:
   resolved "https://registry.yarnpkg.com/utils-merge/-/utils-merge-1.0.1.tgz#9f95710f50a267947b2ccc124741c1028427e713"
   integrity sha512-pMZTvIkT1d+TFGvDOqodOclx0QWkkgi6Tdoa8gC8ffGAAqz9pzPTZWAybbsHHoED/ztMtkv/VoYTYyShUn81hA==
 
-uuid@3.0.1:
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.0.1.tgz#6544bba2dfda8c1cf17e629a3a305e2bb1fee6c1"
-  integrity sha512-tyhM7iisckwwmyHVFcjTzISz/R1ss/bRudNgHFYsgeu7j4JbhRvjE+Hbcpr9y5xh+b+HxeFjuToDT4i9kQNrtA==
-
 v8-compile-cache-lib@^3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/v8-compile-cache-lib/-/v8-compile-cache-lib-3.0.1.tgz#6336e8d71965cb3d35a1bbb7868445a7c05264bf"
@@ -10839,16 +10771,6 @@ xml-parser-xo@^4.1.0:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/xml-parser-xo/-/xml-parser-xo-4.1.1.tgz#7434d990f442e06ed96286c813c02e921f14fc50"
   integrity sha512-Ggf2y90+Y6e9IK5hoPuembVHJ03PhDSdhldEmgzbihzu9k0XBo0sfcFxaSi4W1PlUSSI1ok+MJ0JCXUn+U4Ilw==
-
-xmlbuilder@8.2.2:
-  version "8.2.2"
-  resolved "https://registry.yarnpkg.com/xmlbuilder/-/xmlbuilder-8.2.2.tgz#69248673410b4ba42e1a6136551d2922335aa773"
-  integrity sha512-eKRAFz04jghooy8muekqzo8uCSVNeyRedbuJrp0fovbLIi7wlsYtdUn3vBAAPq2Y3/0xMz2WMEUQ8yhVVO9Stw==
-
-xmldom@0.1.x:
-  version "0.1.31"
-  resolved "https://registry.yarnpkg.com/xmldom/-/xmldom-0.1.31.tgz#b76c9a1bd9f0a9737e5a72dc37231cf38375e2ff"
-  integrity sha512-yS2uJflVQs6n+CyjHoaBmVSqIDevTAWrzMmjG1Gc7h1qQ7uVozNhEPJAwZXWyGQ/Gafo3fCwrcaokezLPupVyQ==
 
 xtend@~4.0.1:
   version "4.0.2"
