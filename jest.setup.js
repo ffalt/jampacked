@@ -6,7 +6,7 @@ import {NativeModules} from 'react-native';
 jest.mock('./node_modules/react-native/Libraries/EventEmitter/NativeEventEmitter.js');
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-require('react-native-reanimated/lib/reanimated2/jestUtils').setUpTests();
+require('react-native-reanimated/lib/module/reanimated2/jestUtils').setUpTests();
 
 // react-native-snackbar
 NativeModules.RNSnackbar = {
@@ -56,6 +56,9 @@ jest.mock('react-native-track-player', () => ({
 	})
 }));
 
+jest.mock('react-native-bootsplash', () => {
+	return {RNBootSplash: jest.fn()};
+});
 // react-native-screens
 jest.mock('react-native-screens', () => ({
 	...jest.requireActual('react-native-screens'),
@@ -71,7 +74,7 @@ jest.mock('react-native-sqlite-storage', () => ({
 					return Promise.resolve([]);
 				}
 			}),
-			cleanDb: ()=> Promise.resolve(),
+			cleanDb: () => Promise.resolve(),
 			executeSql: (query) => {
 				return Promise.resolve([]);
 			}
