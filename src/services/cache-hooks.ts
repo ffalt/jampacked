@@ -1,37 +1,38 @@
 import {DocumentNode} from 'graphql';
-import {LazyQueryHookOptions, QueryLazyOptions} from '@apollo/client/react/types/types';
 import {useCallback, useEffect, useState} from 'react';
 import {ApolloError, useLazyQuery} from '@apollo/client';
 import dataService from './data';
 import {buildCacheID} from './cache-query';
 import {CacheState} from './cache';
+import {LazyQueryHookOptions} from '@apollo/client/react/types/types';
+import type {OperationVariables} from '@apollo/client/core';
 
-export type QueryFunc<TVariables> = (options?: QueryLazyOptions<TVariables>, forceRefresh?: boolean) => void;
+export type QueryFunc<TVariables> = (options?: LazyQueryHookOptions<TVariables>, forceRefresh?: boolean) => void;
 export type QueryHookData<TResult> = { loading: boolean, error?: ApolloError, data?: TResult, called: boolean, queryID?: string };
 
-export function useCacheOrLazyQuery<TData, TVariables, TResult>(
+export function useCacheOrLazyQuery<TData, TVariables extends OperationVariables | void, TResult>(
 	query: DocumentNode,
 	transform: (d?: TData, variables?: TVariables) => TResult | undefined,
-	options?: LazyQueryHookOptions<TData, TVariables>): [QueryFunc<TVariables>, QueryHookData<TResult>] {
+	options?: LazyQueryHookOptions<TData, any>): [QueryFunc<TVariables>, QueryHookData<TResult>] {
 	const [result, setResult] = useState<TResult | undefined>();
 	const [id, setID] = useState<string | undefined>();
 	const [queryData, setQueryData] = useState<any>();
-	const [q, {loading, error, data, variables}] = useLazyQuery<TData, TVariables>(query, options);
+	const [q, {loading, error, data, variables}] = useLazyQuery<TData, OperationVariables>(query, options);
 
-	const execute = useCallback((queryOptions?: QueryLazyOptions<TVariables>, forceRefresh?: boolean): void => {
-		const queryID = buildCacheID<TVariables>(query, queryOptions?.variables);
+	const execute = useCallback((queryOptions?: LazyQueryHookOptions<TVariables>, forceRefresh?: boolean): void => {
+		const queryID = buildCacheID<TVariables>(query, queryOptions?.variables as TVariables);
 		if (queryID) {
 			setID(queryID);
 			setResult(undefined);
 			setQueryData(undefined);
 			if (forceRefresh) {
-				q(queryOptions);
+				q(queryOptions as OperationVariables);
 			} else {
 				dataService.cache.getData<TResult>(queryID).then(r => {
 					if (r) {
 						setResult(r);
 					} else {
-						q(queryOptions);
+						q(queryOptions as OperationVariables);
 					}
 				});
 			}
