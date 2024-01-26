@@ -6,7 +6,7 @@ import {PinnedMediaScreen} from '../screens/PinnedMediaScreen';
 import {DownloadsScreen} from '../screens/DownloadsScreen';
 
 const Tab = createMaterialTopTabNavigator<DownloadsRouteParamList>();
-const emptyComponent = (): JSX.Element => (<></>);
+const emptyComponent = ():React.JSX.Element => (<></>);
 
 export const DownloadsNavigator: React.FC = () => {
 	return (

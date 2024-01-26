@@ -7,7 +7,7 @@ import {GenreTracksScreen} from '../screens/GenreTracksScreen';
 import {GenreTabNavigatorContext} from './GenreNavigatorContext';
 
 const Tab = createMaterialTopTabNavigator<GenreRouteParamList>();
-const emptyComponent = (): JSX.Element => (<></>);
+const emptyComponent = ():React.JSX.Element => (<></>);
 
 export const GenreNavigator: React.FC<HomeRouteProps<HomeRoute.GENRE>> = ({route}) => {
 	const [state, setState] = useState<{ id?: string, name?: string }>({});

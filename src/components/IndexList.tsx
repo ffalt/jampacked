@@ -35,8 +35,8 @@ export const IndexList: React.FC<{
 	const tileSize = width / (numColumns || 1);
 	const theme = useTheme();
 
-	const renderItemRow = useCallback(({item}: { item: IndexEntry }): JSX.Element => (<Item item={item}/>), []);
-	const renderItemTile = useCallback(({item}: { item: IndexEntry }): JSX.Element => (<ImageItem item={item} size={tileSize}/>), [tileSize]);
+	const renderItemRow = useCallback(({item}: { item: IndexEntry }):React.JSX.Element => (<Item item={item}/>), []);
+	const renderItemTile = useCallback(({item}: { item: IndexEntry }):React.JSX.Element => (<ImageItem item={item} size={tileSize}/>), [tileSize]);
 
 	const ListHeaderComponent = (<PageHeader title={title} goLeft={goLeft} goRight={goRight}/>);
 	const refreshControl = (

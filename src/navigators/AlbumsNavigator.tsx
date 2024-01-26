@@ -7,7 +7,7 @@ import {AlbumsRoute, AlbumsRouteParamList, HomeRoute, HomeRouteProps} from './Ro
 import {AlbumType} from '../services/jam';
 
 const Tab = createMaterialTopTabNavigator<AlbumsRouteParamList>();
-const emptyComponent = (): JSX.Element => (<></>);
+const emptyComponent = ():React.JSX.Element => (<></>);
 
 export const AlbumsNavigator: React.FC<HomeRouteProps<HomeRoute.ALBUMS>> = ({route}) => {
 	const [albumType, setAlbumType] = useState<AlbumType | undefined>();

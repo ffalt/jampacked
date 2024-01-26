@@ -54,7 +54,7 @@ export const QueueItem: React.FC<{ active: boolean; index: number; item: TrackPl
 			.catch(e => console.error(e));
 	}, [index]);
 
-	const renderTrackNr = useCallback((): JSX.Element => {
+	const renderTrackNr = useCallback(():React.JSX.Element => {
 		if (active) {
 			return (<ThemedIcon name="right-open-mini"/>);
 		}

@@ -45,13 +45,13 @@ export const ArtistScreen: React.FC<HomeRouteProps<HomeRoute.ARTIST>> = ({route}
 		headerTitleCmds={<FavIcon style={objHeaderStyles.button} objType={JamObjectType.artist} id={id}/>}
 	/>);
 
-	const renderSection = useCallback(({section}: { section: SectionListData<BaseEntry> }): JSX.Element => (
+	const renderSection = useCallback(({section}: { section: SectionListData<BaseEntry> }): React.JSX.Element => (
 		<View style={sharedStyles.sectionHeader}>
 			<ThemedText style={sharedStyles.sectionHeaderText}>{section.title}</ThemedText>
 		</View>
 	), []);
 
-	const renderItem = useCallback(({item}: { item: BaseEntry }): JSX.Element => (<Item item={item}/>), []);
+	const renderItem = useCallback(({item}: { item: BaseEntry }): React.JSX.Element => (<Item item={item}/>), []);
 
 	const reload = useCallback((): void => {
 		if (id) {

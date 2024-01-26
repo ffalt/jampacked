@@ -5,7 +5,7 @@ import {ArtistListAvgHighestScreen, ArtistListFavScreen, ArtistListFrequentScree
 import {ArtistsRoute, ArtistsRouteParamList} from './Routing';
 
 const Tab = createMaterialTopTabNavigator<ArtistsRouteParamList>();
-const emptyComponent = (): JSX.Element => (<></>);
+const emptyComponent = ():React.JSX.Element => (<></>);
 
 export const ArtistsNavigator: React.FC = () => {
 	return (

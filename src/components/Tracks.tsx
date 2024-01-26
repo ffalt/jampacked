@@ -54,7 +54,7 @@ export const Tracks: React.FC<{
 		});
 	}, [selection, applySelection]);
 
-	const renderItemRow = useCallback(({item}: { item: TrackEntry }): JSX.Element => {
+	const renderItemRow = useCallback(({item}: { item: TrackEntry }):React.JSX.Element => {
 		return (<TrackItem
 			track={item}
 			showCheck={showCheck}

@@ -5,7 +5,7 @@ import {AlbumRoute, AlbumRouteParamList, HomeRoute, HomeRouteProps} from './Rout
 import {AlbumScreen} from '../screens/AlbumScreen';
 
 const Tab = createMaterialTopTabNavigator<AlbumRouteParamList>();
-const emptyComponent = (): JSX.Element => (<></>);
+const emptyComponent = ():React.JSX.Element => (<></>);
 
 export const AlbumNavigator: React.FC<HomeRouteProps<HomeRoute.ALBUM>> = ({route}) => {
 	return (

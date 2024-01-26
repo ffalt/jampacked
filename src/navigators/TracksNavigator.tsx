@@ -4,7 +4,7 @@ import {TracksRoute, TracksRouteParamList} from './Routing';
 import {TrackListAvgHighestScreen, TrackListFavScreen, TrackListFrequentScreen, TrackListHighestScreen, TrackListRandomScreen, TrackListRecentScreen} from '../screens/TrackListScreen';
 
 const Tab = createMaterialTopTabNavigator<TracksRouteParamList>();
-const emptyComponent = (): JSX.Element => (<></>);
+const emptyComponent = ():React.JSX.Element => (<></>);
 
 export const TracksNavigator: React.FC = () => {
 	return (

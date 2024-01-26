@@ -33,10 +33,10 @@ interface TabBarIconProps {
 	size: number;
 }
 
-type TabBarIconFunc = (props: TabBarIconProps) => JSX.Element;
+type TabBarIconFunc = (props: TabBarIconProps) =>React.JSX.Element;
 
 export function getTabBarIcon(name: string): TabBarIconFunc {
-	return (props: TabBarIconProps): JSX.Element => {
+	return (props: TabBarIconProps):React.JSX.Element => {
 		const {focused, color} = props;
 		const size = focused ? 26 : 22;
 		return (

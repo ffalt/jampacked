@@ -9,7 +9,7 @@ import {sharedStyles} from '../style/shared';
 
 export const DownloadsPage: React.FC<{ downloads?: Array<Download>, title: string }> = ({downloads, title}) => {
 	const paused = useTrackPlayerDownloadsPaused();
-	const renderItem = useCallback(({item}: { item: Download }): JSX.Element => (<ActiveDownloadItem item={item}/>), []);
+	const renderItem = useCallback(({item}: { item: Download }):React.JSX.Element => (<ActiveDownloadItem item={item}/>), []);
 
 	const handlePauseToggle = useCallback((): void => {
 		if (paused) {

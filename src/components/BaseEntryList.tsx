@@ -40,8 +40,8 @@ export const BaseEntryList: React.FC<{
 	const tileSize = width / (numColumns || 1);
 	const theme = useTheme();
 
-	const renderItemRow = useCallback(({item}: { item: BaseEntry }): JSX.Element => (<Item item={item}/>), []);
-	const renderItemTile = useCallback(({item}: { item: BaseEntry }): JSX.Element => (<ImageItem item={item} size={tileSize}/>), [tileSize]);
+	const renderItemRow = useCallback(({item}: { item: BaseEntry }):React.JSX.Element => (<Item item={item}/>), []);
+	const renderItemTile = useCallback(({item}: { item: BaseEntry }):React.JSX.Element => (<ImageItem item={item} size={tileSize}/>), [tileSize]);
 	const ListHeaderComponent = (<PageHeader title={info.title} goLeft={goLeft} goRight={goRight} subtitle={info.subtitle}/>);
 
 	const getTileItemLayout = React.useMemo(() => commonItemLayout(tileSize), [tileSize]);

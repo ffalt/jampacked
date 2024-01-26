@@ -33,7 +33,7 @@ export const executeTrackMenuAction = async (selection: Array<TrackEntry>, name?
 	return false;
 };
 
-export const trackMenuIcon: (color: string) => JSX.Element = (color) => {
+export const trackMenuIcon: (color: string) =>React.JSX.Element = (color) => {
 	return <ThemedIcon name="menu" color={color}/>;
 };
 

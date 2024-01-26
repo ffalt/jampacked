@@ -13,7 +13,7 @@ export const Queue: React.FC = () => {
 	const theme = useTheme();
 	const current = useTrackPlayerCurrentTrackNr();
 
-	const renderItem = useCallback(({item, index}: { item: TrackPlayerTrack, index: number }): JSX.Element => (
+	const renderItem = useCallback(({item, index}: { item: TrackPlayerTrack, index: number }):React.JSX.Element => (
 		<QueueItem item={item} index={index} active={index === current}/>
 	), [current]);
 	const reload = useCallback(() => {

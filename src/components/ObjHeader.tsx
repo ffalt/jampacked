@@ -108,7 +108,7 @@ export const ObjHeader: React.FC<{
 	const theme = useTheme();
 	const statusBarHeight = getStatusBarHeight() + staticTheme.padding;
 
-	const renderDetails = (): JSX.Element | undefined => {
+	const renderDetails = ():React.JSX.Element | undefined => {
 		if (customDetails) {
 			return (
 				<View style={styles.headerExtra}>

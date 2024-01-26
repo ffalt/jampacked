@@ -86,7 +86,7 @@ export const Search: React.FC<SearchProps> = ({objType, query, backToAll}) => {
 		}
 	}, [q, getSearch, offset]);
 
-	const renderItem = useCallback(({item}: { item: BaseEntry }): JSX.Element => (<Item item={item}/>), []);
+	const renderItem = useCallback(({item}: { item: BaseEntry }):React.JSX.Element => (<Item item={item}/>), []);
 
 	return (
 		<>

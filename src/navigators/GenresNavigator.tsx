@@ -4,7 +4,7 @@ import {GenresRoute, GenresRouteParamList, HomeRoute, HomeRouteProps} from './Ro
 import {GenreIndexScreen} from '../screens/GenreIndexScreen';
 
 const Tab = createMaterialTopTabNavigator<GenresRouteParamList>();
-const emptyComponent = (): JSX.Element => (<></>);
+const emptyComponent = ():React.JSX.Element => (<></>);
 
 export const GenresNavigator: React.FC<HomeRouteProps<HomeRoute.GENRES>> = () => {
 

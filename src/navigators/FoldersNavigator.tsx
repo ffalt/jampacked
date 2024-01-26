@@ -6,7 +6,7 @@ import {FoldersTabNavigatorContext} from './FoldersNavigatorContext';
 import {FoldersRoute, FoldersRouteParamList, HomeRoute, HomeRouteProps} from './Routing';
 
 const Tab = createMaterialTopTabNavigator<FoldersRouteParamList>();
-const emptyComponent = (): JSX.Element => (<></>);
+const emptyComponent = ():React.JSX.Element => (<></>);
 
 export const FoldersNavigator: React.FC<HomeRouteProps<HomeRoute.FOLDERS>> = ({route}) => {
 	return (

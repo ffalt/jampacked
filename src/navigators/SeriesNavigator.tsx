@@ -5,7 +5,7 @@ import {SeriesListAvgHighestScreen, SeriesListFavScreen, SeriesListFrequentScree
 import {HomeRoute, HomeRouteProps, SeriesRoute, SeriesRouteParamList} from './Routing';
 
 const Tab = createMaterialTopTabNavigator<SeriesRouteParamList>();
-const emptyComponent = (): JSX.Element => (<></>);
+const emptyComponent = ():React.JSX.Element => (<></>);
 
 export const SeriesNavigator: React.FC<HomeRouteProps<HomeRoute.SERIES>> = () => {
 	return (

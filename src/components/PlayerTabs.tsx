@@ -71,7 +71,7 @@ export const PlayerTabs: React.FC = () => {
 		navigation.goBack();
 	}, [navigation]);
 
-	const renderTabBar = useCallback((tabBarProps: any): JSX.Element => {
+	const renderTabBar = useCallback((tabBarProps: any):React.JSX.Element => {
 		const buttons = tabBarProps.navigationState.routes.map((route: { title: string }, i: number) => {
 			const style = [styles.tabItem,
 				i === index && styles.tabItemActive,

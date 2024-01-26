@@ -49,7 +49,7 @@ export const PinnedMediaScreen: React.FC<DownloadsRouteProps<DownloadsRoute.PINN
 		};
 	});
 
-	const renderItem = ({section, item}: { section: SectionListData<PinMedia>, item: TrackEntry }): JSX.Element | null => {
+	const renderItem = ({section, item}: { section: SectionListData<PinMedia>, item: TrackEntry }):React.JSX.Element | null => {
 		const isExpanded = expandedSections.has(section.pin.id);
 		if (!isExpanded) {
 			return null;
@@ -74,7 +74,7 @@ export const PinnedMediaScreen: React.FC<DownloadsRouteProps<DownloadsRoute.PINN
 		});
 	};
 
-	const renderSection = ({section}: { section: SectionListData<PinMedia> }): JSX.Element => {
+	const renderSection = ({section}: { section: SectionListData<PinMedia> }):React.JSX.Element => {
 		const isExpanded = expandedSections.has(section.pin.id);
 		return (
 			<>

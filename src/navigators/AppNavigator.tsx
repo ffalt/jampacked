@@ -63,7 +63,7 @@ export const AppNavigator: React.FC = () => {
 		}
 	}, [isLoading]);
 
-	let screen: JSX.Element;
+	let screen:React.JSX.Element;
 	if (isLoading || isChecking) {
 		screen = <Stack.Screen name={AppRouting.LOAD} component={LoadingScreen}/>;
 	} else if (auth.hasUser) {

@@ -118,7 +118,7 @@ export const FolderScreen: React.FC<HomeRouteProps<HomeRoute.FOLDER>> = ({route}
 		applySelection([]);
 	}, [applySelection]);
 
-	const renderItem = useCallback(({item}: { item: FolderItem }): JSX.Element => {
+	const renderItem = useCallback(({item}: { item: FolderItem }):React.JSX.Element => {
 		if (item.track) {
 			return (<TrackItem
 				track={item.track}

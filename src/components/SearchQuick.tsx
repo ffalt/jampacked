@@ -45,7 +45,7 @@ export const SearchQuick: React.FC<SearchQuickProps> = ({query, setObjType}) => 
 		}
 	}, [getAutocomplete, query]);
 
-	const renderSection = useCallback(({section}: { section: SectionListData<AutoCompleteEntryData> }): JSX.Element => {
+	const renderSection = useCallback(({section}: { section: SectionListData<AutoCompleteEntryData> }):React.JSX.Element => {
 		const setType = (): void => {
 			if (setObjType) {
 				const {objType} = section as AutoCompleteDataSection;
@@ -60,7 +60,7 @@ export const SearchQuick: React.FC<SearchQuickProps> = ({query, setObjType}) => 
 		);
 	}, [setObjType]);
 
-	const renderItem = useCallback(({item}: { item: AutoCompleteEntryData }): JSX.Element => {
+	const renderItem = useCallback(({item}: { item: AutoCompleteEntryData }):React.JSX.Element => {
 
 		const click = (): void => {
 			const route = NavigationService.routeByObjType(item.objType);
