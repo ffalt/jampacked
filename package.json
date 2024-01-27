@@ -4,8 +4,7 @@
   "private": true,
   "scripts": {
     "android": "react-native run-android && react-native log-android",
-    "android:release": "react-native run-android --variant=release && react-native log-android",
-    "android:build:prepare": "jetify",
+    "android:release": "react-native run-android --mode release && react-native log-android",
     "android:build:release:apk": "cd android && ./gradlew assembleRelease",
     "android:build:release:aab": "cd android && ./gradlew bundleRelease",
     "ios": "react-native run-ios && react-native log-ios",
@@ -125,5 +124,6 @@
   },
   "engines": {
     "node": ">=18"
-  }
+  },
+  "packageManager": "yarn@4.0.2"
 }

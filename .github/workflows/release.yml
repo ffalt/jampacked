@@ -24,8 +24,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Test
         run: yarn run test
-      - name: Jettify
-        run: yarn run android:build:prepare
       - name: Gradle chmod Setup
         run: cd android && chmod +x gradlew
       - name: Decode Keystore
