@@ -5,6 +5,7 @@
   "scripts": {
     "android": "react-native run-android && react-native log-android",
     "android:release": "react-native run-android --mode release && react-native log-android",
+    "android:log": "react-native log-android",
     "android:build:release:apk": "cd android && ./gradlew assembleRelease",
     "android:build:release:aab": "cd android && ./gradlew bundleRelease",
     "ios": "react-native run-ios && react-native log-ios",
@@ -66,7 +67,7 @@
     "react-native-status-bar-height": "2.6.0",
     "react-native-svg": "14.1.0",
     "react-native-tab-view": "3.5.2",
-    "react-native-track-player": "ffalt/react-native-track-player#e6a6ce5edd58713b5399476a77d34334a5a7cceb",
+    "react-native-track-player": "ffalt/react-native-track-player#4fe98f82064e8b5ec1632f3fe9e1ca385eddb823",
     "react-native-vector-icons": "10.0.3",
     "waveform-data": "4.3.0"
   },
