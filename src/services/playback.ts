@@ -1,7 +1,8 @@
 import dataService from './data';
 import {JamPlayer} from './player';
 import {snackError} from './snack';
-import {TrackPlayer, Event, State} from './player-api';
+import {TrackPlayer, TrackPlayerTrack, Event, State} from './player-api';
+import {Scrobble} from './scrobble.ts';
 
 let hasApp: boolean = false;
 let wasPausedByDuck: boolean = false;
@@ -10,18 +11,17 @@ export function setAppAvailable(available: boolean): void {
 	hasApp = available;
 }
 
-export default async function playbackService(): Promise<void> {
-	TrackPlayer.addEventListener(Event.Scrobble, ({trackIndex}) => {
-		TrackPlayer.getTrack(trackIndex)
-			.then(track => {
-				if (track && track.id) {
-					dataService.scrobble(track.id)
-						.catch(e => {
-							console.error(e);
-						});
-				}
+function scrobble(track: TrackPlayerTrack): void {
+	if (track && track.id) {
+		dataService.scrobble(track.id)
+			.catch(e => {
+				console.error(e);
 			});
-	});
+	}
+}
+
+export default async function playbackService(): Promise<void> {
+	Scrobble.addScrobbleListener(scrobble);
 	TrackPlayer.addEventListener(Event.RemotePlay, () => JamPlayer.play());
 	TrackPlayer.addEventListener(Event.RemotePause, () => JamPlayer.pause());
 	TrackPlayer.addEventListener(Event.RemoteNext, () => JamPlayer.skipToNext());
@@ -30,12 +30,12 @@ export default async function playbackService(): Promise<void> {
 	TrackPlayer.addEventListener(Event.RemoteJumpBackward, () => JamPlayer.skipBackward());
 	TrackPlayer.addEventListener(Event.RemoteSeek, (data) => TrackPlayer.seekTo(data.position));
 	TrackPlayer.addEventListener(Event.RemoteDuck, (data) => {
-		if (data.permanent === true) {
+		if (data.permanent) {
 			TrackPlayer.stop();
 		} else {
 			if (data.paused) {
-				TrackPlayer.getState().then((playerState) => {
-					wasPausedByDuck = playerState !== State.Paused;
+				TrackPlayer.getPlaybackState().then((playerState) => {
+					wasPausedByDuck = playerState.state !== State.Paused;
 					TrackPlayer.pause();
 				});
 			} else {

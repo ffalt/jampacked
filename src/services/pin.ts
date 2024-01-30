@@ -7,8 +7,8 @@ import {TrackQuery} from './queries/track';
 import {FolderQuery} from './queries/folder';
 import {PlaylistQuery} from './queries/playlist';
 import {PodcastEpisodeQuery} from './queries/podcastEpisode';
-import {DownloadRequest, DownloadState, TrackPlayerDownloadManager} from './player-api';
 import {humanFileSize} from '../utils/filesize.utils';
+import {DownloadRequest, DownloadState, TrackPlayerDownloadManager} from './downloader-api.ts';
 
 export class PinService {
 	private pinSubscriptions = new Map<string, Array<(state: PinState) => void>>();
@@ -43,13 +43,13 @@ export class PinService {
 	}
 
 	private async dropPinCache(): Promise<void> {
-		const dropTableScript = 'DROP TABLE IF EXISTS pin';
+		const dropTableScript: string = 'DROP TABLE IF EXISTS pin';
 		await this.owner.db.query(dropTableScript);
 		await this.checkDB();
 	}
 
 	private async checkDB(): Promise<void> {
-		const createPinTableScript = 'CREATE TABLE if not exists pin(_id INTEGER PRIMARY KEY AUTOINCREMENT, key TEXT, data TEXT, date integer, version integer)';
+		const createPinTableScript: string = 'CREATE TABLE if not exists pin(_id INTEGER PRIMARY KEY AUTOINCREMENT, key TEXT, data TEXT, date integer, version integer)';
 		await this.owner.db.query(createPinTableScript);
 	}
 

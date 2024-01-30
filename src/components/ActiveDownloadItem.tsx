@@ -3,9 +3,9 @@ import {View} from 'react-native';
 import {ThemedText} from './ThemedText';
 import {CircularProgress} from './CircularProgress';
 import {sharedStyles} from '../style/shared';
-import {Download, downloadStateToString} from '../services/player-api';
 import {usePinnedMediaDownload} from '../services/pin-hooks';
 import {humanFileSize} from '../utils/filesize.utils';
+import {Download, downloadStateToString} from '../services/downloader-api.ts';
 
 export const ActiveDownloadItem: React.FC<{ item: Download }> = React.memo(({item}) => {
 	const [state, setState] = useState<{

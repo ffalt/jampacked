@@ -1,7 +1,7 @@
 import {useEffect, useRef, useState} from 'react';
 import dataService from './data';
 import {PinMedia, PinCacheStat, PinState, TrackEntry} from './types';
-import {Download, useTrackPlayerDownloadCached} from './player-api';
+import {Download, useTrackPlayerDownloadCached} from './downloader-api.ts';
 
 export function usePinState(id?: string): PinState | undefined {
 	const [stat, setStat] = useState<PinState | undefined>();

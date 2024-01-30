@@ -23,6 +23,6 @@ const styles = StyleSheet.create({
 
 export const PlayButton: React.FC = () => {
 	const isPlaying = useTrackPlayerPlaybackStateIsPlaying();
-	const icon = isPlaying ? 'pause' : 'play';
+	const icon = isPlaying.playing ? 'pause' : 'play';
 	return (<ClickIcon iconName={icon} onPress={JamPlayer.toggle} style={styles.playButton} color={styles.playButtonIcon.color} fontSize={styles.playButtonIcon.fontSize} />);
 };

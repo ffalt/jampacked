@@ -32,13 +32,13 @@ export const SwipeableItem: React.FC<PropsWithChildren<{ buttons: ReactElement }
 			outputRange: [1, 0],
 			extrapolate: 'clamp'
 		});
-		const trans = progress.interpolate({
+		const translateX = progress.interpolate({
 			inputRange: [0, 1],
 			outputRange: [0, 0]
 		});
 		return (
 			<RectButton style={[styles.rightAction, {backgroundColor: theme.control}]} onPress={close}>
-				<AnimatedView style={[styles.actionIcons, {transform: [{scale}]}, {translateX: trans}]}>
+				<AnimatedView style={[styles.actionIcons, {transform: [{scale}, {translateX}]}]}>
 					{buttons}
 				</AnimatedView>
 			</RectButton>

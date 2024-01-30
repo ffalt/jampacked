@@ -118,7 +118,7 @@ export const ObjHeader: React.FC<{
 				</View>
 			);
 		}
-		const result: Array<JSX.Element> = [];
+		const result: Array<React.JSX.Element> = [];
 		(details || []).forEach(detail => {
 			if (detail.click) {
 				const onClick = (): void => {

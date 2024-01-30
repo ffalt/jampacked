@@ -1,6 +1,7 @@
 import React from 'react';
-import {Stats} from '../components/Stats';
 import {UserDataResult} from '../services/queries/home';
+import {Stats} from './Stats';
+
 export const HomeUserSection: React.FC<{ userData?: UserDataResult }> = ({userData}) => {
 	return (
 		<>
