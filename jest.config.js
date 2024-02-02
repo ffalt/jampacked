@@ -6,7 +6,6 @@ module.exports = {
 		'|@react-native' +
 		'|@kesha-antonov/react-native-background-downloader' +
 		'|react-native-snackbar' +
-		'|react-native-reanimated' +
 		'|react-native-status-bar-height' +
 		'|react-native-floating-action' +
 		'|react-native-track-player' +

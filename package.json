@@ -60,7 +60,6 @@
     "react-native-fs": "^2.20.0",
     "react-native-gesture-handler": "2.14.1",
     "react-native-pager-view": "6.2.3",
-    "react-native-reanimated": "3.6.2",
     "react-native-safe-area-context": "4.8.2",
     "react-native-screens": "3.29.0",
     "react-native-sensitive-info": "6.0.0-alpha.5",

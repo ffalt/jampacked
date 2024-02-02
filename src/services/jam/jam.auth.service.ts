@@ -28,10 +28,20 @@ export class JamAuthService {
 	}
 
 	async check(): Promise<void> {
-		this.checked = true;
 		if (!this.auth || this.auth.server === undefined) {
 			return;
 		}
+		if (this.user) {
+			this.checked = true;
+			return;
+		}
+		await this.checkOnline();
+	}
+	async checkOnline(): Promise<void> {
+		if (!this.auth || this.auth.server === undefined) {
+			return;
+		}
+		this.checked = true;
 		try {
 			const data = await this.http.get<Jam.Session>(`${this.auth.server}${JamAuthService.apiPrefix}/session`, this.getHTTPOptions());
 			if (data.user) {
