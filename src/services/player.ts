@@ -10,7 +10,7 @@ async function buildTrackPlayerTrack(t: TrackEntry): Promise<TrackPlayerTrack> {
 	const local = await dataService.pin.isDownloaded(t.id);
 	const url = local ?
 		dataService.pin.pinCache.pathInCache(t.id) :
-	    dataService.jam.stream.streamUrl({id: t.id, format: AudioFormatType.mp3}, !headers);
+		dataService.jam.stream.streamUrl({id: t.id, format: AudioFormatType.mp3}, !headers);
 	return {
 		id: t.id,
 		url,
