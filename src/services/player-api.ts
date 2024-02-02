@@ -24,7 +24,7 @@ export async function initPlayer(): Promise<void> {
 			// scrobble: true,
 			android: {
 				alwaysPauseOnInterruption: true,
-				appKilledPlaybackBehavior: AppKilledPlaybackBehavior.StopPlaybackAndRemoveNotification
+				appKilledPlaybackBehavior: AppKilledPlaybackBehavior.ContinuePlayback
 			},
 			icon: require('../assets/images/logo.png'),
 
