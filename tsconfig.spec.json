@@ -94,6 +94,7 @@
     "index.js",
     "wdyr.js",
     "node_modules/",
+    "modules/",
     "babel.config.js",
     "metro.config.js",
     "jest.config.js",

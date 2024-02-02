@@ -1,74 +1,75 @@
 import {useEffect, useRef, useState} from 'react';
 import dataService from './data';
-import {PinMedia, PinCacheStat, PinState, TrackEntry} from './types';
-import {Download, useTrackPlayerDownloadCached} from './downloader-api.ts';
+import {JamObjectType} from './jam';
+import {PinMedia, PinState} from './types';
+import {DownloadProgress, DownloadTask, MediaCacheStat} from './media-cache';
+import {EventSubscription} from 'react-native';
 
-export function usePinState(id?: string): PinState | undefined {
+export function usePinState(id?: string, objType?: JamObjectType): PinState | undefined {
 	const [stat, setStat] = useState<PinState | undefined>();
-	const isUnmountedRef = useRef(true);
 
 	useEffect(() => {
-		isUnmountedRef.current = false;
-		return () => {
-			isUnmountedRef.current = true;
-		};
-	}, []);
+		let isSubscribed = true;
+		let subscription: EventSubscription;
 
-	useEffect(() => {
-		const refresh = (): void => {
-			if (!id) {
-				return;
+		const update = (state: PinState): void => {
+			if (isSubscribed) {
+				setStat(state);
 			}
-			dataService.pin.getPinState(id)
-				.then((value) => {
-					if (isUnmountedRef.current) {
-						return;
-					}
-					setStat(value);
-
-				});
 		};
 
-		if (id) {
-			dataService.pin.subscribePinChangeUpdates(id, refresh);
-			refresh();
+		if (id && objType) {
+			subscription = dataService.pin.subscribePinChangeUpdates(id, update);
+			dataService.pin.getPinState(id).then(update);
 		}
 		return (): void => {
-			if (id) {
-				dataService.pin.unsubscribePinChangeUpdates(id, refresh);
+			isSubscribed = false;
+			if (id && subscription) {
+				subscription.remove();
 			}
 		};
-	}, [id]);
+	}, [id, objType]);
 
 	return stat;
 }
 
-export function usePinCacheStat(): PinCacheStat | undefined {
-	const [stat, setStat] = useState<PinCacheStat | undefined>();
-	const isUnmountedRef = useRef(true);
+export function useMediaCacheStat(): MediaCacheStat | undefined {
+	const [stat, setStat] = useState<MediaCacheStat | undefined>();
+	//
+	// useEffect(() => {
+	//
+	// 	let isSubscribed = true;
+	//
+	// 	dataService.mediaCacheStat()
+	// 		.then(result => {
+	// 			if (isSubscribed) {
+	// 				setStat(result);
+	// 			}
+	// 		});
+	//
+	// 	return (): void => {
+	// 		isSubscribed = false;
+	// 	};
+	//
+	// }, []);
 
 	useEffect(() => {
-		isUnmountedRef.current = false;
-		return () => {
-			isUnmountedRef.current = true;
-		};
-	}, []);
+		let isSubscribed = true;
 
-	useEffect(() => {
-		const refresh = (): void => {
-			dataService.pin.stat()
+		const update = (): void => {
+			dataService.pin.pinCache.stat()
 				.then(s => {
-					if (isUnmountedRef.current) {
-						return;
+					if (isSubscribed) {
+						setStat(s);
 					}
-					setStat(s);
 				});
 		};
 
-		dataService.pin.subscribeCacheChangeUpdates(refresh);
-		refresh();
+		dataService.pin.pinCache.subscribeCacheChangeUpdates(update);
+		update();
 		return (): void => {
-			dataService.pin.unsubscribeCacheChangeUpdates(refresh);
+			isSubscribed = false;
+			dataService.pin.pinCache.unsubscribeCacheChangeUpdates(update);
 		};
 	}, []);
 
@@ -78,69 +79,74 @@ export function usePinCacheStat(): PinCacheStat | undefined {
 export function usePinnedMedia(): { media: Array<PinMedia>, loading: boolean } {
 	const [media, setMedia] = useState<Array<PinMedia>>([]);
 	const [loading, setLoading] = useState<boolean>(true);
-	const isUnmountedRef = useRef(true);
 
 	useEffect(() => {
-		isUnmountedRef.current = false;
-		return () => {
-			isUnmountedRef.current = true;
-		};
-	}, []);
+		let isSubscribed = true;
 
-	useEffect(() => {
 		const update = (): void => {
-			if (isUnmountedRef.current) {
-				return;
-			}
 			dataService.pin.getPins().then(pins => {
-				if (isUnmountedRef.current) {
-					return;
+				if (isSubscribed) {
+					setMedia(pins);
+					setLoading(false);
 				}
-				setMedia(pins);
-				setLoading(false);
 			});
 		};
 
 		update();
-		dataService.pin.subscribePinsChangeSubscriptions(update);
+		// dataService.mediaCache.subscribePinsChanges(update);
 		return (): void => {
-			dataService.pin.unsubscribePinsChangeSubscriptions(update);
+			isSubscribed = false;
+			// dataService.mediaCache.unsubscribePinsChanges(update);
 		};
 	}, []);
 
 	return {media, loading};
 }
 
-export function usePinnedMediaDownload(id: string): { track?: TrackEntry, download?: Download } {
-	const download = useTrackPlayerDownloadCached(id, dataService.pin.manager);
-	const [track, setTrack] = useState<TrackEntry | undefined>(undefined);
-	const isUnmountedRef = useRef(true);
+export function useDownloads(): Array<DownloadTask> {
+	const [tasks, setTasks] = useState<Array<DownloadTask>>(dataService.pin.pinCache.tasks);
 
 	useEffect(() => {
-		isUnmountedRef.current = false;
-		return () => {
-			isUnmountedRef.current = true;
-		};
-	}, []);
-
-	useEffect(() => {
-		const update = (): void => {
-			if (isUnmountedRef.current) {
-				return;
+		let isSubscribed = true;
+		const update = (list: Array<DownloadTask>): void => {
+			if (isSubscribed) {
+				setTasks(list);
 			}
-			dataService.pin.getPinnedTrack(id).then(t => {
-				if (isUnmountedRef.current) {
-					return;
-				}
-				setTrack(t);
-			});
 		};
 
-		update();
-	}, [download, id]);
+		dataService.pin.pinCache.subscribeTaskUpdates(update);
+		return (): void => {
+			isSubscribed = false;
+			dataService.pin.pinCache.unsubscribeTaskUpdates(update);
+		};
+	}, [tasks]);
 
-	return {download, track};
+
+	return tasks;
 }
+
+export const useDownloadStatus = (id: string): DownloadProgress | undefined => {
+
+	const [downloadProgress, setDownloadProgress] = useState<DownloadProgress | undefined>(
+		dataService.pin.pinCache.getProgress(id)
+	);
+
+	useEffect(() => {
+		let isSubscribed = true;
+		const update = (progress: DownloadProgress): void => {
+			if (isSubscribed) {
+				setDownloadProgress(progress);
+			}
+		};
+		dataService.pin.pinCache.subscribeDownloadUpdates(id, update);
+		return (): void => {
+			isSubscribed = false;
+			dataService.pin.pinCache.unsubscribeDownloadUpdates(id, update);
+		};
+	}, [id]);
+
+	return downloadProgress;
+};
 
 export function usePinnedCount(): number {
 	const [count, setCount] = useState<number>(0);
@@ -164,11 +170,9 @@ export function usePinnedCount(): number {
 				});
 		};
 
-		dataService.pin.subscribePinsChangeSubscriptions(refresh);
+		const subscription = dataService.pin.subscribePinsChangeSubscriptions(refresh);
 		refresh();
-		return (): void => {
-			dataService.pin.unsubscribePinsChangeSubscriptions(refresh);
-		};
+		return (): void => subscription.remove();
 	}, []);
 
 	return count;
