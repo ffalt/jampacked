@@ -1,12 +1,25 @@
-import React from 'react';
+import React, {useCallback} from 'react';
+import {PageHeader} from '../components/PageHeader';
+import {ActiveDownloadItem} from '../components/ActiveDownloadItem';
+import {useDownloads} from '../services/pin-hooks';
+import {DefaultFlatList} from '../components/DefFlatList';
 import {DownloadsRoute, DownloadsRouteProps} from '../navigators/Routing';
-import dataService from '../services/data';
-import {useTrackPlayerCurrentDownloadsCached} from '../services/player-api';
-import {DownloadsPage} from '../components/Downloads';
+import {DownloadTask} from '../services/media-cache.ts';
 
 export const DownloadsActiveScreen: React.FC<DownloadsRouteProps<DownloadsRoute.ACTIVE>> = () => {
-	const downloads = useTrackPlayerCurrentDownloadsCached(dataService.pin.manager);
+	const downloads = useDownloads();
+	const renderItem = useCallback(({item}: { item: DownloadTask }): JSX.Element => (<ActiveDownloadItem item={item}/>), []);
+	const ListHeaderComponent = (<PageHeader title="Active Downloads" subtitle="Pinned Media"/>);
+	const reload = useCallback(() => {
+		//TODO reload active download list
+	}, []);
 	return (
-		<DownloadsPage downloads={downloads} title="Active Downloads"/>
+		<DefaultFlatList
+			items={downloads}
+			renderItem={renderItem}
+			ListHeaderComponent={ListHeaderComponent}
+			loading={false}
+			reload={reload}
+		/>
 	);
 };

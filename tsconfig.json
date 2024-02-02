@@ -8,6 +8,7 @@
   },
   "exclude": [
     "node_modules/*",
+    "modules/*",
     "local/",
     "__tests__/**/*-test.ts",
     "index.js",

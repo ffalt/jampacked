@@ -132,7 +132,7 @@ export class Database {
 	}
 
 	/**
-	 * Treats an where object and returns the query with its parameters
+	 * Treats a where object and returns the query with its parameters
 	 * @param where Where statement
 	 */
 	private buildWhere<T>(where?: WhereStatement<T>): WhereStatementResult {

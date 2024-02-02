@@ -3,7 +3,7 @@ import {ActivityIndicator, Button, StyleSheet, View} from 'react-native';
 import {ThemedText} from './ThemedText';
 import {staticTheme, useTheme} from '../style/theming';
 import dataService from '../services/data';
-import {usePinCacheStat} from '../services/pin-hooks';
+import {useMediaCacheStat} from '../services/pin-hooks';
 
 const styles = StyleSheet.create({
 	container: {
@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
 export const MediaCachingView: React.FC = () => {
 	const [running, setRunning] = useState<boolean>(false);
 	const theme = useTheme();
-	const stat = usePinCacheStat();
+	const stat = useMediaCacheStat();
 
 	const clearMediaCache = useCallback((): void => {
 		setRunning(true);

@@ -7,7 +7,10 @@ import {TrackPlayer, TrackPlayerTrack, State, useTrackPlayerCurrentTrack} from '
 async function buildTrackPlayerTrack(t: TrackEntry): Promise<TrackPlayerTrack> {
 	const headers = dataService.currentUserToken ? {Authorization: `Bearer ${dataService.currentUserToken}`} : undefined;
 	const imageID = t.seriesID ? t.id : (t.albumID || t.id);
-	const url = dataService.jam.stream.streamUrl({id: t.id, format: AudioFormatType.mp3}, !headers);
+	const local = await dataService.pin.isDownloaded(t.id);
+	const url = local ?
+		dataService.pin.pinCache.pathInCache(t.id) :
+		dataService.jam.stream.streamUrl({id: t.id, format: AudioFormatType.mp3}, !headers);
 	return {
 		id: t.id,
 		url,
@@ -35,15 +38,15 @@ export class JamPlayer {
 	}
 
 	static async clearQueue(): Promise<void> {
-		await TrackPlayer.clear();
+		await TrackPlayer.clearQueue();
 	}
 
 	static async addTrackToQueue(track: TrackEntry): Promise<void> {
-		await TrackPlayer.add(await buildTrackPlayerTrack(track));
+		await TrackPlayer.add([await buildTrackPlayerTrack(track)]);
 	}
 
 	static async removeTrackFromQueue(index: number): Promise<void> {
-		await TrackPlayer.remove(index);
+		await TrackPlayer.remove([index]);
 	}
 
 	static async addTracksToQueue(tracks: Array<TrackEntry>): Promise<void> {
@@ -78,7 +81,7 @@ export class JamPlayer {
 
 	static async skipBackward(): Promise<void> {
 		try {
-			await TrackPlayer.seekTo((await TrackPlayer.getPosition()) - 10);
+			await TrackPlayer.seekBy(10);
 		} catch (e) {
 			console.error(e);
 		}
@@ -94,7 +97,7 @@ export class JamPlayer {
 
 	static async toggle(): Promise<void> {
 		try {
-			if (await TrackPlayer.getState() !== State.Playing) {
+			if ((await TrackPlayer.getPlaybackState()).state !== State.Playing) {
 				await TrackPlayer.play();
 			} else {
 				await TrackPlayer.pause();
@@ -115,7 +118,7 @@ export class JamPlayer {
 
 	static async destroy(): Promise<void> {
 		try {
-			await TrackPlayer.destroy();
+			await TrackPlayer.reset(); // TODO: TrackPlayer.destroy(); ?
 		} catch (e) {
 			console.error(e);
 		}
@@ -131,7 +134,7 @@ export class JamPlayer {
 
 	static async skipForward(): Promise<void> {
 		try {
-			await TrackPlayer.seekTo((await TrackPlayer.getPosition()) + 10);
+			await TrackPlayer.seekBy(10);
 		} catch (e) {
 			console.error(e);
 		}
@@ -154,7 +157,7 @@ export class JamPlayer {
 	}
 
 	static async seekPercent(percent: number): Promise<void> {
-		const duration = (await TrackPlayer.getDuration());
+		const duration = (await TrackPlayer.getProgress()).duration;
 		await TrackPlayer.seekTo(duration * percent);
 	}
 
