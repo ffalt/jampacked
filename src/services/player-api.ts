@@ -20,8 +20,6 @@ export async function initPlayer(): Promise<void> {
 			autoUpdateMetadata: true
 		});
 		await TrackPlayer.updateOptions({
-			// stopWithApp: false,
-			// scrobble: true,
 			android: {
 				alwaysPauseOnInterruption: true,
 				appKilledPlaybackBehavior: AppKilledPlaybackBehavior.ContinuePlayback
