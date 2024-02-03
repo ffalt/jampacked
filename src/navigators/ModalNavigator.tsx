@@ -32,7 +32,7 @@ export const ModalNavigator: React.FC = () => {
 
 		return (): void => {
 			isSubscribed = false;
-			subscription.remove(); // Linking.removeEventListener('url', handleUrl);
+			subscription.remove();
 		};
 	}, []);
 
