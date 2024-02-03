@@ -19,7 +19,7 @@ export function usePinState(id?: string, objType?: JamObjectType): PinState | un
 		};
 
 		if (id && objType) {
-			subscription = dataService.pin.subscribePinChangeUpdates(id, update);
+			subscription = dataService.pin.subscribeToPinChanges(id, update);
 			dataService.pin.getPinState(id).then(update);
 		}
 		return (): void => {
@@ -65,11 +65,11 @@ export function useMediaCacheStat(): MediaCacheStat | undefined {
 				});
 		};
 
-		dataService.pin.pinCache.subscribeCacheChangeUpdates(update);
+		const subscription = dataService.pin.pinCache.subscribeCacheChangeUpdates(update);
 		update();
 		return (): void => {
 			isSubscribed = false;
-			dataService.pin.pinCache.unsubscribeCacheChangeUpdates(update);
+			subscription.remove();
 		};
 	}, []);
 
@@ -93,10 +93,10 @@ export function usePinnedMedia(): { media: Array<PinMedia>, loading: boolean } {
 		};
 
 		update();
-		// dataService.mediaCache.subscribePinsChanges(update);
+		const subscription = dataService.pin.subscribeToPinsChanges(update);
 		return (): void => {
 			isSubscribed = false;
-			// dataService.mediaCache.unsubscribePinsChanges(update);
+			subscription.remove();
 		};
 	}, []);
 
@@ -114,10 +114,10 @@ export function useDownloads(): Array<DownloadTask> {
 			}
 		};
 
-		dataService.pin.pinCache.subscribeTaskUpdates(update);
+		const subscription = dataService.pin.pinCache.subscribeTaskUpdates(update);
 		return (): void => {
 			isSubscribed = false;
-			dataService.pin.pinCache.unsubscribeTaskUpdates(update);
+			subscription.remove();
 		};
 	}, [tasks]);
 
@@ -138,10 +138,10 @@ export const useDownloadStatus = (id: string): DownloadProgress | undefined => {
 				setDownloadProgress(progress);
 			}
 		};
-		dataService.pin.pinCache.subscribeDownloadUpdates(id, update);
+		const subscription = dataService.pin.pinCache.subscribeDownloadUpdates(id, update);
 		return (): void => {
 			isSubscribed = false;
-			dataService.pin.pinCache.unsubscribeDownloadUpdates(id, update);
+			subscription.remove();
 		};
 	}, [id]);
 
@@ -170,7 +170,7 @@ export function usePinnedCount(): number {
 				});
 		};
 
-		const subscription = dataService.pin.subscribePinsChangeSubscriptions(refresh);
+		const subscription = dataService.pin.subscribeToPinsChanges(refresh);
 		refresh();
 		return (): void => subscription.remove();
 	}, []);

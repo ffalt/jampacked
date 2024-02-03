@@ -83,10 +83,10 @@ export function useCacheManagement(): [fill: () => void, clear: () => void, stop
 			}
 		};
 
-		dataService.cache.subscribeStateChangeUpdates(update);
+		const subscription = dataService.cache.subscribeStateChangeUpdates(update);
 		return (): void => {
 			isSubscribed = false;
-			dataService.cache.unsubscribeStateChangeUpdates(update);
+			subscription.remove();
 		};
 	}, []);
 

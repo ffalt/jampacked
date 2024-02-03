@@ -11,6 +11,7 @@ import TrackPlayer, {AddTrack,
 	useProgress as useTrackPlayerProgressMS} from 'react-native-track-player';
 import {Platform} from 'react-native';
 import {useEffect, useRef, useState} from 'react';
+import EventEmitter from 'react-native/Libraries/vendor/emitter/EventEmitter';
 
 export async function initPlayer(): Promise<void> {
 	const isRunning = (Platform.OS === 'android') && (await TrackPlayer.isServiceRunning());
@@ -89,9 +90,9 @@ export function useTrackPlayerQueue(): Array<Track> | undefined {
 				})
 				.catch(console.error);
 		};
-		queueChangeEmitter.addListener(update);
+		const subscription = queueChangeEmitter.addListener('queue', update);
 		update();
-		return () => queueChangeEmitter.removeListener(update);
+		return () => subscription.remove();
 	};
 
 	useEffect(() => refresh(), []);
@@ -124,33 +125,21 @@ export function useTrackPlayerCurrentTrackNr(): number | undefined {
 	return trackNr;
 }
 
-class Emitter {
-	listeners: ((...params: any[]) => void)[] = [];
-
-	addListener(listener: (...params: any[]) => void): void {
-		this.listeners.push(listener);
-	}
-
-	removeListener(listener: (...params: any[]) => void): void {
-		this.listeners = this.listeners.filter(value => value === listener);
-	}
-
-	emit<T = any>(...params: T[]): void {
-		this.listeners.forEach(listener => listener(...params));
-	}
-}
-
-const queueChangeEmitter = new Emitter();
+const queueChangeEmitter = new EventEmitter();
 
 async function add(tracks: AddTrack[], insertBeforeIndex?: number): Promise<number | void> {
 	const result = await TrackPlayer.add(tracks, insertBeforeIndex);
-	queueChangeEmitter.emit();
+	notifyQueueChange();
 	return result;
 }
 
 async function remove(indexes: number[]): Promise<void> {
 	await TrackPlayer.remove(indexes);
-	queueChangeEmitter.emit();
+	notifyQueueChange();
+}
+
+function notifyQueueChange(): void {
+	queueChangeEmitter.emit('queue');
 }
 
 async function isPlaying(): Promise<boolean> {
@@ -176,17 +165,17 @@ async function shuffle(): Promise<void> {
 		queue[swapIndex] = item;
 	}
 	await TrackPlayer.setQueue(queue);
-	queueChangeEmitter.emit();
+	notifyQueueChange();
 }
 
 async function clearQueue(): Promise<void> {
 	await TrackPlayer.setQueue([]);
-	queueChangeEmitter.emit();
+	notifyQueueChange();
 }
 
 async function reset(): Promise<void> {
 	await TrackPlayer.reset();
-	queueChangeEmitter.emit();
+	notifyQueueChange();
 }
 
 class TrackPlayerExt {
