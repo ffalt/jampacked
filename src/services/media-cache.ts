@@ -61,15 +61,8 @@ export class MediaCache {
 		return (await this.stat()).files;
 	}
 
-	async clearTasks(): Promise<void> {
-		this.tasks.forEach(task => task.stop());
-		this.tasks = [];
-	}
-
 	async clear(): Promise<void> {
-		console.log('clear');
 		await RNFS.unlink(this.cachePath());
-		await this.clearTasks();
 		await this.initCachePath();
 		this.notifyCacheChange();
 	}

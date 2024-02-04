@@ -5,6 +5,9 @@ import {NativeModules} from 'react-native';
 
 jest.mock('./node_modules/react-native/Libraries/EventEmitter/NativeEventEmitter.js');
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+require('react-native-reanimated/lib/module/reanimated2/jestUtils').setUpTests();
+
 // react-native-background-downloader
 NativeModules.RNBackgroundDownloader = {
 	addListener: jest.fn(),

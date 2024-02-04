@@ -2,6 +2,7 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {TouchableOpacity, View} from 'react-native';
 import {ThemedText} from './ThemedText';
 import {ThemedIcon} from './ThemedIcon';
+import {CircularProgress} from './CircularProgress';
 import {useDownloadStatus} from '../services/pin-hooks';
 import {sharedStyles} from '../style/shared';
 import {DownloadTask} from '../services/media-cache.ts';
@@ -44,7 +45,11 @@ export const ActiveDownloadItem: React.FC<{ item: DownloadTask }> = React.memo((
 	return (
 		<View style={sharedStyles.item}>
 			<View style={sharedStyles.itemSectionLeft}>
-				<ThemedText style={sharedStyles.itemFooterText}>{state.percent}</ThemedText>
+				<CircularProgress
+					size={26}
+					strokeWidth={2}
+					progress={state.percent}
+				/>
 			</View>
 			<View style={sharedStyles.itemContent}>
 				<ThemedText style={sharedStyles.itemText} numberOfLines={1}>{state.text}</ThemedText>
