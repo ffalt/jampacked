@@ -1,11 +1,9 @@
 import {TrackPlayer, Event, TrackPlayerPlaybackState, State, TrackPlayerTrack} from './player-api';
-import EventEmitter from 'react-native/Libraries/vendor/emitter/EventEmitter';
-import {EventSubscription} from 'react-native';
 
 export type ScrobbleListener = (track: TrackPlayerTrack) => void;
 
 export class Scrobble {
-	subscriptions = new EventEmitter();
+	listeners: ScrobbleListener[] = [];
 	scrobbleTrackID?: string;
 	scrobbleTrigger: number = -1;
 	scrobbleDuration: number = 0;
@@ -17,10 +15,15 @@ export class Scrobble {
 		this.register();
 	}
 
-	static addScrobbleListener = (listener: ScrobbleListener): EventSubscription => scrobble.addListener(listener);
+	static addScrobbleListener = (listener: ScrobbleListener): void => scrobble.addListener(listener);
+	static removeScrobbleListener = (listener: ScrobbleListener): void => scrobble.removeListener(listener);
 
-	addListener(listener: ScrobbleListener): EventSubscription {
-		return this.subscriptions.addListener('scrobble', listener);
+	addListener(listener: ScrobbleListener): void {
+		this.listeners.push(listener);
+	}
+
+	removeListener(listener: ScrobbleListener): void {
+		this.listeners = this.listeners.filter(value => value === listener);
 	}
 
 	stopScrobble(): void {
@@ -91,7 +94,7 @@ export class Scrobble {
 	}
 
 	emit(track: TrackPlayerTrack): void {
-		this.subscriptions.emit('scrobble', track);
+		this.listeners.forEach(listener => listener(track));
 	}
 }
 

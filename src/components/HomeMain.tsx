@@ -27,10 +27,10 @@ export const HomeMain: React.FC = () => {
 			}
 		};
 
-		const subscription = dataService.cache.subscribeHomeDataChangeUpdates(update);
+		dataService.cache.subscribeHomeDataChangeUpdates(update);
 		return (): void => {
 			isSubscribed = false;
-			subscription.remove();
+			dataService.cache.unsubscribeHomeDataChangeUpdates(update);
 		};
 	}, [getHomeData]);
 
@@ -54,9 +54,9 @@ export const HomeMain: React.FC = () => {
 			)}
 		>
 			<Stats stats={homeData?.stats} label="Library"/>
+			<HomeAppSection/>
 			<HomeDataSection homeData={homeData?.homeData}/>
 			<HomeUserSection userData={homeData?.user}/>
-			<HomeAppSection/>
 		</ScrollView>
 	);
 };

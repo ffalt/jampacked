@@ -22,7 +22,6 @@ function scrobble(track: TrackPlayerTrack): void {
 
 export default async function playbackService(): Promise<void> {
 	Scrobble.addScrobbleListener(scrobble);
-	TrackPlayer.addEventListener(Event.PlaybackQueueEnded, () => JamPlayer.stop());
 	TrackPlayer.addEventListener(Event.RemotePlay, () => JamPlayer.play());
 	TrackPlayer.addEventListener(Event.RemotePause, () => JamPlayer.pause());
 	TrackPlayer.addEventListener(Event.RemoteNext, () => JamPlayer.skipToNext());

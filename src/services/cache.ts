@@ -6,8 +6,6 @@ import {snackSuccess} from './snack';
 import {DocumentNode} from 'graphql';
 import {buildCacheID} from './cache-query';
 import {OperationVariables} from '@apollo/client/core/types';
-import EventEmitter from 'react-native/Libraries/vendor/emitter/EventEmitter';
-import {EventSubscription} from 'react-native';
 
 export interface CacheState {
 	isRunning: boolean;
@@ -17,7 +15,8 @@ export interface CacheState {
 
 export class CacheService {
 	version = 11;
-	private subscriptions = new EventEmitter();
+	private stateSubscriptions: Array<(state: CacheState) => void> = [];
+	private homeDataSubscriptions: Array<() => void> = [];
 	state: CacheState = {
 		isRunning: false,
 		isStopped: false,
@@ -125,7 +124,9 @@ export class CacheService {
 
 	private notifyState(state: CacheState): void {
 		this.state = state;
-		this.subscriptions.emit('state', state);
+		for (const update of this.stateSubscriptions) {
+			update(state);
+		}
 	}
 
 	async fill(): Promise<void> {
@@ -253,17 +254,27 @@ snackSuccess('Cache optimized');
 		this.notifyState({...this.state, isStopped: true});
 	}
 
-	subscribeStateChangeUpdates(update: (state: CacheState) => void): EventSubscription {
-		return this.subscriptions.addListener('state', update);
+	subscribeStateChangeUpdates(update: (state: CacheState) => void): void {
+		this.stateSubscriptions.push(update);
+	}
+
+	unsubscribeStateChangeUpdates(update: (state: CacheState) => void): void {
+		this.stateSubscriptions = this.stateSubscriptions.filter(u => u !== update);
 	}
 
 	async updateHomeData(): Promise<void> {
 		await this.remove('HomeResult');
 		await this.remove('UserResult');
-		return this.subscriptions.emit('home');
+		for (const update of this.homeDataSubscriptions) {
+			update();
+		}
 	}
 
-	subscribeHomeDataChangeUpdates(update: () => void): EventSubscription {
-		return this.subscriptions.addListener('home', update);
+	subscribeHomeDataChangeUpdates(update: () => void): void {
+		this.homeDataSubscriptions.push(update);
+	}
+
+	unsubscribeHomeDataChangeUpdates(update: () => void): void {
+		this.homeDataSubscriptions = this.homeDataSubscriptions.filter(u => u !== update);
 	}
 }

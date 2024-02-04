@@ -146,11 +146,11 @@ export class PinService {
 		const update = (tasks: Array<DownloadTask>): void => {
 			const task = tasks.find(t => waitForIDs.includes(t.id));
 			if (!task || tasks.length === 0) {
-				subscription.remove();
+				this.pinCache.unsubscribeTaskUpdates(update);
 				this.notifyPinChange(id, {active: false, pinned: true});
 			}
 		};
-		const subscription = this.pinCache.subscribeTaskUpdates(update);
+		this.pinCache.subscribeTaskUpdates(update);
 	}
 
 	async unpin(id: string): Promise<void> {
@@ -171,12 +171,8 @@ export class PinService {
 		this.pinChangeEmitter.emit(id, state);
 	}
 
-	subscribeToPinChanges(id: string, update: (state: PinState) => void): EmitterSubscription {
+	subscribePinChangeUpdates(id: string, update: (state: PinState) => void): EmitterSubscription {
 		return this.pinChangeEmitter.addListener(id, update);
-	}
-
-	subscribeToPinsChanges(listener: () => void): EmitterSubscription {
-		return this.pinsChangeEmitter.addListener('pin', listener);
 	}
 
 	async clearPins(): Promise<void> {
@@ -187,5 +183,9 @@ export class PinService {
 	async getPins(): Promise<Array<PinMedia>> {
 		const docs = await this.getPinDocs<PinMedia>();
 		return docs.map(doc => doc.data);
+	}
+
+	subscribePinsChangeSubscriptions(listener: () => void): EmitterSubscription {
+		return this.pinsChangeEmitter.addListener('pin', listener);
 	}
 }

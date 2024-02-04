@@ -1,8 +1,6 @@
 import RNBackgroundDownloader, {DownloadOption as DownloaderOption, DownloadTask as DownloaderTask} from '@kesha-antonov/react-native-background-downloader';
 import RNFS from 'react-native-fs';
 import {humanFileSize} from '../utils/filesize.utils';
-import EventEmitter from 'react-native/Libraries/vendor/emitter/EventEmitter';
-import {EventSubscription} from 'react-native';
 
 export interface MediaCacheStat {
 	files: number;
@@ -17,8 +15,9 @@ export interface DownloadProgress {
 
 export class MediaCache {
 	tasks: Array<DownloadTask> = [];
-	private downloadSubscriptions = new EventEmitter();
-	private downloadsSubscriptions = new EventEmitter();
+	private downloadSubscriptions = new Map<string, Array<(progress: DownloadProgress) => void>>();
+	private downloadsSubscriptions: Array<(tasks: Array<DownloadTask>) => void> = [];
+	private cacheChangeSubscriptions: Array<() => void> = [];
 
 	async init(): Promise<void> {
 		const lostTasks = await RNBackgroundDownloader.checkForExistingDownloads();
@@ -68,8 +67,9 @@ export class MediaCache {
 	}
 
 	async clear(): Promise<void> {
-		await this.clearTasks();
+		console.log('clear');
 		await RNFS.unlink(this.cachePath());
+		await this.clearTasks();
 		await this.initCachePath();
 		this.notifyCacheChange();
 	}
@@ -125,16 +125,20 @@ export class MediaCache {
 			});
 	}
 
-	subscribeTaskUpdates(update: (tasks: Array<DownloadTask>) => void): EventSubscription {
-		return this.downloadsSubscriptions.addListener('tasks', update);
+	subscribeTaskUpdates(update: (tasks: Array<DownloadTask>) => void): void {
+		this.downloadsSubscriptions.push(update);
 	}
 
-	subscribeCacheChangeUpdates(update: () => void): EventSubscription {
-		return this.downloadsSubscriptions.addListener('cache', update);
+	unsubscribeTaskUpdates(update: (tasks: Array<DownloadTask>) => void): void {
+		this.downloadsSubscriptions = this.downloadsSubscriptions.filter(u => u !== update);
 	}
 
-	subscribeDownloadUpdates(id: string, update: (progress: DownloadProgress) => void): EventSubscription {
-		return this.downloadSubscriptions.addListener(id, update);
+	subscribeCacheChangeUpdates(update: () => void): void {
+		this.cacheChangeSubscriptions.push(update);
+	}
+
+	unsubscribeCacheChangeUpdates(update: () => void): void {
+		this.cacheChangeSubscriptions = this.cacheChangeSubscriptions.filter(u => u !== update);
 	}
 
 	getProgress(id: string): DownloadProgress | undefined {
@@ -158,16 +162,40 @@ export class MediaCache {
 	}
 
 	private notifyTaskChange(task: DownloadTask): void {
-		this.downloadSubscriptions.emit(task.id, {task});
+		const array = this.downloadSubscriptions.get(task.id) || [];
+		const progress = {task};
+		array.forEach(update => {
+			update(progress);
+		});
 	}
 
 	private notifyCacheChange(): void {
-		this.downloadsSubscriptions.emit('cache');
+		this.cacheChangeSubscriptions.forEach(update => {
+			update();
+		});
 	}
 
 	private notifyTasksChange(): void {
 		const list = this.tasks.slice(0);
-		this.downloadsSubscriptions.emit('tasks', list);
+		this.downloadsSubscriptions.forEach(update => {
+			update(list);
+		});
+	}
+
+	subscribeDownloadUpdates(id: string, update: (progress: DownloadProgress) => void): void {
+		const array = this.downloadSubscriptions.get(id) || [];
+		array.push(update);
+		this.downloadSubscriptions.set(id, array);
+	}
+
+	unsubscribeDownloadUpdates(id: string, update: (progress: DownloadProgress) => void): void {
+		let array = this.downloadSubscriptions.get(id) || [];
+		array = array.splice(array.indexOf(update), 1);
+		if (array.length === 0) {
+			this.downloadSubscriptions.delete(id);
+		} else {
+			this.downloadSubscriptions.set(id, array);
+		}
 	}
 }
 
