@@ -47,7 +47,7 @@ export function useCacheOrLazyQuery<TData, TVariables extends OperationVariables
 
 	useEffect(() => {
 		if (queryData) {
-			const r = transform(queryData, variables as TVariables);
+			const r = transform(queryData, variables);
 			if (id && r) {
 				setResult(r);
 				dataService.cache.setData(id, r);

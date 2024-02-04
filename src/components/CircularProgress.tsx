@@ -2,8 +2,6 @@ import * as React from 'react';
 import {useEffect, useState} from 'react';
 import {StyleSheet} from 'react-native';
 import Svg, {Circle, Defs, LinearGradient, Stop} from 'react-native-svg';
-
-// @ts-expect-error: function multiply is not in types for react-native-reanimated
 import Animated, {interpolate, multiply} from 'react-native-reanimated';
 
 interface CircularProgressProps {
@@ -19,7 +17,6 @@ export const CircularProgress: React.FC<CircularProgressProps> = React.memo((
 	{progress = 0, size, strokeWidth}) => {
 	const [state, setState] = useState<{
 		strokeDasharray: string;
-		// @ts-expect-error: Animated.Node is not in types for react-native-reanimated
 		strokeDashoffset: Animated.Node<number> | number;
 		r: number,
 		cx: number,

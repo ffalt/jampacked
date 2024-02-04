@@ -13,14 +13,14 @@ const styles = StyleSheet.create({
 
 export const PlayerProgress: React.FC = () => {
 	const theme = useTheme();
-	const pc = useTrackPlayerProgressPercent(300);
+	const {progress} = useTrackPlayerProgressPercent(300);
 	return (
 		<Slider
 			thumbTintColor={theme.sliderHandle}
 			maximumTrackTintColor={theme.inactiveTintColor}
 			minimumTrackTintColor={theme.activeTintColor}
 			style={styles.slider}
-			value={pc}
+			value={progress}
 			step={0.001}
 			onSlidingComplete={JamPlayer.seekPercent}
 		/>

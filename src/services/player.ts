@@ -35,15 +35,15 @@ export class JamPlayer {
 	}
 
 	static async clearQueue(): Promise<void> {
-		await TrackPlayer.clearQueue();
+		await TrackPlayer.clear();
 	}
 
 	static async addTrackToQueue(track: TrackEntry): Promise<void> {
-		await TrackPlayer.add([await buildTrackPlayerTrack(track)]);
+		await TrackPlayer.add(await buildTrackPlayerTrack(track));
 	}
 
 	static async removeTrackFromQueue(index: number): Promise<void> {
-		await TrackPlayer.remove([index]);
+		await TrackPlayer.remove(index);
 	}
 
 	static async addTracksToQueue(tracks: Array<TrackEntry>): Promise<void> {
@@ -78,7 +78,7 @@ export class JamPlayer {
 
 	static async skipBackward(): Promise<void> {
 		try {
-			await TrackPlayer.seekBy(10);
+			await TrackPlayer.seekTo((await TrackPlayer.getPosition()) - 10);
 		} catch (e) {
 			console.error(e);
 		}
@@ -94,7 +94,7 @@ export class JamPlayer {
 
 	static async toggle(): Promise<void> {
 		try {
-			if ((await TrackPlayer.getPlaybackState()).state !== State.Playing) {
+			if (await TrackPlayer.getState() !== State.Playing) {
 				await TrackPlayer.play();
 			} else {
 				await TrackPlayer.pause();
@@ -115,7 +115,7 @@ export class JamPlayer {
 
 	static async destroy(): Promise<void> {
 		try {
-			await TrackPlayer.reset(); // TODO: TrackPlayer.destroy(); ?
+			await TrackPlayer.destroy();
 		} catch (e) {
 			console.error(e);
 		}
@@ -131,7 +131,7 @@ export class JamPlayer {
 
 	static async skipForward(): Promise<void> {
 		try {
-			await TrackPlayer.seekBy(10);
+			await TrackPlayer.seekTo((await TrackPlayer.getPosition()) + 10);
 		} catch (e) {
 			console.error(e);
 		}
@@ -154,7 +154,7 @@ export class JamPlayer {
 	}
 
 	static async seekPercent(percent: number): Promise<void> {
-		const duration = (await TrackPlayer.getProgress()).duration;
+		const duration = (await TrackPlayer.getDuration());
 		await TrackPlayer.seekTo(duration * percent);
 	}
 

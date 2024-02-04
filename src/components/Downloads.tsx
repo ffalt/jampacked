@@ -1,21 +1,21 @@
 import React, {useCallback} from 'react';
-import {PageHeader} from './PageHeader';
-import {ActiveDownloadItem} from './ActiveDownloadItem';
-import {DefaultFlatList} from './DefFlatList';
+import {PageHeader} from '../components/PageHeader';
+import {ActiveDownloadItem} from '../components/ActiveDownloadItem';
+import {DefaultFlatList} from '../components/DefFlatList';
 import {View} from 'react-native';
-import {ClickLabelIcon} from './ClickLabelIcon';
+import {TrackPlayer, Download, useTrackPlayerDownloadsPaused} from '../services/player-api';
+import {ClickLabelIcon} from '../components/ClickLabelIcon';
 import {sharedStyles} from '../style/shared';
-import {Download, pauseDownloads, resumeDownloads, useTrackPlayerDownloadsPaused} from '../services/downloader-api';
 
 export const DownloadsPage: React.FC<{ downloads?: Array<Download>, title: string }> = ({downloads, title}) => {
 	const paused = useTrackPlayerDownloadsPaused();
-	const renderItem = useCallback(({item}: { item: Download }): React.JSX.Element => (<ActiveDownloadItem item={item}/>), []);
+	const renderItem = useCallback(({item}: { item: Download }):React.JSX.Element => (<ActiveDownloadItem item={item}/>), []);
 
 	const handlePauseToggle = useCallback((): void => {
 		if (paused) {
-			resumeDownloads().catch(console.error);
+			TrackPlayer.resumeDownloads().catch(console.error);
 		} else {
-			pauseDownloads().catch(console.error);
+			TrackPlayer.pauseDownloads().catch(console.error);
 		}
 	}, [paused]);
 

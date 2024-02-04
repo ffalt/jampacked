@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useState} from 'react';
 import {FlatList, RefreshControl, StyleSheet} from 'react-native';
 import {useTheme} from '../style/theming';
 import {PageHeader} from './PageHeader';
@@ -34,7 +34,7 @@ export const BaseEntryList: React.FC<{
 	onRefresh: () => void;
 	onLoadMore: () => void;
 }> = ({info, entries, refreshing, onRefresh, onLoadMore, goLeft, goRight}) => {
-	const tiles = false; //[tiles, setTiles] = useState<boolean>(false);
+	const [tiles, setTiles] = useState<boolean>(false);
 	const numColumns = 3;
 	const width = useWindowWidth();
 	const tileSize = width / (numColumns || 1);
@@ -48,7 +48,7 @@ export const BaseEntryList: React.FC<{
 
 	if (tiles) {
 		return (
-			<FlatList<BaseEntry>
+			<FlatList
 				data={entries || []}
 				key="index"
 				renderItem={renderItemTile}

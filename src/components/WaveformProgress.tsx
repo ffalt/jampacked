@@ -5,7 +5,7 @@ import {SoundCloudWave} from './Waveform';
 import {Jam} from '../services/jam';
 import {StyleProp, ViewStyle} from 'react-native';
 import {useWindowWidth} from '../utils/dimension.hook';
-import {useTrackPlayerProgressMS} from '../services/player-api';
+import {useTrackPlayerProgressPercent} from '../services/player-api';
 
 interface WaveformProgressProps {
 	waveform?: Jam.WaveFormData;
@@ -13,7 +13,7 @@ interface WaveformProgressProps {
 }
 
 export const WaveformProgress: React.FC<WaveformProgressProps> = ({waveform, style}) => {
-	const progress = useTrackPlayerProgressMS();
+	const {progress, bufferProgress} = useTrackPlayerProgressPercent();
 	const theme = useTheme();
 	const dimensionsWidth = useWindowWidth();
 
@@ -27,8 +27,8 @@ export const WaveformProgress: React.FC<WaveformProgressProps> = ({waveform, sty
 			waveform={waveform}
 			width={dimensionsWidth}
 			height={50}
-			percentPlayable={progress.buffered / progress.duration}
-			percentPlayed={progress.position / progress.duration}
+			percentPlayable={bufferProgress}
+			percentPlayed={progress}
 			style={style}
 			colors={theme.waveform}
 			setTime={setTime}

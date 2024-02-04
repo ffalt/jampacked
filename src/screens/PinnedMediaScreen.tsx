@@ -8,9 +8,9 @@ import {SectionListData, TouchableOpacity} from 'react-native';
 import {TrackDisplay, TrackItem} from '../components/TrackItem';
 import {DefaultSectionList} from '../components/DefSectionList';
 import {Separator} from '../components/Separator';
+import {downloadStateToString, useTrackPlayerDownloadCached} from '../services/player-api';
 import dataService from '../services/data';
 import {useTheme} from '../style/theming';
-import {downloadStateToString, useTrackPlayerDownloadCached} from '../services/downloader-api.ts';
 
 export const PinnedTrackItem: React.FC<{ track: TrackEntry }> = React.memo(({track}) => {
 	const download = useTrackPlayerDownloadCached(track.id, dataService.pin.manager);
