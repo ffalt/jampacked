@@ -54,9 +54,9 @@ export const HomeMain: React.FC = () => {
 			)}
 		>
 			<Stats stats={homeData?.stats} label="Library"/>
-			<HomeAppSection/>
 			<HomeDataSection homeData={homeData?.homeData}/>
 			<HomeUserSection userData={homeData?.user}/>
+			<HomeAppSection/>
 		</ScrollView>
 	);
 };

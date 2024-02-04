@@ -105,7 +105,7 @@ export const PlayerStrip: React.FC = () => {
 							disabled={!hasPrevious}
 							fontSize={staticTheme.fontSizeSmall}
 							style={[styles.button, !hasPrevious && styles.disabled]}
-							iconName="backward"
+							iconName="step-backward"
 							onPress={JamPlayer.skipToPrevious}
 						/>
 					</View>

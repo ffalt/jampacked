@@ -71,10 +71,6 @@
 -dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement
 -dontwarn okio.**
 
-# reanimated
-
--keep class com.swmansion.reanimated.** { *; }
-
 # fastimage
 
 -keep public class com.dylanvann.fastimage.* {*;}

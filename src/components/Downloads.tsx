@@ -1,10 +1,10 @@
 import React, {useCallback} from 'react';
-import {PageHeader} from '../components/PageHeader';
-import {ActiveDownloadItem} from '../components/ActiveDownloadItem';
-import {DefaultFlatList} from '../components/DefFlatList';
+import {PageHeader} from './PageHeader';
+import {ActiveDownloadItem} from './ActiveDownloadItem';
+import {DefaultFlatList} from './DefFlatList';
 import {View} from 'react-native';
 import {TrackPlayer, Download, useTrackPlayerDownloadsPaused} from '../services/player-api';
-import {ClickLabelIcon} from '../components/ClickLabelIcon';
+import {ClickLabelIcon} from './ClickLabelIcon';
 import {sharedStyles} from '../style/shared';
 
 export const DownloadsPage: React.FC<{ downloads?: Array<Download>, title: string }> = ({downloads, title}) => {

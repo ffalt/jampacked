@@ -1,13 +1,23 @@
 import React, {useEffect, useState} from 'react';
-import {View} from 'react-native';
+import {DimensionValue, StyleSheet, View} from 'react-native';
 import {ThemedText} from './ThemedText';
-import {CircularProgress} from './CircularProgress';
 import {sharedStyles} from '../style/shared';
 import {Download, downloadStateToString} from '../services/player-api';
 import {usePinnedMediaDownload} from '../services/pin-hooks';
 import {humanFileSize} from '../utils/filesize.utils';
+import {useTheme} from '../style/theming.ts';
+
+const styles = StyleSheet.create({
+	miniProgress: {
+		height: 2
+	},
+	footer: {
+		marginBottom: 5
+	}
+});
 
 export const ActiveDownloadItem: React.FC<{ item: Download }> = React.memo(({item}) => {
+	const theme = useTheme();
 	const [state, setState] = useState<{
 		text: string, state: string, bytes: string,
 		percent: number
@@ -30,25 +40,20 @@ export const ActiveDownloadItem: React.FC<{ item: Download }> = React.memo(({ite
 		});
 	}, [download, item, track]);
 
+	const width: DimensionValue = `${state.percent}%`;
 	return (
 		<View style={sharedStyles.item}>
-			<View style={sharedStyles.itemSectionLeft}>
-				<CircularProgress
-					size={26}
-					strokeWidth={2}
-					progress={state.percent}
-				/>
-			</View>
 			<View style={sharedStyles.itemContent}>
 				<ThemedText style={sharedStyles.itemText} numberOfLines={1}>{state.text}</ThemedText>
-				<View style={sharedStyles.itemFooter}>
+				<View style={[sharedStyles.itemFooter, styles.footer]}>
 					<ThemedText style={sharedStyles.itemFooterText}>{state.state}</ThemedText>
+					<ThemedText style={sharedStyles.itemFooterText}>{state.percent.toFixed(2)}%</ThemedText>
 					<ThemedText style={sharedStyles.itemFooterText}>{state.bytes}</ThemedText>
 				</View>
+				<View style={[styles.miniProgress, {backgroundColor: theme.separator}]}>
+					<View style={[styles.miniProgress, {width, backgroundColor: theme.progress}]}/>
+				</View>
 			</View>
-			{/*<TouchableOpacity onPress={handlePress} style={sharedStyles.itemSectionRight}>*/}
-			{/*	<ThemedIcon name={state.icon}/> */}
-			{/*</TouchableOpacity>*/}
 		</View>
 	);
 });
