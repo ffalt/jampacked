@@ -1,4 +1,5 @@
-import TrackPlayer, {AddTrack,
+// eslint-disable-next-line object-curly-newline
+import TrackPlayer, {
 	AppKilledPlaybackBehavior,
 	Capability,
 	Event,
@@ -8,9 +9,11 @@ import TrackPlayer, {AddTrack,
 	Track,
 	useActiveTrack as useTrackPlayerCurrentTrack,
 	useIsPlaying as useTrackPlayerPlaybackStateIsPlaying,
-	useProgress as useTrackPlayerProgressMS} from 'react-native-track-player';
+	useProgress as useTrackPlayerProgressMS
+} from 'react-native-track-player';
 import {Platform} from 'react-native';
 import {useEffect, useRef, useState} from 'react';
+import type {AddTrack} from 'react-native-track-player/src/interfaces';
 
 export async function initPlayer(): Promise<void> {
 	const isRunning = (Platform.OS === 'android') && (await TrackPlayer.isServiceRunning());
@@ -171,7 +174,7 @@ async function shuffle(): Promise<void> {
 	// Fisher-Yates shuffle
 	for (let i = startIndex; i < length; i++) {
 		const max = i + 1 - startIndex;
-		const randomInt = Math.floor(Math.random() * max);
+		const randomInt = Math.floor(Math.random() * max)
 		const swapIndex = randomInt + startIndex;
 		const item = queue[i];
 		queue[i] = queue[swapIndex];

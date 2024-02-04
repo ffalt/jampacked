@@ -1,46 +1,34 @@
-import React, {useCallback, useEffect, useState} from 'react';
-import {TouchableOpacity, View} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {View} from 'react-native';
 import {ThemedText} from './ThemedText';
-import {ThemedIcon} from './ThemedIcon';
 import {CircularProgress} from './CircularProgress';
-import {useDownloadStatus} from '../services/pin-hooks';
 import {sharedStyles} from '../style/shared';
-import {DownloadTask} from '../services/media-cache.ts';
+import {usePinnedMediaDownload} from '../services/pin-hooks';
+import {humanFileSize} from '../utils/filesize.utils';
+import {Download, downloadStateToString} from '../services/downloader-api.ts';
 
-export const ActiveDownloadItem: React.FC<{ item: DownloadTask }> = React.memo(({item}) => {
+export const ActiveDownloadItem: React.FC<{ item: Download }> = React.memo(({item}) => {
 	const [state, setState] = useState<{
-		text: string, state: string, icon: string, percent: number }>({
+		text: string, state: string, bytes: string,
+		percent: number
+	}>({
 		text: '',
 		state: '',
-		icon: 'download',
+		bytes: '',
 		percent: 0
 	});
-	const progress = useDownloadStatus(item.id);
-
-	const handlePress = useCallback((): void => {
-		if (progress) {
-			if (progress.task.state !== 'PAUSED') {
-				progress.task.pause();
-			} else {
-				progress.task.resume();
-			}
-		}
-		// NavigationService.navigateObj(JamObjectType.track, item.id, item.id);
-	}, [progress]);
+	const {download, track} = usePinnedMediaDownload(item.id);
 
 	useEffect(() => {
-		if (!progress) {
-			return;
-		}
-		let percent = progress.task.bytesDownloaded / progress.task.bytesTotal;
-		percent = Math.max(percent || 0, 0);
+		const o = download ? download : item;
+		const percent = Math.max(o.percentDownloaded || 0, 0);
 		setState({
 			percent,
-			text: progress.task.id || '',
-			icon: progress.task.state === 'DOWNLOADING' ? 'pause' : 'download',
-			state: (progress.task.state || '') + (percent > 0 ? ` (${(percent * 100).toFixed(0)}%)` : '')
+			bytes: `${humanFileSize(o.bytesDownloaded)}`,
+			text: !track ? 'Loading' : ([track.album, track.title].join('-')),
+			state: downloadStateToString(o.state)
 		});
-	}, [progress]);
+	}, [download, item, track]);
 
 	return (
 		<View style={sharedStyles.item}>
@@ -55,11 +43,12 @@ export const ActiveDownloadItem: React.FC<{ item: DownloadTask }> = React.memo((
 				<ThemedText style={sharedStyles.itemText} numberOfLines={1}>{state.text}</ThemedText>
 				<View style={sharedStyles.itemFooter}>
 					<ThemedText style={sharedStyles.itemFooterText}>{state.state}</ThemedText>
+					<ThemedText style={sharedStyles.itemFooterText}>{state.bytes}</ThemedText>
 				</View>
 			</View>
-			<TouchableOpacity onPress={handlePress} style={sharedStyles.itemSectionRight}>
-				<ThemedIcon name={state.icon}/>
-			</TouchableOpacity>
+			{/*<TouchableOpacity onPress={handlePress} style={sharedStyles.itemSectionRight}>*/}
+			{/*	<ThemedIcon name={state.icon}/> */}
+			{/*</TouchableOpacity>*/}
 		</View>
 	);
 });

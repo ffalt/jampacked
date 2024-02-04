@@ -67,7 +67,7 @@ export const AlbumScreen: React.FC<AlbumRouteProps<AlbumRoute.MAIN>> = () => {
 		headerTitleCmds={
 			<>
 				<ClickIcon style={objHeaderStyles.button} fontSize={objHeaderStyles.buttonIcon.fontSize} iconName="play" onPress={playTracks}/>
-				<PinIcon style={objHeaderStyles.button} fontSize={objHeaderStyles.buttonIcon.fontSize} objType={JamObjectType.album} id={id}/>
+				{/*<PinIcon style={objHeaderStyles.button} fontSize={objHeaderStyles.buttonIcon.fontSize} objType={JamObjectType.album} id={id}/>*/}
 				<FavIcon style={objHeaderStyles.button} fontSize={objHeaderStyles.buttonIcon.fontSize} objType={JamObjectType.album} id={id}/>
 			</>
 		}

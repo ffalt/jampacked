@@ -7,10 +7,7 @@ import {TrackPlayer, TrackPlayerTrack, State, useTrackPlayerCurrentTrack} from '
 async function buildTrackPlayerTrack(t: TrackEntry): Promise<TrackPlayerTrack> {
 	const headers = dataService.currentUserToken ? {Authorization: `Bearer ${dataService.currentUserToken}`} : undefined;
 	const imageID = t.seriesID ? t.id : (t.albumID || t.id);
-	const local = await dataService.pin.isDownloaded(t.id);
-	const url = local ?
-		dataService.pin.pinCache.pathInCache(t.id) :
-	    dataService.jam.stream.streamUrl({id: t.id, format: AudioFormatType.mp3}, !headers);
+	const url = dataService.jam.stream.streamUrl({id: t.id, format: AudioFormatType.mp3}, !headers);
 	return {
 		id: t.id,
 		url,

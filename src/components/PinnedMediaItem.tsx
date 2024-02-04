@@ -19,7 +19,7 @@ export const PinnedMediaItem: React.FC<{ item: PinMedia }> = React.memo(({item})
 					<ThemedText style={sharedStyles.itemFooterText}>Tracks: {item.tracks.length}</ThemedText>
 				</View>
 			</View>
-			<PinIcon style={sharedStyles.itemButton} fontSize={sharedStyles.itemButtonIcon.fontSize} objType={item.objType} id={item.id}/>
+			{/*<PinIcon style={sharedStyles.itemButton} fontSize={sharedStyles.itemButtonIcon.fontSize} objType={item.objType} id={item.id}/>*/}
 		</View>
 	);
 });
