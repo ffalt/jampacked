@@ -8,7 +8,6 @@ import {AuthContext, defaultAuth} from '../services/auth';
 import RNBootSplash from 'react-native-bootsplash';
 import {useThemeContext} from '../style/theming';
 import {ModalNavigator} from './ModalNavigator';
-import {initPlayer} from '../services/player-api.ts';
 
 const Stack = createNativeStackNavigator<AppStackNavigatorParamList>();
 
@@ -33,10 +32,6 @@ export const AppNavigator: React.FC = () => {
 			setAuth(prev => ({...prev, hasUser: false, user: undefined}));
 		}
 	});
-
-	useEffect(() => {
-		initPlayer().catch(console.error);
-	}, []);
 
 	useEffect(() => {
 		let isSubscribed = true;
@@ -68,7 +63,7 @@ export const AppNavigator: React.FC = () => {
 		}
 	}, [isLoading]);
 
-	let screen: React.JSX.Element;
+	let screen:React.JSX.Element;
 	if (isLoading || isChecking) {
 		screen = <Stack.Screen name={AppRouting.LOAD} component={LoadingScreen}/>;
 	} else if (auth.hasUser) {
