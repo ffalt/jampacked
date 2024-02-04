@@ -4,12 +4,11 @@ module.exports = {
 		'node_modules/(?!(' +
 		'react-native' +
 		'|@react-native' +
-		'|@kesha-antonov/react-native-background-downloader' +
 		'|react-native-snackbar' +
 		'|react-native-reanimated' +
 		'|react-native-status-bar-height' +
-		'|react-native-floating-action' +
 		'|react-native-track-player' +
+		'|react-native-floating-action' +
 		'|d3-array' +
 		'|d3-color' +
 		'|d3-format' +

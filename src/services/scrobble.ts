@@ -14,7 +14,6 @@ export class Scrobble {
 	constructor() {
 		this.register();
 	}
-
 	static addScrobbleListener = (listener: ScrobbleListener): void => scrobble.addListener(listener);
 	static removeScrobbleListener = (listener: ScrobbleListener): void => scrobble.removeListener(listener);
 
