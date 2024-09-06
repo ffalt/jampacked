@@ -1,4 +1,3 @@
-// eslint-disable-next-line object-curly-newline
 import {
 	Capability,
 	State,
@@ -19,7 +18,6 @@ import {
 	useTrackPlayerCurrentTrackNr,
 	useTrackPlayerQueue,
 	useTrackPlayerPlaybackStateIsPlaying
-// eslint-disable-next-line object-curly-newline
 } from 'react-native-track-player';
 import TrackPlayer from 'react-native-track-player';
 import {Platform} from 'react-native';

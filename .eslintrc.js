@@ -45,8 +45,10 @@ module.exports = {
 		"comma-dangle": ["error", {"functions": "ignore"}],
 		"max-len": ["warn", 200],
 		// "no-console": "off",
-		"no-console": ["error", {allow: ["warn", "error"]}],
-		"object-curly-newline": ["error", {ImportDeclaration: "never"}],
+		"no-console": ["error", {"allow": ["warn", "error"]}],
+		"object-curly-newline": ["error", {
+			"ImportDeclaration": {"multiline": true}
+		}],
 		"prettier/prettier": "off"
 	},
 	"overrides": [

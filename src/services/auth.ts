@@ -29,8 +29,7 @@ export const defaultAuth: Auth = {
 			priority: FastImage.priority.normal
 		};
 	},
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	login: async (server: string, name: string, password: string): Promise<void> => {
+	login: async (_server: string, _name: string, _password: string): Promise<void> => {
 		// dummy
 	},
 	logout: async (): Promise<void> => {
