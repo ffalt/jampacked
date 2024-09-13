@@ -2,14 +2,16 @@ import {DocumentNode, useLazyQuery, ApolloError} from '@apollo/client';
 import {JamObjectType} from '../jam';
 import {useCallback, useEffect, useState} from 'react';
 import {SearchResultData} from '../types';
-import {SearchAlbumsResultDocument, SearchAlbumsResultQuery, SearchAlbumsResultQueryVariables,
+import {
+	SearchAlbumsResultDocument, SearchAlbumsResultQuery, SearchAlbumsResultQueryVariables,
 	SearchArtistsResultDocument, SearchArtistsResultQuery, SearchArtistsResultQueryVariables,
 	SearchEpisodesResultDocument, SearchEpisodesResultQuery, SearchEpisodesResultQueryVariables,
 	SearchFoldersResultDocument, SearchFoldersResultQuery, SearchFoldersResultQueryVariables,
 	SearchPlaylistsResultDocument, SearchPlaylistsResultQuery, SearchPlaylistsResultQueryVariables,
 	SearchPodcastsResultDocument, SearchPodcastsResultQuery, SearchPodcastsResultQueryVariables,
 	SearchSeriesResultDocument, SearchSeriesResultQuery, SearchSeriesResultQueryVariables,
-	SearchTracksResultDocument, SearchTracksResultQuery, SearchTracksResultQueryVariables} from './search.api';
+	SearchTracksResultDocument, SearchTracksResultQuery, SearchTracksResultQueryVariables
+} from './search.api';
 
 interface SearchPage<T> {
 	total: number;

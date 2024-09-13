@@ -58,7 +58,6 @@ export const App: React.FC = () => {
 		return (): void => {
 			setAppAvailable(false);
 		};
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	if (!client) {

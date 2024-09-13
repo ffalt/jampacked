@@ -1,5 +1,5 @@
-/* eslint-disable no-undef */
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import '@testing-library/react-native/extend-expect';
 
 import {NativeModules} from 'react-native';
 
@@ -10,8 +10,6 @@ NativeModules.RNSnackbar = {
 	LENGTH_LONG: 0
 };
 
-// react-native-track-player
-// NativeModules.TrackPlayerModule = {};
 jest.mock('react-native-track-player', () => ({
 	__esModule: true,
 	default: {
@@ -56,11 +54,12 @@ jest.mock('react-native-track-player', () => ({
 jest.mock('react-native-bootsplash', () => {
 	return {RNBootSplash: jest.fn()};
 });
-// react-native-screens
+
 jest.mock('react-native-screens', () => ({
-	...jest.requireActual('react-native-screens'),
+	...jest.requireActual('react-native-screens').default,
 	enableScreens: jest.fn()
 }));
+
 jest.mock('react-native-sqlite-storage', () => ({
 	DEBUG: jest.fn,
 	enablePromise: jest.fn(),

@@ -6,6 +6,7 @@ module.exports = {
 		'|@react-native' +
 		'|react-native-snackbar' +
 		'|react-native-status-bar-height' +
+		'|react-native-screens' +
 		'|react-native-track-player' +
 		'|react-native-floating-action' +
 		'|d3-array' +

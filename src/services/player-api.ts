@@ -33,6 +33,7 @@ export async function initPlayer(): Promise<void> {
 			stopWithApp: false,
 			alwaysPauseOnInterruption: true,
 			scrobble: true,
+			// eslint-disable-next-line @typescript-eslint/no-require-imports
 			icon: require('../assets/images/logo.png'),
 
 			capabilities: [

@@ -18,7 +18,7 @@ export class JamConfigurationService implements JamConfiguration {
 		try {
 			const credentials = await SInfo.getItem(STORE_KEY, this.storeConfig);
 			return credentials ? JSON.parse(credentials) : undefined;
-		} catch (e) {
+		} catch (_) {
 			return;
 		}
 	}

@@ -56,7 +56,6 @@ export async function initApolloClient(dataService: DataService): Promise<JamApo
 	}) as any as ApolloLink;
 
 	const logLink = new ApolloLink((operation: any, forward: any) => {
-		// eslint-disable-next-line no-console
 		console.log('query', operation.operationName, operation.variables);
 		return forward(operation).map((result: any) => {
 			// console.log('stop', operation.operationName);

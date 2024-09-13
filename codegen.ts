@@ -5,7 +5,7 @@ const config: CodegenConfig = {
 	schema: 'schema.graphql',
 	documents: './src/**/*.graphql',
 	hooks: {
-		afterOneFileWrite: ['yarn eslint --fix', 'yarn run codegen:add-header --']
+		afterOneFileWrite: ['node codegen.hook.mjs']
 	},
 	generates: {
 		'./src/services/queries/_types.ts': {

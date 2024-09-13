@@ -165,7 +165,7 @@ export class Database {
 					} else if (p !== null) {
 						try {
 							newParams.push(JSON.stringify(p));
-						} catch (e) {
+						} catch (_) {
 							newParams.push(p);
 						}
 					} else {
@@ -185,6 +185,6 @@ type WhereStatement<T> = {
 };
 
 type WhereStatementResult = {
-	sql: string
-	params: Array<any>
+	sql: string;
+	params: Array<any>;
 };

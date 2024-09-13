@@ -242,7 +242,7 @@ snackSuccess('Cache optimized');
 			await this.dropJamCache();
 			this.notifyState({isRunning: false, message: '', isStopped: false});
 			snackSuccess('Cache cleared');
-		} catch (e) {
+		} catch (_) {
 			this.notifyState({isRunning: false, message: '', isStopped: false});
 		}
 	}
