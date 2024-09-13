@@ -1,5 +1,5 @@
 import React from 'react';
-import FastImage, {ImageStyle} from 'react-native-fast-image';
+import FastImage, {ImageStyle} from '@d11/react-native-fast-image';
 import {StyleProp} from 'react-native';
 import {useAuth} from '../services/auth';
 import {staticTheme} from '../style/theming';

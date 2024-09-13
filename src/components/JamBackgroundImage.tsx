@@ -1,6 +1,6 @@
 import React, {PropsWithChildren} from 'react';
 import {StyleSheet, View} from 'react-native';
-import FastImage from 'react-native-fast-image';
+import FastImage from '@d11/react-native-fast-image';
 import {useAuth} from '../services/auth';
 
 export const FastImageBackground: React.FC<PropsWithChildren<{ id: string, style?: any, imageStyle?: any }>> = ({id, children, style, imageStyle}) => {

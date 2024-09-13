@@ -2,5 +2,5 @@
 <resources>
     <color name="app_bg">#0b1821</color>
     <color name="app_text">#ffffff</color>
-    <color name="bootsplash_background">#0B1821</color>
+    <color name="bootsplash_background">#0b1821</color>
 </resources>

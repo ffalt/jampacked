@@ -1,7 +1,7 @@
 import React, {useContext} from 'react';
 import dataService from './data';
 import {ImageFormatType, Jam} from './jam';
-import FastImage, {Source} from 'react-native-fast-image';
+import FastImage, {Source} from '@d11/react-native-fast-image';
 
 export interface Auth {
 	hasUser: boolean,
