@@ -15,8 +15,8 @@ export type Scalars = {
   Boolean: { input: boolean; output: boolean; }
   Int: { input: number; output: number; }
   Float: { input: number; output: number; }
-  /** The javascript `Date` as string. Type represents date and time as the ISO Date string. */
-  DateTime: { input: any; output: any; }
+  /** A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.This scalar is serialized to a string in ISO 8601 format and parsed from a string in ISO 8601 format. */
+  DateTimeISO: { input: any; output: any; }
   /** The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf). */
   JSON: { input: any; output: any; }
 };
@@ -91,7 +91,7 @@ export type AlbumFilterArgsQL = {
   query?: InputMaybe<Scalars['String']['input']>;
   rootIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
   seriesIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
-  since?: InputMaybe<Scalars['Float']['input']>;
+  since?: InputMaybe<Scalars['Int']['input']>;
   slug?: InputMaybe<Scalars['String']['input']>;
   toYear?: InputMaybe<Scalars['Int']['input']>;
   trackIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
@@ -133,8 +133,8 @@ export type AlbumPageQL = {
 export type AlbumQL = {
   albumType: AlbumType;
   artist: ArtistQL;
-  createdAt: Scalars['DateTime']['output'];
-  duration?: Maybe<Scalars['Float']['output']>;
+  createdAt: Scalars['DateTimeISO']['output'];
+  duration?: Maybe<Scalars['Int']['output']>;
   folders: Array<FolderQL>;
   foldersCount: Scalars['Int']['output'];
   genres: Array<GenreQL>;
@@ -150,7 +150,7 @@ export type AlbumQL = {
   state: StateQL;
   tracks: Array<TrackQL>;
   tracksCount: Scalars['Int']['output'];
-  updatedAt: Scalars['DateTime']['output'];
+  updatedAt: Scalars['DateTimeISO']['output'];
   year?: Maybe<Scalars['Int']['output']>;
 };
 
@@ -181,7 +181,7 @@ export type ArtistFilterArgsQL = {
   query?: InputMaybe<Scalars['String']['input']>;
   rootIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
   seriesIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
-  since?: InputMaybe<Scalars['Float']['input']>;
+  since?: InputMaybe<Scalars['Int']['input']>;
   slug?: InputMaybe<Scalars['String']['input']>;
   trackIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
 };
@@ -221,7 +221,7 @@ export type ArtistQL = {
   albums: Array<AlbumQL>;
   albumsCount: Scalars['Int']['output'];
   albumsTracksCount: Scalars['Int']['output'];
-  createdAt: Scalars['DateTime']['output'];
+  createdAt: Scalars['DateTimeISO']['output'];
   folders: Array<FolderQL>;
   foldersCount: Scalars['Int']['output'];
   genres: Array<GenreQL>;
@@ -238,7 +238,7 @@ export type ArtistQL = {
   state: StateQL;
   tracks: Array<TrackQL>;
   tracksCount: Scalars['Int']['output'];
-  updatedAt: Scalars['DateTime']['output'];
+  updatedAt: Scalars['DateTimeISO']['output'];
 };
 
 export type ArtworkFilterArgsQL = {
@@ -250,7 +250,7 @@ export type ArtworkFilterArgsQL = {
   ids?: InputMaybe<Array<Scalars['ID']['input']>>;
   name?: InputMaybe<Scalars['String']['input']>;
   query?: InputMaybe<Scalars['String']['input']>;
-  since?: InputMaybe<Scalars['Float']['input']>;
+  since?: InputMaybe<Scalars['Int']['input']>;
   sizeFrom?: InputMaybe<Scalars['Int']['input']>;
   sizeTo?: InputMaybe<Scalars['Int']['input']>;
   types?: InputMaybe<Array<ArtworkImageType>>;
@@ -290,7 +290,7 @@ export type ArtworkPageQL = {
 };
 
 export type ArtworkQL = {
-  createdAt: Scalars['DateTime']['output'];
+  createdAt: Scalars['DateTimeISO']['output'];
   fileSize: Scalars['Int']['output'];
   /** Get the Navigation Index for Albums */
   folder: FolderQL;
@@ -299,10 +299,10 @@ export type ArtworkQL = {
   id: Scalars['ID']['output'];
   name: Scalars['String']['output'];
   path: Scalars['String']['output'];
-  statCreated: Scalars['DateTime']['output'];
-  statModified: Scalars['DateTime']['output'];
+  statCreated: Scalars['DateTimeISO']['output'];
+  statModified: Scalars['DateTimeISO']['output'];
   types: Array<ArtworkImageType>;
-  updatedAt: Scalars['DateTime']['output'];
+  updatedAt: Scalars['DateTimeISO']['output'];
   width?: Maybe<Scalars['Int']['output']>;
 };
 
@@ -323,7 +323,7 @@ export type BookmarkFilterArgsQL = {
   episodeIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
   ids?: InputMaybe<Array<Scalars['ID']['input']>>;
   query?: InputMaybe<Scalars['String']['input']>;
-  since?: InputMaybe<Scalars['Float']['input']>;
+  since?: InputMaybe<Scalars['Int']['input']>;
   trackIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
   userIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
 };
@@ -350,16 +350,16 @@ export type BookmarkPageQL = {
 
 export type BookmarkQL = {
   comment?: Maybe<Scalars['String']['output']>;
-  createdAt: Scalars['DateTime']['output'];
+  createdAt: Scalars['DateTimeISO']['output'];
   episode?: Maybe<EpisodeQL>;
   id: Scalars['ID']['output'];
-  position: Scalars['Float']['output'];
+  position: Scalars['Int']['output'];
   track?: Maybe<TrackQL>;
-  updatedAt: Scalars['DateTime']['output'];
+  updatedAt: Scalars['DateTimeISO']['output'];
 };
 
 export type ChatQL = {
-  created: Scalars['DateTime']['output'];
+  created: Scalars['DateTimeISO']['output'];
   message: Scalars['String']['output'];
   userID: Scalars['ID']['output'];
   userName: Scalars['String']['output'];
@@ -390,7 +390,7 @@ export type EpisodeFilterArgsQL = {
   name?: InputMaybe<Scalars['String']['input']>;
   podcastIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
   query?: InputMaybe<Scalars['String']['input']>;
-  since?: InputMaybe<Scalars['Float']['input']>;
+  since?: InputMaybe<Scalars['Int']['input']>;
   statuses?: InputMaybe<Array<PodcastStatus>>;
 };
 
@@ -420,13 +420,13 @@ export type EpisodeQL = {
   bookmarks: Array<BookmarkQL>;
   bookmarksCount: Scalars['Int']['output'];
   chapters?: Maybe<Array<EpisodeChapterQL>>;
-  createdAt: Scalars['DateTime']['output'];
-  date: Scalars['DateTime']['output'];
-  duration?: Maybe<Scalars['Float']['output']>;
+  createdAt: Scalars['DateTimeISO']['output'];
+  date: Scalars['DateTimeISO']['output'];
+  duration?: Maybe<Scalars['Int']['output']>;
   enclosures?: Maybe<Array<EpisodeEnclosureQL>>;
   error?: Maybe<Scalars['String']['output']>;
-  fileCreated?: Maybe<Scalars['DateTime']['output']>;
-  fileModified?: Maybe<Scalars['DateTime']['output']>;
+  fileCreated?: Maybe<Scalars['DateTimeISO']['output']>;
+  fileModified?: Maybe<Scalars['DateTimeISO']['output']>;
   fileSize?: Maybe<Scalars['Int']['output']>;
   guid?: Maybe<Scalars['String']['output']>;
   id: Scalars['ID']['output'];
@@ -438,7 +438,7 @@ export type EpisodeQL = {
   status: PodcastStatus;
   summary?: Maybe<Scalars['String']['output']>;
   tag?: Maybe<TagQL>;
-  updatedAt: Scalars['DateTime']['output'];
+  updatedAt: Scalars['DateTimeISO']['output'];
   waveform: WaveformQL;
 };
 
@@ -478,7 +478,7 @@ export type FolderFilterArgsQL = {
   query?: InputMaybe<Scalars['String']['input']>;
   rootIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
   seriesIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
-  since?: InputMaybe<Scalars['Float']['input']>;
+  since?: InputMaybe<Scalars['Int']['input']>;
   title?: InputMaybe<Scalars['String']['input']>;
   toYear?: InputMaybe<Scalars['Int']['input']>;
   trackIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
@@ -499,6 +499,8 @@ export type FolderOrderArgsQL = {
 };
 
 export enum FolderOrderFields {
+  album = 'album',
+  artist = 'artist',
   created = 'created',
   default = 'default',
   level = 'level',
@@ -529,7 +531,7 @@ export type FolderQL = {
   artworksCount: Scalars['Int']['output'];
   children: Array<FolderQL>;
   childrenCount: Scalars['Int']['output'];
-  createdAt: Scalars['DateTime']['output'];
+  createdAt: Scalars['DateTimeISO']['output'];
   folderType: FolderType;
   genres: Array<GenreQL>;
   genresCount: Scalars['Int']['output'];
@@ -546,13 +548,13 @@ export type FolderQL = {
   rootsCount: Scalars['Int']['output'];
   series?: Maybe<Array<SeriesQL>>;
   seriesCount: Scalars['Int']['output'];
-  statCreated: Scalars['DateTime']['output'];
-  statModified: Scalars['DateTime']['output'];
+  statCreated: Scalars['DateTimeISO']['output'];
+  statModified: Scalars['DateTimeISO']['output'];
   state: StateQL;
   title: Scalars['String']['output'];
   tracks?: Maybe<Array<TrackQL>>;
   tracksCount: Scalars['Int']['output'];
-  updatedAt: Scalars['DateTime']['output'];
+  updatedAt: Scalars['DateTimeISO']['output'];
   year?: Maybe<Scalars['Int']['output']>;
 };
 
@@ -569,7 +571,7 @@ export type GenreFilterArgsQL = {
   ids?: InputMaybe<Array<Scalars['ID']['input']>>;
   name?: InputMaybe<Scalars['String']['input']>;
   query?: InputMaybe<Scalars['String']['input']>;
-  since?: InputMaybe<Scalars['Float']['input']>;
+  since?: InputMaybe<Scalars['Int']['input']>;
   trackIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
 };
 
@@ -606,7 +608,7 @@ export type GenreQL = {
   albums: AlbumPageQL;
   artistCount: Scalars['Int']['output'];
   artists: ArtistPageQL;
-  createdAt: Scalars['DateTime']['output'];
+  createdAt: Scalars['DateTimeISO']['output'];
   folderCount: Scalars['Int']['output'];
   folders: Array<FolderQL>;
   id: Scalars['ID']['output'];
@@ -614,7 +616,7 @@ export type GenreQL = {
   series: Array<SeriesQL>;
   trackCount: Scalars['Int']['output'];
   tracks: TrackPageQL;
-  updatedAt: Scalars['DateTime']['output'];
+  updatedAt: Scalars['DateTimeISO']['output'];
 };
 
 
@@ -678,7 +680,7 @@ export type MutationscrobbleArgs = {
 
 export type NowPlayingQL = {
   episode?: Maybe<EpisodeQL>;
-  time: Scalars['Float']['output'];
+  time: Scalars['Int']['output'];
   track?: Maybe<TrackQL>;
   userID: Scalars['ID']['output'];
   userName: Scalars['String']['output'];
@@ -692,46 +694,46 @@ export type PageArgsQL = {
 };
 
 export type PlayQueueEntryQL = {
-  createdAt: Scalars['DateTime']['output'];
+  createdAt: Scalars['DateTimeISO']['output'];
   episode?: Maybe<EpisodeQL>;
   id: Scalars['ID']['output'];
   playQueue: PlayQueueQL;
   position: Scalars['Int']['output'];
   track?: Maybe<TrackQL>;
-  updatedAt: Scalars['DateTime']['output'];
+  updatedAt: Scalars['DateTimeISO']['output'];
 };
 
 export type PlayQueueQL = {
   changedBy: Scalars['String']['output'];
-  createdAt: Scalars['DateTime']['output'];
+  createdAt: Scalars['DateTimeISO']['output'];
   current?: Maybe<Scalars['Int']['output']>;
-  duration?: Maybe<Scalars['Float']['output']>;
+  duration?: Maybe<Scalars['Int']['output']>;
   entries: Array<PlayQueueEntryQL>;
   entriesCount: Scalars['Int']['output'];
   id: Scalars['ID']['output'];
-  position?: Maybe<Scalars['Float']['output']>;
-  updatedAt: Scalars['DateTime']['output'];
+  position?: Maybe<Scalars['Int']['output']>;
+  updatedAt: Scalars['DateTimeISO']['output'];
 };
 
 export type PlaylistEntryQL = {
-  createdAt: Scalars['DateTime']['output'];
+  createdAt: Scalars['DateTimeISO']['output'];
   episode?: Maybe<EpisodeQL>;
   id: Scalars['ID']['output'];
   playlist: PlaylistQL;
-  position: Scalars['Float']['output'];
+  position: Scalars['Int']['output'];
   track?: Maybe<TrackQL>;
-  updatedAt: Scalars['DateTime']['output'];
+  updatedAt: Scalars['DateTimeISO']['output'];
 };
 
 export type PlaylistFilterArgsQL = {
   comment?: InputMaybe<Scalars['String']['input']>;
-  durationFrom?: InputMaybe<Scalars['Float']['input']>;
-  durationTo?: InputMaybe<Scalars['Float']['input']>;
+  durationFrom?: InputMaybe<Scalars['Int']['input']>;
+  durationTo?: InputMaybe<Scalars['Int']['input']>;
   ids?: InputMaybe<Array<Scalars['ID']['input']>>;
   isPublic?: InputMaybe<Scalars['Boolean']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   query?: InputMaybe<Scalars['String']['input']>;
-  since?: InputMaybe<Scalars['Float']['input']>;
+  since?: InputMaybe<Scalars['Int']['input']>;
   userIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
 };
 
@@ -758,15 +760,15 @@ export type PlaylistPageQL = {
 
 export type PlaylistQL = {
   comment?: Maybe<Scalars['String']['output']>;
-  createdAt: Scalars['DateTime']['output'];
-  duration: Scalars['Float']['output'];
+  createdAt: Scalars['DateTimeISO']['output'];
+  duration: Scalars['Int']['output'];
   entries: Array<PlaylistEntryQL>;
   entriesCount: Scalars['Int']['output'];
   id: Scalars['ID']['output'];
   isPublic: Scalars['Boolean']['output'];
   name: Scalars['String']['output'];
   state: StateQL;
-  updatedAt: Scalars['DateTime']['output'];
+  updatedAt: Scalars['DateTimeISO']['output'];
   userID: Scalars['ID']['output'];
   userName: Scalars['String']['output'];
 };
@@ -784,8 +786,8 @@ export type PodcastDiscoverQL = {
   logo_url: Scalars['String']['output'];
   mygpo_link: Scalars['String']['output'];
   scaled_logo_url: Scalars['String']['output'];
-  subscribers: Scalars['Float']['output'];
-  subscribers_last_week: Scalars['Float']['output'];
+  subscribers: Scalars['Int']['output'];
+  subscribers_last_week: Scalars['Int']['output'];
   title: Scalars['String']['output'];
   url: Scalars['String']['output'];
   website: Scalars['String']['output'];
@@ -801,7 +803,7 @@ export type PodcastDiscoverTagPageQL = {
 export type PodcastDiscoverTagQL = {
   tag: Scalars['String']['output'];
   title: Scalars['String']['output'];
-  usage: Scalars['Float']['output'];
+  usage: Scalars['Int']['output'];
 };
 
 export type PodcastFilterArgsQL = {
@@ -811,11 +813,11 @@ export type PodcastFilterArgsQL = {
   episodeIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
   generator?: InputMaybe<Scalars['String']['input']>;
   ids?: InputMaybe<Array<Scalars['ID']['input']>>;
-  lastCheckFrom?: InputMaybe<Scalars['Float']['input']>;
-  lastCheckTo?: InputMaybe<Scalars['Float']['input']>;
+  lastCheckFrom?: InputMaybe<Scalars['Int']['input']>;
+  lastCheckTo?: InputMaybe<Scalars['Int']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   query?: InputMaybe<Scalars['String']['input']>;
-  since?: InputMaybe<Scalars['Float']['input']>;
+  since?: InputMaybe<Scalars['Int']['input']>;
   statuses?: InputMaybe<Array<PodcastStatus>>;
   title?: InputMaybe<Scalars['String']['input']>;
   url?: InputMaybe<Scalars['String']['input']>;
@@ -853,7 +855,7 @@ export type PodcastPageQL = {
 export type PodcastQL = {
   author?: Maybe<Scalars['String']['output']>;
   categories: Array<Scalars['String']['output']>;
-  createdAt: Scalars['DateTime']['output'];
+  createdAt: Scalars['DateTimeISO']['output'];
   description?: Maybe<Scalars['String']['output']>;
   episodes: Array<EpisodeQL>;
   episodesCount: Scalars['Int']['output'];
@@ -862,13 +864,13 @@ export type PodcastQL = {
   id: Scalars['ID']['output'];
   image?: Maybe<Scalars['String']['output']>;
   language?: Maybe<Scalars['String']['output']>;
-  lastCheck: Scalars['DateTime']['output'];
+  lastCheck: Scalars['DateTimeISO']['output'];
   link?: Maybe<Scalars['String']['output']>;
   name: Scalars['String']['output'];
   state: StateQL;
   status: PodcastStatus;
   title?: Maybe<Scalars['String']['output']>;
-  updatedAt: Scalars['DateTime']['output'];
+  updatedAt: Scalars['DateTimeISO']['output'];
   url: Scalars['String']['output'];
 };
 
@@ -1070,7 +1072,7 @@ export type QuerybookmarksArgs = {
 
 
 export type QuerychatsArgs = {
-  since?: InputMaybe<Scalars['Float']['input']>;
+  since?: InputMaybe<Scalars['Int']['input']>;
 };
 
 
@@ -1334,13 +1336,13 @@ export type RadioPageQL = {
 };
 
 export type RadioQL = {
-  createdAt: Scalars['DateTime']['output'];
-  disabled: Scalars['Boolean']['output'];
+  createdAt: Scalars['DateTimeISO']['output'];
+  disabled?: Maybe<Scalars['Boolean']['output']>;
   homepage?: Maybe<Scalars['String']['output']>;
   id: Scalars['ID']['output'];
   name: Scalars['String']['output'];
   state: StateQL;
-  updatedAt: Scalars['DateTime']['output'];
+  updatedAt: Scalars['DateTimeISO']['output'];
   url: Scalars['String']['output'];
 };
 
@@ -1352,7 +1354,7 @@ export type RootFilterArgsQL = {
   name?: InputMaybe<Scalars['String']['input']>;
   query?: InputMaybe<Scalars['String']['input']>;
   seriesIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
-  since?: InputMaybe<Scalars['Float']['input']>;
+  since?: InputMaybe<Scalars['Int']['input']>;
   strategies: Array<RootScanStrategy>;
   trackIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
 };
@@ -1372,7 +1374,7 @@ export type RootPageQL = {
 export type RootQL = {
   albums: Array<AlbumQL>;
   artists: Array<ArtistQL>;
-  createdAt: Scalars['DateTime']['output'];
+  createdAt: Scalars['DateTimeISO']['output'];
   folders: Array<FolderQL>;
   id: Scalars['ID']['output'];
   name: Scalars['String']['output'];
@@ -1381,7 +1383,7 @@ export type RootQL = {
   status: RootStatusQL;
   strategy: RootScanStrategy;
   tracks: Array<TrackQL>;
-  updatedAt: Scalars['DateTime']['output'];
+  updatedAt: Scalars['DateTimeISO']['output'];
 };
 
 export enum RootScanStrategy {
@@ -1393,7 +1395,7 @@ export enum RootScanStrategy {
 
 export type RootStatusQL = {
   error?: Maybe<Scalars['String']['output']>;
-  lastScan?: Maybe<Scalars['DateTime']['output']>;
+  lastScan?: Maybe<Scalars['DateTimeISO']['output']>;
   scanning?: Maybe<Scalars['Boolean']['output']>;
 };
 
@@ -1407,7 +1409,7 @@ export type SeriesFilterArgsQL = {
   name?: InputMaybe<Scalars['String']['input']>;
   query?: InputMaybe<Scalars['String']['input']>;
   rootIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
-  since?: InputMaybe<Scalars['Float']['input']>;
+  since?: InputMaybe<Scalars['Int']['input']>;
   trackIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
 };
 
@@ -1437,7 +1439,7 @@ export type SeriesQL = {
   albums: Array<AlbumQL>;
   albumsCount: Scalars['Int']['output'];
   artist?: Maybe<ArtistQL>;
-  createdAt: Scalars['DateTime']['output'];
+  createdAt: Scalars['DateTimeISO']['output'];
   folders: Array<FolderQL>;
   foldersCount: Scalars['Int']['output'];
   genres: Array<GenreQL>;
@@ -1449,23 +1451,24 @@ export type SeriesQL = {
   state: StateQL;
   tracks: Array<TrackQL>;
   tracksCount: Scalars['Int']['output'];
-  updatedAt: Scalars['DateTime']['output'];
+  updatedAt: Scalars['DateTimeISO']['output'];
 };
 
 export type SessionFilterArgsQL = {
   agent?: InputMaybe<Scalars['String']['input']>;
   client?: InputMaybe<Scalars['String']['input']>;
-  expiresFrom?: InputMaybe<Scalars['Float']['input']>;
-  expiresTo?: InputMaybe<Scalars['Float']['input']>;
+  expiresFrom?: InputMaybe<Scalars['Int']['input']>;
+  expiresTo?: InputMaybe<Scalars['Int']['input']>;
   ids?: InputMaybe<Array<Scalars['ID']['input']>>;
   mode?: InputMaybe<SessionMode>;
-  since?: InputMaybe<Scalars['Float']['input']>;
+  since?: InputMaybe<Scalars['Int']['input']>;
   userIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
 };
 
 export enum SessionMode {
   browser = 'browser',
-  jwt = 'jwt'
+  jwt = 'jwt',
+  subsonic = 'subsonic'
 }
 
 export type SessionOrderArgsQL = {
@@ -1488,21 +1491,21 @@ export type SessionPageQL = {
 export type SessionQL = {
   agent: Scalars['String']['output'];
   client: Scalars['String']['output'];
-  createdAt: Scalars['DateTime']['output'];
-  expires: Scalars['DateTime']['output'];
+  createdAt: Scalars['DateTimeISO']['output'];
+  expires: Scalars['DateTimeISO']['output'];
   id: Scalars['ID']['output'];
   mode: SessionMode;
-  updatedAt: Scalars['DateTime']['output'];
+  updatedAt: Scalars['DateTimeISO']['output'];
 };
 
 export type StateQL = {
-  createdAt: Scalars['DateTime']['output'];
-  faved?: Maybe<Scalars['DateTime']['output']>;
+  createdAt: Scalars['DateTimeISO']['output'];
+  faved?: Maybe<Scalars['DateTimeISO']['output']>;
   id: Scalars['ID']['output'];
-  lastPlayed?: Maybe<Scalars['DateTime']['output']>;
+  lastPlayed?: Maybe<Scalars['DateTimeISO']['output']>;
   played?: Maybe<Scalars['Int']['output']>;
   rated?: Maybe<Scalars['Int']['output']>;
-  updatedAt: Scalars['DateTime']['output'];
+  updatedAt: Scalars['DateTimeISO']['output'];
 };
 
 export type StatsAlbumTypesQL = {
@@ -1556,7 +1559,7 @@ export type TagQL = {
   artist?: Maybe<Scalars['String']['output']>;
   artistSort?: Maybe<Scalars['String']['output']>;
   chapters?: Maybe<Array<TagChapterQL>>;
-  createdAt: Scalars['DateTime']['output'];
+  createdAt: Scalars['DateTimeISO']['output'];
   disc?: Maybe<Scalars['Int']['output']>;
   discTotal?: Maybe<Scalars['Int']['output']>;
   format: TagFormatType;
@@ -1573,13 +1576,14 @@ export type TagQL = {
   mbReleaseID?: Maybe<Scalars['String']['output']>;
   mbReleaseTrackID?: Maybe<Scalars['String']['output']>;
   mbTrackID?: Maybe<Scalars['String']['output']>;
-  mediaBitRate?: Maybe<Scalars['Float']['output']>;
+  mediaBitDepth?: Maybe<Scalars['Int']['output']>;
+  mediaBitRate?: Maybe<Scalars['Int']['output']>;
   mediaChannels?: Maybe<Scalars['Int']['output']>;
-  mediaDuration?: Maybe<Scalars['Float']['output']>;
+  mediaDuration?: Maybe<Scalars['Int']['output']>;
   mediaEncoded?: Maybe<Scalars['String']['output']>;
   mediaFormat?: Maybe<AudioFormatType>;
   mediaMode?: Maybe<Scalars['String']['output']>;
-  mediaSampleRate?: Maybe<Scalars['Float']['output']>;
+  mediaSampleRate?: Maybe<Scalars['Int']['output']>;
   mediaVersion?: Maybe<Scalars['String']['output']>;
   nrTagImages?: Maybe<Scalars['Int']['output']>;
   series?: Maybe<Scalars['String']['output']>;
@@ -1588,7 +1592,7 @@ export type TagQL = {
   titleSort?: Maybe<Scalars['String']['output']>;
   trackNr?: Maybe<Scalars['Int']['output']>;
   trackTotal?: Maybe<Scalars['Int']['output']>;
-  updatedAt: Scalars['DateTime']['output'];
+  updatedAt: Scalars['DateTimeISO']['output'];
   year?: Maybe<Scalars['Int']['output']>;
 };
 
@@ -1609,7 +1613,7 @@ export type TrackFilterArgsQL = {
   query?: InputMaybe<Scalars['String']['input']>;
   rootIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
   seriesIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
-  since?: InputMaybe<Scalars['Float']['input']>;
+  since?: InputMaybe<Scalars['Int']['input']>;
   toYear?: InputMaybe<Scalars['Int']['input']>;
 };
 
@@ -1649,11 +1653,11 @@ export type TrackQL = {
   artist?: Maybe<ArtistQL>;
   bookmarks: Array<BookmarkQL>;
   bookmarksCount: Scalars['Int']['output'];
-  createdAt: Scalars['DateTime']['output'];
-  fileCreated: Scalars['DateTime']['output'];
-  fileModified: Scalars['DateTime']['output'];
+  createdAt: Scalars['DateTimeISO']['output'];
+  fileCreated: Scalars['DateTimeISO']['output'];
+  fileModified: Scalars['DateTimeISO']['output'];
   fileName: Scalars['String']['output'];
-  fileSize: Scalars['Float']['output'];
+  fileSize: Scalars['Int']['output'];
   folder: FolderQL;
   genres: Array<GenreQL>;
   id: Scalars['ID']['output'];
@@ -1665,7 +1669,7 @@ export type TrackQL = {
   series?: Maybe<SeriesQL>;
   state: StateQL;
   tag?: Maybe<TagQL>;
-  updatedAt: Scalars['DateTime']['output'];
+  updatedAt: Scalars['DateTimeISO']['output'];
   waveform: WaveformQL;
 };
 
@@ -1760,7 +1764,7 @@ export type UserFilterArgsQL = {
   name?: InputMaybe<Scalars['String']['input']>;
   query?: InputMaybe<Scalars['String']['input']>;
   roles?: InputMaybe<Array<UserRole>>;
-  since?: InputMaybe<Scalars['Float']['input']>;
+  since?: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type UserIndexGroupQL = {
@@ -1786,7 +1790,7 @@ export type UserPageQL = {
 
 export type UserQL = {
   bookmarks: BookmarkPageQL;
-  createdAt: Scalars['DateTime']['output'];
+  createdAt: Scalars['DateTimeISO']['output'];
   email: Scalars['String']['output'];
   favorites: UserFavoritesQL;
   id: Scalars['ID']['output'];
@@ -1797,7 +1801,7 @@ export type UserQL = {
   roles: Array<UserRole>;
   sessions: SessionPageQL;
   stats: UserStatsQL;
-  updatedAt: Scalars['DateTime']['output'];
+  updatedAt: Scalars['DateTimeISO']['output'];
 };
 
 

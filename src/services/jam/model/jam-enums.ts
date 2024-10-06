@@ -44,7 +44,9 @@ export enum FolderOrderFields {
 	level = 'level',
 	name = 'name',
 	title = 'title',
-	year = 'year'
+	year = 'year',
+	artist = 'artist',
+	album = 'album'
 }
 
 export enum PlaylistEntryOrderFields {
@@ -287,7 +289,8 @@ export enum AlbumType {
 
 export enum SessionMode {
 	browser = 'browser',
-	jwt = 'jwt'
+	jwt = 'jwt',
+	subsonic = 'subsonic'
 }
 
 export enum UserRole {

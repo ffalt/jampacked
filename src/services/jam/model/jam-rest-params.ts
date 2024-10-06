@@ -1592,7 +1592,16 @@ export declare namespace JamParameters {
 		rootID?: string;
 	}
 
-	export interface StreamArgs {
+	export interface StreamParamArgs {
+		/**
+		 * start offset for transcoding/streaming
+		 * @TJS-type integer
+		 * @minimum 0
+		 */
+		timeOffset?: number;
+	}
+
+	export interface StreamPathArgs {
 		/**
 		 * maximal bitrate if transcoding (in Kbps)
 		 * @TJS-type integer
@@ -1710,6 +1719,11 @@ export declare namespace JamParameters {
 	export interface UserGenerateImageArgs {
 		/** Random Seed String */
 		seed?: string;
+	}
+
+	export interface UserGenerateSusonicTokenArgs {
+		/** Password of calling user (or admin) is required to generate/update the Subsonic token */
+		password: string;
 	}
 
 	export interface UserMutateArgs {
@@ -1916,7 +1930,7 @@ export declare namespace JamParameters {
 
 	export type WaveformWaveformArgs = WaveformArgs & ID;
 
-	export type StreamStreamArgs = StreamArgs & ID;
+	export type StreamStreamArgs = StreamParamArgs & StreamPathArgs & ID;
 
 	export type ArtworkIdArgs = IncludesFolderArgs & IncludesArtworkChildrenArgs & IncludesArtworkArgs & ID;
 
@@ -1937,6 +1951,8 @@ export declare namespace JamParameters {
 	export type UserGenerateUserImageArgs = UserGenerateImageArgs & ID;
 
 	export type UserUploadUserImageArgs = ID;
+
+	export type UserGenerateSubsonicTokenArgs = UserGenerateSusonicTokenArgs & ID;
 
 	export type PlaylistUpdateArgs = PlaylistMutateArgs & ID;
 
