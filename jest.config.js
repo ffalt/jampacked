@@ -9,6 +9,7 @@ module.exports = {
 		'|react-native-screens' +
 		'|react-native-track-player' +
 		'|react-native-floating-action' +
+		'|@d11/react-native-fast-image' +
 		'|d3-array' +
 		'|d3-color' +
 		'|d3-format' +
