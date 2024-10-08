@@ -1,10 +1,10 @@
-import React, {ReactNode} from 'react';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {ThemedText} from './ThemedText';
-import {staticTheme, useTheme} from '../style/theming';
-import {JamImage} from './JamImage';
-import {FastImageBackground} from './JamBackgroundImage';
-import {getStatusBarHeight} from 'react-native-status-bar-height';
+import React, { ReactNode } from 'react';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { ThemedText } from './ThemedText';
+import { staticTheme, useTheme } from '../style/theming';
+import { JamImage } from './JamImage';
+import { FastImageBackground } from './JamBackgroundImage';
+import { getStatusBarHeight } from 'react-native-status-bar-height';
 
 export const objHeaderStyles = StyleSheet.create({
 	button: {
@@ -44,6 +44,10 @@ const styles = StyleSheet.create({
 		justifyContent: 'space-between',
 		paddingHorizontal: staticTheme.padding
 	},
+	headerTitleCmdsExtra: {
+		flexDirection: 'row',
+		paddingTop: staticTheme.padding,
+	},
 	headerTitleCmds: {
 		paddingTop: staticTheme.padding,
 		flexDirection: 'row',
@@ -57,7 +61,7 @@ const styles = StyleSheet.create({
 		paddingHorizontal: staticTheme.padding,
 		flexDirection: 'column',
 		alignItems: 'center',
-		justifyContent: 'center'
+		justifyContent: 'space-between'
 	},
 	headerTitle: {
 		fontSize: staticTheme.fontSizeBig,
@@ -103,12 +107,13 @@ export const ObjHeader: React.FC<{
 	typeName?: string;
 	details?: Array<HeaderDetail>;
 	headerTitleCmds?: ReactNode | Array<ReactNode>;
+	headerTitleCmdsExtras?: ReactNode | Array<ReactNode>;
 	customDetails?: ReactNode | Array<ReactNode>;
-}> = ({id, typeName, title, headerTitleCmds, details, customDetails}) => {
+}> = ({ id, typeName, title, headerTitleCmds, headerTitleCmdsExtras, details, customDetails }) => {
 	const theme = useTheme();
 	const statusBarHeight = getStatusBarHeight() + staticTheme.padding;
 
-	const renderDetails = ():React.JSX.Element | undefined => {
+	const renderDetails = (): React.JSX.Element | undefined => {
 		if (customDetails) {
 			return (
 				<View style={styles.headerExtra}>
@@ -128,14 +133,14 @@ export const ObjHeader: React.FC<{
 				};
 				result.push((
 					<TouchableOpacity key={detail.title} style={styles.ListHeaderRow} onPress={onClick}>
-						<ThemedText style={[styles.ListHeaderTitle, {color: theme.muted}]}>{detail.title}</ThemedText>
+						<ThemedText style={[styles.ListHeaderTitle, { color: theme.muted }]}>{detail.title}</ThemedText>
 						<ThemedText style={styles.ListHeaderValue}>{detail.value}</ThemedText>
 					</TouchableOpacity>
 				));
 			} else {
 				result.push((
 					<View key={detail.title} style={styles.ListHeaderRow}>
-						<ThemedText style={[styles.ListHeaderTitle, {color: theme.muted}]}>{detail.title}</ThemedText>
+						<ThemedText style={[styles.ListHeaderTitle, { color: theme.muted }]}>{detail.title}</ThemedText>
 						<ThemedText style={styles.ListHeaderValue}>{detail.value}</ThemedText>
 					</View>
 				));
@@ -153,13 +158,14 @@ export const ObjHeader: React.FC<{
 	};
 
 	return (
-		<FastImageBackground id={id} style={[styles.header, {paddingTop: statusBarHeight}]}>
+		<FastImageBackground id={id} style={[styles.header, { paddingTop: statusBarHeight }]}>
 			<View style={styles.headerTop}>
 				<JamImage id={id} size={173} requestSize={staticTheme.cover}/>
 				<View style={styles.headerTitleContainer}>
-					<ThemedText style={[styles.headerTitleType, {color: theme.muted}]}>{typeName}</ThemedText>
+					<ThemedText style={[styles.headerTitleType, { color: theme.muted }]}>{typeName}</ThemedText>
 					<ThemedText numberOfLines={2} style={styles.headerTitle}>{title}</ThemedText>
 					<View style={styles.headerTitleCmds}>{headerTitleCmds}</View>
+					<View style={styles.headerTitleCmdsExtra}>{headerTitleCmdsExtras}</View>
 				</View>
 			</View>
 			{renderDetails()}

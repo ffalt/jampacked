@@ -11,6 +11,7 @@ import {JamObjectType} from '../services/jam';
 import {useLazySeriesQuery} from '../services/queries/series';
 import {DefaultSectionList} from '../components/DefSectionList';
 import {sharedStyles} from '../style/shared';
+import { Rating } from '../components/Rating';
 
 const buildDetails = (artist?: string, tracks?: number, genre?: string, toArtist?: () => void): Array<HeaderDetail> => {
 	return [
@@ -49,6 +50,7 @@ export const SeriesScreen: React.FC<HomeRouteProps<HomeRoute.SERIE>> = ({route})
 		typeName="Series"
 		details={details}
 		headerTitleCmds={<FavIcon style={objHeaderStyles.button} objType={JamObjectType.series} id={id}/>}
+		headerTitleCmdsExtras={<Rating fontSize={objHeaderStyles.buttonIcon.fontSize} objType={JamObjectType.series} id={id}/>}
 	/>);
 
 	const renderSection = useCallback(({section}: { section: SectionListData<BaseEntry> }):React.JSX.Element => (

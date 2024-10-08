@@ -14,6 +14,9 @@ const styles = StyleSheet.create({
 		alignContent: 'space-between',
 		justifyContent: 'space-between',
 		top: 0
+	},
+	rating: {
+		justifyContent: 'flex-end'
 	}
 });
 
@@ -22,7 +25,7 @@ export const PlayerAnnotation: React.FC = () => {
 	return (
 		<View style={styles.annotation}>
 			<FavIcon style={objHeaderStyles.button} fontSize={objHeaderStyles.buttonIcon.fontSize} objType={JamObjectType.track} id={currentTrack?.id}/>
-			<Rating style={objHeaderStyles.button} fontSize={objHeaderStyles.buttonIcon.fontSize} id={currentTrack?.id} objType={JamObjectType.track}></Rating>
+			<Rating style={[objHeaderStyles.button, styles.rating]} fontSize={objHeaderStyles.buttonIcon.fontSize} id={currentTrack?.id} objType={JamObjectType.track}></Rating>
 		</View>
 	);
 };

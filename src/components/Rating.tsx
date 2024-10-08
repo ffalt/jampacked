@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
 	view: {
 		flex: 0,
 		flexDirection: 'row',
-		justifyContent: 'flex-end',
+		justifyContent: 'center',
 		columnGap: staticTheme.paddingLarge,
 		flexGrow: 1
 	},

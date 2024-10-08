@@ -11,6 +11,7 @@ import {BaseEntry} from '../services/types';
 import {useLazyArtistQuery} from '../services/queries/artist';
 import {DefaultSectionList} from '../components/DefSectionList';
 import {sharedStyles} from '../style/shared';
+import { Rating } from '../components/Rating';
 
 const buildDetails = (albums?: number, tracks?: number, genre?: string): Array<HeaderDetail> => {
 	return [
@@ -43,6 +44,7 @@ export const ArtistScreen: React.FC<HomeRouteProps<HomeRoute.ARTIST>> = ({route}
 		typeName="Artist"
 		details={details}
 		headerTitleCmds={<FavIcon style={objHeaderStyles.button} objType={JamObjectType.artist} id={id}/>}
+		headerTitleCmdsExtras={<Rating fontSize={objHeaderStyles.buttonIcon.fontSize} objType={JamObjectType.artist} id={id}/>}
 	/>);
 
 	const renderSection = useCallback(({section}: { section: SectionListData<BaseEntry> }): React.JSX.Element => (

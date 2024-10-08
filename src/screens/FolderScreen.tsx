@@ -6,7 +6,7 @@ import {HeaderDetail, ObjHeader, objHeaderStyles} from '../components/ObjHeader'
 import {genreDisplay} from '../utils/genre.utils';
 import {snackError} from '../services/snack';
 import {Item} from '../components/Item';
-import {FolderType} from '../services/jam';
+import { FolderType, JamObjectType } from '../services/jam';
 import {Folder, FolderItem} from '../services/queries/folder';
 import {ErrorView} from '../components/ErrorView';
 import {useLazyFolderQuery} from '../services/queries/folder';
@@ -17,6 +17,7 @@ import {FloatingAction} from 'react-native-floating-action';
 import {ActionMenuItem, executeTrackMenuAction, trackMenuIcon, trackMenuMultiSelectActions, trackMenuSingleSelectActions} from '../components/ActionMenuTrack';
 import {useTheme} from '../style/theming';
 import {ClickIcon} from '../components/ClickIcon';
+import { Rating } from '../components/Rating';
 
 const buildDetails = (folder?: Folder): Array<HeaderDetail> => {
 	let result: Array<HeaderDetail> = [];
@@ -92,6 +93,7 @@ export const FolderScreen: React.FC<HomeRouteProps<HomeRoute.FOLDER>> = ({route}
 		headerTitleCmds={folder?.tracks?.length ?
 			(<ClickIcon iconName="play" onPress={playTracks} style={objHeaderStyles.button} fontSize={objHeaderStyles.buttonIcon.fontSize}/>)
 			: undefined}
+		headerTitleCmdsExtras={<Rating fontSize={objHeaderStyles.buttonIcon.fontSize} objType={JamObjectType.folder} id={id}/>}
 	/>);
 
 	const isVariousArtist = folder?.artist === MUSICBRAINZ_VARIOUS_ARTISTS_NAME;

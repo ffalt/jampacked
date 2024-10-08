@@ -13,6 +13,7 @@ import { useLazyTrackQuery } from '../services/queries/track';
 import { ClickIcon } from '../components/ClickIcon';
 import { TrackEntry } from '../services/types';
 import { NavigationService } from '../navigators/navigation';
+import { Rating } from '../components/Rating';
 
 const buildDetails = (track?: TrackEntry): Array<HeaderDetail> => {
 	return [
@@ -64,7 +65,7 @@ export const TrackScreen: React.FC<HomeRouteProps<HomeRoute.TRACK>> = ({ route }
 	const headerTitleCmds = (
 		<>
 			<ClickIcon iconName="play" onPress={playTrack} style={objHeaderStyles.button} fontSize={objHeaderStyles.buttonIcon.fontSize}/>
-			<FavIcon style={objHeaderStyles.button} objType={JamObjectType.track} id={id}/>
+			<FavIcon style={objHeaderStyles.button} fontSize={objHeaderStyles.buttonIcon.fontSize} objType={JamObjectType.track} id={id}/>
 		</>
 	);
 
@@ -91,6 +92,7 @@ export const TrackScreen: React.FC<HomeRouteProps<HomeRoute.TRACK>> = ({ route }
 					typeName="Track"
 					details={details}
 					headerTitleCmds={headerTitleCmds}
+					headerTitleCmdsExtras={<Rating fontSize={objHeaderStyles.buttonIcon.fontSize} objType={JamObjectType.track} id={id}/>}
 				/>
 				<Lyrics id={id}/>
 			</View>
