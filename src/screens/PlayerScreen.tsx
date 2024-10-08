@@ -8,6 +8,7 @@ import {staticTheme} from '../style/theming';
 import {PlayerTrack} from '../components/PlayerTrack';
 import {ModalRouting, ModalStackProps} from '../navigators/Routing';
 import {PlayerWaveformProgress} from '../components/PlayerWaveformProgress';
+import { PlayerAnnotation } from '../components/PlayerAnnotation';
 
 const styles = StyleSheet.create({
 	player: {
@@ -25,6 +26,7 @@ export const PlayerScreen: React.FC<ModalStackProps<ModalRouting.PLAYER>> = () =
 			<PlayerWaveformProgress/>
 			<PlayerProgress/>
 			<PlayerTime/>
+			<PlayerAnnotation/>
 			<PlayerControl/>
 		</View>
 	);

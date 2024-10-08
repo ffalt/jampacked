@@ -3,12 +3,8 @@ import React, { useEffect } from 'react';
 import { ThemedText } from './ThemedText';
 import { staticTheme } from '../style/theming';
 import { useTrackPlayerCurrentTrack } from '../services/player-api';
-import { FavIcon } from './FavIcon';
-import { objHeaderStyles } from './ObjHeader';
-import { JamObjectType } from '../services/jam';
 import { NavigationService } from '../navigators/navigation';
 import { HomeRoute } from '../navigators/Routing';
-import { sharedStyles } from '../style/shared';
 import { useLazyTrackQuery } from '../services/queries/track';
 
 const styles = StyleSheet.create({
@@ -27,7 +23,10 @@ const styles = StyleSheet.create({
 		textAlign: 'center'
 	},
 	annotation: {
-		paddingTop: 8
+		paddingTop: staticTheme.paddingLarge,
+		flexDirection: 'row',
+		alignContent: 'space-between',
+		justifyContent: 'space-between'
 	}
 });
 
@@ -70,9 +69,6 @@ export const PlayerTrack: React.FC = () => {
 			<TouchableOpacity onPress={clickArtist}>
 				<ThemedText style={styles.artist}>{currentTrack?.artist}</ThemedText>
 			</TouchableOpacity>
-			<View style={styles.annotation}>
-				<FavIcon style={objHeaderStyles.button} fontSize={objHeaderStyles.buttonIcon.fontSize} objType={JamObjectType.track} id={currentTrack?.id}/>
-			</View>
 		</View>
 	);
 };

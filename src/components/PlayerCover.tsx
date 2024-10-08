@@ -1,7 +1,7 @@
 import { StyleSheet, View } from 'react-native';
 import React from 'react';
 import { useCurrentTrackID } from '../services/player';
-import { staticTheme, useTheme } from '../style/theming';
+import { useTheme } from '../style/theming';
 import { JamImage } from './JamImage';
 
 const styles = StyleSheet.create({
