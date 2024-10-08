@@ -1,30 +1,42 @@
-import React, {useCallback, useEffect, useState} from 'react';
-import {RefreshControl, ScrollView, View} from 'react-native';
-import {HomeRoute, HomeRouteProps} from '../navigators/Routing';
-import {HeaderDetail, ObjHeader, objHeaderStyles} from '../components/ObjHeader';
-import {genreDisplay} from '../utils/genre.utils';
-import {JamPlayer} from '../services/player';
-import {JamObjectType} from '../services/jam';
-import {FavIcon} from '../components/FavIcon';
-import {Lyrics} from '../components/Lyrics';
-import {useTheme} from '../style/theming';
-import {ErrorView} from '../components/ErrorView';
-import {useLazyTrackQuery} from '../services/queries/track';
-import {ClickIcon} from '../components/ClickIcon';
+import React, { useCallback, useEffect, useState } from 'react';
+import { RefreshControl, ScrollView, View } from 'react-native';
+import { HomeRoute, HomeRouteProps } from '../navigators/Routing';
+import { HeaderDetail, ObjHeader, objHeaderStyles } from '../components/ObjHeader';
+import { genreDisplay } from '../utils/genre.utils';
+import { JamPlayer } from '../services/player';
+import { JamObjectType } from '../services/jam';
+import { FavIcon } from '../components/FavIcon';
+import { Lyrics } from '../components/Lyrics';
+import { useTheme } from '../style/theming';
+import { ErrorView } from '../components/ErrorView';
+import { useLazyTrackQuery } from '../services/queries/track';
+import { ClickIcon } from '../components/ClickIcon';
+import { TrackEntry } from '../services/types';
+import { NavigationService } from '../navigators/navigation';
 
-const buildDetails = (artist?: string, album?: string, genre?: string): Array<HeaderDetail> => {
+const buildDetails = (track?: TrackEntry): Array<HeaderDetail> => {
 	return [
-		{title: 'Artist', value: artist || ''},
-		{title: 'Album', value: `${album || ''}`},
-		{title: 'Genre', value: genre || ''}
+		{
+			title: 'Artist', value: track?.artist || '', click: track?.artistID ? () => {
+				NavigationService.navigate(HomeRoute.ARTIST, { id: track?.artistID, name: track?.artist || '' });
+			} : undefined
+		},
+		{
+			title: 'Album', value: `${track?.album || ''}`, click: track?.artistID ? () => {
+				NavigationService.navigate(HomeRoute.ALBUM, { id: track?.albumID, name: track?.album || '' });
+			} : undefined
+		},
+		{
+			title: 'Genre', value: (track?.genre ? genreDisplay([track.genre]) : '') || ''
+		}
 	];
 };
 
-export const TrackScreen: React.FC<HomeRouteProps<HomeRoute.TRACK>> = ({route}) => {
+export const TrackScreen: React.FC<HomeRouteProps<HomeRoute.TRACK>> = ({ route }) => {
 	const theme = useTheme();
 	const [details, setDetails] = useState<Array<HeaderDetail>>(buildDetails());
-	const [getTrack, {loading, error, track}] = useLazyTrackQuery();
-	const {id, name} = (route?.params || {});
+	const [getTrack, { loading, error, track }] = useLazyTrackQuery();
+	const { id, name } = (route?.params || {});
 
 	useEffect(() => {
 		if (id) {
@@ -34,7 +46,7 @@ export const TrackScreen: React.FC<HomeRouteProps<HomeRoute.TRACK>> = ({route}) 
 
 	useEffect(() => {
 		if (track) {
-			setDetails(buildDetails(track.artist, track.album, track.genre ? genreDisplay([track.genre]) : undefined));
+			setDetails(buildDetails(track));
 		}
 	}, [track]);
 

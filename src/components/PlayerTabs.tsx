@@ -31,6 +31,7 @@ const styles = StyleSheet.create({
 		paddingBottom: staticTheme.padding,
 		paddingLeft: 16,
 		paddingRight: 16
+
 	},
 	tabItemActive: {
 		borderBottomWidth: 1

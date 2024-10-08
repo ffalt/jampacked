@@ -14,8 +14,8 @@ import {sharedStyles} from '../style/shared';
 
 const buildDetails = (albums?: number, tracks?: number, genre?: string): Array<HeaderDetail> => {
 	return [
-		{title: 'Albums', value: `${albums || ''}`},
-		{title: 'Tracks', value: `${tracks || ''}`},
+		{title: 'Albums', value: `${albums}`},
+		{title: 'Tracks', value: `${tracks}`},
 		{title: 'Genre', value: genre || ''}
 	];
 };

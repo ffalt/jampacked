@@ -7,14 +7,12 @@ import {ClickLabelIcon} from './ClickLabelIcon';
 
 const styles = StyleSheet.create({
 	container: {
-		flex: 1,
-		borderBottomWidth: 1
+		flex: 1
 	},
 	containerLoading: {
 		flex: 1,
 		justifyContent: 'center',
-		alignItems: 'center',
-		borderBottomWidth: 1
+		alignItems: 'center'
 	},
 	none: {
 		fontSize: staticTheme.fontSizeSmall,
@@ -71,7 +69,7 @@ export const Lyrics: React.FC<{ id?: string | null }> = ({id}) => {
 		return (
 			<View key="nolyrics" style={[styles.containerLoading, {borderColor: theme.separator}]}>
 				{id && !error && !loading && <ThemedText style={styles.none}>{text}</ThemedText>}
-				{loading && <ActivityIndicator size="small" color={theme.textColor}/>}
+				{loading && <View><ActivityIndicator size="small" color={theme.textColor}/><ThemedText style={styles.none}>Searching Lyrics</ThemedText></View>}
 				{error && !loading && (
 					<View>
 						<ThemedText style={styles.none}>{error.message}</ThemedText>
