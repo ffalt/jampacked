@@ -69,7 +69,7 @@
     "@babel/preset-env": "7.25.7",
     "@babel/preset-react": "7.25.7",
     "@babel/preset-typescript": "7.25.7",
-    "@babel/runtime": "7.25.7",
+    "@babel/runtime": "7.26.10",
     "@eslint/compat": "1.2.0",
     "@eslint/js": "^9.12.0",
     "@graphql-codegen/cli": "5.0.2",
