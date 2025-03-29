@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import '@testing-library/react-native/extend-expect';
+// import '@testing-library/react-native/extend-expect';
 
 import {NativeModules} from 'react-native';
 

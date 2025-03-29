@@ -21,6 +21,9 @@ module.exports = {
 		'|react-native-fs' +
 		'|@react-navigation)/)'
 	],
+	'moduleNameMapper': {
+		'\\.(ttf)$': '<rootDir>/__mocks__/file-mock.js',
+	},
 	'setupFilesAfterEnv': [
 		'./jest.setup.js',
 		'./node_modules/react-native-gesture-handler/jestSetup.js'

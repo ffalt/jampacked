@@ -33,7 +33,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "jamTests.xctest"
+               BuildableName = "jamTests"
                BlueprintName = "jamTests"
                ReferencedContainer = "container:jam.xcodeproj">
             </BuildableReference>

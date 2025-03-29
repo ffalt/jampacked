@@ -14,7 +14,6 @@ import { AlbumTabNavigatorContext } from '../navigators/AlbumNavigatorContext';
 import { PinIcon } from '../components/PinIcon';
 import { ClickIcon } from '../components/ClickIcon';
 import { Rating } from '../components/Rating';
-import { View } from 'react-native';
 
 export const MUSICBRAINZ_VARIOUS_ARTISTS_NAME = 'Various Artists';
 
