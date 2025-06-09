@@ -1588,6 +1588,7 @@ export type TagQL = {
   nrTagImages?: Maybe<Scalars['Int']['output']>;
   series?: Maybe<Scalars['String']['output']>;
   seriesNr?: Maybe<Scalars['String']['output']>;
+  syncedlyrics?: Maybe<Scalars['String']['output']>;
   title?: Maybe<Scalars['String']['output']>;
   titleSort?: Maybe<Scalars['String']['output']>;
   trackNr?: Maybe<Scalars['Int']['output']>;

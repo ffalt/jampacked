@@ -1760,6 +1760,8 @@ export declare namespace Jam {
 	export interface TrackLyrics {
 		/** Lyrics */
 		lyrics?: string;
+		/** Synced Lyrics */
+		syncedLyrics?: string;
 		/** Audio Tag or External Service */
 		source?: string;
 	}

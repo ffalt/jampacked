@@ -1,21 +1,9 @@
-import {createTheming} from '@callstack/react-theme-provider';
-import {DefaultTheme} from '@react-navigation/native';
-import React, {useContext} from 'react';
-import {Appearance} from 'react-native';
+import { createTheming } from '@callstack/react-theme-provider';
+import { DefaultTheme } from '@react-navigation/native';
+import React, { useContext } from 'react';
+import { Appearance } from 'react-native';
 
 const getColorScheme = Appearance.getColorScheme || ((): string => '');
-
-export declare type NavigationTheme = {
-	dark: boolean;
-	colors: {
-		primary: string;
-		background: string;
-		card: string;
-		text: string;
-		border: string;
-		notification: string;
-	};
-};
 
 export const staticTheme = {
 	fontSizeHuge: 30,
@@ -64,7 +52,7 @@ export interface ITheme {
 	overlay: string;
 	overlayText: string;
 	overlayTextActive: string;
-	navigation: NavigationTheme;
+	navigation: ReactNavigation.Theme;
 	waveform: {
 		active: string;
 		activeInverse: string;
@@ -112,6 +100,24 @@ const light: ITheme = {
 	statusBar: 'rgba(255,255,255,0.7)',
 	navigation: {
 		dark: false,
+		fonts: {
+			regular: {
+				fontFamily: 'sans-serif',
+				fontWeight: 'normal',
+			},
+			medium: {
+				fontFamily: 'sans-serif-medium',
+				fontWeight: 'normal',
+			},
+			bold: {
+				fontFamily: 'sans-serif',
+				fontWeight: '600',
+			},
+			heavy: {
+				fontFamily: 'sans-serif',
+				fontWeight: '700',
+			}
+		},
 		colors: {
 			...DefaultTheme.colors,
 			primary: '#2d7c61',
@@ -171,6 +177,25 @@ const dark: ITheme = {
 	},
 	navigation: {
 		dark: true,
+		fonts: {
+			regular: {
+				fontFamily: 'sans-serif',
+				fontWeight: 'normal',
+			},
+			medium: {
+				fontFamily: 'sans-serif-medium',
+				fontWeight: 'normal',
+			},
+			bold: {
+				fontFamily: 'sans-serif',
+				fontWeight: '600',
+			},
+			heavy: {
+				fontFamily: 'sans-serif',
+				fontWeight: '700',
+			}
+		},
+
 		colors: {
 			primary: '#008300',
 			background: '#0b1821',
@@ -216,6 +241,24 @@ const black: ITheme = {
 	statusBar: 'rgba(0,0,0,0.5)',
 	navigation: {
 		dark: true,
+		fonts: {
+			regular: {
+				fontFamily: 'sans-serif',
+				fontWeight: 'normal',
+			},
+			medium: {
+				fontFamily: 'sans-serif-medium',
+				fontWeight: 'normal',
+			},
+			bold: {
+				fontFamily: 'sans-serif',
+				fontWeight: '600',
+			},
+			heavy: {
+				fontFamily: 'sans-serif',
+				fontWeight: '700',
+			}
+		},
 		colors: {
 			primary: '#008300',
 			background: '#000000',
@@ -247,13 +290,13 @@ const themes: {
 	light: ITheme,
 	dark: ITheme,
 	black: ITheme, [name: string]: ITheme
-} = {light, dark, black};
+} = { light, dark, black };
 
 export const themeList: Array<{ key: string, label: string }> = [
-	{key: 'auto', label: 'System Theme'},
-	{key: 'light', label: 'Light'},
-	{key: 'dark', label: 'Dark'},
-	{key: 'black', label: 'Black'}
+	{ key: 'auto', label: 'System Theme' },
+	{ key: 'light', label: 'Light' },
+	{ key: 'dark', label: 'Dark' },
+	{ key: 'black', label: 'Black' }
 ];
 
 export interface ThemeSettings {
@@ -263,7 +306,7 @@ export interface ThemeSettings {
 }
 
 export function getAutoTheme(): ITheme {
-	return {...(getColorScheme() === 'dark' ? dark : light), name: 'auto'};
+	return { ...(getColorScheme() === 'dark' ? dark : light), name: 'auto' };
 }
 
 export function getTheme(name?: string | null): ITheme {
@@ -285,9 +328,9 @@ export const ThemeContext = React.createContext<ThemeSettings>(
 	}
 );
 
-const {ThemeProvider: ThemeProviderIntern, useTheme: useThemeIntern} = createTheming(getAutoTheme());
+const { ThemeProvider: ThemeProviderIntern, useTheme: useThemeIntern } = createTheming(getAutoTheme());
 // React.ComponentType<{children: React.ReactNode, theme?: Theme }>
-export const ThemeProvider: React.ComponentType<{children: React.ReactNode, theme?: ITheme }> = ThemeProviderIntern;
+export const ThemeProvider: React.ComponentType<{ children: React.ReactNode, theme?: ITheme }> = ThemeProviderIntern;
 export const useTheme = useThemeIntern;
 
 export const useThemeContext = (): ThemeSettings => useContext<ThemeSettings>(ThemeContext);

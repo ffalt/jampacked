@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-// import '@testing-library/react-native/extend-expect';
-
 import {NativeModules} from 'react-native';
 
 jest.mock('./node_modules/react-native/Libraries/EventEmitter/NativeEventEmitter.js');
@@ -51,6 +48,14 @@ jest.mock('react-native-track-player', () => ({
 	})
 }));
 
+jest.mock('react-native-gesture-handler', () => {
+	return {RNGestureHandlerModule: jest.fn()};
+});
+
+jest.mock('react-native-gesture-handler/Swipeable', () => {
+	return {RNGestureHandlerModule: jest.fn()};
+});
+
 jest.mock('react-native-bootsplash', () => {
 	return {RNBootSplash: jest.fn()};
 });
@@ -63,15 +68,15 @@ jest.mock('react-native-screens', () => ({
 jest.mock('react-native-sqlite-storage', () => ({
 	DEBUG: jest.fn,
 	enablePromise: jest.fn(),
-	openDatabase: (...args1) => {
+	openDatabase: (..._args1: any) => {
 		return {
-			transaction: (...args2) => Promise.resolve({
-				executeSql: (query) => {
+			transaction: (..._args2: any) => Promise.resolve({
+				executeSql: (_query: any) => {
 					return Promise.resolve([]);
 				}
 			}),
 			cleanDb: () => Promise.resolve(),
-			executeSql: (query) => {
+			executeSql: (_query: any) => {
 				return Promise.resolve([]);
 			}
 		};

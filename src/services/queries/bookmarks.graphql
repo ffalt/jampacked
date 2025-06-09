@@ -1,0 +1,53 @@
+query BookmarkResult($take: Int!, $skip: Int!, $ids: [ID!], $trackIDs:[ID!], $episodeIDs:[ID!], $userIDs: [ID!]){
+    bookmarks(page: {take: $take, skip: $skip}, filter: {ids: $ids, trackIDs: $trackIDs, episodeIDs:$episodeIDs, userIDs:$userIDs  }) {
+        total
+        skip
+        take
+        items {
+            id
+            comment
+            track {
+                id
+                name
+                album {
+                    id
+                    name
+                }
+                artist {
+                    id
+                    name
+                }
+                series {
+                    id
+                    name
+                }
+                genres {
+                    id
+                    name
+                }
+                tag {
+                    mediaDuration
+                    title
+                    disc
+                    trackNr
+                }
+            }
+            episode {
+                id
+                name
+                podcast {
+                    id
+                }
+                tag {
+                    mediaDuration
+                    title
+                    artist
+                    genres
+                    album
+                    disc
+                    trackNr
+                }
+            }
+        }
+    }
+}

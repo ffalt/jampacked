@@ -22,9 +22,9 @@ export default [
 		ignores: [
 			"src/services/queries/*.api.ts",
 			"src/services/jam",
+			"**/babel.config.js",
 			"**/codegen.ts",
 			"**/codegen.hook.mjs",
-			"**/jest.config.js",
 			"**/jest.transformer.js",
 			"**/eslint.config.mjs",
 			"**/wdyr.js",

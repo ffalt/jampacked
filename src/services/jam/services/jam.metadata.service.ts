@@ -25,6 +25,13 @@ export class JamMetaDataService {
 	}
 
 	/**
+	 * Get Lrclib.net data // Rights needed: stream
+	 */
+	async lcrlibSearch(params: JamParameters.LrclibSearchArgs): Promise<Jam.MetaDataResult> {
+		return this.base.requestData<Jam.MetaDataResult>('/metadata/lrclib/get', params);
+	}
+
+	/**
 	 * Lookup AcoustId data // Rights needed: stream
 	 */
 	async acoustidLookup(params: JamParameters.AcoustidLookupArgs): Promise<Jam.MetaDataResult> {

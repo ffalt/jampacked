@@ -101,6 +101,11 @@ export type TrackEntryList = {
 	take?: number;
 };
 
+export type UseGetCallFunctionTransform<T> = (
+	take: number,
+	skip: number,
+	forceRefresh?: boolean) => T;
+
 export type UseListCallFunctionTransform<T> = (
 	albumTypes: Array<AlbumType>,
 	listType: ListType | undefined,

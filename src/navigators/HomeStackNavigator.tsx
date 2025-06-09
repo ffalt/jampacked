@@ -19,6 +19,7 @@ import {GenresNavigator} from './GenresNavigator';
 import {TracksNavigator} from './TracksNavigator';
 import {GenreNavigator} from './GenreNavigator';
 import {AlbumNavigator} from './AlbumNavigator';
+import { BookmarksScreen } from '../screens/BookmarksScreen.tsx';
 
 const Stack = createNativeStackNavigator<HomeRouteParamList>();
 
@@ -33,6 +34,7 @@ export const HomeStackNavigator: React.FC = () => (
 		<Stack.Screen name={HomeRoute.FOLDER} component={FolderScreen}/>
 		<Stack.Screen name={HomeRoute.PLAYLIST} component={PlaylistScreen}/>
 		<Stack.Screen name={HomeRoute.PLAYLISTS} component={PlaylistIndexScreen}/>
+		<Stack.Screen name={HomeRoute.BOOKMARKS} component={BookmarksScreen}/>
 		<Stack.Screen name={HomeRoute.PODCASTS} component={PodcastIndexScreen}/>
 		<Stack.Screen name={HomeRoute.PODCAST} component={PodcastScreen}/>
 		<Stack.Screen name={HomeRoute.TRACKS} component={TracksNavigator}/>

@@ -1190,6 +1190,20 @@ export declare namespace JamParameters {
 		seed?: string;
 	}
 
+	export interface LrclibSearchArgs {
+		/** Song Title */
+		title: string;
+		/** Song Artist */
+		artist: string;
+		/** Song Album */
+		album: string;
+		/**
+		 * Song Duration in seconds
+		 * @TJS-type integer
+		 */
+		duration: number;
+	}
+
 	export interface LyricsOVHSearchArgs {
 		/** Song Title */
 		title: string;
@@ -1930,7 +1944,7 @@ export declare namespace JamParameters {
 
 	export type WaveformWaveformArgs = WaveformArgs & ID;
 
-	export type StreamStreamArgs = StreamParamArgs & StreamPathArgs & ID;
+	export type StreamStreamArgs = ID & StreamPathArgs & StreamParamArgs;
 
 	export type ArtworkIdArgs = IncludesFolderArgs & IncludesArtworkChildrenArgs & IncludesArtworkArgs & ID;
 
