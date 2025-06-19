@@ -115,7 +115,6 @@
     "lodash.chunk": "4.2.0",
     "lodash.debounce": "4.0.8",
     "lodash.throttle": "4.1.1",
-    "metro-react-native-babel-preset": "0.77.0",
     "prettier": "3.5.3",
     "prop-types": "15.8.1",
     "react-test-renderer": "19.1.0",

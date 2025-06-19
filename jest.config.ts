@@ -34,12 +34,7 @@ const config: Config = {
 	coverageReporters: ['html', 'json', 'lcov', 'text'],
 	modulePathIgnorePatterns: ['<rootDir>/dist/'],
 	preset: 'react-native',
-	setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
-	// TODO: remove custom transform once the react-native preset is fixed for RN v0.76, maybe?
-	transform: {
-		'^.+\\.(js)$': ['babel-jest', { plugins: ['babel-plugin-syntax-hermes-parser'] }],
-		'^.+\\.(ts|tsx)$': 'babel-jest',
-	},
+	setupFilesAfterEnv: ['<rootDir>/jest.setup.ts']
 };
 
 export default config;
