@@ -1,13 +1,12 @@
-import {CommonActions, NavigationContainerRef} from '@react-navigation/core';
-import {JamObjectType} from '../services/jam';
-import {AlbumRoute, AlbumsRoute, ArtistsRoute, FoldersRoute, GenreRoute, GenresRoute, HomeRoute, SeriesRoute, TracksRoute} from './Routing';
-import {Navig, NavigParams} from '../services/types';
-import {RouteLink} from './Routes';
+import { CommonActions, NavigationContainerRef } from '@react-navigation/core';
+import { JamObjectType } from '../services/jam';
+import { AlbumRoute, AlbumsRoute, ArtistsRoute, FoldersRoute, GenreRoute, GenresRoute, HomeRoute, SeriesRoute, TracksRoute } from './Routing';
+import { Navig, NavigParams } from '../services/types';
+import { RouteLink } from './Routes';
 
 let navigator: NavigationContainerRef<any>;
 
 export class NavigationService {
-
 	static setTopLevelNavigator(navigatorRef: NavigationContainerRef<any>): void {
 		navigator = navigatorRef;
 	}
@@ -62,7 +61,7 @@ export class NavigationService {
 		}
 		if (navigator) {
 			navigator.dispatch(
-				CommonActions.navigate({name: routeName, params})
+				CommonActions.navigate({ name: routeName, params })
 			);
 		}
 	}
@@ -102,7 +101,7 @@ export class NavigationService {
 	static navigateObj(objType: string, id: string, name: string): void {
 		const route = NavigationService.routeByObjType(objType as JamObjectType);
 		if (route) {
-			NavigationService.navigate(route, {id, name});
+			NavigationService.navigate(route, { id, name });
 		}
 	}
 }

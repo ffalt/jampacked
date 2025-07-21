@@ -1,18 +1,18 @@
-import React, {useCallback, useState} from 'react';
-import {PageHeader} from '../components/PageHeader';
-import {PinnedMediaItem} from '../components/PinnedMediaItem';
-import {PinMedia, TrackEntry} from '../services/types';
-import {usePinnedMedia} from '../services/pin-hooks';
-import {DownloadsRoute, DownloadsRouteProps} from '../navigators/Routing';
-import {SectionListData, TouchableOpacity} from 'react-native';
-import {TrackDisplay, TrackItem} from '../components/TrackItem';
-import {DefaultSectionList} from '../components/DefSectionList';
-import {Separator} from '../components/Separator';
-import {downloadStateToString, useTrackPlayerDownloadCached} from '../services/player-api';
+import React, { useCallback, useState } from 'react';
+import { PageHeader } from '../components/PageHeader';
+import { PinnedMediaItem } from '../components/PinnedMediaItem';
+import { PinMedia, TrackEntry } from '../services/types';
+import { usePinnedMedia } from '../services/pin-hooks';
+import { DownloadsRoute, DownloadsRouteProps } from '../navigators/Routing';
+import { SectionListData, TouchableOpacity } from 'react-native';
+import { TrackDisplay, TrackItem } from '../components/TrackItem';
+import { DefaultSectionList } from '../components/DefSectionList';
+import { Separator } from '../components/Separator';
+import { downloadStateToString, useTrackPlayerDownloadCached } from '../services/player-api';
 import dataService from '../services/data';
-import {useTheme} from '../style/theming';
+import { useTheme } from '../style/theming';
 
-export const PinnedTrackItem: React.FC<{ track: TrackEntry }> = React.memo(({track}) => {
+export const PinnedTrackItem: React.FC<{ track: TrackEntry }> = React.memo(({ track }) => {
 	const download = useTrackPlayerDownloadCached(track.id, dataService.pin.manager);
 	const trackDisplay = (t: TrackEntry): TrackDisplay => {
 		return {
@@ -32,16 +32,16 @@ export const PinnedTrackItem: React.FC<{ track: TrackEntry }> = React.memo(({tra
 });
 
 export const PinnedMediaScreen: React.FC<DownloadsRouteProps<DownloadsRoute.PINNED>> = () => {
-	const {media, loading} = usePinnedMedia();
+	const { media, loading } = usePinnedMedia();
 	const theme = useTheme();
 	const [expandedSections, setExpandedSections] = useState(new Set());
 
 	const ListHeaderComponent = (<PageHeader title="Media" subtitle="Pinned"/>);
 	const reload = useCallback(() => {
-		//TODO reload pinned download list
+		// TODO reload pinned download list
 	}, []);
 
-	const list = media.map(p => {
+	const list = media.map((p) => {
 		return {
 			pin: p,
 			collapsed: true,
@@ -49,7 +49,7 @@ export const PinnedMediaScreen: React.FC<DownloadsRouteProps<DownloadsRoute.PINN
 		};
 	});
 
-	const renderItem = ({section, item}: { section: SectionListData<PinMedia>, item: TrackEntry }):React.JSX.Element | null => {
+	const renderItem = ({ section, item }: { section: SectionListData<PinMedia>; item: TrackEntry }): React.JSX.Element | null => {
 		const isExpanded = expandedSections.has(section.pin.id);
 		if (!isExpanded) {
 			return null;
@@ -74,13 +74,13 @@ export const PinnedMediaScreen: React.FC<DownloadsRouteProps<DownloadsRoute.PINN
 		});
 	};
 
-	const renderSection = ({section}: { section: SectionListData<PinMedia> }):React.JSX.Element => {
+	const renderSection = ({ section }: { section: SectionListData<PinMedia> }): React.JSX.Element => {
 		const isExpanded = expandedSections.has(section.pin.id);
 		return (
 			<>
 				<Separator/>
 				<TouchableOpacity
-					style={{backgroundColor: isExpanded ? theme.activeBackgroundColor : undefined}}
+					style={{ backgroundColor: isExpanded ? theme.activeBackgroundColor : undefined }}
 					onPress={(): void => handleToggle(section.pin.id)}>
 					<PinnedMediaItem item={section.pin}/>
 				</TouchableOpacity>

@@ -1,11 +1,11 @@
-import {Database} from './db';
-import {JamApolloClient} from './apollo';
-import {Doc} from './types';
+import { Database } from './db';
+import { JamApolloClient } from './apollo';
+import { Doc } from './types';
 import FastImage from '@d11/react-native-fast-image';
-import {snackSuccess} from './snack';
-import {DocumentNode} from 'graphql';
-import {buildCacheID} from './cache-query';
-import {OperationVariables} from '@apollo/client/core/types';
+import { snackSuccess } from './snack';
+import { DocumentNode } from 'graphql';
+import { buildCacheID } from './cache-query';
+import { OperationVariables } from '@apollo/client/core/types';
 
 export interface CacheState {
 	isRunning: boolean;
@@ -54,12 +54,10 @@ export class CacheService {
 	}
 
 	private async clearDoc(id: string): Promise<void> {
-
-		await this.db.delete('jam', {key: id});
+		await this.db.delete('jam', { key: id });
 	}
 
 	private async setDoc<T>(id: string, data: T): Promise<void> {
-
 		await this.clearDoc(id);
 		await this.db.insert('jam', ['data', 'key', 'date', 'version'], [JSON.stringify(data), id, Date.now(), this.version]);
 	}
@@ -105,7 +103,7 @@ export class CacheService {
 	async getCacheOrQuery<TData, TVariables extends OperationVariables, TResult>(
 		query: DocumentNode,
 		variables: TVariables,
-		transform: (d?: TData, vars?: TVariables) => TResult | undefined,
+		transform: (d?: TData, vars?: TVariables) => TResult | undefined
 	): Promise<TResult | undefined> {
 		const queryID = buildCacheID<TVariables>(query, variables);
 		if (queryID) {
@@ -113,13 +111,13 @@ export class CacheService {
 			if (cache) {
 				return cache;
 			}
-			const result = await this.client.query<TData>({query, variables});
+			const result = await this.client.query<TData>({ query, variables });
 			return transform(result?.data, variables);
 		}
 	}
 
 	private updateText(msg: string): void {
-		this.notifyState({...this.state, message: msg});
+		this.notifyState({ ...this.state, message: msg });
 	}
 
 	private notifyState(state: CacheState): void {
@@ -222,28 +220,28 @@ await new Promise<void>(resolve => {
 }
 snackSuccess('Cache optimized');
 */
-		this.notifyState({isRunning: false, message: '', isStopped: false});
+		this.notifyState({ isRunning: false, message: '', isStopped: false });
 	}
 
 	async clear(): Promise<void> {
 		if (this.state.isRunning) {
 			return;
 		}
-		this.notifyState({isRunning: true, message: 'Clearing...', isStopped: false});
+		this.notifyState({ isRunning: true, message: 'Clearing...', isStopped: false });
 		try {
 			this.updateText('1/2 Clearing Image Cache');
 			await FastImage.clearDiskCache();
 			await FastImage.clearMemoryCache();
 			if (this.state.isStopped) {
-				this.notifyState({isRunning: false, message: '', isStopped: false});
+				this.notifyState({ isRunning: false, message: '', isStopped: false });
 				return;
 			}
 			this.updateText('2/2 Clearing Data Cache');
 			await this.dropJamCache();
-			this.notifyState({isRunning: false, message: '', isStopped: false});
+			this.notifyState({ isRunning: false, message: '', isStopped: false });
 			snackSuccess('Cache cleared');
-		} catch (_) {
-			this.notifyState({isRunning: false, message: '', isStopped: false});
+		} catch {
+			this.notifyState({ isRunning: false, message: '', isStopped: false });
 		}
 	}
 
@@ -251,7 +249,7 @@ snackSuccess('Cache optimized');
 		if (!this.state.isRunning) {
 			return;
 		}
-		this.notifyState({...this.state, isStopped: true});
+		this.notifyState({ ...this.state, isStopped: true });
 	}
 
 	subscribeStateChangeUpdates(update: (state: CacheState) => void): void {

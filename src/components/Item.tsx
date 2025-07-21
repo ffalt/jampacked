@@ -1,17 +1,16 @@
-import React, {useCallback} from 'react';
-import {TouchableOpacity, View} from 'react-native';
-import {ThemedText} from './ThemedText';
-import {staticTheme} from '../style/theming';
-import {JamImage} from './JamImage';
-import {NavigationService} from '../navigators/navigation';
-import {BaseEntry} from '../services/types';
-import {sharedStyles} from '../style/shared';
+import React, { useCallback } from 'react';
+import { TouchableOpacity, View } from 'react-native';
+import { ThemedText } from './ThemedText';
+import { staticTheme } from '../style/theming';
+import { JamImage } from './JamImage';
+import { NavigationService } from '../navigators/navigation';
+import { BaseEntry } from '../services/types';
+import { sharedStyles } from '../style/shared';
 // import {SwipeableItem} from './SwipeableItem';
 // import {PinIcon} from './PinIcon';
 // import {FavIcon} from './FavIcon';
 
-export const Item: React.FC<{ item: BaseEntry }> = ({item}) => {
-
+export const Item: React.FC<{ item: BaseEntry }> = ({ item }) => {
 	const handlePress = useCallback((): void => {
 		NavigationService.navigateObj(item.objType, item.id, item.title);
 	}, [item]);

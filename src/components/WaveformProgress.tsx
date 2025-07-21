@@ -1,19 +1,19 @@
-import React, {useCallback} from 'react';
-import {useTheme} from '../style/theming';
-import {JamPlayer} from '../services/player';
-import {SoundCloudWave} from './Waveform';
-import {Jam} from '../services/jam';
-import {StyleProp, ViewStyle} from 'react-native';
-import {useWindowWidth} from '../utils/dimension.hook';
-import {useTrackPlayerProgressPercent} from '../services/player-api';
+import React, { useCallback } from 'react';
+import { useTheme } from '../style/theming';
+import { JamPlayer } from '../services/player';
+import { SoundCloudWave } from './Waveform';
+import { Jam } from '../services/jam';
+import { StyleProp, ViewStyle } from 'react-native';
+import { useWindowWidth } from '../utils/dimension.hook';
+import { useTrackPlayerProgressPercent } from '../services/player-api';
 
 interface WaveformProgressProps {
 	waveform?: Jam.WaveFormData;
 	style?: StyleProp<ViewStyle>;
 }
 
-export const WaveformProgress: React.FC<WaveformProgressProps> = ({waveform, style}) => {
-	const {progress, bufferProgress} = useTrackPlayerProgressPercent();
+export const WaveformProgress: React.FC<WaveformProgressProps> = ({ waveform, style }) => {
+	const { progress, bufferProgress } = useTrackPlayerProgressPercent();
 	const theme = useTheme();
 	const dimensionsWidth = useWindowWidth();
 

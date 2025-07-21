@@ -1,11 +1,11 @@
-import {AlbumType, JamObjectType} from '../jam';
-import {SectionListData} from 'react-native';
-import {BaseEntry} from '../types';
-import {DocumentNode} from 'graphql';
-import {ApolloError} from '@apollo/client';
-import {useCacheOrLazyQuery} from '../cache-hooks';
-import {useCallback} from 'react';
-import {ArtistResultDocument, ArtistResultQuery, ArtistResultQueryVariables} from './artist.api';
+import { AlbumType, JamObjectType } from '../jam';
+import { SectionListData } from 'react-native';
+import { BaseEntry } from '../types';
+import { DocumentNode } from 'graphql';
+import { ApolloError } from '@apollo/client';
+import { useCacheOrLazyQuery } from '../cache-hooks';
+import { useCallback } from 'react';
+import { ArtistResultDocument, ArtistResultQuery, ArtistResultQueryVariables } from './artist.api';
 
 export interface AlbumEntry {
 	id: string;
@@ -30,7 +30,7 @@ function transformData(data?: ArtistResultQuery): Artist | undefined {
 		return;
 	}
 	const sections: Array<SectionListData<BaseEntry>> = [];
-	(data.artist.albums || []).forEach(album => {
+	(data.artist.albums || []).forEach((album) => {
 		let section = sections.find(s => s.key === album.albumType);
 		if (!section) {
 			section = {
@@ -66,22 +66,22 @@ function transformData(data?: ArtistResultQuery): Artist | undefined {
 }
 
 function transformVariables(id: string): ArtistResultQueryVariables {
-	return {id};
+	return { id };
 }
 
 export const ArtistQuery: {
 	query: DocumentNode;
 	transformData: (d?: ArtistResultQuery, variables?: ArtistResultQueryVariables) => Artist | undefined;
 	transformVariables: (id: string) => ArtistResultQueryVariables;
-} = {query: ArtistResultDocument, transformData, transformVariables};
+} = { query: ArtistResultDocument, transformData, transformVariables };
 
 export const useLazyArtistQuery = (): [(id: string, forceRefresh?: boolean) => void,
-	{ loading: boolean, error?: ApolloError, artist?: Artist, called: boolean }
+	{ loading: boolean; error?: ApolloError; artist?: Artist; called: boolean }
 ] => {
-	const [query, {loading, error, data, called}] =
+	const [query, { loading, error, data, called }] =
 		useCacheOrLazyQuery<ArtistResultQuery, ArtistResultQueryVariables, Artist>(ArtistQuery.query, ArtistQuery.transformData);
 	const get = useCallback((id: string, forceRefresh?: boolean): void => {
-		query({variables: ArtistQuery.transformVariables(id)}, forceRefresh);
+		query({ variables: ArtistQuery.transformVariables(id) }, forceRefresh);
 	}, [query]);
-	return [get, {loading, called, error, artist: data}];
+	return [get, { loading, called, error, artist: data }];
 };

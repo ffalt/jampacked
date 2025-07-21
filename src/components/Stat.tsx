@@ -1,9 +1,9 @@
-import {StyleSheet, TouchableOpacity} from 'react-native';
-import {staticTheme, useTheme} from '../style/theming';
-import {HomeStatData} from '../services/types';
+import { StyleSheet, TouchableOpacity } from 'react-native';
+import { staticTheme, useTheme } from '../style/theming';
+import { HomeStatData } from '../services/types';
 import React from 'react';
-import {NavigationService} from '../navigators/navigation';
-import {ThemedText} from './ThemedText';
+import { NavigationService } from '../navigators/navigation';
+import { ThemedText } from './ThemedText';
 
 const styles = StyleSheet.create({
 	homeStat: {
@@ -22,8 +22,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-
-export const Stat: React.FC<{ stat: HomeStatData }> = React.memo(({stat}) => {
+export const Stat: React.FC<{ stat: HomeStatData }> = React.memo(({ stat }) => {
 	const theme = useTheme();
 
 	const click = (): void => {
@@ -31,7 +30,7 @@ export const Stat: React.FC<{ stat: HomeStatData }> = React.memo(({stat}) => {
 	};
 
 	return (
-		<TouchableOpacity onPress={click} style={[styles.homeStat, {backgroundColor: theme.itemBackground}]}>
+		<TouchableOpacity onPress={click} style={[styles.homeStat, { backgroundColor: theme.itemBackground }]}>
 			<ThemedText style={styles.homeStatValue}>{stat.value}</ThemedText>
 			<ThemedText style={styles.homeStatDesc} numberOfLines={1}>{stat.link.title}</ThemedText>
 		</TouchableOpacity>

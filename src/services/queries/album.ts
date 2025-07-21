@@ -1,11 +1,11 @@
-import {TrackEntry} from '../types';
-import {AlbumType} from '../jam';
-import {DocumentNode} from 'graphql';
-import {transformTrack} from './track';
-import {ApolloError} from '@apollo/client';
-import {useCacheOrLazyQuery} from '../cache-hooks';
-import {useCallback} from 'react';
-import {AlbumResultDocument, AlbumResultQuery, AlbumResultQueryVariables} from './album.api';
+import { TrackEntry } from '../types';
+import { AlbumType } from '../jam';
+import { DocumentNode } from 'graphql';
+import { transformTrack } from './track';
+import { ApolloError } from '@apollo/client';
+import { useCacheOrLazyQuery } from '../cache-hooks';
+import { useCallback } from 'react';
+import { AlbumResultDocument, AlbumResultQuery, AlbumResultQueryVariables } from './album.api';
 
 export interface Album {
 	id: string;
@@ -35,23 +35,23 @@ function transformData(data?: AlbumResultQuery): Album | undefined {
 }
 
 function transformVariables(id: string): AlbumResultQueryVariables {
-	return {id};
+	return { id };
 }
 
 export const AlbumQuery: {
 	query: DocumentNode;
 	transformData: (d?: AlbumResultQuery, variables?: AlbumResultQueryVariables) => Album | undefined;
 	transformVariables: (id: string) => AlbumResultQueryVariables;
-} = {query: AlbumResultDocument, transformData, transformVariables};
+} = { query: AlbumResultDocument, transformData, transformVariables };
 
 export const useLazyAlbumQuery = (): [
 	(id: string, forceRefresh?: boolean) => void,
-	{ loading: boolean, error?: ApolloError, called: boolean, album?: Album }
+	{ loading: boolean; error?: ApolloError; called: boolean; album?: Album }
 ] => {
-	const [query, {loading, error, data, called}] =
+	const [query, { loading, error, data, called }] =
 		useCacheOrLazyQuery<AlbumResultQuery, AlbumResultQueryVariables, Album>(AlbumQuery.query, AlbumQuery.transformData);
 	const get = useCallback((id: string, forceRefresh?: boolean): void => {
-		query({variables: AlbumQuery.transformVariables(id)}, forceRefresh);
+		query({ variables: AlbumQuery.transformVariables(id) }, forceRefresh);
 	}, [query]);
-	return [get, {loading, called, error, album: data}];
+	return [get, { loading, called, error, album: data }];
 };

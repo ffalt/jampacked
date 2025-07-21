@@ -2,7 +2,6 @@
   "extends": "./tsconfig.json",
   "include": [
     "./App.tsx",
-    "./index.js",
     "./jest.transformer.js",
     "./jest.config.js",
     "./jest.setup.js",

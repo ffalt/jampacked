@@ -1,11 +1,11 @@
-import React, {useEffect, useState} from 'react';
-import {BaseEntryListList, BaseEntryListListQuery} from './BaseEntryListList';
-import {JamRouteLinks, RouteLink} from '../navigators/Routes';
-import {AlbumType, ListType} from '../services/jam';
-import {useLazyFolderListQuery} from '../services/queries/folderList';
+import React, { useEffect, useState } from 'react';
+import { BaseEntryListList, BaseEntryListListQuery } from './BaseEntryListList';
+import { JamRouteLinks, RouteLink } from '../navigators/Routes';
+import { AlbumType, ListType } from '../services/jam';
+import { useLazyFolderListQuery } from '../services/queries/folderList';
 
-export const FolderList: React.FC<{ query: { listType?: ListType; albumType?: AlbumType, goLeft?: RouteLink, goRight?: RouteLink } }> =
-	({query}) => {
+export const FolderList: React.FC<{ query: { listType?: ListType; albumType?: AlbumType; goLeft?: RouteLink; goRight?: RouteLink } }> =
+	({ query }) => {
 		const [view, setView] = useState<BaseEntryListListQuery>({
 			text: '',
 			icon: 'folder',

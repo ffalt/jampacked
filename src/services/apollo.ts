@@ -1,7 +1,7 @@
-import {ApolloClient, ApolloLink, DefaultOptions, InMemoryCache, HttpLink} from '@apollo/client';
-import {setContext} from '@apollo/client/link/context';
-import {DataService} from './data';
-import {onError} from '@apollo/client/link/error';
+import { ApolloClient, ApolloLink, DefaultOptions, InMemoryCache, HttpLink } from '@apollo/client';
+import { setContext } from '@apollo/client/link/context';
+import { DataService } from './data';
+import { onError } from '@apollo/client/link/error';
 
 const defaultOptions: DefaultOptions = {
 	watchQuery: {
@@ -25,7 +25,6 @@ export function apolloClient(): JamApolloClient {
 }
 
 export async function initApolloClient(dataService: DataService): Promise<JamApolloClient> {
-
 	const httpLink = new HttpLink({
 		uri: (_): string => {
 			return `${dataService.jam.auth.auth?.server}/graphql`;
@@ -33,7 +32,7 @@ export async function initApolloClient(dataService: DataService): Promise<JamApo
 		credentials: 'include'
 	}) as any as ApolloLink;
 
-	const authLink = setContext((_, {headers}: any) => {
+	const authLink = setContext((_, { headers }: any) => {
 		return {
 			headers: {
 				...headers,
@@ -44,10 +43,10 @@ export async function initApolloClient(dataService: DataService): Promise<JamApo
 		};
 	}) as any as ApolloLink;
 
-	const errorLink = onError(({graphQLErrors, networkError}) => {
+	const errorLink = onError(({ graphQLErrors, networkError }) => {
 		if (graphQLErrors) {
-			graphQLErrors.map(({message, locations, path}) =>
-				console.error(`[GraphQL error]: Message: ${message}, Location: ${JSON.stringify(locations)}, Path: ${path}`),
+			graphQLErrors.map(({ message, locations, path }) =>
+				console.error(`[GraphQL error]: Message: ${message}, Location: ${JSON.stringify(locations)}, Path: ${path}`)
 			);
 		}
 		if (networkError) {
@@ -63,7 +62,7 @@ export async function initApolloClient(dataService: DataService): Promise<JamApo
 		});
 	});
 
-	const cache = new InMemoryCache({addTypename: false});
+	const cache = new InMemoryCache({ addTypename: false });
 
 	const authHttpLink = ApolloLink.concat(authLink, httpLink);
 	const links: Array<ApolloLink> = logging ? [logLink, errorLink, authHttpLink] : [errorLink, authHttpLink];

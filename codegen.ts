@@ -1,4 +1,4 @@
-import type {CodegenConfig} from '@graphql-codegen/cli';
+import type { CodegenConfig } from '@graphql-codegen/cli';
 
 const config: CodegenConfig = {
 	overwrite: true,
@@ -33,7 +33,7 @@ const config: CodegenConfig = {
 			preset: 'near-operation-file', // Tells codegen to generate multiple files instead of one
 			presetConfig: {
 				extension: '.api.ts',
-				baseTypesPath: './services/queries/_types.ts', // # Points to the base types file
+				baseTypesPath: './services/queries/_types.ts' // # Points to the base types file
 			},
 			config: {
 				withHooks: false,

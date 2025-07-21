@@ -1,17 +1,17 @@
-import React, {useCallback, useContext, useEffect, useState} from 'react';
-import {AlbumsRoute, AlbumsRouteProps} from '../navigators/Routing';
-import {IndexList} from '../components/IndexList';
-import {ErrorView} from '../components/ErrorView';
-import {getAlbumTypeInfos} from '../services/jam-lists';
-import {AlbumsTabNavigatorContext} from '../navigators/AlbumsNavigatorContext';
-import {useLazyAlbumIndexQuery} from '../services/queries/albumIndex';
-import {ListType} from '../services/jam';
-import {JamRouteLinks} from '../navigators/Routes';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
+import { AlbumsRoute, AlbumsRouteProps } from '../navigators/Routing';
+import { IndexList } from '../components/IndexList';
+import { ErrorView } from '../components/ErrorView';
+import { getAlbumTypeInfos } from '../services/jam-lists';
+import { AlbumsTabNavigatorContext } from '../navigators/AlbumsNavigatorContext';
+import { useLazyAlbumIndexQuery } from '../services/queries/albumIndex';
+import { ListType } from '../services/jam';
+import { JamRouteLinks } from '../navigators/Routes';
 
 export const AlbumIndexScreen: React.FC<AlbumsRouteProps<AlbumsRoute.INDEX>> = () => {
 	const [title, setTitle] = useState<string>('');
-	const [getIndex, {loading, error, called, index}] = useLazyAlbumIndexQuery();
-	const {albumType} = useContext(AlbumsTabNavigatorContext);
+	const [getIndex, { loading, error, called, index }] = useLazyAlbumIndexQuery();
+	const { albumType } = useContext(AlbumsTabNavigatorContext);
 
 	useEffect(() => {
 		if (albumType) {

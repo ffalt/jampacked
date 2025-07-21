@@ -1,11 +1,11 @@
-import {AlbumType, JamObjectType} from '../jam';
-import {SectionListData} from 'react-native';
-import {BaseEntry} from '../types';
-import {DocumentNode} from 'graphql';
-import {ApolloError} from '@apollo/client';
-import {useCacheOrLazyQuery} from '../cache-hooks';
-import {useCallback} from 'react';
-import {SeriesResultDocument, SeriesResultQuery, SeriesResultQueryVariables} from './series.api';
+import { AlbumType, JamObjectType } from '../jam';
+import { SectionListData } from 'react-native';
+import { BaseEntry } from '../types';
+import { DocumentNode } from 'graphql';
+import { ApolloError } from '@apollo/client';
+import { useCacheOrLazyQuery } from '../cache-hooks';
+import { useCallback } from 'react';
+import { SeriesResultDocument, SeriesResultQuery, SeriesResultQueryVariables } from './series.api';
 
 export interface AlbumEntry {
 	id: string;
@@ -30,7 +30,7 @@ function transformData(data?: SeriesResultQuery): Series | undefined {
 		return;
 	}
 	const sections: Array<SectionListData<BaseEntry>> = [];
-	(data.series.albums || []).forEach(album => {
+	(data.series.albums || []).forEach((album) => {
 		let section = sections.find(s => s.key === album.albumType);
 		if (!section) {
 			section = {
@@ -59,7 +59,7 @@ function transformData(data?: SeriesResultQuery): Series | undefined {
 		artistID: data.series.artist?.id,
 		artistName: data.series.artist?.name,
 		tracksCount: data.series.tracksCount,
-		albums: data.series.albums.map(series => {
+		albums: data.series.albums.map((series) => {
 			return {
 				...series,
 				year: series.year || undefined,
@@ -71,22 +71,22 @@ function transformData(data?: SeriesResultQuery): Series | undefined {
 }
 
 function transformVariables(id: string): SeriesResultQueryVariables {
-	return {id};
+	return { id };
 }
 
 export const SeriesQuery: {
 	query: DocumentNode;
 	transformData: (d?: SeriesResultQuery, variables?: SeriesResultQueryVariables) => Series | undefined;
 	transformVariables: (id: string) => SeriesResultQueryVariables;
-} = {query: SeriesResultDocument, transformData, transformVariables};
+} = { query: SeriesResultDocument, transformData, transformVariables };
 
 export const useLazySeriesQuery = (): [(id: string, forceRefresh?: boolean) => void,
-	{ loading: boolean, error?: ApolloError, series?: Series, called: boolean }
+	{ loading: boolean; error?: ApolloError; series?: Series; called: boolean }
 ] => {
-	const [query, {loading, error, data, called}] =
+	const [query, { loading, error, data, called }] =
 		useCacheOrLazyQuery<SeriesResultQuery, SeriesResultQueryVariables, Series>(SeriesQuery.query, SeriesQuery.transformData);
 	const get = useCallback((id: string, forceRefresh?: boolean): void => {
-		query({variables: SeriesQuery.transformVariables(id)}, forceRefresh);
+		query({ variables: SeriesQuery.transformVariables(id) }, forceRefresh);
 	}, [query]);
-	return [get, {loading, called, error, series: data}];
+	return [get, { loading, called, error, series: data }];
 };

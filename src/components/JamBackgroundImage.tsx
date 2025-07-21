@@ -1,9 +1,9 @@
-import React, {PropsWithChildren} from 'react';
-import {StyleSheet, View} from 'react-native';
+import React, { PropsWithChildren } from 'react';
+import { StyleSheet, View } from 'react-native';
 import FastImage from '@d11/react-native-fast-image';
-import {useAuth} from '../services/auth';
+import { useAuth } from '../services/auth';
 
-export const FastImageBackground: React.FC<PropsWithChildren<{ id: string, style?: any, imageStyle?: any }>> = ({id, children, style, imageStyle}) => {
+export const FastImageBackground: React.FC<PropsWithChildren<{ id: string; style?: any; imageStyle?: any }>> = ({ id, children, style, imageStyle }) => {
 	const auth = useAuth();
 
 	const source = React.useMemo(() => auth.imgSource(id, 300), [auth, id]);

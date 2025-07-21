@@ -1,17 +1,17 @@
-import React, {useCallback} from 'react';
-import {RefreshControl, StyleSheet} from 'react-native';
-import {useTheme} from '../style/theming';
-import {PageHeader} from './PageHeader';
-import {Separator} from './Separator';
-import {AtoZList} from './AtoZList';
-import {Item} from './Item';
-import {ImageItem} from './ImageItem';
-import {Index, IndexEntry} from '../services/types';
-import {useWindowWidth} from '../utils/dimension.hook';
-import {ListEmpty} from './ListEmpty';
-import {defaultKeyExtractor} from '../utils/list.utils';
-import {sharedStyles} from '../style/shared';
-import {RouteLink} from '../navigators/Routes';
+import React, { useCallback } from 'react';
+import { RefreshControl, StyleSheet } from 'react-native';
+import { useTheme } from '../style/theming';
+import { PageHeader } from './PageHeader';
+import { Separator } from './Separator';
+import { AtoZList } from './AtoZList';
+import { Item } from './Item';
+import { ImageItem } from './ImageItem';
+import { Index, IndexEntry } from '../services/types';
+import { useWindowWidth } from '../utils/dimension.hook';
+import { ListEmpty } from './ListEmpty';
+import { defaultKeyExtractor } from '../utils/list.utils';
+import { sharedStyles } from '../style/shared';
+import { RouteLink } from '../navigators/Routes';
 
 const styles = StyleSheet.create({
 	row: {
@@ -28,15 +28,15 @@ export const IndexList: React.FC<{
 	onRefresh: () => void;
 	goLeft?: RouteLink;
 	goRight?: RouteLink;
-}> = ({title, index, refreshing, onRefresh, goLeft, goRight}) => {
+}> = ({ title, index, refreshing, onRefresh, goLeft, goRight }) => {
 	const tiles = false;
 	const numColumns = 3;
 	const width = useWindowWidth();
 	const tileSize = width / (numColumns || 1);
 	const theme = useTheme();
 
-	const renderItemRow = useCallback(({item}: { item: IndexEntry }):React.JSX.Element => (<Item item={item}/>), []);
-	const renderItemTile = useCallback(({item}: { item: IndexEntry }):React.JSX.Element => (<ImageItem item={item} size={tileSize}/>), [tileSize]);
+	const renderItemRow = useCallback(({ item }: { item: IndexEntry }): React.JSX.Element => (<Item item={item}/>), []);
+	const renderItemTile = useCallback(({ item }: { item: IndexEntry }): React.JSX.Element => (<ImageItem item={item} size={tileSize}/>), [tileSize]);
 
 	const ListHeaderComponent = (<PageHeader title={title} goLeft={goLeft} goRight={goRight}/>);
 	const refreshControl = (
@@ -80,4 +80,3 @@ export const IndexList: React.FC<{
 		/>
 	);
 };
-

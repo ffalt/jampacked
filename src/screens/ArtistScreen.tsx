@@ -1,30 +1,30 @@
-import React, {useCallback, useEffect, useState} from 'react';
-import {SectionListData, View} from 'react-native';
-import {ThemedText} from '../components/ThemedText';
-import {HomeRoute, HomeRouteProps} from '../navigators/Routing';
-import {Item} from '../components/Item';
-import {HeaderDetail, ObjHeader, objHeaderStyles} from '../components/ObjHeader';
-import {genreDisplay} from '../utils/genre.utils';
-import {FavIcon} from '../components/FavIcon';
-import {JamObjectType} from '../services/jam';
-import {BaseEntry} from '../services/types';
-import {useLazyArtistQuery} from '../services/queries/artist';
-import {DefaultSectionList} from '../components/DefSectionList';
-import {sharedStyles} from '../style/shared';
+import React, { useCallback, useEffect, useState } from 'react';
+import { SectionListData, View } from 'react-native';
+import { ThemedText } from '../components/ThemedText';
+import { HomeRoute, HomeRouteProps } from '../navigators/Routing';
+import { Item } from '../components/Item';
+import { HeaderDetail, ObjHeader, objHeaderStyles } from '../components/ObjHeader';
+import { genreDisplay } from '../utils/genre.utils';
+import { FavIcon } from '../components/FavIcon';
+import { JamObjectType } from '../services/jam';
+import { BaseEntry } from '../services/types';
+import { useLazyArtistQuery } from '../services/queries/artist';
+import { DefaultSectionList } from '../components/DefSectionList';
+import { sharedStyles } from '../style/shared';
 import { Rating } from '../components/Rating';
 
 const buildDetails = (albums?: number, tracks?: number, genre?: string): Array<HeaderDetail> => {
 	return [
-		{title: 'Albums', value: `${albums}`},
-		{title: 'Tracks', value: `${tracks}`},
-		{title: 'Genre', value: genre || ''}
+		{ title: 'Albums', value: `${albums}` },
+		{ title: 'Tracks', value: `${tracks}` },
+		{ title: 'Genre', value: genre || '' }
 	];
 };
 
-export const ArtistScreen: React.FC<HomeRouteProps<HomeRoute.ARTIST>> = ({route}) => {
+export const ArtistScreen: React.FC<HomeRouteProps<HomeRoute.ARTIST>> = ({ route }) => {
 	const [details, setDetails] = useState<Array<HeaderDetail>>(buildDetails());
-	const [getArtist, {loading, error, artist}] = useLazyArtistQuery();
-	const {id, name} = (route?.params || {});
+	const [getArtist, { loading, error, artist }] = useLazyArtistQuery();
+	const { id, name } = (route?.params || {});
 
 	useEffect(() => {
 		if (id) {
@@ -47,13 +47,13 @@ export const ArtistScreen: React.FC<HomeRouteProps<HomeRoute.ARTIST>> = ({route}
 		headerTitleCmdsExtras={<Rating fontSize={objHeaderStyles.buttonIcon.fontSize} objType={JamObjectType.artist} id={id}/>}
 	/>);
 
-	const renderSection = useCallback(({section}: { section: SectionListData<BaseEntry> }): React.JSX.Element => (
+	const renderSection = useCallback(({ section }: { section: SectionListData<BaseEntry> }): React.JSX.Element => (
 		<View style={sharedStyles.sectionHeader}>
 			<ThemedText style={sharedStyles.sectionHeaderText}>{section.title}</ThemedText>
 		</View>
 	), []);
 
-	const renderItem = useCallback(({item}: { item: BaseEntry }): React.JSX.Element => (<Item item={item}/>), []);
+	const renderItem = useCallback(({ item }: { item: BaseEntry }): React.JSX.Element => (<Item item={item}/>), []);
 
 	const reload = useCallback((): void => {
 		if (id) {

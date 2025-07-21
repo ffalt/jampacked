@@ -1,8 +1,8 @@
 import React from 'react';
-import {StyleSheet} from 'react-native';
-import {JamPlayer} from '../services/player';
-import {useTrackPlayerPlaybackStateIsPlaying} from '../services/player-api';
-import {ClickIcon} from './ClickIcon';
+import { StyleSheet } from 'react-native';
+import { JamPlayer } from '../services/player';
+import { useTrackPlayerPlaybackStateIsPlaying } from '../services/player-api';
+import { ClickIcon } from './ClickIcon';
 
 const styles = StyleSheet.create({
 	playButton: {
@@ -14,6 +14,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'center'
 	},
+	// eslint-disable-next-line react-native/no-unused-styles
 	playButtonIcon: {
 		color: '#000000',
 		fontSize: 20,

@@ -1,19 +1,19 @@
-import React, {useCallback, useEffect} from 'react';
-import {HomeRoute, HomeRouteProps} from '../navigators/Routing';
-import {JamPlayer} from '../services/player';
-import {ObjHeader, objHeaderStyles} from '../components/ObjHeader';
-import {JamObjectType} from '../services/jam';
-import {FavIcon} from '../components/FavIcon';
-import {snackError} from '../services/snack';
-import {ThemedText} from '../components/ThemedText';
-import {useLazyPlaylistQuery} from '../services/queries/playlist';
-import {Tracks} from '../components/Tracks';
-import {defaultShowArtistTrackDisplay} from '../components/TrackItem';
-import {ClickIcon} from '../components/ClickIcon';
+import React, { useCallback, useEffect } from 'react';
+import { HomeRoute, HomeRouteProps } from '../navigators/Routing';
+import { JamPlayer } from '../services/player';
+import { ObjHeader, objHeaderStyles } from '../components/ObjHeader';
+import { JamObjectType } from '../services/jam';
+import { FavIcon } from '../components/FavIcon';
+import { snackError } from '../services/snack';
+import { ThemedText } from '../components/ThemedText';
+import { useLazyPlaylistQuery } from '../services/queries/playlist';
+import { Tracks } from '../components/Tracks';
+import { defaultShowArtistTrackDisplay } from '../components/TrackItem';
+import { ClickIcon } from '../components/ClickIcon';
 
-export const PlaylistScreen: React.FC<HomeRouteProps<HomeRoute.PLAYLIST>> = ({route}) => {
-	const [getPlaylist, {loading, error, playlist}] = useLazyPlaylistQuery();
-	const {id, name} = (route?.params || {});
+export const PlaylistScreen: React.FC<HomeRouteProps<HomeRoute.PLAYLIST>> = ({ route }) => {
+	const [getPlaylist, { loading, error, playlist }] = useLazyPlaylistQuery();
+	const { id, name } = (route?.params || {});
 
 	useEffect(() => {
 		if (id) {
@@ -28,7 +28,7 @@ export const PlaylistScreen: React.FC<HomeRouteProps<HomeRoute.PLAYLIST>> = ({ro
 	const playTracks = (): void => {
 		if (playlist?.tracks) {
 			JamPlayer.playTracks(playlist.tracks)
-				.catch(e => {
+				.catch((e) => {
 					snackError(e);
 				});
 		}
@@ -56,4 +56,3 @@ export const PlaylistScreen: React.FC<HomeRouteProps<HomeRoute.PLAYLIST>> = ({ro
 		/>
 	);
 };
-

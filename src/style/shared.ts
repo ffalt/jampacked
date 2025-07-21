@@ -1,5 +1,5 @@
-import {StyleSheet} from 'react-native';
-import {staticTheme} from './theming';
+import { StyleSheet } from 'react-native';
+import { staticTheme } from './theming';
 
 export const sharedStyles = StyleSheet.create({
 	flex: {

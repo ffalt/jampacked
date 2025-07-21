@@ -1,10 +1,10 @@
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
-import {sharedStyles} from '../style/shared';
-import {ThemedText} from './ThemedText';
-import {Stat} from './Stat';
-import {JamRouteLinks} from '../navigators/Routes';
-import {usePinnedCount} from '../services/pin-hooks';
+import { StyleSheet, View } from 'react-native';
+import { sharedStyles } from '../style/shared';
+import { ThemedText } from './ThemedText';
+import { Stat } from './Stat';
+import { JamRouteLinks } from '../navigators/Routes';
+import { usePinnedCount } from '../services/pin-hooks';
 
 const styles = StyleSheet.create({
 	homeStatContainer: {
@@ -22,7 +22,7 @@ export const HomeAppSection: React.FC = () => {
 				<ThemedText style={sharedStyles.sectionHeaderText}>Pinned</ThemedText>
 			</View>
 			<View style={styles.homeStatContainer}>
-				<Stat key="Media" stat={{link: JamRouteLinks.pinned(), value: pinCount}}/>
+				<Stat key="Media" stat={{ link: JamRouteLinks.pinned(), value: pinCount }}/>
 			</View>
 		</>
 	);

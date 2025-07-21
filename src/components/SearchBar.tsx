@@ -1,8 +1,8 @@
-import React, {useCallback, useState} from 'react';
-import {StyleSheet, TextInput, View, ViewStyle} from 'react-native';
+import React, { useCallback, useState } from 'react';
+import { StyleSheet, TextInput, View, ViewStyle } from 'react-native';
 import throttle from 'lodash.throttle';
-import {staticTheme, useTheme} from '../style/theming';
-import {ClickIcon} from './ClickIcon';
+import { staticTheme, useTheme } from '../style/theming';
+import { ClickIcon } from './ClickIcon';
 
 const styles = StyleSheet.create({
 	inputGroup: {
@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-export const SearchBar: React.FC<{ style?: ViewStyle, searchQueryChange?: (searchQuery?: string) => void }> = ({style, searchQueryChange}) => {
+export const SearchBar: React.FC<{ style?: ViewStyle; searchQueryChange?: (searchQuery?: string) => void }> = ({ style, searchQueryChange }) => {
 	const [search, setSearch] = useState<string | undefined>();
 	const [query, setQuery] = useState<string | undefined>();
 	const theme = useTheme();
@@ -62,14 +62,14 @@ export const SearchBar: React.FC<{ style?: ViewStyle, searchQueryChange?: (searc
 	}, [handleSearch]);
 
 	const isEmpty = (!query || query.length === 0);
-	const cancel = !isEmpty
-		? (<ClickIcon iconName="cancel" onPress={handleClearButton} style={styles.inputCancelIcon} fontSize={styles.inputCancelIcon.fontSize}/>)
-		: undefined;
+	const cancel = !isEmpty ?
+			(<ClickIcon iconName="cancel" onPress={handleClearButton} style={styles.inputCancelIcon} fontSize={styles.inputCancelIcon.fontSize}/>) :
+		undefined;
 	return (
-		<View style={[styles.inputGroup, {borderColor: theme.separator}, style]}>
+		<View style={[styles.inputGroup, { borderColor: theme.separator }, style]}>
 			<ClickIcon iconName="search" onPress={handleSearchButton} style={[styles.inputIcon, isEmpty && styles.disabled]} fontSize={styles.inputIcon.fontSize}/>
 			<TextInput
-				style={[styles.input, {color: theme.textColor}]}
+				style={[styles.input, { color: theme.textColor }]}
 				placeholderTextColor={theme.muted}
 				placeholder="Search"
 				value={query}

@@ -24,7 +24,7 @@ export const BookmarksScreen: React.FC<HomeRouteProps<HomeRoute.BOOKMARKS>> = ()
 	const playTracks = (): void => {
 		if (bookmarks?.tracks) {
 			JamPlayer.playTracks(bookmarks.tracks)
-				.catch(e => {
+				.catch((e) => {
 					snackError(e);
 				});
 		}

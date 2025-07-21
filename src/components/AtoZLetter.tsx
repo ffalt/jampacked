@@ -1,6 +1,6 @@
 import React from 'react';
-import {StyleSheet, Text} from 'react-native';
-import {useTheme} from '../style/theming';
+import { StyleSheet, Text } from 'react-native';
+import { useTheme } from '../style/theming';
 
 const styles = StyleSheet.create({
 	letter: {
@@ -10,8 +10,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-export const AtoZLetter: React.FC<{ letter: string; active: boolean }> = ({letter, active}) => {
+export const AtoZLetter: React.FC<{ letter: string; active: boolean }> = ({ letter, active }) => {
 	const theme = useTheme();
-	return <Text style={[styles.letter, {color: active ? theme.overlayTextActive : theme.overlayText}]}>{letter}</Text>;
+	return <Text style={[styles.letter, { color: active ? theme.overlayTextActive : theme.overlayText }]}>{letter}</Text>;
 };
-

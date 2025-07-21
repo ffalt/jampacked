@@ -1,4 +1,4 @@
-import {Auth, Jam, JamConfiguration} from './jam';
+import { Auth, Jam, JamConfiguration } from './jam';
 import SInfo from 'react-native-sensitive-info';
 
 const STORE_KEY = 'credentials';
@@ -18,7 +18,7 @@ export class JamConfigurationService implements JamConfiguration {
 		try {
 			const credentials = await SInfo.getItem(STORE_KEY, this.storeConfig);
 			return credentials ? JSON.parse(credentials) : undefined;
-		} catch (_) {
+		} catch {
 			return;
 		}
 	}
@@ -34,5 +34,4 @@ export class JamConfigurationService implements JamConfiguration {
 	async userChangeNotify(/* user: Jam.SessionUser | undefined */): Promise<void> {
 		// console.log('Changed User', user);
 	}
-
 }

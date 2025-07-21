@@ -1,10 +1,10 @@
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
-import {JamPlayer} from '../services/player';
-import {PlayButton} from './PlayButton';
-import {staticTheme} from '../style/theming';
-import {ClickIcon} from './ClickIcon';
-import {useTrackPlayerHasSiblings} from '../services/player-api';
+import { StyleSheet, View } from 'react-native';
+import { JamPlayer } from '../services/player';
+import { PlayButton } from './PlayButton';
+import { staticTheme } from '../style/theming';
+import { ClickIcon } from './ClickIcon';
+import { useTrackPlayerHasSiblings } from '../services/player-api';
 
 const styles = StyleSheet.create({
 	playerControl: {
@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
 });
 
 export const PlayerControl: React.FC = () => {
-	const {hasNext, hasPrevious} = useTrackPlayerHasSiblings();
+	const { hasNext, hasPrevious } = useTrackPlayerHasSiblings();
 	return (
 		<View style={styles.playerControl}>
 			<ClickIcon disabled={!hasNext} fontSize={staticTheme.fontSizeLarge}

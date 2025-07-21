@@ -1,11 +1,11 @@
-import React, {useCallback, useEffect, useState} from 'react';
-import {ListTypeName} from '../services/jam-lists';
-import {BaseEntry, useListFunction} from '../services/types';
-import {BaseEntryList, BaseEntryListInfo} from './BaseEntryList';
-import {AlbumType, ListType} from '../services/jam';
-import {ErrorView} from './ErrorView';
+import React, { useCallback, useEffect, useState } from 'react';
+import { ListTypeName } from '../services/jam-lists';
+import { BaseEntry, useListFunction } from '../services/types';
+import { BaseEntryList, BaseEntryListInfo } from './BaseEntryList';
+import { AlbumType, ListType } from '../services/jam';
+import { ErrorView } from './ErrorView';
 import dataService from '../services/data';
-import {RouteLink} from '../navigators/Routes';
+import { RouteLink } from '../navigators/Routes';
 
 export interface BaseEntryListListQuery {
 	icon: string;
@@ -14,12 +14,12 @@ export interface BaseEntryListListQuery {
 	listType?: ListType;
 	albumTypes?: Array<AlbumType>;
 	genreIDs?: Array<string>;
-	useList: useListFunction
+	useList: useListFunction;
 	goLeft?: RouteLink;
 	goRight?: RouteLink;
 }
 
-export const BaseEntryListList: React.FC<{ query: BaseEntryListListQuery }> = ({query}) => {
+export const BaseEntryListList: React.FC<{ query: BaseEntryListListQuery }> = ({ query }) => {
 	const [info, setInfo] = useState<BaseEntryListInfo>({
 		title: '',
 		subtitle: '',
@@ -27,18 +27,18 @@ export const BaseEntryListList: React.FC<{ query: BaseEntryListListQuery }> = ({
 	});
 	const [total, setTotal] = useState<number>(0);
 	const [type, setType] = useState<{
-		listType?: ListType,
-		seed?: string,
-		albumTypes?: Array<AlbumType>,
-		genreIDs?: Array<string>,
-		offset: number
+		listType?: ListType;
+		seed?: string;
+		albumTypes?: Array<AlbumType>;
+		genreIDs?: Array<string>;
+		offset: number;
 	} | undefined>();
 	const [entries, setEntries] = useState<Array<BaseEntry> | undefined>();
 	const amount = 20;
-	const [getList, {loading, error, data, queryID}] = query.useList();
+	const [getList, { loading, error, data, queryID }] = query.useList();
 
 	useEffect(() => {
-		setInfo({icon: query.icon, title: query.text, subtitle: query.subtitle || ListTypeName[query.listType || '']});
+		setInfo({ icon: query.icon, title: query.text, subtitle: query.subtitle || ListTypeName[query.listType || ''] });
 		setType((prev) => {
 			if (query.genreIDs) {
 				const prev_genres = prev?.genreIDs ? prev.genreIDs.join('/') : '';
@@ -48,7 +48,7 @@ export const BaseEntryListList: React.FC<{ query: BaseEntryListListQuery }> = ({
 				}
 				setTotal(0);
 				setEntries(undefined);
-				return {genreIDs: query.genreIDs, albumTypes: query.albumTypes, offset: 0};
+				return { genreIDs: query.genreIDs, albumTypes: query.albumTypes, offset: 0 };
 			} else {
 				if (prev?.listType === query.listType) {
 					return prev;
@@ -56,7 +56,7 @@ export const BaseEntryListList: React.FC<{ query: BaseEntryListListQuery }> = ({
 				setTotal(0);
 				setEntries(undefined);
 				const seed = query.listType === ListType.random ? Date.now().toString() : undefined;
-				return {listType: query.listType, albumTypes: query.albumTypes, genreIDs: query.genreIDs, seed, offset: 0};
+				return { listType: query.listType, albumTypes: query.albumTypes, genreIDs: query.genreIDs, seed, offset: 0 };
 			}
 		});
 	}, [query]);
@@ -89,7 +89,7 @@ export const BaseEntryListList: React.FC<{ query: BaseEntryListListQuery }> = ({
 			.then(() => {
 				setType((prev) => {
 					const seed = prev?.listType === ListType.random ? Date.now().toString() : undefined;
-					return {...prev, seed, offset: 0};
+					return { ...prev, seed, offset: 0 };
 				});
 			});
 	}, [queryID]);
@@ -101,7 +101,7 @@ export const BaseEntryListList: React.FC<{ query: BaseEntryListListQuery }> = ({
 				if (p + amount > total) {
 					return prev;
 				}
-				return {...prev, offset: p + amount};
+				return { ...prev, offset: p + amount };
 			});
 		}
 	}, [entries, total, loading]);

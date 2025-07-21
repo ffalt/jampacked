@@ -1,19 +1,19 @@
-import {AlbumType} from '../services/jam';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import { AlbumType } from '../services/jam';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 // App Routes
 
 export enum AppRouting {
 	AUTH = 'Auth',
 	APP = 'App',
-	LOAD = 'Load',
+	LOAD = 'Load'
 }
 
-export type AppStackNavigatorParamList = {
+export interface AppStackNavigatorParamList {
 	Auth: undefined;
 	App: undefined;
 	Load: undefined;
-};
+}
 
 export type AppStackProps<T extends keyof AppStackNavigatorParamList> = NativeStackScreenProps<AppStackNavigatorParamList, T>;
 
@@ -24,10 +24,10 @@ export enum ModalRouting {
 	PLAYER = 'Player'
 }
 
-export type ModalStackNavigatorParamList = {
+export interface ModalStackNavigatorParamList {
 	Main: undefined;
 	Player: undefined;
-};
+}
 
 export type ModalStackProps<T extends keyof ModalStackNavigatorParamList> = NativeStackScreenProps<ModalStackNavigatorParamList, T>;
 
@@ -39,11 +39,11 @@ export enum BottomTabRoute {
 	SETTINGS = 'Settings'
 }
 
-export type BottomTabNavigatorParamList = {
+export interface BottomTabNavigatorParamList {
 	Home: undefined;
 	Queue: undefined;
 	Settings: undefined;
-};
+}
 
 export type BottomTabProps<T extends keyof BottomTabNavigatorParamList> = NativeStackScreenProps<BottomTabNavigatorParamList, T>;
 
@@ -72,7 +72,7 @@ export enum HomeRoute {
 	GENRE = 'Genre'
 }
 
-export type HomeRouteParamList = {
+export interface HomeRouteParamList {
 	Start: undefined;
 	Artists: undefined;
 	Series: undefined;
@@ -84,16 +84,16 @@ export type HomeRouteParamList = {
 	Pinned: undefined;
 	Playlists: undefined;
 	Bookmarks: undefined;
-	Playlist: { id: string, name: string };
-	Episode: { id: string, name: string };
-	Podcast: { id: string, name: string };
-	Track: { id: string, name: string };
-	Folder: { id: string, name: string };
-	Serie: { id: string, name: string };
-	Artist: { id: string, name: string };
-	Album: { id: string, name: string };
-	Genre: { id: string, name: string };
-};
+	Playlist: { id: string; name: string };
+	Episode: { id: string; name: string };
+	Podcast: { id: string; name: string };
+	Track: { id: string; name: string };
+	Folder: { id: string; name: string };
+	Serie: { id: string; name: string };
+	Artist: { id: string; name: string };
+	Album: { id: string; name: string };
+	Genre: { id: string; name: string };
+}
 
 export type HomeRouteProps<T extends keyof HomeRouteParamList> = NativeStackScreenProps<HomeRouteParamList, T>;
 
@@ -109,7 +109,7 @@ export enum ArtistsRoute {
 	FREQUENT = 'ArtistsFrequent'
 }
 
-export type ArtistsRouteParamList = {
+export interface ArtistsRouteParamList {
 	ArtistsIndex: undefined;
 	ArtistsFav: undefined;
 	ArtistsRecent: undefined;
@@ -117,7 +117,7 @@ export type ArtistsRouteParamList = {
 	ArtistsHighest: undefined;
 	ArtistsAvgHighest: undefined;
 	ArtistsFrequent: undefined;
-};
+}
 
 export type ArtistsRouteProps<T extends keyof ArtistsRouteParamList> = NativeStackScreenProps<ArtistsRouteParamList, T>;
 
@@ -132,14 +132,14 @@ export enum TracksRoute {
 	FREQUENT = 'TracksFrequent'
 }
 
-export type TracksRouteParamList = {
+export interface TracksRouteParamList {
 	TracksFav: undefined;
 	TracksRecent: undefined;
 	TracksRandom: undefined;
 	TracksHighest: undefined;
 	TracksAvgHighest: undefined;
 	TracksFrequent: undefined;
-};
+}
 
 export type TracksRouteProps<T extends keyof TracksRouteParamList> = NativeStackScreenProps<TracksRouteParamList, T>;
 
@@ -150,10 +150,10 @@ export enum AlbumRoute {
 	INFO = 'AlbumInfo'
 }
 
-export type AlbumRouteParamList = {
+export interface AlbumRouteParamList {
 	AlbumMain: { id?: string; name?: string };
 	AlbumInfo: { id?: string; name?: string };
-};
+}
 
 export type AlbumRouteProps<T extends keyof AlbumRouteParamList> = NativeStackScreenProps<AlbumRouteParamList, T>;
 
@@ -169,7 +169,7 @@ export enum AlbumsRoute {
 	FREQUENT = 'AlbumsFrequent'
 }
 
-export type AlbumsRouteParamList = {
+export interface AlbumsRouteParamList {
 	AlbumsIndex: { albumType?: AlbumType };
 	AlbumsFav: { albumType?: AlbumType };
 	AlbumsRecent: { albumType?: AlbumType };
@@ -177,7 +177,7 @@ export type AlbumsRouteParamList = {
 	AlbumsHighest: { albumType?: AlbumType };
 	AlbumsAvgHighest: { albumType?: AlbumType };
 	AlbumsFrequent: { albumType?: AlbumType };
-};
+}
 
 export type AlbumsRouteProps<T extends keyof AlbumsRouteParamList> = NativeStackScreenProps<AlbumsRouteParamList, T>;
 
@@ -193,7 +193,7 @@ export enum SeriesRoute {
 	FREQUENT = 'SeriesFrequent'
 }
 
-export type SeriesRouteParamList = {
+export interface SeriesRouteParamList {
 	SeriesIndex: undefined;
 	SeriesFav: undefined;
 	SeriesRecent: undefined;
@@ -201,7 +201,7 @@ export type SeriesRouteParamList = {
 	SeriesHighest: undefined;
 	SeriesAvgHighest: undefined;
 	SeriesFrequent: undefined;
-};
+}
 
 export type SeriesRouteProps<T extends keyof SeriesRouteParamList> = NativeStackScreenProps<SeriesRouteParamList, T>;
 
@@ -217,7 +217,7 @@ export enum FoldersRoute {
 	FREQUENT = 'FoldersFrequent'
 }
 
-export type FoldersRouteParamList = {
+export interface FoldersRouteParamList {
 	FoldersIndex: { albumType?: AlbumType };
 	FoldersFav: { albumType?: AlbumType };
 	FoldersRecent: { albumType?: AlbumType };
@@ -225,7 +225,7 @@ export type FoldersRouteParamList = {
 	FoldersHighest: { albumType?: AlbumType };
 	FoldersAvgHighest: { albumType?: AlbumType };
 	FoldersFrequent: { albumType?: AlbumType };
-};
+}
 
 export type FoldersRouteProps<T extends keyof FoldersRouteParamList> = NativeStackScreenProps<FoldersRouteParamList, T>;
 
@@ -237,11 +237,11 @@ export enum DownloadsRoute {
 	ALL = 'DownloadsAll'
 }
 
-export type DownloadsRouteParamList = {
+export interface DownloadsRouteParamList {
 	DownloadsActive: undefined;
 	DownloadsPinned: undefined;
 	DownloadsAll: undefined;
-};
+}
 
 export type DownloadsRouteProps<T extends keyof DownloadsRouteParamList> = NativeStackScreenProps<DownloadsRouteParamList, T>;
 
@@ -251,9 +251,9 @@ export enum GenresRoute {
 	INDEX = 'GenreIndex'
 }
 
-export type GenresRouteParamList = {
+export interface GenresRouteParamList {
 	GenreIndex: undefined;
-};
+}
 
 export type GenresRouteProps<T extends keyof GenresRouteParamList> = NativeStackScreenProps<GenresRouteParamList, T>;
 
@@ -265,11 +265,10 @@ export enum GenreRoute {
 	TRACKS = 'GenreTracks'
 }
 
-export type GenreRouteParamList = {
-	GenreAlbums: { id: string, name: string };
-	GenreArtists: { id: string, name: string };
-	GenreTracks: { id: string, name: string };
-};
+export interface GenreRouteParamList {
+	GenreAlbums: { id: string; name: string };
+	GenreArtists: { id: string; name: string };
+	GenreTracks: { id: string; name: string };
+}
 
 export type GenreRouteProps<T extends keyof GenreRouteParamList> = NativeStackScreenProps<GenreRouteParamList, T>;
-

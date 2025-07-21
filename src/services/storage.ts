@@ -1,4 +1,4 @@
-import {Database} from './db';
+import { Database } from './db';
 
 export class StorageService {
 	version = 1;
@@ -23,7 +23,7 @@ export class StorageService {
 	}
 
 	async setValue(id: string, value?: string): Promise<void> {
-		await this.db.delete('store', {key: id});
+		await this.db.delete('store', { key: id });
 		if (value) {
 			await this.db.insert('store', ['data', 'key', 'date', 'version'], [value, id, Date.now(), 1]);
 		}

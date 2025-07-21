@@ -20,7 +20,7 @@ import {
 	useTrackPlayerPlaybackStateIsPlaying
 } from 'react-native-track-player';
 import TrackPlayer from 'react-native-track-player';
-import {Platform} from 'react-native';
+import { Platform } from 'react-native';
 
 export async function initPlayer(): Promise<void> {
 	const isRunning = (Platform.OS === 'android') && (await TrackPlayer.isServiceRunning());

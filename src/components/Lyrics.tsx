@@ -1,9 +1,9 @@
-import {ActivityIndicator, ScrollView, StyleSheet, View} from 'react-native';
-import React, {useCallback, useEffect, useState} from 'react';
-import {staticTheme, useTheme} from '../style/theming';
-import {ThemedText} from './ThemedText';
-import {useLazyTrackLyricsQuery} from '../services/queries/lyrics';
-import {ClickLabelIcon} from './ClickLabelIcon';
+import { ActivityIndicator, ScrollView, StyleSheet, View } from 'react-native';
+import React, { useCallback, useEffect, useState } from 'react';
+import { staticTheme, useTheme } from '../style/theming';
+import { ThemedText } from './ThemedText';
+import { useLazyTrackLyricsQuery } from '../services/queries/lyrics';
+import { ClickLabelIcon } from './ClickLabelIcon';
 
 const styles = StyleSheet.create({
 	container: {
@@ -37,10 +37,10 @@ const styles = StyleSheet.create({
 	}
 });
 
-export const Lyrics: React.FC<{ id?: string | null }> = ({id}) => {
+export const Lyrics: React.FC<{ id?: string | null }> = ({ id }) => {
 	const [text, setText] = useState<string>('');
 	const theme = useTheme();
-	const [getLyrics, {lyrics, loading, error}] = useLazyTrackLyricsQuery();
+	const [getLyrics, { lyrics, loading, error }] = useLazyTrackLyricsQuery();
 
 	useEffect(() => {
 		if (id) {
@@ -57,30 +57,28 @@ export const Lyrics: React.FC<{ id?: string | null }> = ({id}) => {
 		}
 	}, [lyrics]);
 
-
 	const refresh = useCallback((): void => {
 		if (id) {
 			getLyrics(id);
 		}
 	}, [getLyrics, id]);
 
-
 	if (!lyrics) {
 		return (
-			<View key="nolyrics" style={[styles.containerLoading, {borderColor: theme.separator}]}>
+			<View key="nolyrics" style={[styles.containerLoading, { borderColor: theme.separator }]}>
 				{id && !error && !loading && <ThemedText style={styles.none}>{text}</ThemedText>}
 				{loading && <View><ActivityIndicator size="small" color={theme.textColor}/><ThemedText style={styles.none}>Searching Lyrics</ThemedText></View>}
 				{error && !loading && (
 					<View>
 						<ThemedText style={styles.none}>{error.message}</ThemedText>
-						<ClickLabelIcon style={[styles.button, {borderColor: theme.separator}]} onPress={refresh} iconName="reload" label="Refresh" labelStyle={styles.buttonText}/>
+						<ClickLabelIcon style={[styles.button, { borderColor: theme.separator }]} onPress={refresh} iconName="reload" label="Refresh" labelStyle={styles.buttonText}/>
 					</View>
 				)}
 			</View>
 		);
 	}
 	return (
-		<ScrollView key="lyrics" style={[styles.container, {borderColor: theme.separator}]}>
+		<ScrollView key="lyrics" style={[styles.container, { borderColor: theme.separator }]}>
 			<ThemedText style={styles.lyrics}>{text}</ThemedText>
 		</ScrollView>
 	);

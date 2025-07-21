@@ -19,7 +19,7 @@ function transformData(data?: BookmarkResultQuery): Bookmarks | undefined {
 		return;
 	}
 	const tracks: Array<TrackEntry> = [];
-	(data.bookmarks.items || []).map(entry => {
+	(data.bookmarks.items || []).map((entry) => {
 		const item = entry.track ? transformTrack(entry.track) : transformEpisode(entry.episode);
 		if (item) {
 			tracks.push(item);
@@ -45,7 +45,7 @@ export const BookmarksQuery: {
 } = { query: BookmarkResultDocument, transformData, transformVariables };
 
 export const useLazyBookmarksQuery = (): [(take: number, skip: number, forceRefresh?: boolean) => void,
-	{ loading: boolean, error?: ApolloError, bookmarks?: Bookmarks, called: boolean }
+	{ loading: boolean; error?: ApolloError; bookmarks?: Bookmarks; called: boolean }
 ] => {
 	const [query, { loading, error, data, called }] = useCacheOrLazyQuery<BookmarkResultQuery, BookmarkResultQueryVariables, Bookmarks>(BookmarksQuery.query, BookmarksQuery.transformData);
 	const get = useCallback((take: number, skip: number, forceRefresh?: boolean): void => {

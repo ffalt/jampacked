@@ -1,15 +1,15 @@
 import React from 'react';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {JamPlayer} from '../services/player';
-import {useTrackPlayerCurrentTrack, useTrackPlayerHasSiblings} from '../services/player-api';
-import {JamImage} from './JamImage';
-import {ThemedText} from './ThemedText';
-import {staticTheme, useTheme} from '../style/theming';
-import {PlayButton} from './PlayButton';
-import {ModalRouting} from '../navigators/Routing';
-import {MiniProgressBar} from './PlayerProgressMini';
-import {NavigationService} from '../navigators/navigation';
-import {ClickIcon} from './ClickIcon';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { JamPlayer } from '../services/player';
+import { useTrackPlayerCurrentTrack, useTrackPlayerHasSiblings } from '../services/player-api';
+import { JamImage } from './JamImage';
+import { ThemedText } from './ThemedText';
+import { staticTheme, useTheme } from '../style/theming';
+import { PlayButton } from './PlayButton';
+import { ModalRouting } from '../navigators/Routing';
+import { MiniProgressBar } from './PlayerProgressMini';
+import { NavigationService } from '../navigators/navigation';
+import { ClickIcon } from './ClickIcon';
 
 const styles = StyleSheet.create({
 	disabled: {
@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
 export const PlayerStrip: React.FC = () => {
 	const track = useTrackPlayerCurrentTrack();
 	const theme = useTheme();
-	const {hasNext, hasPrevious} = useTrackPlayerHasSiblings();
+	const { hasNext, hasPrevious } = useTrackPlayerHasSiblings();
 	if (!track) {
 		return (<></>);
 	}
@@ -79,7 +79,7 @@ export const PlayerStrip: React.FC = () => {
 		NavigationService.navigate(ModalRouting.PLAYER);
 	};
 	return (
-		<View style={[styles.playerStrip, {borderTopColor: theme.separator, backgroundColor: theme.control}]}>
+		<View style={[styles.playerStrip, { borderTopColor: theme.separator, backgroundColor: theme.control }]}>
 			<View style={styles.playerStripContent}>
 
 				<TouchableOpacity onPress={showPlayer} style={styles.playerStripTrack}>
@@ -132,4 +132,3 @@ export const PlayerStrip: React.FC = () => {
 		</View>
 	);
 };
-

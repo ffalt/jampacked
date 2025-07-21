@@ -1,9 +1,9 @@
-import React, {useEffect, useState} from 'react';
-import {ThemedText} from './ThemedText';
-import {snackError} from '../services/snack';
-import {Button, Image, StyleSheet, View} from 'react-native';
-import {IMAGE_ERROR} from '../style/images';
-import {staticTheme} from '../style/theming';
+import React, { useEffect, useState } from 'react';
+import { ThemedText } from './ThemedText';
+import { snackError } from '../services/snack';
+import { Button, Image, StyleSheet, View } from 'react-native';
+import { IMAGE_ERROR } from '../style/images';
+import { staticTheme } from '../style/theming';
 
 const styles = StyleSheet.create({
 	container: {
@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-export const ErrorView: React.FC<{ error: Error, onRetry: () => void }> = ({error, onRetry}) => {
+export const ErrorView: React.FC<{ error: Error; onRetry: () => void }> = ({ error, onRetry }) => {
 	const [value, setValue] = useState<string>('');
 
 	useEffect(() => {

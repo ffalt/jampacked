@@ -1,8 +1,8 @@
-import React, {PropsWithChildren, ReactElement, useRef} from 'react';
-import {Animated, StyleSheet, View} from 'react-native';
-import {RectButton} from 'react-native-gesture-handler';
+import React, { PropsWithChildren, ReactElement, useRef } from 'react';
+import { Animated, StyleSheet, View } from 'react-native';
+import { RectButton } from 'react-native-gesture-handler';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
-import {useTheme} from '../style/theming';
+import { useTheme } from '../style/theming';
 
 const AnimatedView = Animated.createAnimatedComponent(View);
 
@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-export const SwipeableItem: React.FC<PropsWithChildren<{ buttons: ReactElement }>> = ({buttons, children}) => {
+export const SwipeableItem: React.FC<PropsWithChildren<{ buttons: ReactElement }>> = ({ buttons, children }) => {
 	const containerRef = useRef<Swipeable | null>(null);
 	const theme = useTheme();
 
@@ -37,8 +37,8 @@ export const SwipeableItem: React.FC<PropsWithChildren<{ buttons: ReactElement }
 			outputRange: [0, 0]
 		});
 		return (
-			<RectButton style={[styles.rightAction, {backgroundColor: theme.control}]} onPress={close}>
-				<AnimatedView style={[styles.actionIcons, {transform: [{scale}]}, {translateX: trans}]}>
+			<RectButton style={[styles.rightAction, { backgroundColor: theme.control }]} onPress={close}>
+				<AnimatedView style={[styles.actionIcons, { transform: [{ scale }] }, { translateX: trans }]}>
 					{buttons}
 				</AnimatedView>
 			</RectButton>

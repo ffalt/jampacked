@@ -9,11 +9,11 @@ function transformData(data: RateResultQuery | undefined): { rated?: number } {
 
 export const useLazyRateQuery = (): [(id: string) => void,
 	{
-		loading: boolean,
-		error?: ApolloError,
-		rating?: { rated?: number },
-		called: boolean,
-		setRating: (rate: number) => void
+		loading: boolean;
+		error?: ApolloError;
+		rating?: { rated?: number };
+		called: boolean;
+		setRating: (rate: number) => void;
 	}
 ] => {
 	const [rating, setRate] = useState<{ rated?: number } | undefined>(undefined);
@@ -26,7 +26,6 @@ export const useLazyRateQuery = (): [(id: string) => void,
 	const get = useCallback((id: string): void => {
 		query({ variables: { id } });
 	}, [query]);
-
 
 	const setRating = useCallback((rate: number): void => {
 		setRate({ rated: rate });

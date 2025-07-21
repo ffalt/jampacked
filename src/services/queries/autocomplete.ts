@@ -1,17 +1,17 @@
-import {ApolloError, useLazyQuery} from '@apollo/client';
-import {JamObjectType} from '../jam';
-import {useCallback, useEffect, useState} from 'react';
-import {AutoCompleteData, AutoCompleteDataSection} from '../types';
-import {AutocompleteResultDocument, AutocompleteResultQuery, AutocompleteResultQueryVariables} from './autocomplete.api';
+import { ApolloError, useLazyQuery } from '@apollo/client';
+import { JamObjectType } from '../jam';
+import { useCallback, useEffect, useState } from 'react';
+import { AutoCompleteData, AutoCompleteDataSection } from '../types';
+import { AutocompleteResultDocument, AutocompleteResultQuery, AutocompleteResultQueryVariables } from './autocomplete.api';
 
 type Autocomplete = Array<AutoCompleteDataSection>;
 
-function buildSection(key: string, objType: JamObjectType, page: { total: number; items: Array<{ id: string, name: string }> }): AutoCompleteDataSection {
+function buildSection(key: string, objType: JamObjectType, page: { total: number; items: Array<{ id: string; name: string }> }): AutoCompleteDataSection {
 	return {
 		key,
 		objType,
 		total: page.total,
-		data: page.items.map(entry => ({id: entry.id, name: entry.name, objType}))
+		data: page.items.map(entry => ({ id: entry.id, name: entry.name, objType }))
 	};
 }
 
@@ -48,11 +48,11 @@ function transformData(data?: AutocompleteResultQuery): Autocomplete {
 }
 
 export const useLazyAutocompleteQuery = (): [(query: string) => void,
-	{ loading: boolean, error?: ApolloError, sections?: Autocomplete, called: boolean }
+	{ loading: boolean; error?: ApolloError; sections?: Autocomplete; called: boolean }
 ] => {
 	const [sections, setSections] = useState<Autocomplete | undefined>(undefined);
-	const [getAutocomplete, {loading, error, data, called}]
-		= useLazyQuery<AutocompleteResultQuery, AutocompleteResultQueryVariables>(AutocompleteResultDocument);
+	const [getAutocomplete, { loading, error, data, called }] =
+		useLazyQuery<AutocompleteResultQuery, AutocompleteResultQueryVariables>(AutocompleteResultDocument);
 
 	useEffect(() => {
 		if (data) {
@@ -61,7 +61,7 @@ export const useLazyAutocompleteQuery = (): [(query: string) => void,
 	}, [data]);
 
 	const get = useCallback((query: string): void => {
-		getAutocomplete({variables: {query}});
+		getAutocomplete({ variables: { query } });
 	}, [getAutocomplete]);
 
 	return [

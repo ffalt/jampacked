@@ -1,8 +1,8 @@
-import React, {useCallback, useMemo, useRef, useState} from 'react';
-import {PanResponder, StyleSheet, Text, View} from 'react-native';
-import {AtoZLetter} from './AtoZLetter';
-import {useTheme} from '../style/theming';
-import {getStatusBarHeight} from 'react-native-status-bar-height';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
+import { PanResponder, StyleSheet, Text, View } from 'react-native';
+import { AtoZLetter } from './AtoZLetter';
+import { useTheme } from '../style/theming';
+import { getStatusBarHeight } from 'react-native-status-bar-height';
 
 const styles = StyleSheet.create({
 	outerContainer: {
@@ -58,9 +58,9 @@ interface AtoZPickerProps {
 	letters: Array<string>;
 }
 
-export const AtoZPickerBubble: React.FC<{ yPosition: number, letter: string }> = ({yPosition, letter}) =>
+export const AtoZPickerBubble: React.FC<{ yPosition: number; letter: string }> = ({ yPosition, letter }) =>
 	(
-		<View style={[styles.letterBubble, {top: yPosition}]}>
+		<View style={[styles.letterBubble, { top: yPosition }]}>
 			<View style={styles.letterBubbleContainer}>
 				<Text style={styles.letterBubbleText}>{letter}</Text>
 			</View>
@@ -74,8 +74,8 @@ export const AtoZPicker: React.FC<AtoZPickerProps> = (
 	}) => {
 	const theme = useTheme();
 	const containerRef = useRef<View | null>(null);
-	const [containerState, setContainerState] = useState<{ absContainerTop: number; containerHeight: number }>({absContainerTop: 0, containerHeight: 0});
-	const [current, setCurrent] = useState<{ letter: string, yPosition: number }>();
+	const [containerState, setContainerState] = useState<{ absContainerTop: number; containerHeight: number }>({ absContainerTop: 0, containerHeight: 0 });
+	const [current, setCurrent] = useState<{ letter: string; yPosition: number }>();
 
 	const check = useCallback((y: number) => {
 		if (letters.length === 0) {
@@ -87,7 +87,7 @@ export const AtoZPicker: React.FC<AtoZPickerProps> = (
 		const letter = letters[index];
 		if (letter !== undefined) {
 			const yPosition = index * (h / letters.length) + (top / h);
-			setCurrent({letter, yPosition});
+			setCurrent({ letter, yPosition });
 			if (onTouchLetter) {
 				onTouchLetter(letter);
 			}
@@ -144,7 +144,7 @@ export const AtoZPicker: React.FC<AtoZPickerProps> = (
 			return;
 		}
 		containerRef.current.measure((x1, y1, width, height, px, py) => {
-			setContainerState({absContainerTop: py, containerHeight: height});
+			setContainerState({ absContainerTop: py, containerHeight: height });
 		});
 	};
 	const statusBarHeight = getStatusBarHeight();
@@ -153,7 +153,7 @@ export const AtoZPicker: React.FC<AtoZPickerProps> = (
 	}
 	const letterPicks = letters.map(letter => <AtoZLetter letter={letter} key={letter} active={activeLetter === letter}/>);
 	return (
-		<View style={[styles.outerContainer, {backgroundColor: theme.overlay, top: statusBarHeight}]}>
+		<View style={[styles.outerContainer, { backgroundColor: theme.overlay, top: statusBarHeight }]}>
 			<View
 				ref={containerRef}
 				{...panResponder.panHandlers}
@@ -165,6 +165,4 @@ export const AtoZPicker: React.FC<AtoZPickerProps> = (
 			</View>
 		</View>
 	);
-
 };
-

@@ -1,22 +1,22 @@
-import React, {MutableRefObject, useCallback, useEffect, useState} from 'react';
-import {defaultShowArtistTrackDisplay, defaultTrackDisplay, TrackItem} from '../components/TrackItem';
-import {HomeRoute, HomeRouteProps} from '../navigators/Routing';
-import {JamPlayer} from '../services/player';
-import {HeaderDetail, ObjHeader, objHeaderStyles} from '../components/ObjHeader';
-import {genreDisplay} from '../utils/genre.utils';
-import {snackError} from '../services/snack';
-import {Item} from '../components/Item';
+import React, { MutableRefObject, useCallback, useEffect, useState } from 'react';
+import { defaultShowArtistTrackDisplay, defaultTrackDisplay, TrackItem } from '../components/TrackItem';
+import { HomeRoute, HomeRouteProps } from '../navigators/Routing';
+import { JamPlayer } from '../services/player';
+import { HeaderDetail, ObjHeader, objHeaderStyles } from '../components/ObjHeader';
+import { genreDisplay } from '../utils/genre.utils';
+import { snackError } from '../services/snack';
+import { Item } from '../components/Item';
 import { FolderType, JamObjectType } from '../services/jam';
-import {Folder, FolderItem} from '../services/queries/folder';
-import {ErrorView} from '../components/ErrorView';
-import {useLazyFolderQuery} from '../services/queries/folder';
-import {DefaultFlatList} from '../components/DefFlatList';
-import {MUSICBRAINZ_VARIOUS_ARTISTS_NAME} from './AlbumScreen';
-import {TrackEntry} from '../services/types';
-import {FloatingAction} from 'react-native-floating-action';
-import {ActionMenuItem, executeTrackMenuAction, trackMenuIcon, trackMenuMultiSelectActions, trackMenuSingleSelectActions} from '../components/ActionMenuTrack';
-import {useTheme} from '../style/theming';
-import {ClickIcon} from '../components/ClickIcon';
+import { Folder, FolderItem } from '../services/queries/folder';
+import { ErrorView } from '../components/ErrorView';
+import { useLazyFolderQuery } from '../services/queries/folder';
+import { DefaultFlatList } from '../components/DefFlatList';
+import { MUSICBRAINZ_VARIOUS_ARTISTS_NAME } from './AlbumScreen';
+import { TrackEntry } from '../services/types';
+import { FloatingAction } from 'react-native-floating-action';
+import { ActionMenuItem, executeTrackMenuAction, trackMenuIcon, trackMenuMultiSelectActions, trackMenuSingleSelectActions } from '../components/ActionMenuTrack';
+import { useTheme } from '../style/theming';
+import { ClickIcon } from '../components/ClickIcon';
 import { Rating } from '../components/Rating';
 
 const buildDetails = (folder?: Folder): Array<HeaderDetail> => {
@@ -24,17 +24,17 @@ const buildDetails = (folder?: Folder): Array<HeaderDetail> => {
 	switch (folder?.type) {
 		case FolderType.artist:
 			result = [
-				{title: 'Folders', value: `${folder?.folderCount || ''}`},
-				{title: 'Tracks', value: `${folder?.trackCount || ''}`},
-				{title: 'Genre', value: genreDisplay(folder?.genres) || ''}
+				{ title: 'Folders', value: `${folder?.folderCount || ''}` },
+				{ title: 'Tracks', value: `${folder?.trackCount || ''}` },
+				{ title: 'Genre', value: genreDisplay(folder?.genres) || '' }
 			];
 			break;
 		case FolderType.multialbum:
 		case FolderType.album:
 			result = [
-				{title: 'Artist', value: `${folder?.artist || ''}`},
-				{title: 'Tracks', value: `${folder?.trackCount || ''}`},
-				{title: 'Genre', value: genreDisplay(folder?.genres) || ''}
+				{ title: 'Artist', value: `${folder?.artist || ''}` },
+				{ title: 'Tracks', value: `${folder?.trackCount || ''}` },
+				{ title: 'Genre', value: genreDisplay(folder?.genres) || '' }
 			];
 			break;
 		// case FolderType.unknown:
@@ -45,11 +45,11 @@ const buildDetails = (folder?: Folder): Array<HeaderDetail> => {
 	return result.filter(item => item.value.length > 0);
 };
 
-export const FolderScreen: React.FC<HomeRouteProps<HomeRoute.FOLDER>> = ({route}) => {
+export const FolderScreen: React.FC<HomeRouteProps<HomeRoute.FOLDER>> = ({ route }) => {
 	const theme = useTheme();
 	const [details, setDetails] = useState<Array<HeaderDetail>>(buildDetails());
-	const [getFolder, {loading, error, folder}] = useLazyFolderQuery();
-	const {id, name} = (route?.params || {});
+	const [getFolder, { loading, error, folder }] = useLazyFolderQuery();
+	const { id, name } = (route?.params || {});
 	const selectActionRef: MutableRefObject<FloatingAction | null> = React.useRef<FloatingAction>(null);
 	const [showCheck, setShowCheck] = useState<boolean>(false);
 	const [selection, setSelection] = useState<Array<TrackEntry>>([]);
@@ -79,7 +79,7 @@ export const FolderScreen: React.FC<HomeRouteProps<HomeRoute.FOLDER>> = ({route}
 	const playTracks = (): void => {
 		if (folder) {
 			JamPlayer.playTracks(folder.tracks)
-				.catch(e => {
+				.catch((e) => {
 					snackError(e);
 				});
 		}
@@ -91,8 +91,8 @@ export const FolderScreen: React.FC<HomeRouteProps<HomeRoute.FOLDER>> = ({route}
 		typeName={folder?.type}
 		details={details}
 		headerTitleCmds={folder?.tracks?.length ?
-			(<ClickIcon iconName="play" onPress={playTracks} style={objHeaderStyles.button} fontSize={objHeaderStyles.buttonIcon.fontSize}/>)
-			: undefined}
+				(<ClickIcon iconName="play" onPress={playTracks} style={objHeaderStyles.button} fontSize={objHeaderStyles.buttonIcon.fontSize}/>) :
+			undefined}
 		headerTitleCmdsExtras={<Rating fontSize={objHeaderStyles.buttonIcon.fontSize} objType={JamObjectType.folder} id={id}/>}
 	/>);
 
@@ -107,7 +107,7 @@ export const FolderScreen: React.FC<HomeRouteProps<HomeRoute.FOLDER>> = ({route}
 	}, [selection, applySelection]);
 
 	const pressFloatingAction = useCallback((buttonName?: string): void => {
-		executeTrackMenuAction(selection, buttonName).then(result => {
+		executeTrackMenuAction(selection, buttonName).then((result) => {
 			if (result) {
 				applySelection([]);
 			}
@@ -120,7 +120,7 @@ export const FolderScreen: React.FC<HomeRouteProps<HomeRoute.FOLDER>> = ({route}
 		applySelection([]);
 	}, [applySelection]);
 
-	const renderItem = useCallback(({item}: { item: FolderItem }):React.JSX.Element => {
+	const renderItem = useCallback(({ item }: { item: FolderItem }): React.JSX.Element => {
 		if (item.track) {
 			return (<TrackItem
 				track={item.track}

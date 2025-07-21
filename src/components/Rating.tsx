@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-export const Rating: React.FC<{ id?: string; objType: JamObjectType; style?: StyleProp<ViewStyle>, fontSize?: number }> = ({ id, style, fontSize }) => {
+export const Rating: React.FC<{ id?: string; objType: JamObjectType; style?: StyleProp<ViewStyle>; fontSize?: number }> = ({ id, style, fontSize }) => {
 	const [rate, setRate] = useState<number>(0);
 	const [getRating, { rating, loading }] = useLazyRateQuery();
 	const [setRatingMutation] = useRateMutation();
@@ -54,13 +54,13 @@ export const Rating: React.FC<{ id?: string; objType: JamObjectType; style?: Sty
 		if (!loading && id) {
 			const destRating = r === rate ? r - 1 : r;
 			setRatingMutation({ variables: { id, rating: destRating } })
-				.then(result => {
+				.then((result) => {
 					if (isUnmountedRef.current) {
 						return;
 					}
 					const resultRating = result.data?.rate?.rated;
 					const newRate = resultRating === undefined || resultRating === null ? 0 : resultRating;
-					setRate(newRate)
+					setRate(newRate);
 					snackSuccess(`Rated with ${newRate}`);
 					dataService.cache.updateHomeData().catch(console.error);
 				});

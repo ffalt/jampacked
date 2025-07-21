@@ -1,8 +1,8 @@
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
-import {DurationText} from './DurationText';
-import {staticTheme} from '../style/theming';
-import {useTrackPlayerProgressMS} from '../services/player-api';
+import { StyleSheet, View } from 'react-native';
+import { DurationText } from './DurationText';
+import { staticTheme } from '../style/theming';
+import { useTrackPlayerProgressMS } from '../services/player-api';
 
 const styles = StyleSheet.create({
 	times: {
@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
 });
 
 export const PlayerTime: React.FC = () => {
-	const {duration, position} = useTrackPlayerProgressMS();
+	const { duration, position } = useTrackPlayerProgressMS();
 	return (
 		<View style={styles.times}>
 			<DurationText style={styles.time} duration={position}/>

@@ -1,7 +1,7 @@
-import React, {useEffect, useState} from 'react';
-import {ThemedText} from './ThemedText';
-import {StyleSheet, View} from 'react-native';
-import {useTheme} from '../style/theming';
+import React, { useEffect, useState } from 'react';
+import { ThemedText } from './ThemedText';
+import { StyleSheet, View } from 'react-native';
+import { useTheme } from '../style/theming';
 
 const styles = StyleSheet.create({
 	container: {
@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-export const ListEmpty: React.FC<{ list?: Array<any> }> = ({list}) => {
+export const ListEmpty: React.FC<{ list?: Array<any> }> = ({ list }) => {
 	const [text, setText] = useState('');
 	const theme = useTheme();
 
@@ -44,7 +44,7 @@ export const ListEmpty: React.FC<{ list?: Array<any> }> = ({list}) => {
 
 	return (
 		<View style={styles.container}>
-			<ThemedText style={[styles.empty, {color: theme.muted}]}>{text}</ThemedText>
+			<ThemedText style={[styles.empty, { color: theme.muted }]}>{text}</ThemedText>
 		</View>
 	);
 };

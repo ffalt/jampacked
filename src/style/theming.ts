@@ -60,15 +60,15 @@ export interface ITheme {
 		activePlayableInverse: string;
 		inactive: string;
 		inactiveInverse: string;
-	}
+	};
 	checkbox: {
-		checked: string
-		unchecked: string
-	}
+		checked: string;
+		unchecked: string;
+	};
 	floating: {
 		color: string;
 		background: string;
-	}
+	};
 	refreshCtrlBackground: string;
 	refreshCtrlColors: Array<string>;
 	statusBar: string;
@@ -103,19 +103,19 @@ const light: ITheme = {
 		fonts: {
 			regular: {
 				fontFamily: 'sans-serif',
-				fontWeight: 'normal',
+				fontWeight: 'normal'
 			},
 			medium: {
 				fontFamily: 'sans-serif-medium',
-				fontWeight: 'normal',
+				fontWeight: 'normal'
 			},
 			bold: {
 				fontFamily: 'sans-serif',
-				fontWeight: '600',
+				fontWeight: '600'
 			},
 			heavy: {
 				fontFamily: 'sans-serif',
-				fontWeight: '700',
+				fontWeight: '700'
 			}
 		},
 		colors: {
@@ -180,19 +180,19 @@ const dark: ITheme = {
 		fonts: {
 			regular: {
 				fontFamily: 'sans-serif',
-				fontWeight: 'normal',
+				fontWeight: 'normal'
 			},
 			medium: {
 				fontFamily: 'sans-serif-medium',
-				fontWeight: 'normal',
+				fontWeight: 'normal'
 			},
 			bold: {
 				fontFamily: 'sans-serif',
-				fontWeight: '600',
+				fontWeight: '600'
 			},
 			heavy: {
 				fontFamily: 'sans-serif',
-				fontWeight: '700',
+				fontWeight: '700'
 			}
 		},
 
@@ -244,19 +244,19 @@ const black: ITheme = {
 		fonts: {
 			regular: {
 				fontFamily: 'sans-serif',
-				fontWeight: 'normal',
+				fontWeight: 'normal'
 			},
 			medium: {
 				fontFamily: 'sans-serif-medium',
-				fontWeight: 'normal',
+				fontWeight: 'normal'
 			},
 			bold: {
 				fontFamily: 'sans-serif',
-				fontWeight: '600',
+				fontWeight: '600'
 			},
 			heavy: {
 				fontFamily: 'sans-serif',
-				fontWeight: '700',
+				fontWeight: '700'
 			}
 		},
 		colors: {
@@ -287,12 +287,12 @@ const black: ITheme = {
 };
 
 const themes: {
-	light: ITheme,
-	dark: ITheme,
-	black: ITheme, [name: string]: ITheme
+	light: ITheme;
+	dark: ITheme;
+	black: ITheme; [name: string]: ITheme;
 } = { light, dark, black };
 
-export const themeList: Array<{ key: string, label: string }> = [
+export const themeList: Array<{ key: string; label: string }> = [
 	{ key: 'auto', label: 'System Theme' },
 	{ key: 'light', label: 'Light' },
 	{ key: 'dark', label: 'Dark' },
@@ -330,7 +330,7 @@ export const ThemeContext = React.createContext<ThemeSettings>(
 
 const { ThemeProvider: ThemeProviderIntern, useTheme: useThemeIntern } = createTheming(getAutoTheme());
 // React.ComponentType<{children: React.ReactNode, theme?: Theme }>
-export const ThemeProvider: React.ComponentType<{ children: React.ReactNode, theme?: ITheme }> = ThemeProviderIntern;
+export const ThemeProvider: React.ComponentType<{ children: React.ReactNode; theme?: ITheme }> = ThemeProviderIntern;
 export const useTheme = useThemeIntern;
 
 export const useThemeContext = (): ThemeSettings => useContext<ThemeSettings>(ThemeContext);

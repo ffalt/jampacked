@@ -1,13 +1,13 @@
-import {useEffect, useState} from 'react';
-import {AudioFormatType} from './jam';
+import { useEffect, useState } from 'react';
+import { AudioFormatType } from './jam';
 import dataService from './data';
-import {TrackEntry} from './types';
-import {TrackPlayer, TrackPlayerTrack, State, useTrackPlayerCurrentTrack} from './player-api';
+import { TrackEntry } from './types';
+import { TrackPlayer, TrackPlayerTrack, State, useTrackPlayerCurrentTrack } from './player-api';
 
 async function buildTrackPlayerTrack(t: TrackEntry): Promise<TrackPlayerTrack> {
-	const headers = dataService.currentUserToken ? {Authorization: `Bearer ${dataService.currentUserToken}`} : undefined;
+	const headers = dataService.currentUserToken ? { Authorization: `Bearer ${dataService.currentUserToken}` } : undefined;
 	const imageID = t.seriesID ? t.id : (t.albumID || t.id);
-	const url = dataService.jam.stream.streamUrl({id: t.id, format: AudioFormatType.mp3}, !headers);
+	const url = dataService.jam.stream.streamUrl({ id: t.id, format: AudioFormatType.mp3 }, !headers);
 	return {
 		id: t.id,
 		url,
@@ -16,7 +16,7 @@ async function buildTrackPlayerTrack(t: TrackEntry): Promise<TrackPlayerTrack> {
 		album: t.album,
 		genre: t.genre,
 		duration: t.durationMS / 1000,
-		artwork: dataService.jam.image.imageUrl({id: imageID, size: 300}, !headers),
+		artwork: dataService.jam.image.imageUrl({ id: imageID, size: 300 }, !headers),
 		headers
 		// type: TrackType.default;
 		// date: t.tag?.year,
@@ -29,7 +29,6 @@ async function buildTrackPlayerTrack(t: TrackEntry): Promise<TrackPlayerTrack> {
 }
 
 export class JamPlayer {
-
 	static async shuffleQueue(): Promise<void> {
 		await TrackPlayer.shuffle();
 	}
@@ -58,7 +57,6 @@ export class JamPlayer {
 			await JamPlayer.playTracks([track]);
 		}
 	}
-
 
 	static async playTracks(tracks: Array<TrackEntry>): Promise<void> {
 		const entries = await Promise.all(tracks.map(t => buildTrackPlayerTrack(t)));

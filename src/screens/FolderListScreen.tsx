@@ -1,9 +1,9 @@
-import React, {useContext} from 'react';
-import {FoldersRoute, FoldersRouteProps} from '../navigators/Routing';
-import {ListType} from '../services/jam';
-import {FolderList} from '../components/FolderList';
-import {FoldersTabNavigatorContext} from '../navigators/FoldersNavigatorContext';
-import {JamRouteLinks} from '../navigators/Routes';
+import React, { useContext } from 'react';
+import { FoldersRoute, FoldersRouteProps } from '../navigators/Routing';
+import { ListType } from '../services/jam';
+import { FolderList } from '../components/FolderList';
+import { FoldersTabNavigatorContext } from '../navigators/FoldersNavigatorContext';
+import { JamRouteLinks } from '../navigators/Routes';
 
 export const FolderListFavScreen: React.FC<FoldersRouteProps<FoldersRoute.FAV>> = () => {
 	const state = useContext(FoldersTabNavigatorContext);
@@ -63,4 +63,3 @@ export const FolderListAvgHighestScreen: React.FC<FoldersRouteProps<FoldersRoute
 		goLeft: JamRouteLinks.folderlist(ListType.highest, state?.albumType)
 	}}/>);
 };
-

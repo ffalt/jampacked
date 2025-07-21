@@ -1,10 +1,10 @@
 import React from 'react';
-import {TrackEntry} from '../services/types';
-import {JamPlayer} from '../services/player';
-import {NavigationService} from '../navigators/navigation';
-import {JamObjectType} from '../services/jam';
-import {ThemedIcon} from './ThemedIcon';
-import {IActionProps} from 'react-native-floating-action';
+import { TrackEntry } from '../services/types';
+import { JamPlayer } from '../services/player';
+import { NavigationService } from '../navigators/navigation';
+import { JamObjectType } from '../services/jam';
+import { ThemedIcon } from './ThemedIcon';
+import { IActionProps } from 'react-native-floating-action';
 
 export interface ActionMenuItem extends IActionProps {
 	position?: number;
@@ -33,7 +33,7 @@ export const executeTrackMenuAction = async (selection: Array<TrackEntry>, name?
 	return false;
 };
 
-export const trackMenuIcon: (color: string) =>React.JSX.Element = (color) => {
+export const trackMenuIcon: (color: string) => React.JSX.Element = (color) => {
 	return <ThemedIcon name="menu" color={color}/>;
 };
 

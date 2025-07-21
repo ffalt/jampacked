@@ -91,7 +91,6 @@
     "node_modules/*",
     "local/",
     "__tests__/**/*-test.ts",
-    "index.js",
     "wdyr.js",
     "node_modules/",
     "babel.config.js",

@@ -1,5 +1,5 @@
-import {useEffect, useState} from 'react';
-import {Dimensions, ScaledSize} from 'react-native';
+import { useEffect, useState } from 'react';
+import { Dimensions, ScaledSize } from 'react-native';
 
 export const useScreenDimensions = (): (ScaledSize & { isLandscape: boolean }) => {
 	const [screenData, setScreenData] = useState(Dimensions.get('screen'));

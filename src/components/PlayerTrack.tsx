@@ -21,12 +21,6 @@ const styles = StyleSheet.create({
 	},
 	album: {
 		textAlign: 'center'
-	},
-	annotation: {
-		paddingTop: staticTheme.paddingLarge,
-		flexDirection: 'row',
-		alignContent: 'space-between',
-		justifyContent: 'space-between'
 	}
 });
 

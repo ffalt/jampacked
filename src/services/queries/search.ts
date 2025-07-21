@@ -1,7 +1,7 @@
-import {DocumentNode, useLazyQuery, ApolloError} from '@apollo/client';
-import {JamObjectType} from '../jam';
-import {useCallback, useEffect, useState} from 'react';
-import {SearchResultData} from '../types';
+import { DocumentNode, useLazyQuery, ApolloError } from '@apollo/client';
+import { JamObjectType } from '../jam';
+import { useCallback, useEffect, useState } from 'react';
+import { SearchResultData } from '../types';
 import {
 	SearchAlbumsResultDocument, SearchAlbumsResultQuery, SearchAlbumsResultQueryVariables,
 	SearchArtistsResultDocument, SearchArtistsResultQuery, SearchArtistsResultQueryVariables,
@@ -46,7 +46,7 @@ function buildPage<T extends SearchQueryResult>(data: SearchPage<T>, objType: Ja
 		query,
 		total: data.total,
 		skip: data.skip || 0,
-		entries: data.items.map(o => ({id: o.id, title: o.name, desc: getDesc(o) || '', objType}))
+		entries: data.items.map(o => ({ id: o.id, title: o.name, desc: getDesc(o) || '', objType }))
 	};
 }
 
@@ -73,10 +73,11 @@ function transformData(data: SearchQueryResults | undefined, variables: SearchVa
 		return buildPage<SearchPlaylistsResult_playlists_items>(data.playlists, JamObjectType.playlist, variables.query, o => `Tracks: ${o.entriesCount}`);
 	}
 	if (data.folders) {
-		return buildPage<SearchFoldersResult_folders_items>(data.folders, JamObjectType.folder, variables.query, o => {
+		return buildPage<SearchFoldersResult_folders_items>(data.folders, JamObjectType.folder, variables.query, (o) => {
 			return (o.folderType || '') + ' ' + (
-				(o.tracksCount || 0) > 0 ? `Tracks: ${o.tracksCount}` :
-					((o.childrenCount || 0) > 0 ? `Folder: ${o.childrenCount}` : '')
+				(o.tracksCount || 0) > 0 ?
+					`Tracks: ${o.tracksCount}` :
+						((o.childrenCount || 0) > 0 ? `Folder: ${o.childrenCount}` : '')
 			);
 		});
 	}
@@ -108,10 +109,10 @@ function getSearchQuery(objType: JamObjectType): DocumentNode {
 }
 
 export const useLazySearchQuery = (objType: JamObjectType): [(query: string, take: number, skip: number) => void,
-	{ loading: boolean, error?: ApolloError, result?: SearchResultData, called: boolean }
+	{ loading: boolean; error?: ApolloError; result?: SearchResultData; called: boolean }
 ] => {
 	const [result, setResult] = useState<SearchResultData | undefined>(undefined);
-	const [getSearch, {loading, error, data, variables, called}] = useLazyQuery<SearchQueryResults, SearchVariable>(getSearchQuery(objType));
+	const [getSearch, { loading, error, data, variables, called }] = useLazyQuery<SearchQueryResults, SearchVariable>(getSearchQuery(objType));
 
 	useEffect(() => {
 		if (data && variables) {
@@ -120,7 +121,7 @@ export const useLazySearchQuery = (objType: JamObjectType): [(query: string, tak
 	}, [data, variables]);
 
 	const get = useCallback((query: string, take: number, skip: number): void => {
-		getSearch({variables: {query, take, skip}});
+		getSearch({ variables: { query, take, skip } });
 	}, [getSearch]);
 
 	return [

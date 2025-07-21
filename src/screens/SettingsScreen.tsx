@@ -1,14 +1,14 @@
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
-import {BottomTabProps, BottomTabRoute} from '../navigators/Routing';
-import {ThemesView} from '../components/ThemesView';
-import {ThemedText} from '../components/ThemedText';
-import {CachingView} from '../components/CachingView';
-import {MediaCachingView} from '../components/MediaCachingView';
-import {PageHeader} from '../components/PageHeader';
-import {sharedStyles} from '../style/shared';
-import {staticTheme} from '../style/theming';
-import {UserView} from '../components/UserView';
+import { StyleSheet, View } from 'react-native';
+import { BottomTabProps, BottomTabRoute } from '../navigators/Routing';
+import { ThemesView } from '../components/ThemesView';
+import { ThemedText } from '../components/ThemedText';
+import { CachingView } from '../components/CachingView';
+import { MediaCachingView } from '../components/MediaCachingView';
+import { PageHeader } from '../components/PageHeader';
+import { sharedStyles } from '../style/shared';
+import { staticTheme } from '../style/theming';
+import { UserView } from '../components/UserView';
 
 const styles = StyleSheet.create({
 	container: {
@@ -23,15 +23,6 @@ const styles = StyleSheet.create({
 		paddingTop: staticTheme.paddingLarge,
 		paddingBottom: staticTheme.paddingSmall,
 		paddingHorizontal: 0
-	},
-	permissionSection: {
-		paddingTop: staticTheme.padding
-	},
-	permission: {
-		flexDirection: 'row'
-	},
-	permissionText: {
-		paddingHorizontal: staticTheme.paddingSmall
 	}
 });
 

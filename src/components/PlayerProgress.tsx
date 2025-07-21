@@ -1,9 +1,9 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 import Slider from '@react-native-community/slider';
 import React from 'react';
-import {JamPlayer} from '../services/player';
-import {useTrackPlayerProgressPercent} from '../services/player-api';
-import {staticTheme, useTheme} from '../style/theming';
+import { JamPlayer } from '../services/player';
+import { useTrackPlayerProgressPercent } from '../services/player-api';
+import { staticTheme, useTheme } from '../style/theming';
 
 const styles = StyleSheet.create({
 	slider: {
@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
 
 export const PlayerProgress: React.FC = () => {
 	const theme = useTheme();
-	const {progress} = useTrackPlayerProgressPercent(300);
+	const { progress } = useTrackPlayerProgressPercent(300);
 	return (
 		<Slider
 			thumbTintColor={theme.sliderHandle}
@@ -26,4 +26,3 @@ export const PlayerProgress: React.FC = () => {
 		/>
 	);
 };
-

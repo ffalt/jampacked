@@ -6,9 +6,9 @@ const config: Config = {
 	coveragePathIgnorePatterns: [
 		'<rootDir>/node_modules/',
 		'<rootDir>/src/__tests__',
-		'<rootDir>/src/__fixtures__',
+		'<rootDir>/src/__fixtures__'
 	],
-	'transformIgnorePatterns': [
+	transformIgnorePatterns: [
 		'node_modules/(?!(' +
 		'react-native' +
 		'|@react-native' +

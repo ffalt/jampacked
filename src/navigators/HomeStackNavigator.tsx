@@ -1,30 +1,30 @@
 import React from 'react';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {HomeScreen} from '../screens/HomeScreen';
-import {ArtistScreen} from '../screens/ArtistScreen';
-import {HomeRoute, HomeRouteParamList} from './Routing';
-import {SeriesScreen} from '../screens/SeriesScreen';
-import {FolderScreen} from '../screens/FolderScreen';
-import {PodcastIndexScreen} from '../screens/PodcastIndexScreen';
-import {PodcastScreen} from '../screens/PodcastScreen';
-import {TrackScreen} from '../screens/TrackScreen';
-import {PlaylistScreen} from '../screens/PlaylistScreen';
-import {PlaylistIndexScreen} from '../screens/PlaylistIndexScreen';
-import {ArtistsNavigator} from './ArtistsNavigator';
-import {AlbumsNavigator} from './AlbumsNavigator';
-import {SeriesNavigator} from './SeriesNavigator';
-import {FoldersNavigator} from './FoldersNavigator';
-import {DownloadsNavigator} from './DownloadsNavigator';
-import {GenresNavigator} from './GenresNavigator';
-import {TracksNavigator} from './TracksNavigator';
-import {GenreNavigator} from './GenreNavigator';
-import {AlbumNavigator} from './AlbumNavigator';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { HomeScreen } from '../screens/HomeScreen';
+import { ArtistScreen } from '../screens/ArtistScreen';
+import { HomeRoute, HomeRouteParamList } from './Routing';
+import { SeriesScreen } from '../screens/SeriesScreen';
+import { FolderScreen } from '../screens/FolderScreen';
+import { PodcastIndexScreen } from '../screens/PodcastIndexScreen';
+import { PodcastScreen } from '../screens/PodcastScreen';
+import { TrackScreen } from '../screens/TrackScreen';
+import { PlaylistScreen } from '../screens/PlaylistScreen';
+import { PlaylistIndexScreen } from '../screens/PlaylistIndexScreen';
+import { ArtistsNavigator } from './ArtistsNavigator';
+import { AlbumsNavigator } from './AlbumsNavigator';
+import { SeriesNavigator } from './SeriesNavigator';
+import { FoldersNavigator } from './FoldersNavigator';
+import { DownloadsNavigator } from './DownloadsNavigator';
+import { GenresNavigator } from './GenresNavigator';
+import { TracksNavigator } from './TracksNavigator';
+import { GenreNavigator } from './GenreNavigator';
+import { AlbumNavigator } from './AlbumNavigator';
 import { BookmarksScreen } from '../screens/BookmarksScreen.tsx';
 
 const Stack = createNativeStackNavigator<HomeRouteParamList>();
 
 export const HomeStackNavigator: React.FC = () => (
-	<Stack.Navigator screenOptions={{headerShown: false}}>
+	<Stack.Navigator screenOptions={{ headerShown: false }}>
 		<Stack.Screen name={HomeRoute.START} component={HomeScreen}/>
 		<Stack.Screen name={HomeRoute.ARTISTS} component={ArtistsNavigator}/>
 		<Stack.Screen name={HomeRoute.ALBUMS} component={AlbumsNavigator}/>

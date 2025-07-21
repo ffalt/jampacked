@@ -1,21 +1,21 @@
-import React, {useCallback} from 'react';
-import {StyleSheet, TouchableOpacity} from 'react-native';
+import React, { useCallback } from 'react';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 import FastImage from '@d11/react-native-fast-image';
-import {useTheme} from '../style/theming';
-import {NavigationService} from '../navigators/navigation';
-import {BaseEntry} from '../services/types';
-import {useAuth} from '../services/auth';
+import { useTheme } from '../style/theming';
+import { NavigationService } from '../navigators/navigation';
+import { BaseEntry } from '../services/types';
+import { useAuth } from '../services/auth';
 
 const styles = StyleSheet.create({
-	image: {flex: 1}
+	image: { flex: 1 }
 });
 
-export const ImageItem: React.FC<{ item: BaseEntry; size: number; }> = React.memo(({item, size}) => {
+export const ImageItem: React.FC<{ item: BaseEntry; size: number }> = React.memo(({ item, size }) => {
 	const theme = useTheme();
 	const auth = useAuth();
 
 	const handleClick = useCallback((): void => {
-		const {id, title, objType} = item;
+		const { id, title, objType } = item;
 		NavigationService.navigateObj(objType, id, title);
 	}, [item]);
 

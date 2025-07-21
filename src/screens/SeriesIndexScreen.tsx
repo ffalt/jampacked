@@ -1,13 +1,13 @@
-import React, {useCallback, useEffect} from 'react';
-import {SeriesRoute, SeriesRouteProps} from '../navigators/Routing';
-import {IndexList} from '../components/IndexList';
-import {ErrorView} from '../components/ErrorView';
-import {useLazySeriesIndexQuery} from '../services/queries/seriesIndex';
-import {JamRouteLinks} from '../navigators/Routes';
-import {ListType} from '../services/jam';
+import React, { useCallback, useEffect } from 'react';
+import { SeriesRoute, SeriesRouteProps } from '../navigators/Routing';
+import { IndexList } from '../components/IndexList';
+import { ErrorView } from '../components/ErrorView';
+import { useLazySeriesIndexQuery } from '../services/queries/seriesIndex';
+import { JamRouteLinks } from '../navigators/Routes';
+import { ListType } from '../services/jam';
 
 export const SeriesIndexScreen: React.FC<SeriesRouteProps<SeriesRoute.INDEX>> = () => {
-	const [getIndex, {loading, error, called, index}] = useLazySeriesIndexQuery();
+	const [getIndex, { loading, error, called, index }] = useLazySeriesIndexQuery();
 
 	useEffect(() => {
 		if (!called) {

@@ -7,13 +7,16 @@ import { FastImageBackground } from './JamBackgroundImage';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 
 export const objHeaderStyles = StyleSheet.create({
+	// eslint-disable-next-line react-native/no-unused-styles
 	button: {
 		paddingHorizontal: staticTheme.paddingSmall,
 		marginHorizontal: staticTheme.marginLarge
 	},
+	// eslint-disable-next-line react-native/no-unused-styles
 	buttonIcon: {
 		fontSize: 26
 	},
+	// eslint-disable-next-line react-native/no-unused-styles
 	panel: {
 		paddingHorizontal: staticTheme.paddingSmall,
 		marginHorizontal: staticTheme.marginLarge
@@ -37,16 +40,9 @@ const styles = StyleSheet.create({
 		justifyContent: 'space-between',
 		paddingHorizontal: staticTheme.padding
 	},
-	headerBottom: {
-		flex: 1,
-		flexDirection: 'row',
-		alignItems: 'center',
-		justifyContent: 'space-between',
-		paddingHorizontal: staticTheme.padding
-	},
 	headerTitleCmdsExtra: {
 		flexDirection: 'row',
-		paddingTop: staticTheme.padding,
+		paddingTop: staticTheme.padding
 	},
 	headerTitleCmds: {
 		paddingTop: staticTheme.padding,
@@ -123,8 +119,8 @@ export const ObjHeader: React.FC<{
 				</View>
 			);
 		}
-		const result: Array<JSX.Element> = [];
-		(details || []).forEach(detail => {
+		const result: Array<React.JSX.Element> = [];
+		(details || []).forEach((detail) => {
 			if (detail.click) {
 				const onClick = (): void => {
 					if (detail.click) {

@@ -1,9 +1,9 @@
-import {AlbumType, JamObjectType, ListType} from '../jam';
-import {BaseEntryList, UseListCallFunctionTransform, useListFunction} from '../types';
-import {DocumentNode} from 'graphql';
-import {useCacheOrLazyQuery} from '../cache-hooks';
-import {useCallback} from 'react';
-import {AlbumListResultDocument, AlbumListResultQuery, AlbumListResultQueryVariables} from './albumList.api';
+import { AlbumType, JamObjectType, ListType } from '../jam';
+import { BaseEntryList, UseListCallFunctionTransform, useListFunction } from '../types';
+import { DocumentNode } from 'graphql';
+import { useCacheOrLazyQuery } from '../cache-hooks';
+import { useCallback } from 'react';
+import { AlbumListResultDocument, AlbumListResultQuery, AlbumListResultQueryVariables } from './albumList.api';
 
 function transformData(data?: AlbumListResultQuery, variables?: AlbumListResultQueryVariables): BaseEntryList | undefined {
 	if (!data) {
@@ -16,7 +16,7 @@ function transformData(data?: AlbumListResultQuery, variables?: AlbumListResultQ
 		listType: !variables?.listType ? undefined : variables.listType,
 		items: []
 	};
-	data.albums.items.forEach(entry => {
+	data.albums.items.forEach((entry) => {
 		result.items.push({
 			id: entry.id,
 			objType: JamObjectType.album,
@@ -28,18 +28,17 @@ function transformData(data?: AlbumListResultQuery, variables?: AlbumListResultQ
 }
 
 const transformVariables: UseListCallFunctionTransform<AlbumListResultQueryVariables> = (albumTypes, listType, genreIDs, seed, take, skip) => {
-	return {albumTypes, listType, genreIDs, skip, take, seed};
+	return { albumTypes, listType, genreIDs, skip, take, seed };
 };
 
 export const AlbumListQuery: {
 	query: DocumentNode;
 	transformData: (d?: AlbumListResultQuery, variables?: AlbumListResultQueryVariables) => BaseEntryList | undefined;
 	transformVariables: UseListCallFunctionTransform<AlbumListResultQueryVariables>;
-} = {query: AlbumListResultDocument, transformData, transformVariables};
-
+} = { query: AlbumListResultDocument, transformData, transformVariables };
 
 export const useLazyAlbumListQuery: useListFunction = () => {
-	const [query, {loading, error, data, called, queryID}] =
+	const [query, { loading, error, data, called, queryID }] =
 		useCacheOrLazyQuery<AlbumListResultQuery, AlbumListResultQueryVariables, BaseEntryList>(AlbumListQuery.query, AlbumListQuery.transformData);
 	const get = useCallback((
 		albumTypes: Array<AlbumType>,
@@ -50,7 +49,7 @@ export const useLazyAlbumListQuery: useListFunction = () => {
 		skip: number,
 		forceRefresh?: boolean
 	): void => {
-		query({variables: AlbumListQuery.transformVariables(albumTypes, listType, genreIDs, seed, take, skip)}, forceRefresh);
+		query({ variables: AlbumListQuery.transformVariables(albumTypes, listType, genreIDs, seed, take, skip) }, forceRefresh);
 	}, [query]);
-	return [get, {loading, called, error, data, queryID}];
+	return [get, { loading, called, error, data, queryID }];
 };

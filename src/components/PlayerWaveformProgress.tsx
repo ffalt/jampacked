@@ -1,9 +1,9 @@
-import React, {useEffect} from 'react';
-import {useCurrentTrackID} from '../services/player';
-import {WaveformProgress} from './WaveformProgress';
-import {snackError} from '../services/snack';
-import {StyleSheet, View} from 'react-native';
-import {useLazyWaveformQuery} from '../services/queries/waveform';
+import React, { useEffect } from 'react';
+import { useCurrentTrackID } from '../services/player';
+import { WaveformProgress } from './WaveformProgress';
+import { snackError } from '../services/snack';
+import { StyleSheet, View } from 'react-native';
+import { useLazyWaveformQuery } from '../services/queries/waveform';
 
 const styles = StyleSheet.create({
 	container: {
@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
 
 export const PlayerWaveformProgress: React.FC = () => {
 	const id = useCurrentTrackID();
-	const [getWaveform, {error, waveform}] = useLazyWaveformQuery();
+	const [getWaveform, { error, waveform }] = useLazyWaveformQuery();
 
 	useEffect(() => {
 		if (id) {

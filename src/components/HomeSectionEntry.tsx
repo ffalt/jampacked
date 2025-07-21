@@ -1,10 +1,10 @@
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {staticTheme, useTheme} from '../style/theming';
-import {HomeEntry} from '../services/types';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { staticTheme, useTheme } from '../style/theming';
+import { HomeEntry } from '../services/types';
 import React from 'react';
-import {NavigationService} from '../navigators/navigation';
-import {JamImage} from './JamImage';
-import {ThemedText} from './ThemedText';
+import { NavigationService } from '../navigators/navigation';
+import { JamImage } from './JamImage';
+import { ThemedText } from './ThemedText';
 
 const styles = StyleSheet.create({
 	HomeSectionEntryText: {
@@ -22,17 +22,16 @@ const styles = StyleSheet.create({
 	}
 });
 
-
-export const HomeSectionEntry: React.FC<{ entry: HomeEntry; }> = React.memo(({entry}) => {
+export const HomeSectionEntry: React.FC<{ entry: HomeEntry }> = React.memo(({ entry }) => {
 	const theme = useTheme();
 
 	const click = (): void => {
-		NavigationService.navigate(entry.route, {id: entry.id, name: entry.name});
+		NavigationService.navigate(entry.route, { id: entry.id, name: entry.name });
 	};
 
 	return (
 		<TouchableOpacity onPress={click}>
-			<View style={[styles.HomeSectionEntry, {backgroundColor: theme.itemBackground}]}>
+			<View style={[styles.HomeSectionEntry, { backgroundColor: theme.itemBackground }]}>
 				<JamImage id={entry.id} size={staticTheme.thumbMedium}/>
 				<ThemedText numberOfLines={1} style={styles.HomeSectionEntryText}>{entry.name}</ThemedText>
 			</View>

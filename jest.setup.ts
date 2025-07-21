@@ -1,4 +1,4 @@
-import {NativeModules} from 'react-native';
+import { NativeModules } from 'react-native';
 
 jest.mock('./node_modules/react-native/Libraries/EventEmitter/NativeEventEmitter.js');
 
@@ -49,15 +49,15 @@ jest.mock('react-native-track-player', () => ({
 }));
 
 jest.mock('react-native-gesture-handler', () => {
-	return {RNGestureHandlerModule: jest.fn()};
+	return { RNGestureHandlerModule: jest.fn() };
 });
 
 jest.mock('react-native-gesture-handler/Swipeable', () => {
-	return {RNGestureHandlerModule: jest.fn()};
+	return { RNGestureHandlerModule: jest.fn() };
 });
 
 jest.mock('react-native-bootsplash', () => {
-	return {RNBootSplash: jest.fn()};
+	return { RNBootSplash: jest.fn() };
 });
 
 jest.mock('react-native-screens', () => ({

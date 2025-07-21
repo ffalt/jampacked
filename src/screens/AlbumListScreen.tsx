@@ -1,9 +1,9 @@
-import React, {useContext} from 'react';
-import {AlbumsRoute, AlbumsRouteProps} from '../navigators/Routing';
-import {ListType} from '../services/jam';
-import {AlbumList} from '../components/AlbumList';
-import {AlbumsTabNavigatorContext} from '../navigators/AlbumsNavigatorContext';
-import {JamRouteLinks} from '../navigators/Routes';
+import React, { useContext } from 'react';
+import { AlbumsRoute, AlbumsRouteProps } from '../navigators/Routing';
+import { ListType } from '../services/jam';
+import { AlbumList } from '../components/AlbumList';
+import { AlbumsTabNavigatorContext } from '../navigators/AlbumsNavigatorContext';
+import { JamRouteLinks } from '../navigators/Routes';
 
 export const AlbumListFavScreen: React.FC<AlbumsRouteProps<AlbumsRoute.FAV>> = () => {
 	const state = useContext(AlbumsTabNavigatorContext);

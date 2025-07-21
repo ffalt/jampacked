@@ -55,7 +55,7 @@ export const AlbumScreen: React.FC<AlbumRouteProps<AlbumRoute.MAIN>> = () => {
 	const playTracks = (): void => {
 		if (album) {
 			JamPlayer.playTracks(album.tracks)
-				.catch(e => {
+				.catch((e) => {
 					snackError(e);
 				});
 		}

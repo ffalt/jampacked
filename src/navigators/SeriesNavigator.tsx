@@ -1,17 +1,17 @@
-import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import React from 'react';
-import {SeriesIndexScreen} from '../screens/SeriesIndexScreen';
-import {SeriesListAvgHighestScreen, SeriesListFavScreen, SeriesListFrequentScreen, SeriesListHighestScreen, SeriesListRandomScreen, SeriesListRecentScreen} from '../screens/SeriesListScreen';
-import {HomeRoute, HomeRouteProps, SeriesRoute, SeriesRouteParamList} from './Routing';
+import { SeriesIndexScreen } from '../screens/SeriesIndexScreen';
+import { SeriesListAvgHighestScreen, SeriesListFavScreen, SeriesListFrequentScreen, SeriesListHighestScreen, SeriesListRandomScreen, SeriesListRecentScreen } from '../screens/SeriesListScreen';
+import { HomeRoute, HomeRouteProps, SeriesRoute, SeriesRouteParamList } from './Routing';
 
 const Tab = createMaterialTopTabNavigator<SeriesRouteParamList>();
-const emptyComponent = ():React.JSX.Element => (<></>);
+const emptyComponent = (): React.JSX.Element => (<></>);
 
 export const SeriesNavigator: React.FC<HomeRouteProps<HomeRoute.SERIES>> = () => {
 	return (
 		<Tab.Navigator
 			initialRouteName={SeriesRoute.INDEX}
-			screenOptions={{lazy: true}}
+			screenOptions={{ lazy: true }}
 			tabBar={emptyComponent}
 		>
 			<Tab.Screen name={SeriesRoute.INDEX} component={SeriesIndexScreen}/>

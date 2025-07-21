@@ -1,10 +1,10 @@
 import React from 'react';
-import {useTheme} from '../style/theming';
-import {FlatList, ListRenderItem, RefreshControl, StyleProp, ViewStyle} from 'react-native';
-import {ListEmpty} from './ListEmpty';
-import {Separator} from './Separator';
-import {defaultItemLayout, defaultKeyExtractor} from '../utils/list.utils';
-import {ErrorView} from './ErrorView';
+import { useTheme } from '../style/theming';
+import { FlatList, ListRenderItem, RefreshControl, StyleProp, ViewStyle } from 'react-native';
+import { ListEmpty } from './ListEmpty';
+import { Separator } from './Separator';
+import { defaultItemLayout, defaultKeyExtractor } from '../utils/list.utils';
+import { ErrorView } from './ErrorView';
 
 interface DefaultFlatListParams<T> {
 	style?: StyleProp<ViewStyle>;

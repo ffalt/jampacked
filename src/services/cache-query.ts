@@ -1,4 +1,4 @@
-import {DocumentNode} from 'graphql';
+import { DocumentNode } from 'graphql';
 
 export function buildCacheID<TVariables>(query: DocumentNode, variables?: TVariables): string | undefined {
 	const opDef = query.definitions.find(d => d.kind === 'OperationDefinition');
@@ -6,4 +6,3 @@ export function buildCacheID<TVariables>(query: DocumentNode, variables?: TVaria
 		return (opDef as any).name.value + (variables ? JSON.stringify(variables) : '');
 	}
 }
-

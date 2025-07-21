@@ -1,15 +1,15 @@
-import React, {useState} from 'react';
-import {StyleSheet, View} from 'react-native';
-import {HomeRoute, HomeRouteProps} from '../navigators/Routing';
-import {ThemedText} from '../components/ThemedText';
-import {JamImage} from '../components/JamImage';
-import {staticTheme} from '../style/theming';
-import {Logo} from '../components/Logo';
-import {useAuth} from '../services/auth';
-import {getStatusBarHeight} from 'react-native-status-bar-height';
-import {SearchBar} from '../components/SearchBar';
-import {SearchResults} from '../components/SearchResults';
-import {HomeMain} from '../components/HomeMain';
+import React, { useState } from 'react';
+import { StyleSheet, View } from 'react-native';
+import { HomeRoute, HomeRouteProps } from '../navigators/Routing';
+import { ThemedText } from '../components/ThemedText';
+import { JamImage } from '../components/JamImage';
+import { staticTheme } from '../style/theming';
+import { Logo } from '../components/Logo';
+import { useAuth } from '../services/auth';
+import { getStatusBarHeight } from 'react-native-status-bar-height';
+import { SearchBar } from '../components/SearchBar';
+import { SearchResults } from '../components/SearchResults';
+import { HomeMain } from '../components/HomeMain';
 
 const styles = StyleSheet.create({
 	container: {
@@ -52,7 +52,7 @@ export const HomeScreen: React.FC<HomeRouteProps<HomeRoute.START>> = () => {
 	const content = search ? (<SearchResults search={search} />) : (<HomeMain />);
 
 	return (
-		<View style={[styles.container, {paddingTop: statusBarHeight}]}>
+		<View style={[styles.container, { paddingTop: statusBarHeight }]}>
 			<View style={styles.header}>
 				<View style={styles.userHeader}>
 					<Logo size={staticTheme.userImage}/>
@@ -65,4 +65,3 @@ export const HomeScreen: React.FC<HomeRouteProps<HomeRoute.START>> = () => {
 		</View>
 	);
 };
-

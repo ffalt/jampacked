@@ -1,11 +1,11 @@
-import React, {useEffect, useState} from 'react';
-import {DimensionValue, StyleSheet, View} from 'react-native';
-import {ThemedText} from './ThemedText';
-import {sharedStyles} from '../style/shared';
-import {Download, downloadStateToString} from '../services/player-api';
-import {usePinnedMediaDownload} from '../services/pin-hooks';
-import {humanFileSize} from '../utils/filesize.utils';
-import {useTheme} from '../style/theming.ts';
+import React, { useEffect, useState } from 'react';
+import { DimensionValue, StyleSheet, View } from 'react-native';
+import { ThemedText } from './ThemedText';
+import { sharedStyles } from '../style/shared';
+import { Download, downloadStateToString } from '../services/player-api';
+import { usePinnedMediaDownload } from '../services/pin-hooks';
+import { humanFileSize } from '../utils/filesize.utils';
+import { useTheme } from '../style/theming.ts';
 
 const styles = StyleSheet.create({
 	miniProgress: {
@@ -16,18 +16,18 @@ const styles = StyleSheet.create({
 	}
 });
 
-export const ActiveDownloadItem: React.FC<{ item: Download }> = React.memo(({item}) => {
+export const ActiveDownloadItem: React.FC<{ item: Download }> = React.memo(({ item }) => {
 	const theme = useTheme();
 	const [state, setState] = useState<{
-		text: string, state: string, bytes: string,
-		percent: number
+		text: string; state: string; bytes: string;
+		percent: number;
 	}>({
 		text: '',
 		state: '',
 		bytes: '',
 		percent: 0
 	});
-	const {download, track} = usePinnedMediaDownload(item.id);
+	const { download, track } = usePinnedMediaDownload(item.id);
 
 	useEffect(() => {
 		const o = download ? download : item;
@@ -50,8 +50,8 @@ export const ActiveDownloadItem: React.FC<{ item: Download }> = React.memo(({ite
 					<ThemedText style={sharedStyles.itemFooterText}>{state.percent.toFixed(2)}%</ThemedText>
 					<ThemedText style={sharedStyles.itemFooterText}>{state.bytes}</ThemedText>
 				</View>
-				<View style={[styles.miniProgress, {backgroundColor: theme.separator}]}>
-					<View style={[styles.miniProgress, {width, backgroundColor: theme.progress}]}/>
+				<View style={[styles.miniProgress, { backgroundColor: theme.separator }]}>
+					<View style={[styles.miniProgress, { width, backgroundColor: theme.progress }]}/>
 				</View>
 			</View>
 		</View>

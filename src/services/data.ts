@@ -1,10 +1,10 @@
-import {Database} from './db';
-import {JamService} from './jam';
-import {JamConfigurationService} from './jam-configuration';
-import {initApolloClient, JamApolloClient} from './apollo';
-import {PinService} from './pin';
-import {CacheService} from './cache';
-import {StorageService} from './storage';
+import { Database } from './db';
+import { JamService } from './jam';
+import { JamConfigurationService } from './jam-configuration';
+import { initApolloClient, JamApolloClient } from './apollo';
+import { PinService } from './pin';
+import { CacheService } from './cache';
+import { StorageService } from './storage';
 
 export class DataService {
 	db!: Database;
@@ -50,7 +50,7 @@ export class DataService {
 	// data
 
 	async scrobble(id: string): Promise<void> {
-		await this.jam.nowplaying.scrobble({id});
+		await this.jam.nowplaying.scrobble({ id });
 		await this.cache.updateHomeData();
 	}
 
@@ -78,5 +78,3 @@ export class DataService {
 const configuration = new JamConfigurationService();
 const dataService = new DataService(new JamService(configuration));
 export default dataService;
-
-

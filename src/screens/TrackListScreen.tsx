@@ -1,8 +1,8 @@
 import React from 'react';
-import {TracksRoute, TracksRouteProps} from '../navigators/Routing';
-import {ListType} from '../services/jam';
-import {TrackList} from '../components/TrackList';
-import {JamRouteLinks} from '../navigators/Routes';
+import { TracksRoute, TracksRouteProps } from '../navigators/Routing';
+import { ListType } from '../services/jam';
+import { TrackList } from '../components/TrackList';
+import { JamRouteLinks } from '../navigators/Routes';
 
 export const TrackListFavScreen: React.FC<TracksRouteProps<TracksRoute.FAV>> = () => {
 	return (<TrackList query={{

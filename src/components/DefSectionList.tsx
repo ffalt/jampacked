@@ -1,10 +1,10 @@
 import React from 'react';
-import {useTheme} from '../style/theming';
-import {RefreshControl, SectionList, SectionListData, SectionListRenderItem, StyleProp, ViewStyle} from 'react-native';
-import {ListEmpty} from './ListEmpty';
-import {Separator} from './Separator';
-import {defaultKeyExtractor} from '../utils/list.utils';
-import {ErrorView} from './ErrorView';
+import { useTheme } from '../style/theming';
+import { RefreshControl, SectionList, SectionListData, SectionListRenderItem, StyleProp, ViewStyle } from 'react-native';
+import { ListEmpty } from './ListEmpty';
+import { Separator } from './Separator';
+import { defaultKeyExtractor } from '../utils/list.utils';
+import { ErrorView } from './ErrorView';
 
 interface DefaultSectionListParams<T> {
 	style?: StyleProp<ViewStyle>;

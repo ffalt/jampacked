@@ -1,30 +1,30 @@
-import React, {useCallback, useEffect, useState} from 'react';
-import {SectionListData, View} from 'react-native';
-import {ThemedText} from '../components/ThemedText';
-import {HomeRoute, HomeRouteProps} from '../navigators/Routing';
-import {Item} from '../components/Item';
-import {HeaderDetail, ObjHeader, objHeaderStyles} from '../components/ObjHeader';
-import {BaseEntry} from '../services/types';
-import {NavigationService} from '../navigators/navigation';
-import {FavIcon} from '../components/FavIcon';
-import {JamObjectType} from '../services/jam';
-import {useLazySeriesQuery} from '../services/queries/series';
-import {DefaultSectionList} from '../components/DefSectionList';
-import {sharedStyles} from '../style/shared';
+import React, { useCallback, useEffect, useState } from 'react';
+import { SectionListData, View } from 'react-native';
+import { ThemedText } from '../components/ThemedText';
+import { HomeRoute, HomeRouteProps } from '../navigators/Routing';
+import { Item } from '../components/Item';
+import { HeaderDetail, ObjHeader, objHeaderStyles } from '../components/ObjHeader';
+import { BaseEntry } from '../services/types';
+import { NavigationService } from '../navigators/navigation';
+import { FavIcon } from '../components/FavIcon';
+import { JamObjectType } from '../services/jam';
+import { useLazySeriesQuery } from '../services/queries/series';
+import { DefaultSectionList } from '../components/DefSectionList';
+import { sharedStyles } from '../style/shared';
 import { Rating } from '../components/Rating';
 
 const buildDetails = (artist?: string, tracks?: number, genre?: string, toArtist?: () => void): Array<HeaderDetail> => {
 	return [
-		{title: 'Artist', value: `${artist || ''}`, click: artist ? toArtist : undefined},
-		{title: 'Tracks', value: `${tracks || ''}`},
-		{title: 'Genre', value: genre || ''}
+		{ title: 'Artist', value: `${artist || ''}`, click: artist ? toArtist : undefined },
+		{ title: 'Tracks', value: `${tracks || ''}` },
+		{ title: 'Genre', value: genre || '' }
 	];
 };
 
-export const SeriesScreen: React.FC<HomeRouteProps<HomeRoute.SERIE>> = ({route}) => {
+export const SeriesScreen: React.FC<HomeRouteProps<HomeRoute.SERIE>> = ({ route }) => {
 	const [details, setDetails] = useState<Array<HeaderDetail>>(buildDetails());
-	const [getSeries, {loading, error, series}] = useLazySeriesQuery();
-	const {id, name} = (route?.params || {});
+	const [getSeries, { loading, error, series }] = useLazySeriesQuery();
+	const { id, name } = (route?.params || {});
 
 	useEffect(() => {
 		if (id) {
@@ -35,7 +35,7 @@ export const SeriesScreen: React.FC<HomeRouteProps<HomeRoute.SERIE>> = ({route})
 	useEffect(() => {
 		if (series) {
 			setDetails(buildDetails(series.artistName, series.tracksCount, 'Audio Series', () => {
-				NavigationService.navigate(HomeRoute.ARTIST, {id: series.artistID, name: series.artistName || ''});
+				NavigationService.navigate(HomeRoute.ARTIST, { id: series.artistID, name: series.artistName || '' });
 			}));
 		}
 	}, [series]);
@@ -53,13 +53,13 @@ export const SeriesScreen: React.FC<HomeRouteProps<HomeRoute.SERIE>> = ({route})
 		headerTitleCmdsExtras={<Rating fontSize={objHeaderStyles.buttonIcon.fontSize} objType={JamObjectType.series} id={id}/>}
 	/>);
 
-	const renderSection = useCallback(({section}: { section: SectionListData<BaseEntry> }):React.JSX.Element => (
+	const renderSection = useCallback(({ section }: { section: SectionListData<BaseEntry> }): React.JSX.Element => (
 		<View style={sharedStyles.sectionHeader}>
 			<ThemedText style={sharedStyles.sectionHeaderText}>{section.title}</ThemedText>
 		</View>
 	), []);
 
-	const renderItem = useCallback(({item}: { item: BaseEntry }):React.JSX.Element => (<Item item={item}/>), []);
+	const renderItem = useCallback(({ item }: { item: BaseEntry }): React.JSX.Element => (<Item item={item}/>), []);
 
 	return (
 		<DefaultSectionList

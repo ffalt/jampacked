@@ -1,19 +1,19 @@
-import React, {useCallback, useEffect} from 'react';
-import {HomeRoute, HomeRouteProps} from '../navigators/Routing';
-import {JamPlayer} from '../services/player';
-import {ObjHeader, objHeaderStyles} from '../components/ObjHeader';
-import {JamObjectType} from '../services/jam';
-import {FavIcon} from '../components/FavIcon';
-import {snackError} from '../services/snack';
-import {ThemedText} from '../components/ThemedText';
-import {ErrorView} from '../components/ErrorView';
-import {useLazyPodcastQuery} from '../services/queries/podcast';
-import {Tracks} from '../components/Tracks';
-import {ClickIcon} from '../components/ClickIcon';
+import React, { useCallback, useEffect } from 'react';
+import { HomeRoute, HomeRouteProps } from '../navigators/Routing';
+import { JamPlayer } from '../services/player';
+import { ObjHeader, objHeaderStyles } from '../components/ObjHeader';
+import { JamObjectType } from '../services/jam';
+import { FavIcon } from '../components/FavIcon';
+import { snackError } from '../services/snack';
+import { ThemedText } from '../components/ThemedText';
+import { ErrorView } from '../components/ErrorView';
+import { useLazyPodcastQuery } from '../services/queries/podcast';
+import { Tracks } from '../components/Tracks';
+import { ClickIcon } from '../components/ClickIcon';
 
-export const PodcastScreen: React.FC<HomeRouteProps<HomeRoute.PODCAST>> = ({route}) => {
-	const [getPodcast, {loading, error, podcast}] = useLazyPodcastQuery();
-	const {id, name} = (route?.params || {});
+export const PodcastScreen: React.FC<HomeRouteProps<HomeRoute.PODCAST>> = ({ route }) => {
+	const [getPodcast, { loading, error, podcast }] = useLazyPodcastQuery();
+	const { id, name } = (route?.params || {});
 
 	useEffect(() => {
 		if (id) {
@@ -28,7 +28,7 @@ export const PodcastScreen: React.FC<HomeRouteProps<HomeRoute.PODCAST>> = ({rout
 	const playTracks = (): void => {
 		if (podcast?.episodes) {
 			JamPlayer.playTracks(podcast.episodes)
-				.catch(e => {
+				.catch((e) => {
 					snackError(e);
 				});
 		}
@@ -53,4 +53,3 @@ export const PodcastScreen: React.FC<HomeRouteProps<HomeRoute.PODCAST>> = ({rout
 		<Tracks tracks={podcast?.episodes} ListHeaderComponent={ListHeaderComponent} refreshing={loading} onRefresh={reload}/>
 	);
 };
-

@@ -1,14 +1,14 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react';
-import {StyleProp, ViewStyle} from 'react-native';
-import {JamObjectType} from '../services/jam';
-import {useFavMutation, useLazyFavQuery} from '../services/queries/fav';
-import {snackSuccess} from '../services/snack';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { StyleProp, ViewStyle } from 'react-native';
+import { JamObjectType } from '../services/jam';
+import { useFavMutation, useLazyFavQuery } from '../services/queries/fav';
+import { snackSuccess } from '../services/snack';
 import dataService from '../services/data';
-import {ClickIcon} from './ClickIcon';
+import { ClickIcon } from './ClickIcon';
 
-export const FavIcon: React.FC<{ id?: string; objType: JamObjectType; style?: StyleProp<ViewStyle>, fontSize?: number }> = ({id, style, fontSize}) => {
+export const FavIcon: React.FC<{ id?: string; objType: JamObjectType; style?: StyleProp<ViewStyle>; fontSize?: number }> = ({ id, style, fontSize }) => {
 	const [isFaved, setIsFaved] = useState<boolean>(false);
-	const [getFaved, {faved, loading, setFav}] = useLazyFavQuery();
+	const [getFaved, { faved, loading, setFav }] = useLazyFavQuery();
 	const [toggleFav] = useFavMutation();
 	const isUnmountedRef = useRef(true);
 
@@ -39,12 +39,12 @@ export const FavIcon: React.FC<{ id?: string; objType: JamObjectType; style?: St
 
 	const handleToggleFav = useCallback((): void => {
 		if (!loading && id) {
-			toggleFav({variables: {id, remove: isFaved}})
-				.then(result => {
+			toggleFav({ variables: { id, remove: isFaved } })
+				.then((result) => {
 					if (isUnmountedRef.current) {
 						return;
 					}
-					const fav = {timestamp: result.data?.fav?.faved ? (new Date(result.data.fav.faved)).valueOf() : undefined};
+					const fav = { timestamp: result.data?.fav?.faved ? (new Date(result.data.fav.faved)).valueOf() : undefined };
 					setIsFaved((fav?.timestamp || 0) > 0);
 					setFav(fav);
 					snackSuccess(!isFaved ? 'Added to Favorites' : 'Removed from Favorites');

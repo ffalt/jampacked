@@ -1,10 +1,10 @@
-import React, {useEffect, useState} from 'react';
-import {BaseEntryListList, BaseEntryListListQuery} from './BaseEntryListList';
-import {JamRouteLinks, RouteLink} from '../navigators/Routes';
-import {AlbumType, ListType} from '../services/jam';
-import {useLazySeriesListQuery} from '../services/queries/seriesList';
+import React, { useEffect, useState } from 'react';
+import { BaseEntryListList, BaseEntryListListQuery } from './BaseEntryListList';
+import { JamRouteLinks, RouteLink } from '../navigators/Routes';
+import { AlbumType, ListType } from '../services/jam';
+import { useLazySeriesListQuery } from '../services/queries/seriesList';
 
-export const SeriesList: React.FC<{ query: { listType?: ListType; albumType?: AlbumType, goLeft?: RouteLink, goRight?: RouteLink } }> = ({query}) => {
+export const SeriesList: React.FC<{ query: { listType?: ListType; albumType?: AlbumType; goLeft?: RouteLink; goRight?: RouteLink } }> = ({ query }) => {
 	const [view, setView] = useState<BaseEntryListListQuery>({
 		text: '',
 		icon: 'series',

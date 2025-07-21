@@ -1,11 +1,11 @@
-import React, {useCallback} from 'react';
-import {StyleSheet, View} from 'react-native';
-import {State, TapGestureHandler, TapGestureHandlerStateChangeEvent} from 'react-native-gesture-handler';
-import {ThemedText} from './ThemedText';
-import {TrackEntry} from '../services/types';
-import {sharedStyles} from '../style/shared';
-import {staticTheme} from '../style/theming';
-import {ThemedCheckbox} from './ThemedCheckbox';
+import React, { useCallback } from 'react';
+import { StyleSheet, View } from 'react-native';
+import { State, TapGestureHandler, TapGestureHandlerStateChangeEvent } from 'react-native-gesture-handler';
+import { ThemedText } from './ThemedText';
+import { TrackEntry } from '../services/types';
+import { sharedStyles } from '../style/shared';
+import { staticTheme } from '../style/theming';
+import { ThemedCheckbox } from './ThemedCheckbox';
 
 const styles = StyleSheet.create({
 	trackListCheck: {
@@ -58,12 +58,12 @@ export const defaultListTrackDisplay = (track: TrackEntry): TrackDisplay => {
 	};
 };
 export const TrackItem: React.FC<{
-	track: TrackEntry, displayFunc?: TrackDisplayFunction;
+	track: TrackEntry; displayFunc?: TrackDisplayFunction;
 	isSelected?: boolean;
 	showCheck?: boolean;
 	setSelected?: (item: TrackEntry) => void;
 	doubleTab?: (item: TrackEntry) => void;
-}> = React.memo(({track, displayFunc, showCheck, isSelected, setSelected, doubleTab}) => {
+}> = React.memo(({ track, displayFunc, showCheck, isSelected, setSelected, doubleTab }) => {
 	const doubleTap = React.useRef(React.createRef<TapGestureHandler>().current);
 	const display = displayFunc ? displayFunc(track) : defaultTrackDisplay(track);
 
@@ -92,16 +92,18 @@ export const TrackItem: React.FC<{
 		</View>
 	);
 	const column3 = display.column3 && (
-		<View style={[styles.trackListRuntime]}>
+		<View style={styles.trackListRuntime}>
 			<ThemedText style={[sharedStyles.itemFooterText, sharedStyles.itemFooterTextRight]} numberOfLines={1}>{display.column3}</ThemedText>
 		</View>
 	);
 
-	const columnCheck = showCheck ? (
-		<View style={styles.trackListCheck}>
-			<ThemedCheckbox isSelected={isSelected}/>
-		</View>
-	) : undefined;
+	const columnCheck = showCheck ?
+			(
+				<View style={styles.trackListCheck}>
+					<ThemedCheckbox isSelected={isSelected}/>
+				</View>
+			) :
+		undefined;
 
 	return (
 		<TapGestureHandler

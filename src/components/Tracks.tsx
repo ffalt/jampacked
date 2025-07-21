@@ -1,12 +1,12 @@
-import React, {MutableRefObject, useCallback, useState} from 'react';
-import {DefaultFlatList} from './DefFlatList';
-import {TrackEntry} from '../services/types';
-import {TrackDisplayFunction, TrackItem} from './TrackItem';
-import {ErrorView} from './ErrorView';
-import {FloatingAction} from 'react-native-floating-action';
-import {ActionMenuItem, executeTrackMenuAction, trackMenuIcon, trackMenuMultiSelectActions, trackMenuSingleSelectActions} from './ActionMenuTrack';
-import {JamPlayer} from '../services/player';
-import {useTheme} from '../style/theming';
+import React, { MutableRefObject, useCallback, useState } from 'react';
+import { DefaultFlatList } from './DefFlatList';
+import { TrackEntry } from '../services/types';
+import { TrackDisplayFunction, TrackItem } from './TrackItem';
+import { ErrorView } from './ErrorView';
+import { FloatingAction } from 'react-native-floating-action';
+import { ActionMenuItem, executeTrackMenuAction, trackMenuIcon, trackMenuMultiSelectActions, trackMenuSingleSelectActions } from './ActionMenuTrack';
+import { JamPlayer } from '../services/player';
+import { useTheme } from '../style/theming';
 
 export const Tracks: React.FC<{
 	tracks?: Array<TrackEntry>;
@@ -16,7 +16,7 @@ export const Tracks: React.FC<{
 	displayFunc?: TrackDisplayFunction;
 	onRefresh: () => void;
 	onLoadMore?: () => void;
-}> = ({tracks, refreshing, displayFunc, onRefresh, onLoadMore, error, ListHeaderComponent}) => {
+}> = ({ tracks, refreshing, displayFunc, onRefresh, onLoadMore, error, ListHeaderComponent }) => {
 	const theme = useTheme();
 	const selectActionRef: MutableRefObject<FloatingAction | null> = React.useRef<FloatingAction>(null);
 	const [showCheck, setShowCheck] = useState<boolean>(false);
@@ -47,14 +47,14 @@ export const Tracks: React.FC<{
 	}, [applySelection]);
 
 	const pressFloatingAction = useCallback((name?: string): void => {
-		executeTrackMenuAction(selection, name).then(result => {
+		executeTrackMenuAction(selection, name).then((result) => {
 			if (result) {
 				applySelection([]);
 			}
 		});
 	}, [selection, applySelection]);
 
-	const renderItemRow = useCallback(({item}: { item: TrackEntry }):React.JSX.Element => {
+	const renderItemRow = useCallback(({ item }: { item: TrackEntry }): React.JSX.Element => {
 		return (<TrackItem
 			track={item}
 			showCheck={showCheck}

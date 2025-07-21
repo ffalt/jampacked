@@ -1,9 +1,9 @@
-import {StyleSheet, View} from 'react-native';
-import {HomeStatData} from '../services/types';
+import { StyleSheet, View } from 'react-native';
+import { HomeStatData } from '../services/types';
 import React from 'react';
-import {ThemedText} from './ThemedText';
-import {Stat} from './Stat';
-import {sharedStyles} from '../style/shared';
+import { ThemedText } from './ThemedText';
+import { Stat } from './Stat';
+import { sharedStyles } from '../style/shared';
 
 const styles = StyleSheet.create({
 	homeStatContainer: {
@@ -13,10 +13,10 @@ const styles = StyleSheet.create({
 	}
 });
 
-export const Stats: React.FC<{ stats?: Array<HomeStatData>; label: string }> = React.memo(({stats, label}) => {
-	const entries = stats && stats.length > 0
-		? stats.map(stat => <Stat key={stat.link.title} stat={stat}/>)
-		: [];
+export const Stats: React.FC<{ stats?: Array<HomeStatData>; label: string }> = React.memo(({ stats, label }) => {
+	const entries = stats && stats.length > 0 ?
+			stats.map(stat => <Stat key={stat.link.title} stat={stat}/>) :
+			[];
 	if (entries.length === 0) {
 		return (<></>);
 	}

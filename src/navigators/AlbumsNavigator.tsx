@@ -1,15 +1,15 @@
-import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
-import React, {useEffect, useState} from 'react';
-import {AlbumIndexScreen} from '../screens/AlbumIndexScreen';
-import {AlbumListAvgHighestScreen, AlbumListFavScreen, AlbumListFrequentScreen, AlbumListHighestScreen, AlbumListRandomScreen, AlbumListRecentScreen} from '../screens/AlbumListScreen';
-import {AlbumsTabNavigatorContext} from './AlbumsNavigatorContext';
-import {AlbumsRoute, AlbumsRouteParamList, HomeRoute, HomeRouteProps} from './Routing';
-import {AlbumType} from '../services/jam';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import React, { useEffect, useState } from 'react';
+import { AlbumIndexScreen } from '../screens/AlbumIndexScreen';
+import { AlbumListAvgHighestScreen, AlbumListFavScreen, AlbumListFrequentScreen, AlbumListHighestScreen, AlbumListRandomScreen, AlbumListRecentScreen } from '../screens/AlbumListScreen';
+import { AlbumsTabNavigatorContext } from './AlbumsNavigatorContext';
+import { AlbumsRoute, AlbumsRouteParamList, HomeRoute, HomeRouteProps } from './Routing';
+import { AlbumType } from '../services/jam';
 
 const Tab = createMaterialTopTabNavigator<AlbumsRouteParamList>();
-const emptyComponent = ():React.JSX.Element => (<></>);
+const emptyComponent = (): React.JSX.Element => (<></>);
 
-export const AlbumsNavigator: React.FC<HomeRouteProps<HomeRoute.ALBUMS>> = ({route}) => {
+export const AlbumsNavigator: React.FC<HomeRouteProps<HomeRoute.ALBUMS>> = ({ route }) => {
 	const [albumType, setAlbumType] = useState<AlbumType | undefined>();
 
 	useEffect(() => {
@@ -17,10 +17,10 @@ export const AlbumsNavigator: React.FC<HomeRouteProps<HomeRoute.ALBUMS>> = ({rou
 	}, [route]);
 
 	return (
-		<AlbumsTabNavigatorContext.Provider value={{albumType}}>
+		<AlbumsTabNavigatorContext.Provider value={{ albumType }}>
 			<Tab.Navigator
 				initialRouteName={AlbumsRoute.INDEX}
-				screenOptions={{lazy: true}}
+				screenOptions={{ lazy: true }}
 				tabBar={emptyComponent}
 			>
 				<Tab.Screen name={AlbumsRoute.INDEX} component={AlbumIndexScreen}/>

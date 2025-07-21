@@ -3,10 +3,10 @@
 	based on https://github.com/rgovindji/react-native-atoz-list
 
  */
-import React, {MutableRefObject, useCallback, useEffect, useState} from 'react';
-import {FlatList, FlatListProps, NativeScrollEvent, NativeSyntheticEvent, StyleSheet, View} from 'react-native';
-import {AtoZPicker} from './AtoZPicker';
-import {commonItemLayout} from '../utils/list.utils';
+import React, { MutableRefObject, useCallback, useEffect, useState } from 'react';
+import { FlatList, FlatListProps, NativeScrollEvent, NativeSyntheticEvent, StyleSheet, View } from 'react-native';
+import { AtoZPicker } from './AtoZPicker';
+import { commonItemLayout } from '../utils/list.utils';
 
 interface AtoZListProps<T> extends FlatListProps<T> {
 	itemHeight?: number;
@@ -19,15 +19,12 @@ interface SectionItem {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1
-	},
-	searchBar: {
-		paddingRight: 30
 	}
 });
 
 export const AtoZList: React.FC<AtoZListProps<any>> = <T extends SectionItem, >(props: AtoZListProps<T>) => {
 	const containerRef: MutableRefObject<FlatList<T> | null> = React.useRef<FlatList<T>>(null);
-	const {itemHeight, data, numColumns} = props;
+	const { itemHeight, data, numColumns } = props;
 	const [activeLetter, setActiveLetter] = useState<string | undefined>();
 	const [letters, setLetters] = useState<Array<string>>([]);
 
@@ -36,7 +33,7 @@ export const AtoZList: React.FC<AtoZListProps<any>> = <T extends SectionItem, >(
 			const index = ((data as Array<T>) || []).findIndex(d => d.letter === letter);
 			if (index >= 0) {
 				const scrollIndex = Math.floor(index / (numColumns || 1));
-				containerRef.current.scrollToIndex({index: scrollIndex});
+				containerRef.current.scrollToIndex({ index: scrollIndex });
 			}
 		}
 	}, [data, numColumns]);
@@ -56,7 +53,7 @@ export const AtoZList: React.FC<AtoZListProps<any>> = <T extends SectionItem, >(
 		const list: Array<string> = [];
 		const items = (data || []);
 		if (items.length > 20) {
-			(items as Array<T>).forEach(item => {
+			(items as Array<T>).forEach((item) => {
 				if (!list.includes(item.letter)) {
 					list.push(item.letter);
 				}
@@ -80,5 +77,4 @@ export const AtoZList: React.FC<AtoZListProps<any>> = <T extends SectionItem, >(
 			/>
 		</View>
 	);
-
 };

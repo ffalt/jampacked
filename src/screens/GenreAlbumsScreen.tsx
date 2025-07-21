@@ -1,9 +1,9 @@
-import React, {useContext, useEffect, useState} from 'react';
-import {BaseEntryListList, BaseEntryListListQuery} from '../components/BaseEntryListList';
-import {useLazyAlbumListQuery} from '../services/queries/albumList';
-import {GenreRoute, GenreRouteProps} from '../navigators/Routing';
-import {GenreTabNavigatorContext} from '../navigators/GenreNavigatorContext';
-import {JamRouteLinks} from '../navigators/Routes';
+import React, { useContext, useEffect, useState } from 'react';
+import { BaseEntryListList, BaseEntryListListQuery } from '../components/BaseEntryListList';
+import { useLazyAlbumListQuery } from '../services/queries/albumList';
+import { GenreRoute, GenreRouteProps } from '../navigators/Routing';
+import { GenreTabNavigatorContext } from '../navigators/GenreNavigatorContext';
+import { JamRouteLinks } from '../navigators/Routes';
 
 export const GenreAlbumsScreen: React.FC<GenreRouteProps<GenreRoute.ALBUMS>> = () => {
 	const state = useContext(GenreTabNavigatorContext);

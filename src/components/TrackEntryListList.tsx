@@ -1,12 +1,12 @@
-import React, {useCallback, useEffect, useState} from 'react';
-import {ListTypeName} from '../services/jam-lists';
-import {TrackEntry, useTrackListFunction} from '../services/types';
-import {TrackEntryList, TrackEntryListInfo} from './TrackEntryList';
-import {ListType} from '../services/jam';
-import {ErrorView} from './ErrorView';
+import React, { useCallback, useEffect, useState } from 'react';
+import { ListTypeName } from '../services/jam-lists';
+import { TrackEntry, useTrackListFunction } from '../services/types';
+import { TrackEntryList, TrackEntryListInfo } from './TrackEntryList';
+import { ListType } from '../services/jam';
+import { ErrorView } from './ErrorView';
 import dataService from '../services/data';
-import {defaultListTrackDisplay, TrackDisplayFunction} from './TrackItem';
-import {RouteLink} from '../navigators/Routes';
+import { defaultListTrackDisplay, TrackDisplayFunction } from './TrackItem';
+import { RouteLink } from '../navigators/Routes';
 
 export interface TrackEntryListListQuery {
 	listType?: ListType;
@@ -19,7 +19,7 @@ export interface TrackEntryListListQuery {
 	goRight?: RouteLink;
 }
 
-export const TrackEntryListList: React.FC<{ query: TrackEntryListListQuery }> = ({query}) => {
+export const TrackEntryListList: React.FC<{ query: TrackEntryListListQuery }> = ({ query }) => {
 	const [info, setInfo] = useState<TrackEntryListInfo>({
 		title: '',
 		subtitle: '',
@@ -35,10 +35,10 @@ export const TrackEntryListList: React.FC<{ query: TrackEntryListListQuery }> = 
 	} | undefined>();
 	const [entries, setEntries] = useState<Array<TrackEntry> | undefined>();
 	const amount = 20;
-	const [getList, {loading, error, data, queryID}] = query.useList();
+	const [getList, { loading, error, data, queryID }] = query.useList();
 
 	useEffect(() => {
-		setInfo({icon: query.icon, title: query.text, subtitle: query.subtitle || ListTypeName[query.listType || '']});
+		setInfo({ icon: query.icon, title: query.text, subtitle: query.subtitle || ListTypeName[query.listType || ''] });
 		setType((prev) => {
 			if (query.genreIDs) {
 				const prev_genres = prev?.genreIDs ? prev.genreIDs.join('/') : '';
@@ -48,7 +48,7 @@ export const TrackEntryListList: React.FC<{ query: TrackEntryListListQuery }> = 
 				}
 				setTotal(0);
 				setEntries(undefined);
-				return {genreIDs: query.genreIDs, offset: 0, displayFunc: defaultListTrackDisplay};
+				return { genreIDs: query.genreIDs, offset: 0, displayFunc: defaultListTrackDisplay };
 			} else {
 				if (prev?.listType === query.listType) {
 					return prev;
@@ -56,7 +56,7 @@ export const TrackEntryListList: React.FC<{ query: TrackEntryListListQuery }> = 
 				setTotal(0);
 				setEntries(undefined);
 				const seed = query.listType === ListType.random ? Date.now().toString() : undefined;
-				return {listType: query.listType, seed, offset: 0, displayFunc: defaultListTrackDisplay};
+				return { listType: query.listType, seed, offset: 0, displayFunc: defaultListTrackDisplay };
 			}
 		});
 	}, [query]);
@@ -89,7 +89,7 @@ export const TrackEntryListList: React.FC<{ query: TrackEntryListListQuery }> = 
 			.then(() => {
 				setType((prev) => {
 					const seed = prev?.listType === ListType.random ? Date.now().toString() : undefined;
-					return {...prev, seed, offset: 0};
+					return { ...prev, seed, offset: 0 };
 				});
 			});
 	}, [queryID]);
@@ -101,7 +101,7 @@ export const TrackEntryListList: React.FC<{ query: TrackEntryListListQuery }> = 
 				if (p + amount > total) {
 					return prev;
 				}
-				return {...prev, offset: p + amount};
+				return { ...prev, offset: p + amount };
 			});
 		}
 	}, [entries, total, loading]);

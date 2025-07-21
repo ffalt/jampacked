@@ -1,10 +1,10 @@
-import React, {useEffect, useState} from 'react';
-import {BaseEntryListList, BaseEntryListListQuery} from './BaseEntryListList';
-import {AlbumType, ListType} from '../services/jam';
-import {JamRouteLinks, RouteLink} from '../navigators/Routes';
-import {useLazyArtistListQuery} from '../services/queries/artistList';
+import React, { useEffect, useState } from 'react';
+import { BaseEntryListList, BaseEntryListListQuery } from './BaseEntryListList';
+import { AlbumType, ListType } from '../services/jam';
+import { JamRouteLinks, RouteLink } from '../navigators/Routes';
+import { useLazyArtistListQuery } from '../services/queries/artistList';
 
-export const ArtistList: React.FC<{ query: { listType?: ListType; albumType?: AlbumType, goLeft?: RouteLink, goRight?: RouteLink } }> = ({query}) => {
+export const ArtistList: React.FC<{ query: { listType?: ListType; albumType?: AlbumType; goLeft?: RouteLink; goRight?: RouteLink } }> = ({ query }) => {
 	const [view, setView] = useState<BaseEntryListListQuery>({
 		text: '',
 		icon: 'artist',

@@ -1,9 +1,9 @@
-import React, {useCallback, useState} from 'react';
-import {ActivityIndicator, Button, StyleSheet, View} from 'react-native';
-import {ThemedText} from './ThemedText';
-import {staticTheme, useTheme} from '../style/theming';
+import React, { useCallback, useState } from 'react';
+import { ActivityIndicator, Button, StyleSheet, View } from 'react-native';
+import { ThemedText } from './ThemedText';
+import { staticTheme, useTheme } from '../style/theming';
 import dataService from '../services/data';
-import {usePinCacheStat} from '../services/pin-hooks';
+import { usePinCacheStat } from '../services/pin-hooks';
 
 const styles = StyleSheet.create({
 	container: {
@@ -30,7 +30,7 @@ export const MediaCachingView: React.FC = () => {
 			.then(() => {
 				setRunning(false);
 			})
-			.catch(e => {
+			.catch((e) => {
 				console.error(e);
 			});
 	}, []);

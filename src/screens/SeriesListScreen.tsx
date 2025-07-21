@@ -1,8 +1,8 @@
 import React from 'react';
-import {ListType} from '../services/jam';
-import {SeriesList} from '../components/SeriesList';
-import {SeriesRoute, SeriesRouteProps} from '../navigators/Routing';
-import {JamRouteLinks} from '../navigators/Routes';
+import { ListType } from '../services/jam';
+import { SeriesList } from '../components/SeriesList';
+import { SeriesRoute, SeriesRouteProps } from '../navigators/Routing';
+import { JamRouteLinks } from '../navigators/Routes';
 
 export const SeriesListFavScreen: React.FC<SeriesRouteProps<SeriesRoute.FAV>> = () => {
 	return (<SeriesList query={{

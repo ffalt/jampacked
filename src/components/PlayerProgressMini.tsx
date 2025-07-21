@@ -1,7 +1,7 @@
 import React from 'react';
-import {DimensionValue, StyleSheet, View} from 'react-native';
-import {useTheme} from '../style/theming';
-import {useTrackPlayerProgressPercent} from '../services/player-api';
+import { DimensionValue, StyleSheet, View } from 'react-native';
+import { useTheme } from '../style/theming';
+import { useTrackPlayerProgressPercent } from '../services/player-api';
 
 const styles = StyleSheet.create({
 	miniProgress: {
@@ -11,11 +11,11 @@ const styles = StyleSheet.create({
 
 export const MiniProgressBar: React.FC = () => {
 	const theme = useTheme();
-	const {progress} = useTrackPlayerProgressPercent();
+	const { progress } = useTrackPlayerProgressPercent();
 	const width: DimensionValue = `${progress * 100}%`;
 	return (
-		<View style={[styles.miniProgress, {backgroundColor: theme.separator}]}>
-			<View style={[styles.miniProgress, {width, backgroundColor: theme.progress}]}/>
+		<View style={[styles.miniProgress, { backgroundColor: theme.separator }]}>
+			<View style={[styles.miniProgress, { width, backgroundColor: theme.progress }]}/>
 		</View>
 	);
 };

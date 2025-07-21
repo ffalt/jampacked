@@ -4,18 +4,18 @@
  	LICENSE: MIT
 
  */
-import React, {useCallback, useEffect, useState} from 'react';
-import {StyleProp, StyleSheet, TouchableOpacity, View, ViewStyle} from 'react-native';
-import {scaleLinear} from 'd3-scale';
-import {mean} from 'd3-array';
+import React, { useCallback, useEffect, useState } from 'react';
+import { StyleProp, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
+import { scaleLinear } from 'd3-scale';
+import { mean } from 'd3-array';
 import chunk from 'lodash.chunk';
 import WaveformData from 'waveform-data';
-import {Jam} from '../services/jam';
+import { Jam } from '../services/jam';
 
 interface Colors {
-	active: string,
-	activePlayable: string,
-	inactive: string,
+	active: string;
+	activePlayable: string;
+	inactive: string;
 }
 
 interface WaveFormProps {
@@ -62,15 +62,11 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		flexDirection: 'row'
 	},
-	waveformInverse: {
-		transform: [{rotateX: '180deg'}, {rotateY: '0deg'}]
-	},
 	waveformBar: {
 		width: 2,
 		marginRight: 1
 	}
 });
-
 
 interface WaveformViewBarProps {
 	top: number;
@@ -88,14 +84,13 @@ const WaveformViewBar: React.FC<WaveformViewBarProps> = React.memo((
 		goToIndex,
 		index
 	}) => {
-
 	const goTime = useCallback((): void => {
 		goToIndex(index);
 	}, [goToIndex, index]);
 
 	return (
 		<TouchableOpacity onPress={goTime}>
-			<View style={[styles.waveformBar, {backgroundColor, height, marginTop: top}]}/>
+			<View style={[styles.waveformBar, { backgroundColor, height, marginTop: top }]}/>
 		</TouchableOpacity>
 	);
 });
@@ -109,13 +104,12 @@ const WaveformView: React.FC<WaveFormViewProps> = React.memo((
 		width,
 		setTime
 	}) => {
-
 	const goToIndex = useCallback((index: number) => {
 		setTime(index / bars.items.length);
 	}, [setTime, bars.items.length]);
 
 	return (
-		<View style={[styles.waveform, {height, width}]}>
+		<View style={[styles.waveform, { height, width }]}>
 			{bars.items.map((bar, i) => {
 				const backgroundColor = getColor(i, bars.items.length, percentPlayed, percentPlayable, colors);
 				return (
@@ -153,7 +147,7 @@ export const SoundCloudWave: React.FC<WaveFormProps> = (
 		waveform,
 		style
 	}) => {
-	const [bars, setBars] = useState<{ items: Array<WaveFormBar> }>({items: []});
+	const [bars, setBars] = useState<{ items: Array<WaveFormBar> }>({ items: [] });
 
 	useEffect(() => {
 		if (waveform) {
@@ -178,12 +172,12 @@ export const SoundCloudWave: React.FC<WaveFormProps> = (
 					height: (high + low)
 				};
 			});
-			setBars({items});
+			setBars({ items });
 		}
 	}, [waveform, height, width]);
 
 	return (
-		<View style={[styles.container, {height}, style]}>
+		<View style={[styles.container, { height }, style]}>
 			<WaveformView
 				bars={bars}
 				colors={colors}

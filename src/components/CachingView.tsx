@@ -1,8 +1,8 @@
-import React, {useCallback} from 'react';
-import {ActivityIndicator, Button, StyleSheet, View} from 'react-native';
-import {ThemedText} from './ThemedText';
-import {staticTheme} from '../style/theming';
-import {useCacheManagement} from '../services/cache-hooks';
+import React, { useCallback } from 'react';
+import { ActivityIndicator, Button, StyleSheet, View } from 'react-native';
+import { ThemedText } from './ThemedText';
+import { staticTheme } from '../style/theming';
+import { useCacheManagement } from '../services/cache-hooks';
 
 const styles = StyleSheet.create({
 	container: {
@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-export const CachingView: React.FC<{ title: string }> = ({title}) => {
+export const CachingView: React.FC<{ title: string }> = ({ title }) => {
 	const [fill, clear, stop, state] = useCacheManagement();
 
 	const startCache = useCallback((): void => {

@@ -1,8 +1,8 @@
-import React, {useCallback, useState} from 'react';
-import {SearchQuick} from './SearchQuick';
-import {Search} from './Search';
-import {StyleSheet, View} from 'react-native';
-import {JamObjectType} from '../services/jam';
+import React, { useCallback, useState } from 'react';
+import { SearchQuick } from './SearchQuick';
+import { Search } from './Search';
+import { StyleSheet, View } from 'react-native';
+import { JamObjectType } from '../services/jam';
 
 const styles = StyleSheet.create({
 	container: {
@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-export const SearchResults: React.FC<{ search?: string}> = ({search}) => {
+export const SearchResults: React.FC<{ search?: string }> = ({ search }) => {
 	const [objType, setObjType] = useState<JamObjectType | undefined>();
 
 	const setObjectTypeSearch = useCallback((ot?: JamObjectType): void => {
@@ -21,9 +21,9 @@ export const SearchResults: React.FC<{ search?: string}> = ({search}) => {
 		setObjType(undefined);
 	};
 
-	const searchContent = !objType
-		? (<SearchQuick query={search} setObjType={setObjectTypeSearch}/>)
-		: (<Search query={search} objType={objType} backToAll={backToAll}/>);
+	const searchContent = !objType ?
+			(<SearchQuick query={search} setObjType={setObjectTypeSearch}/>) :
+			(<Search query={search} objType={objType} backToAll={backToAll}/>);
 
 	return (
 		<View style={styles.container}>

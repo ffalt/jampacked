@@ -1,16 +1,16 @@
-import React, {useCallback} from 'react';
-import {TrackPlayerTrack} from '../services/player-api';
-import {staticTheme, useTheme} from '../style/theming';
-import {JamPlayer} from '../services/player';
-import {ThemedIcon} from './ThemedIcon';
-import {ThemedText} from './ThemedText';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {DurationText} from './DurationText';
-import {PinIcon} from './PinIcon';
-import {FavIcon} from './FavIcon';
-import {ClickIcon} from './ClickIcon';
-import {SwipeableItem} from './SwipeableItem';
-import {sharedStyles} from '../style/shared';
+import React, { useCallback } from 'react';
+import { TrackPlayerTrack } from '../services/player-api';
+import { staticTheme, useTheme } from '../style/theming';
+import { JamPlayer } from '../services/player';
+import { ThemedIcon } from './ThemedIcon';
+import { ThemedText } from './ThemedText';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { DurationText } from './DurationText';
+import { PinIcon } from './PinIcon';
+import { FavIcon } from './FavIcon';
+import { ClickIcon } from './ClickIcon';
+import { SwipeableItem } from './SwipeableItem';
+import { sharedStyles } from '../style/shared';
 
 const styles = StyleSheet.create({
 	trackListContainer: {
@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-export const QueueItem: React.FC<{ active: boolean; index: number; item: TrackPlayerTrack; }> = React.memo(({index, active, item}) => {
+export const QueueItem: React.FC<{ active: boolean; index: number; item: TrackPlayerTrack }> = React.memo(({ index, active, item }) => {
 	const theme = useTheme();
 
 	const playItem = useCallback((): void => {
@@ -54,7 +54,7 @@ export const QueueItem: React.FC<{ active: boolean; index: number; item: TrackPl
 			.catch(e => console.error(e));
 	}, [index]);
 
-	const renderTrackNr = useCallback(():React.JSX.Element => {
+	const renderTrackNr = useCallback((): React.JSX.Element => {
 		if (active) {
 			return (<ThemedIcon name="right-open-mini"/>);
 		}
@@ -74,7 +74,7 @@ export const QueueItem: React.FC<{ active: boolean; index: number; item: TrackPl
 
 	return (
 		<SwipeableItem buttons={buttons}>
-			<TouchableOpacity onPress={playItem} style={[styles.trackListContainer, {height: sharedStyles.item.height, backgroundColor: theme.background}]}>
+			<TouchableOpacity onPress={playItem} style={[styles.trackListContainer, { height: sharedStyles.item.height, backgroundColor: theme.background }]}>
 				<View style={styles.trackListNumber}>
 					{renderTrackNr()}
 				</View>

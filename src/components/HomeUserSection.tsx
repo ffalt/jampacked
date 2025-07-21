@@ -1,7 +1,7 @@
 import React from 'react';
-import {Stats} from '../components/Stats';
-import {UserDataResult} from '../services/queries/home';
-export const HomeUserSection: React.FC<{ userData?: UserDataResult }> = ({userData}) => {
+import { Stats } from '../components/Stats';
+import { UserDataResult } from '../services/queries/home';
+export const HomeUserSection: React.FC<{ userData?: UserDataResult }> = ({ userData }) => {
 	return (
 		<>
 			{userData?.stats && <Stats stats={userData.stats} label="Collections"/>}

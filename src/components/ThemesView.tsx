@@ -1,6 +1,6 @@
 import React from 'react';
-import {themeList, useThemeContext} from '../style/theming';
-import {RadioButtons} from './RadioButton';
+import { themeList, useThemeContext } from '../style/theming';
+import { RadioButtons } from './RadioButton';
 
 export const ThemesView: React.FC = () => {
 	const themeSettings = useThemeContext();

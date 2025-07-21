@@ -1,8 +1,8 @@
 import React from 'react';
-import {ArtistsRoute, ArtistsRouteProps} from '../navigators/Routing';
-import {ListType} from '../services/jam';
-import {ArtistList} from '../components/ArtistList';
-import {JamRouteLinks} from '../navigators/Routes';
+import { ArtistsRoute, ArtistsRouteProps } from '../navigators/Routing';
+import { ListType } from '../services/jam';
+import { ArtistList } from '../components/ArtistList';
+import { JamRouteLinks } from '../navigators/Routes';
 
 export const ArtistListFavScreen: React.FC<ArtistsRouteProps<ArtistsRoute.FAV>> = () => {
 	return (<ArtistList query={{

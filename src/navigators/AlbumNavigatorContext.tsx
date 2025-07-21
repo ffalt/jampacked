@@ -1,3 +1,3 @@
-import {createContext} from 'react';
+import { createContext } from 'react';
 
-export const AlbumTabNavigatorContext = createContext<{ id?: string, name?: string }>({});
+export const AlbumTabNavigatorContext = createContext<{ id?: string; name?: string }>({});

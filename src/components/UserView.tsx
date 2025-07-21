@@ -1,15 +1,12 @@
-import React, {useCallback} from 'react';
-import {staticTheme} from '../style/theming';
-import {Button, StyleSheet, View} from 'react-native';
-import {ThemedIcon} from './ThemedIcon';
-import {ThemedText} from './ThemedText';
-import {useAuth} from '../services/auth';
-import {JamImage} from './JamImage';
+import React, { useCallback } from 'react';
+import { staticTheme } from '../style/theming';
+import { Button, StyleSheet, View } from 'react-native';
+import { ThemedIcon } from './ThemedIcon';
+import { ThemedText } from './ThemedText';
+import { useAuth } from '../services/auth';
+import { JamImage } from './JamImage';
 
 const styles = StyleSheet.create({
-	permissionSection: {
-		paddingTop: staticTheme.padding
-	},
 	permission: {
 		flexDirection: 'row'
 	},
@@ -30,7 +27,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-export const UserPermission: React.FC<{ text: string }> = ({text}) => {
+export const UserPermission: React.FC<{ text: string }> = ({ text }) => {
 	return (
 		<View style={styles.permission}>
 			<ThemedIcon name="checkmark"/>
@@ -44,7 +41,7 @@ export const UserView: React.FC = () => {
 
 	const logout = useCallback((): void => {
 		auth.logout()
-			.catch(e => {
+			.catch((e) => {
 				console.error(e);
 			});
 	}, [auth]);

@@ -1,7 +1,7 @@
-import {SectionListData} from 'react-native';
-import {AlbumType, Jam, JamObjectType, ListType} from './jam';
-import {ApolloError} from '@apollo/client';
-import {RouteLink} from '../navigators/Routes';
+import { SectionListData } from 'react-native';
+import { AlbumType, Jam, JamObjectType, ListType } from './jam';
+import { ApolloError } from '@apollo/client';
+import { RouteLink } from '../navigators/Routes';
 
 export interface NavigParams {
 	id?: string;
@@ -67,7 +67,7 @@ export interface AutoCompleteEntryData extends Jam.AutoCompleteEntry {
 
 export type Index = Array<IndexEntry>;
 
-export type HomeStatData = { link: RouteLink, value: number };
+export interface HomeStatData { link: RouteLink; value: number }
 
 export type HomeStatsData = Array<HomeStatData>;
 
@@ -78,28 +78,28 @@ export interface AutoCompleteDataSection extends SectionListData<AutoCompleteEnt
 
 export type AutoCompleteData = Array<AutoCompleteDataSection>;
 
-export type SearchResultData = {
+export interface SearchResultData {
 	query: string;
 	total: number;
 	skip?: number;
 	entries: Array<BaseEntry>;
-};
+}
 
-export type BaseEntryList = {
+export interface BaseEntryList {
 	listType?: ListType;
 	items: Array<BaseEntry>;
 	total: number;
 	skip?: number;
 	take?: number;
-};
+}
 
-export type TrackEntryList = {
+export interface TrackEntryList {
 	listType?: ListType;
 	items: Array<TrackEntry>;
 	total: number;
 	skip?: number;
 	take?: number;
-};
+}
 
 export type UseGetCallFunctionTransform<T> = (
 	take: number,
@@ -125,12 +125,12 @@ export type UseListCallFunction = (
 	forceRefresh?: boolean) => void;
 export type useListFunction = () => [
 	UseListCallFunction,
-	{ loading: boolean, error?: ApolloError, data?: BaseEntryList, called: boolean, queryID?: string }
+	{ loading: boolean; error?: ApolloError; data?: BaseEntryList; called: boolean; queryID?: string }
 ];
 export type UseTrackListCallFunction = (listType: ListType | undefined, genreIDs: Array<string>, seed: string | undefined, take: number, skip: number, forceRefresh?: boolean) => void;
 export type useTrackListFunction = () => [
 	UseTrackListCallFunction,
-	{ loading: boolean, error?: ApolloError, data?: TrackEntryList, called: boolean, queryID?: string }
+	{ loading: boolean; error?: ApolloError; data?: TrackEntryList; called: boolean; queryID?: string }
 ];
 
 export interface PinMedia {

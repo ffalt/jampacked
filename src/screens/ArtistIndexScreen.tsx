@@ -1,13 +1,13 @@
-import React, {useCallback, useEffect} from 'react';
-import {AlbumType, ListType} from '../services/jam';
-import {ArtistsRoute, ArtistsRouteProps} from '../navigators/Routing';
-import {IndexList} from '../components/IndexList';
-import {ErrorView} from '../components/ErrorView';
-import {useLazyArtistIndexQuery} from '../services/queries/artistIndex';
-import {JamRouteLinks} from '../navigators/Routes';
+import React, { useCallback, useEffect } from 'react';
+import { AlbumType, ListType } from '../services/jam';
+import { ArtistsRoute, ArtistsRouteProps } from '../navigators/Routing';
+import { IndexList } from '../components/IndexList';
+import { ErrorView } from '../components/ErrorView';
+import { useLazyArtistIndexQuery } from '../services/queries/artistIndex';
+import { JamRouteLinks } from '../navigators/Routes';
 
 export const ArtistIndexScreen: React.FC<ArtistsRouteProps<ArtistsRoute.INDEX>> = () => {
-	const [getIndex, {loading, error, called, index}] = useLazyArtistIndexQuery();
+	const [getIndex, { loading, error, called, index }] = useLazyArtistIndexQuery();
 
 	useEffect(() => {
 		if (!called) {

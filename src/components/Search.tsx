@@ -1,12 +1,12 @@
-import React, {useCallback, useEffect, useState} from 'react';
-import {JamObjectType} from '../services/jam';
-import {StyleSheet} from 'react-native';
-import {Item} from './Item';
-import {staticTheme} from '../style/theming';
-import {BaseEntry} from '../services/types';
-import {useLazySearchQuery} from '../services/queries/search';
-import {DefaultFlatList} from './DefFlatList';
-import {ClickLabelIcon} from './ClickLabelIcon';
+import React, { useCallback, useEffect, useState } from 'react';
+import { JamObjectType } from '../services/jam';
+import { StyleSheet } from 'react-native';
+import { Item } from './Item';
+import { staticTheme } from '../style/theming';
+import { BaseEntry } from '../services/types';
+import { useLazySearchQuery } from '../services/queries/search';
+import { DefaultFlatList } from './DefFlatList';
+import { ClickLabelIcon } from './ClickLabelIcon';
 
 const styles = StyleSheet.create({
 	section: {
@@ -21,6 +21,7 @@ const styles = StyleSheet.create({
 		fontWeight: 'bold',
 		paddingLeft: staticTheme.padding
 	},
+	// eslint-disable-next-line react-native/no-unused-styles
 	sectionIcon: {
 		fontSize: staticTheme.fontSizeLarge
 	}
@@ -32,12 +33,12 @@ interface SearchProps {
 	backToAll?: () => void;
 }
 
-export const Search: React.FC<SearchProps> = ({objType, query, backToAll}) => {
+export const Search: React.FC<SearchProps> = ({ objType, query, backToAll }) => {
 	const [q, setQ] = useState<string | undefined>();
 	const [total, setTotal] = useState<number>(0);
 	const [offset, setOffset] = useState<number>(0);
 	const [entries, setEntries] = useState<Array<BaseEntry>>([]);
-	const [getSearch, {loading, error, result}] = useLazySearchQuery(objType);
+	const [getSearch, { loading, error, result }] = useLazySearchQuery(objType);
 	const amount = 20;
 
 	useEffect(() => {
@@ -70,12 +71,12 @@ export const Search: React.FC<SearchProps> = ({objType, query, backToAll}) => {
 	}, [backToAll]);
 
 	const handleLoadMore = useCallback((): void => {
-		setOffset((prev => {
+		setOffset((prev) => {
 			if (prev + amount > total) {
 				return prev;
 			}
 			return prev + amount;
-		}));
+		});
 	}, [total]);
 
 	const reload = useCallback((): void => {
@@ -86,7 +87,7 @@ export const Search: React.FC<SearchProps> = ({objType, query, backToAll}) => {
 		}
 	}, [q, getSearch, offset]);
 
-	const renderItem = useCallback(({item}: { item: BaseEntry }):React.JSX.Element => (<Item item={item}/>), []);
+	const renderItem = useCallback(({ item }: { item: BaseEntry }): React.JSX.Element => (<Item item={item}/>), []);
 
 	return (
 		<>

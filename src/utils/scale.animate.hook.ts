@@ -1,5 +1,5 @@
-import {useEffect, useRef, useState} from 'react';
-import {Animated, Easing} from 'react-native';
+import { useEffect, useRef, useState } from 'react';
+import { Animated, Easing } from 'react-native';
 
 export const useScaleAnimate = (inverted = false, avoidFirst = true): Animated.AnimatedInterpolation<number> => {
 	const scaleValue = useRef(new Animated.Value(0)).current;
@@ -12,7 +12,7 @@ export const useScaleAnimate = (inverted = false, avoidFirst = true): Animated.A
 
 	useEffect(() => {
 		if (!avoidFirst || !isFirst) {
-			Animated.timing(scaleValue, {toValue: inverted ? 1 : 0, duration: 200, easing: Easing.bounce, useNativeDriver: true}).start();
+			Animated.timing(scaleValue, { toValue: inverted ? 1 : 0, duration: 200, easing: Easing.bounce, useNativeDriver: true }).start();
 		}
 		setIsFirst(false);
 	}, [avoidFirst, inverted, isFirst, scaleValue]);

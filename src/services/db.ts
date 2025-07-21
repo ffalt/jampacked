@@ -56,8 +56,8 @@ export class Database {
 	 */
 	async query(sql: string, params: Array<any> = []): Promise<SQLite.ResultSet> {
 		const para = this.treatParams(params);
-		return new Promise<SQLite.ResultSet>(resolve => {
-			this.db?.transaction(async tx => {
+		return new Promise<SQLite.ResultSet>((resolve) => {
+			this.db?.transaction(async (tx) => {
 				const results = await (new Promise((resolve2, reject) => {
 					tx.executeSql(sql, para, (a, b) => resolve2(b), err => reject(err));
 				})) as any;
@@ -113,9 +113,9 @@ export class Database {
 	 * @param values Values to be inserted
 	 * @param where Where statement to know which lines will be updated
 	 */
-	async update(table: string, keys: Array<string>, values: Array<any>, where?: { [key: string]: any }): Promise<SQLite.ResultSet> {
+	async update(table: string, keys: Array<string>, values: Array<any>, where?: Record<string, any>): Promise<SQLite.ResultSet> {
 		const keysString = keys.map(k => `${k} = ?`).join(', ');
-		const {sql, params} = this.buildWhere(where);
+		const { sql, params } = this.buildWhere(where);
 		const query = `UPDATE ${table} SET ${keysString} ${sql}`;
 		return this.query(query, values.concat(params));
 	}
@@ -126,7 +126,7 @@ export class Database {
 	 * @param statement Where statement to know which lines will be deleted
 	 */
 	async delete<T>(table: string, statement?: WhereStatement<T>): Promise<any> {
-		const {sql, params} = this.buildWhere(statement);
+		const { sql, params } = this.buildWhere(statement);
 		const query = `DELETE FROM ${table} ${sql}`;
 		return this.query(query, params);
 	}
@@ -142,7 +142,7 @@ export class Database {
 			Object.keys(where).forEach(k => values.push(where[k]));
 			sql = `WHERE ${Object.keys(where).map(k => `${k} = ?`).join(' AND ')}`;
 		}
-		return {params: values, sql};
+		return { params: values, sql };
 	}
 
 	/**
@@ -151,7 +151,7 @@ export class Database {
 	 */
 	private treatParams(params: Array<any>): Array<any> {
 		const newParams: Array<any> = [];
-		params.forEach(p => {
+		params.forEach((p) => {
 			switch (typeof p) {
 				case 'string':
 					newParams.push(p.trim());
@@ -165,7 +165,7 @@ export class Database {
 					} else if (p !== null) {
 						try {
 							newParams.push(JSON.stringify(p));
-						} catch (_) {
+						} catch {
 							newParams.push(p);
 						}
 					} else {
@@ -180,11 +180,9 @@ export class Database {
 	}
 }
 
-type WhereStatement<T> = {
-	[K: string]: T;
-};
+type WhereStatement<T> = Record<string, T>;
 
-type WhereStatementResult = {
+interface WhereStatementResult {
 	sql: string;
 	params: Array<any>;
-};
+}

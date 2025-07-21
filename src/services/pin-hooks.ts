@@ -1,7 +1,7 @@
-import {useEffect, useRef, useState} from 'react';
+import { useEffect, useRef, useState } from 'react';
 import dataService from './data';
-import {PinMedia, PinCacheStat, PinState, TrackEntry} from './types';
-import {Download, useTrackPlayerDownloadCached} from './player-api';
+import { PinMedia, PinCacheStat, PinState, TrackEntry } from './types';
+import { Download, useTrackPlayerDownloadCached } from './player-api';
 
 export function usePinState(id?: string): PinState | undefined {
 	const [stat, setStat] = useState<PinState | undefined>();
@@ -25,7 +25,6 @@ export function usePinState(id?: string): PinState | undefined {
 						return;
 					}
 					setStat(value);
-
 				});
 		};
 
@@ -57,7 +56,7 @@ export function usePinCacheStat(): PinCacheStat | undefined {
 	useEffect(() => {
 		const refresh = (): void => {
 			dataService.pin.stat()
-				.then(s => {
+				.then((s) => {
 					if (isUnmountedRef.current) {
 						return;
 					}
@@ -75,7 +74,7 @@ export function usePinCacheStat(): PinCacheStat | undefined {
 	return stat;
 }
 
-export function usePinnedMedia(): { media: Array<PinMedia>, loading: boolean } {
+export function usePinnedMedia(): { media: Array<PinMedia>; loading: boolean } {
 	const [media, setMedia] = useState<Array<PinMedia>>([]);
 	const [loading, setLoading] = useState<boolean>(true);
 	const isUnmountedRef = useRef(true);
@@ -92,7 +91,7 @@ export function usePinnedMedia(): { media: Array<PinMedia>, loading: boolean } {
 			if (isUnmountedRef.current) {
 				return;
 			}
-			dataService.pin.getPins().then(pins => {
+			dataService.pin.getPins().then((pins) => {
 				if (isUnmountedRef.current) {
 					return;
 				}
@@ -108,10 +107,10 @@ export function usePinnedMedia(): { media: Array<PinMedia>, loading: boolean } {
 		};
 	}, []);
 
-	return {media, loading};
+	return { media, loading };
 }
 
-export function usePinnedMediaDownload(id: string): { track?: TrackEntry, download?: Download } {
+export function usePinnedMediaDownload(id: string): { track?: TrackEntry; download?: Download } {
 	const download = useTrackPlayerDownloadCached(id, dataService.pin.manager);
 	const [track, setTrack] = useState<TrackEntry | undefined>(undefined);
 	const isUnmountedRef = useRef(true);
@@ -128,7 +127,7 @@ export function usePinnedMediaDownload(id: string): { track?: TrackEntry, downlo
 			if (isUnmountedRef.current) {
 				return;
 			}
-			dataService.pin.getPinnedTrack(id).then(t => {
+			dataService.pin.getPinnedTrack(id).then((t) => {
 				if (isUnmountedRef.current) {
 					return;
 				}
@@ -139,7 +138,7 @@ export function usePinnedMediaDownload(id: string): { track?: TrackEntry, downlo
 		update();
 	}, [download, id]);
 
-	return {download, track};
+	return { download, track };
 }
 
 export function usePinnedCount(): number {
@@ -156,7 +155,7 @@ export function usePinnedCount(): number {
 	useEffect(() => {
 		const refresh = (): void => {
 			dataService.pin.getPinCount()
-				.then(value => {
+				.then((value) => {
 					if (isUnmountedRef.current) {
 						return;
 					}

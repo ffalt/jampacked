@@ -1,24 +1,21 @@
-import React, {useCallback} from 'react';
-import {ActivityIndicator, StyleSheet, TouchableOpacity, View} from 'react-native';
-import {SceneMap, TabView} from 'react-native-tab-view';
-import {ThemedText} from './ThemedText';
-import {staticTheme, useTheme} from '../style/theming';
-import {PlayerLyrics} from './PlayerLyrics';
-import {PlayerCover} from './PlayerCover';
-import {useWindowWidth} from '../utils/dimension.hook';
-import {useNavigation} from '@react-navigation/native';
-import {getStatusBarHeight} from 'react-native-status-bar-height';
-import {Queue} from './Queue';
-import {ClickIcon} from './ClickIcon';
+import React, { useCallback } from 'react';
+import { ActivityIndicator, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { SceneMap, TabView } from 'react-native-tab-view';
+import { ThemedText } from './ThemedText';
+import { staticTheme, useTheme } from '../style/theming';
+import { PlayerLyrics } from './PlayerLyrics';
+import { PlayerCover } from './PlayerCover';
+import { useWindowWidth } from '../utils/dimension.hook';
+import { useNavigation } from '@react-navigation/native';
+import { getStatusBarHeight } from 'react-native-status-bar-height';
+import { Queue } from './Queue';
+import { ClickIcon } from './ClickIcon';
 
 const styles = StyleSheet.create({
 	scene: {
 		flex: 1
 	},
-	header: {
-		flex: 1,
-		flexDirection: 'row'
-	},
+	// eslint-disable-next-line react-native/no-unused-styles
 	icon: {
 		fontSize: 20
 	},
@@ -53,16 +50,18 @@ const renderScene = SceneMap({
 	queue: () => (<Queue/>)
 });
 
-const renderLazyPlaceholder: React.FC<{ route: { title: string } }> = () => <LazyPlaceholder/>;
+type PlaceholderFC = (props: { route: { key: string } }) => React.ReactNode;
+
+const renderLazyPlaceholder: PlaceholderFC = () => <LazyPlaceholder/>;
 
 const routes = [
-	{key: 'cover', title: 'Cover'},
-	{key: 'lyrics', title: 'Lyrics'},
-	{key: 'queue', title: 'Queue'}
+	{ key: 'cover', title: 'Cover' },
+	{ key: 'lyrics', title: 'Lyrics' },
+	{ key: 'queue', title: 'Queue' }
 ];
 
 export const PlayerTabs: React.FC = () => {
-	const initialLayout = {width: useWindowWidth()};
+	const initialLayout = { width: useWindowWidth() };
 	const [index, setIndex] = React.useState(0);
 	const navigation = useNavigation();
 	const theme = useTheme();
@@ -72,11 +71,11 @@ export const PlayerTabs: React.FC = () => {
 		navigation.goBack();
 	}, [navigation]);
 
-	const renderTabBar = useCallback((tabBarProps: any):React.JSX.Element => {
+	const renderTabBar = useCallback((tabBarProps: any): React.JSX.Element => {
 		const buttons = tabBarProps.navigationState.routes.map((route: { title: string }, i: number) => {
 			const style = [styles.tabItem,
 				i === index && styles.tabItemActive,
-				i === index && {borderBottomColor: theme.textColor}
+				i === index && { borderBottomColor: theme.textColor }
 			];
 			const toIndex = (): void => {
 				setIndex(i);
@@ -98,11 +97,11 @@ export const PlayerTabs: React.FC = () => {
 	return (
 		<TabView
 			lazy={true}
-			style={[{paddingTop: statusBarHeight}]}
+			style={{ paddingTop: statusBarHeight }}
 			swipeEnabled={true}
 			renderLazyPlaceholder={renderLazyPlaceholder}
 			renderTabBar={renderTabBar}
-			navigationState={{index, routes}}
+			navigationState={{ index, routes }}
 			renderScene={renderScene}
 			onIndexChange={setIndex}
 			initialLayout={initialLayout}
