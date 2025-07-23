@@ -18,10 +18,6 @@ Run `yarn run android` for a dev server. Connected phone or else an emulator is 
 
 Run `yarn run android:release` for a dev server. Connected phone or else an emulator is started.
 
-## Development server IOS (Experimental)
-
-Run `yarn run ios` for a dev server. Connected phone or else an emulator is started.
-
 ## Build Production Android
 
 Note: You must provide your own `android/app/jam_keystore.jks`
