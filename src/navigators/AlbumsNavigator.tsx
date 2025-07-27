@@ -3,10 +3,10 @@ import React, { useEffect, useState } from 'react';
 import { AlbumIndexScreen } from '../screens/AlbumIndexScreen';
 import { AlbumListAvgHighestScreen, AlbumListFavScreen, AlbumListFrequentScreen, AlbumListHighestScreen, AlbumListRandomScreen, AlbumListRecentScreen } from '../screens/AlbumListScreen';
 import { AlbumsTabNavigatorContext } from './AlbumsNavigatorContext';
-import { AlbumsRoute, AlbumsRouteParamList, HomeRoute, HomeRouteProps } from './Routing';
+import { AlbumsRoute, AlbumsRouteParameterList, HomeRoute, HomeRouteProps } from './Routing';
 import { AlbumType } from '../services/jam';
 
-const Tab = createMaterialTopTabNavigator<AlbumsRouteParamList>();
+const Tab = createMaterialTopTabNavigator<AlbumsRouteParameterList>();
 const emptyComponent = (): React.JSX.Element => (<></>);
 
 export const AlbumsNavigator: React.FC<HomeRouteProps<HomeRoute.ALBUMS>> = ({ route }) => {
@@ -23,13 +23,13 @@ export const AlbumsNavigator: React.FC<HomeRouteProps<HomeRoute.ALBUMS>> = ({ ro
 				screenOptions={{ lazy: true }}
 				tabBar={emptyComponent}
 			>
-				<Tab.Screen name={AlbumsRoute.INDEX} component={AlbumIndexScreen}/>
-				<Tab.Screen name={AlbumsRoute.FAV} component={AlbumListFavScreen}/>
-				<Tab.Screen name={AlbumsRoute.RECENT} component={AlbumListRecentScreen}/>
-				<Tab.Screen name={AlbumsRoute.FREQUENT} component={AlbumListFrequentScreen}/>
-				<Tab.Screen name={AlbumsRoute.RANDOM} component={AlbumListRandomScreen}/>
-				<Tab.Screen name={AlbumsRoute.HIGHEST} component={AlbumListHighestScreen}/>
-				<Tab.Screen name={AlbumsRoute.AVGHIGHEST} component={AlbumListAvgHighestScreen}/>
+				<Tab.Screen name={AlbumsRoute.INDEX} component={AlbumIndexScreen} />
+				<Tab.Screen name={AlbumsRoute.FAV} component={AlbumListFavScreen} />
+				<Tab.Screen name={AlbumsRoute.RECENT} component={AlbumListRecentScreen} />
+				<Tab.Screen name={AlbumsRoute.FREQUENT} component={AlbumListFrequentScreen} />
+				<Tab.Screen name={AlbumsRoute.RANDOM} component={AlbumListRandomScreen} />
+				<Tab.Screen name={AlbumsRoute.HIGHEST} component={AlbumListHighestScreen} />
+				<Tab.Screen name={AlbumsRoute.AVGHIGHEST} component={AlbumListAvgHighestScreen} />
 			</Tab.Navigator>
 		</AlbumsTabNavigatorContext.Provider>
 	);

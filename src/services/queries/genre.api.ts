@@ -6,19 +6,20 @@ import * as Types from './_types';
 import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
 export type GenreResultQueryVariables = Types.Exact<{
-  id: Types.Scalars['ID']['input'];
+	id: Types.Scalars['ID']['input'];
 }>;
 
-
-export type GenreResultQuery = { genre: { id: string, name: string } };
-
+export interface GenreResultQuery { genre: { id: string; name: string } }
 
 export const GenreResultDocument = gql`
-    query GenreResult($id: ID!) {
-  genre(id: $id) {
-    id
-    name
+  query GenreResult($id: ID!) {
+  	genre(id: $id) {
+  		id
+  		name
+  	}
   }
-}
-    `;
-export type GenreResultQueryResult = Apollo.QueryResult<GenreResultQuery, GenreResultQueryVariables>;
+`;
+export type GenreResultQueryResult = Apollo.QueryResult<
+	GenreResultQuery,
+	GenreResultQueryVariables
+>;

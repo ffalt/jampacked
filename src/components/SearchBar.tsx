@@ -62,12 +62,12 @@ export const SearchBar: React.FC<{ style?: ViewStyle; searchQueryChange?: (searc
 	}, [handleSearch]);
 
 	const isEmpty = (!query || query.length === 0);
-	const cancel = !isEmpty ?
-			(<ClickIcon iconName="cancel" onPress={handleClearButton} style={styles.inputCancelIcon} fontSize={styles.inputCancelIcon.fontSize}/>) :
-		undefined;
+	const cancel = isEmpty ?
+		undefined :
+		(<ClickIcon iconName="cancel" onPress={handleClearButton} style={styles.inputCancelIcon} fontSize={styles.inputCancelIcon.fontSize} />);
 	return (
 		<View style={[styles.inputGroup, { borderColor: theme.separator }, style]}>
-			<ClickIcon iconName="search" onPress={handleSearchButton} style={[styles.inputIcon, isEmpty && styles.disabled]} fontSize={styles.inputIcon.fontSize}/>
+			<ClickIcon iconName="search" onPress={handleSearchButton} style={[styles.inputIcon, isEmpty && styles.disabled]} fontSize={styles.inputIcon.fontSize} />
 			<TextInput
 				style={[styles.input, { color: theme.textColor }]}
 				placeholderTextColor={theme.muted}

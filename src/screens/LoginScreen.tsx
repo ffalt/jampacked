@@ -93,16 +93,16 @@ const styles = StyleSheet.create({
 });
 
 const defaultState = (__DEV__) ?
-		{
-			server: 'http://10.0.2.2:4040',
-			name: 'admin',
-			password: 'admin'
-		} :
-		{
-			server: '',
-			name: '',
-			password: ''
-		};
+	{
+		server: 'http://10.0.2.2:4040',
+		name: 'admin',
+		password: 'admin'
+	} :
+	{
+		server: '',
+		name: '',
+		password: ''
+	};
 
 export const LoginScreen: React.FC<AppStackProps<AppRouting.AUTH>> = () => {
 	const [server, setServer] = useState<string>(defaultState.server);
@@ -111,31 +111,33 @@ export const LoginScreen: React.FC<AppStackProps<AppRouting.AUTH>> = () => {
 	const [loading, setLoading] = useState<boolean>(false);
 	const [error, setError] = useState<string | undefined>();
 	const auth = useAuth();
-	const userNameRef = useRef<TextInput | null>(null);
-	const passwordRef = useRef<TextInput | null>(null);
+	const userNameReference = useRef<TextInput | null>(null);
+	const passwordReference = useRef<TextInput | null>(null);
 	const theme = useTheme();
 	const statusBarHeight = getStatusBarHeight() + staticTheme.padding;
 
 	useEffect(() => {
 		let isSubscribed = true;
-		dataService.getStored('last:server').then((result) => {
-			if (result && isSubscribed) {
-				setServer(result);
-			}
-		});
-		dataService.getStored('last:user').then((result) => {
-			if (result && isSubscribed) {
-				setName(result);
-			}
-		});
+		dataService.getStored('last:server')
+			.then(result => {
+				if (result && isSubscribed) {
+					setServer(result);
+				}
+			})
+			.catch(console.error);
+		dataService.getStored('last:user')
+			.then(result => {
+				if (result && isSubscribed) {
+					setName(result);
+				}
+			})
+			.catch(console.error);
 		return (): void => {
 			isSubscribed = false;
 		};
 	}, []);
 
-	const checkEmpty = (s: string): boolean => {
-		return (!s || s.trim().length === 0);
-	};
+	const checkEmpty = (s: string): boolean => (!s || s.trim().length === 0);
 
 	const loginPress = useCallback((): void => {
 		if (checkEmpty(server) || checkEmpty(name) || checkEmpty(password)) {
@@ -151,18 +153,18 @@ export const LoginScreen: React.FC<AppStackProps<AppRouting.AUTH>> = () => {
 
 		setError(undefined);
 		setLoading(true);
-		login().catch((e) => {
-			setError(`${e}`);
+		login().catch(error_ => {
+			setError(`${error_}`);
 			setLoading(false);
 		});
 	}, [auth, server, name, password]);
 
 	const focusUsername = (): void => {
-		userNameRef.current?.focus();
+		userNameReference.current?.focus();
 	};
 
 	const focusPassword = (): void => {
-		passwordRef.current?.focus();
+		passwordReference.current?.focus();
 	};
 
 	const onChangeServerText = (text: string): void => {
@@ -178,8 +180,8 @@ export const LoginScreen: React.FC<AppStackProps<AppRouting.AUTH>> = () => {
 	};
 
 	const contentView = loading ?
-			(<ActivityIndicator size="large" color={styles.buttonIndicator.color}/>) :
-			(<Text style={styles.buttonText}>Login</Text>);
+		(<ActivityIndicator size="large" color={styles.buttonIndicator.color} />) :
+		(<Text style={styles.buttonText}>Login</Text>);
 
 	const errorView = error && (
 		<View style={styles.error}>
@@ -191,13 +193,13 @@ export const LoginScreen: React.FC<AppStackProps<AppRouting.AUTH>> = () => {
 		<ScrollView contentContainerStyle={styles.scrollContainer}>
 			<View style={[styles.container, { paddingTop: statusBarHeight }]}>
 				<View style={styles.headline}>
-					<Logo size={140}/>
+					<Logo size={140} />
 				</View>
 				<View style={styles.loginBlock}>
 					<KeyboardAvoidingView style={styles.content}>
 						<View style={[styles.inputGroup, { borderColor: theme.textColor }]}>
 							<View style={styles.inputIconWrapper}>
-								<ThemedIcon name="notes-beamed" size={styles.inputIcon.fontSize}/>
+								<ThemedIcon name="notes-beamed" size={styles.inputIcon.fontSize} />
 							</View>
 							<TextInput
 								style={[styles.input, { color: theme.textColor }]}
@@ -218,10 +220,10 @@ export const LoginScreen: React.FC<AppStackProps<AppRouting.AUTH>> = () => {
 						</View>
 						<View style={[styles.inputGroup, { borderColor: theme.textColor }]}>
 							<View style={styles.inputIconWrapper}>
-								<ThemedIcon name="user" size={styles.inputIcon.fontSize}/>
+								<ThemedIcon name="user" size={styles.inputIcon.fontSize} />
 							</View>
 							<TextInput
-								ref={userNameRef}
+								ref={userNameReference}
 								style={[styles.input, { color: theme.textColor }]}
 								placeholderTextColor={theme.muted}
 								placeholder="User"
@@ -240,10 +242,10 @@ export const LoginScreen: React.FC<AppStackProps<AppRouting.AUTH>> = () => {
 						</View>
 						<View style={[styles.inputGroup, { borderColor: theme.textColor }]}>
 							<View style={styles.inputIconWrapper}>
-								<ThemedIcon name="key" size={styles.inputIcon.fontSize}/>
+								<ThemedIcon name="key" size={styles.inputIcon.fontSize} />
 							</View>
 							<TextInput
-								ref={passwordRef}
+								ref={passwordReference}
 								style={[styles.input, { color: theme.textColor }]}
 								placeholderTextColor={theme.muted}
 								placeholder="Password"

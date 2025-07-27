@@ -10,17 +10,17 @@ export const FavIcon: React.FC<{ id?: string; objType: JamObjectType; style?: St
 	const [isFaved, setIsFaved] = useState<boolean>(false);
 	const [getFaved, { faved, loading, setFav }] = useLazyFavQuery();
 	const [toggleFav] = useFavMutation();
-	const isUnmountedRef = useRef(true);
+	const isUnmountedReference = useRef(true);
 
 	useEffect(() => {
-		isUnmountedRef.current = false;
+		isUnmountedReference.current = false;
 		return () => {
-			isUnmountedRef.current = true;
+			isUnmountedReference.current = true;
 		};
 	}, []);
 
 	useEffect(() => {
-		if (id && !isUnmountedRef.current) {
+		if (id && !isUnmountedReference.current) {
 			getFaved(id);
 		}
 	}, [getFaved, id]);
@@ -30,7 +30,7 @@ export const FavIcon: React.FC<{ id?: string; objType: JamObjectType; style?: St
 			return;
 		}
 		if (faved) {
-			if (isUnmountedRef.current) {
+			if (isUnmountedReference.current) {
 				return;
 			}
 			setIsFaved((faved?.timestamp || 0) > 0);
@@ -40,25 +40,28 @@ export const FavIcon: React.FC<{ id?: string; objType: JamObjectType; style?: St
 	const handleToggleFav = useCallback((): void => {
 		if (!loading && id) {
 			toggleFav({ variables: { id, remove: isFaved } })
-				.then((result) => {
-					if (isUnmountedRef.current) {
+				.then(result => {
+					if (isUnmountedReference.current) {
 						return;
 					}
 					const fav = { timestamp: result.data?.fav?.faved ? (new Date(result.data.fav.faved)).valueOf() : undefined };
 					setIsFaved((fav?.timestamp || 0) > 0);
 					setFav(fav);
-					snackSuccess(!isFaved ? 'Added to Favorites' : 'Removed from Favorites');
+					snackSuccess(isFaved ? 'Removed from Favorites' : 'Added to Favorites');
 					dataService.cache.updateHomeData().catch(console.error);
-				});
+				})
+				.catch(console.error);
 		}
 	}, [loading, id, toggleFav, isFaved, setFav]);
 
 	const iconName = isFaved ? 'heart-full' : 'heart-empty';
-	return (<ClickIcon
-		style={style}
-		fontSize={fontSize}
-		iconName={iconName}
-		onPress={handleToggleFav}
-		muted={(loading || !faved)}
-	/>);
+	return (
+		<ClickIcon
+			style={style}
+			fontSize={fontSize}
+			iconName={iconName}
+			onPress={handleToggleFav}
+			muted={(loading || !faved)}
+		/>
+	);
 };

@@ -39,7 +39,7 @@ export const HomeMain: React.FC = () => {
 	}, [getHomeData]);
 
 	if (error) {
-		return (<ErrorView error={error} onRetry={reload}/>);
+		return (<ErrorView error={error} onRetry={reload} />);
 	}
 	return (
 		<ScrollView
@@ -53,10 +53,10 @@ export const HomeMain: React.FC = () => {
 				/>
 			)}
 		>
-			<Stats stats={homeData?.stats} label="Library"/>
-			<HomeDataSection homeData={homeData?.homeData}/>
-			<HomeUserSection userData={homeData?.user}/>
-			<HomeAppSection/>
+			<Stats stats={homeData?.stats} label="Library" />
+			<HomeDataSection homeData={homeData?.homeData} />
+			<HomeUserSection userData={homeData?.user} />
+			<HomeAppSection />
 		</ScrollView>
 	);
 };

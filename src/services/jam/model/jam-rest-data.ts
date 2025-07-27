@@ -1,7 +1,7 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import * as JamEnums from './jam-enums';
+import type * as JamEnums from './jam-enums';
 
 export declare namespace Jam {
 
@@ -1762,6 +1762,8 @@ export declare namespace Jam {
 		lyrics?: string;
 		/** Synced Lyrics */
 		syncedLyrics?: string;
+		/** Language of the the lyrics */
+		language?: string;
 		/** Audio Tag or External Service */
 		source?: string;
 	}

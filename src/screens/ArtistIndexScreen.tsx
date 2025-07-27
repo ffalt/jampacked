@@ -20,7 +20,7 @@ export const ArtistIndexScreen: React.FC<ArtistsRouteProps<ArtistsRoute.INDEX>> 
 	}, [getIndex]);
 
 	if (error) {
-		return (<ErrorView error={error} onRetry={reload}/>);
+		return (<ErrorView error={error} onRetry={reload} />);
 	}
 
 	return (

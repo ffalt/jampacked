@@ -9,7 +9,7 @@ import { BaseEntry } from '../services/types';
 import { useWindowWidth } from '../utils/dimension.hook';
 import { ListEmpty } from './ListEmpty';
 import { commonItemLayout, defaultKeyExtractor } from '../utils/list.utils';
-import { DefaultFlatList } from './DefFlatList';
+import { DefaultFlatList } from './DefaultFlatList.tsx';
 import { RouteLink } from '../navigators/Routes';
 
 const style = StyleSheet.create({
@@ -35,14 +35,14 @@ export const BaseEntryList: React.FC<{
 	onLoadMore: () => void;
 }> = ({ info, entries, refreshing, onRefresh, onLoadMore, goLeft, goRight }) => {
 	const [tiles, _setTiles] = useState<boolean>(false);
-	const numColumns = 3;
+	const numberColumns = 3;
 	const width = useWindowWidth();
-	const tileSize = width / (numColumns || 1);
+	const tileSize = width / (numberColumns || 1);
 	const theme = useTheme();
 
-	const renderItemRow = useCallback(({ item }: { item: BaseEntry }): React.JSX.Element => (<Item item={item}/>), []);
-	const renderItemTile = useCallback(({ item }: { item: BaseEntry }): React.JSX.Element => (<ImageItem item={item} size={tileSize}/>), [tileSize]);
-	const ListHeaderComponent = (<PageHeader title={info.title} goLeft={goLeft} goRight={goRight} subtitle={info.subtitle}/>);
+	const renderItemRow = useCallback(({ item }: { item: BaseEntry }): React.JSX.Element => (<Item item={item} />), []);
+	const renderItemTile = useCallback(({ item }: { item: BaseEntry }): React.JSX.Element => (<ImageItem item={item} size={tileSize} />), [tileSize]);
+	const ListHeaderComponent = (<PageHeader title={info.title} goLeft={goLeft} goRight={goRight} subtitle={info.subtitle} />);
 
 	const getTileItemLayout = React.useMemo(() => commonItemLayout(tileSize), [tileSize]);
 
@@ -54,13 +54,13 @@ export const BaseEntryList: React.FC<{
 				renderItem={renderItemTile}
 				keyExtractor={defaultKeyExtractor}
 				ItemSeparatorComponent={Separator}
-				numColumns={numColumns}
+				numColumns={numberColumns}
 				columnWrapperStyle={style.row}
 				onEndReachedThreshold={0.4}
 				onEndReached={onLoadMore}
 				getItemLayout={getTileItemLayout}
 				ListHeaderComponent={ListHeaderComponent}
-				ListEmptyComponent={<ListEmpty list={entries}/>}
+				ListEmptyComponent={<ListEmpty list={entries} />}
 				refreshControl={(
 					<RefreshControl
 						refreshing={refreshing}

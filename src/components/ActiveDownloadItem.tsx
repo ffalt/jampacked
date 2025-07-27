@@ -30,12 +30,12 @@ export const ActiveDownloadItem: React.FC<{ item: Download }> = React.memo(({ it
 	const { download, track } = usePinnedMediaDownload(item.id);
 
 	useEffect(() => {
-		const o = download ? download : item;
+		const o = download ?? item;
 		const percent = Math.max(o.percentDownloaded || 0, 0);
 		setState({
 			percent,
 			bytes: `${humanFileSize(o.bytesDownloaded)}`,
-			text: !track ? 'Loading' : ([track.album, track.title].join('-')),
+			text: track ? ([track.album, track.title].join('-')) : 'Loading',
 			state: downloadStateToString(o.state)
 		});
 	}, [download, item, track]);
@@ -47,11 +47,14 @@ export const ActiveDownloadItem: React.FC<{ item: Download }> = React.memo(({ it
 				<ThemedText style={sharedStyles.itemText} numberOfLines={1}>{state.text}</ThemedText>
 				<View style={[sharedStyles.itemFooter, styles.footer]}>
 					<ThemedText style={sharedStyles.itemFooterText}>{state.state}</ThemedText>
-					<ThemedText style={sharedStyles.itemFooterText}>{state.percent.toFixed(2)}%</ThemedText>
+					<ThemedText style={sharedStyles.itemFooterText}>
+						{state.percent.toFixed(2)}
+						%
+					</ThemedText>
 					<ThemedText style={sharedStyles.itemFooterText}>{state.bytes}</ThemedText>
 				</View>
 				<View style={[styles.miniProgress, { backgroundColor: theme.separator }]}>
-					<View style={[styles.miniProgress, { width, backgroundColor: theme.progress }]}/>
+					<View style={[styles.miniProgress, { width, backgroundColor: theme.progress }]} />
 				</View>
 			</View>
 		</View>

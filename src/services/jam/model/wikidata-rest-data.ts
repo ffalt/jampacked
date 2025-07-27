@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/naming-convention */
-
 export declare namespace WikiData {
 
 	export interface SiteLink {
@@ -16,7 +14,7 @@ export declare namespace WikiData {
 		datavalue: {
 			type: string;
 			value: {
-				id: string;
+				'id': string;
 				'entity-type': string;
 				'numeric-id': number;
 			} | string;
@@ -71,5 +69,4 @@ export declare namespace WikiData {
 			[id: string]: Entity;
 		};
 	}
-
 }

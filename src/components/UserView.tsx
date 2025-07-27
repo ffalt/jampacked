@@ -27,40 +27,36 @@ const styles = StyleSheet.create({
 	}
 });
 
-export const UserPermission: React.FC<{ text: string }> = ({ text }) => {
-	return (
-		<View style={styles.permission}>
-			<ThemedIcon name="checkmark"/>
-			<ThemedText style={styles.permissionText}>{text}</ThemedText>
-		</View>
-	);
-};
+export const UserPermission: React.FC<{ text: string }> = ({ text }) => (
+	<View style={styles.permission}>
+		<ThemedIcon name="checkmark" />
+		<ThemedText style={styles.permissionText}>{text}</ThemedText>
+	</View>
+);
 
 export const UserView: React.FC = () => {
 	const auth = useAuth();
 
 	const logout = useCallback((): void => {
 		auth.logout()
-			.catch((e) => {
-				console.error(e);
-			});
+			.catch(console.error);
 	}, [auth]);
 
 	return (
 		<>
 			<View style={styles.userSection}>
 				<View>
-					<JamImage id={auth.currentUserID()} size={staticTheme.thumbMedium} style={styles.userImage}/>
+					<JamImage id={auth.currentUserID()} size={staticTheme.thumbMedium} style={styles.userImage} />
 				</View>
 				<View style={styles.flex1}>
 					<ThemedText>{auth.currentUserName()}</ThemedText>
-					{auth?.user?.roles.stream && <UserPermission text="Stream Audio"/>}
-					{auth?.user?.roles.podcast && <UserPermission text="Manage Podcasts"/>}
-					{auth?.user?.roles.upload && <UserPermission text="Upload Audio"/>}
-					{auth?.user?.roles.admin && <UserPermission text="Server Administration"/>}
+					{auth?.user?.roles.stream && <UserPermission text="Stream Audio" />}
+					{auth?.user?.roles.podcast && <UserPermission text="Manage Podcasts" />}
+					{auth?.user?.roles.upload && <UserPermission text="Upload Audio" />}
+					{auth?.user?.roles.admin && <UserPermission text="Server Administration" />}
 				</View>
 				<View>
-					<Button title="Logout" onPress={logout}/>
+					<Button title="Logout" onPress={logout} />
 				</View>
 			</View>
 		</>

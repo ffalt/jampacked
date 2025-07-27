@@ -30,7 +30,6 @@ export const staticTheme = {
 	thumbMedium: 80
 };
 
-// export type ITheme = ReturnType<typeof useTheme>;
 export interface ITheme {
 	name: string;
 	textColor: string;

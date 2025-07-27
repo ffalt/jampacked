@@ -28,7 +28,7 @@ export const PlayerCover: React.FC = () => {
 	}
 	return (
 		<View style={[styles.cover, { borderColor: theme.separator }]}>
-			<JamImage id={id} requestSize={600} style={styles.image}/>
+			<JamImage id={id} requestSize={600} style={styles.image} />
 		</View>
 	);
 };

@@ -20,12 +20,12 @@ export const HomeSection: React.FC<{ title: string; section?: Array<HomeEntry>; 
 		}
 	};
 
-	const entries = section.map(entry => <HomeSectionEntry key={entry.id} entry={entry}/>);
+	const entries = section.map(entry => <HomeSectionEntry key={entry.id} entry={entry} />);
 	return (
 		<>
 			<TouchableOpacity style={sharedStyles.sectionHeader} onPress={click}>
 				<ThemedText style={sharedStyles.sectionHeaderText}>{title}</ThemedText>
-				<ThemedIcon style={sharedStyles.sectionHeaderIcon} name="right-open" color={theme.muted}/>
+				<ThemedIcon style={sharedStyles.sectionHeaderIcon} name="right-open" color={theme.muted} />
 			</TouchableOpacity>
 			<ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
 				{entries}

@@ -26,10 +26,10 @@ export const PlayerWaveformProgress: React.FC = () => {
 	}
 
 	if (!waveform) {
-		return (<View style={styles.container}/>);
+		return (<View style={styles.container} />);
 	}
 
 	return (
-		<WaveformProgress waveform={waveform}/>
+		<WaveformProgress waveform={waveform} />
 	);
 };

@@ -61,7 +61,7 @@ export const useLazyAutocompleteQuery = (): [(query: string) => void,
 	}, [data]);
 
 	const get = useCallback((query: string): void => {
-		getAutocomplete({ variables: { query } });
+		getAutocomplete({ variables: { query } }).catch(console.error);
 	}, [getAutocomplete]);
 
 	return [

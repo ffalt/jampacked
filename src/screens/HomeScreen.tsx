@@ -55,9 +55,9 @@ export const HomeScreen: React.FC<HomeRouteProps<HomeRoute.START>> = () => {
 		<View style={[styles.container, { paddingTop: statusBarHeight }]}>
 			<View style={styles.header}>
 				<View style={styles.userHeader}>
-					<Logo size={staticTheme.userImage}/>
+					<Logo size={staticTheme.userImage} />
 					<ThemedText style={styles.userHeaderText} numberOfLines={2}>{userName}</ThemedText>
-					<JamImage id={userId} size={staticTheme.userImage} style={styles.userImage}/>
+					<JamImage id={userId} size={staticTheme.userImage} style={styles.userImage} />
 				</View>
 				<SearchBar searchQueryChange={setSearch} />
 			</View>

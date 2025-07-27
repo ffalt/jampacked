@@ -18,7 +18,7 @@ export const GenreIndexScreen: React.FC<GenresRouteProps<GenresRoute.INDEX>> = (
 	}, [getIndex]);
 
 	if (error) {
-		return (<ErrorView error={error} onRetry={reload}/>);
+		return (<ErrorView error={error} onRetry={reload} />);
 	}
 
 	return (

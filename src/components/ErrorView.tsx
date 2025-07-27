@@ -40,9 +40,9 @@ export const ErrorView: React.FC<{ error: Error; onRetry: () => void }> = ({ err
 
 	return (
 		<View style={styles.container}>
-			<Image style={styles.image} source={IMAGE_ERROR}/>
+			<Image style={styles.image} source={IMAGE_ERROR} />
 			<ThemedText style={styles.text}>{value}</ThemedText>
-			<Button onPress={onRetry} title="Retry"/>
+			<Button onPress={onRetry} title="Retry" />
 		</View>
 	);
 };

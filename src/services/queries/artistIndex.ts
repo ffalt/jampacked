@@ -11,8 +11,8 @@ function transformData(data?: ArtistIndexResultQuery): Index | undefined {
 		return;
 	}
 	const index: Index = [];
-	data.artistIndex.groups.forEach((group) => {
-		group.items.forEach((entry) => {
+	for (const group of data.artistIndex.groups) {
+		for (const entry of group.items) {
 			index.push({
 				id: entry.id,
 				objType: JamObjectType.artist,
@@ -20,8 +20,8 @@ function transformData(data?: ArtistIndexResultQuery): Index | undefined {
 				title: entry.name,
 				letter: group.name
 			});
-		});
-	});
+		}
+	}
 	return index;
 }
 

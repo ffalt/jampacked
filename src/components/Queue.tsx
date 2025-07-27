@@ -3,7 +3,7 @@ import React, { useCallback } from 'react';
 import { JamPlayer } from '../services/player';
 import { useTheme } from '../style/theming';
 import { QueueItem } from './QueueItem';
-import { DefaultFlatList } from './DefFlatList';
+import { DefaultFlatList } from './DefaultFlatList.tsx';
 import { TrackPlayerTrack, useTrackPlayerCurrentTrackNr, useTrackPlayerQueue } from '../services/player-api';
 import { ClickLabelIcon } from './ClickLabelIcon';
 import { sharedStyles } from '../style/shared';
@@ -14,7 +14,7 @@ export const Queue: React.FC = () => {
 	const current = useTrackPlayerCurrentTrackNr();
 
 	const renderItem = useCallback(({ item, index }: { item: TrackPlayerTrack; index: number }): React.JSX.Element => (
-		<QueueItem item={item} index={index} active={index === current}/>
+		<QueueItem item={item} index={index} active={index === current} />
 	), [current]);
 	const reload = useCallback(() => {
 		// nop
@@ -27,10 +27,12 @@ export const Queue: React.FC = () => {
 			items={queue}
 			renderItem={renderItem}
 			keyExtractor={keyExtractor}
-			ListHeaderComponent={(<View style={[sharedStyles.barButtons, { borderColor: theme.separator }]}>
-				<ClickLabelIcon iconName="trash" onPress={JamPlayer.clearQueue} label="Clear" style={sharedStyles.barButton} labelStyle={sharedStyles.barButtonText}/>
-				<ClickLabelIcon iconName="shuffle" onPress={JamPlayer.shuffleQueue} label="Shuffle" style={sharedStyles.barButton} labelStyle={sharedStyles.barButtonText}/>
-			</View>)}
+			ListHeaderComponent={(
+				<View style={[sharedStyles.barButtons, { borderColor: theme.separator }]}>
+					<ClickLabelIcon iconName="trash" onPress={JamPlayer.clearQueue} label="Clear" style={sharedStyles.barButton} labelStyle={sharedStyles.barButtonText} />
+					<ClickLabelIcon iconName="shuffle" onPress={JamPlayer.shuffleQueue} label="Shuffle" style={sharedStyles.barButton} labelStyle={sharedStyles.barButtonText} />
+				</View>
+			)}
 			loading={false}
 			reload={reload}
 		/>

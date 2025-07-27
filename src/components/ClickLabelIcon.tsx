@@ -4,7 +4,7 @@ import { useTheme } from '../style/theming';
 import { ThemedIcon } from './ThemedIcon';
 import { ThemedText } from './ThemedText';
 
-interface ClickLabelIconParams {
+interface ClickLabelIconParameters {
 	label: string;
 	iconName: string;
 	style?: StyleProp<ViewStyle>;
@@ -17,20 +17,23 @@ interface ClickLabelIconParams {
 	onPress: () => void;
 }
 
-export const ClickLabelIcon: React.FC<ClickLabelIconParams> =
+export const ClickLabelIcon: React.FC<ClickLabelIconParameters> =
 	({ label, iconName, clickThrough, style, labelStyle, fontSize, disabled, color, muted, onPress }) => {
 		const theme = useTheme();
 		const iconColor = color || (muted ? theme.muted : undefined);
 
 		return (
-			<TouchableOpacity style={style} onPress={(e): void => {
-				onPress();
-				if (!clickThrough) {
-					e.preventDefault();
-					e.stopPropagation();
-				}
-			}} disabled={disabled}>
-				<ThemedIcon name={iconName} size={fontSize} color={iconColor}/>
+			<TouchableOpacity
+				style={style}
+				onPress={(event): void => {
+					onPress();
+					if (!clickThrough) {
+						event.preventDefault();
+						event.stopPropagation();
+					}
+				}}
+				disabled={disabled}>
+				<ThemedIcon name={iconName} size={fontSize} color={iconColor} />
 				<ThemedText style={labelStyle}>{label}</ThemedText>
 			</TouchableOpacity>
 		);

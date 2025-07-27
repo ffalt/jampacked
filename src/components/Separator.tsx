@@ -10,5 +10,5 @@ const styles = StyleSheet.create({
 
 export const Separator: React.FC = () => {
 	const theme = useTheme();
-	return (<View style={[styles.separator, { backgroundColor: theme.separator }]}/>);
+	return (<View style={[styles.separator, { backgroundColor: theme.separator }]} />);
 };

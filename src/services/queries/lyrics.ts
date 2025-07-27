@@ -9,14 +9,12 @@ export interface TrackLyrics {
 	source?: string;
 }
 
-export const transformData = (data?: TrackLyricsResultQuery): TrackLyrics | undefined => {
-	return data ?
-			{
-				lyrics: data.track?.lyrics?.lyrics || undefined,
-				source: data.track?.lyrics?.source || undefined
-			} :
-		undefined;
-};
+export const transformData = (data?: TrackLyricsResultQuery): TrackLyrics | undefined => data ?
+	{
+		lyrics: data.track?.lyrics?.lyrics || undefined,
+		source: data.track?.lyrics?.source || undefined
+	} :
+	undefined;
 
 function transformVariables(id: string): TrackLyricsResultQueryVariables {
 	return { id };

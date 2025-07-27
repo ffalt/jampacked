@@ -4,13 +4,13 @@ import SInfo from 'react-native-sensitive-info';
 const STORE_KEY = 'credentials';
 
 export class JamConfigurationService implements JamConfiguration {
-	public clientName = 'Jam';
-	public storeConfig = {
+	clientName = 'Jam';
+	storeConfig = {
 		sharedPreferencesName: 'jam',
 		keychainService: 'jam'
 	};
 
-	public domain(): string {
+	domain(): string {
 		return '';
 	}
 
@@ -24,14 +24,10 @@ export class JamConfigurationService implements JamConfiguration {
 	}
 
 	async toStorage(data: { user: Jam.SessionUser; auth: Auth } | undefined): Promise<void> {
-		if (data) {
-			await SInfo.setItem(STORE_KEY, JSON.stringify(data), this.storeConfig);
-		} else {
-			await SInfo.deleteItem(STORE_KEY, this.storeConfig);
-		}
+		await (data ? SInfo.setItem(STORE_KEY, JSON.stringify(data), this.storeConfig) : SInfo.deleteItem(STORE_KEY, this.storeConfig));
 	}
 
 	async userChangeNotify(/* user: Jam.SessionUser | undefined */): Promise<void> {
-		// console.log('Changed User', user);
+		// nop
 	}
 }

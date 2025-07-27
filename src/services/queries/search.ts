@@ -25,11 +25,13 @@ interface SearchQueryResult {
 }
 
 type SearchVariable =
-	SearchAlbumsResultQueryVariables & SearchArtistsResultQueryVariables & SearchSeriesResultQueryVariables & SearchEpisodesResultQueryVariables &
-	SearchPodcastsResultQueryVariables & SearchPlaylistsResultQueryVariables & SearchFoldersResultQueryVariables & SearchTracksResultQueryVariables;
+	SearchAlbumsResultQueryVariables & SearchArtistsResultQueryVariables &
+	SearchSeriesResultQueryVariables & SearchEpisodesResultQueryVariables &
+	SearchPodcastsResultQueryVariables & SearchPlaylistsResultQueryVariables &
+	SearchFoldersResultQueryVariables & SearchTracksResultQueryVariables;
 
-type SearchQueryResults =
-	SearchAlbumsResultQuery & SearchArtistsResultQuery & SearchSeriesResultQuery & SearchEpisodesResultQuery & SearchPodcastsResultQuery &
+type SearchQueryResults = SearchAlbumsResultQuery & SearchArtistsResultQuery &
+	SearchSeriesResultQuery & SearchEpisodesResultQuery & SearchPodcastsResultQuery &
 	SearchPlaylistsResultQuery & SearchFoldersResultQuery & SearchTracksResultQuery;
 
 type SearchAlbumsResult_albums_items = NonNullable<SearchAlbumsResultQuery>['albums']['items'][number];
@@ -41,12 +43,12 @@ type SearchTracksResult_tracks_items = NonNullable<SearchTracksResultQuery>['tra
 type SearchEpisodesResult_episodes_items = NonNullable<SearchEpisodesResultQuery>['episodes']['items'][number];
 type SearchPlaylistsResult_playlists_items = NonNullable<SearchPlaylistsResultQuery>['playlists']['items'][number];
 
-function buildPage<T extends SearchQueryResult>(data: SearchPage<T>, objType: JamObjectType, query: string, getDesc: (item: T) => string | undefined): SearchResultData {
+function buildPage<T extends SearchQueryResult>(data: SearchPage<T>, objectType: JamObjectType, query: string, getDesc: (item: T) => string | undefined): SearchResultData {
 	return {
 		query,
 		total: data.total,
-		skip: data.skip || 0,
-		entries: data.items.map(o => ({ id: o.id, title: o.name, desc: getDesc(o) || '', objType }))
+		skip: data.skip ?? 0,
+		entries: data.items.map(o => ({ id: o.id, title: o.name, desc: getDesc(o) ?? '', objType: objectType }))
 	};
 }
 
@@ -73,46 +75,58 @@ function transformData(data: SearchQueryResults | undefined, variables: SearchVa
 		return buildPage<SearchPlaylistsResult_playlists_items>(data.playlists, JamObjectType.playlist, variables.query, o => `Tracks: ${o.entriesCount}`);
 	}
 	if (data.folders) {
-		return buildPage<SearchFoldersResult_folders_items>(data.folders, JamObjectType.folder, variables.query, (o) => {
-			return (o.folderType || '') + ' ' + (
-				(o.tracksCount || 0) > 0 ?
-					`Tracks: ${o.tracksCount}` :
-						((o.childrenCount || 0) > 0 ? `Folder: ${o.childrenCount}` : '')
-			);
+		return buildPage<SearchFoldersResult_folders_items>(data.folders, JamObjectType.folder, variables.query, o => {
+			let info: string;
+			if ((o.tracksCount || 0) > 0) {
+				info = `Tracks: ${o.tracksCount}`;
+			} else {
+				info = (o.childrenCount || 0) > 0 ? `Folder: ${o.childrenCount}` : '';
+			}
+			return `${o.folderType ?? ''} ${info}`;
 		});
 	}
 	if (data.tracks) {
-		return buildPage<SearchTracksResult_tracks_items>(data.tracks, JamObjectType.track, variables.query, o => o.tag?.artist || '');
+		return buildPage<SearchTracksResult_tracks_items>(data.tracks, JamObjectType.track, variables.query, o => o.tag?.artist ?? '');
 	}
 }
 
-function getSearchQuery(objType: JamObjectType): DocumentNode {
-	switch (objType) {
-		case JamObjectType.folder:
+function getSearchQuery(objectType: JamObjectType): DocumentNode {
+	switch (objectType) {
+		case JamObjectType.folder: {
 			return SearchFoldersResultDocument;
-		case JamObjectType.track:
+		}
+		case JamObjectType.track: {
 			return SearchTracksResultDocument;
-		case JamObjectType.playlist:
+		}
+		case JamObjectType.playlist: {
 			return SearchPlaylistsResultDocument;
-		case JamObjectType.podcast:
+		}
+		case JamObjectType.podcast: {
 			return SearchPodcastsResultDocument;
-		case JamObjectType.episode:
+		}
+		case JamObjectType.episode: {
 			return SearchEpisodesResultDocument;
-		case JamObjectType.series:
+		}
+		case JamObjectType.series: {
 			return SearchSeriesResultDocument;
-		case JamObjectType.album:
+		}
+		case JamObjectType.album: {
 			return SearchAlbumsResultDocument;
-		case JamObjectType.artist:
+		}
+		case JamObjectType.artist: {
 			return SearchArtistsResultDocument;
+		}
+		default: {
+			throw new Error('Invalid Search Type');
+		}
 	}
-	throw new Error('Invalid Search Type');
 }
 
-export const useLazySearchQuery = (objType: JamObjectType): [(query: string, take: number, skip: number) => void,
+export const useLazySearchQuery = (objectType: JamObjectType): [(query: string, take: number, skip: number) => void,
 	{ loading: boolean; error?: ApolloError; result?: SearchResultData; called: boolean }
 ] => {
 	const [result, setResult] = useState<SearchResultData | undefined>(undefined);
-	const [getSearch, { loading, error, data, variables, called }] = useLazyQuery<SearchQueryResults, SearchVariable>(getSearchQuery(objType));
+	const [getSearch, { loading, error, data, variables, called }] = useLazyQuery<SearchQueryResults, SearchVariable>(getSearchQuery(objectType));
 
 	useEffect(() => {
 		if (data && variables) {
@@ -121,7 +135,7 @@ export const useLazySearchQuery = (objType: JamObjectType): [(query: string, tak
 	}, [data, variables]);
 
 	const get = useCallback((query: string, take: number, skip: number): void => {
-		getSearch({ variables: { query, take, skip } });
+		getSearch({ variables: { query, take, skip } }).catch(console.error);
 	}, [getSearch]);
 
 	return [

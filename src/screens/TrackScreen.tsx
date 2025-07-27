@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { RefreshControl, ScrollView, View } from 'react-native';
 import { HomeRoute, HomeRouteProps } from '../navigators/Routing';
-import { HeaderDetail, ObjHeader, objHeaderStyles } from '../components/ObjHeader';
+import { HeaderDetail, ObjectHeader, objectHeaderStyles } from '../components/ObjectHeader.tsx';
 import { genreDisplay } from '../utils/genre.utils';
 import { JamPlayer } from '../services/player';
 import { JamObjectType } from '../services/jam';
@@ -15,27 +15,25 @@ import { TrackEntry } from '../services/types';
 import { NavigationService } from '../navigators/navigation';
 import { Rating } from '../components/Rating';
 
-const buildDetails = (track?: TrackEntry): Array<HeaderDetail> => {
-	return [
-		{
-			title: 'Artist', value: track?.artist || '', click: track?.artistID ?
-					() => {
-						NavigationService.navigate(HomeRoute.ARTIST, { id: track?.artistID, name: track?.artist || '' });
-					} :
-				undefined
-		},
-		{
-			title: 'Album', value: `${track?.album || ''}`, click: track?.artistID ?
-					() => {
-						NavigationService.navigate(HomeRoute.ALBUM, { id: track?.albumID, name: track?.album || '' });
-					} :
-				undefined
-		},
-		{
-			title: 'Genre', value: (track?.genre ? genreDisplay([track.genre]) : '') || ''
-		}
-	];
-};
+const buildDetails = (track?: TrackEntry): Array<HeaderDetail> => [
+	{
+		title: 'Artist', value: track?.artist || '', click: track?.artistID ?
+			() => {
+				NavigationService.navigate(HomeRoute.ARTIST, { id: track?.artistID, name: track?.artist || '' });
+			} :
+			undefined
+	},
+	{
+		title: 'Album', value: `${track?.album || ''}`, click: track?.artistID ?
+			() => {
+				NavigationService.navigate(HomeRoute.ALBUM, { id: track?.albumID, name: track?.album || '' });
+			} :
+			undefined
+	},
+	{
+		title: 'Genre', value: (track?.genre ? genreDisplay([track.genre]) : '') || ''
+	}
+];
 
 export const TrackScreen: React.FC<HomeRouteProps<HomeRoute.TRACK>> = ({ route }) => {
 	const theme = useTheme();
@@ -58,7 +56,7 @@ export const TrackScreen: React.FC<HomeRouteProps<HomeRoute.TRACK>> = ({ route }
 	const playTrack = useCallback((): void => {
 		if (track) {
 			JamPlayer.playTrack(track)
-				.catch(e => console.error(e));
+				.catch(console.error);
 		}
 	}, [track]);
 
@@ -68,13 +66,13 @@ export const TrackScreen: React.FC<HomeRouteProps<HomeRoute.TRACK>> = ({ route }
 
 	const headerTitleCmds = (
 		<>
-			<ClickIcon iconName="play" onPress={playTrack} style={objHeaderStyles.button} fontSize={objHeaderStyles.buttonIcon.fontSize}/>
-			<FavIcon style={objHeaderStyles.button} fontSize={objHeaderStyles.buttonIcon.fontSize} objType={JamObjectType.track} id={id}/>
+			<ClickIcon iconName="play" onPress={playTrack} style={objectHeaderStyles.button} fontSize={objectHeaderStyles.buttonIcon.fontSize} />
+			<FavIcon style={objectHeaderStyles.button} fontSize={objectHeaderStyles.buttonIcon.fontSize} objType={JamObjectType.track} id={id} />
 		</>
 	);
 
 	if (error) {
-		return (<ErrorView error={error} onRetry={reload}/>);
+		return (<ErrorView error={error} onRetry={reload} />);
 	}
 
 	return (
@@ -90,15 +88,15 @@ export const TrackScreen: React.FC<HomeRouteProps<HomeRoute.TRACK>> = ({ route }
 			)}
 		>
 			<View>
-				<ObjHeader
+				<ObjectHeader
 					id={id}
 					title={name}
 					typeName="Track"
 					details={details}
 					headerTitleCmds={headerTitleCmds}
-					headerTitleCmdsExtras={<Rating fontSize={objHeaderStyles.buttonIcon.fontSize} objType={JamObjectType.track} id={id}/>}
+					headerTitleCmdsExtras={<Rating fontSize={objectHeaderStyles.buttonIcon.fontSize} objType={JamObjectType.track} id={id} />}
 				/>
-				<Lyrics id={id}/>
+				<Lyrics id={id} />
 			</View>
 		</ScrollView>
 	);

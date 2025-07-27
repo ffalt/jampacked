@@ -42,14 +42,26 @@ export const PageHeader: React.FC<{
 	goLeft?: RouteLink;
 	goRight?: RouteLink;
 }> = ({ title, goLeft, goRight, subtitle }) => {
-	const goLeftButton = goLeft !== undefined ?
-			(<ClickIcon iconName="left-open" fontSize={styles.buttonIcon.fontSize} muted={true} onPress={(): void => NavigationService.navigateTo(goLeft.navig)}/>) :
-		undefined;
-	const goRightButton = goRight !== undefined ?
-			(<ClickIcon iconName="right-open" fontSize={styles.buttonIcon.fontSize} muted={true} onPress={(): void => NavigationService.navigateTo(goRight.navig)}/>) :
-		undefined;
+	const goLeftButton = goLeft === undefined ?
+		undefined :
+		(
+			<ClickIcon
+				iconName="left-open"
+				fontSize={styles.buttonIcon.fontSize}
+				muted={true}
+				onPress={(): void => NavigationService.navigateTo(goLeft.navig)} />
+		);
+	const goRightButton = goRight === undefined ?
+		undefined :
+		(
+			<ClickIcon
+				iconName="right-open"
+				fontSize={styles.buttonIcon.fontSize}
+				muted={true}
+				onPress={(): void => NavigationService.navigateTo(goRight.navig)} />
+		);
 	const subtitleView = subtitle ?
-			(<ThemedText style={styles.ListHeaderSubtitle}>{subtitle}</ThemedText>) :
+		(<ThemedText style={styles.ListHeaderSubtitle}>{subtitle}</ThemedText>) :
 		undefined;
 
 	const statusBarHeight = getStatusBarHeight();

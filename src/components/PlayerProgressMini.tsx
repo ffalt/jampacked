@@ -15,7 +15,7 @@ export const MiniProgressBar: React.FC = () => {
 	const width: DimensionValue = `${progress * 100}%`;
 	return (
 		<View style={[styles.miniProgress, { backgroundColor: theme.separator }]}>
-			<View style={[styles.miniProgress, { width, backgroundColor: theme.progress }]}/>
+			<View style={[styles.miniProgress, { width, backgroundColor: theme.progress }]} />
 		</View>
 	);
 };

@@ -27,5 +27,5 @@ export const GenreArtistsScreen: React.FC<GenreRouteProps<GenreRoute.ARTISTS>> =
 		}
 	}, [state]);
 
-	return (<BaseEntryListList query={view}/>);
+	return (<BaseEntryListList query={view} />);
 };

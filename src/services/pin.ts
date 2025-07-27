@@ -1,4 +1,4 @@
-import { Doc, PinMedia, PinState, PinCacheStat, TrackEntry } from './types';
+import { Document, PinMedia, PinState, PinCacheStat, TrackEntry } from './types';
 import { AudioFormatType, JamObjectType } from './jam';
 import { DataService } from './data';
 import { AlbumQuery } from './queries/album';
@@ -11,12 +11,12 @@ import { DownloadRequest, DownloadState, TrackPlayerDownloadManager } from './pl
 import { humanFileSize } from '../utils/filesize.utils';
 
 export class PinService {
-	private pinSubscriptions = new Map<string, Array<(state: PinState) => void>>();
+	manager: TrackPlayerDownloadManager = new TrackPlayerDownloadManager();
+	private readonly pinSubscriptions = new Map<string, Array<(state: PinState) => void>>();
 	private pinsChangeSubscriptions: Array<() => void> = [];
-	public manager: TrackPlayerDownloadManager = new TrackPlayerDownloadManager();
-	private dataFormatVersion = 1;
+	private readonly dataFormatVersion = 1;
 
-	constructor(private owner: DataService) {
+	constructor(private readonly owner: DataService) {
 	}
 
 	async init(): Promise<void> {
@@ -33,12 +33,10 @@ export class PinService {
 	}
 
 	async download(tracks: Array<TrackEntry>): Promise<void> {
-		const requests: Array<DownloadRequest> = tracks.map((t) => {
-			return {
-				id: t.id,
-				url: this.owner.jam.stream.streamUrl({ id: t.id, format: AudioFormatType.mp3 }, false)
-			};
-		});
+		const requests: Array<DownloadRequest> = tracks.map(track => ({
+			id: track.id,
+			url: this.owner.jam.stream.streamUrl({ id: track.id, format: AudioFormatType.mp3 }, false)
+		}));
 		await this.manager.download(requests);
 	}
 
@@ -53,12 +51,12 @@ export class PinService {
 		await this.owner.db.query(createPinTableScript);
 	}
 
-	private async getPinDocs<T>(): Promise<Array<Doc<T>>> {
+	private async getPinDocs<T>(): Promise<Array<Document<T>>> {
 		try {
 			const results = await this.owner.db.query('SELECT * FROM pin');
-			const list: Array<Doc<T>> = [];
-			for (let i = 0; i < results.rows.length; i++) {
-				const result = results.rows.item(i);
+			const list: Array<Document<T>> = [];
+			for (let index = 0; index < results.rows.length; index++) {
+				const result = results.rows.item(index);
 				list.push({
 					key: result.key,
 					version: result.version,
@@ -67,13 +65,13 @@ export class PinService {
 				});
 			}
 			return list;
-		} catch (e) {
-			console.error(e);
+		} catch (error) {
+			console.error(error);
 			return [];
 		}
 	}
 
-	private async getPinDoc<T>(id: string): Promise<Doc<T> | undefined> {
+	private async getPinDoc<T>(id: string): Promise<Document<T> | undefined> {
 		try {
 			const results = await this.owner.db.query('SELECT * FROM pin WHERE key=?', [id]);
 			const result = results.rows.item(0);
@@ -85,8 +83,8 @@ export class PinService {
 					data: JSON.parse(result.data)
 				};
 			}
-		} catch (e) {
-			console.error(e);
+		} catch (error) {
+			console.error(error);
 		}
 	}
 
@@ -105,7 +103,7 @@ export class PinService {
 
 	async hasAnyCurrentDownloads(ids: Array<string>): Promise<boolean> {
 		const downloads = this.manager.getCurrentDownloads();
-		return !!downloads.find(d => ids.includes(d.id));
+		return downloads.some(d => ids.includes(d.id));
 	}
 
 	async stat(): Promise<PinCacheStat> {
@@ -123,23 +121,23 @@ export class PinService {
 
 	async getPinState(id: string): Promise<PinState> {
 		const key = `pin_${id}`;
-		const doc = await this.getPinDoc<PinMedia>(key);
-		if (!doc) {
+		const document = await this.getPinDoc<PinMedia>(key);
+		if (!document) {
 			return {
 				active: false,
 				pinned: false
 			};
 		}
-		const active = await this.hasAnyCurrentDownloads(doc.data.tracks.map(t => t.id));
+		const active = await this.hasAnyCurrentDownloads(document.data.tracks.map(t => t.id));
 		return {
 			active,
 			pinned: true
 		};
 	}
 
-	async pinObject(id: string, objType: JamObjectType, name: string, tracks: Array<TrackEntry>): Promise<void> {
-		if (tracks.length) {
-			const data: PinMedia = { id, name, objType, tracks };
+	async pinObject(id: string, objectType: JamObjectType, name: string, tracks: Array<TrackEntry>): Promise<void> {
+		if (tracks.length > 0) {
+			const data: PinMedia = { id, name, objType: objectType, tracks };
 			await this.setPinDoc(id, data);
 			await this.download(tracks);
 			this.notifyPinChange(id, { active: false, pinned: true });
@@ -160,7 +158,7 @@ export class PinService {
 	async pinFolder(id: string): Promise<void> {
 		const folder = await this.owner.cache.getCacheOrQuery(FolderQuery.query, FolderQuery.transformVariables(id), FolderQuery.transformData);
 		if (folder) {
-			await this.pinObject(id, JamObjectType.folder, folder.title || id, folder.tracks || []);
+			await this.pinObject(id, JamObjectType.folder, folder.title ?? id, folder.tracks ?? []);
 		} else {
 			snackError(new Error('Album not found'));
 		}
@@ -169,7 +167,7 @@ export class PinService {
 	async pinPlaylist(id: string): Promise<void> {
 		const playlist = await this.owner.cache.getCacheOrQuery(PlaylistQuery.query, PlaylistQuery.transformVariables(id), PlaylistQuery.transformData);
 		if (playlist) {
-			await this.pinObject(id, JamObjectType.playlist, playlist.name || id, playlist.tracks || []);
+			await this.pinObject(id, JamObjectType.playlist, playlist.name ?? id, playlist.tracks ?? []);
 		} else {
 			snackError(new Error('Playlist not found'));
 		}
@@ -178,7 +176,7 @@ export class PinService {
 	async pinTrack(id: string): Promise<void> {
 		const track = await this.owner.cache.getCacheOrQuery(TrackQuery.query, TrackQuery.transformVariables(id), TrackQuery.transformData);
 		if (track) {
-			await this.pinObject(id, JamObjectType.track, track.title || id, [track]);
+			await this.pinObject(id, JamObjectType.track, track.title ?? id, [track]);
 		} else {
 			snackError(new Error('Track not found'));
 		}
@@ -187,32 +185,37 @@ export class PinService {
 	async pinPodcastEpisode(id: string): Promise<void> {
 		const track = await this.owner.cache.getCacheOrQuery(PodcastEpisodeQuery.query, PodcastEpisodeQuery.transformVariables(id), PodcastEpisodeQuery.transformData);
 		if (track) {
-			await this.pinObject(id, JamObjectType.episode, track.title || id, [track]);
+			await this.pinObject(id, JamObjectType.episode, track.title ?? id, [track]);
 		} else {
 			snackError(new Error('Episode not found'));
 		}
 	}
 
-	async pin(id: string, objType: JamObjectType): Promise<void> {
+	async pin(id: string, objectType: JamObjectType): Promise<void> {
 		this.notifyPinChange(id, { active: true, pinned: true });
-		switch (objType) {
-			case JamObjectType.album:
+		switch (objectType) {
+			case JamObjectType.album: {
 				await this.pinAlbum(id);
 				break;
-			case JamObjectType.track:
+			}
+			case JamObjectType.track: {
 				await this.pinTrack(id);
 				break;
-			case JamObjectType.folder:
+			}
+			case JamObjectType.folder: {
 				await this.pinFolder(id);
 				break;
-			case JamObjectType.playlist:
+			}
+			case JamObjectType.playlist: {
 				await this.pinPlaylist(id);
 				break;
-			case JamObjectType.episode:
+			}
+			case JamObjectType.episode: {
 				await this.pinPodcastEpisode(id);
 				break;
+			}
 			default: {
-				snackError(new Error(`Pinning this object type is not supported: ${objType}`));
+				snackError(new Error(`Pinning this object type is not supported: ${objectType}`));
 				this.notifyPinChange(id, { active: false, pinned: false });
 			}
 		}
@@ -221,10 +224,10 @@ export class PinService {
 
 	async unpin(id: string): Promise<void> {
 		const key = `pin_${id}`;
-		const doc = await this.getPinDoc<PinMedia>(key);
-		if (doc) {
+		const document = await this.getPinDoc<PinMedia>(key);
+		if (document) {
 			this.notifyPinChange(id, { active: true, pinned: false });
-			const ids = await this.filterPinnedByOthers(key, doc.data.tracks.map(t => t.id));
+			const ids = await this.filterPinnedByOthers(key, document.data.tracks.map(t => t.id));
 			await this.manager.remove(ids);
 			await this.clearPinDoc(key);
 			this.notifyPinChange(id, { active: false, pinned: false });
@@ -234,15 +237,15 @@ export class PinService {
 
 	async getPinCount(): Promise<number> {
 		// TODO: make this more efficient
-		const docs = await this.getPinDocs<PinMedia>();
-		return docs.length;
+		const documents = await this.getPinDocs<PinMedia>();
+		return documents.length;
 	}
 
 	async getPinnedTrack(id: string): Promise<TrackEntry | undefined> {
 		// TODO: make this more efficient
-		const docs = await this.getPinDocs<PinMedia>();
-		for (const doc of docs) {
-			const track = doc.data.tracks.find(t => t.id === id);
+		const documents = await this.getPinDocs<PinMedia>();
+		for (const document of documents) {
+			const track = document.data.tracks.find(t => t.id === id);
 			if (track) {
 				return track;
 			}
@@ -250,16 +253,16 @@ export class PinService {
 	}
 
 	async filterPinnedByOthers(currentKey: string, ids: Array<string>): Promise<Array<string>> {
-		const result = ids.slice(0);
+		const result = [...ids];
 		// TODO: make this more efficient
-		const docs = await this.getPinDocs<PinMedia>();
-		for (const doc of docs) {
-			if (doc.key === currentKey) {
+		const documents = await this.getPinDocs<PinMedia>();
+		for (const document of documents) {
+			if (document.key === currentKey) {
 				continue;
 			}
-			for (const track of doc.data.tracks) {
-				const index = result.findIndex(s => track.id === s);
-				if (index >= 0) {
+			for (const track of document.data.tracks) {
+				const index = result.indexOf(track.id);
+				if (index !== -1) {
 					result.splice(index, 1);
 				}
 			}
@@ -269,7 +272,9 @@ export class PinService {
 
 	notifyPinChange(id: string, state: PinState): void {
 		const array = this.pinSubscriptions.get(id) || [];
-		array.forEach(update => update(state));
+		for (const update of array) {
+			update(state);
+		}
 	}
 
 	subscribeCacheChangeUpdates(listen: () => void): void {
@@ -305,7 +310,13 @@ export class PinService {
 	}
 
 	notifyPinsChange(): void {
-		this.pinsChangeSubscriptions.forEach(update => update());
+		this.updateList(this.pinsChangeSubscriptions);
+	}
+
+	updateList(updates: Array<() => void>): void {
+		for (const update of updates) {
+			update();
+		}
 	}
 
 	async clearPins(): Promise<void> {
@@ -314,7 +325,7 @@ export class PinService {
 	}
 
 	async getPins(): Promise<Array<PinMedia>> {
-		const docs = await this.getPinDocs<PinMedia>();
-		return docs.map(doc => doc.data);
+		const documents = await this.getPinDocs<PinMedia>();
+		return documents.map(document => document.data);
 	}
 }

@@ -8,21 +8,19 @@ import { TrackResultDocument, TrackResultQuery, TrackResultQueryVariables } from
 
 export type TrackResult_track = NonNullable<TrackResultQuery>['track'];
 
-export const transformTrack = (track: TrackResult_track): TrackEntry => {
-	return {
-		id: track.id,
-		title: track.tag?.title || track.name,
-		artist: track.artist?.name || '?',
-		genre: track.genres?.length ? (track.genres || []).map(g => g.name).join(' / ') : undefined,
-		album: track.album?.name || '?',
-		albumID: track.album?.id,
-		artistID: track.artist?.id,
-		seriesID: track.series?.id,
-		trackNr: (track.tag?.disc && track.tag?.disc > 1 ? `${track.tag?.disc}-` : '') + (track.tag?.trackNr || ''),
-		durationMS: track.tag?.mediaDuration || 0,
-		duration: formatDuration(track.tag?.mediaDuration || undefined)
-	};
-};
+export const transformTrack = (track: TrackResult_track): TrackEntry => ({
+	id: track.id,
+	title: track.tag?.title ?? track.name,
+	artist: track.artist?.name ?? '?',
+	genre: track.genres?.length ? (track.genres || []).map(g => g.name).join(' / ') : undefined,
+	album: track.album?.name ?? '?',
+	albumID: track.album?.id,
+	artistID: track.artist?.id,
+	seriesID: track.series?.id,
+	trackNr: (track.tag?.disc && track.tag?.disc > 1 ? `${track.tag?.disc}-` : '') + (track.tag?.trackNr || ''),
+	durationMS: track.tag?.mediaDuration ?? 0,
+	duration: formatDuration(track.tag?.mediaDuration ?? undefined)
+});
 
 export const transformData = (data?: TrackResultQuery): TrackEntry | undefined => {
 	if (!data) {

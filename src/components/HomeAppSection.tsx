@@ -22,7 +22,7 @@ export const HomeAppSection: React.FC = () => {
 				<ThemedText style={sharedStyles.sectionHeaderText}>Pinned</ThemedText>
 			</View>
 			<View style={styles.homeStatContainer}>
-				<Stat key="Media" stat={{ link: JamRouteLinks.pinned(), value: pinCount }}/>
+				<Stat key="Media" stat={{ link: JamRouteLinks.pinned(), value: pinCount }} />
 			</View>
 		</>
 	);

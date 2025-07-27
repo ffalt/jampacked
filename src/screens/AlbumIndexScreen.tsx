@@ -33,7 +33,7 @@ export const AlbumIndexScreen: React.FC<AlbumsRouteProps<AlbumsRoute.INDEX>> = (
 	}, [albumType, getIndex]);
 
 	if (error) {
-		return (<ErrorView error={error} onRetry={reload}/>);
+		return (<ErrorView error={error} onRetry={reload} />);
 	}
 
 	return (

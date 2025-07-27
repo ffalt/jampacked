@@ -23,5 +23,5 @@ export const TrackList: React.FC<{ query: { listType?: ListType; goLeft?: RouteL
 		});
 	}, [query]);
 
-	return (<TrackEntryListList query={view}/>);
+	return (<TrackEntryListList query={view} />);
 };

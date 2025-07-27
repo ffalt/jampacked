@@ -11,8 +11,8 @@ function transformData(data?: SeriesIndexResultQuery): Index | undefined {
 		return;
 	}
 	const index: Index = [];
-	data.seriesIndex.groups.forEach((group) => {
-		group.items.forEach((entry) => {
+	for (const group of data.seriesIndex.groups) {
+		for (const entry of group.items) {
 			index.push({
 				id: entry.id,
 				objType: JamObjectType.series,
@@ -20,8 +20,8 @@ function transformData(data?: SeriesIndexResultQuery): Index | undefined {
 				title: entry.name,
 				letter: group.name
 			});
-		});
-	});
+		}
+	}
 	return index;
 }
 

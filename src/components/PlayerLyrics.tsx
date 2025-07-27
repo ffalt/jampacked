@@ -5,6 +5,6 @@ import { Lyrics } from './Lyrics';
 export const PlayerLyrics: React.FC = () => {
 	const currentTrackID = useCurrentTrackID();
 	return (
-		<Lyrics id={currentTrackID}/>
+		<Lyrics id={currentTrackID} />
 	);
 };

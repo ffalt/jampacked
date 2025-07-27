@@ -28,5 +28,5 @@ export const GenreAlbumsScreen: React.FC<GenreRouteProps<GenreRoute.ALBUMS>> = (
 		}
 	}, [state]);
 
-	return (<BaseEntryListList query={view}/>);
+	return (<BaseEntryListList query={view} />);
 };

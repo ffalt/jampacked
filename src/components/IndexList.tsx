@@ -30,15 +30,15 @@ export const IndexList: React.FC<{
 	goRight?: RouteLink;
 }> = ({ title, index, refreshing, onRefresh, goLeft, goRight }) => {
 	const tiles = false;
-	const numColumns = 3;
+	const numberColumns = 3;
 	const width = useWindowWidth();
-	const tileSize = width / (numColumns || 1);
+	const tileSize = width / (numberColumns || 1);
 	const theme = useTheme();
 
-	const renderItemRow = useCallback(({ item }: { item: IndexEntry }): React.JSX.Element => (<Item item={item}/>), []);
-	const renderItemTile = useCallback(({ item }: { item: IndexEntry }): React.JSX.Element => (<ImageItem item={item} size={tileSize}/>), [tileSize]);
+	const renderItemRow = useCallback(({ item }: { item: IndexEntry }): React.JSX.Element => (<Item item={item} />), []);
+	const renderItemTile = useCallback(({ item }: { item: IndexEntry }): React.JSX.Element => (<ImageItem item={item} size={tileSize} />), [tileSize]);
 
-	const ListHeaderComponent = (<PageHeader title={title} goLeft={goLeft} goRight={goRight}/>);
+	const ListHeaderComponent = (<PageHeader title={title} goLeft={goLeft} goRight={goRight} />);
 	const refreshControl = (
 		<RefreshControl
 			refreshing={refreshing}
@@ -48,7 +48,7 @@ export const IndexList: React.FC<{
 			colors={theme.refreshCtrlColors}
 		/>
 	);
-	const ListEmptyComponent = (<ListEmpty list={index}/>);
+	const ListEmptyComponent = (<ListEmpty list={index} />);
 
 	if (tiles) {
 		return (
@@ -57,7 +57,7 @@ export const IndexList: React.FC<{
 				key="tiles"
 				renderItem={renderItemTile}
 				keyExtractor={defaultKeyExtractor}
-				numColumns={numColumns}
+				numColumns={numberColumns}
 				ListHeaderComponent={ListHeaderComponent}
 				ListEmptyComponent={ListEmptyComponent}
 				columnWrapperStyle={styles.row}

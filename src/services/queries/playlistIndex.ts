@@ -11,7 +11,7 @@ function transformData(data?: PlaylistIndexResultQuery): Index | undefined {
 		return;
 	}
 	const index: Index = [];
-	data.playlists.items.forEach((playlist) => {
+	for (const playlist of data.playlists.items) {
 		index.push({
 			id: playlist.id,
 			objType: JamObjectType.playlist,
@@ -19,7 +19,7 @@ function transformData(data?: PlaylistIndexResultQuery): Index | undefined {
 			title: playlist.name,
 			letter: playlist.name[0]
 		});
-	});
+	}
 	return index;
 }
 

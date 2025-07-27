@@ -5,26 +5,42 @@ import * as Types from './_types';
 
 import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
-export type GenreIndexResultQueryVariables = Types.Exact<{ [key: string]: never; }>;
+export type GenreIndexResultQueryVariables = Types.Exact<{
+	[key: string]: never;
+}>;
 
-
-export type GenreIndexResultQuery = { genreIndex: { groups: Array<{ name: string, items: Array<{ id: string, name: string, albumCount: number, artistCount: number, trackCount: number }> }> } };
-
+export interface GenreIndexResultQuery {
+	genreIndex: {
+		groups: Array<{
+			name: string;
+			items: Array<{
+				id: string;
+				name: string;
+				albumCount: number;
+				artistCount: number;
+				trackCount: number;
+			}>;
+		}>;
+	};
+}
 
 export const GenreIndexResultDocument = gql`
-    query GenreIndexResult {
-  genreIndex {
-    groups {
-      name
-      items {
-        id
-        name
-        albumCount
-        artistCount
-        trackCount
-      }
-    }
+  query GenreIndexResult {
+  	genreIndex {
+  		groups {
+  			name
+  			items {
+  				id
+  				name
+  				albumCount
+  				artistCount
+  				trackCount
+  			}
+  		}
+  	}
   }
-}
-    `;
-export type GenreIndexResultQueryResult = Apollo.QueryResult<GenreIndexResultQuery, GenreIndexResultQueryVariables>;
+`;
+export type GenreIndexResultQueryResult = Apollo.QueryResult<
+	GenreIndexResultQuery,
+	GenreIndexResultQueryVariables
+>;

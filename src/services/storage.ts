@@ -3,8 +3,7 @@ import { Database } from './db';
 export class StorageService {
 	version = 1;
 
-	constructor(private db: Database) {
-
+	constructor(private readonly db: Database) {
 	}
 
 	async init(): Promise<void> {

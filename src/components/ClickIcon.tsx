@@ -3,7 +3,7 @@ import { StyleProp, TouchableOpacity, ViewStyle } from 'react-native';
 import { useTheme } from '../style/theming';
 import { ThemedIcon } from './ThemedIcon';
 
-interface ClickIconParams {
+interface ClickIconParameters {
 	iconName: string;
 	style?: StyleProp<ViewStyle>;
 	fontSize?: number;
@@ -14,20 +14,24 @@ interface ClickIconParams {
 	onPress: () => void;
 }
 
-export const ClickIcon: React.FC<ClickIconParams> =
+export const ClickIcon: React.FC<ClickIconParameters> =
 	({ iconName, clickThrough, style, fontSize, disabled, color, muted, onPress }) => {
 		const theme = useTheme();
 		const iconColor = color || (muted ? theme.muted : undefined);
 
 		return (
-			<TouchableOpacity style={style} onPress={(e): void => {
-				onPress();
-				if (!clickThrough) {
-					e.preventDefault();
-					e.stopPropagation();
-				}
-			}} disabled={disabled}>
-				<ThemedIcon name={iconName} size={fontSize} color={iconColor}/>
+			<TouchableOpacity
+				style={style}
+				onPress={(event): void => {
+					onPress();
+					if (!clickThrough) {
+						event.preventDefault();
+						event.stopPropagation();
+					}
+				}}
+				disabled={disabled}
+			>
+				<ThemedIcon name={iconName} size={fontSize} color={iconColor} />
 			</TouchableOpacity>
 		);
 	};

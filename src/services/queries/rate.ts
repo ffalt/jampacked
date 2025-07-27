@@ -4,7 +4,7 @@ import { RateResultDocument, RateResultQuery, RateResultQueryVariables, SetRateR
 
 function transformData(data: RateResultQuery | undefined): { rated?: number } {
 	const value = data?.state?.rated;
-	return { rated: (value === null) ? undefined : value };
+	return { rated: value ?? undefined };
 }
 
 export const useLazyRateQuery = (): [(id: string) => void,
@@ -16,7 +16,7 @@ export const useLazyRateQuery = (): [(id: string) => void,
 		setRating: (rate: number) => void;
 	}
 ] => {
-	const [rating, setRate] = useState<{ rated?: number } | undefined>(undefined);
+	const [rate, setRate] = useState<{ rated?: number } | undefined>(undefined);
 	const [query, { loading, error, called, data }] = useLazyQuery<RateResultQuery, RateResultQueryVariables>(RateResultDocument);
 
 	useEffect(() => {
@@ -24,7 +24,7 @@ export const useLazyRateQuery = (): [(id: string) => void,
 	}, [data]);
 
 	const get = useCallback((id: string): void => {
-		query({ variables: { id } });
+		query({ variables: { id } }).catch(console.error);
 	}, [query]);
 
 	const setRating = useCallback((rate: number): void => {
@@ -37,7 +37,7 @@ export const useLazyRateQuery = (): [(id: string) => void,
 			loading,
 			called,
 			error,
-			rating,
+			rating: rate,
 			setRating
 		}
 	];

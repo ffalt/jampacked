@@ -1,5 +1,5 @@
-export function padTime(val: number): string {
-	return (val <= 9) ? `0${val}` : val.toString();
+export function padTime(value: number): string {
+	return (value <= 9) ? `0${value}` : value.toString();
 }
 
 function splitTime(value: number): { days: number; hours: number; minutes: number; seconds: number } {
@@ -10,8 +10,8 @@ function splitTime(value: number): { days: number; hours: number; minutes: numbe
 		seconds: 0
 	};
 	let delta = value;
-	duration.days = Math.floor(delta / 86400);
-	delta -= duration.days * 86400;
+	duration.days = Math.floor(delta / 86_400);
+	delta -= duration.days * 86_400;
 	// calculate (and subtract) whole hours
 	duration.hours = Math.floor(delta / 3600) % 24;
 	delta -= duration.hours * 3600;
@@ -23,11 +23,11 @@ function splitTime(value: number): { days: number; hours: number; minutes: numbe
 	return duration;
 }
 
-export function formatDuration(val?: number): string {
-	if (val === undefined) {
+export function formatDuration(value?: number): string {
+	if (value === undefined) {
 		return '';
 	}
-	const time = splitTime(val / 1000);
+	const time = splitTime(value / 1000);
 	const duration: Array<string> = [];
 	if (time.days > 0) {
 		duration.push(`${time.days}d `);
@@ -39,7 +39,6 @@ export function formatDuration(val?: number): string {
 			duration.push(`${time.hours}:`);
 		}
 	}
-	duration.push(padTime(time.minutes));
-	duration.push(`:${padTime(time.seconds)}`);
+	duration.push(padTime(time.minutes), `:${padTime(time.seconds)}`);
 	return duration.join('');
 }

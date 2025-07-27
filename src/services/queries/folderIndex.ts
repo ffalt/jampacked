@@ -12,11 +12,9 @@ function transformData(data?: FolderIndexResultQuery): Index | undefined {
 		return;
 	}
 	const index: Index = [];
-	data.folderIndex.groups.forEach((group) => {
-		group.items.forEach((entry) => {
+	for (const group of data.folderIndex.groups) {
+		for (const entry of group.items) {
 			const desc = `${titleCase(entry.folderType || '')}`;
-			// `${(entry.tracksCount || 0) > 0 ? `Tracks: ${entry.tracksCount}` :
-			// (@(entry.childrenCount || 0) > 0 ? `Folder: ${entry.childrenCount}` : '')}`;
 			index.push({
 				id: entry.id,
 				objType: JamObjectType.folder,
@@ -24,8 +22,8 @@ function transformData(data?: FolderIndexResultQuery): Index | undefined {
 				title: entry.name,
 				letter: group.name
 			});
-		});
-	});
+		}
+	}
 	return index;
 }
 

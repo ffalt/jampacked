@@ -38,20 +38,20 @@ export const CachingView: React.FC<{ title: string }> = ({ title }) => {
 			<View style={styles.container}>
 				<ThemedText style={styles.text}>{title}</ThemedText>
 				<View style={styles.button}>
-					<Button title="Optimize" onPress={startCache}/>
+					<Button title="Optimize" onPress={startCache} />
 				</View>
 				<View style={styles.button}>
-					<Button title="Clear" onPress={clearCache}/>
+					<Button title="Clear" onPress={clearCache} />
 				</View>
 			</View>
 		);
 	}
 	return (
 		<View style={styles.container}>
-			<ActivityIndicator size="small"/>
+			<ActivityIndicator size="small" />
 			<ThemedText style={styles.text}>{state.message}</ThemedText>
 			<View style={styles.button}>
-				<Button title="Stop" onPress={stopCache}/>
+				<Button title="Stop" onPress={stopCache} />
 			</View>
 		</View>
 	);

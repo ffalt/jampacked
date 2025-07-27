@@ -1,107 +1,116 @@
 import { CommonActions, NavigationContainerRef } from '@react-navigation/core';
 import { JamObjectType } from '../services/jam';
 import { AlbumRoute, AlbumsRoute, ArtistsRoute, FoldersRoute, GenreRoute, GenresRoute, HomeRoute, SeriesRoute, TracksRoute } from './Routing';
-import { Navig, NavigParams } from '../services/types';
+import { Navig, NavigParameters } from '../services/types';
 import { RouteLink } from './Routes';
 
 let navigator: NavigationContainerRef<any>;
 
-export class NavigationService {
-	static setTopLevelNavigator(navigatorRef: NavigationContainerRef<any>): void {
-		navigator = navigatorRef;
-	}
+export const NavigationService = {
+	setTopLevelNavigator(navigatorReference: NavigationContainerRef<any>): void {
+		navigator = navigatorReference;
+	},
 
-	static navigateToChild(parentRouteName: string, routeName: string, defaultRouteName: string, params?: NavigParams): void {
+	navigateToChild(parentRouteName: string, routeName: string, defaultRouteName: string, parameters?: NavigParameters): void {
 		if (navigator) {
 			navigator.dispatch(
 				CommonActions.navigate({
 					name: parentRouteName,
 					params: {
-						...params,
-						screen: routeName !== parentRouteName ? routeName : defaultRouteName,
-						params
+						...parameters,
+						screen: routeName === parentRouteName ? defaultRouteName : routeName,
+						params: parameters
 					}
 				})
 			);
 		}
-	}
+	},
 
-	static navigate(routeName: string, params?: NavigParams): void {
+	navigate(routeName: string, parameters?: NavigParameters): void {
 		if (routeName.startsWith('Artists')) {
-			this.navigateToChild(HomeRoute.ARTISTS, routeName, ArtistsRoute.INDEX, params);
+			this.navigateToChild(HomeRoute.ARTISTS, routeName, ArtistsRoute.INDEX, parameters);
 			return;
 		}
 		if (routeName.startsWith('Albums')) {
-			this.navigateToChild(HomeRoute.ALBUMS, routeName, AlbumsRoute.INDEX, params);
+			this.navigateToChild(HomeRoute.ALBUMS, routeName, AlbumsRoute.INDEX, parameters);
 			return;
 		}
 		if (routeName.startsWith('Album')) {
-			this.navigateToChild(HomeRoute.ALBUM, routeName, AlbumRoute.MAIN, params);
+			this.navigateToChild(HomeRoute.ALBUM, routeName, AlbumRoute.MAIN, parameters);
 			return;
 		}
 		if (routeName.startsWith('Series')) {
-			this.navigateToChild(HomeRoute.SERIES, routeName, SeriesRoute.INDEX, params);
+			this.navigateToChild(HomeRoute.SERIES, routeName, SeriesRoute.INDEX, parameters);
 			return;
 		}
 		if (routeName.startsWith('Folders')) {
-			this.navigateToChild(HomeRoute.FOLDERS, routeName, FoldersRoute.INDEX, params);
+			this.navigateToChild(HomeRoute.FOLDERS, routeName, FoldersRoute.INDEX, parameters);
 			return;
 		}
 		if (routeName.startsWith('Tracks')) {
-			this.navigateToChild(HomeRoute.TRACKS, routeName, TracksRoute.FAV, params);
+			this.navigateToChild(HomeRoute.TRACKS, routeName, TracksRoute.FAV, parameters);
 			return;
 		}
 		if (routeName.startsWith('Genres')) {
-			this.navigateToChild(HomeRoute.GENRES, routeName, GenresRoute.INDEX, params);
+			this.navigateToChild(HomeRoute.GENRES, routeName, GenresRoute.INDEX, parameters);
 			return;
 		}
 		if (routeName.startsWith('Genre')) {
-			this.navigateToChild(HomeRoute.GENRE, routeName, GenreRoute.ARTISTS, params);
+			this.navigateToChild(HomeRoute.GENRE, routeName, GenreRoute.ARTISTS, parameters);
 			return;
 		}
 		if (navigator) {
 			navigator.dispatch(
-				CommonActions.navigate({ name: routeName, params })
+				CommonActions.navigate({ name: routeName, params: parameters })
 			);
 		}
-	}
+	},
 
-	static navigateTo(navig: Navig): void {
+	navigateTo(navig: Navig): void {
 		NavigationService.navigate(navig.route, navig.params);
-	}
+	},
 
-	static navigateLink(link: RouteLink): void {
+	navigateLink(link: RouteLink): void {
 		NavigationService.navigateTo(link.navig);
-	}
+	},
 
-	static routeByObjType(objType: JamObjectType): string | undefined {
-		switch (objType) {
-			case JamObjectType.album:
+	routeByObjType(objectType: JamObjectType): string | undefined {
+		switch (objectType) {
+			case JamObjectType.album: {
 				return HomeRoute.ALBUM;
-			case JamObjectType.artist:
+			}
+			case JamObjectType.artist: {
 				return HomeRoute.ARTIST;
-			case JamObjectType.folder:
+			}
+			case JamObjectType.folder: {
 				return HomeRoute.FOLDER;
-			case JamObjectType.track:
+			}
+			case JamObjectType.track: {
 				return HomeRoute.TRACK;
-			case JamObjectType.podcast:
+			}
+			case JamObjectType.podcast: {
 				return HomeRoute.PODCAST;
-			case JamObjectType.episode:
+			}
+			case JamObjectType.episode: {
 				return HomeRoute.EPISODE;
-			case JamObjectType.playlist:
+			}
+			case JamObjectType.playlist: {
 				return HomeRoute.PLAYLIST;
-			case JamObjectType.series:
+			}
+			case JamObjectType.series: {
 				return HomeRoute.SERIE;
-			case JamObjectType.genre:
+			}
+			case JamObjectType.genre: {
 				return HomeRoute.GENRE;
+			}
 			default:
 		}
-	}
+	},
 
-	static navigateObj(objType: string, id: string, name: string): void {
-		const route = NavigationService.routeByObjType(objType as JamObjectType);
+	navigateObj(objectType: string, id: string, name: string): void {
+		const route = NavigationService.routeByObjType(objectType as JamObjectType);
 		if (route) {
 			NavigationService.navigate(route, { id, name });
 		}
 	}
-}
+};

@@ -1,12 +1,11 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import {JamBaseService} from '../jam.base.service';
-import {Jam} from '../model/jam-rest-data';
+import { JamBaseService } from '../jam.base.service';
+import type { Jam } from '../model/jam-rest-data';
 
 export class JamPingService {
-
-	constructor(private base: JamBaseService) {
+	constructor(private readonly base: JamBaseService) {
 	}
 
 	/**
@@ -15,5 +14,4 @@ export class JamPingService {
 	async ping(): Promise<Jam.Ping> {
 		return this.base.requestData<Jam.Ping>('/ping', {});
 	}
-
 }

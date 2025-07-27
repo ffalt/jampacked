@@ -6,31 +6,46 @@ import * as Types from './_types';
 import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
 export type SeriesResultQueryVariables = Types.Exact<{
-  id: Types.Scalars['ID']['input'];
+	id: Types.Scalars['ID']['input'];
 }>;
 
-
-export type SeriesResultQuery = { series: { id: string, name: string, tracksCount: number, artist?: { id: string, name: string } | null, albums: Array<{ id: string, name: string, albumType: Types.AlbumType, seriesNr?: string | null, year?: number | null }> } };
-
+export interface SeriesResultQuery {
+	series: {
+		id: string;
+		name: string;
+		tracksCount: number;
+		artist?: { id: string; name: string } | null;
+		albums: Array<{
+			id: string;
+			name: string;
+			albumType: Types.AlbumType;
+			seriesNr?: string | null;
+			year?: number | null;
+		}>;
+	};
+}
 
 export const SeriesResultDocument = gql`
-    query SeriesResult($id: ID!) {
-  series(id: $id) {
-    id
-    name
-    artist {
-      id
-      name
-    }
-    tracksCount
-    albums {
-      id
-      name
-      albumType
-      seriesNr
-      year
-    }
+  query SeriesResult($id: ID!) {
+  	series(id: $id) {
+  		id
+  		name
+  		artist {
+  			id
+  			name
+  		}
+  		tracksCount
+  		albums {
+  			id
+  			name
+  			albumType
+  			seriesNr
+  			year
+  		}
+  	}
   }
-}
-    `;
-export type SeriesResultQueryResult = Apollo.QueryResult<SeriesResultQuery, SeriesResultQueryVariables>;
+`;
+export type SeriesResultQueryResult = Apollo.QueryResult<
+	SeriesResultQuery,
+	SeriesResultQueryVariables
+>;

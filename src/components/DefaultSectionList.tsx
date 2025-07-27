@@ -6,7 +6,7 @@ import { Separator } from './Separator';
 import { defaultKeyExtractor } from '../utils/list.utils';
 import { ErrorView } from './ErrorView';
 
-interface DefaultSectionListParams<T> {
+interface DefaultSectionListParameters<T> {
 	style?: StyleProp<ViewStyle>;
 	error?: Error;
 	ListHeaderComponent?: React.ComponentType<any> | React.ReactElement | null;
@@ -20,7 +20,7 @@ interface DefaultSectionListParams<T> {
 	extraData?: any;
 }
 
-export const DefaultSectionList: React.FC<DefaultSectionListParams<any>> = (
+export const DefaultSectionList: React.FC<DefaultSectionListParameters<any>> = (
 	{
 		sections, error, reload, renderItem, extraData, loading, style,
 		renderSectionHeader,
@@ -31,7 +31,7 @@ export const DefaultSectionList: React.FC<DefaultSectionListParams<any>> = (
 ) => {
 	const theme = useTheme();
 	if (error) {
-		return (<ErrorView error={error} onRetry={reload}/>);
+		return (<ErrorView error={error} onRetry={reload} />);
 	}
 	return (
 		<SectionList
@@ -39,7 +39,7 @@ export const DefaultSectionList: React.FC<DefaultSectionListParams<any>> = (
 			sections={sections || []}
 			extraData={extraData}
 			ListHeaderComponent={ListHeaderComponent}
-			ListEmptyComponent={<ListEmpty list={sections}/>}
+			ListEmptyComponent={<ListEmpty list={sections} />}
 			renderSectionHeader={renderSectionHeader}
 			ItemSeparatorComponent={ItemSeparatorComponent || (ItemSeparatorComponent === null) ? ItemSeparatorComponent : Separator}
 			SectionSeparatorComponent={SectionSeparatorComponent || (SectionSeparatorComponent === null) ? SectionSeparatorComponent : Separator}

@@ -35,28 +35,22 @@ export interface TrackDisplay {
 
 export type TrackDisplayFunction = (track: TrackEntry) => TrackDisplay;
 
-export const defaultTrackDisplay = (track: TrackEntry): TrackDisplay => {
-	return {
-		column1: track.trackNr,
-		column2title: track.title,
-		column3: track.duration
-	};
-};
-export const defaultShowArtistTrackDisplay = (track: TrackEntry): TrackDisplay => {
-	return {
-		column1: track.trackNr,
-		column2title: track.title,
-		column2sub: track.artist,
-		column3: track.duration
-	};
-};
-export const defaultListTrackDisplay = (track: TrackEntry): TrackDisplay => {
-	return {
-		column2title: track.title,
-		column2sub: track.artist,
-		column3: track.duration
-	};
-};
+export const defaultTrackDisplay = (track: TrackEntry): TrackDisplay => ({
+	column1: track.trackNr,
+	column2title: track.title,
+	column3: track.duration
+});
+export const defaultShowArtistTrackDisplay = (track: TrackEntry): TrackDisplay => ({
+	column1: track.trackNr,
+	column2title: track.title,
+	column2sub: track.artist,
+	column3: track.duration
+});
+export const defaultListTrackDisplay = (track: TrackEntry): TrackDisplay => ({
+	column2title: track.title,
+	column2sub: track.artist,
+	column3: track.duration
+});
 export const TrackItem: React.FC<{
 	track: TrackEntry; displayFunc?: TrackDisplayFunction;
 	isSelected?: boolean;
@@ -98,11 +92,11 @@ export const TrackItem: React.FC<{
 	);
 
 	const columnCheck = showCheck ?
-			(
-				<View style={styles.trackListCheck}>
-					<ThemedCheckbox isSelected={isSelected}/>
-				</View>
-			) :
+		(
+			<View style={styles.trackListCheck}>
+				<ThemedCheckbox isSelected={isSelected} />
+			</View>
+		) :
 		undefined;
 
 	return (

@@ -15,25 +15,24 @@ const styles = StyleSheet.create({
 		columnGap: staticTheme.paddingLarge,
 		flexGrow: 1
 	},
-	star: {
-	}
+	star: {}
 });
 
 export const Rating: React.FC<{ id?: string; objType: JamObjectType; style?: StyleProp<ViewStyle>; fontSize?: number }> = ({ id, style, fontSize }) => {
 	const [rate, setRate] = useState<number>(0);
 	const [getRating, { rating, loading }] = useLazyRateQuery();
 	const [setRatingMutation] = useRateMutation();
-	const isUnmountedRef = useRef(true);
+	const isUnmountedReference = useRef(true);
 
 	useEffect(() => {
-		isUnmountedRef.current = false;
+		isUnmountedReference.current = false;
 		return () => {
-			isUnmountedRef.current = true;
+			isUnmountedReference.current = true;
 		};
 	}, []);
 
 	useEffect(() => {
-		if (id && !isUnmountedRef.current) {
+		if (id && !isUnmountedReference.current) {
 			getRating(id);
 		}
 	}, [getRating, id]);
@@ -43,7 +42,7 @@ export const Rating: React.FC<{ id?: string; objType: JamObjectType; style?: Sty
 			return;
 		}
 		if (rating) {
-			if (isUnmountedRef.current) {
+			if (isUnmountedReference.current) {
 				return;
 			}
 			setRate(rating.rated === undefined ? -1 : rating.rated);
@@ -52,10 +51,10 @@ export const Rating: React.FC<{ id?: string; objType: JamObjectType; style?: Sty
 
 	const handleRate = (r: number): void => {
 		if (!loading && id) {
-			const destRating = r === rate ? r - 1 : r;
-			setRatingMutation({ variables: { id, rating: destRating } })
-				.then((result) => {
-					if (isUnmountedRef.current) {
+			const destinationRating = r === rate ? r - 1 : r;
+			setRatingMutation({ variables: { id, rating: destinationRating } })
+				.then(result => {
+					if (isUnmountedReference.current) {
 						return;
 					}
 					const resultRating = result.data?.rate?.rated;
@@ -63,7 +62,8 @@ export const Rating: React.FC<{ id?: string; objType: JamObjectType; style?: Sty
 					setRate(newRate);
 					snackSuccess(`Rated with ${newRate}`);
 					dataService.cache.updateHomeData().catch(console.error);
-				});
+				})
+				.catch(console.error);
 		}
 	};
 

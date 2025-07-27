@@ -2,15 +2,14 @@ import React, { MutableRefObject, useCallback, useEffect, useState } from 'react
 import { defaultShowArtistTrackDisplay, defaultTrackDisplay, TrackItem } from '../components/TrackItem';
 import { HomeRoute, HomeRouteProps } from '../navigators/Routing';
 import { JamPlayer } from '../services/player';
-import { HeaderDetail, ObjHeader, objHeaderStyles } from '../components/ObjHeader';
+import { HeaderDetail, ObjectHeader, objectHeaderStyles } from '../components/ObjectHeader.tsx';
 import { genreDisplay } from '../utils/genre.utils';
 import { snackError } from '../services/snack';
 import { Item } from '../components/Item';
 import { FolderType, JamObjectType } from '../services/jam';
-import { Folder, FolderItem } from '../services/queries/folder';
+import { Folder, FolderItem, useLazyFolderQuery } from '../services/queries/folder';
 import { ErrorView } from '../components/ErrorView';
-import { useLazyFolderQuery } from '../services/queries/folder';
-import { DefaultFlatList } from '../components/DefFlatList';
+import { DefaultFlatList } from '../components/DefaultFlatList.tsx';
 import { MUSICBRAINZ_VARIOUS_ARTISTS_NAME } from './AlbumScreen';
 import { TrackEntry } from '../services/types';
 import { FloatingAction } from 'react-native-floating-action';
@@ -22,21 +21,23 @@ import { Rating } from '../components/Rating';
 const buildDetails = (folder?: Folder): Array<HeaderDetail> => {
 	let result: Array<HeaderDetail> = [];
 	switch (folder?.type) {
-		case FolderType.artist:
+		case FolderType.artist: {
 			result = [
 				{ title: 'Folders', value: `${folder?.folderCount || ''}` },
 				{ title: 'Tracks', value: `${folder?.trackCount || ''}` },
 				{ title: 'Genre', value: genreDisplay(folder?.genres) || '' }
 			];
 			break;
+		}
 		case FolderType.multialbum:
-		case FolderType.album:
+		case FolderType.album: {
 			result = [
 				{ title: 'Artist', value: `${folder?.artist || ''}` },
 				{ title: 'Tracks', value: `${folder?.trackCount || ''}` },
 				{ title: 'Genre', value: genreDisplay(folder?.genres) || '' }
 			];
 			break;
+		}
 		// case FolderType.unknown:
 		// case FolderType.collection:
 		// case FolderType.extras:
@@ -50,7 +51,7 @@ export const FolderScreen: React.FC<HomeRouteProps<HomeRoute.FOLDER>> = ({ route
 	const [details, setDetails] = useState<Array<HeaderDetail>>(buildDetails());
 	const [getFolder, { loading, error, folder }] = useLazyFolderQuery();
 	const { id, name } = (route?.params || {});
-	const selectActionRef: MutableRefObject<FloatingAction | null> = React.useRef<FloatingAction>(null);
+	const selectActionReference: MutableRefObject<FloatingAction | null> = React.useRef<FloatingAction>(null);
 	const [showCheck, setShowCheck] = useState<boolean>(false);
 	const [selection, setSelection] = useState<Array<TrackEntry>>([]);
 	const [actions, setActions] = useState<Array<ActionMenuItem>>([]);
@@ -79,22 +80,24 @@ export const FolderScreen: React.FC<HomeRouteProps<HomeRoute.FOLDER>> = ({ route
 	const playTracks = (): void => {
 		if (folder) {
 			JamPlayer.playTracks(folder.tracks)
-				.catch((e) => {
-					snackError(e);
+				.catch(error_ => {
+					snackError(error_);
 				});
 		}
 	};
 
-	const ListHeaderComponent = (<ObjHeader
-		id={id}
-		title={name}
-		typeName={folder?.type}
-		details={details}
-		headerTitleCmds={folder?.tracks?.length ?
-				(<ClickIcon iconName="play" onPress={playTracks} style={objHeaderStyles.button} fontSize={objHeaderStyles.buttonIcon.fontSize}/>) :
-			undefined}
-		headerTitleCmdsExtras={<Rating fontSize={objHeaderStyles.buttonIcon.fontSize} objType={JamObjectType.folder} id={id}/>}
-	/>);
+	const ListHeaderComponent = (
+		<ObjectHeader
+			id={id}
+			title={name}
+			typeName={folder?.type}
+			details={details}
+			headerTitleCmds={folder?.tracks?.length ?
+				(<ClickIcon iconName="play" onPress={playTracks} style={objectHeaderStyles.button} fontSize={objectHeaderStyles.buttonIcon.fontSize} />) :
+				undefined}
+			headerTitleCmdsExtras={<Rating fontSize={objectHeaderStyles.buttonIcon.fontSize} objType={JamObjectType.folder} id={id} />}
+		/>
+	);
 
 	const isVariousArtist = folder?.artist === MUSICBRAINZ_VARIOUS_ARTISTS_NAME;
 
@@ -102,37 +105,41 @@ export const FolderScreen: React.FC<HomeRouteProps<HomeRoute.FOLDER>> = ({ route
 		if (selection.includes(item)) {
 			applySelection(selection.filter(t => t !== item));
 		} else {
-			applySelection(selection.concat([item]));
+			applySelection([...selection, item]);
 		}
 	}, [selection, applySelection]);
 
 	const pressFloatingAction = useCallback((buttonName?: string): void => {
-		executeTrackMenuAction(selection, buttonName).then((result) => {
-			if (result) {
-				applySelection([]);
-			}
-		});
+		executeTrackMenuAction(selection, buttonName)
+			.then(result => {
+				if (result) {
+					applySelection([]);
+				}
+			})
+			.catch(console.error);
 	}, [selection, applySelection]);
 
 	const doubleTab = useCallback((track: TrackEntry): void => {
 		JamPlayer.playTrack(track)
-			.catch(e => console.error(e));
+			.catch(console.error);
 		applySelection([]);
 	}, [applySelection]);
 
 	const renderItem = useCallback(({ item }: { item: FolderItem }): React.JSX.Element => {
 		if (item.track) {
-			return (<TrackItem
-				track={item.track}
-				isSelected={selection.includes(item.track)}
-				doubleTab={doubleTab}
-				showCheck={showCheck}
-				setSelected={setSelected}
-				displayFunc={isVariousArtist ? defaultShowArtistTrackDisplay : defaultTrackDisplay}
-			/>);
+			return (
+				<TrackItem
+					track={item.track}
+					isSelected={selection.includes(item.track)}
+					doubleTab={doubleTab}
+					showCheck={showCheck}
+					setSelected={setSelected}
+					displayFunc={isVariousArtist ? defaultShowArtistTrackDisplay : defaultTrackDisplay}
+				/>
+			);
 		}
 		if (item.folder) {
-			return <Item item={item.folder}/>;
+			return <Item item={item.folder} />;
 		}
 		return <></>;
 	}, [isVariousArtist, selection, setSelected, showCheck, doubleTab]);
@@ -142,7 +149,7 @@ export const FolderScreen: React.FC<HomeRouteProps<HomeRoute.FOLDER>> = ({ route
 	}, [getFolder, id]);
 
 	if (error) {
-		return (<ErrorView error={error} onRetry={reload}/>);
+		return (<ErrorView error={error} onRetry={reload} />);
 	}
 
 	return (
@@ -156,7 +163,7 @@ export const FolderScreen: React.FC<HomeRouteProps<HomeRoute.FOLDER>> = ({ route
 				reload={reload}
 			/>
 			<FloatingAction
-				ref={selectActionRef}
+				ref={selectActionReference}
 				visible={selection.length > 0}
 				animated={false}
 				showBackground={false}

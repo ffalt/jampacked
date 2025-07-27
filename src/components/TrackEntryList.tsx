@@ -21,8 +21,8 @@ export const TrackEntryList: React.FC<{
 	goRight?: RouteLink;
 	displayFunc?: TrackDisplayFunction;
 }> = ({ info, entries, refreshing, onRefresh, onLoadMore, displayFunc, goLeft, goRight }) => {
-	const ListHeaderComponent = (<PageHeader title={info.title} goLeft={goLeft} goRight={goRight} subtitle={info.subtitle}/>);
+	const ListHeaderComponent = (<PageHeader title={info.title} goLeft={goLeft} goRight={goRight} subtitle={info.subtitle} />);
 	return (
-		<Tracks tracks={entries} ListHeaderComponent={ListHeaderComponent} onLoadMore={onLoadMore} onRefresh={onRefresh} refreshing={refreshing} displayFunc={displayFunc}/>
+		<Tracks tracks={entries} ListHeaderComponent={ListHeaderComponent} onLoadMore={onLoadMore} onRefresh={onRefresh} refreshing={refreshing} displayFunc={displayFunc} />
 	);
 };

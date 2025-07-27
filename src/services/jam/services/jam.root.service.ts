@@ -1,13 +1,12 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import {JamBaseService} from '../jam.base.service';
-import {Jam} from '../model/jam-rest-data';
-import {JamParameters} from '../model/jam-rest-params';
+import { JamBaseService } from '../jam.base.service';
+import type { Jam } from '../model/jam-rest-data';
+import type { JamParameters } from '../model/jam-rest-params';
 
 export class JamRootService {
-
-	constructor(private base: JamBaseService) {
+	constructor(private readonly base: JamBaseService) {
 	}
 
 	/**
@@ -65,5 +64,4 @@ export class JamRootService {
 	async refreshMeta(params: JamParameters.RootRefreshArgs): Promise<Jam.AdminChangeQueueInfo> {
 		return this.base.requestPostData<Jam.AdminChangeQueueInfo>('/root/refreshMeta', params);
 	}
-
 }

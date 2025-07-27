@@ -39,20 +39,20 @@ const LazyPlaceholder: React.FC = () => {
 	const theme = useTheme();
 	return (
 		<View style={styles.scene}>
-			<ActivityIndicator size="large" color={theme.textColor}/>
+			<ActivityIndicator size="large" color={theme.textColor} />
 		</View>
 	);
 };
 
 const renderScene = SceneMap({
-	cover: () => (<PlayerCover/>),
-	lyrics: () => (<PlayerLyrics/>),
-	queue: () => (<Queue/>)
+	cover: () => (<PlayerCover />),
+	lyrics: () => (<PlayerLyrics />),
+	queue: () => (<Queue />)
 });
 
 type PlaceholderFC = (props: { route: { key: string } }) => React.ReactNode;
 
-const renderLazyPlaceholder: PlaceholderFC = () => <LazyPlaceholder/>;
+const renderLazyPlaceholder: PlaceholderFC = () => <LazyPlaceholder />;
 
 const routes = [
 	{ key: 'cover', title: 'Cover' },
@@ -72,13 +72,13 @@ export const PlayerTabs: React.FC = () => {
 	}, [navigation]);
 
 	const renderTabBar = useCallback((tabBarProps: any): React.JSX.Element => {
-		const buttons = tabBarProps.navigationState.routes.map((route: { title: string }, i: number) => {
+		const buttons = tabBarProps.navigationState.routes.map((route: { title: string }, pos: number) => {
 			const style = [styles.tabItem,
-				i === index && styles.tabItemActive,
-				i === index && { borderBottomColor: theme.textColor }
+				pos === index && styles.tabItemActive,
+				pos === index && { borderBottomColor: theme.textColor }
 			];
 			const toIndex = (): void => {
-				setIndex(i);
+				setIndex(pos);
 			};
 			return (
 				<TouchableOpacity key={route.title} style={style} onPress={toIndex}>
@@ -88,7 +88,7 @@ export const PlayerTabs: React.FC = () => {
 		});
 		return (
 			<View style={styles.tabBar}>
-				<ClickIcon iconName="down-open-big" style={styles.tabItem} fontSize={styles.icon.fontSize} onPress={close}/>
+				<ClickIcon iconName="down-open-big" style={styles.tabItem} fontSize={styles.icon.fontSize} onPress={close} />
 				{buttons}
 			</View>
 		);

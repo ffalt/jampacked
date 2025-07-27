@@ -25,23 +25,18 @@ export function apolloClient(): JamApolloClient {
 }
 
 export async function initApolloClient(dataService: DataService): Promise<JamApolloClient> {
-	const httpLink = new HttpLink({
-		uri: (_): string => {
-			return `${dataService.jam.auth.auth?.server}/graphql`;
-		},
-		credentials: 'include'
-	}) as any as ApolloLink;
+	const httpLink = new HttpLink(
+		{ uri: (_): string => `${dataService.jam.auth.auth?.server}/graphql`, credentials: 'include' }
+	) as any as ApolloLink;
 
-	const authLink = setContext((_, { headers }: any) => {
-		return {
-			headers: {
-				...headers,
-				authorization: dataService.jam.auth?.auth?.token ?
-					`Bearer ${dataService.jam.auth?.auth?.token}` :
-					headers.authorization
-			}
-		};
-	}) as any as ApolloLink;
+	const authLink = setContext((_, { headers }: any) => ({
+		headers: {
+			...headers,
+			authorization: dataService.jam.auth?.auth?.token ?
+				`Bearer ${dataService.jam.auth?.auth?.token}` :
+				headers.authorization
+		}
+	})) as any as ApolloLink;
 
 	const errorLink = onError(({ graphQLErrors, networkError }) => {
 		if (graphQLErrors) {
@@ -56,10 +51,7 @@ export async function initApolloClient(dataService: DataService): Promise<JamApo
 
 	const logLink = new ApolloLink((operation: any, forward: any) => {
 		console.log('query', operation.operationName, operation.variables);
-		return forward(operation).map((result: any) => {
-			// console.log('stop', operation.operationName);
-			return result;
-		});
+		return forward(operation).map((result: any) => result);
 	});
 
 	const cache = new InMemoryCache({ addTypename: false });

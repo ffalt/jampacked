@@ -12,14 +12,14 @@ function transformData(data?: TrackListResultQuery, variables?: TrackListResultQ
 	}
 	const result: TrackEntryList = {
 		total: data.tracks.total,
-		skip: data.tracks.skip === null ? undefined : data.tracks.skip,
-		take: data.tracks.take === null ? undefined : data.tracks.take,
-		listType: !variables?.listType ? undefined : variables.listType,
+		skip: data.tracks.skip ?? undefined,
+		take: data.tracks.take ?? undefined,
+		listType: variables?.listType ?? undefined,
 		items: []
 	};
-	data.tracks.items.forEach((entry) => {
+	for (const entry of data.tracks.items) {
 		result.items.push(transformTrack(entry));
-	});
+	}
 	return result;
 }
 

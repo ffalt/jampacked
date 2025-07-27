@@ -4,9 +4,9 @@ import { ApolloError, useLazyQuery } from '@apollo/client';
 import { useCallback, useEffect, useState } from 'react';
 import { WaveformResultDocument, WaveformResultQuery, WaveformResultQueryVariables } from './waveform.api';
 
-export const transformData = (data?: WaveformResultQuery): Jam.WaveFormData | undefined => {
-	return data?.waveform?.json ? JSON.parse(data.waveform.json) : undefined;
-};
+export const transformData =
+	(data?: WaveformResultQuery): Jam.WaveFormData | undefined =>
+		data?.waveform?.json ? JSON.parse(data.waveform.json) : undefined;
 
 function transformVariables(id: string): WaveformResultQueryVariables {
 	return { id };
@@ -29,7 +29,7 @@ export const useLazyWaveformQuery = (): [(id: string) => void,
 	}, [data]);
 
 	const get = useCallback((id: string): void => {
-		query({ variables: WaveformQuery.transformVariables(id) });
+		query({ variables: WaveformQuery.transformVariables(id) }).catch(console.error);
 	}, [query]);
 
 	return [get, { loading, called, error, waveform }];

@@ -1,13 +1,12 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import {JamBaseService} from '../jam.base.service';
-import {Jam} from '../model/jam-rest-data';
-import {JamParameters} from '../model/jam-rest-params';
+import { JamBaseService } from '../jam.base.service';
+import type { Jam } from '../model/jam-rest-data';
+import type { JamParameters } from '../model/jam-rest-params';
 
 export class JamMetaDataService {
-
-	constructor(private base: JamBaseService) {
+	constructor(private readonly base: JamBaseService) {
 	}
 
 	/**
@@ -76,7 +75,7 @@ export class JamMetaDataService {
 	/**
 	 * Get CoverArtArchive image // Rights needed: stream
 	 */
-	async coverartarchiveImageBinary(params: JamParameters.CoverArtArchiveImageArgs): Promise<{buffer: ArrayBuffer; contentType: string}> {
+	async coverartarchiveImageBinary(params: JamParameters.CoverArtArchiveImageArgs): Promise<{ buffer: ArrayBuffer; contentType: string }> {
 		return this.base.binary('/metadata/coverartarchive/image', params);
 	}
 
@@ -100,5 +99,4 @@ export class JamMetaDataService {
 	async wikidataLookup(params: JamParameters.WikidataLookupArgs): Promise<Jam.MetaDataResult> {
 		return this.base.requestData<Jam.MetaDataResult>('/metadata/wikidata/lookup', params);
 	}
-
 }

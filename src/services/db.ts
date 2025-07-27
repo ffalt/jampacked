@@ -1,4 +1,4 @@
-import SQLite from 'react-native-sqlite-storage';
+import SQLite, { ResultSet } from 'react-native-sqlite-storage';
 // import {SQLitePlugin, SQLResult} from 'react-native-sqlite-storage'
 
 SQLite.enablePromise(false);
@@ -34,7 +34,7 @@ export class Database {
 					name, location: 'Library'
 				},
 				() => resolve(db),
-				err => reject(err)
+				error => reject(error)
 			);
 		});
 		return this.db;
@@ -52,32 +52,36 @@ export class Database {
 	/**
 	 * Executes a query
 	 * @param sql Query to be executed
-	 * @param params Params that substitutes '?' in the query
+	 * @param parameters Params that substitutes '?' in the query
 	 */
-	async query(sql: string, params: Array<any> = []): Promise<SQLite.ResultSet> {
-		const para = this.treatParams(params);
-		return new Promise<SQLite.ResultSet>((resolve) => {
-			this.db?.transaction(async (tx) => {
-				const results = await (new Promise((resolve2, reject) => {
-					tx.executeSql(sql, para, (a, b) => resolve2(b), err => reject(err));
-				})) as any;
-				resolve(results);
-			});
+	async query(sql: string, parameters: Array<any> = []): Promise<SQLite.ResultSet> {
+		const para = this.treatParams(parameters);
+		return new Promise<SQLite.ResultSet>(resolve => {
+			this.executeQuery(sql, para, resolve);
 		});
+	}
+
+	private executeQuery(sql: string, para: Array<any>, resolve: (value: (PromiseLike<ResultSet> | ResultSet)) => void) {
+		this.db?.transaction(async tx => {
+			const results = await (new Promise((resolve2, reject) => {
+				tx.executeSql(sql, para, (_a, b) => resolve2(b), error => reject(error));
+			})) as any;
+			resolve(results);
+		}).catch(console.error);
 	}
 
 	/**
 	 * Execute a query and get returned rows as an array
 	 * Used in SELECT queries
 	 * @param sql Query to be executed
-	 * @param params Params that substitutes '?' in the query
+	 * @param parameters Params that substitutes '?' in the query
 	 */
-	async queryAndGetRows(sql: string, params: Array<any> = []): Promise<Array<any>> {
-		const result = await this.query(sql, params);
+	async queryAndGetRows(sql: string, parameters: Array<any> = []): Promise<Array<any>> {
+		const result = await this.query(sql, parameters);
 		const data = [];
 
-		for (let i = 0; i < result.rows.length; i += 1) {
-			data.push(result.rows.item(i));
+		for (let index = 0; index < result.rows.length; index += 1) {
+			data.push(result.rows.item(index));
 		}
 
 		return data;
@@ -87,10 +91,10 @@ export class Database {
 	 * Executes a query and get the inserted id
 	 * Used in INSERT queries
 	 * @param sql Query to be executed
-	 * @param params Params that substitutes '?' in the query
+	 * @param parameters Params that substitutes '?' in the query
 	 */
-	async queryAndGetInsertId(sql: string, params: Array<any> = []): Promise<number> {
-		const result = await this.query(sql, params);
+	async queryAndGetInsertId(sql: string, parameters: Array<any> = []): Promise<number> {
+		const result = await this.query(sql, parameters);
 		return result.insertId;
 	}
 
@@ -102,7 +106,8 @@ export class Database {
 	 */
 	async insert(table: string, keys: Array<string>, values: Array<any>): Promise<number> {
 		const gaps = keys.map(() => '?');
-		const sql = `INSERT INTO ${table} (${keys.join(', ')}) VALUES (${gaps.join(', ')})`;
+		const sql = `INSERT INTO ${table} (${keys.join(', ')})
+                 VALUES (${gaps.join(', ')})`;
 		return this.queryAndGetInsertId(sql, values);
 	}
 
@@ -116,8 +121,9 @@ export class Database {
 	async update(table: string, keys: Array<string>, values: Array<any>, where?: Record<string, any>): Promise<SQLite.ResultSet> {
 		const keysString = keys.map(k => `${k} = ?`).join(', ');
 		const { sql, params } = this.buildWhere(where);
-		const query = `UPDATE ${table} SET ${keysString} ${sql}`;
-		return this.query(query, values.concat(params));
+		const query = `UPDATE ${table}
+                   SET ${keysString} ${sql}`;
+		return this.query(query, [...values, ...params]);
 	}
 
 	/**
@@ -127,7 +133,8 @@ export class Database {
 	 */
 	async delete<T>(table: string, statement?: WhereStatement<T>): Promise<any> {
 		const { sql, params } = this.buildWhere(statement);
-		const query = `DELETE FROM ${table} ${sql}`;
+		const query = `DELETE
+                   FROM ${table} ${sql}`;
 		return this.query(query, params);
 	}
 
@@ -139,7 +146,10 @@ export class Database {
 		const values: Array<T> = [];
 		let sql = '';
 		if (where) {
-			Object.keys(where).forEach(k => values.push(where[k]));
+			for (const k of Object.keys(where)) {
+				values.push(where[k]);
+			}
+			// qlty-ignore: radarlint-js:typescript:S4624 false positive
 			sql = `WHERE ${Object.keys(where).map(k => `${k} = ?`).join(' AND ')}`;
 		}
 		return { params: values, sql };
@@ -147,36 +157,40 @@ export class Database {
 
 	/**
 	 * Treat all parameters to be used in queries
-	 * @param params Parameters
+	 * @param parameters Parameters
 	 */
-	private treatParams(params: Array<any>): Array<any> {
-		const newParams: Array<any> = [];
-		params.forEach((p) => {
+	private treatParams(parameters: Array<any>): Array<any> {
+		const newParameters: Array<any> = [];
+		for (const p of parameters) {
 			switch (typeof p) {
-				case 'string':
-					newParams.push(p.trim());
+				case 'string': {
+					newParameters.push(p.trim());
 					break;
-				case 'boolean':
-					newParams.push(p ? 1 : 0);
+				}
+				case 'boolean': {
+					newParameters.push(p ? 1 : 0);
 					break;
-				case 'object':
+				}
+				case 'object': {
 					if (p instanceof Date) {
-						newParams.push(p.toISOString());
-					} else if (p !== null) {
-						try {
-							newParams.push(JSON.stringify(p));
-						} catch {
-							newParams.push(p);
-						}
+						newParameters.push(p.toISOString());
+					} else if (p === null) {
+						newParameters.push(p);
 					} else {
-						newParams.push(p);
+						try {
+							newParameters.push(JSON.stringify(p));
+						} catch {
+							newParameters.push(p);
+						}
 					}
 					break;
-				default:
-					newParams.push(p);
+				}
+				default: {
+					newParameters.push(p);
+				}
 			}
-		});
-		return newParams;
+		}
+		return newParameters;
 	}
 }
 

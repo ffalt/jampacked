@@ -3,23 +3,21 @@ import { SectionListData, View } from 'react-native';
 import { ThemedText } from '../components/ThemedText';
 import { HomeRoute, HomeRouteProps } from '../navigators/Routing';
 import { Item } from '../components/Item';
-import { HeaderDetail, ObjHeader, objHeaderStyles } from '../components/ObjHeader';
+import { HeaderDetail, ObjectHeader, objectHeaderStyles } from '../components/ObjectHeader.tsx';
 import { genreDisplay } from '../utils/genre.utils';
 import { FavIcon } from '../components/FavIcon';
 import { JamObjectType } from '../services/jam';
 import { BaseEntry } from '../services/types';
 import { useLazyArtistQuery } from '../services/queries/artist';
-import { DefaultSectionList } from '../components/DefSectionList';
+import { DefaultSectionList } from '../components/DefaultSectionList.tsx';
 import { sharedStyles } from '../style/shared';
 import { Rating } from '../components/Rating';
 
-const buildDetails = (albums?: number, tracks?: number, genre?: string): Array<HeaderDetail> => {
-	return [
-		{ title: 'Albums', value: `${albums}` },
-		{ title: 'Tracks', value: `${tracks}` },
-		{ title: 'Genre', value: genre || '' }
-	];
-};
+const buildDetails = (albums?: number, tracks?: number, genre?: string): Array<HeaderDetail> => [
+	{ title: 'Albums', value: `${albums}` },
+	{ title: 'Tracks', value: `${tracks}` },
+	{ title: 'Genre', value: genre || '' }
+];
 
 export const ArtistScreen: React.FC<HomeRouteProps<HomeRoute.ARTIST>> = ({ route }) => {
 	const [details, setDetails] = useState<Array<HeaderDetail>>(buildDetails());
@@ -38,14 +36,16 @@ export const ArtistScreen: React.FC<HomeRouteProps<HomeRoute.ARTIST>> = ({ route
 		}
 	}, [artist]);
 
-	const ListHeaderComponent = (<ObjHeader
-		id={id}
-		title={name}
-		typeName="Artist"
-		details={details}
-		headerTitleCmds={<FavIcon style={objHeaderStyles.button} objType={JamObjectType.artist} id={id}/>}
-		headerTitleCmdsExtras={<Rating fontSize={objHeaderStyles.buttonIcon.fontSize} objType={JamObjectType.artist} id={id}/>}
-	/>);
+	const ListHeaderComponent = (
+		<ObjectHeader
+			id={id}
+			title={name}
+			typeName="Artist"
+			details={details}
+			headerTitleCmds={<FavIcon style={objectHeaderStyles.button} objType={JamObjectType.artist} id={id} />}
+			headerTitleCmdsExtras={<Rating fontSize={objectHeaderStyles.buttonIcon.fontSize} objType={JamObjectType.artist} id={id} />}
+		/>
+	);
 
 	const renderSection = useCallback(({ section }: { section: SectionListData<BaseEntry> }): React.JSX.Element => (
 		<View style={sharedStyles.sectionHeader}>
@@ -53,7 +53,7 @@ export const ArtistScreen: React.FC<HomeRouteProps<HomeRoute.ARTIST>> = ({ route
 		</View>
 	), []);
 
-	const renderItem = useCallback(({ item }: { item: BaseEntry }): React.JSX.Element => (<Item item={item}/>), []);
+	const renderItem = useCallback(({ item }: { item: BaseEntry }): React.JSX.Element => (<Item item={item} />), []);
 
 	const reload = useCallback((): void => {
 		if (id) {

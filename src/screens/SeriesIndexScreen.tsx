@@ -20,7 +20,7 @@ export const SeriesIndexScreen: React.FC<SeriesRouteProps<SeriesRoute.INDEX>> = 
 	}, [getIndex]);
 
 	if (error) {
-		return (<ErrorView error={error} onRetry={reload}/>);
+		return (<ErrorView error={error} onRetry={reload} />);
 	}
 
 	return (

@@ -51,26 +51,28 @@ export const QueueItem: React.FC<{ active: boolean; index: number; item: TrackPl
 
 	const playItem = useCallback((): void => {
 		JamPlayer.skipToTrack(index)
-			.catch(e => console.error(e));
+			.catch(console.error);
 	}, [index]);
 
 	const renderTrackNr = useCallback((): React.JSX.Element => {
 		if (active) {
-			return (<ThemedIcon name="right-open-mini"/>);
+			return (<ThemedIcon name="right-open-mini" />);
 		}
 		return (<ThemedText style={styles.trackNumberStyle}>{index + 1}</ThemedText>);
 	}, [active, index]);
 
 	const rightPress = useCallback((): void => {
 		JamPlayer.removeTrackFromQueue(index)
-			.catch(e => console.error(e));
+			.catch(console.error);
 	}, [index]);
 
-	const buttons = (<>
-		<PinIcon style={sharedStyles.itemButton} fontSize={sharedStyles.itemButtonIcon.fontSize} objType={item.objType} id={item.id}/>
-		<FavIcon style={sharedStyles.itemButton} fontSize={sharedStyles.itemButtonIcon.fontSize} objType={item.objType} id={item.id}/>
-		<ClickIcon style={sharedStyles.itemButton} fontSize={sharedStyles.itemButtonIcon.fontSize} iconName="remove" onPress={rightPress} clickThrough={true}/>
-	</>);
+	const buttons = (
+		<>
+			<PinIcon style={sharedStyles.itemButton} fontSize={sharedStyles.itemButtonIcon.fontSize} objType={item.objType} id={item.id} />
+			<FavIcon style={sharedStyles.itemButton} fontSize={sharedStyles.itemButtonIcon.fontSize} objType={item.objType} id={item.id} />
+			<ClickIcon style={sharedStyles.itemButton} fontSize={sharedStyles.itemButtonIcon.fontSize} iconName="remove" onPress={rightPress} clickThrough={true} />
+		</>
+	);
 
 	return (
 		<SwipeableItem buttons={buttons}>
@@ -83,7 +85,7 @@ export const QueueItem: React.FC<{ active: boolean; index: number; item: TrackPl
 					<ThemedText style={styles.trackSubStyle}>{item.artist}</ThemedText>
 				</View>
 				<View style={styles.trackListRuntime}>
-					<DurationText style={styles.trackRuntimeStyle} duration={item.duration} ms={true}/>
+					<DurationText style={styles.trackRuntimeStyle} duration={item.duration} ms={true} />
 				</View>
 			</TouchableOpacity>
 		</SwipeableItem>

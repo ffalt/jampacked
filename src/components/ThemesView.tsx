@@ -10,6 +10,6 @@ export const ThemesView: React.FC = () => {
 	};
 
 	return (
-		<RadioButtons options={themeList} value={themeSettings.theme.name} onChange={changeTheme}/>
+		<RadioButtons options={themeList} value={themeSettings.theme.name} onChange={changeTheme} />
 	);
 };

@@ -52,7 +52,7 @@ export const RadioButtons: React.FC<{
 				<TouchableOpacity key={item.key} style={styles.buttonContainer} onPress={(): void => select(item)}>
 					<ThemedText style={styles.text}>{item.label}</ThemedText>
 					<View style={[styles.circle, { borderColor: theme.textColor }]}>
-						{value === item.key && <View style={[styles.checkedCircle, { backgroundColor: theme.navigation.colors.primary }]}/>}
+						{value === item.key && <View style={[styles.checkedCircle, { backgroundColor: theme.navigation.colors.primary }]} />}
 					</View>
 				</TouchableOpacity>
 			))}

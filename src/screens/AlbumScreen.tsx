@@ -1,7 +1,7 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { AlbumRoute, AlbumRouteProps, HomeRoute } from '../navigators/Routing';
 import { JamPlayer } from '../services/player';
-import { HeaderDetail, ObjHeader, objHeaderStyles } from '../components/ObjHeader';
+import { HeaderDetail, ObjectHeader, objectHeaderStyles } from '../components/ObjectHeader.tsx';
 import { genreDisplay } from '../utils/genre.utils';
 import { JamObjectType } from '../services/jam';
 import { FavIcon } from '../components/FavIcon';
@@ -17,13 +17,11 @@ import { Rating } from '../components/Rating';
 
 export const MUSICBRAINZ_VARIOUS_ARTISTS_NAME = 'Various Artists';
 
-const buildDetails = (artist?: string, tracks?: number, genre?: string, click?: () => void): Array<HeaderDetail> => {
-	return [
-		{ title: 'Artist', value: artist || '', click: artist ? click : undefined },
-		{ title: 'Tracks', value: `${tracks || ''}` },
-		{ title: 'Genre', value: genre || '' }
-	];
-};
+const buildDetails = (artist?: string, tracks?: number, genre?: string, click?: () => void): Array<HeaderDetail> => [
+	{ title: 'Artist', value: artist || '', click: artist ? click : undefined },
+	{ title: 'Tracks', value: `${tracks || ''}` },
+	{ title: 'Genre', value: genre || '' }
+];
 
 export const AlbumScreen: React.FC<AlbumRouteProps<AlbumRoute.MAIN>> = () => {
 	const state = useContext(AlbumTabNavigatorContext);
@@ -55,25 +53,27 @@ export const AlbumScreen: React.FC<AlbumRouteProps<AlbumRoute.MAIN>> = () => {
 	const playTracks = (): void => {
 		if (album) {
 			JamPlayer.playTracks(album.tracks)
-				.catch((e) => {
-					snackError(e);
+				.catch(error_ => {
+					snackError(error_);
 				});
 		}
 	};
-	const ListHeaderComponent = (<ObjHeader
-		id={id}
-		title={name}
-		typeName={album?.albumType}
-		details={details}
-		headerTitleCmds={
-			<>
-				<ClickIcon style={objHeaderStyles.button} fontSize={objHeaderStyles.buttonIcon.fontSize} iconName="play" onPress={playTracks}/>
-				<PinIcon style={objHeaderStyles.button} fontSize={objHeaderStyles.buttonIcon.fontSize} objType={JamObjectType.album} id={id}/>
-				<FavIcon style={objHeaderStyles.button} fontSize={objHeaderStyles.buttonIcon.fontSize} objType={JamObjectType.album} id={id}/>
-			</>
-		}
-		headerTitleCmdsExtras={<Rating fontSize={objHeaderStyles.buttonIcon.fontSize} objType={JamObjectType.album} id={id}/>}
-	/>);
+	const ListHeaderComponent = (
+		<ObjectHeader
+			id={id}
+			title={name}
+			typeName={album?.albumType}
+			details={details}
+			headerTitleCmds={(
+				<>
+					<ClickIcon style={objectHeaderStyles.button} fontSize={objectHeaderStyles.buttonIcon.fontSize} iconName="play" onPress={playTracks} />
+					<PinIcon style={objectHeaderStyles.button} fontSize={objectHeaderStyles.buttonIcon.fontSize} objType={JamObjectType.album} id={id} />
+					<FavIcon style={objectHeaderStyles.button} fontSize={objectHeaderStyles.buttonIcon.fontSize} objType={JamObjectType.album} id={id} />
+				</>
+			)}
+			headerTitleCmdsExtras={<Rating fontSize={objectHeaderStyles.buttonIcon.fontSize} objType={JamObjectType.album} id={id} />}
+		/>
+	);
 	return (
 		<Tracks
 			tracks={album?.tracks}

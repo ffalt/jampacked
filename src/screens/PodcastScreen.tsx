@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect } from 'react';
 import { HomeRoute, HomeRouteProps } from '../navigators/Routing';
 import { JamPlayer } from '../services/player';
-import { ObjHeader, objHeaderStyles } from '../components/ObjHeader';
+import { ObjectHeader, objectHeaderStyles } from '../components/ObjectHeader.tsx';
 import { JamObjectType } from '../services/jam';
 import { FavIcon } from '../components/FavIcon';
 import { snackError } from '../services/snack';
@@ -28,28 +28,32 @@ export const PodcastScreen: React.FC<HomeRouteProps<HomeRoute.PODCAST>> = ({ rou
 	const playTracks = (): void => {
 		if (podcast?.episodes) {
 			JamPlayer.playTracks(podcast.episodes)
-				.catch((e) => {
-					snackError(e);
+				.catch(error_ => {
+					snackError(error_);
 				});
 		}
 	};
 
-	const ListHeaderComponent = (<ObjHeader
-		id={id}
-		title={name}
-		typeName="Podcast"
-		customDetails={<ThemedText style={objHeaderStyles.panel}>{podcast?.description}</ThemedText>}
-		headerTitleCmds={<>
-			<ClickIcon iconName="play" onPress={playTracks} style={objHeaderStyles.button} fontSize={objHeaderStyles.buttonIcon.fontSize}/>
-			<FavIcon style={objHeaderStyles.button} objType={JamObjectType.podcast} id={id}/>
-		</>}
-	/>);
+	const ListHeaderComponent = (
+		<ObjectHeader
+			id={id}
+			title={name}
+			typeName="Podcast"
+			customDetails={<ThemedText style={objectHeaderStyles.panel}>{podcast?.description}</ThemedText>}
+			headerTitleCmds={(
+				<>
+					<ClickIcon iconName="play" onPress={playTracks} style={objectHeaderStyles.button} fontSize={objectHeaderStyles.buttonIcon.fontSize} />
+					<FavIcon style={objectHeaderStyles.button} objType={JamObjectType.podcast} id={id} />
+				</>
+			)}
+		/>
+	);
 
 	if (error) {
-		return (<ErrorView error={error} onRetry={reload}/>);
+		return (<ErrorView error={error} onRetry={reload} />);
 	}
 
 	return (
-		<Tracks tracks={podcast?.episodes} ListHeaderComponent={ListHeaderComponent} refreshing={loading} onRefresh={reload}/>
+		<Tracks tracks={podcast?.episodes} ListHeaderComponent={ListHeaderComponent} refreshing={loading} onRefresh={reload} />
 	);
 };

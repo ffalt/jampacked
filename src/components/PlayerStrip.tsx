@@ -84,7 +84,7 @@ export const PlayerStrip: React.FC = () => {
 
 				<TouchableOpacity onPress={showPlayer} style={styles.playerStripTrack}>
 					<View style={styles.playerStripImage}>
-						<JamImage id={track.id} size={staticTheme.thumb}/>
+						<JamImage id={track.id} size={staticTheme.thumb} />
 					</View>
 					<View style={styles.playerStripText}>
 						<ThemedText numberOfLines={1} style={styles.title}>{track.title}</ThemedText>
@@ -109,7 +109,7 @@ export const PlayerStrip: React.FC = () => {
 							onPress={JamPlayer.skipToPrevious}
 						/>
 					</View>
-					<PlayButton/>
+					<PlayButton />
 					<View style={styles.playerStripControlsColumn}>
 						<ClickIcon
 							disabled={forwardDisabled}
@@ -128,7 +128,7 @@ export const PlayerStrip: React.FC = () => {
 					</View>
 				</View>
 			</View>
-			<MiniProgressBar/>
+			<MiniProgressBar />
 		</View>
 	);
 };

@@ -19,24 +19,22 @@ function transformData(data?: BookmarkResultQuery): Bookmarks | undefined {
 		return;
 	}
 	const tracks: Array<TrackEntry> = [];
-	(data.bookmarks.items || []).map((entry) => {
+	for (const entry of (data.bookmarks.items || [])) {
 		const item = entry.track ? transformTrack(entry.track) : transformEpisode(entry.episode);
 		if (item) {
 			tracks.push(item);
 		}
-	});
+	}
 	return {
 		total: data.bookmarks.total,
-		skip: data.bookmarks.skip === null ? undefined : data.bookmarks.skip,
-		take: data.bookmarks.take === null ? undefined : data.bookmarks.take,
+		skip: data.bookmarks.skip ?? undefined,
+		take: data.bookmarks.take ?? undefined,
 		tracks
 	};
 }
 
 const transformVariables: UseGetCallFunctionTransform<BookmarkResultQueryVariables> =
-	(take, skip) => {
-		return { skip, take };
-	};
+	(take, skip) => ({ skip, take });
 
 export const BookmarksQuery: {
 	query: DocumentNode;

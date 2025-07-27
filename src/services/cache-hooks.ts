@@ -7,17 +7,24 @@ import { CacheState } from './cache';
 import { LazyQueryHookOptions } from '@apollo/client/react/types/types';
 import type { OperationVariables } from '@apollo/client/core';
 
-export type QueryFunc<TVariables> = (options?: LazyQueryHookOptions<TVariables>, forceRefresh?: boolean) => void;
-export interface QueryHookData<TResult> { loading: boolean; error?: ApolloError; data?: TResult; called: boolean; queryID?: string }
+export type QueryFunction<TVariables> = (options?: LazyQueryHookOptions<TVariables>, forceRefresh?: boolean) => void;
+
+export interface QueryHookData<TResult> {
+	loading: boolean;
+	error?: ApolloError;
+	data?: TResult;
+	called: boolean;
+	queryID?: string;
+}
 
 export function useCacheOrLazyQuery<TData, TVariables extends OperationVariables | void, TResult>(
 	query: DocumentNode,
 	transform: (d?: TData, variables?: TVariables) => TResult | undefined,
-	options?: LazyQueryHookOptions<TData, any>): [QueryFunc<TVariables>, QueryHookData<TResult>] {
+	options?: LazyQueryHookOptions<TData, any>): [QueryFunction<TVariables>, QueryHookData<TResult>] {
 	const [result, setResult] = useState<TResult | undefined>();
 	const [id, setID] = useState<string | undefined>();
 	const [queryData, setQueryData] = useState<any>();
-	const [q, { loading, error, data, variables }] = useLazyQuery<TData, OperationVariables>(query, options);
+	const [q, { loading, error, data, variables }] = useLazyQuery<TData>(query, options);
 
 	const execute = useCallback((queryOptions?: LazyQueryHookOptions<TVariables>, forceRefresh?: boolean): void => {
 		const queryID = buildCacheID<TVariables>(query, queryOptions?.variables as TVariables);
@@ -26,15 +33,17 @@ export function useCacheOrLazyQuery<TData, TVariables extends OperationVariables
 			setResult(undefined);
 			setQueryData(undefined);
 			if (forceRefresh) {
-				q(queryOptions as OperationVariables);
+				q(queryOptions as OperationVariables).catch(console.error);
 			} else {
-				dataService.cache.getData<TResult>(queryID).then((r) => {
-					if (r) {
-						setResult(r);
-					} else {
-						q(queryOptions as OperationVariables);
-					}
-				});
+				dataService.cache.getData<TResult>(queryID)
+					.then(async r => {
+						if (r) {
+							setResult(r);
+						} else {
+							await q(queryOptions as OperationVariables);
+						}
+					})
+					.catch(console.error);
 			}
 		}
 	}, [query, q]);
@@ -50,7 +59,7 @@ export function useCacheOrLazyQuery<TData, TVariables extends OperationVariables
 			const r = transform(queryData, variables as TVariables);
 			if (id && r) {
 				setResult(r);
-				dataService.cache.setData(id, r);
+				dataService.cache.setData(id, r).catch(console.error);
 			}
 		}
 	}, [variables, id, transform, queryData]);
@@ -62,15 +71,15 @@ export function useCacheManagement(): [fill: () => void, clear: () => void, stop
 	const [state, setState] = useState<CacheState>(dataService.cache.state);
 
 	const fill = useCallback(() => {
-		dataService.cache.fill();
+		dataService.cache.fill().catch(console.error);
 	}, []);
 
 	const clear = useCallback(() => {
-		dataService.cache.clear();
+		dataService.cache.clear().catch(console.error);
 	}, []);
 
 	const stop = useCallback(() => {
-		dataService.cache.stop();
+		dataService.cache.stop().catch(console.error);
 	}, []);
 
 	useEffect(() => {

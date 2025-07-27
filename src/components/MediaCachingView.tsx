@@ -30,19 +30,22 @@ export const MediaCachingView: React.FC = () => {
 			.then(() => {
 				setRunning(false);
 			})
-			.catch((e) => {
-				console.error(e);
-			});
+			.catch(console.error);
 	}, []);
 
 	if (!running) {
 		return (
 			<View style={styles.container}>
 				<View style={styles.text}>
-					<ThemedText>Files: {stat?.files} {(stat?.files || 0) > 0 ? '(' + stat?.humanSize + ')' : ''}</ThemedText>
+					<ThemedText>
+						Files:
+						{stat?.files}
+						{' '}
+						{(stat?.files || 0) > 0 ? `(${stat?.humanSize})` : ''}
+					</ThemedText>
 				</View>
 				<View style={styles.button}>
-					<Button title="Clear" onPress={clearMediaCache}/>
+					<Button title="Clear" onPress={clearMediaCache} />
 				</View>
 			</View>
 		);
@@ -50,12 +53,12 @@ export const MediaCachingView: React.FC = () => {
 
 	return (
 		<View style={styles.container}>
-			<ActivityIndicator size="small" color={theme.textColor}/>
+			<ActivityIndicator size="small" color={theme.textColor} />
 			<View style={styles.text}>
 				<ThemedText>Removing...</ThemedText>
 			</View>
 			<View style={styles.button}>
-				<Button title="Clear" onPress={clearMediaCache}/>
+				<Button title="Clear" onPress={clearMediaCache} />
 			</View>
 		</View>
 	);

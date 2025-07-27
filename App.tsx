@@ -25,8 +25,8 @@ export const App: React.FC = () => {
 				if (theme) {
 					setThemeSettings({ ...themeSettings, theme });
 				}
-			} catch (e) {
-				console.error(e);
+			} catch (error) {
+				console.error(error);
 			}
 		},
 		setTheme: async (themeName): Promise<void> => {
@@ -35,8 +35,8 @@ export const App: React.FC = () => {
 				setThemeSettings({ ...themeSettings, theme });
 				try {
 					await dataService.setSetting('theme', themeName);
-				} catch (e) {
-					console.error(e);
+				} catch (error) {
+					console.error(error);
 				}
 			}
 		}
@@ -49,11 +49,9 @@ export const App: React.FC = () => {
 			setClient(c);
 		};
 
-		init().then(() => {
-			setAppAvailable(true);
-		}).catch((e) => {
-			console.error(e);
-		});
+		init()
+			.then(() => setAppAvailable(true))
+			.catch(console.error);
 		return (): void => {
 			setAppAvailable(false);
 		};
@@ -68,9 +66,9 @@ export const App: React.FC = () => {
 			<ApolloProvider client={client}>
 				<ThemeContext.Provider value={themeSettings}>
 					<ThemeProvider theme={themeSettings.theme}>
-						<StatusBar translucent={true} backgroundColor={themeSettings.theme.statusBar} barStyle={themeSettings.theme.barStyle}/>
+						<StatusBar translucent={true} backgroundColor={themeSettings.theme.statusBar} barStyle={themeSettings.theme.barStyle} />
 						<NavigationContainer theme={themeSettings.theme.navigation} ref={NavigationService.setTopLevelNavigator}>
-							<AppNavigator/>
+							<AppNavigator />
 						</NavigationContainer>
 					</ThemeProvider>
 				</ThemeContext.Provider>

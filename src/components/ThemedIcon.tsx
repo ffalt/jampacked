@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
 export const ThemedIcon: React.FC<ThemedIconProps> = React.memo(({ name, size, color, style }) => {
 	const theme = useTheme();
 	return (
-		<FontelloIcon name={name} style={[styles.icon, { color: color || theme.textColor, fontSize: size }, style]}/>
+		<FontelloIcon name={name} style={[styles.icon, { color: color || theme.textColor, fontSize: size }, style]} />
 	);
 });
 
@@ -33,14 +33,14 @@ interface TabBarIconProps {
 	size: number;
 }
 
-type TabBarIconFunc = (props: TabBarIconProps) => React.JSX.Element;
+type TabBarIconFunction = (props: TabBarIconProps) => React.JSX.Element;
 
-export function getTabBarIcon(name: string): TabBarIconFunc {
+export function getTabBarIcon(name: string): TabBarIconFunction {
 	return (props: TabBarIconProps): React.JSX.Element => {
 		const { focused, color } = props;
 		const size = focused ? 26 : 22;
 		return (
-			<FontelloIcon name={name} size={size} color={color}/>
+			<FontelloIcon name={name} size={size} color={color} />
 		);
 	};
 }

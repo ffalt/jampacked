@@ -64,7 +64,7 @@ export const AtoZPickerBubble: React.FC<{ yPosition: number; letter: string }> =
 			<View style={styles.letterBubbleContainer}>
 				<Text style={styles.letterBubbleText}>{letter}</Text>
 			</View>
-			<View style={styles.letterBubbleArrow}/>
+			<View style={styles.letterBubbleArrow} />
 		</View>
 	);
 
@@ -73,7 +73,7 @@ export const AtoZPicker: React.FC<AtoZPickerProps> = (
 		letters, activeLetter, onTouchStart, onTouchEnd, onTouchLetter
 	}) => {
 	const theme = useTheme();
-	const containerRef = useRef<View | null>(null);
+	const containerReference = useRef<View | null>(null);
 	const [containerState, setContainerState] = useState<{ absContainerTop: number; containerHeight: number }>({ absContainerTop: 0, containerHeight: 0 });
 	const [current, setCurrent] = useState<{ letter: string; yPosition: number }>();
 
@@ -98,22 +98,16 @@ export const AtoZPicker: React.FC<AtoZPickerProps> = (
 		if (onTouchStart) {
 			onTouchStart();
 		}
-		// this.tapTimeout = setTimeout(() => {
 		check(y);
-		// }, 250);
 	}, [check, onTouchStart]);
 
 	const move = useCallback((y: number) => {
-		// if (this.tapTimeout) {
-		// 	clearTimeout(this.tapTimeout);
-		// }
 		check(y);
 	}, [check]);
 
 	const stop = useCallback(() => {
 		setTimeout(() => {
 			setCurrent(undefined);
-			// 	this.setState({currentLetter: null});
 		}, 150);
 		if (onTouchEnd) {
 			requestAnimationFrame(() => {
@@ -125,10 +119,10 @@ export const AtoZPicker: React.FC<AtoZPickerProps> = (
 	const panResponder = useMemo(() => PanResponder.create({
 		onStartShouldSetPanResponder: () => true,
 		onMoveShouldSetPanResponder: () => true,
-		onPanResponderGrant: (event, gestureState) => {
+		onPanResponderGrant: (_event, gestureState) => {
 			start(gestureState.y0);
 		},
-		onPanResponderMove: (event, gestureState) => {
+		onPanResponderMove: (_event, gestureState) => {
 			move(gestureState.moveY);
 		},
 		onPanResponderTerminate: () => {
@@ -140,10 +134,10 @@ export const AtoZPicker: React.FC<AtoZPickerProps> = (
 	}), [start, move, stop]);
 
 	const onLayout = (): void => {
-		if (!containerRef.current) {
+		if (!containerReference.current) {
 			return;
 		}
-		containerRef.current.measure((x1, y1, width, height, px, py) => {
+		containerReference.current.measure((_x1, _y1, _width, height, _px, py) => {
 			setContainerState({ absContainerTop: py, containerHeight: height });
 		});
 	};
@@ -151,16 +145,16 @@ export const AtoZPicker: React.FC<AtoZPickerProps> = (
 	if (letters.length === 0) {
 		return (<></>);
 	}
-	const letterPicks = letters.map(letter => <AtoZLetter letter={letter} key={letter} active={activeLetter === letter}/>);
+	const letterPicks = letters.map(letter => <AtoZLetter letter={letter} key={letter} active={activeLetter === letter} />);
 	return (
 		<View style={[styles.outerContainer, { backgroundColor: theme.overlay, top: statusBarHeight }]}>
 			<View
-				ref={containerRef}
+				ref={containerReference}
 				{...panResponder.panHandlers}
 				onLayout={onLayout}
 				style={styles.letters}
 			>
-				{current && <AtoZPickerBubble yPosition={current.yPosition} letter={current.letter}/>}
+				{current && <AtoZPickerBubble yPosition={current.yPosition} letter={current.letter} />}
 				{letterPicks}
 			</View>
 		</View>

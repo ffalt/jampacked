@@ -3,23 +3,21 @@ import { SectionListData, View } from 'react-native';
 import { ThemedText } from '../components/ThemedText';
 import { HomeRoute, HomeRouteProps } from '../navigators/Routing';
 import { Item } from '../components/Item';
-import { HeaderDetail, ObjHeader, objHeaderStyles } from '../components/ObjHeader';
+import { HeaderDetail, ObjectHeader, objectHeaderStyles } from '../components/ObjectHeader.tsx';
 import { BaseEntry } from '../services/types';
 import { NavigationService } from '../navigators/navigation';
 import { FavIcon } from '../components/FavIcon';
 import { JamObjectType } from '../services/jam';
 import { useLazySeriesQuery } from '../services/queries/series';
-import { DefaultSectionList } from '../components/DefSectionList';
+import { DefaultSectionList } from '../components/DefaultSectionList.tsx';
 import { sharedStyles } from '../style/shared';
 import { Rating } from '../components/Rating';
 
-const buildDetails = (artist?: string, tracks?: number, genre?: string, toArtist?: () => void): Array<HeaderDetail> => {
-	return [
-		{ title: 'Artist', value: `${artist || ''}`, click: artist ? toArtist : undefined },
-		{ title: 'Tracks', value: `${tracks || ''}` },
-		{ title: 'Genre', value: genre || '' }
-	];
-};
+const buildDetails = (artist?: string, tracks?: number, genre?: string, toArtist?: () => void): Array<HeaderDetail> => [
+	{ title: 'Artist', value: `${artist || ''}`, click: artist ? toArtist : undefined },
+	{ title: 'Tracks', value: `${tracks || ''}` },
+	{ title: 'Genre', value: genre || '' }
+];
 
 export const SeriesScreen: React.FC<HomeRouteProps<HomeRoute.SERIE>> = ({ route }) => {
 	const [details, setDetails] = useState<Array<HeaderDetail>>(buildDetails());
@@ -44,14 +42,15 @@ export const SeriesScreen: React.FC<HomeRouteProps<HomeRoute.SERIE>> = ({ route 
 		getSeries(id, true);
 	}, [getSeries, id]);
 
-	const ListHeaderComponent = (<ObjHeader
-		id={id}
-		title={name}
-		typeName="Series"
-		details={details}
-		headerTitleCmds={<FavIcon style={objHeaderStyles.button} objType={JamObjectType.series} id={id}/>}
-		headerTitleCmdsExtras={<Rating fontSize={objHeaderStyles.buttonIcon.fontSize} objType={JamObjectType.series} id={id}/>}
-	/>);
+	const ListHeaderComponent = (
+		<ObjectHeader
+			id={id}
+			title={name}
+			typeName="Series"
+			details={details}
+			headerTitleCmds={<FavIcon style={objectHeaderStyles.button} objType={JamObjectType.series} id={id} />}
+			headerTitleCmdsExtras={<Rating fontSize={objectHeaderStyles.buttonIcon.fontSize} objType={JamObjectType.series} id={id} />} />
+	);
 
 	const renderSection = useCallback(({ section }: { section: SectionListData<BaseEntry> }): React.JSX.Element => (
 		<View style={sharedStyles.sectionHeader}>
@@ -59,7 +58,7 @@ export const SeriesScreen: React.FC<HomeRouteProps<HomeRoute.SERIE>> = ({ route 
 		</View>
 	), []);
 
-	const renderItem = useCallback(({ item }: { item: BaseEntry }): React.JSX.Element => (<Item item={item}/>), []);
+	const renderItem = useCallback(({ item }: { item: BaseEntry }): React.JSX.Element => (<Item item={item} />), []);
 
 	return (
 		<DefaultSectionList
@@ -69,7 +68,6 @@ export const SeriesScreen: React.FC<HomeRouteProps<HomeRoute.SERIE>> = ({ route 
 			renderItem={renderItem}
 			error={error}
 			loading={loading}
-			reload={reload}
-		/>
+			reload={reload} />
 	);
 };

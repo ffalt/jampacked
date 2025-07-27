@@ -1,9 +1,9 @@
 # Changelog
 
-All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
+All notable changes to this project will be documented in this file.
+See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
 ## [0.0.3](https://github.com-ffalt/ffalt/jampacked/compare/v0.0.2...v0.0.3) (2023-01-23)
-
 
 ### Features
 
@@ -16,7 +16,6 @@ All notable changes to this project will be documented in this file. See [commit
 * **tracks:** add checkboxes and action buttons ([f95a6bd](https://github.com-ffalt/ffalt/jampacked/commit/f95a6bd296744aa2f4455a2411db3c07a7a0db1a))
 * **ui:** include search screen into home, user screen into home & settings, remove side drawer ([8e33add](https://github.com-ffalt/ffalt/jampacked/commit/8e33adda733aa7faf196d02399cb4c127bbab75a))
 
-
 ### Bug Fixes
 
 * **fullscreen-player:** re-enable screen swipe ([87ca015](https://github.com-ffalt/ffalt/jampacked/commit/87ca0150ec6c3a12fc8c9fbb2283669855923fd3))
@@ -25,7 +24,6 @@ All notable changes to this project will be documented in this file. See [commit
 * **track-player:** prepare tracks before stopping player ([a78ffb7](https://github.com-ffalt/ffalt/jampacked/commit/a78ffb7a3cb04b6da06710edbda8be2b545ba490))
 
 ### [0.0.2](https://github.com-ffalt/ffalt/jampacked/compare/v0.0.1...v0.0.2) (2021-10-30)
-
 
 ### Features
 

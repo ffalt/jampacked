@@ -5,7 +5,7 @@ import { Item } from './Item';
 import { staticTheme } from '../style/theming';
 import { BaseEntry } from '../services/types';
 import { useLazySearchQuery } from '../services/queries/search';
-import { DefaultFlatList } from './DefFlatList';
+import { DefaultFlatList } from './DefaultFlatList.tsx';
 import { ClickLabelIcon } from './ClickLabelIcon';
 
 const styles = StyleSheet.create({
@@ -58,9 +58,7 @@ export const Search: React.FC<SearchProps> = ({ objType, query, backToAll }) => 
 	useEffect(() => {
 		if (result?.entries?.length) {
 			setTotal(result.total);
-			setEntries((prev) => {
-				return prev.concat(result.entries);
-			});
+			setEntries(previous => [...previous, ...result.entries]);
 		}
 	}, [result]);
 
@@ -71,11 +69,11 @@ export const Search: React.FC<SearchProps> = ({ objType, query, backToAll }) => 
 	}, [backToAll]);
 
 	const handleLoadMore = useCallback((): void => {
-		setOffset((prev) => {
-			if (prev + amount > total) {
-				return prev;
+		setOffset(previous => {
+			if (previous + amount > total) {
+				return previous;
 			}
-			return prev + amount;
+			return previous + amount;
 		});
 	}, [total]);
 
@@ -87,11 +85,11 @@ export const Search: React.FC<SearchProps> = ({ objType, query, backToAll }) => 
 		}
 	}, [q, getSearch, offset]);
 
-	const renderItem = useCallback(({ item }: { item: BaseEntry }): React.JSX.Element => (<Item item={item}/>), []);
+	const renderItem = useCallback(({ item }: { item: BaseEntry }): React.JSX.Element => (<Item item={item} />), []);
 
 	return (
 		<>
-			<ClickLabelIcon label={objType} iconName="left-open" onPress={handleBack} style={styles.section} fontSize={styles.sectionIcon.fontSize} labelStyle={styles.sectionText}/>
+			<ClickLabelIcon label={objType} iconName="left-open" onPress={handleBack} style={styles.section} fontSize={styles.sectionIcon.fontSize} labelStyle={styles.sectionText} />
 			<DefaultFlatList
 				items={entries}
 				renderItem={renderItem}

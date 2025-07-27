@@ -1,13 +1,12 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import {JamBaseService} from '../jam.base.service';
-import {Jam} from '../model/jam-rest-data';
-import {JamParameters} from '../model/jam-rest-params';
+import { JamBaseService } from '../jam.base.service';
+import type { Jam } from '../model/jam-rest-data';
+import type { JamParameters } from '../model/jam-rest-params';
 
 export class JamChatService {
-
-	constructor(private base: JamBaseService) {
+	constructor(private readonly base: JamBaseService) {
 	}
 
 	/**
@@ -30,5 +29,4 @@ export class JamChatService {
 	async remove(params: JamParameters.ChatRemoveArgs): Promise<void> {
 		return this.base.requestPostDataOK('/chat/remove', params);
 	}
-
 }

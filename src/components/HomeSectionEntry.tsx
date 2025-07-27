@@ -32,7 +32,7 @@ export const HomeSectionEntry: React.FC<{ entry: HomeEntry }> = React.memo(({ en
 	return (
 		<TouchableOpacity onPress={click}>
 			<View style={[styles.HomeSectionEntry, { backgroundColor: theme.itemBackground }]}>
-				<JamImage id={entry.id} size={staticTheme.thumbMedium}/>
+				<JamImage id={entry.id} size={staticTheme.thumbMedium} />
 				<ThemedText numberOfLines={1} style={styles.HomeSectionEntryText}>{entry.name}</ThemedText>
 			</View>
 		</TouchableOpacity>

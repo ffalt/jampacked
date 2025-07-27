@@ -7,7 +7,14 @@ on:
     tags-ignore:
       - '**'
     paths-ignore:
-      - 'README.md'
+      - README.md
+      - CHANGELOG.md
+
+permissions:
+    contents: read
+    id-token: write
+    pull-requests: write
+    issues: write
 
 jobs:
   test:

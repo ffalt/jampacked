@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
 export const LoadingScreen: React.FC<AppStackProps<AppRouting.LOAD>> = React.memo(() =>
 	(
 		<View style={styles.container}>
-			<Logo size={104}/>
+			<Logo size={104} />
 		</View>
 	)
 );

@@ -90,7 +90,7 @@ const WaveformViewBar: React.FC<WaveformViewBarProps> = React.memo((
 
 	return (
 		<TouchableOpacity onPress={goTime}>
-			<View style={[styles.waveformBar, { backgroundColor, height, marginTop: top }]}/>
+			<View style={[styles.waveformBar, { backgroundColor, height, marginTop: top }]} />
 		</TouchableOpacity>
 	);
 });
@@ -110,12 +110,12 @@ const WaveformView: React.FC<WaveFormViewProps> = React.memo((
 
 	return (
 		<View style={[styles.waveform, { height, width }]}>
-			{bars.items.map((bar, i) => {
-				const backgroundColor = getColor(i, bars.items.length, percentPlayed, percentPlayable, colors);
+			{bars.items.map((bar, index) => {
+				const backgroundColor = getColor(index, bars.items.length, percentPlayed, percentPlayable, colors);
 				return (
 					<WaveformViewBar
-						key={i.toString()}
-						index={i}
+						key={index.toString()}
+						index={index}
 						top={bar.top}
 						height={bar.height}
 						goToIndex={goToIndex}
@@ -128,11 +128,9 @@ const WaveformView: React.FC<WaveFormViewProps> = React.memo((
 });
 
 const buildBars = (domain: Array<number>, range: Array<number>, chunks: Array<Array<number>>): { items: Array<number> } => {
-	const scaleFunc = scaleLinear().domain(domain).range(range);
+	const scaleFunction = scaleLinear().domain(domain).range(range);
 	return {
-		items: chunks.map((c) => {
-			return scaleFunc(mean(c) as number);
-		})
+		items: chunks.map(c => scaleFunction(mean(c) as number))
 	};
 };
 
@@ -158,8 +156,8 @@ export const SoundCloudWave: React.FC<WaveFormProps> = (
 				wfWidth = waveform.data.length / 2;
 				wfHeight = waveform.sample_rate / 2;
 			}
-			const refWith = (width - 40) || 1;
-			const chunkNr = wfWidth / (refWith / 3);
+			const rWidth = (width - 40) || 1;
+			const chunkNr = wfWidth / (rWidth / 3);
 			const chunksHigh = chunk(wf.channel(0).max_array(), chunkNr);
 			const chunksLow = chunk(wf.channel(0).min_array(), chunkNr);
 			const barsHigh = buildBars([0, wfHeight], [0, height / 2], chunksHigh);

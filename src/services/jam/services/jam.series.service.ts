@@ -1,13 +1,12 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import {JamBaseService} from '../jam.base.service';
-import {Jam} from '../model/jam-rest-data';
-import {JamParameters} from '../model/jam-rest-params';
+import { JamBaseService } from '../jam.base.service';
+import type { Jam } from '../model/jam-rest-data';
+import type { JamParameters } from '../model/jam-rest-params';
 
 export class JamSeriesService {
-
-	constructor(private base: JamBaseService) {
+	constructor(private readonly base: JamBaseService) {
 	}
 
 	/**
@@ -51,5 +50,4 @@ export class JamSeriesService {
 	async tracks(params: JamParameters.SeriesTracksArgs): Promise<Jam.TrackPage> {
 		return this.base.requestData<Jam.TrackPage>('/series/tracks', params);
 	}
-
 }

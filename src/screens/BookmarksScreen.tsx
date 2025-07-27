@@ -3,7 +3,7 @@ import { HomeRoute, HomeRouteProps } from '../navigators/Routing';
 import { useLazyBookmarksQuery } from '../services/queries/bookmarks.ts';
 import { JamPlayer } from '../services/player.ts';
 import { snackError } from '../services/snack.ts';
-import { ObjHeader, objHeaderStyles } from '../components/ObjHeader.tsx';
+import { ObjectHeader, objectHeaderStyles } from '../components/ObjectHeader.tsx';
 import { ClickIcon } from '../components/ClickIcon.tsx';
 import { Tracks } from '../components/Tracks.tsx';
 import { defaultShowArtistTrackDisplay } from '../components/TrackItem.tsx';
@@ -24,20 +24,24 @@ export const BookmarksScreen: React.FC<HomeRouteProps<HomeRoute.BOOKMARKS>> = ()
 	const playTracks = (): void => {
 		if (bookmarks?.tracks) {
 			JamPlayer.playTracks(bookmarks.tracks)
-				.catch((e) => {
-					snackError(e);
+				.catch(error_ => {
+					snackError(error_);
 				});
 		}
 	};
 
-	const ListHeaderComponent = (<ObjHeader
-		id="bookmarks"
-		title="Bookmarks"
-		typeName="Bookmarks"
-		headerTitleCmds={<>
-			<ClickIcon iconName="play" onPress={playTracks} style={objHeaderStyles.button} fontSize={objHeaderStyles.buttonIcon.fontSize}/>
-		</>}
-	/>);
+	const ListHeaderComponent = (
+		<ObjectHeader
+			id="bookmarks"
+			title="Bookmarks"
+			typeName="Bookmarks"
+			headerTitleCmds={(
+				<>
+					<ClickIcon iconName="play" onPress={playTracks} style={objectHeaderStyles.button} fontSize={objectHeaderStyles.buttonIcon.fontSize} />
+				</>
+			)}
+		/>
+	);
 
 	return (
 		<Tracks

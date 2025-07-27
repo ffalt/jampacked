@@ -1,25 +1,10 @@
-import {
+import TrackPlayer, {
 	Capability,
-	State,
 	DownloadState,
 	Track,
-	Event,
 	Download as TrackPlayerDownload,
-	DownloadRequest as TrackPlayerDownloadRequest,
-	TrackPlayerDownloadManager,
-	useTrackPlayerCurrentDownloadsCached,
-	useTrackPlayerDownloadCached,
-	useTrackPlayerDownloadsCached,
-	useTrackPlayerDownloadsPaused,
-	useTrackPlayerCurrentTrack,
-	useTrackPlayerProgressMS,
-	useTrackPlayerHasSiblings,
-	useTrackPlayerProgressPercent,
-	useTrackPlayerCurrentTrackNr,
-	useTrackPlayerQueue,
-	useTrackPlayerPlaybackStateIsPlaying
+	DownloadRequest as TrackPlayerDownloadRequest
 } from 'react-native-track-player';
-import TrackPlayer from 'react-native-track-player';
 import { Platform } from 'react-native';
 
 export async function initPlayer(): Promise<void> {
@@ -66,22 +51,30 @@ export async function initPlayer(): Promise<void> {
 
 export function downloadStateToString(mode: DownloadState): string {
 	switch (mode) {
-		case DownloadState.Completed:
+		case DownloadState.Completed: {
 			return 'Completed';
-		case DownloadState.Downloading:
+		}
+		case DownloadState.Downloading: {
 			return 'Downloading';
-		case DownloadState.Failed:
+		}
+		case DownloadState.Failed: {
 			return 'Failed';
-		case DownloadState.Queued:
+		}
+		case DownloadState.Queued: {
 			return 'Queued';
-		case DownloadState.Removing:
+		}
+		case DownloadState.Removing: {
 			return 'Removing';
-		case DownloadState.Restarting:
+		}
+		case DownloadState.Restarting: {
 			return 'Restarting';
-		case DownloadState.Stopped:
+		}
+		case DownloadState.Stopped: {
 			return 'Stopped';
-		default:
+		}
+		default: {
 			return 'Unknown';
+		}
 	}
 }
 
@@ -90,17 +83,20 @@ export type Download = TrackPlayerDownload;
 export type DownloadRequest = TrackPlayerDownloadRequest;
 
 export {
-	TrackPlayer, Event, DownloadState, State,
+	DownloadState,
+	Event,
+	State,
 	TrackPlayerDownloadManager,
-	useTrackPlayerDownloadsPaused,
-	useTrackPlayerDownloadsCached,
-	useTrackPlayerCurrentTrack,
-	useTrackPlayerProgressMS,
-	useTrackPlayerHasSiblings,
-	useTrackPlayerProgressPercent,
-	useTrackPlayerCurrentTrackNr,
-	useTrackPlayerQueue,
-	useTrackPlayerPlaybackStateIsPlaying,
+	default as TrackPlayer,
 	useTrackPlayerCurrentDownloadsCached,
-	useTrackPlayerDownloadCached
-};
+	useTrackPlayerCurrentTrack,
+	useTrackPlayerCurrentTrackNr,
+	useTrackPlayerDownloadCached,
+	useTrackPlayerDownloadsCached,
+	useTrackPlayerDownloadsPaused,
+	useTrackPlayerHasSiblings,
+	useTrackPlayerPlaybackStateIsPlaying,
+	useTrackPlayerProgressMS,
+	useTrackPlayerProgressPercent,
+	useTrackPlayerQueue
+} from 'react-native-track-player';

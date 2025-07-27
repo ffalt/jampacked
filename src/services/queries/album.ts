@@ -19,7 +19,7 @@ export interface Album {
 }
 
 function transformData(data?: AlbumResultQuery): Album | undefined {
-	if (!data || !data.album) {
+	if (!data?.album) {
 		return;
 	}
 	return {

@@ -11,26 +11,25 @@ function transformData(data?: SeriesListResultQuery, variables?: SeriesListResul
 	}
 	const result: BaseEntryList = {
 		total: data.serieses.total,
-		skip: data.serieses.skip === null ? undefined : data.serieses.skip,
-		take: data.serieses.take === null ? undefined : data.serieses.take,
-		listType: !variables?.listType ? undefined : variables.listType,
+		skip: data.serieses.skip ?? undefined,
+		take: data.serieses.take ?? undefined,
+		listType: variables?.listType ?? undefined,
 		items: []
 	};
-	data.serieses.items.forEach((entry) => {
+	for (const entry of data.serieses.items) {
 		result.items.push({
 			id: entry.id,
 			objType: JamObjectType.series,
 			desc: `Episodes: ${entry.albumsCount}`,
 			title: entry.name
 		});
-	});
+	}
 	return result;
 }
 
 const transformVariables: UseListCallFunctionTransform<SeriesListResultQueryVariables> =
-	(albumTypes, listType, genreIDs, seed, take, skip) => {
-		return { albumTypes, listType, genreIDs, skip, take, seed };
-	};
+	(albumTypes, listType, genreIDs, seed, take, skip) =>
+		({ albumTypes, listType, genreIDs, skip, take, seed });
 
 export const SeriesListQuery: {
 	query: DocumentNode;

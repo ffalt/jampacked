@@ -6,7 +6,7 @@ import { JamImage } from './JamImage';
 import { FastImageBackground } from './JamBackgroundImage';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 
-export const objHeaderStyles = StyleSheet.create({
+export const objectHeaderStyles = StyleSheet.create({
 	// eslint-disable-next-line react-native/no-unused-styles
 	button: {
 		paddingHorizontal: staticTheme.paddingSmall,
@@ -97,7 +97,7 @@ export interface HeaderDetail {
 	click?: () => void;
 }
 
-export const ObjHeader: React.FC<{
+export const ObjectHeader: React.FC<{
 	id: string;
 	title: string;
 	typeName?: string;
@@ -120,7 +120,7 @@ export const ObjHeader: React.FC<{
 			);
 		}
 		const result: Array<React.JSX.Element> = [];
-		(details || []).forEach((detail) => {
+		for (const detail of (details || [])) {
 			if (detail.click) {
 				const onClick = (): void => {
 					if (detail.click) {
@@ -141,8 +141,8 @@ export const ObjHeader: React.FC<{
 					</View>
 				));
 			}
-		});
-		if (result.length) {
+		}
+		if (result.length > 0) {
 			return (
 				<View style={styles.headerExtra}>
 					<View style={styles.headerExtraContainer}>
@@ -156,7 +156,7 @@ export const ObjHeader: React.FC<{
 	return (
 		<FastImageBackground id={id} style={[styles.header, { paddingTop: statusBarHeight }]}>
 			<View style={styles.headerTop}>
-				<JamImage id={id} size={173} requestSize={staticTheme.cover}/>
+				<JamImage id={id} size={173} requestSize={staticTheme.cover} />
 				<View style={styles.headerTitleContainer}>
 					<ThemedText style={[styles.headerTitleType, { color: theme.muted }]}>{typeName}</ThemedText>
 					<ThemedText numberOfLines={2} style={styles.headerTitle}>{title}</ThemedText>

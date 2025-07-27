@@ -9,171 +9,206 @@ export interface RouteLink {
 	navig: Navig;
 }
 
-export class JamRouteLinks {
-	static artists(): RouteLink {
+export const JamRouteLinks = {
+	artists(): RouteLink {
 		return ({ title: 'Artists', icon: 'artist', navig: { route: HomeRoute.ARTISTS } });
-	}
+	},
 
-	static artistlistRoute(listType: ListType): ArtistsRoute {
+	artistlistRoute(listType: ListType): ArtistsRoute {
 		switch (listType) {
-			case ListType.random:
-				return ArtistsRoute.RANDOM;
-			case ListType.highest:
+			case ListType.highest: {
 				return ArtistsRoute.HIGHEST;
-			case ListType.avghighest:
+			}
+			case ListType.avghighest: {
 				return ArtistsRoute.AVGHIGHEST;
-			case ListType.frequent:
+			}
+			case ListType.frequent: {
 				return ArtistsRoute.FREQUENT;
-			case ListType.faved:
+			}
+			case ListType.faved: {
 				return ArtistsRoute.FAV;
-			case ListType.recent:
+			}
+			case ListType.recent: {
 				return ArtistsRoute.RECENT;
+			}
+			// case ListType.random:
+			default: {
+				return ArtistsRoute.RANDOM;
+			}
 		}
-	}
+	},
 
-	static albumlistRoute(listType: ListType): AlbumsRoute {
+	albumlistRoute(listType: ListType): AlbumsRoute {
 		switch (listType) {
-			case ListType.random:
-				return AlbumsRoute.RANDOM;
-			case ListType.highest:
+			case ListType.highest: {
 				return AlbumsRoute.HIGHEST;
-			case ListType.avghighest:
+			}
+			case ListType.avghighest: {
 				return AlbumsRoute.AVGHIGHEST;
-			case ListType.frequent:
+			}
+			case ListType.frequent: {
 				return AlbumsRoute.FREQUENT;
-			case ListType.faved:
+			}
+			case ListType.faved: {
 				return AlbumsRoute.FAV;
-			case ListType.recent:
+			}
+			case ListType.recent: {
 				return AlbumsRoute.RECENT;
+			}
+			// case ListType.random:
+			default: {
+				return AlbumsRoute.RANDOM;
+			}
 		}
-	}
+	},
 
-	static serieslistRoute(listType: ListType): SeriesRoute {
+	serieslistRoute(listType: ListType): SeriesRoute {
 		switch (listType) {
-			case ListType.random:
-				return SeriesRoute.RANDOM;
-			case ListType.highest:
+			case ListType.highest: {
 				return SeriesRoute.HIGHEST;
-			case ListType.avghighest:
+			}
+			case ListType.avghighest: {
 				return SeriesRoute.AVGHIGHEST;
-			case ListType.frequent:
+			}
+			case ListType.frequent: {
 				return SeriesRoute.FREQUENT;
-			case ListType.faved:
+			}
+			case ListType.faved: {
 				return SeriesRoute.FAV;
-			case ListType.recent:
+			}
+			case ListType.recent: {
 				return SeriesRoute.RECENT;
+			}
+			// case ListType.random:
+			default: {
+				return SeriesRoute.RANDOM;
+			}
 		}
-	}
+	},
 
-	static tracklistRoute(listType: ListType): TracksRoute {
+	tracklistRoute(listType: ListType): TracksRoute {
 		switch (listType) {
-			case ListType.random:
-				return TracksRoute.RANDOM;
-			case ListType.highest:
+			case ListType.highest: {
 				return TracksRoute.HIGHEST;
-			case ListType.avghighest:
+			}
+			case ListType.avghighest: {
 				return TracksRoute.AVGHIGHEST;
-			case ListType.frequent:
+			}
+			case ListType.frequent: {
 				return TracksRoute.FREQUENT;
-			case ListType.faved:
+			}
+			case ListType.faved: {
 				return TracksRoute.FAV;
-			case ListType.recent:
+			}
+			case ListType.recent: {
 				return TracksRoute.RECENT;
+			}
+			// case ListType.random:
+			default: {
+				return TracksRoute.RANDOM;
+			}
 		}
-	}
+	},
 
-	static folderlistRoute(listType: ListType): FoldersRoute {
+	folderlistRoute(listType: ListType): FoldersRoute {
 		switch (listType) {
-			case ListType.random:
-				return FoldersRoute.RANDOM;
-			case ListType.highest:
+			case ListType.highest: {
 				return FoldersRoute.HIGHEST;
-			case ListType.avghighest:
+			}
+			case ListType.avghighest: {
 				return FoldersRoute.AVGHIGHEST;
-			case ListType.frequent:
+			}
+			case ListType.frequent: {
 				return FoldersRoute.FREQUENT;
-			case ListType.faved:
+			}
+			case ListType.faved: {
 				return FoldersRoute.FAV;
-			case ListType.recent:
+			}
+			case ListType.recent: {
 				return FoldersRoute.RECENT;
+			}
+			// case ListType.random:
+			default: {
+				return FoldersRoute.RANDOM;
+			}
 		}
-	}
+	},
 
-	static artistlist(listType: ListType): RouteLink {
+	artistlist(listType: ListType): RouteLink {
 		return ({ title: 'Artists', icon: 'artist', navig: { route: JamRouteLinks.artistlistRoute(listType) } });
-	}
+	},
 
-	static series(): RouteLink {
+	series(): RouteLink {
 		return ({ title: 'Series', icon: 'series', navig: { route: HomeRoute.SERIES } });
-	}
+	},
 
-	static folders(albumType?: AlbumType): RouteLink {
+	folders(albumType?: AlbumType): RouteLink {
 		return ({ title: 'Folders', icon: 'folder', navig: { route: HomeRoute.FOLDERS, params: { albumType } } });
-	}
+	},
 
-	static tracks(): RouteLink {
+	tracks(): RouteLink {
 		return ({ title: 'Tracks', icon: 'track', navig: { route: HomeRoute.TRACKS } });
-	}
+	},
 
-	static genres(): RouteLink {
+	genres(): RouteLink {
 		return ({ title: 'Genres', icon: 'genre', navig: { route: HomeRoute.GENRES } });
-	}
+	},
 
-	static genretracks(): RouteLink {
+	genretracks(): RouteLink {
 		return ({ title: 'Genres Tracks', icon: 'genre', navig: { route: GenreRoute.TRACKS } });
-	}
+	},
 
-	static genreartists(): RouteLink {
+	genreartists(): RouteLink {
 		return ({ title: 'Genres Artists', icon: 'genre', navig: { route: GenreRoute.ARTISTS } });
-	}
+	},
 
-	static genrealbums(): RouteLink {
+	genrealbums(): RouteLink {
 		return ({ title: 'Genres Albums', icon: 'genre', navig: { route: GenreRoute.ALBUMS } });
-	}
+	},
 
-	static podcasts(): RouteLink {
+	podcasts(): RouteLink {
 		return ({ title: 'Podcasts', icon: 'podcast', navig: { route: HomeRoute.PODCASTS } });
-	}
+	},
 
-	static albums(albumType?: AlbumType): RouteLink {
+	albums(albumType?: AlbumType): RouteLink {
 		const t = albumType ? getAlbumTypeInfos(albumType) : undefined;
 		return ({ title: t?.title || 'Albums', icon: t?.icon || 'album', navig: { route: HomeRoute.ALBUMS, params: { albumType } } });
-	}
+	},
 
-	static albumlist(listType: ListType, albumType?: AlbumType): RouteLink {
+	albumlist(listType: ListType, albumType?: AlbumType): RouteLink {
 		const t = albumType ? getAlbumTypeInfos(albumType) : undefined;
 		return ({ title: t?.title || 'Albums', icon: t?.icon || 'album', navig: { route: JamRouteLinks.albumlistRoute(listType), params: { albumType } } });
-	}
+	},
 
-	static serieslist(listType: ListType): RouteLink {
+	serieslist(listType: ListType): RouteLink {
 		return ({ title: 'Series', icon: 'series', navig: { route: JamRouteLinks.serieslistRoute(listType) } });
-	}
+	},
 
-	static folderlist(listType: ListType, albumType?: AlbumType): RouteLink {
+	folderlist(listType: ListType, albumType?: AlbumType): RouteLink {
 		return ({ title: 'Folders', icon: 'folder', navig: { route: JamRouteLinks.folderlistRoute(listType), params: { albumType } } });
-	}
+	},
 
-	static tracklist(listType: ListType): RouteLink {
+	tracklist(listType: ListType): RouteLink {
 		return ({ title: 'Tracks', icon: 'track', navig: { route: JamRouteLinks.tracklistRoute(listType) } });
-	}
+	},
 
-	static bookmarks(): RouteLink {
+	bookmarks(): RouteLink {
 		return ({ title: 'Bookmarks', icon: 'bookmark', navig: { route: HomeRoute.BOOKMARKS } });
-	}
+	},
 
-	static playlists(): RouteLink {
+	playlists(): RouteLink {
 		return ({ title: 'Playlists', icon: 'playlist', navig: { route: HomeRoute.PLAYLISTS } });
-	}
+	},
 
-	static home(): RouteLink {
+	home(): RouteLink {
 		return ({ title: 'Home', icon: 'home', navig: { route: HomeRoute.START } });
-	}
+	},
 
-	static settings(): RouteLink {
+	settings(): RouteLink {
 		return ({ title: 'Settings', icon: 'settings', navig: { route: BottomTabRoute.SETTINGS } });
-	}
+	},
 
-	static pinned(): RouteLink {
+	pinned(): RouteLink {
 		return ({ title: 'Pinned', icon: 'download', navig: { route: HomeRoute.PINNED } });
 	}
-}
+};

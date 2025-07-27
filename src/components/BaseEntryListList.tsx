@@ -39,19 +39,19 @@ export const BaseEntryListList: React.FC<{ query: BaseEntryListListQuery }> = ({
 
 	useEffect(() => {
 		setInfo({ icon: query.icon, title: query.text, subtitle: query.subtitle || ListTypeName[query.listType || ''] });
-		setType((prev) => {
+		setType(previous => {
 			if (query.genreIDs) {
-				const prev_genres = prev?.genreIDs ? prev.genreIDs.join('/') : '';
+				const previous_genres = previous?.genreIDs ? previous.genreIDs.join('/') : '';
 				const query_genres = query?.genreIDs ? query.genreIDs.join('/') : '';
-				if (prev_genres === query_genres) {
-					return prev;
+				if (previous_genres === query_genres) {
+					return previous;
 				}
 				setTotal(0);
 				setEntries(undefined);
 				return { genreIDs: query.genreIDs, albumTypes: query.albumTypes, offset: 0 };
 			} else {
-				if (prev?.listType === query.listType) {
-					return prev;
+				if (previous?.listType === query.listType) {
+					return previous;
 				}
 				setTotal(0);
 				setEntries(undefined);
@@ -71,9 +71,9 @@ export const BaseEntryListList: React.FC<{ query: BaseEntryListListQuery }> = ({
 		if (data) {
 			const items = data.items;
 			setTotal(data.total);
-			setEntries((prev) => {
-				if (prev) {
-					return prev.concat(items);
+			setEntries(previous => {
+				if (previous) {
+					return [...previous, ...items];
 				}
 				return items;
 			});
@@ -83,31 +83,32 @@ export const BaseEntryListList: React.FC<{ query: BaseEntryListListQuery }> = ({
 	const reload = useCallback((): void => {
 		setEntries(undefined);
 		setTotal(0);
-		// TODO: this depends on ordering of graphql variables, FIXME
+		// TODO: this depends on ordering of graphql variables
 		const id = (queryID || '').slice(0, queryID?.indexOf('skip'));
 		dataService.cache.removeKeyStartWith(id)
 			.then(() => {
-				setType((prev) => {
-					const seed = prev?.listType === ListType.random ? Date.now().toString() : undefined;
-					return { ...prev, seed, offset: 0 };
+				setType(previous => {
+					const seed = previous?.listType === ListType.random ? Date.now().toString() : undefined;
+					return { ...previous, seed, offset: 0 };
 				});
-			});
+			})
+			.catch(console.error);
 	}, [queryID]);
 
 	const handleLoadMore = useCallback((): void => {
 		if (!loading && entries && total > 0 && total > entries.length) {
-			setType((prev) => {
-				const p = prev?.offset || 0;
+			setType(previous => {
+				const p = previous?.offset || 0;
 				if (p + amount > total) {
-					return prev;
+					return previous;
 				}
-				return { ...prev, offset: p + amount };
+				return { ...previous, offset: p + amount };
 			});
 		}
 	}, [entries, total, loading]);
 
 	if (error) {
-		return (<ErrorView error={error} onRetry={reload}/>);
+		return (<ErrorView error={error} onRetry={reload} />);
 	}
 
 	return (
@@ -119,5 +120,6 @@ export const BaseEntryListList: React.FC<{ query: BaseEntryListListQuery }> = ({
 			goLeft={query.goLeft}
 			goRight={query.goRight}
 			info={info}
-		/>);
+		/>
+	);
 };

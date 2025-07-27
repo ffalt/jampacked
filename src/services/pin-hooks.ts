@@ -5,12 +5,12 @@ import { Download, useTrackPlayerDownloadCached } from './player-api';
 
 export function usePinState(id?: string): PinState | undefined {
 	const [stat, setStat] = useState<PinState | undefined>();
-	const isUnmountedRef = useRef(true);
+	const isUnmountedReference = useRef(true);
 
 	useEffect(() => {
-		isUnmountedRef.current = false;
+		isUnmountedReference.current = false;
 		return () => {
-			isUnmountedRef.current = true;
+			isUnmountedReference.current = true;
 		};
 	}, []);
 
@@ -20,12 +20,13 @@ export function usePinState(id?: string): PinState | undefined {
 				return;
 			}
 			dataService.pin.getPinState(id)
-				.then((value) => {
-					if (isUnmountedRef.current) {
+				.then(value => {
+					if (isUnmountedReference.current) {
 						return;
 					}
 					setStat(value);
-				});
+				})
+				.catch(console.error);
 		};
 
 		if (id) {
@@ -44,24 +45,25 @@ export function usePinState(id?: string): PinState | undefined {
 
 export function usePinCacheStat(): PinCacheStat | undefined {
 	const [stat, setStat] = useState<PinCacheStat | undefined>();
-	const isUnmountedRef = useRef(true);
+	const isUnmountedReference = useRef(true);
 
 	useEffect(() => {
-		isUnmountedRef.current = false;
+		isUnmountedReference.current = false;
 		return () => {
-			isUnmountedRef.current = true;
+			isUnmountedReference.current = true;
 		};
 	}, []);
 
 	useEffect(() => {
 		const refresh = (): void => {
 			dataService.pin.stat()
-				.then((s) => {
-					if (isUnmountedRef.current) {
+				.then(s => {
+					if (isUnmountedReference.current) {
 						return;
 					}
 					setStat(s);
-				});
+				})
+				.catch(console.error);
 		};
 
 		dataService.pin.subscribeCacheChangeUpdates(refresh);
@@ -77,27 +79,29 @@ export function usePinCacheStat(): PinCacheStat | undefined {
 export function usePinnedMedia(): { media: Array<PinMedia>; loading: boolean } {
 	const [media, setMedia] = useState<Array<PinMedia>>([]);
 	const [loading, setLoading] = useState<boolean>(true);
-	const isUnmountedRef = useRef(true);
+	const isUnmountedReference = useRef(true);
 
 	useEffect(() => {
-		isUnmountedRef.current = false;
+		isUnmountedReference.current = false;
 		return () => {
-			isUnmountedRef.current = true;
+			isUnmountedReference.current = true;
 		};
 	}, []);
 
 	useEffect(() => {
 		const update = (): void => {
-			if (isUnmountedRef.current) {
+			if (isUnmountedReference.current) {
 				return;
 			}
-			dataService.pin.getPins().then((pins) => {
-				if (isUnmountedRef.current) {
-					return;
-				}
-				setMedia(pins);
-				setLoading(false);
-			});
+			dataService.pin.getPins()
+				.then(pins => {
+					if (isUnmountedReference.current) {
+						return;
+					}
+					setMedia(pins);
+					setLoading(false);
+				})
+				.catch(console.error);
 		};
 
 		update();
@@ -113,28 +117,29 @@ export function usePinnedMedia(): { media: Array<PinMedia>; loading: boolean } {
 export function usePinnedMediaDownload(id: string): { track?: TrackEntry; download?: Download } {
 	const download = useTrackPlayerDownloadCached(id, dataService.pin.manager);
 	const [track, setTrack] = useState<TrackEntry | undefined>(undefined);
-	const isUnmountedRef = useRef(true);
+	const isUnmountedReference = useRef(true);
 
 	useEffect(() => {
-		isUnmountedRef.current = false;
+		isUnmountedReference.current = false;
 		return () => {
-			isUnmountedRef.current = true;
+			isUnmountedReference.current = true;
 		};
 	}, []);
 
 	useEffect(() => {
 		const update = (): void => {
-			if (isUnmountedRef.current) {
+			if (isUnmountedReference.current) {
 				return;
 			}
-			dataService.pin.getPinnedTrack(id).then((t) => {
-				if (isUnmountedRef.current) {
-					return;
-				}
-				setTrack(t);
-			});
+			dataService.pin.getPinnedTrack(id)
+				.then(t => {
+					if (isUnmountedReference.current) {
+						return;
+					}
+					setTrack(t);
+				})
+				.catch(console.error);
 		};
-
 		update();
 	}, [download, id]);
 
@@ -143,26 +148,26 @@ export function usePinnedMediaDownload(id: string): { track?: TrackEntry; downlo
 
 export function usePinnedCount(): number {
 	const [count, setCount] = useState<number>(0);
-	const isUnmountedRef = useRef(true);
+	const isUnmountedReference = useRef(true);
 
 	useEffect(() => {
-		isUnmountedRef.current = false;
+		isUnmountedReference.current = false;
 		return () => {
-			isUnmountedRef.current = true;
+			isUnmountedReference.current = true;
 		};
 	}, []);
 
 	useEffect(() => {
 		const refresh = (): void => {
 			dataService.pin.getPinCount()
-				.then((value) => {
-					if (isUnmountedRef.current) {
+				.then(value => {
+					if (isUnmountedReference.current) {
 						return;
 					}
 					setCount(value);
-				});
+				})
+				.catch(console.error);
 		};
-
 		dataService.pin.subscribePinsChangeSubscriptions(refresh);
 		refresh();
 		return (): void => {

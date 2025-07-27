@@ -26,28 +26,26 @@ const styles = StyleSheet.create({
 	}
 });
 
-export const SettingsScreen: React.FC<BottomTabProps<BottomTabRoute.SETTINGS>> = () => {
-	return (
-		<>
-			<PageHeader title="Settings" />
-			<View style={styles.container}>
-				<View style={[sharedStyles.sectionHeader, styles.sectionFirst]}>
-					<ThemedText style={sharedStyles.sectionHeaderText}>Cache</ThemedText>
-				</View>
-				<CachingView title="Data & Image Cache"/>
-				<View style={[sharedStyles.sectionHeader, styles.section]}>
-					<ThemedText style={sharedStyles.sectionHeaderText}>Pinned Offline Tracks</ThemedText>
-				</View>
-				<MediaCachingView/>
-				<View style={[sharedStyles.sectionHeader, styles.section]}>
-					<ThemedText style={sharedStyles.sectionHeaderText}>Theme</ThemedText>
-				</View>
-				<ThemesView/>
-				<View style={[sharedStyles.sectionHeader, styles.section]}>
-					<ThemedText style={sharedStyles.sectionHeaderText}>User</ThemedText>
-				</View>
-				<UserView/>
+export const SettingsScreen: React.FC<BottomTabProps<BottomTabRoute.SETTINGS>> = () => (
+	<>
+		<PageHeader title="Settings" />
+		<View style={styles.container}>
+			<View style={[sharedStyles.sectionHeader, styles.sectionFirst]}>
+				<ThemedText style={sharedStyles.sectionHeaderText}>Cache</ThemedText>
 			</View>
-		</>
-	);
-};
+			<CachingView title="Data & Image Cache" />
+			<View style={[sharedStyles.sectionHeader, styles.section]}>
+				<ThemedText style={sharedStyles.sectionHeaderText}>Pinned Offline Tracks</ThemedText>
+			</View>
+			<MediaCachingView />
+			<View style={[sharedStyles.sectionHeader, styles.section]}>
+				<ThemedText style={sharedStyles.sectionHeaderText}>Theme</ThemedText>
+			</View>
+			<ThemesView />
+			<View style={[sharedStyles.sectionHeader, styles.section]}>
+				<ThemedText style={sharedStyles.sectionHeaderText}>User</ThemedText>
+			</View>
+			<UserView />
+		</View>
+	</>
+);

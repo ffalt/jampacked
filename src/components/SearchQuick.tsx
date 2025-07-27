@@ -9,7 +9,7 @@ import { staticTheme } from '../style/theming';
 import { AutoCompleteData, AutoCompleteDataSection, AutoCompleteEntryData } from '../services/types';
 import { useLazyAutocompleteQuery } from '../services/queries/autocomplete';
 import { sharedStyles } from '../style/shared';
-import { DefaultSectionList } from './DefSectionList';
+import { DefaultSectionList } from './DefaultSectionList.tsx';
 
 const styles = StyleSheet.create({
 	list: {
@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
 
 interface SearchQuickProps {
 	query?: string;
-	setObjType?: (objType: JamObjectType) => void;
+	setObjType?: (objectType: JamObjectType) => void;
 }
 
 export const SearchQuick: React.FC<SearchQuickProps> = ({ query, setObjType }) => {
@@ -54,7 +54,7 @@ export const SearchQuick: React.FC<SearchQuickProps> = ({ query, setObjType }) =
 		return (
 			<TouchableOpacity style={sharedStyles.sectionHeader} onPress={setType}>
 				<ThemedText style={sharedStyles.sectionHeaderText}>{section.key}</ThemedText>
-				{(section.data.length >= 5) && <ThemedIcon style={sharedStyles.sectionHeaderIcon} name="right-open"/>}
+				{(section.data.length >= 5) && <ThemedIcon style={sharedStyles.sectionHeaderIcon} name="right-open" />}
 			</TouchableOpacity>
 		);
 	}, [setObjType]);
@@ -69,7 +69,7 @@ export const SearchQuick: React.FC<SearchQuickProps> = ({ query, setObjType }) =
 
 		return (
 			<TouchableOpacity onPress={click} style={sharedStyles.item}>
-				<JamImage id={item.id} size={staticTheme.thumb} style={sharedStyles.itemSectionLeft}/>
+				<JamImage id={item.id} size={staticTheme.thumb} style={sharedStyles.itemSectionLeft} />
 				<View style={sharedStyles.itemContent}>
 					<ThemedText style={sharedStyles.itemText} numberOfLines={2}>{item.name}</ThemedText>
 				</View>

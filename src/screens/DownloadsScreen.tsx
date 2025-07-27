@@ -7,6 +7,6 @@ import { DownloadsPage } from '../components/Downloads';
 export const DownloadsScreen: React.FC<DownloadsRouteProps<DownloadsRoute.ALL>> = () => {
 	const downloads = useTrackPlayerDownloadsCached(dataService.pin.manager);
 	return (
-		<DownloadsPage title={'All Downloads'} downloads={downloads}/>
+		<DownloadsPage title="All Downloads" downloads={downloads} />
 	);
 };

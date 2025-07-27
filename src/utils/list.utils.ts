@@ -1,12 +1,12 @@
 import { sharedStyles } from '../style/shared';
 
-type commonItemLayoutFunc = (data: unknown, index: number) => { length: number; offset: number; index: number };
+type commonItemLayoutFunction = (data: unknown, index: number) => { length: number; offset: number; index: number };
 
-export function commonItemLayout(itemHeight?: number): commonItemLayoutFunc | undefined {
+export function commonItemLayout(itemHeight?: number): commonItemLayoutFunction | undefined {
 	if (!itemHeight) {
 		return;
 	}
-	return (data: unknown, index: number): { length: number; offset: number; index: number } => ({
+	return (_data: unknown, index: number): { length: number; offset: number; index: number } => ({
 		length: itemHeight,
 		offset: itemHeight * index,
 		index

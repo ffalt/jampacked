@@ -2,7 +2,7 @@ import { StyleSheet, View } from 'react-native';
 import React from 'react';
 import { staticTheme } from '../style/theming';
 import { FavIcon } from './FavIcon';
-import { objHeaderStyles } from './ObjHeader';
+import { objectHeaderStyles } from './ObjectHeader.tsx';
 import { JamObjectType } from '../services/jam';
 import { Rating } from './Rating';
 import { useTrackPlayerCurrentTrack } from '../services/player-api';
@@ -24,8 +24,17 @@ export const PlayerAnnotation: React.FC = () => {
 	const currentTrack = useTrackPlayerCurrentTrack();
 	return (
 		<View style={styles.annotation}>
-			<FavIcon style={objHeaderStyles.button} fontSize={objHeaderStyles.buttonIcon.fontSize} objType={JamObjectType.track} id={currentTrack?.id}/>
-			<Rating style={[objHeaderStyles.button, styles.rating]} fontSize={objHeaderStyles.buttonIcon.fontSize} id={currentTrack?.id} objType={JamObjectType.track}></Rating>
+			<FavIcon
+				style={objectHeaderStyles.button}
+				fontSize={objectHeaderStyles.buttonIcon.fontSize}
+				objType={JamObjectType.track}
+				id={currentTrack?.id} />
+			<Rating
+				style={[objectHeaderStyles.button, styles.rating]}
+				fontSize={objectHeaderStyles.buttonIcon.fontSize}
+				id={currentTrack?.id}
+				objType={JamObjectType.track}>
+			</Rating>
 		</View>
 	);
 };

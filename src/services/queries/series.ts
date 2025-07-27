@@ -30,7 +30,7 @@ function transformData(data?: SeriesResultQuery): Series | undefined {
 		return;
 	}
 	const sections: Array<SectionListData<BaseEntry>> = [];
-	(data.series.albums || []).forEach((album) => {
+	for (const album of (data.series.albums || [])) {
 		let section = sections.find(s => s.key === album.albumType);
 		if (!section) {
 			section = {
@@ -46,26 +46,24 @@ function transformData(data?: SeriesResultQuery): Series | undefined {
 		} else if (album.year) {
 			desc = `${album.year}`;
 		}
-		section.data = section.data.concat([{
+		section.data = [...section.data, {
 			objType: JamObjectType.album,
 			id: album.id,
 			title: album.name,
 			desc
-		}]);
-	});
+		}];
+	}
 	return {
 		id: data.series.id,
 		name: data.series.name,
 		artistID: data.series.artist?.id,
 		artistName: data.series.artist?.name,
 		tracksCount: data.series.tracksCount,
-		albums: data.series.albums.map((series) => {
-			return {
-				...series,
-				year: series.year || undefined,
-				seriesNr: series.seriesNr || undefined
-			};
-		}),
+		albums: data.series.albums.map(series => ({
+			...series,
+			year: series.year || undefined,
+			seriesNr: series.seriesNr || undefined
+		})),
 		sections
 	};
 }

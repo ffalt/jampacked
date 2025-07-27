@@ -20,7 +20,7 @@ export const FolderIndexScreen: React.FC<FoldersRouteProps<FoldersRoute.INDEX>> 
 	}, [getIndex]);
 
 	if (error) {
-		return (<ErrorView error={error} onRetry={reload}/>);
+		return (<ErrorView error={error} onRetry={reload} />);
 	}
 
 	return (

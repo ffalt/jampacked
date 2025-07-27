@@ -23,7 +23,7 @@ export const useLazyFavQuery = (): [(id: string) => void,
 	}, [data]);
 
 	const get = useCallback((id: string): void => {
-		query({ variables: { id } });
+		query({ variables: { id } }).catch(console.error);
 	}, [query]);
 
 	const setFav = useCallback((fav: { timestamp?: number } | undefined): void => {

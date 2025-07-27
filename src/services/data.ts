@@ -56,21 +56,21 @@ export class DataService {
 
 	// user dependent settings
 
-	public async getSetting(key: string): Promise<string | undefined> {
+	async getSetting(key: string): Promise<string | undefined> {
 		return this.storage.getValue(`jam:${this.currentUserID}:${key}`);
 	}
 
-	public async setSetting(key: string, value?: string): Promise<void> {
+	async setSetting(key: string, value?: string): Promise<void> {
 		return this.storage.setValue(`jam:${this.currentUserID}:${key}`, value);
 	}
 
 	// user independent settings
 
-	public async getStored(key: string): Promise<string | undefined> {
+	async getStored(key: string): Promise<string | undefined> {
 		return this.storage.getValue(`jam-store:${key}`);
 	}
 
-	public async setStored(key: string, value?: string): Promise<void> {
+	async setStored(key: string, value?: string): Promise<void> {
 		return this.storage.setValue(`jam-store:${key}`, value);
 	}
 }

@@ -3,7 +3,7 @@ import { AlbumType, Jam, JamObjectType, ListType } from './jam';
 import { ApolloError } from '@apollo/client';
 import { RouteLink } from '../navigators/Routes';
 
-export interface NavigParams {
+export interface NavigParameters {
 	id?: string;
 	name?: string;
 	albumType?: AlbumType;
@@ -12,7 +12,7 @@ export interface NavigParams {
 
 export interface Navig {
 	route: string;
-	params?: NavigParams;
+	params?: NavigParameters;
 }
 
 export interface HomeEntry {
@@ -28,7 +28,7 @@ export interface HomeData {
 	albumsRecent?: Array<HomeEntry>;
 }
 
-export interface Doc<T> {
+export interface Document<T> {
 	key: string;
 	version: number;
 	date: number;
@@ -67,7 +67,10 @@ export interface AutoCompleteEntryData extends Jam.AutoCompleteEntry {
 
 export type Index = Array<IndexEntry>;
 
-export interface HomeStatData { link: RouteLink; value: number }
+export interface HomeStatData {
+	link: RouteLink;
+	value: number;
+}
 
 export type HomeStatsData = Array<HomeStatData>;
 

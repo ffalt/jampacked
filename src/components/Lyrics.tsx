@@ -67,11 +67,24 @@ export const Lyrics: React.FC<{ id?: string | null }> = ({ id }) => {
 		return (
 			<View key="nolyrics" style={[styles.containerLoading, { borderColor: theme.separator }]}>
 				{id && !error && !loading && <ThemedText style={styles.none}>{text}</ThemedText>}
-				{loading && <View><ActivityIndicator size="small" color={theme.textColor}/><ThemedText style={styles.none}>Searching Lyrics</ThemedText></View>}
+				{loading && (
+					<View>
+						<ActivityIndicator size="small" color={theme.textColor} />
+						<ThemedText
+							style={styles.none}>
+							Searching Lyrics
+						</ThemedText>
+					</View>
+				)}
 				{error && !loading && (
 					<View>
 						<ThemedText style={styles.none}>{error.message}</ThemedText>
-						<ClickLabelIcon style={[styles.button, { borderColor: theme.separator }]} onPress={refresh} iconName="reload" label="Refresh" labelStyle={styles.buttonText}/>
+						<ClickLabelIcon
+							style={[styles.button, { borderColor: theme.separator }]}
+							onPress={refresh}
+							iconName="reload"
+							label="Refresh"
+							labelStyle={styles.buttonText} />
 					</View>
 				)}
 			</View>

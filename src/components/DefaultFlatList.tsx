@@ -6,7 +6,7 @@ import { Separator } from './Separator';
 import { defaultItemLayout, defaultKeyExtractor } from '../utils/list.utils';
 import { ErrorView } from './ErrorView';
 
-interface DefaultFlatListParams<T> {
+interface DefaultFlatListParameters<T> {
 	style?: StyleProp<ViewStyle>;
 	id?: string;
 	error?: Error;
@@ -20,7 +20,7 @@ interface DefaultFlatListParams<T> {
 	loading: boolean;
 }
 
-export const DefaultFlatList: React.FC<DefaultFlatListParams<any>> = (
+export const DefaultFlatList: React.FC<DefaultFlatListParameters<any>> = (
 	{
 		items, id, error, reload,
 		renderItem, loading, style, keyExtractor,
@@ -29,7 +29,7 @@ export const DefaultFlatList: React.FC<DefaultFlatListParams<any>> = (
 ) => {
 	const theme = useTheme();
 	if (error) {
-		return (<ErrorView error={error} onRetry={reload}/>);
+		return (<ErrorView error={error} onRetry={reload} />);
 	}
 	return (
 		<FlatList
@@ -42,7 +42,7 @@ export const DefaultFlatList: React.FC<DefaultFlatListParams<any>> = (
 			keyExtractor={keyExtractor || defaultKeyExtractor}
 			ItemSeparatorComponent={Separator}
 			ListHeaderComponent={ListHeaderComponent}
-			ListEmptyComponent={<ListEmpty list={items}/>}
+			ListEmptyComponent={<ListEmpty list={items} />}
 			getItemLayout={defaultItemLayout}
 			refreshControl={(
 				<RefreshControl

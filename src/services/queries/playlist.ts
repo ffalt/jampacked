@@ -22,13 +22,13 @@ export const transformEpisode = (episode: PlaylistResult_playlist_entries_episod
 	}
 	return {
 		id: episode.id,
-		title: episode.tag?.title || episode.name,
-		artist: episode.tag?.artist || '?',
+		title: episode.tag?.title ?? episode.name,
+		artist: episode.tag?.artist ?? '?',
 		genre: episode.tag?.genres ? episode.tag?.genres.join(' / ') : undefined,
-		album: episode.tag?.album || '?',
+		album: episode.tag?.album ?? '?',
 		podcastID: episode.podcast?.id,
 		trackNr: (episode.tag?.disc && episode.tag?.disc > 1 ? `${episode.tag?.disc}-` : '') + (episode.tag?.trackNr || ''),
-		durationMS: episode.tag?.mediaDuration || 0,
+		durationMS: episode.tag?.mediaDuration ?? 0,
 		duration: formatDuration(episode.tag?.mediaDuration || undefined)
 	};
 };
@@ -38,15 +38,15 @@ function transformData(data?: PlaylistResultQuery): Playlist | undefined {
 		return;
 	}
 	const tracks: Array<TrackEntry> = [];
-	(data.playlist.entries || []).map((entry) => {
+	for (const entry of (data.playlist.entries || [])) {
 		const item = entry.track ? transformTrack(entry.track) : transformEpisode(entry.episode);
 		if (item) {
 			tracks.push(item);
 		}
-	});
+	}
 	return {
 		...data.playlist,
-		comment: data.playlist.comment || undefined,
+		comment: data.playlist.comment ?? undefined,
 		tracks
 	};
 }

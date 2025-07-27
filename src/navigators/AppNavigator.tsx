@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { LoadingScreen } from '../screens/LoadingScreen';
-import { AppStackNavigatorParamList, AppRouting } from './Routing';
+import { AppStackNavigatorParameterList, AppRouting } from './Routing';
 import { LoginScreen } from '../screens/LoginScreen';
 import dataService from '../services/data';
 import { AuthContext, defaultAuth } from '../services/auth';
@@ -9,7 +9,7 @@ import RNBootSplash from 'react-native-bootsplash';
 import { useThemeContext } from '../style/theming';
 import { ModalNavigator } from './ModalNavigator';
 
-const Stack = createNativeStackNavigator<AppStackNavigatorParamList>();
+const Stack = createNativeStackNavigator<AppStackNavigatorParameterList>();
 
 export const AppNavigator: React.FC = () => {
 	const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -21,15 +21,15 @@ export const AppNavigator: React.FC = () => {
 		login: async (server: string, name: string, password: string): Promise<void> => {
 			await dataService.jam.auth.login(server, name, password);
 			await theme.loadUserTheme();
-			setAuth(prev => ({ ...prev, hasUser: dataService.jam.auth.isLoggedIn(), user: dataService.jam.auth.user }));
+			setAuth(previous => ({ ...previous, hasUser: dataService.jam.auth.isLoggedIn(), user: dataService.jam.auth.user }));
 		},
 		logout: async (): Promise<void> => {
 			try {
 				await dataService.jam.auth.logout();
-			} catch (e) {
-				console.error(e);
+			} catch (error) {
+				console.error(error);
 			}
-			setAuth(prev => ({ ...prev, hasUser: false, user: undefined }));
+			setAuth(previous => ({ ...previous, hasUser: false, user: undefined }));
 		}
 	});
 
@@ -40,7 +40,7 @@ export const AppNavigator: React.FC = () => {
 				.then(() => {
 					if (isSubscribed) {
 						setIsLoading(false);
-						setAuth(prev => ({ ...prev, hasUser: dataService.jam.auth.isLoggedIn(), user: dataService.jam.auth.user }));
+						setAuth(previous => ({ ...previous, hasUser: dataService.jam.auth.isLoggedIn(), user: dataService.jam.auth.user }));
 					}
 					setIsChecking(false);
 				})
@@ -59,23 +59,26 @@ export const AppNavigator: React.FC = () => {
 
 	useEffect(() => {
 		if (!isLoading) {
-			RNBootSplash.hide({ fade: true });
+			RNBootSplash.hide({ fade: true })
+				.catch(console.error);
 		}
 	}, [isLoading]);
 
 	let screen: React.JSX.Element;
 	if (isLoading || isChecking) {
-		screen = <Stack.Screen name={AppRouting.LOAD} component={LoadingScreen}/>;
+		screen = <Stack.Screen name={AppRouting.LOAD} component={LoadingScreen} />;
 	} else if (auth.hasUser) {
-		screen = <Stack.Screen name={AppRouting.APP} component={ModalNavigator}/>;
+		screen = <Stack.Screen name={AppRouting.APP} component={ModalNavigator} />;
 	} else {
-		screen = <Stack.Screen name={AppRouting.AUTH} component={LoginScreen}/>;
+		screen = <Stack.Screen name={AppRouting.AUTH} component={LoginScreen} />;
 	}
 	return (
 		<AuthContext.Provider value={auth}>
 			<Stack.Navigator screenOptions={{
 				headerShown: false
-			}}>{screen}</Stack.Navigator>
+			}}>
+				{screen}
+			</Stack.Navigator>
 		</AuthContext.Provider>
 	);
 };

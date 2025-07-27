@@ -27,5 +27,5 @@ export const GenreTracksScreen: React.FC<GenreRouteProps<GenreRoute.TRACKS>> = (
 		}
 	}, [state]);
 
-	return (<TrackEntryListList query={view}/>);
+	return (<TrackEntryListList query={view} />);
 };

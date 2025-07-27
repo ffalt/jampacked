@@ -1,5 +1,5 @@
 import React, { MutableRefObject, useCallback, useState } from 'react';
-import { DefaultFlatList } from './DefFlatList';
+import { DefaultFlatList } from './DefaultFlatList.tsx';
 import { TrackEntry } from '../services/types';
 import { TrackDisplayFunction, TrackItem } from './TrackItem';
 import { ErrorView } from './ErrorView';
@@ -18,7 +18,7 @@ export const Tracks: React.FC<{
 	onLoadMore?: () => void;
 }> = ({ tracks, refreshing, displayFunc, onRefresh, onLoadMore, error, ListHeaderComponent }) => {
 	const theme = useTheme();
-	const selectActionRef: MutableRefObject<FloatingAction | null> = React.useRef<FloatingAction>(null);
+	const selectActionReference: MutableRefObject<FloatingAction | null> = React.useRef<FloatingAction>(null);
 	const [showCheck, setShowCheck] = useState<boolean>(false);
 	const [selection, setSelection] = useState<Array<TrackEntry>>([]);
 	const [actions, setActions] = useState<Array<ActionMenuItem>>([]);
@@ -36,37 +36,39 @@ export const Tracks: React.FC<{
 		if (selection.includes(item)) {
 			applySelection(selection.filter(t => t !== item));
 		} else {
-			applySelection(selection.concat([item]));
+			applySelection([...selection, item]);
 		}
 	}, [selection, applySelection]);
 
 	const doubleTab = useCallback((track: TrackEntry): void => {
 		JamPlayer.playTrack(track)
-			.catch(e => console.error(e));
+			.catch(console.error);
 		applySelection([]);
 	}, [applySelection]);
 
 	const pressFloatingAction = useCallback((name?: string): void => {
-		executeTrackMenuAction(selection, name).then((result) => {
-			if (result) {
-				applySelection([]);
-			}
-		});
+		executeTrackMenuAction(selection, name)
+			.then(result => {
+				if (result) {
+					applySelection([]);
+				}
+			})
+			.catch(console.error);
 	}, [selection, applySelection]);
 
-	const renderItemRow = useCallback(({ item }: { item: TrackEntry }): React.JSX.Element => {
-		return (<TrackItem
+	const renderItemRow = useCallback(({ item }: { item: TrackEntry }): React.JSX.Element => (
+		<TrackItem
 			track={item}
 			showCheck={showCheck}
 			isSelected={selection.includes(item)}
 			setSelected={setSelected}
 			doubleTab={doubleTab}
 			displayFunc={displayFunc}
-		/>);
-	}, [displayFunc, selection, setSelected, showCheck, doubleTab]);
+		/>
+	), [displayFunc, selection, setSelected, showCheck, doubleTab]);
 
 	if (error) {
-		return (<ErrorView error={error} onRetry={onRefresh}/>);
+		return (<ErrorView error={error} onRetry={onRefresh} />);
 	}
 	return (
 		<>
@@ -82,7 +84,7 @@ export const Tracks: React.FC<{
 				reload={onRefresh}
 			/>
 			<FloatingAction
-				ref={selectActionRef}
+				ref={selectActionReference}
 				visible={selection.length > 0}
 				animated={false}
 				showBackground={false}
@@ -91,5 +93,6 @@ export const Tracks: React.FC<{
 				actions={actions}
 				onPressItem={pressFloatingAction}
 			/>
-		</>);
+		</>
+	);
 };

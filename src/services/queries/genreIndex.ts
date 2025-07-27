@@ -11,8 +11,8 @@ function transformData(data?: GenreIndexResultQuery): Index | undefined {
 		return;
 	}
 	const index: Index = [];
-	data.genreIndex.groups.forEach((group) => {
-		group.items.forEach((entry) => {
+	for (const group of data.genreIndex.groups) {
+		for (const entry of group.items) {
 			index.push({
 				id: entry.id,
 				objType: JamObjectType.genre,
@@ -20,8 +20,8 @@ function transformData(data?: GenreIndexResultQuery): Index | undefined {
 				title: entry.name,
 				letter: group.name
 			});
-		});
-	});
+		}
+	}
 	return index;
 }
 

@@ -19,5 +19,12 @@ export const PinIcon: React.FC<{ id?: string; objType: JamObjectType; style?: St
 	}, [pinned, id, objType]);
 
 	const iconName = pinned?.pinned ? 'pin' : 'pin-outline';
-	return (<ClickIcon fontSize={fontSize} iconName={iconName} onPress={handleTogglePin} disabled={(pinned === undefined)} style={style}/>);
+	return (
+		<ClickIcon
+			fontSize={fontSize}
+			iconName={iconName}
+			onPress={handleTogglePin}
+			disabled={(pinned === undefined)}
+			style={style} />
+	);
 };

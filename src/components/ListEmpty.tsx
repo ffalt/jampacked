@@ -22,22 +22,22 @@ export const ListEmpty: React.FC<{ list?: Array<any> }> = ({ list }) => {
 
 	useEffect(() => {
 		let isSubscribed = false;
-		let delayDebounceFn: any;
-		if (!list) {
+		let delayDebounceFunction: any;
+		if (list) {
+			setText((list.length > 0 ? '' : 'No entries'));
+		} else {
 			isSubscribed = true;
 			setText('');
-			delayDebounceFn = setTimeout(() => {
+			delayDebounceFunction = setTimeout(() => {
 				if (isSubscribed) {
 					setText('Loading');
 				}
 			}, 700);
-		} else {
-			setText((list.length ? '' : 'No entries'));
 		}
 		return (): void => {
 			if (isSubscribed) {
 				isSubscribed = false;
-				clearTimeout(delayDebounceFn);
+				clearTimeout(delayDebounceFunction);
 			}
 		};
 	}, [list]);

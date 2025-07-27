@@ -10,7 +10,7 @@ export interface Genre {
 }
 
 function transformData(data?: GenreResultQuery): Genre | undefined {
-	if (!data || !data.genre) {
+	if (!data?.genre) {
 		return;
 	}
 	return {

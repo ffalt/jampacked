@@ -6,7 +6,7 @@ import { usePinnedMedia } from '../services/pin-hooks';
 import { DownloadsRoute, DownloadsRouteProps } from '../navigators/Routing';
 import { SectionListData, TouchableOpacity } from 'react-native';
 import { TrackDisplay, TrackItem } from '../components/TrackItem';
-import { DefaultSectionList } from '../components/DefSectionList';
+import { DefaultSectionList } from '../components/DefaultSectionList.tsx';
 import { Separator } from '../components/Separator';
 import { downloadStateToString, useTrackPlayerDownloadCached } from '../services/player-api';
 import dataService from '../services/data';
@@ -14,14 +14,12 @@ import { useTheme } from '../style/theming';
 
 export const PinnedTrackItem: React.FC<{ track: TrackEntry }> = React.memo(({ track }) => {
 	const download = useTrackPlayerDownloadCached(track.id, dataService.pin.manager);
-	const trackDisplay = (t: TrackEntry): TrackDisplay => {
-		return {
-			column1: t.trackNr,
-			column2title: t.title,
-			column2sub: download ? downloadStateToString(download.state) : 'Not downloaded',
-			column3: t.duration
-		};
-	};
+	const trackDisplay = (t: TrackEntry): TrackDisplay => ({
+		column1: t.trackNr,
+		column2title: t.title,
+		column2sub: download ? downloadStateToString(download.state) : 'Not downloaded',
+		column3: t.duration
+	});
 	return (
 		<TrackItem
 			track={track}
@@ -36,18 +34,16 @@ export const PinnedMediaScreen: React.FC<DownloadsRouteProps<DownloadsRoute.PINN
 	const theme = useTheme();
 	const [expandedSections, setExpandedSections] = useState(new Set());
 
-	const ListHeaderComponent = (<PageHeader title="Media" subtitle="Pinned"/>);
+	const ListHeaderComponent = (<PageHeader title="Media" subtitle="Pinned" />);
 	const reload = useCallback(() => {
 		// TODO reload pinned download list
 	}, []);
 
-	const list = media.map((p) => {
-		return {
-			pin: p,
-			collapsed: true,
-			data: p.tracks
-		};
-	});
+	const list = media.map(p => ({
+		pin: p,
+		collapsed: true,
+		data: p.tracks
+	}));
 
 	const renderItem = ({ section, item }: { section: SectionListData<PinMedia>; item: TrackEntry }): React.JSX.Element | null => {
 		const isExpanded = expandedSections.has(section.pin.id);
@@ -56,14 +52,14 @@ export const PinnedMediaScreen: React.FC<DownloadsRouteProps<DownloadsRoute.PINN
 		}
 		return (
 			<>
-				<PinnedTrackItem track={item}/>
-				<Separator/>
+				<PinnedTrackItem track={item} />
+				<Separator />
 			</>
 		);
 	};
 
 	const handleToggle = (id: string): void => {
-		setExpandedSections((current) => {
+		setExpandedSections(current => {
 			const next = new Set(current);
 			if (next.has(id)) {
 				next.delete(id);
@@ -78,13 +74,13 @@ export const PinnedMediaScreen: React.FC<DownloadsRouteProps<DownloadsRoute.PINN
 		const isExpanded = expandedSections.has(section.pin.id);
 		return (
 			<>
-				<Separator/>
+				<Separator />
 				<TouchableOpacity
 					style={{ backgroundColor: isExpanded ? theme.activeBackgroundColor : undefined }}
 					onPress={(): void => handleToggle(section.pin.id)}>
-					<PinnedMediaItem item={section.pin}/>
+					<PinnedMediaItem item={section.pin} />
 				</TouchableOpacity>
-				<Separator/>
+				<Separator />
 			</>
 		);
 	};

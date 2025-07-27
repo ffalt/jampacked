@@ -18,16 +18,14 @@ const styles = StyleSheet.create({
 	}
 });
 
-export const PlayerScreen: React.FC<ModalStackProps<ModalRouting.PLAYER>> = () => {
-	return (
-		<View style={styles.player}>
-			<PlayerTabs/>
-			<PlayerTrack/>
-			<PlayerWaveformProgress/>
-			<PlayerProgress/>
-			<PlayerTime/>
-			<PlayerAnnotation/>
-			<PlayerControl/>
-		</View>
-	);
-};
+export const PlayerScreen: React.FC<ModalStackProps<ModalRouting.PLAYER>> = () => (
+	<View style={styles.player}>
+		<PlayerTabs />
+		<PlayerTrack />
+		<PlayerWaveformProgress />
+		<PlayerProgress />
+		<PlayerTime />
+		<PlayerAnnotation />
+		<PlayerControl />
+	</View>
+);

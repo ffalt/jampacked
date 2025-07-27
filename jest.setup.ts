@@ -48,17 +48,14 @@ jest.mock('react-native-track-player', () => ({
 	})
 }));
 
-jest.mock('react-native-gesture-handler', () => {
-	return { RNGestureHandlerModule: jest.fn() };
-});
+jest.mock('react-native-gesture-handler', () =>
+	({ RNGestureHandlerModule: jest.fn() }));
 
-jest.mock('react-native-gesture-handler/Swipeable', () => {
-	return { RNGestureHandlerModule: jest.fn() };
-});
+jest.mock('react-native-gesture-handler/Swipeable', () =>
+	({ RNGestureHandlerModule: jest.fn() }));
 
-jest.mock('react-native-bootsplash', () => {
-	return { RNBootSplash: jest.fn() };
-});
+jest.mock('react-native-bootsplash', () =>
+	({ RNBootSplash: jest.fn() }));
 
 jest.mock('react-native-screens', () => ({
 	...jest.requireActual('react-native-screens').default,
@@ -68,17 +65,11 @@ jest.mock('react-native-screens', () => ({
 jest.mock('react-native-sqlite-storage', () => ({
 	DEBUG: jest.fn,
 	enablePromise: jest.fn(),
-	openDatabase: (..._args1: any) => {
-		return {
-			transaction: (..._args2: any) => Promise.resolve({
-				executeSql: (_query: any) => {
-					return Promise.resolve([]);
-				}
-			}),
-			cleanDb: () => Promise.resolve(),
-			executeSql: (_query: any) => {
-				return Promise.resolve([]);
-			}
-		};
-	}
+	openDatabase: (..._args1: any) => ({
+		transaction: async (..._args2: any) => Promise.resolve({
+			executeSql: async (_query: any) => Promise.resolve([])
+		}),
+		cleanDb: async () => Promise.resolve(),
+		executeSql: async (_query: any) => Promise.resolve([])
+	})
 }));

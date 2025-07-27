@@ -11,25 +11,25 @@ function transformData(data?: ArtistListResultQuery, variables?: ArtistListResul
 	}
 	const result: BaseEntryList = {
 		total: data.artists.total,
-		skip: data.artists.skip === null ? undefined : data.artists.skip,
-		take: data.artists.take === null ? undefined : data.artists.take,
-		listType: !variables?.listType ? undefined : variables.listType,
+		skip: data.artists.skip ?? undefined,
+		take: data.artists.take ?? undefined,
+		listType: variables?.listType ?? undefined,
 		items: []
 	};
-	data.artists.items.forEach((entry) => {
+	for (const entry of data.artists.items) {
 		result.items.push({
 			id: entry.id,
 			objType: JamObjectType.artist,
 			desc: `Albums: ${entry.albumsCount}`,
 			title: entry.name
 		});
-	});
+	}
 	return result;
 }
 
-const transformVariables: UseListCallFunctionTransform<ArtistListResultQueryVariables> = (albumTypes, listType, genreIDs, seed, take, skip) => {
-	return { albumTypes, listType, genreIDs, skip, take, seed };
-};
+const transformVariables: UseListCallFunctionTransform<ArtistListResultQueryVariables> =
+	(albumTypes, listType, genreIDs, seed, take, skip) =>
+		({ albumTypes, listType, genreIDs, skip, take, seed });
 
 export const ArtistListQuery: {
 	query: DocumentNode;

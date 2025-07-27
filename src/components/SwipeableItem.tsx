@@ -19,11 +19,11 @@ const styles = StyleSheet.create({
 });
 
 export const SwipeableItem: React.FC<PropsWithChildren<{ buttons: ReactElement }>> = ({ buttons, children }) => {
-	const containerRef = useRef<Swipeable | null>(null);
+	const containerReference = useRef<Swipeable | null>(null);
 	const theme = useTheme();
 
 	const close = (): void => {
-		containerRef?.current?.close();
+		containerReference?.current?.close();
 	};
 
 	const renderRightActions = (progress: Animated.AnimatedInterpolation<number>, dragX: Animated.AnimatedInterpolation<number>): ReactElement => {
@@ -47,7 +47,7 @@ export const SwipeableItem: React.FC<PropsWithChildren<{ buttons: ReactElement }
 
 	return (
 		<Swipeable
-			ref={containerRef}
+			ref={containerReference}
 			friction={2}
 			leftThreshold={80}
 			enableTrackpadTwoFingerGesture

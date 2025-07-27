@@ -18,7 +18,7 @@ export function snackFail(text: string): void {
 	});
 }
 
-export function snackError(e: { message: string }): void {
-	console.error(e);
-	snackFail(e.message);
+export function snackError(error: { message: string }): void {
+	console.error(error);
+	snackFail(error.message);
 }

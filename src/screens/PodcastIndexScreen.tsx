@@ -18,7 +18,7 @@ export const PodcastIndexScreen: React.FC<HomeRouteProps<HomeRoute.PODCASTS>> = 
 	}, [getIndex]);
 
 	if (error) {
-		return (<ErrorView error={error} onRetry={reload}/>);
+		return (<ErrorView error={error} onRetry={reload} />);
 	}
 
 	return (

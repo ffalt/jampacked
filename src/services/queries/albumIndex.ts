@@ -11,8 +11,8 @@ function transformData(data?: AlbumIndexResultQuery): Index | undefined {
 		return;
 	}
 	const index: Index = [];
-	data.albumIndex.groups.forEach((group) => {
-		group.items.forEach((entry) => {
+	for (const group of data.albumIndex.groups) {
+		for (const entry of group.items) {
 			index.push({
 				id: entry.id,
 				objType: JamObjectType.album,
@@ -20,8 +20,8 @@ function transformData(data?: AlbumIndexResultQuery): Index | undefined {
 				title: entry.name,
 				letter: group.name
 			});
-		});
-	});
+		}
+	}
 	return index;
 }
 

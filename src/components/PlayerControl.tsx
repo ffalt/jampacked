@@ -31,13 +31,21 @@ export const PlayerControl: React.FC = () => {
 	const { hasNext, hasPrevious } = useTrackPlayerHasSiblings();
 	return (
 		<View style={styles.playerControl}>
-			<ClickIcon disabled={!hasNext} fontSize={staticTheme.fontSizeLarge}
-				style={[styles.button, !hasNext && styles.disabled]} iconName="step-backward" onPress={JamPlayer.skipToPrevious}/>
-			<ClickIcon fontSize={staticTheme.fontSizeLarge} style={styles.button} iconName="backward" onPress={JamPlayer.skipBackward}/>
-			<PlayButton/>
-			<ClickIcon fontSize={staticTheme.fontSizeLarge} style={styles.button} iconName="forward" onPress={JamPlayer.skipForward}/>
-			<ClickIcon disabled={!hasPrevious} fontSize={staticTheme.fontSizeLarge}
-				style={[styles.button, !hasPrevious && styles.disabled]} iconName="step-forward" onPress={JamPlayer.skipToNext}/>
+			<ClickIcon
+				disabled={!hasNext}
+				fontSize={staticTheme.fontSizeLarge}
+				style={[styles.button, !hasNext && styles.disabled]}
+				iconName="step-backward"
+				onPress={JamPlayer.skipToPrevious} />
+			<ClickIcon fontSize={staticTheme.fontSizeLarge} style={styles.button} iconName="backward" onPress={JamPlayer.skipBackward} />
+			<PlayButton />
+			<ClickIcon fontSize={staticTheme.fontSizeLarge} style={styles.button} iconName="forward" onPress={JamPlayer.skipForward} />
+			<ClickIcon
+				disabled={!hasPrevious}
+				fontSize={staticTheme.fontSizeLarge}
+				style={[styles.button, !hasPrevious && styles.disabled]}
+				iconName="step-forward"
+				onPress={JamPlayer.skipToNext} />
 		</View>
 	);
 };

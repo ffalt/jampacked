@@ -23,17 +23,17 @@ const styles = StyleSheet.create({
 });
 
 export const AtoZList: React.FC<AtoZListProps<any>> = <T extends SectionItem, >(props: AtoZListProps<T>) => {
-	const containerRef: MutableRefObject<FlatList<T> | null> = React.useRef<FlatList<T>>(null);
+	const containerReference: MutableRefObject<FlatList<T> | null> = React.useRef<FlatList<T>>(null);
 	const { itemHeight, data, numColumns } = props;
 	const [activeLetter, setActiveLetter] = useState<string | undefined>();
 	const [letters, setLetters] = useState<Array<string>>([]);
 
 	const onTouchLetter = useCallback((letter: string): void => {
-		if (containerRef.current) {
+		if (containerReference.current) {
 			const index = ((data as Array<T>) || []).findIndex(d => d.letter === letter);
-			if (index >= 0) {
+			if (index !== -1) {
 				const scrollIndex = Math.floor(index / (numColumns || 1));
-				containerRef.current.scrollToIndex({ index: scrollIndex });
+				containerReference.current.scrollToIndex({ index: scrollIndex });
 			}
 		}
 	}, [data, numColumns]);
@@ -53,11 +53,11 @@ export const AtoZList: React.FC<AtoZListProps<any>> = <T extends SectionItem, >(
 		const list: Array<string> = [];
 		const items = (data || []);
 		if (items.length > 20) {
-			(items as Array<T>).forEach((item) => {
+			for (const item of (items as Array<T>)) {
 				if (!list.includes(item.letter)) {
 					list.push(item.letter);
 				}
-			});
+			}
 		}
 		setLetters(list);
 	}, [data]);
@@ -65,7 +65,7 @@ export const AtoZList: React.FC<AtoZListProps<any>> = <T extends SectionItem, >(
 	return (
 		<View style={styles.container}>
 			<FlatList
-				ref={containerRef}
+				ref={containerReference}
 				{...props}
 				getItemLayout={getItemLayout}
 				onScroll={onScroll}

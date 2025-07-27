@@ -18,7 +18,7 @@ export const PlaylistIndexScreen: React.FC<HomeRouteProps<HomeRoute.PLAYLISTS>> 
 	}, [getIndex]);
 
 	if (error) {
-		return (<ErrorView error={error} onRetry={reload}/>);
+		return (<ErrorView error={error} onRetry={reload} />);
 	}
 
 	return (

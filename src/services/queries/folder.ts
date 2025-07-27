@@ -43,7 +43,7 @@ function transformData(data?: FolderResultQuery): Folder | undefined {
 		type: data.folder.folderType,
 		artist: data.folder.artist || undefined,
 		genres: (data.folder.genres || []).map(g => g.name),
-		items: folders.concat(trackItems),
+		items: [...folders, ...trackItems],
 		tracks
 	};
 }

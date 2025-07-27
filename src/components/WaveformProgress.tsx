@@ -19,7 +19,7 @@ export const WaveformProgress: React.FC<WaveformProgressProps> = ({ waveform, st
 
 	const setTime = useCallback((data: number): void => {
 		JamPlayer.seekPercent(data)
-			.catch(e => console.error(e));
+			.catch(console.error);
 	}, []);
 
 	return (

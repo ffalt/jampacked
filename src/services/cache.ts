@@ -1,6 +1,6 @@
 import { Database } from './db';
 import { JamApolloClient } from './apollo';
-import { Doc } from './types';
+import { Document } from './types';
 import FastImage from '@d11/react-native-fast-image';
 import { snackSuccess } from './snack';
 import { DocumentNode } from 'graphql';
@@ -23,8 +23,7 @@ export class CacheService {
 		message: ''
 	};
 
-	constructor(private db: Database, private client: JamApolloClient) {
-
+	constructor(private readonly db: Database, private readonly client: JamApolloClient) {
 	}
 
 	async init(): Promise<void> {
@@ -36,7 +35,7 @@ export class CacheService {
 		await this.db.query(createJamTableScript);
 	}
 
-	private async getDoc<T>(id: string): Promise<Doc<T> | undefined> {
+	private async getDoc<T>(id: string): Promise<Document<T> | undefined> {
 		try {
 			const results = await this.db.query('SELECT * FROM jam WHERE key=?', [id]);
 			const result = results.rows.item(0);
@@ -48,8 +47,8 @@ export class CacheService {
 					data: JSON.parse(result.data)
 				};
 			}
-		} catch (e) {
-			console.error(e);
+		} catch (error) {
+			console.error(error);
 		}
 	}
 
@@ -73,9 +72,9 @@ export class CacheService {
 
 	async get<T>(forceRefresh: boolean, id: string, build: () => Promise<T>): Promise<T> {
 		if (!forceRefresh) {
-			const doc = await this.getDoc<T>(id);
-			if (doc) {
-				return doc.data;
+			const document = await this.getDoc<T>(id);
+			if (document) {
+				return document.data;
 			}
 		}
 		const result = await build();
@@ -103,7 +102,7 @@ export class CacheService {
 	async getCacheOrQuery<TData, TVariables extends OperationVariables, TResult>(
 		query: DocumentNode,
 		variables: TVariables,
-		transform: (d?: TData, vars?: TVariables) => TResult | undefined
+		transform: (d?: TData, variables?: TVariables) => TResult | undefined
 	): Promise<TResult | undefined> {
 		const queryID = buildCacheID<TVariables>(query, variables);
 		if (queryID) {
@@ -116,8 +115,8 @@ export class CacheService {
 		}
 	}
 
-	private updateText(msg: string): void {
-		this.notifyState({ ...this.state, message: msg });
+	private updateText(message: string): void {
+		this.notifyState({ ...this.state, message });
 	}
 
 	private notifyState(state: CacheState): void {

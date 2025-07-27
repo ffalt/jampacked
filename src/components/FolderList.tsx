@@ -26,5 +26,5 @@ export const FolderList: React.FC<{ query: { listType?: ListType; albumType?: Al
 			});
 		}, [query]);
 
-		return (<BaseEntryListList query={view}/>);
+		return (<BaseEntryListList query={view} />);
 	};

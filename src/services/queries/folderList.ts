@@ -12,30 +12,26 @@ function transformData(data?: FolderListResultQuery, variables?: FolderListResul
 	}
 	const result: BaseEntryList = {
 		total: data.folders.total,
-		skip: data.folders.skip === null ? undefined : data.folders.skip,
-		take: data.folders.take === null ? undefined : data.folders.take,
-		listType: !variables?.listType ? undefined : variables.listType,
+		skip: data.folders.skip ?? undefined,
+		take: data.folders.take ?? undefined,
+		listType: variables?.listType ?? undefined,
 		items: []
 	};
-	data.folders.items.forEach((entry) => {
+	for (const entry of data.folders.items) {
 		const desc = `${titleCase(entry.folderType || '')}`;
-		// const desc = (entry.folderType || '') + ' ' + (
-		// 	(entry.tracksCount || 0) > 0 ? `Tracks: ${entry.tracksCount}` :
-		// 		((entry.childrenCount || 0) > 0 ? `Folder: ${entry.childrenCount}` : '')
-		// );
 		result.items.push({
 			id: entry.id,
 			objType: JamObjectType.folder,
 			desc,
 			title: entry.name
 		});
-	});
+	}
 	return result;
 }
 
-const transformVariables: UseListCallFunctionTransform<FolderListResultQueryVariables> = (albumTypes, listType, genreIDs, seed, take, skip) => {
-	return { albumTypes, listType, genreIDs, skip, take, seed };
-};
+const transformVariables: UseListCallFunctionTransform<FolderListResultQueryVariables> =
+	(albumTypes, listType, genreIDs, seed, take, skip) =>
+		({ albumTypes, listType, genreIDs, skip, take, seed });
 
 export const FolderIndexQuery: {
 	query: DocumentNode;

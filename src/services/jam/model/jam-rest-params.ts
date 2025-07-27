@@ -1,7 +1,7 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import * as JamEnums from './jam-enums';
+import type * as JamEnums from './jam-enums';
 
 export declare namespace JamParameters {
 
@@ -1944,7 +1944,7 @@ export declare namespace JamParameters {
 
 	export type WaveformWaveformArgs = WaveformArgs & ID;
 
-	export type StreamStreamArgs = ID & StreamPathArgs & StreamParamArgs;
+	export type StreamStreamArgs = StreamParamArgs & StreamPathArgs & ID;
 
 	export type ArtworkIdArgs = IncludesFolderArgs & IncludesArtworkChildrenArgs & IncludesArtworkArgs & ID;
 

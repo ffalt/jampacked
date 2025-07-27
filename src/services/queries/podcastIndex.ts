@@ -11,7 +11,7 @@ function transformData(data?: PodcastIndexResultQuery): Index | undefined {
 		return;
 	}
 	const index: Index = [];
-	data.podcasts.items.forEach((podcast) => {
+	for (const podcast of data.podcasts.items) {
 		index.push({
 			id: podcast.id,
 			objType: JamObjectType.podcast,
@@ -19,7 +19,7 @@ function transformData(data?: PodcastIndexResultQuery): Index | undefined {
 			title: podcast.name,
 			letter: podcast.name[0]
 		});
-	});
+	}
 	return index;
 }
 

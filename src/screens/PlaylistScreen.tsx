@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect } from 'react';
 import { HomeRoute, HomeRouteProps } from '../navigators/Routing';
 import { JamPlayer } from '../services/player';
-import { ObjHeader, objHeaderStyles } from '../components/ObjHeader';
+import { ObjectHeader, objectHeaderStyles } from '../components/ObjectHeader.tsx';
 import { JamObjectType } from '../services/jam';
 import { FavIcon } from '../components/FavIcon';
 import { snackError } from '../services/snack';
@@ -28,22 +28,26 @@ export const PlaylistScreen: React.FC<HomeRouteProps<HomeRoute.PLAYLIST>> = ({ r
 	const playTracks = (): void => {
 		if (playlist?.tracks) {
 			JamPlayer.playTracks(playlist.tracks)
-				.catch((e) => {
-					snackError(e);
+				.catch(error_ => {
+					snackError(error_);
 				});
 		}
 	};
 
-	const ListHeaderComponent = (<ObjHeader
-		id={id}
-		title={name}
-		typeName="Playlist"
-		customDetails={<ThemedText style={objHeaderStyles.panel}>{playlist?.comment}</ThemedText>}
-		headerTitleCmds={<>
-			<ClickIcon iconName="play" onPress={playTracks} style={objHeaderStyles.button} fontSize={objHeaderStyles.buttonIcon.fontSize}/>
-			<FavIcon style={objHeaderStyles.button} objType={JamObjectType.playlist} id={id}/>
-		</>}
-	/>);
+	const ListHeaderComponent = (
+		<ObjectHeader
+			id={id}
+			title={name}
+			typeName="Playlist"
+			customDetails={<ThemedText style={objectHeaderStyles.panel}>{playlist?.comment}</ThemedText>}
+			headerTitleCmds={(
+				<>
+					<ClickIcon iconName="play" onPress={playTracks} style={objectHeaderStyles.button} fontSize={objectHeaderStyles.buttonIcon.fontSize} />
+					<FavIcon style={objectHeaderStyles.button} objType={JamObjectType.playlist} id={id} />
+				</>
+			)}
+		/>
+	);
 
 	return (
 		<Tracks

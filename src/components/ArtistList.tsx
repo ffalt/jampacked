@@ -25,5 +25,5 @@ export const ArtistList: React.FC<{ query: { listType?: ListType; albumType?: Al
 		});
 	}, [query]);
 
-	return (<BaseEntryListList query={view}/>);
+	return (<BaseEntryListList query={view} />);
 };

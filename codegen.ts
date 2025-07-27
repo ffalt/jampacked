@@ -5,7 +5,11 @@ const config: CodegenConfig = {
 	schema: 'schema.graphql',
 	documents: './src/**/*.graphql',
 	hooks: {
-		afterOneFileWrite: ['node codegen.hook.mjs']
+		afterOneFileWrite: [
+			'prettier --write',
+			'eslint --fix',
+			'node codegen.hook.mjs'
+		]
 	},
 	generates: {
 		'./src/services/queries/_types.ts': {
