@@ -28,7 +28,7 @@
     "graphql": "16.11.0"
   },
   "dependencies": {
-    "@apollo/client": "3.13.8",
+    "@apollo/client": "3.14.0",
     "@callstack/react-theme-provider": "3.0.9",
     "@d11/react-native-fast-image": "8.6.12",
     "@react-native-community/checkbox": "0.5.20",

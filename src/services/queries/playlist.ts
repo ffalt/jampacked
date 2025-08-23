@@ -27,7 +27,7 @@ export const transformEpisode = (episode: PlaylistResult_playlist_entries_episod
 		genre: episode.tag?.genres ? episode.tag?.genres.join(' / ') : undefined,
 		album: episode.tag?.album ?? '?',
 		podcastID: episode.podcast?.id,
-		trackNr: (episode.tag?.disc && episode.tag?.disc > 1 ? `${episode.tag?.disc}-` : '') + (episode.tag?.trackNr || ''),
+		trackNr: (episode.tag?.disc && episode.tag?.disc > 1 ? `${episode.tag?.disc}-` : '') + (episode.tag?.trackNr ?? ''),
 		durationMS: episode.tag?.mediaDuration ?? 0,
 		duration: formatDuration(episode.tag?.mediaDuration || undefined)
 	};
@@ -38,7 +38,7 @@ function transformData(data?: PlaylistResultQuery): Playlist | undefined {
 		return;
 	}
 	const tracks: Array<TrackEntry> = [];
-	for (const entry of (data.playlist.entries || [])) {
+	for (const entry of (data.playlist.entries ?? [])) {
 		const item = entry.track ? transformTrack(entry.track) : transformEpisode(entry.episode);
 		if (item) {
 			tracks.push(item);

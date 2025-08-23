@@ -1,4 +1,4 @@
-import { type NitroSQLiteConnection, open, type QueryResult, type QueryResultRow, type SQLiteQueryParams } from 'react-native-nitro-sqlite';
+import { NITRO_SQLITE_NULL, type NitroSQLiteConnection, open, type QueryResult, type QueryResultRow, type SQLiteQueryParams, type SQLiteValue } from 'react-native-nitro-sqlite';
 
 let database: Database | undefined;
 
@@ -150,43 +150,38 @@ export class Database {
 	 * @param parameters Parameters
 	 */
 	private treatParams(parameters: Array<unknown> = []): SQLiteQueryParams {
-		const newParameters: SQLiteQueryParams = [];
-		for (const p of parameters) {
-			if (p === undefined || p === null) {
-				newParameters.push(null);
-				continue;
+		return parameters.map(p => this.treatParam(p));
+	}
+
+	private treatParam(parameter: unknown): SQLiteValue {
+		if (parameter === undefined || parameter === null) {
+			return NITRO_SQLITE_NULL;
+		}
+		switch (typeof parameter) {
+			case 'string': {
+				return parameter.trim();
 			}
-			switch (typeof p) {
-				case 'string': {
-					newParameters.push(p.trim());
-					break;
-				}
-				case 'number': {
-					newParameters.push(p);
-					break;
-				}
-				case 'boolean': {
-					newParameters.push(p ? 1 : 0);
-					break;
-				}
-				case 'object': {
-					if (p instanceof Date) {
-						newParameters.push(p.toISOString());
-					} else {
-						try {
-							newParameters.push(JSON.stringify(p));
-						} catch {
-							newParameters.push(String(p));
-						}
+			case 'number': {
+				return parameter;
+			}
+			case 'boolean': {
+				return parameter ? 1 : 0;
+			}
+			case 'object': {
+				if (parameter instanceof Date) {
+					return parameter.toISOString();
+				} else {
+					try {
+						return JSON.stringify(parameter);
+					} catch {
+						return String(parameter);
 					}
-					break;
 				}
-				default: {
-					newParameters.push(JSON.stringify(p));
-				}
+			}
+			default: {
+				return JSON.stringify(parameter);
 			}
 		}
-		return newParameters;
 	}
 }
 

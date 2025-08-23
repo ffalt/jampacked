@@ -17,7 +17,7 @@ export const transformTrack = (track: TrackResult_track): TrackEntry => ({
 	albumID: track.album?.id,
 	artistID: track.artist?.id,
 	seriesID: track.series?.id,
-	trackNr: (track.tag?.disc && track.tag?.disc > 1 ? `${track.tag?.disc}-` : '') + (track.tag?.trackNr || ''),
+	trackNr: (track.tag?.disc && track.tag?.disc > 1 ? `${track.tag?.disc}-` : '') + (track.tag?.trackNr ?? ''),
 	durationMS: track.tag?.mediaDuration ?? 0,
 	duration: formatDuration(track.tag?.mediaDuration ?? undefined)
 });

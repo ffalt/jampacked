@@ -172,12 +172,12 @@ export const JamRouteLinks = {
 
 	albums(albumType?: AlbumType): RouteLink {
 		const t = albumType ? getAlbumTypeInfos(albumType) : undefined;
-		return ({ title: t?.title || 'Albums', icon: t?.icon || 'album', navig: { route: HomeRoute.ALBUMS, params: { albumType } } });
+		return ({ title: t?.title ?? 'Albums', icon: t?.icon ?? 'album', navig: { route: HomeRoute.ALBUMS, params: { albumType } } });
 	},
 
 	albumlist(listType: ListType, albumType?: AlbumType): RouteLink {
 		const t = albumType ? getAlbumTypeInfos(albumType) : undefined;
-		return ({ title: t?.title || 'Albums', icon: t?.icon || 'album', navig: { route: JamRouteLinks.albumlistRoute(listType), params: { albumType } } });
+		return ({ title: t?.title ?? 'Albums', icon: t?.icon ?? 'album', navig: { route: JamRouteLinks.albumlistRoute(listType), params: { albumType } } });
 	},
 
 	serieslist(listType: ListType): RouteLink {

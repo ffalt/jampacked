@@ -69,7 +69,7 @@ name = "checkov"
 
 [[plugin]]
 name = "eslint"
-version = "9.31.0"
+version = "9.32.0"
 package_file = "package.json"
 package_filters = ["eslint", "jest"]
 
@@ -110,6 +110,7 @@ match.rules = [
     "markdownlint:MD013", # Line length
     "markdownlint:MD024", # Multiple headings with the same content
     "radarlint-js:typescript:S6671", # Expected the Promise rejection reason to be an Error.
+    "radarlint-js:typescript:S4325", # This assertion is unnecessary since it does not change the type of the expression.
     "ripgrep:TODO", # TODO
     "radarlint-js:typescript:S1135" # TODO
 ]

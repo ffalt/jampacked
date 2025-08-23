@@ -11,8 +11,8 @@ export interface TrackLyrics {
 
 export const transformData = (data?: TrackLyricsResultQuery): TrackLyrics | undefined => data ?
 	{
-		lyrics: data.track?.lyrics?.lyrics || undefined,
-		source: data.track?.lyrics?.source || undefined
+		lyrics: data.track?.lyrics?.lyrics ?? undefined,
+		source: data.track?.lyrics?.source ?? undefined
 	} :
 	undefined;
 

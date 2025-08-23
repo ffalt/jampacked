@@ -37,12 +37,12 @@ function transformData(data?: FolderResultQuery): Folder | undefined {
 
 	return {
 		id: data.folder.id,
-		title: data.folder.title || undefined,
+		title: data.folder.title ?? undefined,
 		folderCount: data.folder.childrenCount,
 		trackCount: data.folder.tracksCount,
 		type: data.folder.folderType,
-		artist: data.folder.artist || undefined,
-		genres: (data.folder.genres || []).map(g => g.name),
+		artist: data.folder.artist ?? undefined,
+		genres: (data.folder.genres ?? []).map(g => g.name),
 		items: [...folders, ...trackItems],
 		tracks
 	};

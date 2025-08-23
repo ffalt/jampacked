@@ -61,8 +61,8 @@ function transformData(data?: SeriesResultQuery): Series | undefined {
 		tracksCount: data.series.tracksCount,
 		albums: data.series.albums.map(series => ({
 			...series,
-			year: series.year || undefined,
-			seriesNr: series.seriesNr || undefined
+			year: series.year ?? undefined,
+			seriesNr: series.seriesNr ?? undefined
 		})),
 		sections
 	};
