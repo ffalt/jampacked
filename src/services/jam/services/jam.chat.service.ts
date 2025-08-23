@@ -12,21 +12,21 @@ export class JamChatService {
 	/**
 	 * Get Chat Messages // Rights needed: stream
 	 */
-	async list(params: JamParameters.ChatFilterArgs): Promise<Array<Jam.Chat>> {
+	async list(params: JamParameters.ChatFilterParameters): Promise<Array<Jam.Chat>> {
 		return this.base.requestData<Array<Jam.Chat>>('/chat/list', params);
 	}
 
 	/**
 	 * Post a Chat Message // Rights needed: stream
 	 */
-	async create(params: JamParameters.ChatCreateArgs): Promise<void> {
+	async create(params: JamParameters.ChatCreateParameters): Promise<void> {
 		return this.base.requestPostDataOK('/chat/create', params);
 	}
 
 	/**
 	 * Remove a Chat Message // Rights needed: stream
 	 */
-	async remove(params: JamParameters.ChatRemoveArgs): Promise<void> {
+	async remove(params: JamParameters.ChatRemoveParameters): Promise<void> {
 		return this.base.requestPostDataOK('/chat/remove', params);
 	}
 }

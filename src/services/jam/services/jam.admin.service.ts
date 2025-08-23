@@ -26,7 +26,7 @@ export class JamAdminService {
 	/**
 	 * Update the Server Admin Settings // Rights needed: admin
 	 */
-	async settingsUpdate(params: JamParameters.AdminSettingsArgs): Promise<void> {
+	async settingsUpdate(params: JamParameters.AdminSettingsParameters): Promise<void> {
 		return this.base.requestPostDataOK('/admin/settings/update', params);
 	}
 }

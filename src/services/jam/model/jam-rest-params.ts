@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 // @generated
 // This file was automatically generated and should not be edited.
 
@@ -5,7 +6,7 @@ import type * as JamEnums from './jam-enums';
 
 export declare namespace JamParameters {
 
-	export interface AcousticBrainzLookupArgs {
+	export interface AcousticBrainzLookupParameters {
 		/** MusicBrainz ID */
 		mbID: string;
 		/**
@@ -16,7 +17,7 @@ export declare namespace JamParameters {
 		nr?: number;
 	}
 
-	export interface AcoustidLookupArgs {
+	export interface AcoustidLookupParameters {
 		/** Track ID */
 		trackID: string;
 		/**
@@ -35,9 +36,6 @@ export declare namespace JamParameters {
 		library: AdminSettingsLibrary;
 		/** Admin External Services Settings */
 		externalServices: AdminSettingsExternal;
-	}
-
-	export interface AdminSettingsArgs extends AdminSettings {
 	}
 
 	export interface AdminSettingsChat {
@@ -83,7 +81,10 @@ export declare namespace JamParameters {
 		scanAtStart: boolean;
 	}
 
-	export interface AlbumFilterArgs {
+	export interface AdminSettingsParameters extends AdminSettings {
+	}
+
+	export interface AlbumFilterParameters {
 		/** filter by Search Query */
 		query?: string;
 		/** filter by Album Name */
@@ -136,12 +137,12 @@ export declare namespace JamParameters {
 		toYear?: number;
 	}
 
-	export interface AlbumOrderArgs extends OrderByArgs {
+	export interface AlbumOrderParameters extends OrderByParameters {
 		/** order by field */
 		orderBy?: JamEnums.AlbumOrderFields;
 	}
 
-	export interface ArtistFilterArgs {
+	export interface ArtistFilterParameters {
 		/** filter by Search Query */
 		query?: string;
 		/** filter by Artist Name */
@@ -180,12 +181,12 @@ export declare namespace JamParameters {
 		since?: number;
 	}
 
-	export interface ArtistOrderArgs extends OrderByArgs {
+	export interface ArtistOrderParameters extends OrderByParameters {
 		/** order by field */
 		orderBy?: JamEnums.ArtistOrderFields;
 	}
 
-	export interface ArtworkFilterArgs {
+	export interface ArtworkFilterParameters {
 		/** filter by Search Query */
 		query?: string;
 		/** filter by Artist Name */
@@ -244,29 +245,29 @@ export declare namespace JamParameters {
 		heightTo?: number;
 	}
 
-	export interface ArtworkNewArgs extends ArtworkNewUploadArgs {
+	export interface ArtworkNewParameters extends ArtworkNewUploadParameters {
 		/** URL of an image */
 		url: string;
 	}
 
-	export interface ArtworkNewUploadArgs {
+	export interface ArtworkNewUploadParameters {
 		/** Folder Id */
 		folderID: string;
 		/** Types of the image */
 		types: Array<JamEnums.ArtworkImageType>;
 	}
 
-	export interface ArtworkOrderArgs extends DefaultOrderArgs {
+	export interface ArtworkOrderParameters extends DefaultOrderParameters {
 	}
 
-	export interface ArtworkRenameArgs {
+	export interface ArtworkRenameParameters {
 		/** Artwork Id */
 		id: string;
 		/** New Image Filename */
 		newName: string;
 	}
 
-	export interface AutoCompleteFilterArgs {
+	export interface AutoCompleteFilterParameters {
 		/** query to complete */
 		query: string;
 		/**
@@ -327,7 +328,7 @@ export declare namespace JamParameters {
 		series?: number;
 	}
 
-	export interface BookmarkCreateArgs {
+	export interface BookmarkCreateParameters {
 		/** a track or episode id */
 		mediaID: string;
 		/**
@@ -340,7 +341,7 @@ export declare namespace JamParameters {
 		comment: string;
 	}
 
-	export interface BookmarkFilterArgs {
+	export interface BookmarkFilterParameters {
 		/** filter by Search Query */
 		query?: string;
 		/** filter by Comment */
@@ -361,17 +362,17 @@ export declare namespace JamParameters {
 		userIDs?: Array<string>;
 	}
 
-	export interface BookmarkOrderArgs extends OrderByArgs {
+	export interface BookmarkOrderParameters extends OrderByParameters {
 		/** order by field */
 		orderBy?: JamEnums.BookmarkOrderFields;
 	}
 
-	export interface ChatCreateArgs {
+	export interface ChatCreateParameters {
 		/** Chat message */
 		message: string;
 	}
 
-	export interface ChatFilterArgs {
+	export interface ChatFilterParameters {
 		/**
 		 * filter by message timestamp
 		 * @TJS-type integer
@@ -380,7 +381,7 @@ export declare namespace JamParameters {
 		since?: number;
 	}
 
-	export interface ChatRemoveArgs {
+	export interface ChatRemoveParameters {
 		/**
 		 * Chat time
 		 * @TJS-type integer
@@ -388,19 +389,19 @@ export declare namespace JamParameters {
 		time: number;
 	}
 
-	export interface CoverArtArchiveImageArgs {
+	export interface CoverArtArchiveImageParameters {
 		/** Coverart URL */
 		url: string;
 	}
 
-	export interface CoverArtArchiveLookupArgs {
+	export interface CoverArtArchiveLookupParameters {
 		/** MusicBrainz ID */
 		mbID: string;
 		/** Lookup by CoverArtArchive MusicBrainz Type */
 		type: JamEnums.CoverArtArchiveLookupType;
 	}
 
-	export interface CredentialsArgs {
+	export interface CredentialsParameters {
 		/** User password */
 		password: string;
 		/** User name */
@@ -414,12 +415,12 @@ export declare namespace JamParameters {
 		jwt?: boolean;
 	}
 
-	export interface DefaultOrderArgs extends OrderByArgs {
+	export interface DefaultOrderParameters extends OrderByParameters {
 		/** order by field */
 		orderBy?: JamEnums.DefaultOrderFields;
 	}
 
-	export interface DownloadArgs {
+	export interface DownloadParameters {
 		/**
 		 * format of download stream
 		 * @default zip
@@ -427,7 +428,7 @@ export declare namespace JamParameters {
 		format?: JamEnums.DownloadFormatType;
 	}
 
-	export interface EpisodeFilterArgs {
+	export interface EpisodeFilterParameters {
 		/** filter by Search Query */
 		query?: string;
 		/** filter by Name */
@@ -450,12 +451,12 @@ export declare namespace JamParameters {
 		statuses?: Array<JamEnums.PodcastStatus>;
 	}
 
-	export interface EpisodeOrderArgs extends OrderByArgs {
+	export interface EpisodeOrderParameters extends OrderByParameters {
 		/** order by field */
 		orderBy?: JamEnums.EpisodeOrderFields;
 	}
 
-	export interface FavArgs {
+	export interface FavParameters {
 		/** ID */
 		id: string;
 		/**
@@ -466,14 +467,14 @@ export declare namespace JamParameters {
 		remove: boolean;
 	}
 
-	export interface FolderCreateArgs {
+	export interface FolderCreateParameters {
 		/** Parent Folder Id */
 		id: string;
 		/** New Folder Name */
 		name: string;
 	}
 
-	export interface FolderFilterArgs {
+	export interface FolderFilterParameters {
 		/** filter by Search Query */
 		query?: string;
 		/** filter by Name */
@@ -546,26 +547,26 @@ export declare namespace JamParameters {
 		genreIDs?: Array<string>;
 	}
 
-	export interface FolderMoveArgs {
+	export interface FolderMoveParameters {
 		/** Folder Ids */
 		ids: Array<string>;
 		/** Destination Parent Folder Id */
 		newParentID: string;
 	}
 
-	export interface FolderOrderArgs extends OrderByArgs {
+	export interface FolderOrderParameters extends OrderByParameters {
 		/** order by field */
 		orderBy?: JamEnums.FolderOrderFields;
 	}
 
-	export interface FolderRenameArgs {
+	export interface FolderRenameParameters {
 		/** Folder Id */
 		id: string;
 		/** New Folder Name */
 		name: string;
 	}
 
-	export interface GenreFilterArgs {
+	export interface GenreFilterParameters {
 		/** filter by Search Query */
 		query?: string;
 		/** filter by Genre Name */
@@ -582,24 +583,24 @@ export declare namespace JamParameters {
 		since?: number;
 	}
 
-	export interface GenreOrderArgs extends OrderByArgs {
+	export interface GenreOrderParameters extends OrderByParameters {
 		/** order by field */
 		orderBy?: JamEnums.GenreOrderFields;
 	}
 
-	export interface ImageArgs extends ImageSizeArgs {
+	export interface ImageFormatParameters {
+		/** format of the image */
+		format?: JamEnums.ImageFormatType;
+	}
+
+	export interface ImageParameters extends ImageSizeParameters {
 		/** Object Id */
 		id: string;
 		/** format of the image */
 		format?: JamEnums.ImageFormatType;
 	}
 
-	export interface ImageFormatArgs {
-		/** format of the image */
-		format?: JamEnums.ImageFormatType;
-	}
-
-	export interface ImageSizeArgs {
+	export interface ImageSizeParameters {
 		/**
 		 * size of the image
 		 * @TJS-type integer
@@ -609,7 +610,22 @@ export declare namespace JamParameters {
 		size?: number;
 	}
 
-	export interface IncludesAlbumArgs {
+	export interface IncludesAlbumChildrenParameters {
+		/**
+		 * include tracks on album(s)
+		 * @TJS-type boolean
+		 * @default false
+		 */
+		albumIncTracks?: boolean;
+		/**
+		 * include artist on album(s)
+		 * @TJS-type boolean
+		 * @default false
+		 */
+		albumIncArtist?: boolean;
+	}
+
+	export interface IncludesAlbumParameters {
 		/**
 		 * include track ids on album(s)
 		 * @TJS-type boolean
@@ -642,22 +658,34 @@ export declare namespace JamParameters {
 		albumIncGenres?: boolean;
 	}
 
-	export interface IncludesAlbumChildrenArgs {
+	export interface IncludesArtistChildrenParameters {
 		/**
-		 * include tracks on album(s)
+		 * include albums on artist(s)
 		 * @TJS-type boolean
 		 * @default false
 		 */
-		albumIncTracks?: boolean;
+		artistIncAlbums?: boolean;
 		/**
-		 * include artist on album(s)
+		 * include tracks on artist(s)
 		 * @TJS-type boolean
 		 * @default false
 		 */
-		albumIncArtist?: boolean;
+		artistIncTracks?: boolean;
+		/**
+		 * include series on artist(s)
+		 * @TJS-type boolean
+		 * @default false
+		 */
+		artistIncSeries?: boolean;
+		/**
+		 * include similar artists on artist(s)
+		 * @TJS-type boolean
+		 * @default false
+		 */
+		artistIncSimilar?: boolean;
 	}
 
-	export interface IncludesArtistArgs {
+	export interface IncludesArtistParameters {
 		/**
 		 * include album ids on artist(s)
 		 * @TJS-type boolean
@@ -714,43 +742,7 @@ export declare namespace JamParameters {
 		artistIncGenres?: boolean;
 	}
 
-	export interface IncludesArtistChildrenArgs {
-		/**
-		 * include albums on artist(s)
-		 * @TJS-type boolean
-		 * @default false
-		 */
-		artistIncAlbums?: boolean;
-		/**
-		 * include tracks on artist(s)
-		 * @TJS-type boolean
-		 * @default false
-		 */
-		artistIncTracks?: boolean;
-		/**
-		 * include series on artist(s)
-		 * @TJS-type boolean
-		 * @default false
-		 */
-		artistIncSeries?: boolean;
-		/**
-		 * include similar artists on artist(s)
-		 * @TJS-type boolean
-		 * @default false
-		 */
-		artistIncSimilar?: boolean;
-	}
-
-	export interface IncludesArtworkArgs {
-		/**
-		 * include state (fav,rate) on artwork(s)
-		 * @TJS-type boolean
-		 * @default false
-		 */
-		artworkIncState?: boolean;
-	}
-
-	export interface IncludesArtworkChildrenArgs {
+	export interface IncludesArtworkChildrenParameters {
 		/**
 		 * include folder on artwork(s)
 		 * @TJS-type boolean
@@ -759,7 +751,16 @@ export declare namespace JamParameters {
 		artworkIncFolder?: boolean;
 	}
 
-	export interface IncludesBookmarkChildrenArgs {
+	export interface IncludesArtworkParameters {
+		/**
+		 * include state (fav,rate) on artwork(s)
+		 * @TJS-type boolean
+		 * @default false
+		 */
+		artworkIncState?: boolean;
+	}
+
+	export interface IncludesBookmarkChildrenParameters {
 		/**
 		 * include track on bookmarks(s)
 		 * @TJS-type boolean
@@ -768,7 +769,7 @@ export declare namespace JamParameters {
 		bookmarkIncTrack?: boolean;
 	}
 
-	export interface IncludesEpisodeArgs {
+	export interface IncludesEpisodeParameters {
 		/**
 		 * include media information on episode(s)
 		 * @TJS-type boolean
@@ -795,7 +796,7 @@ export declare namespace JamParameters {
 		episodeIncState?: boolean;
 	}
 
-	export interface IncludesEpisodeParentArgs {
+	export interface IncludesEpisodeParentParameters {
 		/**
 		 * include parent podcast on episode(s)
 		 * @TJS-type boolean
@@ -804,82 +805,7 @@ export declare namespace JamParameters {
 		episodeIncParent?: boolean;
 	}
 
-	export interface IncludesFolderArgs {
-		/**
-		 * include tag on folder(s)
-		 * @TJS-type boolean
-		 * @default false
-		 */
-		folderIncTag?: boolean;
-		/**
-		 * include state (fav,rate) on folder(s)
-		 * @TJS-type boolean
-		 * @default false
-		 */
-		folderIncState?: boolean;
-		/**
-		 * include child folder count on folder(s)
-		 * @TJS-type boolean
-		 * @default false
-		 */
-		folderIncChildFolderCount?: boolean;
-		/**
-		 * include track count on folder(s)
-		 * @TJS-type boolean
-		 * @default false
-		 */
-		folderIncTrackCount?: boolean;
-		/**
-		 * include genre on folder(s)
-		 * @TJS-type boolean
-		 * @default false
-		 */
-		folderIncGenres?: boolean;
-		/**
-		 * include artwork count on folder(s)
-		 * @TJS-type boolean
-		 * @default false
-		 */
-		folderIncArtworkCount?: boolean;
-		/**
-		 * include a list of all parent folder ids/names on folder(s)
-		 * @TJS-type boolean
-		 * @default false
-		 */
-		folderIncParents?: boolean;
-		/**
-		 * include extended meta data on folder(s)
-		 * @TJS-type boolean
-		 * @default false
-		 */
-		folderIncInfo?: boolean;
-		/**
-		 * include similar folders list on folder(s) - only for folders of type artist
-		 * @TJS-type boolean
-		 * @default false
-		 */
-		folderIncSimilar?: boolean;
-		/**
-		 * include artwork images Ids on folder(s)
-		 * @TJS-type boolean
-		 * @default false
-		 */
-		folderIncArtworkIDs?: boolean;
-		/**
-		 * include track Ids on folder(s)
-		 * @TJS-type boolean
-		 * @default false
-		 */
-		folderIncTrackIDs?: boolean;
-		/**
-		 * include children folder Ids on folder(s)
-		 * @TJS-type boolean
-		 * @default false
-		 */
-		folderIncFolderIDs?: boolean;
-	}
-
-	export interface IncludesFolderChildrenArgs {
+	export interface IncludesFolderChildrenParameters {
 		/**
 		 * include artwork images list on folder(s)
 		 * @TJS-type boolean
@@ -972,7 +898,82 @@ export declare namespace JamParameters {
 		folderChildIncFolderIDs?: boolean;
 	}
 
-	export interface IncludesGenreArgs {
+	export interface IncludesFolderParameters {
+		/**
+		 * include tag on folder(s)
+		 * @TJS-type boolean
+		 * @default false
+		 */
+		folderIncTag?: boolean;
+		/**
+		 * include state (fav,rate) on folder(s)
+		 * @TJS-type boolean
+		 * @default false
+		 */
+		folderIncState?: boolean;
+		/**
+		 * include child folder count on folder(s)
+		 * @TJS-type boolean
+		 * @default false
+		 */
+		folderIncChildFolderCount?: boolean;
+		/**
+		 * include track count on folder(s)
+		 * @TJS-type boolean
+		 * @default false
+		 */
+		folderIncTrackCount?: boolean;
+		/**
+		 * include genre on folder(s)
+		 * @TJS-type boolean
+		 * @default false
+		 */
+		folderIncGenres?: boolean;
+		/**
+		 * include artwork count on folder(s)
+		 * @TJS-type boolean
+		 * @default false
+		 */
+		folderIncArtworkCount?: boolean;
+		/**
+		 * include a list of all parent folder ids/names on folder(s)
+		 * @TJS-type boolean
+		 * @default false
+		 */
+		folderIncParents?: boolean;
+		/**
+		 * include extended meta data on folder(s)
+		 * @TJS-type boolean
+		 * @default false
+		 */
+		folderIncInfo?: boolean;
+		/**
+		 * include similar folders list on folder(s) - only for folders of type artist
+		 * @TJS-type boolean
+		 * @default false
+		 */
+		folderIncSimilar?: boolean;
+		/**
+		 * include artwork images Ids on folder(s)
+		 * @TJS-type boolean
+		 * @default false
+		 */
+		folderIncArtworkIDs?: boolean;
+		/**
+		 * include track Ids on folder(s)
+		 * @TJS-type boolean
+		 * @default false
+		 */
+		folderIncTrackIDs?: boolean;
+		/**
+		 * include children folder Ids on folder(s)
+		 * @TJS-type boolean
+		 * @default false
+		 */
+		folderIncFolderIDs?: boolean;
+	}
+
+	export interface IncludesGenreParameters {
 		/**
 		 * include state (fav,rate) on genre(s)
 		 * @TJS-type boolean
@@ -981,7 +982,7 @@ export declare namespace JamParameters {
 		genreState?: boolean;
 	}
 
-	export interface IncludesNowPlayingArgs {
+	export interface IncludesNowPlayingParameters {
 		/**
 		 * include track Id on now playing entries
 		 * @TJS-type boolean
@@ -1008,7 +1009,7 @@ export declare namespace JamParameters {
 		nowPlayingIncEpisodes?: boolean;
 	}
 
-	export interface IncludesPlaylistArgs {
+	export interface IncludesPlaylistParameters {
 		/**
 		 * include entries on playlist
 		 * @TJS-type boolean
@@ -1029,7 +1030,7 @@ export declare namespace JamParameters {
 		playlistIncState?: boolean;
 	}
 
-	export interface IncludesPlayQueueArgs {
+	export interface IncludesPlayQueueParameters {
 		/**
 		 * include entries on play queue
 		 * @TJS-type boolean
@@ -1044,7 +1045,16 @@ export declare namespace JamParameters {
 		playQueueEntriesIDs?: boolean;
 	}
 
-	export interface IncludesPodcastArgs {
+	export interface IncludesPodcastChildrenParameters {
+		/**
+		 * include episodes on podcast(s)
+		 * @TJS-type boolean
+		 * @default false
+		 */
+		podcastIncEpisodes?: boolean;
+	}
+
+	export interface IncludesPodcastParameters {
 		/**
 		 * include state (fav,rate) on podcast(s)
 		 * @TJS-type boolean
@@ -1065,16 +1075,7 @@ export declare namespace JamParameters {
 		podcastIncEpisodeCount?: boolean;
 	}
 
-	export interface IncludesPodcastChildrenArgs {
-		/**
-		 * include episodes on podcast(s)
-		 * @TJS-type boolean
-		 * @default false
-		 */
-		podcastIncEpisodes?: boolean;
-	}
-
-	export interface IncludesRadioArgs {
+	export interface IncludesRadioParameters {
 		/**
 		 * include state (fav,rate) on radio(s)
 		 * @TJS-type boolean
@@ -1083,10 +1084,25 @@ export declare namespace JamParameters {
 		radioState?: boolean;
 	}
 
-	export interface IncludesRootArgs {
+	export interface IncludesRootParameters {
 	}
 
-	export interface IncludesSeriesArgs {
+	export interface IncludesSeriesChildrenParameters {
+		/**
+		 * include albums on series
+		 * @TJS-type boolean
+		 * @default false
+		 */
+		seriesIncAlbums?: boolean;
+		/**
+		 * include tracks on artist(s)
+		 * @TJS-type boolean
+		 * @default false
+		 */
+		seriesIncTracks?: boolean;
+	}
+
+	export interface IncludesSeriesParameters {
 		/**
 		 * include album ids on artist(s)
 		 * @TJS-type boolean
@@ -1125,22 +1141,7 @@ export declare namespace JamParameters {
 		seriesIncInfo?: boolean;
 	}
 
-	export interface IncludesSeriesChildrenArgs {
-		/**
-		 * include albums on series
-		 * @TJS-type boolean
-		 * @default false
-		 */
-		seriesIncAlbums?: boolean;
-		/**
-		 * include tracks on artist(s)
-		 * @TJS-type boolean
-		 * @default false
-		 */
-		seriesIncTracks?: boolean;
-	}
-
-	export interface IncludesTrackArgs {
+	export interface IncludesTrackParameters {
 		/**
 		 * include media information on track(s)
 		 * @TJS-type boolean
@@ -1173,24 +1174,24 @@ export declare namespace JamParameters {
 		trackIncState?: boolean;
 	}
 
-	export interface IncludesUserArgs {
+	export interface IncludesUserParameters {
 	}
 
-	export interface LastFMLookupArgs {
+	export interface LastFMLookupParameters {
 		/** MusicBrainz ID */
 		mbID: string;
 		/** lookup by lastfm type */
 		type: JamEnums.LastFMLookupType;
 	}
 
-	export interface ListArgs {
+	export interface ListParameters {
 		/** filter by special list */
 		list?: JamEnums.ListType;
 		/** seed for random list */
 		seed?: string;
 	}
 
-	export interface LrclibSearchArgs {
+	export interface LrclibSearchParameters {
 		/** Song Title */
 		title: string;
 		/** Song Artist */
@@ -1204,14 +1205,14 @@ export declare namespace JamParameters {
 		duration: number;
 	}
 
-	export interface LyricsOVHSearchArgs {
+	export interface LyricsOVHSearchParameters {
 		/** Song Title */
 		title: string;
 		/** Song Artist */
 		artist: string;
 	}
 
-	export interface MediaHealthArgs {
+	export interface MediaHealthParameters {
 		/**
 		 * check media file integrity
 		 * @TJS-type boolean
@@ -1220,17 +1221,17 @@ export declare namespace JamParameters {
 		healthMedia?: boolean;
 	}
 
-	export interface MediaTagRawUpdateArgs {
+	export interface MediaTagRawUpdateParameters {
 		/**
 		 * Tag Version
 		 * @TJS-type integer
 		 */
 		version: number;
 		/** Tag Frames */
-		frames: any;
+		frames: unknown;
 	}
 
-	export interface MusicBrainzLookupArgs {
+	export interface MusicBrainzLookupParameters {
 		/** MusicBrainz ID */
 		mbID: string;
 		/** MusicBrainz Lookup Type */
@@ -1239,7 +1240,7 @@ export declare namespace JamParameters {
 		inc?: string;
 	}
 
-	export interface MusicBrainzSearchArgs {
+	export interface MusicBrainzSearchParameters {
 		/** MusicBrainz Search Type */
 		type: JamEnums.MusicBrainzSearchType;
 		/** Search by Recording Name */
@@ -1258,7 +1259,7 @@ export declare namespace JamParameters {
 		tracks?: number;
 	}
 
-	export interface OrderByArgs {
+	export interface OrderByParameters {
 		/**
 		 * order direction ascending or descending
 		 * @TJS-type boolean
@@ -1266,7 +1267,7 @@ export declare namespace JamParameters {
 		orderDesc?: boolean;
 	}
 
-	export interface PageArgs {
+	export interface PageParameters {
 		/**
 		 * return items starting from offset position
 		 * @TJS-type integer
@@ -1282,17 +1283,17 @@ export declare namespace JamParameters {
 		take?: number;
 	}
 
-	export interface PlaylistEntryFilterArgs {
+	export interface PlaylistEntryFilterParameters {
 		/** filter by Playlist Ids */
 		playlistIDs?: Array<string>;
 	}
 
-	export interface PlaylistEntryOrderArgs extends OrderByArgs {
+	export interface PlaylistEntryOrderParameters extends OrderByParameters {
 		/** order by field */
 		orderBy?: JamEnums.PlaylistEntryOrderFields;
 	}
 
-	export interface PlaylistFilterArgs {
+	export interface PlaylistFilterParameters {
 		/** filter by Search Query */
 		query?: string;
 		/** filter by Name */
@@ -1328,7 +1329,7 @@ export declare namespace JamParameters {
 		durationTo?: number;
 	}
 
-	export interface PlaylistMutateArgs {
+	export interface PlaylistMutateParameters {
 		/** Playlist Name */
 		name?: string;
 		/** Comment */
@@ -1342,10 +1343,10 @@ export declare namespace JamParameters {
 		mediaIDs?: Array<string>;
 	}
 
-	export interface PlaylistOrderArgs extends DefaultOrderArgs {
+	export interface PlaylistOrderParameters extends DefaultOrderParameters {
 	}
 
-	export interface PlayQueueSetArgs {
+	export interface PlayQueueSetParameters {
 		/** Media Ids of the play queue */
 		mediaIDs?: Array<string>;
 		/** Current Media Id */
@@ -1358,22 +1359,22 @@ export declare namespace JamParameters {
 		position?: number;
 	}
 
-	export interface PodcastCreateArgs {
+	export interface PodcastCreateParameters {
 		/** Podcast Feed URL */
 		url: string;
 	}
 
-	export interface PodcastDiscoverArgs {
-		/** Search Podcast by Name */
-		query: string;
-	}
-
-	export interface PodcastDiscoverByTagArgs {
+	export interface PodcastDiscoverByTagParameters {
 		/** Search Podcast by Tag */
 		tag: string;
 	}
 
-	export interface PodcastFilterArgs {
+	export interface PodcastDiscoverParameters {
+		/** Search Podcast by Name */
+		query: string;
+	}
+
+	export interface PodcastFilterParameters {
 		/** filter by Search Query */
 		query?: string;
 		/** filter by Name */
@@ -1416,17 +1417,17 @@ export declare namespace JamParameters {
 		categories?: Array<string>;
 	}
 
-	export interface PodcastOrderArgs extends OrderByArgs {
+	export interface PodcastOrderParameters extends OrderByParameters {
 		/** order by field */
 		orderBy?: JamEnums.PodcastOrderFields;
 	}
 
-	export interface PodcastRefreshArgs {
+	export interface PodcastRefreshParameters {
 		/** Podcast ID to refresh (empty for refreshing all) */
 		id?: string;
 	}
 
-	export interface RadioFilterArgs {
+	export interface RadioFilterParameters {
 		/** filter by Search Query */
 		query?: string;
 		/** filter by Name */
@@ -1450,7 +1451,7 @@ export declare namespace JamParameters {
 		disabled?: boolean;
 	}
 
-	export interface RadioMutateArgs {
+	export interface RadioMutateParameters {
 		/** Radio Name */
 		name: string;
 		/** URL */
@@ -1464,10 +1465,10 @@ export declare namespace JamParameters {
 		disabled?: boolean;
 	}
 
-	export interface RadioOrderArgs extends DefaultOrderArgs {
+	export interface RadioOrderParameters extends DefaultOrderParameters {
 	}
 
-	export interface RateArgs {
+	export interface RateParameters {
 		/** ID */
 		id: string;
 		/**
@@ -1479,14 +1480,14 @@ export declare namespace JamParameters {
 		rating: number;
 	}
 
-	export interface RawTagUpdateArgs {
+	export interface RawTagUpdateParameters {
 		/** Track Id */
 		id: string;
 		/** Raw tag to store in the track (e.g. id3v2/vorbis) */
-		tag: any;
+		tag: unknown;
 	}
 
-	export interface RootFilterArgs {
+	export interface RootFilterParameters {
 		/** filter by Search Query */
 		query?: string;
 		/** filter by Artist Name */
@@ -1513,7 +1514,7 @@ export declare namespace JamParameters {
 		seriesIDs?: Array<string>;
 	}
 
-	export interface RootMutateArgs {
+	export interface RootMutateParameters {
 		/** Root Name */
 		name: string;
 		/** Absolute Path for Root  */
@@ -1522,15 +1523,15 @@ export declare namespace JamParameters {
 		strategy: JamEnums.RootScanStrategy;
 	}
 
-	export interface RootOrderArgs extends DefaultOrderArgs {
+	export interface RootOrderParameters extends DefaultOrderParameters {
 	}
 
-	export interface RootRefreshArgs {
+	export interface RootRefreshParameters {
 		/** Root ID to refresh (empty for refreshing all) */
 		id?: string;
 	}
 
-	export interface SeriesFilterArgs {
+	export interface SeriesFilterParameters {
 		/** filter by Search Query */
 		query?: string;
 		/** filter by Name */
@@ -1559,10 +1560,10 @@ export declare namespace JamParameters {
 		genreIDs?: Array<string>;
 	}
 
-	export interface SeriesOrderArgs extends DefaultOrderArgs {
+	export interface SeriesOrderParameters extends DefaultOrderParameters {
 	}
 
-	export interface SessionFilterArgs {
+	export interface SessionFilterParameters {
 		/**
 		 * filter by session timestamp
 		 * @TJS-type integer
@@ -1591,12 +1592,12 @@ export declare namespace JamParameters {
 		userIDs?: Array<string>;
 	}
 
-	export interface SessionOrderArgs extends OrderByArgs {
+	export interface SessionOrderParameters extends OrderByParameters {
 		/** order by field */
 		orderBy?: JamEnums.SessionOrderFields;
 	}
 
-	export interface StatesArgs {
+	export interface StatesParameters {
 		/** IDs */
 		ids: Array<string>;
 	}
@@ -1606,7 +1607,7 @@ export declare namespace JamParameters {
 		rootID?: string;
 	}
 
-	export interface StreamParamArgs {
+	export interface StreamParameters {
 		/**
 		 * start offset for transcoding/streaming
 		 * @TJS-type integer
@@ -1615,7 +1616,7 @@ export declare namespace JamParameters {
 		timeOffset?: number;
 	}
 
-	export interface StreamPathArgs {
+	export interface StreamPathParameters {
 		/**
 		 * maximal bitrate if transcoding (in Kbps)
 		 * @TJS-type integer
@@ -1627,7 +1628,7 @@ export declare namespace JamParameters {
 		format?: JamEnums.AudioFormatType;
 	}
 
-	export interface TrackFilterArgs {
+	export interface TrackFilterParameters {
 		/** filter by Search Query */
 		query?: string;
 		/** filter by Track Title */
@@ -1678,40 +1679,40 @@ export declare namespace JamParameters {
 		toYear?: number;
 	}
 
-	export interface TrackFixArgs {
+	export interface TrackFixParameters {
 		/** Track Id */
 		id: string;
 		/** Which issue to fix with the track */
 		fixID: JamEnums.TrackHealthID;
 	}
 
-	export interface TrackMoveArgs {
+	export interface TrackMoveParameters {
 		/** Track Ids */
 		ids: Array<string>;
 		/** ID of the destination folder */
 		folderID: string;
 	}
 
-	export interface TrackOrderArgs extends OrderByArgs {
+	export interface TrackOrderParameters extends OrderByParameters {
 		/** order by field */
 		orderBy?: JamEnums.TrackOrderFields;
 	}
 
-	export interface TrackRenameArgs {
+	export interface TrackRenameParameters {
 		/** Track Id */
 		id: string;
 		/** New track file name */
 		name: string;
 	}
 
-	export interface UserEmailUpdateArgs {
+	export interface UserEmailUpdateParameters {
 		/** Password of calling user (or admin) is required to change the email */
 		password: string;
 		/** New email */
 		email: string;
 	}
 
-	export interface UserFilterArgs {
+	export interface UserFilterParameters {
 		/** filter by Search Query */
 		query?: string;
 		/** filter by User name */
@@ -1730,17 +1731,12 @@ export declare namespace JamParameters {
 		roles?: Array<JamEnums.UserRole>;
 	}
 
-	export interface UserGenerateImageArgs {
+	export interface UserGenerateImageParameters {
 		/** Random Seed String */
 		seed?: string;
 	}
 
-	export interface UserGenerateSusonicTokenArgs {
-		/** Password of calling user (or admin) is required to generate/update the Subsonic token */
-		password: string;
-	}
-
-	export interface UserMutateArgs {
+	export interface UserMutateParameters {
 		/** Password of calling admin user is required to create an user. this is NOT the user password! */
 		password: string;
 		/** User Name */
@@ -1773,17 +1769,22 @@ export declare namespace JamParameters {
 		roleUpload: boolean;
 	}
 
-	export interface UserOrderArgs extends DefaultOrderArgs {
+	export interface UserOrderParameters extends DefaultOrderParameters {
 	}
 
-	export interface UserPasswordUpdateArgs {
+	export interface UserPasswordUpdateParameters {
 		/** Password of calling user (or admin) is required to change the password */
 		password: string;
 		/** New Password */
 		newPassword: string;
 	}
 
-	export interface WaveformArgs {
+	export interface UserSubsonicTokenGenerateParameters {
+		/** Password of calling user (or admin) is required to generate/update the Subsonic token */
+		password: string;
+	}
+
+	export interface WaveformParameters {
 		/** format of the waveform */
 		format?: JamEnums.WaveformFormatType;
 		/**
@@ -1795,7 +1796,7 @@ export declare namespace JamParameters {
 		width?: number;
 	}
 
-	export interface WaveformSVGArgs {
+	export interface WaveformSVGParameters {
 		/** Object Id */
 		id: string;
 		/**
@@ -1807,12 +1808,12 @@ export declare namespace JamParameters {
 		width?: number;
 	}
 
-	export interface WikidataLookupArgs {
+	export interface WikidataLookupParameters {
 		/** WikiData ID */
 		wikiDataID: string;
 	}
 
-	export interface WikidataSummaryArgs {
+	export interface WikidataSummaryParameters {
 		/** WikiData ID */
 		wikiDataID: string;
 		/**
@@ -1822,7 +1823,7 @@ export declare namespace JamParameters {
 		lang?: string;
 	}
 
-	export interface WikipediaSummaryArgs {
+	export interface WikipediaSummaryParameters {
 		/** MusicBrainz ID */
 		title: string;
 		/**
@@ -1840,137 +1841,137 @@ export declare namespace JamParameters {
 		id?: string;
 	}
 
-	export type AlbumIdArgs = IncludesArtistArgs & IncludesTrackArgs & IncludesAlbumChildrenArgs & IncludesAlbumArgs & ID;
+	export type AlbumIdParameters = IncludesArtistParameters & IncludesTrackParameters & IncludesAlbumChildrenParameters & IncludesAlbumParameters & ID;
 
-	export type AlbumSearchArgs = ListArgs & AlbumOrderArgs & AlbumFilterArgs & IncludesArtistArgs & IncludesTrackArgs & IncludesAlbumChildrenArgs & IncludesAlbumArgs & PageArgs;
+	export type AlbumSearchParameters = ListParameters & AlbumOrderParameters & AlbumFilterParameters & IncludesArtistParameters & IncludesTrackParameters & IncludesAlbumChildrenParameters & IncludesAlbumParameters & PageParameters;
 
-	export type AlbumTracksArgs = TrackOrderArgs & AlbumFilterArgs & IncludesTrackArgs & PageArgs;
+	export type AlbumTracksParameters = TrackOrderParameters & AlbumFilterParameters & IncludesTrackParameters & PageParameters;
 
-	export type AlbumSimilarTracksArgs = IncludesTrackArgs & PageArgs & ID;
+	export type AlbumSimilarTracksParameters = IncludesTrackParameters & PageParameters & ID;
 
-	export type ArtistIdArgs = IncludesSeriesArgs & IncludesAlbumArgs & IncludesTrackArgs & IncludesArtistChildrenArgs & IncludesArtistArgs & ID;
+	export type ArtistIdParameters = IncludesSeriesParameters & IncludesAlbumParameters & IncludesTrackParameters & IncludesArtistChildrenParameters & IncludesArtistParameters & ID;
 
-	export type ArtistSearchArgs = ListArgs & ArtistOrderArgs & ArtistFilterArgs & IncludesSeriesArgs & IncludesAlbumArgs & IncludesTrackArgs & IncludesArtistChildrenArgs & IncludesArtistArgs & PageArgs;
+	export type ArtistSearchParameters = ListParameters & ArtistOrderParameters & ArtistFilterParameters & IncludesSeriesParameters & IncludesAlbumParameters & IncludesTrackParameters & IncludesArtistChildrenParameters & IncludesArtistParameters & PageParameters;
 
-	export type ArtistSimilarArgs = IncludesArtistArgs & PageArgs & ID;
+	export type ArtistSimilarParameters = IncludesArtistParameters & PageParameters & ID;
 
-	export type ArtistSimilarTracksArgs = IncludesTrackArgs & PageArgs & ID;
+	export type ArtistSimilarTracksParameters = IncludesTrackParameters & PageParameters & ID;
 
-	export type ArtistTracksArgs = TrackOrderArgs & ArtistFilterArgs & IncludesTrackArgs & PageArgs;
+	export type ArtistTracksParameters = TrackOrderParameters & ArtistFilterParameters & IncludesTrackParameters & PageParameters;
 
-	export type ArtistAlbumsArgs = AlbumOrderArgs & ArtistFilterArgs & IncludesAlbumArgs & PageArgs;
+	export type ArtistAlbumsParameters = AlbumOrderParameters & ArtistFilterParameters & IncludesAlbumParameters & PageParameters;
 
-	export type ArtistSeriesArgs = SeriesOrderArgs & SeriesFilterArgs & IncludesSeriesArgs & PageArgs;
+	export type ArtistSeriesParameters = SeriesOrderParameters & SeriesFilterParameters & IncludesSeriesParameters & PageParameters;
 
-	export type BookmarkIdArgs = IncludesEpisodeArgs & IncludesTrackArgs & IncludesBookmarkChildrenArgs & ID;
+	export type BookmarkIdParameters = IncludesEpisodeParameters & IncludesTrackParameters & IncludesBookmarkChildrenParameters & ID;
 
-	export type BookmarkSearchArgs = BookmarkOrderArgs & BookmarkFilterArgs & IncludesEpisodeArgs & IncludesTrackArgs & IncludesBookmarkChildrenArgs & PageArgs;
+	export type BookmarkSearchParameters = BookmarkOrderParameters & BookmarkFilterParameters & IncludesEpisodeParameters & IncludesTrackParameters & IncludesBookmarkChildrenParameters & PageParameters;
 
-	export type RootIdArgs = IncludesRootArgs & ID;
+	export type RootIdParameters = IncludesRootParameters & ID;
 
-	export type RootSearchArgs = RootOrderArgs & RootFilterArgs & IncludesRootArgs & PageArgs;
+	export type RootSearchParameters = RootOrderParameters & RootFilterParameters & IncludesRootParameters & PageParameters;
 
-	export type EpisodeIdArgs = IncludesPodcastArgs & IncludesEpisodeParentArgs & IncludesEpisodeArgs & ID;
+	export type EpisodeIdParameters = IncludesPodcastParameters & IncludesEpisodeParentParameters & IncludesEpisodeParameters & ID;
 
-	export type EpisodeSearchArgs = ListArgs & EpisodeOrderArgs & EpisodeFilterArgs & IncludesPodcastArgs & IncludesEpisodeParentArgs & IncludesEpisodeArgs & PageArgs;
+	export type EpisodeSearchParameters = ListParameters & EpisodeOrderParameters & EpisodeFilterParameters & IncludesPodcastParameters & IncludesEpisodeParentParameters & IncludesEpisodeParameters & PageParameters;
 
-	export type FolderIdArgs = IncludesArtworkArgs & IncludesTrackArgs & IncludesFolderChildrenArgs & IncludesFolderArgs & ID;
+	export type FolderIdParameters = IncludesArtworkParameters & IncludesTrackParameters & IncludesFolderChildrenParameters & IncludesFolderParameters & ID;
 
-	export type FolderSearchArgs = ListArgs & FolderOrderArgs & FolderFilterArgs & IncludesArtworkArgs & IncludesTrackArgs & IncludesFolderChildrenArgs & IncludesFolderArgs & PageArgs;
+	export type FolderSearchParameters = ListParameters & FolderOrderParameters & FolderFilterParameters & IncludesArtworkParameters & IncludesTrackParameters & IncludesFolderChildrenParameters & IncludesFolderParameters & PageParameters;
 
-	export type FolderTracksArgs = TrackOrderArgs & FolderFilterArgs & IncludesTrackArgs & PageArgs;
+	export type FolderTracksParameters = TrackOrderParameters & FolderFilterParameters & IncludesTrackParameters & PageParameters;
 
-	export type FolderSubfoldersArgs = FolderOrderArgs & FolderFilterArgs & IncludesFolderArgs & PageArgs;
+	export type FolderSubfoldersParameters = FolderOrderParameters & FolderFilterParameters & IncludesFolderParameters & PageParameters;
 
-	export type FolderArtworksArgs = ArtworkOrderArgs & FolderFilterArgs & IncludesArtworkArgs & PageArgs;
+	export type FolderArtworksParameters = ArtworkOrderParameters & FolderFilterParameters & IncludesArtworkParameters & PageParameters;
 
-	export type FolderArtistsSimilarArgs = IncludesFolderArgs & PageArgs & ID;
+	export type FolderArtistsSimilarParameters = IncludesFolderParameters & PageParameters & ID;
 
-	export type FolderArtistsSimilarTracksArgs = IncludesTrackArgs & PageArgs & ID;
+	export type FolderArtistsSimilarTracksParameters = IncludesTrackParameters & PageParameters & ID;
 
-	export type FolderHealthArgs = IncludesFolderArgs & FolderFilterArgs;
+	export type FolderHealthParameters = IncludesFolderParameters & FolderFilterParameters;
 
-	export type PodcastIdArgs = IncludesEpisodeArgs & IncludesPodcastChildrenArgs & IncludesPodcastArgs & ID;
+	export type PodcastIdParameters = IncludesEpisodeParameters & IncludesPodcastChildrenParameters & IncludesPodcastParameters & ID;
 
-	export type PodcastSearchArgs = ListArgs & PodcastOrderArgs & PodcastFilterArgs & IncludesEpisodeArgs & IncludesPodcastChildrenArgs & IncludesPodcastArgs & PageArgs;
+	export type PodcastSearchParameters = ListParameters & PodcastOrderParameters & PodcastFilterParameters & IncludesEpisodeParameters & IncludesPodcastChildrenParameters & IncludesPodcastParameters & PageParameters;
 
-	export type PodcastEpisodesArgs = EpisodeOrderArgs & PodcastFilterArgs & IncludesEpisodeArgs & PageArgs;
+	export type PodcastEpisodesParameters = EpisodeOrderParameters & PodcastFilterParameters & IncludesEpisodeParameters & PageParameters;
 
-	export type PodcastPodcastsDiscoverByTagArgs = PageArgs & PodcastDiscoverByTagArgs;
+	export type PodcastPodcastsDiscoverByTagParameters = PageParameters & PodcastDiscoverByTagParameters;
 
-	export type RadioIdArgs = IncludesRadioArgs & ID;
+	export type RadioIdParameters = IncludesRadioParameters & ID;
 
-	export type RadioSearchArgs = RadioOrderArgs & RadioFilterArgs & IncludesRadioArgs & PageArgs;
+	export type RadioSearchParameters = RadioOrderParameters & RadioFilterParameters & IncludesRadioParameters & PageParameters;
 
-	export type SeriesIdArgs = IncludesTrackArgs & IncludesAlbumArgs & IncludesSeriesChildrenArgs & IncludesSeriesArgs & ID;
+	export type SeriesIdParameters = IncludesTrackParameters & IncludesAlbumParameters & IncludesSeriesChildrenParameters & IncludesSeriesParameters & ID;
 
-	export type SeriesSearchArgs = ListArgs & SeriesOrderArgs & SeriesFilterArgs & IncludesTrackArgs & IncludesAlbumArgs & IncludesSeriesChildrenArgs & IncludesSeriesArgs & PageArgs;
+	export type SeriesSearchParameters = ListParameters & SeriesOrderParameters & SeriesFilterParameters & IncludesTrackParameters & IncludesAlbumParameters & IncludesSeriesChildrenParameters & IncludesSeriesParameters & PageParameters;
 
-	export type SeriesAlbumsArgs = AlbumOrderArgs & SeriesFilterArgs & IncludesAlbumArgs & PageArgs;
+	export type SeriesAlbumsParameters = AlbumOrderParameters & SeriesFilterParameters & IncludesAlbumParameters & PageParameters;
 
-	export type SeriesTracksArgs = TrackOrderArgs & SeriesFilterArgs & IncludesTrackArgs & PageArgs;
+	export type SeriesTracksParameters = TrackOrderParameters & SeriesFilterParameters & IncludesTrackParameters & PageParameters;
 
-	export type TrackIdArgs = IncludesTrackArgs & ID;
+	export type TrackIdParameters = IncludesTrackParameters & ID;
 
-	export type TrackSearchArgs = ListArgs & TrackOrderArgs & TrackFilterArgs & IncludesTrackArgs & PageArgs;
+	export type TrackSearchParameters = ListParameters & TrackOrderParameters & TrackFilterParameters & IncludesTrackParameters & PageParameters;
 
-	export type TrackSimilarArgs = IncludesTrackArgs & PageArgs & ID;
+	export type TrackSimilarParameters = IncludesTrackParameters & PageParameters & ID;
 
-	export type TrackHealthArgs = IncludesTrackArgs & TrackFilterArgs & MediaHealthArgs;
+	export type TrackHealthParameters = IncludesTrackParameters & TrackFilterParameters & MediaHealthParameters;
 
-	export type UserIdArgs = IncludesUserArgs & ID;
+	export type UserIdParameters = IncludesUserParameters & ID;
 
-	export type UserSearchArgs = UserOrderArgs & UserFilterArgs & IncludesUserArgs & PageArgs;
+	export type UserSearchParameters = UserOrderParameters & UserFilterParameters & IncludesUserParameters & PageParameters;
 
-	export type PlayQueueGetArgs = IncludesEpisodeArgs & IncludesTrackArgs & IncludesPlayQueueArgs;
+	export type PlayQueueGetParameters = IncludesEpisodeParameters & IncludesTrackParameters & IncludesPlayQueueParameters;
 
-	export type PlaylistIdArgs = IncludesEpisodeArgs & IncludesTrackArgs & IncludesPlaylistArgs & ID;
+	export type PlaylistIdParameters = IncludesEpisodeParameters & IncludesTrackParameters & IncludesPlaylistParameters & ID;
 
-	export type PlaylistSearchArgs = ListArgs & PlaylistOrderArgs & PlaylistFilterArgs & IncludesEpisodeArgs & IncludesTrackArgs & IncludesPlaylistArgs & PageArgs;
+	export type PlaylistSearchParameters = ListParameters & PlaylistOrderParameters & PlaylistFilterParameters & IncludesEpisodeParameters & IncludesTrackParameters & IncludesPlaylistParameters & PageParameters;
 
-	export type PlaylistEntriesArgs = PlaylistEntryOrderArgs & PlaylistFilterArgs & IncludesEpisodeArgs & IncludesTrackArgs & PageArgs;
+	export type PlaylistEntriesParameters = PlaylistEntryOrderParameters & PlaylistFilterParameters & IncludesEpisodeParameters & IncludesTrackParameters & PageParameters;
 
-	export type GenreIdArgs = IncludesGenreArgs & ID;
+	export type GenreIdParameters = IncludesGenreParameters & ID;
 
-	export type GenreSearchArgs = GenreOrderArgs & ListArgs & GenreFilterArgs & IncludesGenreArgs & PageArgs;
+	export type GenreSearchParameters = GenreOrderParameters & ListParameters & GenreFilterParameters & IncludesGenreParameters & PageParameters;
 
-	export type GenreTracksArgs = TrackOrderArgs & GenreFilterArgs & IncludesTrackArgs & PageArgs;
+	export type GenreTracksParameters = TrackOrderParameters & GenreFilterParameters & IncludesTrackParameters & PageParameters;
 
-	export type GenreAlbumsArgs = AlbumOrderArgs & GenreFilterArgs & IncludesAlbumArgs & PageArgs;
+	export type GenreAlbumsParameters = AlbumOrderParameters & GenreFilterParameters & IncludesAlbumParameters & PageParameters;
 
-	export type GenreArtistsArgs = ArtistOrderArgs & GenreFilterArgs & IncludesArtistArgs & PageArgs;
+	export type GenreArtistsParameters = ArtistOrderParameters & GenreFilterParameters & IncludesArtistParameters & PageParameters;
 
-	export type DownloadDownloadArgs = DownloadArgs & ID;
+	export type DownloadDownloadParameters = DownloadParameters & ID;
 
-	export type WaveformWaveformArgs = WaveformArgs & ID;
+	export type WaveformWaveformParameters = WaveformParameters & ID;
 
-	export type StreamStreamArgs = StreamParamArgs & StreamPathArgs & ID;
+	export type StreamStreamParameters = StreamParameters & StreamPathParameters & ID;
 
-	export type ArtworkIdArgs = IncludesFolderArgs & IncludesArtworkChildrenArgs & IncludesArtworkArgs & ID;
+	export type ArtworkIdParameters = IncludesFolderParameters & IncludesArtworkChildrenParameters & IncludesArtworkParameters & ID;
 
-	export type ArtworkSearchArgs = ListArgs & ArtworkOrderArgs & ArtworkFilterArgs & IncludesFolderArgs & IncludesArtworkChildrenArgs & IncludesArtworkArgs & PageArgs;
+	export type ArtworkSearchParameters = ListParameters & ArtworkOrderParameters & ArtworkFilterParameters & IncludesFolderParameters & IncludesArtworkChildrenParameters & IncludesArtworkParameters & PageParameters;
 
-	export type NowPlayingListArgs = IncludesEpisodeArgs & IncludesTrackArgs & IncludesNowPlayingArgs;
+	export type NowPlayingListParameters = IncludesEpisodeParameters & IncludesTrackParameters & IncludesNowPlayingParameters;
 
-	export type RootUpdateArgs = RootMutateArgs & ID;
+	export type RootUpdateParameters = RootMutateParameters & ID;
 
-	export type RadioUpdateArgs = RadioMutateArgs & ID;
+	export type RadioUpdateParameters = RadioMutateParameters & ID;
 
-	export type UserUpdateArgs = UserMutateArgs & ID;
+	export type UserUpdateParameters = UserMutateParameters & ID;
 
-	export type UserChangePasswordArgs = UserPasswordUpdateArgs & ID;
+	export type UserChangePasswordParameters = UserPasswordUpdateParameters & ID;
 
-	export type UserChangeEmailArgs = UserEmailUpdateArgs & ID;
+	export type UserChangeEmailParameters = UserEmailUpdateParameters & ID;
 
-	export type UserGenerateUserImageArgs = UserGenerateImageArgs & ID;
+	export type UserGenerateUserImageParameters = UserGenerateImageParameters & ID;
 
-	export type UserUploadUserImageArgs = ID;
+	export type UserUploadUserImageParameters = ID;
 
-	export type UserGenerateSubsonicTokenArgs = UserGenerateSusonicTokenArgs & ID;
+	export type UserGenerateSubsonicTokenParameters = UserSubsonicTokenGenerateParameters & ID;
 
-	export type PlaylistUpdateArgs = PlaylistMutateArgs & ID;
+	export type PlaylistUpdateParameters = PlaylistMutateParameters & ID;
 
-	export type ArtworkCreateByUploadArgs = ArtworkNewUploadArgs;
+	export type ArtworkCreateByUploadParameters = ArtworkNewUploadParameters;
 
-	export type ArtworkUpdateArgs = ID;
+	export type ArtworkUpdateParameters = ID;
 }

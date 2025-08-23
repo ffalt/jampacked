@@ -12,91 +12,91 @@ export class JamMetaDataService {
 	/**
 	 * Lookup LastFM data // Rights needed: stream
 	 */
-	async lastfmLookup(params: JamParameters.LastFMLookupArgs): Promise<Jam.MetaDataResult> {
+	async lastfmLookup(params: JamParameters.LastFMLookupParameters): Promise<Jam.MetaDataResult> {
 		return this.base.requestData<Jam.MetaDataResult>('/metadata/lastfm/lookup', params);
 	}
 
 	/**
 	 * Search Lyrics.ovh data // Rights needed: stream
 	 */
-	async lyricsovhSearch(params: JamParameters.LyricsOVHSearchArgs): Promise<Jam.MetaDataResult> {
-		return this.base.requestData<Jam.MetaDataResult>('/metadata/lyricsovh/search', params);
+	async lyricsovhSearch(params: JamParameters.LyricsOVHSearchParameters): Promise<Jam.MetaDataTrackLyricsResult> {
+		return this.base.requestData<Jam.MetaDataTrackLyricsResult>('/metadata/lyricsovh/search', params);
 	}
 
 	/**
 	 * Get Lrclib.net data // Rights needed: stream
 	 */
-	async lcrlibSearch(params: JamParameters.LrclibSearchArgs): Promise<Jam.MetaDataResult> {
+	async lcrlibSearch(params: JamParameters.LrclibSearchParameters): Promise<Jam.MetaDataResult> {
 		return this.base.requestData<Jam.MetaDataResult>('/metadata/lrclib/get', params);
 	}
 
 	/**
 	 * Lookup AcoustId data // Rights needed: stream
 	 */
-	async acoustidLookup(params: JamParameters.AcoustidLookupArgs): Promise<Jam.MetaDataResult> {
+	async acoustidLookup(params: JamParameters.AcoustidLookupParameters): Promise<Jam.MetaDataResult> {
 		return this.base.requestData<Jam.MetaDataResult>('/metadata/acoustid/lookup', params);
 	}
 
 	/**
 	 * Lookup MusicBrainz data // Rights needed: stream
 	 */
-	async musicbrainzLookup(params: JamParameters.MusicBrainzLookupArgs): Promise<Jam.MetaDataResult> {
+	async musicbrainzLookup(params: JamParameters.MusicBrainzLookupParameters): Promise<Jam.MetaDataResult> {
 		return this.base.requestData<Jam.MetaDataResult>('/metadata/musicbrainz/lookup', params);
 	}
 
 	/**
 	 * Search MusicBrainz data // Rights needed: stream
 	 */
-	async musicbrainzSearch(params: JamParameters.MusicBrainzSearchArgs): Promise<Jam.MetaDataResult> {
+	async musicbrainzSearch(params: JamParameters.MusicBrainzSearchParameters): Promise<Jam.MetaDataResult> {
 		return this.base.requestData<Jam.MetaDataResult>('/metadata/musicbrainz/search', params);
 	}
 
 	/**
 	 * Lookup AcousticBrainz data // Rights needed: stream
 	 */
-	async acousticbrainzLookup(params: JamParameters.AcousticBrainzLookupArgs): Promise<Jam.MetaDataResult> {
+	async acousticbrainzLookup(params: JamParameters.AcousticBrainzLookupParameters): Promise<Jam.MetaDataResult> {
 		return this.base.requestData<Jam.MetaDataResult>('/metadata/acousticbrainz/lookup', params);
 	}
 
 	/**
 	 * Lookup CoverArtArchive data // Rights needed: stream
 	 */
-	async coverartarchiveLookup(params: JamParameters.CoverArtArchiveLookupArgs): Promise<Jam.MetaDataResult> {
+	async coverartarchiveLookup(params: JamParameters.CoverArtArchiveLookupParameters): Promise<Jam.MetaDataResult> {
 		return this.base.requestData<Jam.MetaDataResult>('/metadata/coverartarchive/lookup', params);
 	}
 
 	/**
 	 * Get CoverArtArchive image // Rights needed: stream
 	 */
-	coverartarchiveImageUrl(params: JamParameters.CoverArtArchiveImageArgs, forDom: boolean): string {
+	coverartarchiveImageUrl(params: JamParameters.CoverArtArchiveImageParameters, forDom: boolean): string {
 		return this.base.buildRequestUrl('/metadata/coverartarchive/image', params, forDom);
 	}
 
 	/**
 	 * Get CoverArtArchive image // Rights needed: stream
 	 */
-	async coverartarchiveImageBinary(params: JamParameters.CoverArtArchiveImageArgs): Promise<{ buffer: ArrayBuffer; contentType: string }> {
+	async coverartarchiveImageBinary(params: JamParameters.CoverArtArchiveImageParameters): Promise<{ buffer: ArrayBuffer; contentType: string }> {
 		return this.base.binary('/metadata/coverartarchive/image', params);
 	}
 
 	/**
 	 * Search Wikipedia Summary data // Rights needed: stream
 	 */
-	async wikipediaSummarySearch(params: JamParameters.WikipediaSummaryArgs): Promise<Jam.MetaDataResult> {
+	async wikipediaSummarySearch(params: JamParameters.WikipediaSummaryParameters): Promise<Jam.MetaDataResult> {
 		return this.base.requestData<Jam.MetaDataResult>('/metadata/wikipedia/summary', params);
 	}
 
 	/**
 	 * Search WikiData summary data // Rights needed: stream
 	 */
-	async wikidataSummarySearch(params: JamParameters.WikidataSummaryArgs): Promise<Jam.MetaDataResult> {
+	async wikidataSummarySearch(params: JamParameters.WikidataSummaryParameters): Promise<Jam.MetaDataResult> {
 		return this.base.requestData<Jam.MetaDataResult>('/metadata/wikidata/summary', params);
 	}
 
 	/**
 	 * Lookup WikiData summary data // Rights needed: stream
 	 */
-	async wikidataLookup(params: JamParameters.WikidataLookupArgs): Promise<Jam.MetaDataResult> {
+	async wikidataLookup(params: JamParameters.WikidataLookupParameters): Promise<Jam.MetaDataResult> {
 		return this.base.requestData<Jam.MetaDataResult>('/metadata/wikidata/lookup', params);
 	}
 }

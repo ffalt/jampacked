@@ -12,7 +12,7 @@ export class JamNowPlayingService {
 	/**
 	 * Get a List of media [Track, Episode] played currently by Users // Rights needed: stream
 	 */
-	async list(params: JamParameters.NowPlayingListArgs): Promise<Array<Jam.NowPlaying>> {
+	async list(params: JamParameters.NowPlayingListParameters): Promise<Array<Jam.NowPlaying>> {
 		return this.base.requestData<Array<Jam.NowPlaying>>('/nowPlaying/list', params);
 	}
 

@@ -19,14 +19,14 @@ export class JamWaveformService {
 	/**
 	 * Get Peaks Waveform Data as SVG [Episode, Track] // Rights needed: stream
 	 */
-	async svg(params: JamParameters.WaveformSVGArgs): Promise<string> {
+	async svg(params: JamParameters.WaveformSVGParameters): Promise<string> {
 		return this.base.requestData<string>('/waveform/svg', params);
 	}
 
 	/**
 	 * Get Peaks Waveform Data [Episode, Track] // Rights needed: stream
 	 */
-	waveformUrl(params: JamParameters.WaveformWaveformArgs, forDom: boolean): string {
+	waveformUrl(params: JamParameters.WaveformWaveformParameters, forDom: boolean): string {
 		if (!params.id) {
 			return '';
 		}
@@ -36,7 +36,7 @@ export class JamWaveformService {
 	/**
 	 * Get Peaks Waveform Data [Episode, Track] // Rights needed: stream
 	 */
-	async waveformBinary(params: JamParameters.WaveformWaveformArgs): Promise<{ buffer: ArrayBuffer; contentType: string }> {
+	async waveformBinary(params: JamParameters.WaveformWaveformParameters): Promise<{ buffer: ArrayBuffer; contentType: string }> {
 		if (!params.id) {
 			throw new Error('Invalid Parameter');
 		}

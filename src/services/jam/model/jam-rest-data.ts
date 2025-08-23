@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 // @generated
 // This file was automatically generated and should not be edited.
 
@@ -972,9 +973,737 @@ export declare namespace Jam {
 		 * Tag Version
 		 * @TJS-type integer
 		 */
-		version?: number;
+		version: number;
 		/** Tag Frames */
-		frames?: any;
+		frames: MediaTagRawFrames;
+	}
+
+	export interface MediaTagRawAudioEncryption {
+		id: string;
+		/** @TJS-type integer */
+		previewStart: number;
+		/** @TJS-type integer */
+		previewLength: number;
+		bin: string;
+	}
+
+	export interface MediaTagRawBin {
+		bin: string;
+	}
+
+	export interface MediaTagRawBool {
+		/** @TJS-type boolean */
+		bool: boolean;
+	}
+
+	export interface MediaTagRawChapter {
+		id: string;
+		/** @TJS-type integer */
+		start: number;
+		/** @TJS-type integer */
+		end: number;
+		/** @TJS-type integer */
+		offset: number;
+		/** @TJS-type integer */
+		offsetEnd: number;
+	}
+
+	export interface MediaTagRawChapterToc {
+		id: string;
+		/** @TJS-type boolean */
+		ordered: boolean;
+		/** @TJS-type boolean */
+		topLevel: boolean;
+		children: Array<string>;
+	}
+
+	export interface MediaTagRawEventTimingCodes {
+		/** @TJS-type integer */
+		format: number;
+		events: Array<MediaTagRawFrameEventTimingCodesEvent>;
+	}
+
+	export interface MediaTagRawEventTimingCodesEvent {
+		/** @TJS-type integer */
+		type: number;
+		/** @TJS-type integer */
+		timestamp: number;
+	}
+
+	/*
+	 * Media Raw Tag Frame
+	 */
+	export interface MediaTagRawFrame {
+		id: string;
+		value: unknown;
+		subframes?: Array<unknown>;
+	}
+
+	/*
+	 * Media Raw Tag AudioEncryption Frame
+	 */
+	export interface MediaTagRawFrameAudioEncryption extends MediaTagRawFrame {
+		value: MediaTagRawAudioEncryption;
+	}
+
+	/*
+	 * Media Raw Tag Bin Frame
+	 */
+	export interface MediaTagRawFrameBin extends MediaTagRawFrame {
+		value: MediaTagRawBin;
+	}
+
+	/*
+	 * Media Raw Tag Bool Frame
+	 */
+	export interface MediaTagRawFrameBool extends MediaTagRawFrame {
+		value: MediaTagRawBool;
+	}
+
+	/*
+	 * Media Raw Tag Chapter Frame
+	 */
+	export interface MediaTagRawFrameChapter extends MediaTagRawFrame {
+		value: MediaTagRawChapter;
+	}
+
+	/*
+	 * Media Raw Tag ChapterToc Frame
+	 */
+	export interface MediaTagRawFrameChapterToc extends MediaTagRawFrame {
+		value: MediaTagRawChapterToc;
+	}
+
+	/*
+	 * Media Raw Tag EventTimingCodes Frame
+	 */
+	export interface MediaTagRawFrameEventTimingCodes extends MediaTagRawFrame {
+		value: MediaTagRawEventTimingCodes;
+	}
+
+	/*
+	 * Media Raw Tag EventTimingCodesEvent Frame
+	 */
+	export interface MediaTagRawFrameEventTimingCodesEvent extends MediaTagRawFrame {
+		value: MediaTagRawEventTimingCodesEvent;
+	}
+
+	/*
+	 * Media Raw Tag GEOB Frame
+	 */
+	export interface MediaTagRawFrameGEOB extends MediaTagRawFrame {
+		value: MediaTagRawGEOB;
+	}
+
+	/*
+	 * Media Raw Tag IdBin Frame
+	 */
+	export interface MediaTagRawFrameIdBin extends MediaTagRawFrame {
+		value: MediaTagRawIdBin;
+	}
+
+	/*
+	 * Media Raw Tag IdText Frame
+	 */
+	export interface MediaTagRawFrameIdText extends MediaTagRawFrame {
+		value: MediaTagRawIdText;
+	}
+
+	/*
+	 * Media Raw Tag LangDescText Frame
+	 */
+	export interface MediaTagRawFrameLangDescText extends MediaTagRawFrame {
+		value: MediaTagRawLangDescText;
+	}
+
+	/*
+	 * Media Raw Tag Link Frame
+	 */
+	export interface MediaTagRawFrameLink extends MediaTagRawFrame {
+		value: MediaTagRawLink;
+	}
+
+	/*
+	 * Media Raw Tag Num Frame
+	 */
+	export interface MediaTagRawFrameNumber extends MediaTagRawFrame {
+		value: MediaTagRawNumber;
+	}
+
+	/*
+	 * Media Raw Tag Pic Frame
+	 */
+	export interface MediaTagRawFramePic extends MediaTagRawFrame {
+		value: MediaTagRawPic;
+	}
+
+	/*
+	 * Media Raw Tag Popularimeter Frame
+	 */
+	export interface MediaTagRawFramePopularimeter extends MediaTagRawFrame {
+		value: MediaTagRawPopularimeter;
+	}
+
+	/*
+	 * Media Raw Tag ReplayGainAdjustment Frame
+	 */
+	export interface MediaTagRawFrameReplayGainAdjustment extends MediaTagRawFrame {
+		value: MediaTagRawReplayGainAdjustment;
+	}
+
+	/*
+	 * Media Raw Tag RVA Frame
+	 */
+	export interface MediaTagRawFrameRVA extends MediaTagRawFrame {
+		value: MediaTagRawRVA;
+	}
+
+	/*
+	 * Media Raw Tag RVA2 Frame
+	 */
+	export interface MediaTagRawFrameRVA2 extends MediaTagRawFrame {
+		value: MediaTagRawRVA2;
+	}
+
+	/*
+	 * Media Raw Tag RVA2Channel Frame
+	 */
+	export interface MediaTagRawFrameRVA2Channel extends MediaTagRawFrame {
+		value: MediaTagRawRVA2Channel;
+	}
+
+	/*
+	 * Media Raw Tag Frames
+	 */
+	export interface MediaTagRawFrames {
+		/** Frames */
+		AENC?: Array<MediaTagRawFrameAudioEncryption>;
+		/** Frames */
+		APIC?: Array<MediaTagRawFramePic>;
+		/** Frames */
+		ASPI?: Array<MediaTagRawFrameBin>;
+		/** Frames */
+		BUF?: Array<MediaTagRawFrameBin>;
+		/** Frames */
+		CDM?: Array<MediaTagRawFrameBin>;
+		/** Frames */
+		CHAP?: Array<MediaTagRawFrameChapter>;
+		/** Frames */
+		CM1?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		CNT?: Array<MediaTagRawFrameNumber>;
+		/** Frames */
+		COM?: Array<MediaTagRawFrameLangDescText>;
+		/** Frames */
+		COMM?: Array<MediaTagRawFrameLangDescText>;
+		/** Frames */
+		COMR?: Array<MediaTagRawFrameBin>;
+		/** Frames */
+		CRA?: Array<MediaTagRawFrameAudioEncryption>;
+		/** Frames */
+		CRM?: Array<MediaTagRawFrameBin>;
+		/** Frames */
+		CTOC?: Array<MediaTagRawFrameChapterToc>;
+		/** Frames */
+		ENCR?: Array<MediaTagRawFrameBin>;
+		/** Frames */
+		EQU?: Array<MediaTagRawFrameBin>;
+		/** Frames */
+		EQUA?: Array<MediaTagRawFrameBin>;
+		/** Frames */
+		ETC?: Array<MediaTagRawFrameEventTimingCodes>;
+		/** Frames */
+		ETCO?: Array<MediaTagRawFrameEventTimingCodes>;
+		/** Frames */
+		GEO?: Array<MediaTagRawFrameGEOB>;
+		/** Frames */
+		GEOB?: Array<MediaTagRawFrameGEOB>;
+		/** Frames */
+		GRID?: Array<MediaTagRawFrameBin>;
+		/** Frames */
+		GRP1?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		IPL?: Array<MediaTagRawFrameTextList>;
+		/** Frames */
+		IPLS?: Array<MediaTagRawFrameTextList>;
+		/** Frames */
+		LINK?: Array<MediaTagRawFrameLink>;
+		/** Frames */
+		LNK?: Array<MediaTagRawFrameLink>;
+		/** Frames */
+		MCDI?: Array<MediaTagRawFrameBin>;
+		/** Frames */
+		MLL?: Array<MediaTagRawFrameBin>;
+		/** Frames */
+		MLLT?: Array<MediaTagRawFrameBin>;
+		/** Frames */
+		MVNM?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		MVIN?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		NCO?: Array<MediaTagRawFrameBin>;
+		/** Frames */
+		NCON?: Array<MediaTagRawFrameBin>;
+		/** Frames */
+		OWNE?: Array<MediaTagRawFrameBin>;
+		/** Frames */
+		PCNT?: Array<MediaTagRawFrameNumber>;
+		/** Frames */
+		PCS?: Array<MediaTagRawFrameNumber>;
+		/** Frames */
+		PCST?: Array<MediaTagRawFrameNumber>;
+		/** Frames */
+		PIC?: Array<MediaTagRawFramePic>;
+		/** Frames */
+		POP?: Array<MediaTagRawFramePopularimeter>;
+		/** Frames */
+		POPM?: Array<MediaTagRawFramePopularimeter>;
+		/** Frames */
+		POSS?: Array<MediaTagRawFrameBin>;
+		/** Frames */
+		PRI?: Array<MediaTagRawFrameIdBin>;
+		/** Frames */
+		PRIV?: Array<MediaTagRawFrameIdBin>;
+		/** Frames */
+		RBUF?: Array<MediaTagRawFrameBin>;
+		/** Frames */
+		REV?: Array<MediaTagRawFrameBin>;
+		/** Frames */
+		RGAD?: Array<MediaTagRawFrameReplayGainAdjustment>;
+		/** Frames */
+		RVA?: Array<MediaTagRawFrameRVA>;
+		/** Frames */
+		RVA2?: Array<MediaTagRawFrameRVA2>;
+		/** Frames */
+		RVAD?: Array<MediaTagRawFrameRVA>;
+		/** Frames */
+		RVRB?: Array<MediaTagRawFrameBin>;
+		/** Frames */
+		SEEK?: Array<MediaTagRawFrameBin>;
+		/** Frames */
+		SIGN?: Array<MediaTagRawFrameBin>;
+		/** Frames */
+		SLT?: Array<MediaTagRawFrameSynchronisedLyricsEvent>;
+		/** Frames */
+		STC?: Array<MediaTagRawFrameBin>;
+		/** Frames */
+		SYLT?: Array<MediaTagRawFrameSynchronisedLyrics>;
+		/** Frames */
+		SYTC?: Array<MediaTagRawFrameBin>;
+		/** Frames */
+		TAL?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TALB?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TBP?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TBPM?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TCM?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TCMP?: Array<MediaTagRawFrameBool>;
+		/** Frames */
+		TCO?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TCOM?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TCON?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TCOP?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TCP?: Array<MediaTagRawFrameBool>;
+		/** Frames */
+		TCR?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TDA?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TDAT?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TDES?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TDLY?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TDOR?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TDR?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TDEN?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TDRC?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TDRL?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TDS?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TDTG?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TDY?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TEN?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TENC?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TEXT?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TFLT?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TGID?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TID?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TIM?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TIME?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TIPL?: Array<MediaTagRawFrameTextList>;
+		/** Frames */
+		TIT1?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TIT2?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TIT3?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TKE?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TKEY?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TKWD?: Array<MediaTagRawFrameBin>;
+		/** Frames */
+		TLA?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TLAN?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TLE?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TLEN?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TMCL?: Array<MediaTagRawFrameTextList>;
+		/** Frames */
+		TMED?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TMOO?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TMT?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TOA?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TOAL?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TOF?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TOFN?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TOL?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TOLY?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TOPE?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TOR?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TORY?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TOT?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TOWN?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TP1?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TP2?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TP3?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TP4?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TPA?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TPB?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TPE1?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TPE2?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TPE3?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TPE4?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TPOS?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TPRO?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TPUB?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TRC?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TRCK?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TRD?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TRDA?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TRK?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TRSN?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TRSO?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TS2?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TSA?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TSC?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TSI?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TSIZ?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TSO2?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TSOA?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TSOC?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TSOP?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TSOT?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TSST?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TSP?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TSRC?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TSS?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TSSE?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TST?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TT1?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TT2?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TT3?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TXT?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TXX?: Array<MediaTagRawFrameIdText>;
+		/** Frames */
+		TXXX?: Array<MediaTagRawFrameIdText>;
+		/** Frames */
+		TYE?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		TYER?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		UFI?: Array<MediaTagRawFrameIdText>;
+		/** Frames */
+		UFID?: Array<MediaTagRawFrameIdText>;
+		/** Frames */
+		ULT?: Array<MediaTagRawFrameLangDescText>;
+		/** Frames */
+		USER?: Array<MediaTagRawFrameBin>;
+		/** Frames */
+		USLT?: Array<MediaTagRawFrameLangDescText>;
+		/** Frames */
+		WAF?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		WAR?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		WAS?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		WCM?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		WCOM?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		WCOP?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		WCP?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		WFD?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		WFED?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		WOAF?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		WOAR?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		WOAS?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		WORS?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		WPAY?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		WPB?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		WPUB?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		WXX?: Array<MediaTagRawFrameIdText>;
+		/** Frames */
+		WXXX?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		XDOR?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		XHD3?: Array<MediaTagRawFrameBin>;
+		/** Frames */
+		XSOA?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		XSOP?: Array<MediaTagRawFrameText>;
+		/** Frames */
+		XSOT?: Array<MediaTagRawFrameText>;
+	}
+
+	/*
+	 * Media Raw Tag SynchronisedLyrics Frame
+	 */
+	export interface MediaTagRawFrameSynchronisedLyrics extends MediaTagRawFrame {
+		value: MediaTagRawSynchronisedLyrics;
+	}
+
+	/*
+	 * Media Raw Tag SynchronisedLyricsEvent Frame
+	 */
+	export interface MediaTagRawFrameSynchronisedLyricsEvent extends MediaTagRawFrame {
+		value: MediaTagRawSynchronisedLyricsEvent;
+	}
+
+	/*
+	 * Media Raw Tag Text Frame
+	 */
+	export interface MediaTagRawFrameText extends MediaTagRawFrame {
+		/** Text content */
+		value: MediaTagRawText;
+	}
+
+	/*
+	 * Media Raw Tag TextList Frame
+	 */
+	export interface MediaTagRawFrameTextList extends MediaTagRawFrame {
+		value: MediaTagRawTextList;
+	}
+
+	export interface MediaTagRawGEOB {
+		filename: string;
+		mimeType: string;
+		contentDescription: string;
+		bin: string;
+	}
+
+	export interface MediaTagRawIdBin {
+		id: string;
+		bin: string;
+	}
+
+	export interface MediaTagRawIdText {
+		id: string;
+		text: string;
+	}
+
+	export interface MediaTagRawLangDescText {
+		id: string;
+		language: string;
+		text: string;
+	}
+
+	export interface MediaTagRawLink {
+		url: string;
+		id: string;
+		additional: Array<string>;
+	}
+
+	export interface MediaTagRawNumber {
+		/** @TJS-type integer */
+		num: number;
+	}
+
+	export interface MediaTagRawPic {
+		description: string;
+		/** @TJS-type integer */
+		pictureType: number;
+		url?: string;
+		bin?: string;
+		mimeType?: string;
+	}
+
+	export interface MediaTagRawPopularimeter {
+		email: string;
+		/** @TJS-type integer */
+		rating: number;
+		/** @TJS-type integer */
+		count: number;
+	}
+
+	export interface MediaTagRawReplayGainAdjustment {
+		/** @TJS-type integer */
+		peak: number;
+		/** @TJS-type integer */
+		radioAdjustment: number;
+		/** @TJS-type integer */
+		audiophileAdjustment: number;
+	}
+
+	export interface MediaTagRawRVA {
+		/** @TJS-type integer */
+		right: number;
+		/** @TJS-type integer */
+		left: number;
+		/** @TJS-type integer */
+		peakRight?: number;
+		/** @TJS-type integer */
+		peakLeft?: number;
+		/** @TJS-type integer */
+		rightBack?: number;
+		/** @TJS-type integer */
+		leftBack?: number;
+		/** @TJS-type integer */
+		peakRightBack?: number;
+		/** @TJS-type integer */
+		peakLeftBack?: number;
+		/** @TJS-type integer */
+		center?: number;
+		/** @TJS-type integer */
+		peakCenter?: number;
+		/** @TJS-type integer */
+		bass?: number;
+		/** @TJS-type integer */
+		peakBass?: number;
+	}
+
+	export interface MediaTagRawRVA2 {
+		id: string;
+		channels: Array<MediaTagRawFrameRVA2Channel>;
+	}
+
+	export interface MediaTagRawRVA2Channel {
+		/** @TJS-type integer */
+		type: number;
+		/** @TJS-type integer */
+		adjustment: number;
+		/** @TJS-type integer */
+		peak?: number;
+	}
+
+	export interface MediaTagRawSynchronisedLyrics {
+		id: string;
+		language: string;
+		/** @TJS-type integer */
+		timestampFormat: number;
+		/** @TJS-type integer */
+		contentType: number;
+		events: Array<MediaTagRawFrameSynchronisedLyricsEvent>;
+	}
+
+	export interface MediaTagRawSynchronisedLyricsEvent {
+		text: string;
+		/** @TJS-type integer */
+		timestamp: number;
+	}
+
+	export interface MediaTagRawText {
+		text: string;
+	}
+
+	export interface MediaTagRawTextList {
+		list: Array<string>;
 	}
 
 	/*
@@ -982,7 +1711,15 @@ export declare namespace Jam {
 	 */
 	export interface MetaDataResult {
 		/** MetaData */
-		data?: any;
+		data?: unknown;
+	}
+
+	/*
+	 * Metadata TrackLyrics Result
+	 */
+	export interface MetaDataTrackLyricsResult {
+		/** MetaData */
+		data?: TrackLyrics;
 	}
 
 	/*
@@ -1538,7 +2275,7 @@ export declare namespace Jam {
 		/** Api Version */
 		version: string;
 		/** Allowed Cookie Domains for CORS */
-		allowedCookieDomains: Array<string>;
+		allowedCookieDomains?: Array<string>;
 		/** JSON Web Token */
 		jwt?: string;
 		/** User of this session */

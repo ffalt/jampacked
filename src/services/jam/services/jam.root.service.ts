@@ -12,14 +12,14 @@ export class JamRootService {
 	/**
 	 * Get a Root by Id // Rights needed: stream
 	 */
-	async id(params: JamParameters.RootIdArgs): Promise<Jam.Root> {
+	async id(params: JamParameters.RootIdParameters): Promise<Jam.Root> {
 		return this.base.requestData<Jam.Root>('/root/id', params);
 	}
 
 	/**
 	 * Search Roots // Rights needed: stream
 	 */
-	async search(params: JamParameters.RootSearchArgs): Promise<Jam.RootPage> {
+	async search(params: JamParameters.RootSearchParameters): Promise<Jam.RootPage> {
 		return this.base.requestData<Jam.RootPage>('/root/search', params);
 	}
 
@@ -33,14 +33,14 @@ export class JamRootService {
 	/**
 	 * Create a root // Rights needed: stream
 	 */
-	async create(params: JamParameters.RootMutateArgs): Promise<Jam.AdminChangeQueueInfo> {
+	async create(params: JamParameters.RootMutateParameters): Promise<Jam.AdminChangeQueueInfo> {
 		return this.base.requestPostData<Jam.AdminChangeQueueInfo>('/root/create', params);
 	}
 
 	/**
 	 * Update a root // Rights needed: stream
 	 */
-	async update(params: JamParameters.RootUpdateArgs): Promise<Jam.AdminChangeQueueInfo> {
+	async update(params: JamParameters.RootUpdateParameters): Promise<Jam.AdminChangeQueueInfo> {
 		return this.base.requestPostData<Jam.AdminChangeQueueInfo>('/root/update', params);
 	}
 
@@ -54,14 +54,14 @@ export class JamRootService {
 	/**
 	 * Check & update a root folder for file system changes // Rights needed: stream
 	 */
-	async refresh(params: JamParameters.RootRefreshArgs): Promise<Jam.AdminChangeQueueInfo> {
+	async refresh(params: JamParameters.RootRefreshParameters): Promise<Jam.AdminChangeQueueInfo> {
 		return this.base.requestPostData<Jam.AdminChangeQueueInfo>('/root/refresh', params);
 	}
 
 	/**
 	 * Rebuild all metadata (Artists/Albums/...) for a root folder // Rights needed: stream
 	 */
-	async refreshMeta(params: JamParameters.RootRefreshArgs): Promise<Jam.AdminChangeQueueInfo> {
+	async refreshMeta(params: JamParameters.RootRefreshParameters): Promise<Jam.AdminChangeQueueInfo> {
 		return this.base.requestPostData<Jam.AdminChangeQueueInfo>('/root/refreshMeta', params);
 	}
 }

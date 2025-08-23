@@ -12,14 +12,14 @@ export class JamEpisodeService {
 	/**
 	 * Get a Episode by Id // Rights needed: stream
 	 */
-	async id(params: JamParameters.EpisodeIdArgs): Promise<Jam.Episode> {
+	async id(params: JamParameters.EpisodeIdParameters): Promise<Jam.Episode> {
 		return this.base.requestData<Jam.Episode>('/episode/id', params);
 	}
 
 	/**
 	 * Search Episodes // Rights needed: stream
 	 */
-	async search(params: JamParameters.EpisodeSearchArgs): Promise<Jam.EpisodePage> {
+	async search(params: JamParameters.EpisodeSearchParameters): Promise<Jam.EpisodePage> {
 		return this.base.requestData<Jam.EpisodePage>('/episode/search', params);
 	}
 

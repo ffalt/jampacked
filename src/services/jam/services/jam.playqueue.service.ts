@@ -12,14 +12,14 @@ export class JamPlayQueueService {
 	/**
 	 * Get a PlayQueue for the calling user // Rights needed: stream
 	 */
-	async get(params: JamParameters.PlayQueueGetArgs): Promise<Jam.PlayQueue> {
+	async get(params: JamParameters.PlayQueueGetParameters): Promise<Jam.PlayQueue> {
 		return this.base.requestData<Jam.PlayQueue>('/playqueue/get', params);
 	}
 
 	/**
 	 * Create/update the PlayQueue for the calling user // Rights needed: stream
 	 */
-	async set(params: JamParameters.PlayQueueSetArgs): Promise<void> {
+	async set(params: JamParameters.PlayQueueSetParameters): Promise<void> {
 		return this.base.requestPostDataOK('/playqueue/set', params);
 	}
 

@@ -12,28 +12,28 @@ export class JamPodcastService {
 	/**
 	 * Get a Podcast by Id // Rights needed: stream
 	 */
-	async id(params: JamParameters.PodcastIdArgs): Promise<Jam.Podcast> {
+	async id(params: JamParameters.PodcastIdParameters): Promise<Jam.Podcast> {
 		return this.base.requestData<Jam.Podcast>('/podcast/id', params);
 	}
 
 	/**
 	 * Get the Navigation Index for Podcasts // Rights needed: stream
 	 */
-	async index(params: JamParameters.PodcastFilterArgs): Promise<Jam.PodcastIndex> {
+	async index(params: JamParameters.PodcastFilterParameters): Promise<Jam.PodcastIndex> {
 		return this.base.requestData<Jam.PodcastIndex>('/podcast/index', params);
 	}
 
 	/**
 	 * Search Podcasts // Rights needed: stream
 	 */
-	async search(params: JamParameters.PodcastSearchArgs): Promise<Jam.PodcastPage> {
+	async search(params: JamParameters.PodcastSearchParameters): Promise<Jam.PodcastPage> {
 		return this.base.requestData<Jam.PodcastPage>('/podcast/search', params);
 	}
 
 	/**
 	 * Get Episodes of Podcasts // Rights needed: stream
 	 */
-	async episodes(params: JamParameters.PodcastEpisodesArgs): Promise<Jam.EpisodePage> {
+	async episodes(params: JamParameters.PodcastEpisodesParameters): Promise<Jam.EpisodePage> {
 		return this.base.requestData<Jam.EpisodePage>('/podcast/episodes', params);
 	}
 
@@ -47,42 +47,42 @@ export class JamPodcastService {
 	/**
 	 * Discover Podcasts via gpodder.net // Rights needed: stream
 	 */
-	async discover(params: JamParameters.PodcastDiscoverArgs): Promise<Array<Jam.PodcastDiscover>> {
+	async discover(params: JamParameters.PodcastDiscoverParameters): Promise<Array<Jam.PodcastDiscover>> {
 		return this.base.requestData<Array<Jam.PodcastDiscover>>('/podcast/discover', params);
 	}
 
 	/**
 	 * Discover Podcast Tags via gpodder.net // Rights needed: stream
 	 */
-	async podcastsDiscoverTags(params: JamParameters.PageArgs): Promise<Jam.PodcastDiscoverTagPage> {
+	async podcastsDiscoverTags(params: JamParameters.PageParameters): Promise<Jam.PodcastDiscoverTagPage> {
 		return this.base.requestData<Jam.PodcastDiscoverTagPage>('/podcast/discover/tags', params);
 	}
 
 	/**
 	 * Discover Podcasts by Tag via gpodder.net // Rights needed: stream
 	 */
-	async podcastsDiscoverByTag(params: JamParameters.PodcastPodcastsDiscoverByTagArgs): Promise<Jam.PodcastDiscoverTagPage> {
+	async podcastsDiscoverByTag(params: JamParameters.PodcastPodcastsDiscoverByTagParameters): Promise<Jam.PodcastDiscoverTagPage> {
 		return this.base.requestData<Jam.PodcastDiscoverTagPage>('/podcast/discover/byTag', params);
 	}
 
 	/**
 	 * Discover Top Podcasts via gpodder.net // Rights needed: stream
 	 */
-	async podcastsDiscoverTop(params: JamParameters.PageArgs): Promise<Jam.PodcastDiscoverTagPage> {
+	async podcastsDiscoverTop(params: JamParameters.PageParameters): Promise<Jam.PodcastDiscoverTagPage> {
 		return this.base.requestData<Jam.PodcastDiscoverTagPage>('/podcast/discover/top', params);
 	}
 
 	/**
 	 * Create a Podcast // Rights needed: stream
 	 */
-	async create(params: JamParameters.PodcastCreateArgs): Promise<Jam.Podcast> {
+	async create(params: JamParameters.PodcastCreateParameters): Promise<Jam.Podcast> {
 		return this.base.requestPostData<Jam.Podcast>('/podcast/create', params);
 	}
 
 	/**
 	 * Check Podcast Feeds for new Episodes // Rights needed: stream
 	 */
-	async refresh(params: JamParameters.PodcastRefreshArgs): Promise<void> {
+	async refresh(params: JamParameters.PodcastRefreshParameters): Promise<void> {
 		return this.base.requestPostDataOK('/podcast/refresh', params);
 	}
 

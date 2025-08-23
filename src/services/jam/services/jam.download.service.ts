@@ -11,7 +11,7 @@ export class JamDownloadService {
 	/**
 	 * Download Archive Binary [Album, Artist, Artwork, Episode, Folder, Playlist, Podcast, Series, Track] // Rights needed: stream
 	 */
-	downloadUrl(params: JamParameters.DownloadDownloadArgs, forDom: boolean): string {
+	downloadUrl(params: JamParameters.DownloadDownloadParameters, forDom: boolean): string {
 		if (!params.id) {
 			return '';
 		}
@@ -21,7 +21,7 @@ export class JamDownloadService {
 	/**
 	 * Download Archive Binary [Album, Artist, Artwork, Episode, Folder, Playlist, Podcast, Series, Track] // Rights needed: stream
 	 */
-	async downloadBinary(params: JamParameters.DownloadDownloadArgs): Promise<{ buffer: ArrayBuffer; contentType: string }> {
+	async downloadBinary(params: JamParameters.DownloadDownloadParameters): Promise<{ buffer: ArrayBuffer; contentType: string }> {
 		if (!params.id) {
 			throw new Error('Invalid Parameter');
 		}

@@ -313,7 +313,7 @@ export default ts.config(
 			...commonTypeScriptRules,
 			...commonUnicornRules,
 
-			"max-lines": "off",
+			"max-lines": ["error", 2000],
 			"unicorn/explicit-length-check": "off",
 			"unicorn/prevent-abbreviations": "off",
 			"@stylistic/max-statements-per-line": "off",

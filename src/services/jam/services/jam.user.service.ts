@@ -12,28 +12,28 @@ export class JamUserService {
 	/**
 	 * Get an User by Id // Rights needed: admin
 	 */
-	async id(params: JamParameters.UserIdArgs): Promise<Jam.User> {
+	async id(params: JamParameters.UserIdParameters): Promise<Jam.User> {
 		return this.base.requestData<Jam.User>('/user/id', params);
 	}
 
 	/**
 	 * Search Users // Rights needed: admin
 	 */
-	async search(params: JamParameters.UserSearchArgs): Promise<Jam.UserPage> {
+	async search(params: JamParameters.UserSearchParameters): Promise<Jam.UserPage> {
 		return this.base.requestData<Jam.UserPage>('/user/search', params);
 	}
 
 	/**
 	 * Create an User // Rights needed: admin
 	 */
-	async create(params: JamParameters.UserMutateArgs): Promise<Jam.User> {
+	async create(params: JamParameters.UserMutateParameters): Promise<Jam.User> {
 		return this.base.requestPostData<Jam.User>('/user/create', params);
 	}
 
 	/**
 	 * Update an User // Rights needed: admin
 	 */
-	async update(params: JamParameters.UserUpdateArgs): Promise<Jam.User> {
+	async update(params: JamParameters.UserUpdateParameters): Promise<Jam.User> {
 		return this.base.requestPostData<Jam.User>('/user/update', params);
 	}
 
@@ -47,35 +47,35 @@ export class JamUserService {
 	/**
 	 * Set an User Password // Rights needed: stream
 	 */
-	async changePassword(params: JamParameters.UserChangePasswordArgs): Promise<void> {
+	async changePassword(params: JamParameters.UserChangePasswordParameters): Promise<void> {
 		return this.base.requestPostDataOK('/user/password/update', params);
 	}
 
 	/**
 	 * Set an User Email Address // Rights needed: stream
 	 */
-	async changeEmail(params: JamParameters.UserChangeEmailArgs): Promise<void> {
+	async changeEmail(params: JamParameters.UserChangeEmailParameters): Promise<void> {
 		return this.base.requestPostDataOK('/user/email/update', params);
 	}
 
 	/**
 	 * Generate a random User Image // Rights needed: stream
 	 */
-	async generateUserImage(params: JamParameters.UserGenerateUserImageArgs): Promise<void> {
+	async generateUserImage(params: JamParameters.UserGenerateUserImageParameters): Promise<void> {
 		return this.base.requestPostDataOK('/user/image/random', params);
 	}
 
 	/**
 	 * Upload an User Image // Rights needed: stream
 	 */
-	async uploadUserImage(params: JamParameters.UserUploadUserImageArgs, file: any, onUploadProgress: (progressEvent: any) => void): Promise<void> {
+	async uploadUserImage(params: JamParameters.UserUploadUserImageParameters, file: any, onUploadProgress: (progressEvent: any) => void): Promise<void> {
 		return this.base.upload('/user/image/upload', params, 'image', file, onUploadProgress);
 	}
 
 	/**
 	 * Generate a subsonic client token // Rights needed: stream
 	 */
-	async generateSubsonicToken(params: JamParameters.UserGenerateSubsonicTokenArgs): Promise<Jam.SubsonicToken> {
+	async generateSubsonicToken(params: JamParameters.UserGenerateSubsonicTokenParameters): Promise<Jam.SubsonicToken> {
 		return this.base.requestPostData<Jam.SubsonicToken>('/user/subsonic/generate', params);
 	}
 }

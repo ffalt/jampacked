@@ -12,21 +12,21 @@ export class JamArtistService {
 	/**
 	 * Get an Artist by Id // Rights needed: stream
 	 */
-	async id(params: JamParameters.ArtistIdArgs): Promise<Jam.Artist> {
+	async id(params: JamParameters.ArtistIdParameters): Promise<Jam.Artist> {
 		return this.base.requestData<Jam.Artist>('/artist/id', params);
 	}
 
 	/**
 	 * Get the Navigation Index for Albums // Rights needed: stream
 	 */
-	async index(params: JamParameters.ArtistFilterArgs): Promise<Jam.ArtistIndex> {
+	async index(params: JamParameters.ArtistFilterParameters): Promise<Jam.ArtistIndex> {
 		return this.base.requestData<Jam.ArtistIndex>('/artist/index', params);
 	}
 
 	/**
 	 * Search Artists // Rights needed: stream
 	 */
-	async search(params: JamParameters.ArtistSearchArgs): Promise<Jam.ArtistPage> {
+	async search(params: JamParameters.ArtistSearchParameters): Promise<Jam.ArtistPage> {
 		return this.base.requestData<Jam.ArtistPage>('/artist/search', params);
 	}
 
@@ -40,35 +40,35 @@ export class JamArtistService {
 	/**
 	 * Get similar Artists of an Artist by Id (External Service) // Rights needed: stream
 	 */
-	async similar(params: JamParameters.ArtistSimilarArgs): Promise<Jam.ArtistPage> {
+	async similar(params: JamParameters.ArtistSimilarParameters): Promise<Jam.ArtistPage> {
 		return this.base.requestData<Jam.ArtistPage>('/artist/similar', params);
 	}
 
 	/**
 	 * Get similar Tracks of an Artist by Id (External Service) // Rights needed: stream
 	 */
-	async similarTracks(params: JamParameters.ArtistSimilarTracksArgs): Promise<Jam.TrackPage> {
+	async similarTracks(params: JamParameters.ArtistSimilarTracksParameters): Promise<Jam.TrackPage> {
 		return this.base.requestData<Jam.TrackPage>('/artist/similar/tracks', params);
 	}
 
 	/**
 	 * Get Tracks of Artists // Rights needed: stream
 	 */
-	async tracks(params: JamParameters.ArtistTracksArgs): Promise<Jam.TrackPage> {
+	async tracks(params: JamParameters.ArtistTracksParameters): Promise<Jam.TrackPage> {
 		return this.base.requestData<Jam.TrackPage>('/artist/tracks', params);
 	}
 
 	/**
 	 * Get Albums of Artists // Rights needed: stream
 	 */
-	async albums(params: JamParameters.ArtistAlbumsArgs): Promise<Jam.AlbumPage> {
+	async albums(params: JamParameters.ArtistAlbumsParameters): Promise<Jam.AlbumPage> {
 		return this.base.requestData<Jam.AlbumPage>('/artist/albums', params);
 	}
 
 	/**
 	 * Get Series of Artists // Rights needed: stream
 	 */
-	async series(params: JamParameters.ArtistSeriesArgs): Promise<Jam.SeriesPage> {
+	async series(params: JamParameters.ArtistSeriesParameters): Promise<Jam.SeriesPage> {
 		return this.base.requestData<Jam.SeriesPage>('/artist/series', params);
 	}
 }

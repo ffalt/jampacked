@@ -12,35 +12,35 @@ export class JamRadioService {
 	/**
 	 * Get a Radio by Id // Rights needed: stream
 	 */
-	async id(params: JamParameters.RadioIdArgs): Promise<Jam.Radio> {
+	async id(params: JamParameters.RadioIdParameters): Promise<Jam.Radio> {
 		return this.base.requestData<Jam.Radio>('/radio/id', params);
 	}
 
 	/**
 	 * Get the Navigation Index for Radios // Rights needed: stream
 	 */
-	async index(params: JamParameters.RadioFilterArgs): Promise<Jam.RadioIndex> {
+	async index(params: JamParameters.RadioFilterParameters): Promise<Jam.RadioIndex> {
 		return this.base.requestData<Jam.RadioIndex>('/radio/index', params);
 	}
 
 	/**
 	 * Search Radios // Rights needed: stream
 	 */
-	async search(params: JamParameters.RadioSearchArgs): Promise<Jam.RadioPage> {
+	async search(params: JamParameters.RadioSearchParameters): Promise<Jam.RadioPage> {
 		return this.base.requestData<Jam.RadioPage>('/radio/search', params);
 	}
 
 	/**
 	 * Create a Radio // Rights needed: stream
 	 */
-	async create(params: JamParameters.RadioMutateArgs): Promise<void> {
+	async create(params: JamParameters.RadioMutateParameters): Promise<void> {
 		return this.base.requestPostDataOK('/radio/create', params);
 	}
 
 	/**
 	 * Update a Radio // Rights needed: stream
 	 */
-	async update(params: JamParameters.RadioUpdateArgs): Promise<void> {
+	async update(params: JamParameters.RadioUpdateParameters): Promise<void> {
 		return this.base.requestPostDataOK('/radio/update', params);
 	}
 

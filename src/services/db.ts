@@ -1,12 +1,9 @@
-import SQLite, { ResultSet } from 'react-native-sqlite-storage';
-// import {SQLitePlugin, SQLResult} from 'react-native-sqlite-storage'
-
-SQLite.enablePromise(false);
+import { type NitroSQLiteConnection, open, type QueryResult, type QueryResultRow, type SQLiteQueryParams } from 'react-native-nitro-sqlite';
 
 let database: Database | undefined;
 
 export class Database {
-	db?: SQLite.SQLiteDatabase;
+	db?: NitroSQLiteConnection;
 
 	/**
 	 * Start the database and create an instance when necessary
@@ -24,18 +21,17 @@ export class Database {
 	 * Start database connection
 	 * Only used in getInstance() method
 	 */
-	async connect(name: string): Promise<SQLite.SQLiteDatabase> {
+	async connect(name: string): Promise<NitroSQLiteConnection> {
 		if (this.db) {
 			return this.db;
 		}
-		this.db = await new Promise<SQLite.SQLiteDatabase>((resolve, reject) => {
-			const db: SQLite.SQLiteDatabase = SQLite.openDatabase(
-				{
-					name, location: 'Library'
-				},
-				() => resolve(db),
-				error => reject(error)
-			);
+		this.db = await new Promise<NitroSQLiteConnection>((resolve, reject) => {
+			try {
+				const db = open({ name, location: 'Library' });
+				resolve(db);
+			} catch (error: unknown) {
+				reject(error);
+			}
 		});
 		return this.db;
 	}
@@ -44,7 +40,7 @@ export class Database {
 		if (!this.db) {
 			return;
 		}
-		await this.db.close();
+		this.db.close();
 		this.db = undefined;
 		database = undefined;
 	}
@@ -54,20 +50,13 @@ export class Database {
 	 * @param sql Query to be executed
 	 * @param parameters Params that substitutes '?' in the query
 	 */
-	async query(sql: string, parameters: Array<any> = []): Promise<SQLite.ResultSet> {
-		const para = this.treatParams(parameters);
-		return new Promise<SQLite.ResultSet>(resolve => {
-			this.executeQuery(sql, para, resolve);
-		});
+	async query(sql: string, parameters: Array<unknown>): Promise<QueryResult> {
+		const sqlParameters = this.treatParams(parameters);
+		return this.executeQuery(sql, sqlParameters);
 	}
 
-	private executeQuery(sql: string, para: Array<any>, resolve: (value: (PromiseLike<ResultSet> | ResultSet)) => void) {
-		this.db?.transaction(async tx => {
-			const results = await (new Promise((resolve2, reject) => {
-				tx.executeSql(sql, para, (_a, b) => resolve2(b), error => reject(error));
-			})) as any;
-			resolve(results);
-		}).catch(console.error);
+	private async executeQuery(sql: string, para: SQLiteQueryParams): Promise<QueryResult> {
+		return this.db!.executeAsync(sql, para);
 	}
 
 	/**
@@ -76,14 +65,15 @@ export class Database {
 	 * @param sql Query to be executed
 	 * @param parameters Params that substitutes '?' in the query
 	 */
-	async queryAndGetRows(sql: string, parameters: Array<any> = []): Promise<Array<any>> {
+	async queryAndGetRows(sql: string, parameters: Array<unknown> = []): Promise<Array<QueryResultRow | undefined>> {
 		const result = await this.query(sql, parameters);
-		const data = [];
-
+		if (!result?.rows) {
+			return [];
+		}
+		const data: Array<QueryResultRow | undefined> = [];
 		for (let index = 0; index < result.rows.length; index += 1) {
 			data.push(result.rows.item(index));
 		}
-
 		return data;
 	}
 
@@ -93,7 +83,7 @@ export class Database {
 	 * @param sql Query to be executed
 	 * @param parameters Params that substitutes '?' in the query
 	 */
-	async queryAndGetInsertId(sql: string, parameters: Array<any> = []): Promise<number> {
+	async queryAndGetInsertId(sql: string, parameters: Array<unknown> = []): Promise<number | undefined> {
 		const result = await this.query(sql, parameters);
 		return result.insertId;
 	}
@@ -104,7 +94,7 @@ export class Database {
 	 * @param keys Keys to be inserted
 	 * @param values Values to be inserted
 	 */
-	async insert(table: string, keys: Array<string>, values: Array<any>): Promise<number> {
+	async insert(table: string, keys: Array<string>, values: Array<string>): Promise<number | undefined> {
 		const gaps = keys.map(() => '?');
 		const sql = `INSERT INTO ${table} (${keys.join(', ')})
                  VALUES (${gaps.join(', ')})`;
@@ -118,7 +108,7 @@ export class Database {
 	 * @param values Values to be inserted
 	 * @param where Where statement to know which lines will be updated
 	 */
-	async update(table: string, keys: Array<string>, values: Array<any>, where?: Record<string, any>): Promise<SQLite.ResultSet> {
+	async update(table: string, keys: Array<string>, values: Array<any>, where?: Record<string, any>): Promise<QueryResult> {
 		const keysString = keys.map(k => `${k} = ?`).join(', ');
 		const { sql, params } = this.buildWhere(where);
 		const query = `UPDATE ${table}
@@ -131,7 +121,7 @@ export class Database {
 	 * @param table Table name
 	 * @param statement Where statement to know which lines will be deleted
 	 */
-	async delete<T>(table: string, statement?: WhereStatement<T>): Promise<any> {
+	async delete<T>(table: string, statement?: WhereStatement<T>): Promise<QueryResult> {
 		const { sql, params } = this.buildWhere(statement);
 		const query = `DELETE
                    FROM ${table} ${sql}`;
@@ -159,12 +149,20 @@ export class Database {
 	 * Treat all parameters to be used in queries
 	 * @param parameters Parameters
 	 */
-	private treatParams(parameters: Array<any>): Array<any> {
-		const newParameters: Array<any> = [];
+	private treatParams(parameters: Array<unknown> = []): SQLiteQueryParams {
+		const newParameters: SQLiteQueryParams = [];
 		for (const p of parameters) {
+			if (p === undefined || p === null) {
+				newParameters.push(null);
+				continue;
+			}
 			switch (typeof p) {
 				case 'string': {
 					newParameters.push(p.trim());
+					break;
+				}
+				case 'number': {
+					newParameters.push(p);
 					break;
 				}
 				case 'boolean': {
@@ -174,19 +172,17 @@ export class Database {
 				case 'object': {
 					if (p instanceof Date) {
 						newParameters.push(p.toISOString());
-					} else if (p === null) {
-						newParameters.push(p);
 					} else {
 						try {
 							newParameters.push(JSON.stringify(p));
 						} catch {
-							newParameters.push(p);
+							newParameters.push(String(p));
 						}
 					}
 					break;
 				}
 				default: {
-					newParameters.push(p);
+					newParameters.push(JSON.stringify(p));
 				}
 			}
 		}

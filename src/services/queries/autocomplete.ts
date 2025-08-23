@@ -6,7 +6,14 @@ import { AutocompleteResultDocument, AutocompleteResultQuery, AutocompleteResult
 
 type Autocomplete = Array<AutoCompleteDataSection>;
 
-function buildSection(key: string, objType: JamObjectType, page: { total: number; items: Array<{ id: string; name: string }> }): AutoCompleteDataSection {
+interface AutocompleteData {
+	total: number;
+	items: Array<{ id: string; name: string }>;
+}
+
+type AutocompleteResult = Record<keyof AutocompleteResultQuery, AutocompleteData>;
+
+function buildSection(key: string, objType: JamObjectType, page: AutocompleteData): AutoCompleteDataSection {
 	return {
 		key,
 		objType,
@@ -15,34 +22,27 @@ function buildSection(key: string, objType: JamObjectType, page: { total: number
 	};
 }
 
+const dataTypes: Array<{ key: keyof AutocompleteResultQuery; name: string; objType: JamObjectType }> = [
+	{ key: 'albums', name: 'Albums', objType: JamObjectType.album },
+	{ key: 'artists', name: 'Artists', objType: JamObjectType.artist },
+	{ key: 'serieses', name: 'Series', objType: JamObjectType.series },
+	{ key: 'podcasts', name: 'Podcasts', objType: JamObjectType.podcast },
+	{ key: 'episodes', name: 'Podcast Episodes', objType: JamObjectType.episode },
+	{ key: 'playlists', name: 'Playlists', objType: JamObjectType.playlist },
+	{ key: 'folders', name: 'Folders', objType: JamObjectType.folder },
+	{ key: 'tracks', name: 'Tracks', objType: JamObjectType.track }
+];
+
 function transformData(data?: AutocompleteResultQuery): Autocomplete {
 	if (!data) {
 		return [];
 	}
+	const generic = data as AutocompleteResult;
 	const sections: AutoCompleteData = [];
-	if (data.albums && data.albums.items.length > 0) {
-		sections.push(buildSection('Albums', JamObjectType.album, data.albums));
-	}
-	if (data.artists && data.artists.items.length > 0) {
-		sections.push(buildSection('Artists', JamObjectType.artist, data.artists));
-	}
-	if (data.serieses && data.serieses.items.length > 0) {
-		sections.push(buildSection('Series', JamObjectType.series, data.serieses));
-	}
-	if (data.podcasts && data.podcasts.items.length > 0) {
-		sections.push(buildSection('Podcasts', JamObjectType.podcast, data.podcasts));
-	}
-	if (data.episodes && data.episodes.items.length > 0) {
-		sections.push(buildSection('Podcast Episodes', JamObjectType.episode, data.episodes));
-	}
-	if (data.playlists && data.playlists.items.length > 0) {
-		sections.push(buildSection('Playlists', JamObjectType.playlist, data.playlists));
-	}
-	if (data.folders && data.folders.items.length > 0) {
-		sections.push(buildSection('Folders', JamObjectType.folder, data.folders));
-	}
-	if (data.tracks && data.tracks.items.length > 0) {
-		sections.push(buildSection('Tracks', JamObjectType.track, data.tracks));
+	for (const { key, name, objType } of dataTypes) {
+		if (generic[key] && generic[key].items.length > 0) {
+			sections.push(buildSection(name, objType, generic[key]));
+		}
 	}
 	return sections;
 }

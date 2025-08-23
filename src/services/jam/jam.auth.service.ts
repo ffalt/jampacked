@@ -41,14 +41,14 @@ export class JamAuthService {
 			} else {
 				this.user = undefined;
 			}
-		} catch (error) {
+		} catch (error: unknown) {
 			throw (error || new Error('Server error'));
 		}
 	}
 
 	async canUseSession(server: string): Promise<boolean> {
 		const data = await this.http.get<Jam.Session>(`${server}${JamAuthService.apiPrefix}/session`, { withCredentials: false });
-		return (data.allowedCookieDomains || []).includes(this.configuration.domain());
+		return (data.allowedCookieDomains ?? []).includes(this.configuration.domain());
 	}
 
 	async login(server: string, username: string, password: string, storePassword?: boolean): Promise<void> {
@@ -74,16 +74,27 @@ export class JamAuthService {
 			};
 			await this.configuration.toStorage({ auth: this.auth, user: this.user });
 			await this.configuration.userChangeNotify(this.user);
-		} catch (error: any) {
+		} catch (error: unknown) {
 			console.error(error);
 			await this.clear();
-			if (error.error?.error) {
-				throw new Error(error.error.error);
+			if (typeof error === 'string') {
+				return Promise.reject(new Error(error));
 			}
-			if (error.statusText) {
-				throw new Error(error.statusText);
+			if (
+				error !== null &&
+				typeof error === 'object' &&
+				('error' in error) &&
+				error.error !== null &&
+				typeof error.error === 'object' &&
+				('error' in error.error) &&
+				typeof error.error.error === 'string'
+			) {
+				return Promise.reject(new Error(error.error.error));
 			}
-			throw new Error('Server Error');
+			if (error instanceof Error && error.message) {
+				return Promise.reject(new Error(error.message));
+			}
+			return Promise.reject(new Error('Server Error'));
 		}
 	}
 

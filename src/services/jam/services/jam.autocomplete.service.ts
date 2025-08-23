@@ -12,7 +12,7 @@ export class JamAutocompleteService {
 	/**
 	 * Get compact Search Results for Autocomplete Features // Rights needed: stream
 	 */
-	async autocomplete(params: JamParameters.AutoCompleteFilterArgs): Promise<Jam.AutoComplete> {
+	async autocomplete(params: JamParameters.AutoCompleteFilterParameters): Promise<Jam.AutoComplete> {
 		return this.base.requestData<Jam.AutoComplete>('/autocomplete', params);
 	}
 }

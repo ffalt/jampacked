@@ -12,21 +12,21 @@ export class JamBookmarkService {
 	/**
 	 * Get a Bookmark by Id // Rights needed: stream
 	 */
-	async id(params: JamParameters.BookmarkIdArgs): Promise<Jam.Bookmark> {
+	async id(params: JamParameters.BookmarkIdParameters): Promise<Jam.Bookmark> {
 		return this.base.requestData<Jam.Bookmark>('/bookmark/id', params);
 	}
 
 	/**
 	 * Search Bookmarks // Rights needed: stream
 	 */
-	async search(params: JamParameters.BookmarkSearchArgs): Promise<Jam.BookmarkPage> {
+	async search(params: JamParameters.BookmarkSearchParameters): Promise<Jam.BookmarkPage> {
 		return this.base.requestData<Jam.BookmarkPage>('/bookmark/search', params);
 	}
 
 	/**
 	 * Create a Bookmark // Rights needed: stream
 	 */
-	async create(params: JamParameters.BookmarkCreateArgs): Promise<Jam.Bookmark> {
+	async create(params: JamParameters.BookmarkCreateParameters): Promise<Jam.Bookmark> {
 		return this.base.requestPostData<Jam.Bookmark>('/bookmark/create', params);
 	}
 

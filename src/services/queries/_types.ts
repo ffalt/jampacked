@@ -88,7 +88,7 @@ export interface AdminSettingsQL {
 	library: AdminSettingsLibraryQL;
 }
 
-export interface AlbumFilterArgsQL {
+export interface AlbumFilterParametersQL {
 	albumTypes?: InputMaybe<Array<AlbumType>>;
 	artist?: InputMaybe<Scalars['String']['input']>;
 	artistIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
@@ -119,11 +119,6 @@ export interface AlbumIndexQL {
 	groups: Array<AlbumIndexGroupQL>;
 }
 
-export interface AlbumOrderArgsQL {
-	orderBy?: InputMaybe<AlbumOrderFields>;
-	orderDesc?: InputMaybe<Scalars['Boolean']['input']>;
-}
-
 export enum AlbumOrderFields {
 	albumType = 'albumType',
 	artist = 'artist',
@@ -134,6 +129,11 @@ export enum AlbumOrderFields {
 	seriesNr = 'seriesNr',
 	updated = 'updated',
 	year = 'year'
+}
+
+export interface AlbumOrderParametersQL {
+	orderBy?: InputMaybe<AlbumOrderFields>;
+	orderDesc?: InputMaybe<Scalars['Boolean']['input']>;
 }
 
 export interface AlbumPageQL {
@@ -180,7 +180,7 @@ export enum AlbumType {
 	unknown = 'unknown'
 }
 
-export interface ArtistFilterArgsQL {
+export interface ArtistFilterParametersQL {
 	albumIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
 	albumTrackIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
 	albumTypes?: InputMaybe<Array<AlbumType>>;
@@ -208,17 +208,17 @@ export interface ArtistIndexQL {
 	groups: Array<ArtistIndexGroupQL>;
 }
 
-export interface ArtistOrderArgsQL {
-	orderBy?: InputMaybe<ArtistOrderFields>;
-	orderDesc?: InputMaybe<Scalars['Boolean']['input']>;
-}
-
 export enum ArtistOrderFields {
 	created = 'created',
 	default = 'default',
 	name = 'name',
 	nameSort = 'nameSort',
 	updated = 'updated'
+}
+
+export interface ArtistOrderParametersQL {
+	orderBy?: InputMaybe<ArtistOrderFields>;
+	orderDesc?: InputMaybe<Scalars['Boolean']['input']>;
 }
 
 export interface ArtistPageQL {
@@ -254,7 +254,7 @@ export interface ArtistQL {
 	updatedAt: Scalars['DateTimeISO']['output'];
 }
 
-export interface ArtworkFilterArgsQL {
+export interface ArtworkFilterParametersQL {
 	childOfID?: InputMaybe<Scalars['ID']['input']>;
 	folderIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
 	formats?: InputMaybe<Array<Scalars['String']['input']>>;
@@ -290,7 +290,7 @@ export enum ArtworkImageType {
 	watermark = 'watermark'
 }
 
-export interface ArtworkOrderArgsQL {
+export interface ArtworkOrderParametersQL {
 	orderBy?: InputMaybe<DefaultOrderFields>;
 	orderDesc?: InputMaybe<Scalars['Boolean']['input']>;
 }
@@ -331,7 +331,7 @@ export enum AudioFormatType {
 	webma = 'webma'
 }
 
-export interface BookmarkFilterArgsQL {
+export interface BookmarkFilterParametersQL {
 	comment?: InputMaybe<Scalars['String']['input']>;
 	episodeIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
 	ids?: InputMaybe<Array<Scalars['ID']['input']>>;
@@ -341,17 +341,17 @@ export interface BookmarkFilterArgsQL {
 	userIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
 }
 
-export interface BookmarkOrderArgsQL {
-	orderBy?: InputMaybe<BookmarkOrderFields>;
-	orderDesc?: InputMaybe<Scalars['Boolean']['input']>;
-}
-
 export enum BookmarkOrderFields {
 	created = 'created',
 	default = 'default',
 	media = 'media',
 	position = 'position',
 	updated = 'updated'
+}
+
+export interface BookmarkOrderParametersQL {
+	orderBy?: InputMaybe<BookmarkOrderFields>;
+	orderDesc?: InputMaybe<Scalars['Boolean']['input']>;
 }
 
 export interface BookmarkPageQL {
@@ -396,7 +396,7 @@ export interface EpisodeEnclosureQL {
 	url: Scalars['String']['output'];
 }
 
-export interface EpisodeFilterArgsQL {
+export interface EpisodeFilterParametersQL {
 	authors?: InputMaybe<Array<Scalars['String']['input']>>;
 	guids?: InputMaybe<Array<Scalars['String']['input']>>;
 	ids?: InputMaybe<Array<Scalars['ID']['input']>>;
@@ -407,11 +407,6 @@ export interface EpisodeFilterArgsQL {
 	statuses?: InputMaybe<Array<PodcastStatus>>;
 }
 
-export interface EpisodeOrderArgsQL {
-	orderBy?: InputMaybe<EpisodeOrderFields>;
-	orderDesc?: InputMaybe<Scalars['Boolean']['input']>;
-}
-
 export enum EpisodeOrderFields {
 	created = 'created',
 	date = 'date',
@@ -419,6 +414,11 @@ export enum EpisodeOrderFields {
 	name = 'name',
 	status = 'status',
 	updated = 'updated'
+}
+
+export interface EpisodeOrderParametersQL {
+	orderBy?: InputMaybe<EpisodeOrderFields>;
+	orderDesc?: InputMaybe<Scalars['Boolean']['input']>;
 }
 
 export interface EpisodePageQL {
@@ -467,7 +467,7 @@ export interface ExtendedInfoResultQL {
 	info?: Maybe<ExtendedInfoQL>;
 }
 
-export interface FolderFilterArgsQL {
+export interface FolderFilterParametersQL {
 	album?: InputMaybe<Scalars['String']['input']>;
 	albumIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
 	albumTypes?: InputMaybe<Array<AlbumType>>;
@@ -506,11 +506,6 @@ export interface FolderIndexQL {
 	groups: Array<FolderIndexGroupQL>;
 }
 
-export interface FolderOrderArgsQL {
-	orderBy?: InputMaybe<FolderOrderFields>;
-	orderDesc?: InputMaybe<Scalars['Boolean']['input']>;
-}
-
 export enum FolderOrderFields {
 	album = 'album',
 	artist = 'artist',
@@ -521,6 +516,11 @@ export enum FolderOrderFields {
 	title = 'title',
 	updated = 'updated',
 	year = 'year'
+}
+
+export interface FolderOrderParametersQL {
+	orderBy?: InputMaybe<FolderOrderFields>;
+	orderDesc?: InputMaybe<Scalars['Boolean']['input']>;
 }
 
 export interface FolderPageQL {
@@ -580,7 +580,7 @@ export enum FolderType {
 	unknown = 'unknown'
 }
 
-export interface GenreFilterArgsQL {
+export interface GenreFilterParametersQL {
 	ids?: InputMaybe<Array<Scalars['ID']['input']>>;
 	name?: InputMaybe<Scalars['String']['input']>;
 	query?: InputMaybe<Scalars['String']['input']>;
@@ -597,16 +597,16 @@ export interface GenreIndexQL {
 	groups: Array<GenreIndexGroupQL>;
 }
 
-export interface GenreOrderArgsQL {
-	orderBy?: InputMaybe<GenreOrderFields>;
-	orderDesc?: InputMaybe<Scalars['Boolean']['input']>;
-}
-
 export enum GenreOrderFields {
 	created = 'created',
 	default = 'default',
 	name = 'name',
 	updated = 'updated'
+}
+
+export interface GenreOrderParametersQL {
+	orderBy?: InputMaybe<GenreOrderFields>;
+	orderDesc?: InputMaybe<Scalars['Boolean']['input']>;
 }
 
 export interface GenrePageQL {
@@ -633,21 +633,21 @@ export interface GenreQL {
 }
 
 export interface GenreQLalbumsArgs {
-	filter?: InputMaybe<AlbumFilterArgsQL>;
-	order?: InputMaybe<Array<AlbumOrderArgsQL>>;
-	page?: InputMaybe<PageArgsQL>;
+	filter?: InputMaybe<AlbumFilterParametersQL>;
+	order?: InputMaybe<Array<AlbumOrderParametersQL>>;
+	page?: InputMaybe<PageParametersQL>;
 }
 
 export interface GenreQLartistsArgs {
-	filter?: InputMaybe<ArtistFilterArgsQL>;
-	order?: InputMaybe<Array<ArtistOrderArgsQL>>;
-	page?: InputMaybe<PageArgsQL>;
+	filter?: InputMaybe<ArtistFilterParametersQL>;
+	order?: InputMaybe<Array<ArtistOrderParametersQL>>;
+	page?: InputMaybe<PageParametersQL>;
 }
 
 export interface GenreQLtracksArgs {
-	filter?: InputMaybe<TrackFilterArgsQL>;
-	order?: InputMaybe<Array<TrackOrderArgsQL>>;
-	page?: InputMaybe<PageArgsQL>;
+	filter?: InputMaybe<TrackFilterParametersQL>;
+	order?: InputMaybe<Array<TrackOrderParametersQL>>;
+	page?: InputMaybe<PageParametersQL>;
 }
 
 /** Type of List Request */
@@ -693,7 +693,7 @@ export interface NowPlayingQL {
 	userName: Scalars['String']['output'];
 }
 
-export interface PageArgsQL {
+export interface PageParametersQL {
 	/** return items starting from offset position */
 	skip?: InputMaybe<Scalars['Int']['input']>;
 	/** amount of returned items */
@@ -732,7 +732,7 @@ export interface PlaylistEntryQL {
 	updatedAt: Scalars['DateTimeISO']['output'];
 }
 
-export interface PlaylistFilterArgsQL {
+export interface PlaylistFilterParametersQL {
 	comment?: InputMaybe<Scalars['String']['input']>;
 	durationFrom?: InputMaybe<Scalars['Int']['input']>;
 	durationTo?: InputMaybe<Scalars['Int']['input']>;
@@ -753,7 +753,7 @@ export interface PlaylistIndexQL {
 	groups: Array<PlaylistIndexGroupQL>;
 }
 
-export interface PlaylistOrderArgsQL {
+export interface PlaylistOrderParametersQL {
 	orderBy?: InputMaybe<DefaultOrderFields>;
 	orderDesc?: InputMaybe<Scalars['Boolean']['input']>;
 }
@@ -813,7 +813,7 @@ export interface PodcastDiscoverTagQL {
 	usage: Scalars['Int']['output'];
 }
 
-export interface PodcastFilterArgsQL {
+export interface PodcastFilterParametersQL {
 	author?: InputMaybe<Scalars['String']['input']>;
 	categories?: InputMaybe<Array<Scalars['String']['input']>>;
 	description?: InputMaybe<Scalars['String']['input']>;
@@ -839,17 +839,17 @@ export interface PodcastIndexQL {
 	groups: Array<PodcastIndexGroupQL>;
 }
 
-export interface PodcastOrderArgsQL {
-	orderBy?: InputMaybe<PodcastOrderFields>;
-	orderDesc?: InputMaybe<Scalars['Boolean']['input']>;
-}
-
 export enum PodcastOrderFields {
 	created = 'created',
 	default = 'default',
 	lastCheck = 'lastCheck',
 	name = 'name',
 	updated = 'updated'
+}
+
+export interface PodcastOrderParametersQL {
+	orderBy?: InputMaybe<PodcastOrderFields>;
+	orderDesc?: InputMaybe<Scalars['Boolean']['input']>;
 }
 
 export interface PodcastPageQL {
@@ -1007,7 +1007,7 @@ export interface QueryalbumArgs {
 }
 
 export interface QueryalbumIndexArgs {
-	filter?: InputMaybe<AlbumFilterArgsQL>;
+	filter?: InputMaybe<AlbumFilterParametersQL>;
 }
 
 export interface QueryalbumInfoArgs {
@@ -1015,10 +1015,10 @@ export interface QueryalbumInfoArgs {
 }
 
 export interface QueryalbumsArgs {
-	filter?: InputMaybe<AlbumFilterArgsQL>;
+	filter?: InputMaybe<AlbumFilterParametersQL>;
 	list?: InputMaybe<ListType>;
-	order?: InputMaybe<Array<AlbumOrderArgsQL>>;
-	page?: InputMaybe<PageArgsQL>;
+	order?: InputMaybe<Array<AlbumOrderParametersQL>>;
+	page?: InputMaybe<PageParametersQL>;
 	seed?: InputMaybe<Scalars['String']['input']>;
 }
 
@@ -1027,7 +1027,7 @@ export interface QueryartistArgs {
 }
 
 export interface QueryartistIndexArgs {
-	filter?: InputMaybe<ArtistFilterArgsQL>;
+	filter?: InputMaybe<ArtistFilterParametersQL>;
 }
 
 export interface QueryartistInfoArgs {
@@ -1035,10 +1035,10 @@ export interface QueryartistInfoArgs {
 }
 
 export interface QueryartistsArgs {
-	filter?: InputMaybe<ArtistFilterArgsQL>;
+	filter?: InputMaybe<ArtistFilterParametersQL>;
 	list?: InputMaybe<ListType>;
-	order?: InputMaybe<Array<ArtistOrderArgsQL>>;
-	page?: InputMaybe<PageArgsQL>;
+	order?: InputMaybe<Array<ArtistOrderParametersQL>>;
+	page?: InputMaybe<PageParametersQL>;
 	seed?: InputMaybe<Scalars['String']['input']>;
 }
 
@@ -1047,10 +1047,10 @@ export interface QueryartworkArgs {
 }
 
 export interface QueryartworksArgs {
-	filter?: InputMaybe<ArtworkFilterArgsQL>;
+	filter?: InputMaybe<ArtworkFilterParametersQL>;
 	list?: InputMaybe<ListType>;
-	order?: InputMaybe<Array<ArtworkOrderArgsQL>>;
-	page?: InputMaybe<PageArgsQL>;
+	order?: InputMaybe<Array<ArtworkOrderParametersQL>>;
+	page?: InputMaybe<PageParametersQL>;
 	seed?: InputMaybe<Scalars['String']['input']>;
 }
 
@@ -1059,9 +1059,9 @@ export interface QuerybookmarkArgs {
 }
 
 export interface QuerybookmarksArgs {
-	filter?: InputMaybe<BookmarkFilterArgsQL>;
-	order?: InputMaybe<Array<BookmarkOrderArgsQL>>;
-	page?: InputMaybe<PageArgsQL>;
+	filter?: InputMaybe<BookmarkFilterParametersQL>;
+	order?: InputMaybe<Array<BookmarkOrderParametersQL>>;
+	page?: InputMaybe<PageParametersQL>;
 }
 
 export interface QuerychatsArgs {
@@ -1073,10 +1073,10 @@ export interface QueryepisodeArgs {
 }
 
 export interface QueryepisodesArgs {
-	filter?: InputMaybe<EpisodeFilterArgsQL>;
+	filter?: InputMaybe<EpisodeFilterParametersQL>;
 	list?: InputMaybe<ListType>;
-	order?: InputMaybe<Array<EpisodeOrderArgsQL>>;
-	page?: InputMaybe<PageArgsQL>;
+	order?: InputMaybe<Array<EpisodeOrderParametersQL>>;
+	page?: InputMaybe<PageParametersQL>;
 	seed?: InputMaybe<Scalars['String']['input']>;
 }
 
@@ -1085,7 +1085,7 @@ export interface QueryfolderArgs {
 }
 
 export interface QueryfolderIndexArgs {
-	filter?: InputMaybe<FolderFilterArgsQL>;
+	filter?: InputMaybe<FolderFilterParametersQL>;
 }
 
 export interface QueryfolderInfoArgs {
@@ -1093,10 +1093,10 @@ export interface QueryfolderInfoArgs {
 }
 
 export interface QueryfoldersArgs {
-	filter?: InputMaybe<FolderFilterArgsQL>;
+	filter?: InputMaybe<FolderFilterParametersQL>;
 	list?: InputMaybe<ListType>;
-	order?: InputMaybe<Array<FolderOrderArgsQL>>;
-	page?: InputMaybe<PageArgsQL>;
+	order?: InputMaybe<Array<FolderOrderParametersQL>>;
+	page?: InputMaybe<PageParametersQL>;
 	seed?: InputMaybe<Scalars['String']['input']>;
 }
 
@@ -1105,14 +1105,14 @@ export interface QuerygenreArgs {
 }
 
 export interface QuerygenreIndexArgs {
-	filter?: InputMaybe<GenreFilterArgsQL>;
+	filter?: InputMaybe<GenreFilterParametersQL>;
 }
 
 export interface QuerygenresArgs {
-	filter?: InputMaybe<GenreFilterArgsQL>;
+	filter?: InputMaybe<GenreFilterParametersQL>;
 	list?: InputMaybe<ListType>;
-	order?: InputMaybe<Array<GenreOrderArgsQL>>;
-	page?: InputMaybe<PageArgsQL>;
+	order?: InputMaybe<Array<GenreOrderParametersQL>>;
+	page?: InputMaybe<PageParametersQL>;
 	seed?: InputMaybe<Scalars['String']['input']>;
 }
 
@@ -1121,14 +1121,14 @@ export interface QueryplaylistArgs {
 }
 
 export interface QueryplaylistIndexArgs {
-	filter?: InputMaybe<PlaylistFilterArgsQL>;
+	filter?: InputMaybe<PlaylistFilterParametersQL>;
 }
 
 export interface QueryplaylistsArgs {
-	filter?: InputMaybe<PlaylistFilterArgsQL>;
+	filter?: InputMaybe<PlaylistFilterParametersQL>;
 	list?: InputMaybe<ListType>;
-	order?: InputMaybe<Array<PlaylistOrderArgsQL>>;
-	page?: InputMaybe<PageArgsQL>;
+	order?: InputMaybe<Array<PlaylistOrderParametersQL>>;
+	page?: InputMaybe<PageParametersQL>;
 	seed?: InputMaybe<Scalars['String']['input']>;
 }
 
@@ -1137,14 +1137,14 @@ export interface QuerypodcastArgs {
 }
 
 export interface QuerypodcastIndexArgs {
-	filter?: InputMaybe<PodcastFilterArgsQL>;
+	filter?: InputMaybe<PodcastFilterParametersQL>;
 }
 
 export interface QuerypodcastsArgs {
-	filter?: InputMaybe<PodcastFilterArgsQL>;
+	filter?: InputMaybe<PodcastFilterParametersQL>;
 	list?: InputMaybe<ListType>;
-	order?: InputMaybe<Array<PodcastOrderArgsQL>>;
-	page?: InputMaybe<PageArgsQL>;
+	order?: InputMaybe<Array<PodcastOrderParametersQL>>;
+	page?: InputMaybe<PageParametersQL>;
 	seed?: InputMaybe<Scalars['String']['input']>;
 }
 
@@ -1173,14 +1173,14 @@ export interface QueryradioArgs {
 }
 
 export interface QueryradioIndexArgs {
-	filter?: InputMaybe<RadioFilterArgsQL>;
+	filter?: InputMaybe<RadioFilterParametersQL>;
 }
 
 export interface QueryradiosArgs {
-	filter?: InputMaybe<RadioFilterArgsQL>;
+	filter?: InputMaybe<RadioFilterParametersQL>;
 	list?: InputMaybe<ListType>;
-	order?: InputMaybe<Array<RadioOrderArgsQL>>;
-	page?: InputMaybe<PageArgsQL>;
+	order?: InputMaybe<Array<RadioOrderParametersQL>>;
+	page?: InputMaybe<PageParametersQL>;
 	seed?: InputMaybe<Scalars['String']['input']>;
 }
 
@@ -1189,10 +1189,10 @@ export interface QueryrootArgs {
 }
 
 export interface QueryrootsArgs {
-	filter?: InputMaybe<RootFilterArgsQL>;
+	filter?: InputMaybe<RootFilterParametersQL>;
 	list?: InputMaybe<ListType>;
-	order?: InputMaybe<Array<RootOrderArgsQL>>;
-	page?: InputMaybe<PageArgsQL>;
+	order?: InputMaybe<Array<RootOrderParametersQL>>;
+	page?: InputMaybe<PageParametersQL>;
 	seed?: InputMaybe<Scalars['String']['input']>;
 }
 
@@ -1201,7 +1201,7 @@ export interface QueryseriesArgs {
 }
 
 export interface QueryseriesIndexArgs {
-	filter?: InputMaybe<SeriesFilterArgsQL>;
+	filter?: InputMaybe<SeriesFilterParametersQL>;
 }
 
 export interface QueryseriesInfoArgs {
@@ -1209,17 +1209,17 @@ export interface QueryseriesInfoArgs {
 }
 
 export interface QueryseriesesArgs {
-	filter?: InputMaybe<SeriesFilterArgsQL>;
+	filter?: InputMaybe<SeriesFilterParametersQL>;
 	list?: InputMaybe<ListType>;
-	order?: InputMaybe<Array<SeriesOrderArgsQL>>;
-	page?: InputMaybe<PageArgsQL>;
+	order?: InputMaybe<Array<SeriesOrderParametersQL>>;
+	page?: InputMaybe<PageParametersQL>;
 	seed?: InputMaybe<Scalars['String']['input']>;
 }
 
 export interface QuerysessionsArgs {
-	filter?: InputMaybe<SessionFilterArgsQL>;
-	order?: InputMaybe<Array<SessionOrderArgsQL>>;
-	page?: InputMaybe<PageArgsQL>;
+	filter?: InputMaybe<SessionFilterParametersQL>;
+	order?: InputMaybe<Array<SessionOrderParametersQL>>;
+	page?: InputMaybe<PageParametersQL>;
 }
 
 export interface QuerystateArgs {
@@ -1235,10 +1235,10 @@ export interface QuerytrackArgs {
 }
 
 export interface QuerytracksArgs {
-	filter?: InputMaybe<TrackFilterArgsQL>;
+	filter?: InputMaybe<TrackFilterParametersQL>;
 	list?: InputMaybe<ListType>;
-	order?: InputMaybe<Array<TrackOrderArgsQL>>;
-	page?: InputMaybe<PageArgsQL>;
+	order?: InputMaybe<Array<TrackOrderParametersQL>>;
+	page?: InputMaybe<PageParametersQL>;
 	seed?: InputMaybe<Scalars['String']['input']>;
 }
 
@@ -1247,20 +1247,20 @@ export interface QueryuserArgs {
 }
 
 export interface QueryuserIndexArgs {
-	filter?: InputMaybe<UserFilterArgsQL>;
+	filter?: InputMaybe<UserFilterParametersQL>;
 }
 
 export interface QueryusersArgs {
-	filter?: InputMaybe<UserFilterArgsQL>;
-	order?: InputMaybe<Array<UserOrderArgsQL>>;
-	page?: InputMaybe<PageArgsQL>;
+	filter?: InputMaybe<UserFilterParametersQL>;
+	order?: InputMaybe<Array<UserOrderParametersQL>>;
+	page?: InputMaybe<PageParametersQL>;
 }
 
 export interface QuerywaveformArgs {
 	id: Scalars['ID']['input'];
 }
 
-export interface RadioFilterArgsQL {
+export interface RadioFilterParametersQL {
 	disabled?: InputMaybe<Scalars['Boolean']['input']>;
 	homepage?: InputMaybe<Scalars['String']['input']>;
 	ids?: InputMaybe<Array<Scalars['ID']['input']>>;
@@ -1279,7 +1279,7 @@ export interface RadioIndexQL {
 	groups: Array<RadioIndexGroupQL>;
 }
 
-export interface RadioOrderArgsQL {
+export interface RadioOrderParametersQL {
 	orderBy?: InputMaybe<DefaultOrderFields>;
 	orderDesc?: InputMaybe<Scalars['Boolean']['input']>;
 }
@@ -1302,7 +1302,7 @@ export interface RadioQL {
 	url: Scalars['String']['output'];
 }
 
-export interface RootFilterArgsQL {
+export interface RootFilterParametersQL {
 	albumIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
 	artistIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
 	folderIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
@@ -1315,7 +1315,7 @@ export interface RootFilterArgsQL {
 	trackIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
 }
 
-export interface RootOrderArgsQL {
+export interface RootOrderParametersQL {
 	orderBy?: InputMaybe<DefaultOrderFields>;
 	orderDesc?: InputMaybe<Scalars['Boolean']['input']>;
 }
@@ -1355,7 +1355,7 @@ export interface RootStatusQL {
 	scanning?: Maybe<Scalars['Boolean']['output']>;
 }
 
-export interface SeriesFilterArgsQL {
+export interface SeriesFilterParametersQL {
 	albumIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
 	albumTypes?: InputMaybe<Array<AlbumType>>;
 	artistIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
@@ -1378,7 +1378,7 @@ export interface SeriesIndexQL {
 	groups: Array<SeriesIndexGroupQL>;
 }
 
-export interface SeriesOrderArgsQL {
+export interface SeriesOrderParametersQL {
 	orderBy?: InputMaybe<DefaultOrderFields>;
 	orderDesc?: InputMaybe<Scalars['Boolean']['input']>;
 }
@@ -1410,7 +1410,7 @@ export interface SeriesQL {
 	updatedAt: Scalars['DateTimeISO']['output'];
 }
 
-export interface SessionFilterArgsQL {
+export interface SessionFilterParametersQL {
 	agent?: InputMaybe<Scalars['String']['input']>;
 	client?: InputMaybe<Scalars['String']['input']>;
 	expiresFrom?: InputMaybe<Scalars['Int']['input']>;
@@ -1427,14 +1427,14 @@ export enum SessionMode {
 	subsonic = 'subsonic'
 }
 
-export interface SessionOrderArgsQL {
-	orderBy?: InputMaybe<SessionOrderFields>;
-	orderDesc?: InputMaybe<Scalars['Boolean']['input']>;
-}
-
 export enum SessionOrderFields {
 	default = 'default',
 	expires = 'expires'
+}
+
+export interface SessionOrderParametersQL {
+	orderBy?: InputMaybe<SessionOrderFields>;
+	orderDesc?: InputMaybe<Scalars['Boolean']['input']>;
 }
 
 export interface SessionPageQL {
@@ -1553,7 +1553,7 @@ export interface TagQL {
 	year?: Maybe<Scalars['Int']['output']>;
 }
 
-export interface TrackFilterArgsQL {
+export interface TrackFilterParametersQL {
 	album?: InputMaybe<Scalars['String']['input']>;
 	albumArtistIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
 	albumIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
@@ -1579,11 +1579,6 @@ export interface TrackLyricsQL {
 	source?: Maybe<Scalars['String']['output']>;
 }
 
-export interface TrackOrderArgsQL {
-	orderBy?: InputMaybe<TrackOrderFields>;
-	orderDesc?: InputMaybe<Scalars['Boolean']['input']>;
-}
-
 export enum TrackOrderFields {
 	album = 'album',
 	created = 'created',
@@ -1595,6 +1590,11 @@ export enum TrackOrderFields {
 	title = 'title',
 	trackNr = 'trackNr',
 	updated = 'updated'
+}
+
+export interface TrackOrderParametersQL {
+	orderBy?: InputMaybe<TrackOrderFields>;
+	orderDesc?: InputMaybe<Scalars['Boolean']['input']>;
 }
 
 export interface TrackPageQL {
@@ -1653,60 +1653,60 @@ export interface UserFavoritesQL {
 }
 
 export interface UserFavoritesQLalbumsArgs {
-	filter?: InputMaybe<AlbumFilterArgsQL>;
-	order?: InputMaybe<Array<AlbumOrderArgsQL>>;
-	page?: InputMaybe<PageArgsQL>;
+	filter?: InputMaybe<AlbumFilterParametersQL>;
+	order?: InputMaybe<Array<AlbumOrderParametersQL>>;
+	page?: InputMaybe<PageParametersQL>;
 }
 
 export interface UserFavoritesQLartistsArgs {
-	filter?: InputMaybe<ArtistFilterArgsQL>;
-	order?: InputMaybe<Array<ArtistOrderArgsQL>>;
-	page?: InputMaybe<PageArgsQL>;
+	filter?: InputMaybe<ArtistFilterParametersQL>;
+	order?: InputMaybe<Array<ArtistOrderParametersQL>>;
+	page?: InputMaybe<PageParametersQL>;
 }
 
 export interface UserFavoritesQLartworksArgs {
-	filter?: InputMaybe<ArtworkFilterArgsQL>;
-	order?: InputMaybe<Array<ArtworkOrderArgsQL>>;
-	page?: InputMaybe<PageArgsQL>;
+	filter?: InputMaybe<ArtworkFilterParametersQL>;
+	order?: InputMaybe<Array<ArtworkOrderParametersQL>>;
+	page?: InputMaybe<PageParametersQL>;
 }
 
 export interface UserFavoritesQLepisodesArgs {
-	filter?: InputMaybe<EpisodeFilterArgsQL>;
-	order?: InputMaybe<Array<EpisodeOrderArgsQL>>;
-	page?: InputMaybe<PageArgsQL>;
+	filter?: InputMaybe<EpisodeFilterParametersQL>;
+	order?: InputMaybe<Array<EpisodeOrderParametersQL>>;
+	page?: InputMaybe<PageParametersQL>;
 }
 
 export interface UserFavoritesQLfoldersArgs {
-	filter?: InputMaybe<FolderFilterArgsQL>;
-	order?: InputMaybe<Array<FolderOrderArgsQL>>;
-	page?: InputMaybe<PageArgsQL>;
+	filter?: InputMaybe<FolderFilterParametersQL>;
+	order?: InputMaybe<Array<FolderOrderParametersQL>>;
+	page?: InputMaybe<PageParametersQL>;
 }
 
 export interface UserFavoritesQLplaylistsArgs {
-	filter?: InputMaybe<PlaylistFilterArgsQL>;
-	order?: InputMaybe<Array<PlaylistOrderArgsQL>>;
-	page?: InputMaybe<PageArgsQL>;
+	filter?: InputMaybe<PlaylistFilterParametersQL>;
+	order?: InputMaybe<Array<PlaylistOrderParametersQL>>;
+	page?: InputMaybe<PageParametersQL>;
 }
 
 export interface UserFavoritesQLpodcastsArgs {
-	filter?: InputMaybe<PodcastFilterArgsQL>;
-	order?: InputMaybe<Array<PodcastOrderArgsQL>>;
-	page?: InputMaybe<PageArgsQL>;
+	filter?: InputMaybe<PodcastFilterParametersQL>;
+	order?: InputMaybe<Array<PodcastOrderParametersQL>>;
+	page?: InputMaybe<PageParametersQL>;
 }
 
 export interface UserFavoritesQLseriesArgs {
-	filter?: InputMaybe<SeriesFilterArgsQL>;
-	order?: InputMaybe<Array<SeriesOrderArgsQL>>;
-	page?: InputMaybe<PageArgsQL>;
+	filter?: InputMaybe<SeriesFilterParametersQL>;
+	order?: InputMaybe<Array<SeriesOrderParametersQL>>;
+	page?: InputMaybe<PageParametersQL>;
 }
 
 export interface UserFavoritesQLtracksArgs {
-	filter?: InputMaybe<TrackFilterArgsQL>;
-	order?: InputMaybe<Array<TrackOrderArgsQL>>;
-	page?: InputMaybe<PageArgsQL>;
+	filter?: InputMaybe<TrackFilterParametersQL>;
+	order?: InputMaybe<Array<TrackOrderParametersQL>>;
+	page?: InputMaybe<PageParametersQL>;
 }
 
-export interface UserFilterArgsQL {
+export interface UserFilterParametersQL {
 	email?: InputMaybe<Scalars['String']['input']>;
 	ids?: InputMaybe<Array<Scalars['ID']['input']>>;
 	name?: InputMaybe<Scalars['String']['input']>;
@@ -1724,7 +1724,7 @@ export interface UserIndexQL {
 	groups: Array<UserIndexGroupQL>;
 }
 
-export interface UserOrderArgsQL {
+export interface UserOrderParametersQL {
 	orderBy?: InputMaybe<DefaultOrderFields>;
 	orderDesc?: InputMaybe<Scalars['Boolean']['input']>;
 }
@@ -1753,21 +1753,21 @@ export interface UserQL {
 }
 
 export interface UserQLbookmarksArgs {
-	filter?: InputMaybe<BookmarkFilterArgsQL>;
-	order?: InputMaybe<Array<BookmarkOrderArgsQL>>;
-	page?: InputMaybe<PageArgsQL>;
+	filter?: InputMaybe<BookmarkFilterParametersQL>;
+	order?: InputMaybe<Array<BookmarkOrderParametersQL>>;
+	page?: InputMaybe<PageParametersQL>;
 }
 
 export interface UserQLplaylistsArgs {
-	filter?: InputMaybe<PlaylistFilterArgsQL>;
-	order?: InputMaybe<Array<PlaylistOrderArgsQL>>;
-	page?: InputMaybe<PageArgsQL>;
+	filter?: InputMaybe<PlaylistFilterParametersQL>;
+	order?: InputMaybe<Array<PlaylistOrderParametersQL>>;
+	page?: InputMaybe<PageParametersQL>;
 }
 
 export interface UserQLsessionsArgs {
-	filter?: InputMaybe<SessionFilterArgsQL>;
-	order?: InputMaybe<Array<SessionOrderArgsQL>>;
-	page?: InputMaybe<PageArgsQL>;
+	filter?: InputMaybe<SessionFilterParametersQL>;
+	order?: InputMaybe<Array<SessionOrderParametersQL>>;
+	page?: InputMaybe<PageParametersQL>;
 }
 
 /** User Roles */
