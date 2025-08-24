@@ -4,7 +4,7 @@
 import * as Types from './_types';
 
 import { gql } from '@apollo/client';
-import * as Apollo from '@apollo/client';
+import { useQuery } from '@apollo/client/react';
 export type HomeResultQueryVariables = Types.Exact<{ [key: string]: never }>;
 
 export interface HomeResultQuery {
@@ -228,7 +228,7 @@ export const HomeResultDocument = gql`
   	}
   }
 `;
-export type HomeResultQueryResult = Apollo.QueryResult<
+export type HomeResultQueryResult = useQuery.Result<
 	HomeResultQuery,
 	HomeResultQueryVariables
 >;

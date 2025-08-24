@@ -4,7 +4,7 @@
 import * as Types from './_types';
 
 import { gql } from '@apollo/client';
-import * as Apollo from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client/react';
 export type RateResultQueryVariables = Types.Exact<{
 	id: Types.Scalars['ID']['input'];
 }>;
@@ -28,7 +28,7 @@ export const RateResultDocument = gql`
   	}
   }
 `;
-export type RateResultQueryResult = Apollo.QueryResult<
+export type RateResultQueryResult = useQuery.Result<
 	RateResultQuery,
 	RateResultQueryVariables
 >;
@@ -40,13 +40,13 @@ export const SetRateResultDocument = gql`
   	}
   }
 `;
-export type SetRateResultMutationFn = Apollo.MutationFunction<
+export type SetRateResultMutationFn = useMutation.MutationFunction<
 	SetRateResultMutation,
 	SetRateResultMutationVariables
 >;
 export type SetRateResultMutationResult =
-	Apollo.MutationResult<SetRateResultMutation>;
-export type SetRateResultMutationOptions = Apollo.BaseMutationOptions<
+	useMutation.Result<SetRateResultMutation>;
+export type SetRateResultMutationOptions = useMutation.MutationFunctionOptions<
 	SetRateResultMutation,
 	SetRateResultMutationVariables
 >;

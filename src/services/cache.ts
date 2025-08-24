@@ -5,7 +5,7 @@ import FastImage from '@d11/react-native-fast-image';
 import { snackSuccess } from './snack';
 import { DocumentNode } from 'graphql';
 import { buildCacheID } from './cache-query';
-import { OperationVariables } from '@apollo/client/core/types';
+import { OperationVariables } from '@apollo/client';
 
 export interface CacheState {
 	isRunning: boolean;
@@ -38,13 +38,13 @@ export class CacheService {
 	private async getDoc<T>(id: string): Promise<Document<T> | undefined> {
 		try {
 			const results = await this.db.query('SELECT * FROM jam WHERE key=?', [id]);
-			const result = results.rows.item(0);
+			const result = results.rows?.item(0);
 			if (result && result.version === this.version) {
 				return {
-					key: result.key,
+					key: result.key as string,
 					version: result.version,
-					date: result.date,
-					data: JSON.parse(result.data)
+					date: result.date as number,
+					data: JSON.parse(result.data as string)
 				};
 			}
 		} catch (error) {

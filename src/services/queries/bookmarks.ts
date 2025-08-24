@@ -1,6 +1,6 @@
 import { TrackEntry, UseGetCallFunctionTransform } from '../types';
 import { DocumentNode } from 'graphql';
-import { ApolloError } from '@apollo/client';
+import type { ErrorLike } from '@apollo/client';
 import { useCacheOrLazyQuery } from '../cache-hooks';
 import { useCallback } from 'react';
 import { BookmarkResultDocument, BookmarkResultQuery, BookmarkResultQueryVariables } from './bookmarks.api';
@@ -43,11 +43,11 @@ export const BookmarksQuery: {
 } = { query: BookmarkResultDocument, transformData, transformVariables };
 
 export const useLazyBookmarksQuery = (): [(take: number, skip: number, forceRefresh?: boolean) => void,
-	{ loading: boolean; error?: ApolloError; bookmarks?: Bookmarks; called: boolean }
+	{ loading: boolean; error?: ErrorLike; bookmarks?: Bookmarks; called: boolean }
 ] => {
 	const [query, { loading, error, data, called }] = useCacheOrLazyQuery<BookmarkResultQuery, BookmarkResultQueryVariables, Bookmarks>(BookmarksQuery.query, BookmarksQuery.transformData);
 	const get = useCallback((take: number, skip: number, forceRefresh?: boolean): void => {
-		query({ variables: BookmarksQuery.transformVariables(take, skip) }, forceRefresh);
+		query(BookmarksQuery.transformVariables(take, skip), {}, forceRefresh);
 	}, [query]);
 	return [get, { loading, called, error, bookmarks: data }];
 };

@@ -4,7 +4,7 @@
 import * as Types from './_types';
 
 import { gql } from '@apollo/client';
-import * as Apollo from '@apollo/client';
+import { useQuery } from '@apollo/client/react';
 export type FolderListResultQueryVariables = Types.Exact<{
 	listType?: Types.InputMaybe<Types.ListType>;
 	seed?: Types.InputMaybe<Types.Scalars['String']['input']>;
@@ -59,7 +59,7 @@ export const FolderListResultDocument = gql`
   	}
   }
 `;
-export type FolderListResultQueryResult = Apollo.QueryResult<
+export type FolderListResultQueryResult = useQuery.Result<
 	FolderListResultQuery,
 	FolderListResultQueryVariables
 >;

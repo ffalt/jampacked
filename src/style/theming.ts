@@ -328,8 +328,6 @@ export const ThemeContext = React.createContext<ThemeSettings>(
 );
 
 const { ThemeProvider: ThemeProviderIntern, useTheme: useThemeIntern } = createTheming(getAutoTheme());
-// React.ComponentType<{children: React.ReactNode, theme?: Theme }>
 export const ThemeProvider: React.ComponentType<{ children: React.ReactNode; theme?: ITheme }> = ThemeProviderIntern;
 export const useTheme = useThemeIntern;
-
 export const useThemeContext = (): ThemeSettings => useContext<ThemeSettings>(ThemeContext);

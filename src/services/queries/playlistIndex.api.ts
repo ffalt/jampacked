@@ -4,7 +4,7 @@
 import * as Types from './_types';
 
 import { gql } from '@apollo/client';
-import * as Apollo from '@apollo/client';
+import { useQuery } from '@apollo/client/react';
 export type PlaylistIndexResultQueryVariables = Types.Exact<{
 	[key: string]: never;
 }>;
@@ -26,7 +26,7 @@ export const PlaylistIndexResultDocument = gql`
   	}
   }
 `;
-export type PlaylistIndexResultQueryResult = Apollo.QueryResult<
+export type PlaylistIndexResultQueryResult = useQuery.Result<
 	PlaylistIndexResultQuery,
 	PlaylistIndexResultQueryVariables
 >;

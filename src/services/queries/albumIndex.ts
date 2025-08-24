@@ -1,10 +1,10 @@
 import { AlbumType, JamObjectType } from '../jam';
 import { Index } from '../types';
 import { DocumentNode } from 'graphql';
-import { ApolloError } from '@apollo/client';
 import { useCacheOrLazyQuery } from '../cache-hooks';
 import { useCallback } from 'react';
 import { AlbumIndexResultDocument, AlbumIndexResultQuery, AlbumIndexResultQueryVariables } from './albumIndex.api';
+import { ErrorLike } from '@apollo/client';
 
 function transformData(data?: AlbumIndexResultQuery): Index | undefined {
 	if (!data) {
@@ -36,12 +36,12 @@ export const AlbumIndexQuery: {
 } = { query: AlbumIndexResultDocument, transformData, transformVariables };
 
 export const useLazyAlbumIndexQuery = (): [(albumTypes: Array<AlbumType>, forceRefresh?: boolean) => void,
-	{ loading: boolean; error?: ApolloError; index?: Index; called: boolean }
+	{ loading: boolean; error?: ErrorLike; index?: Index; called: boolean }
 ] => {
 	const [query, { loading, error, data, called }] =
 		useCacheOrLazyQuery<AlbumIndexResultQuery, AlbumIndexResultQueryVariables, Index>(AlbumIndexQuery.query, AlbumIndexQuery.transformData);
 	const get = useCallback((albumTypes: Array<AlbumType>, forceRefresh?: boolean): void => {
-		query({ variables: AlbumIndexQuery.transformVariables(albumTypes) }, forceRefresh);
+		query(AlbumIndexQuery.transformVariables(albumTypes), {}, forceRefresh);
 	}, [query]);
 	return [get, { loading, called, error, index: data }];
 };

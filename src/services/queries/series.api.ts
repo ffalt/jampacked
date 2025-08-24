@@ -4,7 +4,7 @@
 import * as Types from './_types';
 
 import { gql } from '@apollo/client';
-import * as Apollo from '@apollo/client';
+import { useQuery } from '@apollo/client/react';
 export type SeriesResultQueryVariables = Types.Exact<{
 	id: Types.Scalars['ID']['input'];
 }>;
@@ -45,7 +45,7 @@ export const SeriesResultDocument = gql`
   	}
   }
 `;
-export type SeriesResultQueryResult = Apollo.QueryResult<
+export type SeriesResultQueryResult = useQuery.Result<
 	SeriesResultQuery,
 	SeriesResultQueryVariables
 >;

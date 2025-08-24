@@ -4,7 +4,7 @@
 import * as Types from './_types';
 
 import { gql } from '@apollo/client';
-import * as Apollo from '@apollo/client';
+import { useQuery } from '@apollo/client/react';
 export type PodcastEpisodeResultQueryVariables = Types.Exact<{
 	id: Types.Scalars['ID']['input'];
 }>;
@@ -43,7 +43,7 @@ export const PodcastEpisodeResultDocument = gql`
   	}
   }
 `;
-export type PodcastEpisodeResultQueryResult = Apollo.QueryResult<
+export type PodcastEpisodeResultQueryResult = useQuery.Result<
 	PodcastEpisodeResultQuery,
 	PodcastEpisodeResultQueryVariables
 >;

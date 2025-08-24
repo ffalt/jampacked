@@ -2,7 +2,7 @@ import { AlbumType, JamObjectType } from '../jam';
 import { SectionListData } from 'react-native';
 import { BaseEntry } from '../types';
 import { DocumentNode } from 'graphql';
-import { ApolloError } from '@apollo/client';
+import { ErrorLike } from '@apollo/client';
 import { useCacheOrLazyQuery } from '../cache-hooks';
 import { useCallback } from 'react';
 import { SeriesResultDocument, SeriesResultQuery, SeriesResultQueryVariables } from './series.api';
@@ -79,12 +79,12 @@ export const SeriesQuery: {
 } = { query: SeriesResultDocument, transformData, transformVariables };
 
 export const useLazySeriesQuery = (): [(id: string, forceRefresh?: boolean) => void,
-	{ loading: boolean; error?: ApolloError; series?: Series; called: boolean }
+	{ loading: boolean; error?: ErrorLike; series?: Series; called: boolean }
 ] => {
 	const [query, { loading, error, data, called }] =
 		useCacheOrLazyQuery<SeriesResultQuery, SeriesResultQueryVariables, Series>(SeriesQuery.query, SeriesQuery.transformData);
 	const get = useCallback((id: string, forceRefresh?: boolean): void => {
-		query({ variables: SeriesQuery.transformVariables(id) }, forceRefresh);
+		query(SeriesQuery.transformVariables(id), {}, forceRefresh);
 	}, [query]);
 	return [get, { loading, called, error, series: data }];
 };

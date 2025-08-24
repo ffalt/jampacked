@@ -1,8 +1,9 @@
 import { Jam } from '../jam';
 import { DocumentNode } from 'graphql';
-import { ApolloError, useLazyQuery } from '@apollo/client';
+import type { ErrorLike } from '@apollo/client';
 import { useCallback, useEffect, useState } from 'react';
 import { WaveformResultDocument, WaveformResultQuery, WaveformResultQueryVariables } from './waveform.api';
+import { useLazyQuery } from '@apollo/client/react';
 
 export const transformData =
 	(data?: WaveformResultQuery): Jam.WaveFormData | undefined =>
@@ -19,7 +20,7 @@ export const WaveformQuery: {
 } = { query: WaveformResultDocument, transformData, transformVariables };
 
 export const useLazyWaveformQuery = (): [(id: string) => void,
-	{ loading: boolean; error?: ApolloError; waveform?: Jam.WaveFormData; called: boolean }
+	{ loading: boolean; error?: ErrorLike; waveform?: Jam.WaveFormData; called: boolean }
 ] => {
 	const [waveform, setWaveform] = useState<Jam.WaveFormData | undefined>(undefined);
 	const [query, { loading, error, data, called }] = useLazyQuery<WaveformResultQuery, WaveformResultQueryVariables>(WaveformQuery.query);

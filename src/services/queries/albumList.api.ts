@@ -4,7 +4,7 @@
 import * as Types from './_types';
 
 import { gql } from '@apollo/client';
-import * as Apollo from '@apollo/client';
+import { useQuery } from '@apollo/client/react';
 export type AlbumListResultQueryVariables = Types.Exact<{
 	listType?: Types.InputMaybe<Types.ListType>;
 	seed?: Types.InputMaybe<Types.Scalars['String']['input']>;
@@ -53,7 +53,7 @@ export const AlbumListResultDocument = gql`
   	}
   }
 `;
-export type AlbumListResultQueryResult = Apollo.QueryResult<
+export type AlbumListResultQueryResult = useQuery.Result<
 	AlbumListResultQuery,
 	AlbumListResultQueryVariables
 >;

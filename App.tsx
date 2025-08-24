@@ -7,7 +7,7 @@ import { AppNavigator } from './src/navigators/AppNavigator';
 import { getAutoTheme, getTheme, ThemeContext, ThemeProvider, ThemeSettings } from './src/style/theming';
 import { NavigationService } from './src/navigators/navigation';
 import dataService from './src/services/data';
-import { ApolloProvider } from '@apollo/client';
+import { ApolloProvider } from '@apollo/client/react';
 import { JamApolloClient } from './src/services/apollo';
 import { sharedStyles } from './src/style/shared';
 import { setAppAvailable } from './src/services/playback';

@@ -1,17 +1,35 @@
-import { DocumentNode, useLazyQuery, ApolloError } from '@apollo/client';
+import { DocumentNode } from 'graphql';
+import type { ErrorLike } from '@apollo/client';
 import { JamObjectType } from '../jam';
 import { useCallback, useEffect, useState } from 'react';
 import { SearchResultData } from '../types';
 import {
-	SearchAlbumsResultDocument, SearchAlbumsResultQuery, SearchAlbumsResultQueryVariables,
-	SearchArtistsResultDocument, SearchArtistsResultQuery, SearchArtistsResultQueryVariables,
-	SearchEpisodesResultDocument, SearchEpisodesResultQuery, SearchEpisodesResultQueryVariables,
-	SearchFoldersResultDocument, SearchFoldersResultQuery, SearchFoldersResultQueryVariables,
-	SearchPlaylistsResultDocument, SearchPlaylistsResultQuery, SearchPlaylistsResultQueryVariables,
-	SearchPodcastsResultDocument, SearchPodcastsResultQuery, SearchPodcastsResultQueryVariables,
-	SearchSeriesResultDocument, SearchSeriesResultQuery, SearchSeriesResultQueryVariables,
-	SearchTracksResultDocument, SearchTracksResultQuery, SearchTracksResultQueryVariables
+	SearchAlbumsResultDocument,
+	SearchAlbumsResultQuery,
+	SearchAlbumsResultQueryVariables,
+	SearchArtistsResultDocument,
+	SearchArtistsResultQuery,
+	SearchArtistsResultQueryVariables,
+	SearchEpisodesResultDocument,
+	SearchEpisodesResultQuery,
+	SearchEpisodesResultQueryVariables,
+	SearchFoldersResultDocument,
+	SearchFoldersResultQuery,
+	SearchFoldersResultQueryVariables,
+	SearchPlaylistsResultDocument,
+	SearchPlaylistsResultQuery,
+	SearchPlaylistsResultQueryVariables,
+	SearchPodcastsResultDocument,
+	SearchPodcastsResultQuery,
+	SearchPodcastsResultQueryVariables,
+	SearchSeriesResultDocument,
+	SearchSeriesResultQuery,
+	SearchSeriesResultQueryVariables,
+	SearchTracksResultDocument,
+	SearchTracksResultQuery,
+	SearchTracksResultQueryVariables
 } from './search.api';
+import { useLazyQuery } from '@apollo/client/react';
 
 interface SearchPage<T> {
 	total: number;
@@ -123,7 +141,7 @@ function getSearchQuery(objectType: JamObjectType): DocumentNode {
 }
 
 export const useLazySearchQuery = (objectType: JamObjectType): [(query: string, take: number, skip: number) => void,
-	{ loading: boolean; error?: ApolloError; result?: SearchResultData; called: boolean }
+	{ loading: boolean; error?: ErrorLike; result?: SearchResultData; called: boolean }
 ] => {
 	const [result, setResult] = useState<SearchResultData | undefined>(undefined);
 	const [getSearch, { loading, error, data, variables, called }] = useLazyQuery<SearchQueryResults, SearchVariable>(getSearchQuery(objectType));

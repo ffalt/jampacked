@@ -4,7 +4,7 @@
 import * as Types from './_types';
 
 import { gql } from '@apollo/client';
-import * as Apollo from '@apollo/client';
+import { useQuery } from '@apollo/client/react';
 export type WaveformResultQueryVariables = Types.Exact<{
 	id: Types.Scalars['ID']['input'];
 }>;
@@ -18,7 +18,7 @@ export const WaveformResultDocument = gql`
   	}
   }
 `;
-export type WaveformResultQueryResult = Apollo.QueryResult<
+export type WaveformResultQueryResult = useQuery.Result<
 	WaveformResultQuery,
 	WaveformResultQueryVariables
 >;

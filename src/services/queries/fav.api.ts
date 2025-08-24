@@ -4,7 +4,7 @@
 import * as Types from './_types';
 
 import { gql } from '@apollo/client';
-import * as Apollo from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client/react';
 export type FavResultQueryVariables = Types.Exact<{
 	id: Types.Scalars['ID']['input'];
 }>;
@@ -26,7 +26,7 @@ export const FavResultDocument = gql`
   	}
   }
 `;
-export type FavResultQueryResult = Apollo.QueryResult<
+export type FavResultQueryResult = useQuery.Result<
 	FavResultQuery,
 	FavResultQueryVariables
 >;
@@ -38,13 +38,13 @@ export const SetFavResultDocument = gql`
   	}
   }
 `;
-export type SetFavResultMutationFn = Apollo.MutationFunction<
+export type SetFavResultMutationFn = useMutation.MutationFunction<
 	SetFavResultMutation,
 	SetFavResultMutationVariables
 >;
 export type SetFavResultMutationResult =
-	Apollo.MutationResult<SetFavResultMutation>;
-export type SetFavResultMutationOptions = Apollo.BaseMutationOptions<
+	useMutation.Result<SetFavResultMutation>;
+export type SetFavResultMutationOptions = useMutation.MutationFunctionOptions<
 	SetFavResultMutation,
 	SetFavResultMutationVariables
 >;

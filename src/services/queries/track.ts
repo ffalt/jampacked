@@ -1,7 +1,7 @@
 import { TrackEntry } from '../types';
 import { formatDuration } from '../../utils/duration.utils';
 import { DocumentNode } from 'graphql';
-import { ApolloError } from '@apollo/client';
+import { ErrorLike } from '@apollo/client';
 import { useCacheOrLazyQuery } from '../cache-hooks';
 import { useCallback } from 'react';
 import { TrackResultDocument, TrackResultQuery, TrackResultQueryVariables } from './track.api';
@@ -41,12 +41,12 @@ export const TrackQuery: {
 } = { query: TrackResultDocument, transformData, transformVariables };
 
 export const useLazyTrackQuery = (): [(id: string, forceRefresh?: boolean) => void,
-	{ loading: boolean; error?: ApolloError; track?: TrackEntry; called: boolean }
+	{ loading: boolean; error?: ErrorLike; track?: TrackEntry; called: boolean }
 ] => {
 	const [query, { loading, error, data, called }] =
 		useCacheOrLazyQuery<TrackResultQuery, TrackResultQueryVariables, TrackEntry>(TrackQuery.query, TrackQuery.transformData);
 	const get = useCallback((id: string, forceRefresh?: boolean): void => {
-		query({ variables: TrackQuery.transformVariables(id) }, forceRefresh);
+		query(TrackQuery.transformVariables(id), {}, forceRefresh);
 	}, [query]);
 	return [get, { loading, called, error, track: data }];
 };

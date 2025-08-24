@@ -49,7 +49,7 @@ export const useLazyAlbumListQuery: useListFunction = () => {
 		skip: number,
 		forceRefresh?: boolean
 	): void => {
-		query({ variables: AlbumListQuery.transformVariables(albumTypes, listType, genreIDs, seed, take, skip) }, forceRefresh);
+		query(AlbumListQuery.transformVariables(albumTypes, listType, genreIDs, seed, take, skip), {}, forceRefresh);
 	}, [query]);
 	return [get, { loading, called, error, data, queryID }];
 };

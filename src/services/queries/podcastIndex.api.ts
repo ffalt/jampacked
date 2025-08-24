@@ -4,7 +4,7 @@
 import * as Types from './_types';
 
 import { gql } from '@apollo/client';
-import * as Apollo from '@apollo/client';
+import { useQuery } from '@apollo/client/react';
 export type PodcastIndexResultQueryVariables = Types.Exact<{
 	[key: string]: never;
 }>;
@@ -26,7 +26,7 @@ export const PodcastIndexResultDocument = gql`
   	}
   }
 `;
-export type PodcastIndexResultQueryResult = Apollo.QueryResult<
+export type PodcastIndexResultQueryResult = useQuery.Result<
 	PodcastIndexResultQuery,
 	PodcastIndexResultQueryVariables
 >;

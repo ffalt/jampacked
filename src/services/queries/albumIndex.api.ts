@@ -4,7 +4,7 @@
 import * as Types from './_types';
 
 import { gql } from '@apollo/client';
-import * as Apollo from '@apollo/client';
+import { useQuery } from '@apollo/client/react';
 export type AlbumIndexResultQueryVariables = Types.Exact<{
 	albumTypes?: Types.InputMaybe<Array<Types.AlbumType> | Types.AlbumType>;
 }>;
@@ -34,7 +34,7 @@ export const AlbumIndexResultDocument = gql`
   	}
   }
 `;
-export type AlbumIndexResultQueryResult = Apollo.QueryResult<
+export type AlbumIndexResultQueryResult = useQuery.Result<
 	AlbumIndexResultQuery,
 	AlbumIndexResultQueryVariables
 >;

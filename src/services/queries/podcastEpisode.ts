@@ -1,6 +1,6 @@
 import { TrackEntry } from '../types';
 import { DocumentNode } from 'graphql';
-import { ApolloError } from '@apollo/client';
+import { ErrorLike } from '@apollo/client';
 import { useCacheOrLazyQuery } from '../cache-hooks';
 import { useCallback } from 'react';
 import { PodcastEpisodeResultDocument, PodcastEpisodeResultQuery, PodcastEpisodeResultQueryVariables } from './podcastEpisode.api';
@@ -26,12 +26,12 @@ export const PodcastEpisodeQuery: {
 } = { query: PodcastEpisodeResultDocument, transformData, transformVariables };
 
 export const useLazyPodcastEpisodeQuery = (): [(id: string, forceRefresh?: boolean) => void,
-	{ loading: boolean; error?: ApolloError; track?: TrackEntry; called: boolean }
+	{ loading: boolean; error?: ErrorLike; track?: TrackEntry; called: boolean }
 ] => {
 	const [query, { loading, error, data, called }] =
 		useCacheOrLazyQuery<PodcastEpisodeResultQuery, PodcastEpisodeResultQueryVariables, TrackEntry>(PodcastEpisodeQuery.query, PodcastEpisodeQuery.transformData);
 	const get = useCallback((id: string, forceRefresh?: boolean): void => {
-		query({ variables: PodcastEpisodeQuery.transformVariables(id) }, forceRefresh);
+		query(PodcastEpisodeQuery.transformVariables(id), {}, forceRefresh);
 	}, [query]);
 	return [get, { loading, called, error, track: data }];
 };

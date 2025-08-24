@@ -1,4 +1,4 @@
-import { Document, PinMedia, PinState, PinCacheStat, TrackEntry } from './types';
+import { Document, PinCacheStat, PinMedia, PinState, TrackEntry } from './types';
 import { AudioFormatType, JamObjectType } from './jam';
 import { DataService } from './data';
 import { AlbumQuery } from './queries/album';
@@ -9,6 +9,7 @@ import { PlaylistQuery } from './queries/playlist';
 import { PodcastEpisodeQuery } from './queries/podcastEpisode';
 import { DownloadRequest, DownloadState, TrackPlayerDownloadManager } from './player-api';
 import { humanFileSize } from '../utils/filesize.utils';
+import { QueryResultRow } from 'react-native-nitro-sqlite';
 
 export class PinService {
 	manager: TrackPlayerDownloadManager = new TrackPlayerDownloadManager();
@@ -54,15 +55,15 @@ export class PinService {
 	private async getPinDocs<T>(): Promise<Array<Document<T>>> {
 		try {
 			const results = await this.owner.db.query('SELECT * FROM pin');
+			if (!results.rows) {
+				return [];
+			}
 			const list: Array<Document<T>> = [];
 			for (let index = 0; index < results.rows.length; index++) {
 				const result = results.rows.item(index);
-				list.push({
-					key: result.key,
-					version: result.version,
-					date: result.date,
-					data: JSON.parse(result.data)
-				});
+				if (result) {
+					list.push(this.rowToObj<T>(result));
+				}
 			}
 			return list;
 		} catch (error) {
@@ -71,17 +72,21 @@ export class PinService {
 		}
 	}
 
+	private rowToObj<T>(row: QueryResultRow): Document<T> {
+		return {
+			key: row['key'] as string,
+			version: row['version'] as number,
+			date: row['date'] as number,
+			data: JSON.parse(row['data'] as string)
+		};
+	}
+
 	private async getPinDoc<T>(id: string): Promise<Document<T> | undefined> {
 		try {
 			const results = await this.owner.db.query('SELECT * FROM pin WHERE key=?', [id]);
-			const result = results.rows.item(0);
+			const result = results.rows && results.rows.length > 0 ? results.rows.item(0) : undefined;
 			if (result) {
-				return {
-					key: result.key,
-					version: result.version,
-					date: result.date,
-					data: JSON.parse(result.data)
-				};
+				return this.rowToObj<T>(result);
 			}
 		} catch (error) {
 			console.error(error);

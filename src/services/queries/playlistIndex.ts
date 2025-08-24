@@ -1,7 +1,7 @@
 import { Index } from '../types';
 import { JamObjectType } from '../jam';
 import { DocumentNode } from 'graphql';
-import { ApolloError } from '@apollo/client';
+import type { ErrorLike } from '@apollo/client';
 import { useCacheOrLazyQuery } from '../cache-hooks';
 import { useCallback } from 'react';
 import { PlaylistIndexResultDocument, PlaylistIndexResultQuery } from './playlistIndex.api';
@@ -29,17 +29,17 @@ function transformVariables(): void {
 
 export const PlaylistIndexQuery: {
 	query: DocumentNode;
-	transformData: (d?: PlaylistIndexResultQuery, variables?: void) => Index | undefined;
+	transformData: (d?: PlaylistIndexResultQuery, variables?: {}) => Index | undefined;
 	transformVariables: () => void;
 } = { query: PlaylistIndexResultDocument, transformData, transformVariables };
 
 export const useLazyPlaylistIndexQuery = (): [(forceRefresh?: boolean) => void,
-	{ loading: boolean; error?: ApolloError; index?: Index; called: boolean }
+	{ loading: boolean; error?: ErrorLike; index?: Index; called: boolean }
 ] => {
 	const [query, { loading, error, data, called }] =
-		useCacheOrLazyQuery<PlaylistIndexResultQuery, void, Index>(PlaylistIndexQuery.query, PlaylistIndexQuery.transformData);
+		useCacheOrLazyQuery<PlaylistIndexResultQuery, {}, Index>(PlaylistIndexQuery.query, PlaylistIndexQuery.transformData);
 	const get = useCallback((forceRefresh?: boolean): void => {
-		query({}, forceRefresh);
+		query({}, {}, forceRefresh);
 	}, [query]);
 	return [get, { loading, error, called, index: data }];
 };

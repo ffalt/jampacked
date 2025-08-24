@@ -4,7 +4,7 @@
 import * as Types from './_types';
 
 import { gql } from '@apollo/client';
-import * as Apollo from '@apollo/client';
+import { useQuery } from '@apollo/client/react';
 export type SearchTracksResultQueryVariables = Types.Exact<{
 	query: Types.Scalars['String']['input'];
 	take?: Types.InputMaybe<Types.Scalars['Int']['input']>;
@@ -142,7 +142,7 @@ export const SearchTracksResultDocument = gql`
   	}
   }
 `;
-export type SearchTracksResultQueryResult = Apollo.QueryResult<
+export type SearchTracksResultQueryResult = useQuery.Result<
 	SearchTracksResultQuery,
 	SearchTracksResultQueryVariables
 >;
@@ -159,7 +159,7 @@ export const SearchSeriesResultDocument = gql`
   	}
   }
 `;
-export type SearchSeriesResultQueryResult = Apollo.QueryResult<
+export type SearchSeriesResultQueryResult = useQuery.Result<
 	SearchSeriesResultQuery,
 	SearchSeriesResultQueryVariables
 >;
@@ -176,7 +176,7 @@ export const SearchPodcastsResultDocument = gql`
   	}
   }
 `;
-export type SearchPodcastsResultQueryResult = Apollo.QueryResult<
+export type SearchPodcastsResultQueryResult = useQuery.Result<
 	SearchPodcastsResultQuery,
 	SearchPodcastsResultQueryVariables
 >;
@@ -193,7 +193,7 @@ export const SearchPlaylistsResultDocument = gql`
   	}
   }
 `;
-export type SearchPlaylistsResultQueryResult = Apollo.QueryResult<
+export type SearchPlaylistsResultQueryResult = useQuery.Result<
 	SearchPlaylistsResultQuery,
 	SearchPlaylistsResultQueryVariables
 >;
@@ -212,7 +212,7 @@ export const SearchFoldersResultDocument = gql`
   	}
   }
 `;
-export type SearchFoldersResultQueryResult = Apollo.QueryResult<
+export type SearchFoldersResultQueryResult = useQuery.Result<
 	SearchFoldersResultQuery,
 	SearchFoldersResultQueryVariables
 >;
@@ -229,7 +229,7 @@ export const SearchEpisodesResultDocument = gql`
   	}
   }
 `;
-export type SearchEpisodesResultQueryResult = Apollo.QueryResult<
+export type SearchEpisodesResultQueryResult = useQuery.Result<
 	SearchEpisodesResultQuery,
 	SearchEpisodesResultQueryVariables
 >;
@@ -246,7 +246,7 @@ export const SearchArtistsResultDocument = gql`
   	}
   }
 `;
-export type SearchArtistsResultQueryResult = Apollo.QueryResult<
+export type SearchArtistsResultQueryResult = useQuery.Result<
 	SearchArtistsResultQuery,
 	SearchArtistsResultQueryVariables
 >;
@@ -265,7 +265,7 @@ export const SearchAlbumsResultDocument = gql`
   	}
   }
 `;
-export type SearchAlbumsResultQueryResult = Apollo.QueryResult<
+export type SearchAlbumsResultQueryResult = useQuery.Result<
 	SearchAlbumsResultQuery,
 	SearchAlbumsResultQueryVariables
 >;

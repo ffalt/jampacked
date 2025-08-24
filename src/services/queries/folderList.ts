@@ -51,7 +51,7 @@ export const useLazyFolderListQuery: useListFunction = () => {
 		skip: number,
 		forceRefresh?: boolean
 	): void => {
-		query({ variables: FolderIndexQuery.transformVariables(albumTypes, listType, genreIDs, seed, take, skip) }, forceRefresh);
+		query(FolderIndexQuery.transformVariables(albumTypes, listType, genreIDs, seed, take, skip), {}, forceRefresh);
 	}, [query]);
 	return [get, { loading, called, error, data, queryID }];
 };

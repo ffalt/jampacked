@@ -1,5 +1,5 @@
 import { DocumentNode } from 'graphql';
-import { ApolloError } from '@apollo/client';
+import type { ErrorLike } from '@apollo/client';
 import { useCacheOrLazyQuery } from '../cache-hooks';
 import { useCallback } from 'react';
 import { TrackLyricsResultDocument, TrackLyricsResultQuery, TrackLyricsResultQueryVariables } from './lyrics.api';
@@ -27,11 +27,11 @@ export const TrackLyricsQuery: {
 } = { query: TrackLyricsResultDocument, transformData, transformVariables };
 
 export const useLazyTrackLyricsQuery = (): [(id: string, forceRefresh?: boolean) => void,
-	{ loading: boolean; error?: ApolloError; lyrics?: TrackLyrics; called: boolean }
+	{ loading: boolean; error?: ErrorLike; lyrics?: TrackLyrics; called: boolean }
 ] => {
 	const [query, { loading, error, data, called }] = useCacheOrLazyQuery<TrackLyricsResultQuery, TrackLyricsResultQueryVariables, TrackLyrics>(TrackLyricsQuery.query, TrackLyricsQuery.transformData);
 	const get = useCallback((id: string, forceRefresh?: boolean): void => {
-		query({ variables: TrackLyricsQuery.transformVariables(id) }, forceRefresh);
+		query(TrackLyricsQuery.transformVariables(id), {}, forceRefresh);
 	}, [query]);
 	return [get, { loading, called, error, lyrics: data }];
 };

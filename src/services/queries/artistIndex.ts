@@ -1,7 +1,7 @@
 import { AlbumType, JamObjectType } from '../jam';
 import { Index } from '../types';
 import { DocumentNode } from 'graphql';
-import { ApolloError } from '@apollo/client';
+import type { ErrorLike } from '@apollo/client';
 import { useCacheOrLazyQuery } from '../cache-hooks';
 import { useCallback } from 'react';
 import { ArtistIndexResultDocument, ArtistIndexResultQuery, ArtistIndexResultQueryVariables } from './artistIndex.api';
@@ -36,11 +36,11 @@ export const ArtistIndexQuery: {
 } = { query: ArtistIndexResultDocument, transformData, transformVariables };
 
 export const useLazyArtistIndexQuery = (): [(albumTypes: Array<AlbumType>, forceRefresh?: boolean) => void,
-	{ loading: boolean; error?: ApolloError; index?: Index; called: boolean }
+	{ loading: boolean; error?: ErrorLike; index?: Index; called: boolean }
 ] => {
 	const [query, { loading, error, data, called }] = useCacheOrLazyQuery<ArtistIndexResultQuery, ArtistIndexResultQueryVariables, Index>(ArtistIndexQuery.query, ArtistIndexQuery.transformData);
 	const get = useCallback((albumTypes: Array<AlbumType>, forceRefresh?: boolean): void => {
-		query({ variables: ArtistIndexQuery.transformVariables(albumTypes) }, forceRefresh);
+		query(ArtistIndexQuery.transformVariables(albumTypes), {}, forceRefresh);
 	}, [query]);
 	return [
 		get,

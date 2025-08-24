@@ -1,8 +1,9 @@
-import { ApolloError, useLazyQuery } from '@apollo/client';
+import type { ErrorLike } from '@apollo/client';
 import { JamObjectType } from '../jam';
 import { useCallback, useEffect, useState } from 'react';
 import { AutoCompleteData, AutoCompleteDataSection } from '../types';
 import { AutocompleteResultDocument, AutocompleteResultQuery, AutocompleteResultQueryVariables } from './autocomplete.api';
+import { useLazyQuery } from '@apollo/client/react';
 
 type Autocomplete = Array<AutoCompleteDataSection>;
 
@@ -48,7 +49,7 @@ function transformData(data?: AutocompleteResultQuery): Autocomplete {
 }
 
 export const useLazyAutocompleteQuery = (): [(query: string) => void,
-	{ loading: boolean; error?: ApolloError; sections?: Autocomplete; called: boolean }
+	{ loading: boolean; error?: ErrorLike; sections?: Autocomplete; called: boolean }
 ] => {
 	const [sections, setSections] = useState<Autocomplete | undefined>(undefined);
 	const [getAutocomplete, { loading, error, data, called }] =

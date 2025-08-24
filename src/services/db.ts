@@ -50,7 +50,7 @@ export class Database {
 	 * @param sql Query to be executed
 	 * @param parameters Params that substitutes '?' in the query
 	 */
-	async query(sql: string, parameters: Array<unknown>): Promise<QueryResult> {
+	async query(sql: string, parameters: Array<unknown> = []): Promise<QueryResult> {
 		const sqlParameters = this.treatParams(parameters);
 		return this.executeQuery(sql, sqlParameters);
 	}
@@ -94,7 +94,7 @@ export class Database {
 	 * @param keys Keys to be inserted
 	 * @param values Values to be inserted
 	 */
-	async insert(table: string, keys: Array<string>, values: Array<string>): Promise<number | undefined> {
+	async insert(table: string, keys: Array<string>, values: Array<string | number | Date>): Promise<number | undefined> {
 		const gaps = keys.map(() => '?');
 		const sql = `INSERT INTO ${table} (${keys.join(', ')})
                  VALUES (${gaps.join(', ')})`;

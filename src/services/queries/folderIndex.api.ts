@@ -4,7 +4,7 @@
 import * as Types from './_types';
 
 import { gql } from '@apollo/client';
-import * as Apollo from '@apollo/client';
+import { useQuery } from '@apollo/client/react';
 export type FolderIndexResultQueryVariables = Types.Exact<{
 	level?: Types.InputMaybe<Types.Scalars['Int']['input']>;
 }>;
@@ -40,7 +40,7 @@ export const FolderIndexResultDocument = gql`
   	}
   }
 `;
-export type FolderIndexResultQueryResult = Apollo.QueryResult<
+export type FolderIndexResultQueryResult = useQuery.Result<
 	FolderIndexResultQuery,
 	FolderIndexResultQueryVariables
 >;

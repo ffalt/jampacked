@@ -2,7 +2,7 @@ import { TrackEntry } from '../types';
 import { formatDuration } from '../../utils/duration.utils';
 import { DocumentNode } from 'graphql';
 import { transformTrack } from './track';
-import { ApolloError } from '@apollo/client';
+import type { ErrorLike } from '@apollo/client';
 import { useCacheOrLazyQuery } from '../cache-hooks';
 import { useCallback } from 'react';
 import { PlaylistResultDocument, PlaylistResultQuery, PlaylistResultQueryVariables } from './playlist.api';
@@ -62,11 +62,11 @@ export const PlaylistQuery: {
 } = { query: PlaylistResultDocument, transformData, transformVariables };
 
 export const useLazyPlaylistQuery = (): [(id: string, forceRefresh?: boolean) => void,
-	{ loading: boolean; error?: ApolloError; playlist?: Playlist; called: boolean }] => {
+	{ loading: boolean; error?: ErrorLike; playlist?: Playlist; called: boolean }] => {
 	const [query, { loading, error, data, called }] =
 		useCacheOrLazyQuery<PlaylistResultQuery, PlaylistResultQueryVariables, Playlist>(PlaylistQuery.query, PlaylistQuery.transformData);
 	const get = useCallback((id: string, forceRefresh?: boolean): void => {
-		query({ variables: PlaylistQuery.transformVariables(id) }, forceRefresh);
+		query(PlaylistQuery.transformVariables(id), {}, forceRefresh);
 	}, [query]);
 	return [get, { loading, error, called, playlist: data }];
 };

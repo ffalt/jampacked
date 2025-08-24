@@ -15,10 +15,10 @@ export class StorageService {
 		await this.db.query(createJamTableScript);
 	}
 
-	async getValue(id: string): Promise<string> {
+	async getValue(id: string): Promise<string | undefined> {
 		const results = await this.db.query('SELECT * FROM store WHERE key=?', [id]);
-		const result = results.rows.length > 0 ? results.rows.item(0) : undefined;
-		return result?.data;
+		const result = results.rows && results.rows.length > 0 ? results.rows.item(0) : undefined;
+		return result?.['data'] as string | undefined;
 	}
 
 	async setValue(id: string, value?: string): Promise<void> {

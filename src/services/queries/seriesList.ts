@@ -44,7 +44,7 @@ export const useLazySeriesListQuery: useListFunction = () => {
 		albumTypes: Array<AlbumType>, listType: ListType | undefined,
 		genreIDs: Array<string>, seed: string | undefined, take: number, skip: number, forceRefresh?: boolean
 	): void => {
-		query({ variables: SeriesListQuery.transformVariables(albumTypes, listType, genreIDs, seed, take, skip) }, forceRefresh);
+		query(SeriesListQuery.transformVariables(albumTypes, listType, genreIDs, seed, take, skip), {}, forceRefresh);
 	}, [query]);
 	return [get, { loading, called, error, data, queryID }];
 };

@@ -2,7 +2,7 @@ import { FolderType, JamObjectType } from '../jam';
 import { BaseEntry, TrackEntry } from '../types';
 import { DocumentNode } from 'graphql';
 import { transformTrack } from './track';
-import { ApolloError } from '@apollo/client';
+import type { ErrorLike } from '@apollo/client';
 import { useCacheOrLazyQuery } from '../cache-hooks';
 import { useCallback } from 'react';
 import { FolderResultDocument, FolderResultQuery, FolderResultQueryVariables } from './folder.api';
@@ -59,12 +59,12 @@ export const FolderQuery: {
 } = { query: FolderResultDocument, transformData, transformVariables };
 
 export const useLazyFolderQuery = (): [(id: string, forceRefresh?: boolean) => void,
-	{ loading: boolean; error?: ApolloError; folder?: Folder; called: boolean }
+	{ loading: boolean; error?: ErrorLike; folder?: Folder; called: boolean }
 ] => {
 	const [query, { loading, error, data, called }] =
 		useCacheOrLazyQuery<FolderResultQuery, FolderResultQueryVariables, Folder>(FolderQuery.query, FolderQuery.transformData);
 	const get = useCallback((id: string, forceRefresh?: boolean): void => {
-		query({ variables: FolderQuery.transformVariables(id) }, forceRefresh);
+		query(FolderQuery.transformVariables(id), {}, forceRefresh);
 	}, [query]);
 	return [get, { loading, called, error, folder: data }];
 };

@@ -1,4 +1,5 @@
-import { ApolloError, MutationTuple, useLazyQuery, useMutation } from '@apollo/client';
+import type { ErrorLike } from '@apollo/client';
+import { MutationTuple, useLazyQuery, useMutation } from '@apollo/client/react';
 import { useCallback, useEffect, useState } from 'react';
 import { FavResultDocument, FavResultQuery, FavResultQueryVariables, SetFavResultDocument, SetFavResultMutation, SetFavResultMutationVariables } from './fav.api';
 
@@ -9,7 +10,7 @@ function transformData(data: FavResultQuery | undefined): { timestamp?: number }
 export const useLazyFavQuery = (): [(id: string) => void,
 	{
 		loading: boolean;
-		error?: ApolloError;
+		error?: ErrorLike;
 		faved?: { timestamp?: number };
 		called: boolean;
 		setFav: (fav: { timestamp?: number } | undefined) => void;

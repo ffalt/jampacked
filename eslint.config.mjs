@@ -71,6 +71,7 @@ const commonUnicornRules = {
 	"unicorn/empty-brace-spaces": "off",
 	"unicorn/prefer-query-selector": "off",
 	"unicorn/prefer-global-this": "off",
+	"unicorn/prefer-ternary": "off",
 	"unicorn/no-null": "off",
 	"unicorn/prefer-string-replace-all": "off",
 	"unicorn/no-useless-undefined": "off",
@@ -125,10 +126,65 @@ const commonTypeScriptRules = {
 			"varsIgnorePattern": "^_",
 			"ignoreRestSiblings": true
 		}
-	]
+	],
+	"@typescript-eslint/require-await": "off"
 };
 
 export default ts.config(
+	{
+		files: ["**/*.{ts,tsx}"],
+		ignores: ["__tests__/", "src/services/queries/*.ts"],
+		extends: [
+			eslint.configs.recommended,
+			...ts.configs.recommended,
+			...ts.configs.stylistic,
+			react.configs.flat.recommended,
+			reactHooks["recommended-latest"],
+			unicorn.configs.recommended,
+			stylistic.configs.recommended
+		],
+		plugins: {
+			"react": react,
+			"react-native": reactNative,
+			"unused-imports": unusedImports
+		},
+		settings: {
+			react: {
+				version: "19"
+			}
+		},
+		languageOptions: {
+			parserOptions: {
+				project: ["tsconfig.json"],
+				createDefaultProgram: true,
+				ecmaFeatures: {
+					jsx: true
+				}
+			},
+			globals: {
+				...globals.reactNative
+			}
+		},
+		rules: {
+			...commonRules,
+			...commonStylisticRules,
+			...commonUnicornRules,
+			...commonTypeScriptRules,
+
+			"react-native/no-unused-styles": "error",
+			"react-native/split-platform-components": "error",
+			"react-native/no-inline-styles": "error",
+			"react-native/no-color-literals": "off",
+			"react-native/no-raw-text": ["error", { skip: ["ThemedText"] }],
+			"react-native/no-single-element-style-arrays": "error",
+
+			"react/display-name": "off",
+			"react/prop-types": "off",
+
+			"unused-imports/no-unused-imports": "error",
+			"unused-imports/no-unused-vars": ["error", { vars: "all", varsIgnorePattern: "^_", args: "after-used", argsIgnorePattern: "^_" }]
+		}
+	},
 	{
 		ignores: [
 			"**/.yarn/",
@@ -190,60 +246,6 @@ export default ts.config(
 			...jest.configs["flat/recommended"].rules,
 			"jest/expect-expect": "off",
 			"jest/no-done-callback": "off"
-		}
-	},
-	{
-		files: ["**/*.{ts,tsx}"],
-		ignores: ["__tests__/", "src/services/queries/*.ts"],
-		extends: [
-			eslint.configs.recommended,
-			...ts.configs.recommended,
-			...ts.configs.stylistic,
-			react.configs.flat.recommended,
-			reactHooks["recommended-latest"],
-			unicorn.configs.recommended,
-			stylistic.configs.recommended
-		],
-		plugins: {
-			"react": react,
-			"react-native": reactNative,
-			"unused-imports": unusedImports
-		},
-		settings: {
-			react: {
-				version: "19"
-			}
-		},
-		languageOptions: {
-			parserOptions: {
-				project: ["tsconfig.json"],
-				createDefaultProgram: true,
-				ecmaFeatures: {
-					jsx: true
-				}
-			},
-			globals: {
-				...globals.reactNative
-			}
-		},
-		rules: {
-			...commonRules,
-			...commonStylisticRules,
-			...commonUnicornRules,
-			...commonTypeScriptRules,
-
-			"react-native/no-unused-styles": "error",
-			"react-native/split-platform-components": "error",
-			"react-native/no-inline-styles": "error",
-			"react-native/no-color-literals": "off",
-			"react-native/no-raw-text": ["error", { skip: ["ThemedText"] }],
-			"react-native/no-single-element-style-arrays": "error",
-
-			"react/display-name": "off",
-			"react/prop-types": "off",
-
-			"unused-imports/no-unused-imports": "error",
-			"unused-imports/no-unused-vars": ["error", { vars: "all", varsIgnorePattern: "^_", args: "after-used", argsIgnorePattern: "^_" }]
 		}
 	},
 	{

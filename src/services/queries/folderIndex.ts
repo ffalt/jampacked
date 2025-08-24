@@ -2,7 +2,7 @@ import { JamObjectType } from '../jam';
 import { Index } from '../types';
 import { titleCase } from '../../utils/format.utils';
 import { DocumentNode } from 'graphql';
-import { ApolloError } from '@apollo/client';
+import type { ErrorLike } from '@apollo/client';
 import { useCacheOrLazyQuery } from '../cache-hooks';
 import { useCallback } from 'react';
 import { FolderIndexResultDocument, FolderIndexResultQuery, FolderIndexResultQueryVariables } from './folderIndex.api';
@@ -38,12 +38,12 @@ export const FolderIndexQuery: {
 } = { query: FolderIndexResultDocument, transformData, transformVariables };
 
 export const useLazyFolderIndexQuery = (): [(level: number, forceRefresh?: boolean) => void,
-	{ loading: boolean; error?: ApolloError; index?: Index; called: boolean }
+	{ loading: boolean; error?: ErrorLike; index?: Index; called: boolean }
 ] => {
 	const [query, { loading, error, data, called }] =
 		useCacheOrLazyQuery<FolderIndexResultQuery, FolderIndexResultQueryVariables, Index>(FolderIndexQuery.query, FolderIndexQuery.transformData);
 	const get = useCallback((level: number, forceRefresh?: boolean): void => {
-		query({ variables: FolderIndexQuery.transformVariables(level) }, forceRefresh);
+		query(FolderIndexQuery.transformVariables(level), {}, forceRefresh);
 	}, [query]);
 	return [get, { loading, called, error, index: data }];
 };

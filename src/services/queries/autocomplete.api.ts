@@ -4,7 +4,7 @@
 import * as Types from './_types';
 
 import { gql } from '@apollo/client';
-import * as Apollo from '@apollo/client';
+import { useQuery } from '@apollo/client/react';
 export type AutocompleteResultQueryVariables = Types.Exact<{
 	query: Types.Scalars['String']['input'];
 }>;
@@ -80,7 +80,7 @@ export const AutocompleteResultDocument = gql`
   	}
   }
 `;
-export type AutocompleteResultQueryResult = Apollo.QueryResult<
+export type AutocompleteResultQueryResult = useQuery.Result<
 	AutocompleteResultQuery,
 	AutocompleteResultQueryVariables
 >;

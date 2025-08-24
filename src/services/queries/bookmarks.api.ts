@@ -4,7 +4,7 @@
 import * as Types from './_types';
 
 import { gql } from '@apollo/client';
-import * as Apollo from '@apollo/client';
+import { useQuery } from '@apollo/client/react';
 export type BookmarkResultQueryVariables = Types.Exact<{
 	take: Types.Scalars['Int']['input'];
 	skip: Types.Scalars['Int']['input'];
@@ -132,7 +132,7 @@ export const BookmarkResultDocument = gql`
   	}
   }
 `;
-export type BookmarkResultQueryResult = Apollo.QueryResult<
+export type BookmarkResultQueryResult = useQuery.Result<
 	BookmarkResultQuery,
 	BookmarkResultQueryVariables
 >;

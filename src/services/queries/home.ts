@@ -3,7 +3,7 @@ import { HomeRoute } from '../../navigators/Routing';
 import { AlbumType, ListType } from '../jam';
 import { JamRouteLinks } from '../../navigators/Routes';
 import { DocumentNode } from 'graphql';
-import { ApolloError } from '@apollo/client';
+import type { ErrorLike } from '@apollo/client';
 import { useCacheOrLazyQuery } from '../cache-hooks';
 import { useCallback } from 'react';
 import { HomeResultDocument, HomeResultQuery } from './home.api';
@@ -90,17 +90,17 @@ function transformVariables(): void {
 
 export const HomeQuery: {
 	query: DocumentNode;
-	transformData: (d?: HomeResultQuery, variables?: void) => HomeDataResult | undefined;
+	transformData: (d?: HomeResultQuery, variables?: {}) => HomeDataResult | undefined;
 	transformVariables: () => void;
 } = { query: HomeResultDocument, transformData, transformVariables };
 
 export const useLazyHomeDataQuery = (): [(forceRefresh?: boolean) => void,
-	{ loading: boolean; error?: ApolloError; homeData?: HomeDataResult; called: boolean }
+	{ loading: boolean; error?: ErrorLike; homeData?: HomeDataResult; called: boolean }
 ] => {
 	const [query, { loading, error, data, called }] =
-		useCacheOrLazyQuery<HomeResultQuery, void, HomeDataResult>(HomeQuery.query, HomeQuery.transformData);
+		useCacheOrLazyQuery<HomeResultQuery, {}, HomeDataResult>(HomeQuery.query, HomeQuery.transformData);
 	const get = useCallback((forceRefresh?: boolean): void => {
-		query({}, forceRefresh);
+		query({}, {}, forceRefresh);
 	}, [query]);
 	return [get, { loading, called, error, homeData: data }];
 };

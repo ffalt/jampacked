@@ -4,7 +4,7 @@
 import * as Types from './_types';
 
 import { gql } from '@apollo/client';
-import * as Apollo from '@apollo/client';
+import { useQuery } from '@apollo/client/react';
 export type SeriesIndexResultQueryVariables = Types.Exact<{
 	[key: string]: never;
 }>;
@@ -32,7 +32,7 @@ export const SeriesIndexResultDocument = gql`
   	}
   }
 `;
-export type SeriesIndexResultQueryResult = Apollo.QueryResult<
+export type SeriesIndexResultQueryResult = useQuery.Result<
 	SeriesIndexResultQuery,
 	SeriesIndexResultQueryVariables
 >;

@@ -4,7 +4,7 @@
 import * as Types from './_types';
 
 import { gql } from '@apollo/client';
-import * as Apollo from '@apollo/client';
+import { useQuery } from '@apollo/client/react';
 export type GenreIndexResultQueryVariables = Types.Exact<{
 	[key: string]: never;
 }>;
@@ -40,7 +40,7 @@ export const GenreIndexResultDocument = gql`
   	}
   }
 `;
-export type GenreIndexResultQueryResult = Apollo.QueryResult<
+export type GenreIndexResultQueryResult = useQuery.Result<
 	GenreIndexResultQuery,
 	GenreIndexResultQueryVariables
 >;
