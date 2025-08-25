@@ -23,6 +23,9 @@
     "reinstall:player": "yarn remove react-native-track-player && yarn add ../react-native-track-player",
     "codegen": "graphql-codegen --config codegen.ts -v"
   },
+  "resolutions": {
+    "tmp": "0.2.5"
+  },
   "dependencies": {
     "@apollo/client": "4.0.0",
     "@callstack/react-theme-provider": "3.0.9",
