@@ -36,16 +36,26 @@ export const PlayerControl: React.FC = () => {
 				fontSize={staticTheme.fontSizeLarge}
 				style={[styles.button, !hasNext && styles.disabled]}
 				iconName="step-backward"
-				onPress={JamPlayer.skipToPrevious} />
-			<ClickIcon fontSize={staticTheme.fontSizeLarge} style={styles.button} iconName="backward" onPress={JamPlayer.skipBackward} />
+				onPress={() => JamPlayer.skipToPreviousSync()} />
+			<ClickIcon
+				fontSize={staticTheme.fontSizeLarge}
+				style={styles.button}
+				iconName="backward"
+				onPress={() => JamPlayer.skipBackwardSync()}
+			/>
 			<PlayButton />
-			<ClickIcon fontSize={staticTheme.fontSizeLarge} style={styles.button} iconName="forward" onPress={JamPlayer.skipForward} />
+			<ClickIcon
+				fontSize={staticTheme.fontSizeLarge}
+				style={styles.button}
+				iconName="forward"
+				onPress={() => JamPlayer.skipForwardSync()}
+			/>
 			<ClickIcon
 				disabled={!hasPrevious}
 				fontSize={staticTheme.fontSizeLarge}
 				style={[styles.button, !hasPrevious && styles.disabled]}
 				iconName="step-forward"
-				onPress={JamPlayer.skipToNext} />
+				onPress={() => JamPlayer.skipToNextSync()} />
 		</View>
 	);
 };

@@ -95,7 +95,7 @@ export interface SearchEpisodesResultQuery {
 	episodes: {
 		total: number;
 		skip?: number | null;
-		items: Array<{ id: string; name: string; date: any }>;
+		items: Array<{ id: string; name: string; date: string }>;
 	};
 }
 

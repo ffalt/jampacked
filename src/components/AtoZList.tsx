@@ -30,9 +30,9 @@ export const AtoZList: React.FC<AtoZListProps<any>> = <T extends SectionItem, >(
 
 	const onTouchLetter = useCallback((letter: string): void => {
 		if (containerReference.current) {
-			const index = ((data as Array<T>) || []).findIndex(d => d.letter === letter);
+			const index = ((data as Array<T>) ?? []).findIndex(d => d.letter === letter);
 			if (index !== -1) {
-				const scrollIndex = Math.floor(index / (numColumns || 1));
+				const scrollIndex = Math.floor(index / (numColumns ?? 1));
 				containerReference.current.scrollToIndex({ index: scrollIndex });
 			}
 		}
@@ -44,14 +44,14 @@ export const AtoZList: React.FC<AtoZListProps<any>> = <T extends SectionItem, >(
 		const offset = event.nativeEvent.contentOffset.y;
 		if (itemHeight) {
 			const index = Math.floor(offset / itemHeight);
-			const item = (data || [])[index];
+			const item = (data ?? [])[index];
 			setActiveLetter(item?.letter);
 		}
 	}, [data, itemHeight]);
 
 	useEffect(() => {
 		const list: Array<string> = [];
-		const items = (data || []);
+		const items = (data ?? []);
 		if (items.length > 20) {
 			for (const item of (items as Array<T>)) {
 				if (!list.includes(item.letter)) {

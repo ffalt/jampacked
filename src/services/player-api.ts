@@ -1,11 +1,6 @@
-import TrackPlayer, {
-	Capability,
-	DownloadState,
-	Track,
-	Download as TrackPlayerDownload,
-	DownloadRequest as TrackPlayerDownloadRequest
-} from 'react-native-track-player';
+import TrackPlayer, { Capability, Download as TrackPlayerDownload, DownloadRequest as TrackPlayerDownloadRequest, DownloadState, Track } from 'react-native-track-player';
 import { Platform } from 'react-native';
+import { IMAGE_LOGO } from '../style/images.ts';
 
 export async function initPlayer(): Promise<void> {
 	const isRunning = (Platform.OS === 'android') && (await TrackPlayer.isServiceRunning());
@@ -18,8 +13,7 @@ export async function initPlayer(): Promise<void> {
 			stopWithApp: false,
 			alwaysPauseOnInterruption: true,
 			scrobble: true,
-			// eslint-disable-next-line @typescript-eslint/no-require-imports
-			icon: require('../assets/images/logo.png'),
+			icon: IMAGE_LOGO,
 
 			capabilities: [
 				Capability.Play,

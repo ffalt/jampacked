@@ -11,6 +11,7 @@ import { FavIcon } from './FavIcon';
 import { ClickIcon } from './ClickIcon';
 import { SwipeableItem } from './SwipeableItem';
 import { sharedStyles } from '../style/shared';
+import { JamObjectType } from '../services/jam';
 
 const styles = StyleSheet.create({
 	trackListContainer: {
@@ -68,8 +69,8 @@ export const QueueItem: React.FC<{ active: boolean; index: number; item: TrackPl
 
 	const buttons = (
 		<>
-			<PinIcon style={sharedStyles.itemButton} fontSize={sharedStyles.itemButtonIcon.fontSize} objType={item.objType} id={item.id} />
-			<FavIcon style={sharedStyles.itemButton} fontSize={sharedStyles.itemButtonIcon.fontSize} objType={item.objType} id={item.id} />
+			<PinIcon style={sharedStyles.itemButton} fontSize={sharedStyles.itemButtonIcon.fontSize} objType={JamObjectType.track} id={item.id} />
+			<FavIcon style={sharedStyles.itemButton} fontSize={sharedStyles.itemButtonIcon.fontSize} objType={JamObjectType.track} id={item.id} />
 			<ClickIcon style={sharedStyles.itemButton} fontSize={sharedStyles.itemButtonIcon.fontSize} iconName="remove" onPress={rightPress} clickThrough={true} />
 		</>
 	);

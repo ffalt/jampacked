@@ -84,7 +84,7 @@ export const PlayerStrip: React.FC = () => {
 
 				<TouchableOpacity onPress={showPlayer} style={styles.playerStripTrack}>
 					<View style={styles.playerStripImage}>
-						<JamImage id={track.id} size={staticTheme.thumb} />
+						<JamImage id={track.id!} size={staticTheme.thumb} />
 					</View>
 					<View style={styles.playerStripText}>
 						<ThemedText numberOfLines={1} style={styles.title}>{track.title}</ThemedText>
@@ -99,14 +99,14 @@ export const PlayerStrip: React.FC = () => {
 							fontSize={staticTheme.fontSizeSmall}
 							style={[styles.button, backwardDisabled && styles.disabled]}
 							iconName="backward"
-							onPress={JamPlayer.skipBackward}
+							onPress={() => JamPlayer.skipBackwardSync()}
 						/>
 						<ClickIcon
 							disabled={!hasPrevious}
 							fontSize={staticTheme.fontSizeSmall}
 							style={[styles.button, !hasPrevious && styles.disabled]}
 							iconName="step-backward"
-							onPress={JamPlayer.skipToPrevious}
+							onPress={() => JamPlayer.skipToPreviousSync()}
 						/>
 					</View>
 					<PlayButton />
@@ -116,14 +116,14 @@ export const PlayerStrip: React.FC = () => {
 							fontSize={staticTheme.fontSizeSmall}
 							style={[styles.button, forwardDisabled && styles.disabled]}
 							iconName="forward"
-							onPress={JamPlayer.skipForward}
+							onPress={() => JamPlayer.skipForwardSync()}
 						/>
 						<ClickIcon
 							disabled={!hasNext}
 							fontSize={staticTheme.fontSizeSmall}
 							style={[styles.button, !hasNext && styles.disabled]}
 							iconName="step-forward"
-							onPress={JamPlayer.skipToNext}
+							onPress={() => JamPlayer.skipToNextSync()}
 						/>
 					</View>
 				</View>

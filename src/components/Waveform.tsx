@@ -130,7 +130,7 @@ const WaveformView: React.FC<WaveFormViewProps> = React.memo((
 const buildBars = (domain: Array<number>, range: Array<number>, chunks: Array<Array<number>>): { items: Array<number> } => {
 	const scaleFunction = scaleLinear().domain(domain).range(range);
 	return {
-		items: chunks.map(c => scaleFunction(mean(c) as number))
+		items: chunks.map(c => scaleFunction(mean(c)!))
 	};
 };
 
@@ -151,11 +151,9 @@ export const SoundCloudWave: React.FC<WaveFormProps> = (
 		if (waveform) {
 			let wfHeight = 1;
 			let wfWidth = 1;
-			const wf = WaveformData.create(waveform as any);
-			if (waveform) {
-				wfWidth = waveform.data.length / 2;
-				wfHeight = waveform.sample_rate / 2;
-			}
+			const wf = WaveformData.create(waveform);
+			wfWidth = waveform.data.length / 2;
+			wfHeight = waveform.sample_rate / 2;
 			const rWidth = (width - 40) || 1;
 			const chunkNr = wfWidth / (rWidth / 3);
 			const chunksHigh = chunk(wf.channel(0).max_array(), chunkNr);

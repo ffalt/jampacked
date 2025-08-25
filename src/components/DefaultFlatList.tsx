@@ -35,11 +35,11 @@ export const DefaultFlatList: React.FC<DefaultFlatListParameters<any>> = (
 		<FlatList
 			key={id}
 			style={style}
-			data={items || []}
+			data={items ?? []}
 			renderItem={renderItem}
 			onEndReachedThreshold={onEndReachedThreshold}
 			onEndReached={onEndReached}
-			keyExtractor={keyExtractor || defaultKeyExtractor}
+			keyExtractor={keyExtractor ?? defaultKeyExtractor}
 			ItemSeparatorComponent={Separator}
 			ListHeaderComponent={ListHeaderComponent}
 			ListEmptyComponent={<ListEmpty list={items} />}

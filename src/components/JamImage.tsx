@@ -7,9 +7,9 @@ import { ImageFormatType } from '../services/jam';
 
 export const JamImage: React.FC<{ id: string; size?: number; requestSize?: number; style?: StyleProp<ImageStyle> }> = React.memo(({ id, requestSize, size, style }) => {
 	const auth = useAuth();
-	const source = React.useMemo(() => auth.imgSource(id, requestSize || staticTheme.thumbMedium, ImageFormatType.webp), [auth, id, requestSize]);
+	const source = React.useMemo(() => auth.imgSource(id, requestSize ?? staticTheme.thumbMedium, ImageFormatType.webp), [auth, id, requestSize]);
 
-	if (!source || !source.uri) {
+	if (!source?.uri) {
 		return (<></>);
 	}
 	return (

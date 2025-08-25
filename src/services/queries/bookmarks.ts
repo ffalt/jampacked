@@ -19,7 +19,7 @@ function transformData(data?: BookmarkResultQuery): Bookmarks | undefined {
 		return;
 	}
 	const tracks: Array<TrackEntry> = [];
-	for (const entry of (data.bookmarks.items || [])) {
+	for (const entry of (data.bookmarks.items ?? [])) {
 		const item = entry.track ? transformTrack(entry.track) : transformEpisode(entry.episode);
 		if (item) {
 			tracks.push(item);

@@ -71,8 +71,8 @@ export const PlayerTabs: React.FC = () => {
 		navigation.goBack();
 	}, [navigation]);
 
-	const renderTabBar = useCallback((tabBarProps: any): React.JSX.Element => {
-		const buttons = tabBarProps.navigationState.routes.map((route: { title: string }, pos: number) => {
+	const renderTabBar = useCallback((tabBarProps: { navigationState: { routes: Array<{ title: string }> } }): React.JSX.Element => {
+		const routeToButton = (route: { title: string }, pos: number): React.ReactElement => {
 			const style = [styles.tabItem,
 				pos === index && styles.tabItemActive,
 				pos === index && { borderBottomColor: theme.textColor }
@@ -85,7 +85,11 @@ export const PlayerTabs: React.FC = () => {
 					<ThemedText>{route.title}</ThemedText>
 				</TouchableOpacity>
 			);
-		});
+		};
+
+		const buttons: Array<React.ReactElement> =
+			tabBarProps.navigationState.routes.map((route: { title: string }, pos: number) => routeToButton(route, pos));
+
 		return (
 			<View style={styles.tabBar}>
 				<ClickIcon iconName="down-open-big" style={styles.tabItem} fontSize={styles.icon.fontSize} onPress={close} />

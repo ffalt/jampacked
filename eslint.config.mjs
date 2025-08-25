@@ -127,7 +127,11 @@ const commonTypeScriptRules = {
 			"ignoreRestSiblings": true
 		}
 	],
-	"@typescript-eslint/require-await": "off"
+	"@typescript-eslint/require-await": "off",
+	"@typescript-eslint/dot-notation": "off",
+	"@typescript-eslint/prefer-promise-reject-errors": "off",
+	"@typescript-eslint/only-throw-error": "off",
+	"@typescript-eslint/no-unsafe-enum-comparison": "off"
 };
 
 export default ts.config(
@@ -136,8 +140,8 @@ export default ts.config(
 		ignores: ["__tests__/", "src/services/queries/*.ts"],
 		extends: [
 			eslint.configs.recommended,
-			...ts.configs.recommended,
-			...ts.configs.stylistic,
+			...ts.configs.recommendedTypeChecked,
+			...ts.configs.stylisticTypeChecked,
 			react.configs.flat.recommended,
 			reactHooks["recommended-latest"],
 			unicorn.configs.recommended,
@@ -233,8 +237,8 @@ export default ts.config(
 		...jest.configs["flat/recommended"],
 		extends: [
 			eslint.configs.recommended,
-			...ts.configs.recommended,
-			...ts.configs.stylistic,
+			...ts.configs.recommendedTypeChecked,
+			...ts.configs.stylisticTypeChecked,
 			unicorn.configs.recommended,
 			stylistic.configs.recommended
 		],
@@ -252,8 +256,8 @@ export default ts.config(
 		files: ["src/services/queries/*.ts"],
 		extends: [
 			eslint.configs.recommended,
-			...ts.configs.recommended,
-			...ts.configs.stylistic,
+			...ts.configs.recommendedTypeChecked,
+			...ts.configs.stylisticTypeChecked,
 			unicorn.configs.recommended,
 			stylistic.configs.recommended
 		],
@@ -298,8 +302,8 @@ export default ts.config(
 		],
 		extends: [
 			eslint.configs.recommended,
-			...ts.configs.recommended,
-			...ts.configs.stylistic,
+			...ts.configs.recommendedTypeChecked,
+			...ts.configs.stylisticTypeChecked,
 			unicorn.configs.recommended,
 			stylistic.configs.recommended
 		],

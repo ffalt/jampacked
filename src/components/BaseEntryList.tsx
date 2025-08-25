@@ -49,7 +49,7 @@ export const BaseEntryList: React.FC<{
 	if (tiles) {
 		return (
 			<FlatList
-				data={entries || []}
+				data={entries ?? []}
 				key="index"
 				renderItem={renderItemTile}
 				keyExtractor={defaultKeyExtractor}

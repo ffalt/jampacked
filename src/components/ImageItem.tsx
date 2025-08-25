@@ -21,7 +21,7 @@ export const ImageItem: React.FC<{ item: BaseEntry; size: number }> = React.memo
 
 	const source = React.useMemo(() => auth.imgSource(item?.id, 300), [item, auth]);
 
-	if (!item || !item.id || !source || !source.uri) {
+	if (!item?.id || !source?.uri) {
 		return (<></>);
 	}
 	return (

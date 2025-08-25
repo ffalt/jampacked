@@ -1,7 +1,7 @@
 import type { ErrorLike } from '@apollo/client';
 import { useCallback, useEffect, useState } from 'react';
 import { RateResultDocument, RateResultQuery, RateResultQueryVariables, SetRateResultDocument, SetRateResultMutation, SetRateResultMutationVariables } from './rate.api';
-import { MutationTuple, useLazyQuery, useMutation } from '@apollo/client/react';
+import { useLazyQuery, useMutation } from '@apollo/client/react';
 
 function transformData(data: RateResultQuery | undefined): { rated?: number } {
 	const value = data?.state?.rated;
@@ -44,5 +44,5 @@ export const useLazyRateQuery = (): [(id: string) => void,
 	];
 };
 
-export const useRateMutation = (): MutationTuple<SetRateResultMutation, SetRateResultMutationVariables> =>
+export const useRateMutation = (): useMutation.ResultTuple<SetRateResultMutation, SetRateResultMutationVariables> =>
 	useMutation<SetRateResultMutation, SetRateResultMutationVariables>(SetRateResultDocument);

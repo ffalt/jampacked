@@ -6,7 +6,7 @@ export const ThemesView: React.FC = () => {
 	const themeSettings = useThemeContext();
 
 	const changeTheme = (theme: string): void => {
-		themeSettings.setTheme(theme);
+		themeSettings.setTheme(theme).catch(console.error);
 	};
 
 	return (

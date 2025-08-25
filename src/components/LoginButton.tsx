@@ -17,7 +17,7 @@ export const LoginButton: React.FC<PropsWithChildren<{
 		}
 	};
 
-	const content = children || <Text>{label}</Text>;
+	const content = children ?? <Text>{label}</Text>;
 	return (
 		<TouchableWithoutFeedback onPress={onPressButton}>
 			<Animated.View style={[style, { transform: [{ scale }] }]}>

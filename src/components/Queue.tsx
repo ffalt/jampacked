@@ -29,8 +29,20 @@ export const Queue: React.FC = () => {
 			keyExtractor={keyExtractor}
 			ListHeaderComponent={(
 				<View style={[sharedStyles.barButtons, { borderColor: theme.separator }]}>
-					<ClickLabelIcon iconName="trash" onPress={JamPlayer.clearQueue} label="Clear" style={sharedStyles.barButton} labelStyle={sharedStyles.barButtonText} />
-					<ClickLabelIcon iconName="shuffle" onPress={JamPlayer.shuffleQueue} label="Shuffle" style={sharedStyles.barButton} labelStyle={sharedStyles.barButtonText} />
+					<ClickLabelIcon
+						iconName="trash"
+						onPress={() => JamPlayer.clearQueueSync()}
+						label="Clear"
+						style={sharedStyles.barButton}
+						labelStyle={sharedStyles.barButtonText}
+					/>
+					<ClickLabelIcon
+						iconName="shuffle"
+						onPress={() => JamPlayer.shuffleQueueSync()}
+						label="Shuffle"
+						style={sharedStyles.barButton}
+						labelStyle={sharedStyles.barButtonText}
+					/>
 				</View>
 			)}
 			loading={false}

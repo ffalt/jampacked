@@ -14,7 +14,7 @@ function transformData(data?: FolderIndexResultQuery): Index | undefined {
 	const index: Index = [];
 	for (const group of data.folderIndex.groups) {
 		for (const entry of group.items) {
-			const desc = `${titleCase(entry.folderType || '')}`;
+			const desc = `${titleCase(entry.folderType ?? '')}`;
 			index.push({
 				id: entry.id,
 				objType: JamObjectType.folder,

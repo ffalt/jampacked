@@ -57,19 +57,22 @@ jest.mock('react-native-gesture-handler/Swipeable', () =>
 jest.mock('react-native-bootsplash', () =>
 	({ RNBootSplash: jest.fn() }));
 
-jest.mock('react-native-screens', () => ({
-	...jest.requireActual('react-native-screens').default,
-	enableScreens: jest.fn()
-}));
+jest.mock('react-native-screens', () => {
+	// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
+	const screens = jest.requireActual('react-native-screens').default;
+	// eslint-disable-next-line @typescript-eslint/no-unsafe-return
+	return ({ ...screens, enableScreens: jest.fn() });
+});
 
-jest.mock('react-native-sqlite-storage', () => ({
-	DEBUG: jest.fn,
-	enablePromise: jest.fn(),
-	openDatabase: (..._args1: any) => ({
-		transaction: async (..._args2: any) => Promise.resolve({
-			executeSql: async (_query: any) => Promise.resolve([])
-		}),
-		cleanDb: async () => Promise.resolve(),
-		executeSql: async (_query: any) => Promise.resolve([])
+jest.mock('react-native-nitro-sqlite', () => ({
+	NITRO_SQLITE_NULL: jest.fn,
+	open: () => ({
+		executeAsync: jest.fn
 	})
 }));
+
+jest.mock('@react-navigation/material-top-tabs', () =>
+	({ createMaterialTopTabNavigator: jest.fn() }));
+
+jest.mock('react-native-pager-view', () =>
+	({ SceneMap: jest.fn(), TabView: jest.fn() }));

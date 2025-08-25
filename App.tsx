@@ -67,7 +67,7 @@ export const App: React.FC = () => {
 				<ThemeContext.Provider value={themeSettings}>
 					<ThemeProvider theme={themeSettings.theme}>
 						<StatusBar translucent={true} backgroundColor={themeSettings.theme.statusBar} barStyle={themeSettings.theme.barStyle} />
-						<NavigationContainer theme={themeSettings.theme.navigation} ref={NavigationService.setTopLevelNavigator}>
+						<NavigationContainer theme={themeSettings.theme.navigation} ref={r => NavigationService.setTopLevelNavigator(r)}>
 							<AppNavigator />
 						</NavigationContainer>
 					</ThemeProvider>

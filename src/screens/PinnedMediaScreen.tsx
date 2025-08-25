@@ -29,6 +29,12 @@ export const PinnedTrackItem: React.FC<{ track: TrackEntry }> = React.memo(({ tr
 	);
 });
 
+interface PinListSection {
+	pin: PinMedia;
+	collapsed: boolean;
+	data: Array<TrackEntry>;
+}
+
 export const PinnedMediaScreen: React.FC<DownloadsRouteProps<DownloadsRoute.PINNED>> = () => {
 	const { media, loading } = usePinnedMedia();
 	const theme = useTheme();
@@ -39,13 +45,13 @@ export const PinnedMediaScreen: React.FC<DownloadsRouteProps<DownloadsRoute.PINN
 		// TODO reload pinned download list
 	}, []);
 
-	const list = media.map(p => ({
+	const list: Array<SectionListData<TrackEntry, PinListSection>> = media.map(p => ({
 		pin: p,
 		collapsed: true,
 		data: p.tracks
 	}));
 
-	const renderItem = ({ section, item }: { section: SectionListData<PinMedia>; item: TrackEntry }): React.JSX.Element | null => {
+	const renderItem = ({ section, item }: { section: PinListSection; item: TrackEntry }): React.JSX.Element | null => {
 		const isExpanded = expandedSections.has(section.pin.id);
 		if (!isExpanded) {
 			return null;
@@ -70,7 +76,7 @@ export const PinnedMediaScreen: React.FC<DownloadsRouteProps<DownloadsRoute.PINN
 		});
 	};
 
-	const renderSection = ({ section }: { section: SectionListData<PinMedia> }): React.JSX.Element => {
+	const renderSection = ({ section }: { section: PinListSection }): React.JSX.Element => {
 		const isExpanded = expandedSections.has(section.pin.id);
 		return (
 			<>
@@ -86,14 +92,14 @@ export const PinnedMediaScreen: React.FC<DownloadsRouteProps<DownloadsRoute.PINN
 	};
 
 	return (
-		<DefaultSectionList
+		<DefaultSectionList<TrackEntry, PinListSection>
 			sections={list}
 			extraData={expandedSections}
 			ListHeaderComponent={ListHeaderComponent}
 			ItemSeparatorComponent={null}
 			SectionSeparatorComponent={null}
-			renderSectionHeader={renderSection}
-			renderItem={renderItem}
+			renderSectionHeader={info => renderSection(info)}
+			renderItem={info => renderItem(info)}
 			loading={loading}
 			reload={reload}
 		/>

@@ -2647,11 +2647,11 @@ export declare namespace Jam {
 		 */
 		version: number;
 		/**
-		 * The number of waveform channels present (version 2 only)
+		 * The number of waveform channels present
 		 * @TJS-type integer
 		 * @minimum 0
 		 */
-		channels?: number;
+		channels: number;
 		/**
 		 * Sample rate of original audio file (Hz)
 		 * @TJS-type integer

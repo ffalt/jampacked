@@ -51,7 +51,7 @@ export const Lyrics: React.FC<{ id?: string | null }> = ({ id }) => {
 
 	useEffect(() => {
 		if (lyrics) {
-			setText(lyrics.lyrics || '[No lyrics available]');
+			setText(lyrics.lyrics ?? '[No lyrics available]');
 		} else {
 			setText('');
 		}

@@ -29,10 +29,10 @@ function transformData(data?: FolderResultQuery): Folder | undefined {
 	if (!data) {
 		return;
 	}
-	const folders: Array<FolderItem> = (data.folder.children || [])
-		.map(f => ({ id: f.id, folder: { id: f.id, objType: JamObjectType.folder, title: f.title || '', desc: f.folderType || '' } }));
+	const folders: Array<FolderItem> = (data.folder.children ?? [])
+		.map(f => ({ id: f.id, folder: { id: f.id, objType: JamObjectType.folder, title: f.title ?? '', desc: f.folderType ?? '' } }));
 
-	const tracks = (data.folder.tracks || []).map(track => transformTrack(track));
+	const tracks = (data.folder.tracks ?? []).map(track => transformTrack(track));
 	const trackItems: Array<FolderItem> = tracks.map(track => ({ track, id: track.id }));
 
 	return {

@@ -30,7 +30,7 @@ function transformData(data?: SeriesResultQuery): Series | undefined {
 		return;
 	}
 	const sections: Array<SectionListData<BaseEntry>> = [];
-	for (const album of (data.series.albums || [])) {
+	for (const album of (data.series.albums ?? [])) {
 		let section = sections.find(s => s.key === album.albumType);
 		if (!section) {
 			section = {

@@ -18,17 +18,17 @@ import { Rating } from '../components/Rating';
 export const MUSICBRAINZ_VARIOUS_ARTISTS_NAME = 'Various Artists';
 
 const buildDetails = (artist?: string, tracks?: number, genre?: string, click?: () => void): Array<HeaderDetail> => [
-	{ title: 'Artist', value: artist || '', click: artist ? click : undefined },
-	{ title: 'Tracks', value: `${tracks || ''}` },
-	{ title: 'Genre', value: genre || '' }
+	{ title: 'Artist', value: artist ?? '', click: artist ? click : undefined },
+	{ title: 'Tracks', value: `${tracks ?? ''}` },
+	{ title: 'Genre', value: genre ?? '' }
 ];
 
 export const AlbumScreen: React.FC<AlbumRouteProps<AlbumRoute.MAIN>> = () => {
 	const state = useContext(AlbumTabNavigatorContext);
 	const [details, setDetails] = useState<Array<HeaderDetail>>(buildDetails());
 	const [getAlbum, { loading, error, album }] = useLazyAlbumQuery();
-	const id = state.id || '';
-	const name = state.name || '';
+	const id = state.id ?? '';
+	const name = state.name ?? '';
 
 	useEffect(() => {
 		if (id) {
@@ -39,8 +39,8 @@ export const AlbumScreen: React.FC<AlbumRouteProps<AlbumRoute.MAIN>> = () => {
 	useEffect(() => {
 		if (album) {
 			setDetails(buildDetails(album.artistName, album.trackCount, genreDisplay(album.genres), (): void => {
-				if (album && album.artistID) {
-					NavigationService.navigate(HomeRoute.ARTIST, { id: album.artistID, name: album.artistName || '' });
+				if (album?.artistID) {
+					NavigationService.navigate(HomeRoute.ARTIST, { id: album.artistID, name: album.artistName ?? '' });
 				}
 			}));
 		}
@@ -53,7 +53,7 @@ export const AlbumScreen: React.FC<AlbumRouteProps<AlbumRoute.MAIN>> = () => {
 	const playTracks = (): void => {
 		if (album) {
 			JamPlayer.playTracks(album.tracks)
-				.catch(error_ => {
+				.catch((error_: unknown) => {
 					snackError(error_);
 				});
 		}

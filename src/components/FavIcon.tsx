@@ -33,7 +33,7 @@ export const FavIcon: React.FC<{ id?: string; objType: JamObjectType; style?: St
 			if (isUnmountedReference.current) {
 				return;
 			}
-			setIsFaved((faved?.timestamp || 0) > 0);
+			setIsFaved((faved?.timestamp ?? 0) > 0);
 		}
 	}, [faved, loading]);
 
@@ -45,7 +45,7 @@ export const FavIcon: React.FC<{ id?: string; objType: JamObjectType; style?: St
 						return;
 					}
 					const fav = { timestamp: result.data?.fav?.faved ? (new Date(result.data.fav.faved)).valueOf() : undefined };
-					setIsFaved((fav?.timestamp || 0) > 0);
+					setIsFaved((fav?.timestamp ?? 0) > 0);
 					setFav(fav);
 					snackSuccess(isFaved ? 'Removed from Favorites' : 'Added to Favorites');
 					dataService.cache.updateHomeData().catch(console.error);

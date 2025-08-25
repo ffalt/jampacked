@@ -22,7 +22,7 @@ export const ListEmpty: React.FC<{ list?: Array<any> }> = ({ list }) => {
 
 	useEffect(() => {
 		let isSubscribed = false;
-		let delayDebounceFunction: any;
+		let delayDebounceFunction: ReturnType<typeof setTimeout> | undefined;
 		if (list) {
 			setText((list.length > 0 ? '' : 'No entries'));
 		} else {

@@ -20,7 +20,7 @@ interface ClickLabelIconParameters {
 export const ClickLabelIcon: React.FC<ClickLabelIconParameters> =
 	({ label, iconName, clickThrough, style, labelStyle, fontSize, disabled, color, muted, onPress }) => {
 		const theme = useTheme();
-		const iconColor = color || (muted ? theme.muted : undefined);
+		const iconColor = color ?? (muted ? theme.muted : undefined);
 
 		return (
 			<TouchableOpacity

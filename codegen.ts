@@ -29,8 +29,12 @@ const config: CodegenConfig = {
 				dedupeFragments: false,
 				withResultType: false,
 				skipTypename: true,
-				strictScalars: false,
-				withHOC: false
+				strictScalars: true,
+				withHOC: false,
+				scalars: {
+					DateTimeISO: 'string',
+					JSON: 'unknown'
+				}
 			}
 		},
 		'./src/': {
@@ -41,7 +45,11 @@ const config: CodegenConfig = {
 			},
 			config: {
 				withHooks: false,
-				skipTypename: true
+				skipTypename: true,
+				scalars: {
+					DateTimeISO: 'string',
+					JSON: 'unknown'
+				}
 			},
 			plugins: ['typescript-operations', 'typescript-react-apollo'] // Generates types based on your operations
 		}

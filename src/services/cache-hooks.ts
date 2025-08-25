@@ -22,7 +22,7 @@ export function useCacheOrLazyQuery<TData, TVariables extends OperationVariables
 	options?: useLazyQuery.Options<TData, TVariables>): [QueryFunction<TData, TVariables>, QueryHookData<TResult>] {
 	const [result, setResult] = useState<TResult | undefined>();
 	const [id, setID] = useState<string | undefined>();
-	const [queryData, setQueryData] = useState<any>();
+	const [queryData, setQueryData] = useState<TData>();
 	const [q, { loading, error, data, variables }] = useLazyQuery<TData, TVariables>(query, options);
 
 	const execute = useCallback((variables: TVariables, queryOptions?: useLazyQuery.Options<TData, TVariables>, forceRefresh?: boolean): void => {

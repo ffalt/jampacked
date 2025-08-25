@@ -14,15 +14,15 @@ import { sharedStyles } from '../style/shared';
 import { Rating } from '../components/Rating';
 
 const buildDetails = (artist?: string, tracks?: number, genre?: string, toArtist?: () => void): Array<HeaderDetail> => [
-	{ title: 'Artist', value: `${artist || ''}`, click: artist ? toArtist : undefined },
-	{ title: 'Tracks', value: `${tracks || ''}` },
-	{ title: 'Genre', value: genre || '' }
+	{ title: 'Artist', value: `${artist ?? ''}`, click: artist ? toArtist : undefined },
+	{ title: 'Tracks', value: `${tracks ?? ''}` },
+	{ title: 'Genre', value: genre ?? '' }
 ];
 
 export const SeriesScreen: React.FC<HomeRouteProps<HomeRoute.SERIE>> = ({ route }) => {
 	const [details, setDetails] = useState<Array<HeaderDetail>>(buildDetails());
 	const [getSeries, { loading, error, series }] = useLazySeriesQuery();
-	const { id, name } = (route?.params || {});
+	const { id, name } = (route?.params ?? {});
 
 	useEffect(() => {
 		if (id) {
@@ -33,7 +33,7 @@ export const SeriesScreen: React.FC<HomeRouteProps<HomeRoute.SERIE>> = ({ route 
 	useEffect(() => {
 		if (series) {
 			setDetails(buildDetails(series.artistName, series.tracksCount, 'Audio Series', () => {
-				NavigationService.navigate(HomeRoute.ARTIST, { id: series.artistID, name: series.artistName || '' });
+				NavigationService.navigate(HomeRoute.ARTIST, { id: series.artistID, name: series.artistName ?? '' });
 			}));
 		}
 	}, [series]);

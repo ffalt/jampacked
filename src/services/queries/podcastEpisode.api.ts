@@ -13,7 +13,7 @@ export interface PodcastEpisodeResultQuery {
 	episode: {
 		id: string;
 		name: string;
-		date: any;
+		date: string;
 		duration?: number | null;
 		tag?: {
 			title?: string | null;

@@ -4,11 +4,11 @@ import { AlbumRoute, AlbumsRoute, ArtistsRoute, FoldersRoute, GenreRoute, Genres
 import { Navig, NavigParameters } from '../services/types';
 import { RouteLink } from './Routes';
 
-let navigator: NavigationContainerRef<any>;
+let navigator: NavigationContainerRef<ReactNavigation.RootParamList>;
 
 export const NavigationService = {
-	setTopLevelNavigator(navigatorReference: NavigationContainerRef<any>): void {
-		navigator = navigatorReference;
+	setTopLevelNavigator(navigatorReference: NavigationContainerRef<ReactNavigation.RootParamList> | null): void {
+		navigator = navigatorReference!;
 	},
 
 	navigateToChild(parentRouteName: string, routeName: string, defaultRouteName: string, parameters?: NavigParameters): void {

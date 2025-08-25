@@ -29,7 +29,7 @@ export const transformEpisode = (episode: PlaylistResult_playlist_entries_episod
 		podcastID: episode.podcast?.id,
 		trackNr: (episode.tag?.disc && episode.tag?.disc > 1 ? `${episode.tag?.disc}-` : '') + (episode.tag?.trackNr ?? ''),
 		durationMS: episode.tag?.mediaDuration ?? 0,
-		duration: formatDuration(episode.tag?.mediaDuration || undefined)
+		duration: formatDuration(episode.tag?.mediaDuration ?? undefined)
 	};
 };
 

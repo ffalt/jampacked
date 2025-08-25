@@ -17,7 +17,7 @@ interface ClickIconParameters {
 export const ClickIcon: React.FC<ClickIconParameters> =
 	({ iconName, clickThrough, style, fontSize, disabled, color, muted, onPress }) => {
 		const theme = useTheme();
-		const iconColor = color || (muted ? theme.muted : undefined);
+		const iconColor = color ?? (muted ? theme.muted : undefined);
 
 		return (
 			<TouchableOpacity

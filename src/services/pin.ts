@@ -77,7 +77,7 @@ export class PinService {
 			key: row['key'] as string,
 			version: row['version'] as number,
 			date: row['date'] as number,
-			data: JSON.parse(row['data'] as string)
+			data: JSON.parse(row['data'] as string) as T
 		};
 	}
 
@@ -154,7 +154,7 @@ export class PinService {
 	async pinAlbum(id: string): Promise<void> {
 		const album = await this.owner.cache.getCacheOrQuery(AlbumQuery.query, AlbumQuery.transformVariables(id), AlbumQuery.transformData);
 		if (album) {
-			await this.pinObject(id, JamObjectType.album, album.name, album.tracks || []);
+			await this.pinObject(id, JamObjectType.album, album.name, album.tracks ?? []);
 		} else {
 			snackError(new Error('Album not found'));
 		}
@@ -276,7 +276,7 @@ export class PinService {
 	}
 
 	notifyPinChange(id: string, state: PinState): void {
-		const array = this.pinSubscriptions.get(id) || [];
+		const array = this.pinSubscriptions.get(id) ?? [];
 		for (const update of array) {
 			update(state);
 		}
@@ -291,13 +291,13 @@ export class PinService {
 	}
 
 	subscribePinChangeUpdates(id: string, update: (state: PinState) => void): void {
-		const array = this.pinSubscriptions.get(id) || [];
+		const array = this.pinSubscriptions.get(id) ?? [];
 		array.push(update);
 		this.pinSubscriptions.set(id, array);
 	}
 
 	unsubscribePinChangeUpdates(id: string, update: (state: PinState) => void): void {
-		let array = this.pinSubscriptions.get(id) || [];
+		let array = this.pinSubscriptions.get(id) ?? [];
 		array = array.splice(array.indexOf(update), 1);
 		if (array.length === 0) {
 			this.pinSubscriptions.delete(id);

@@ -1,4 +1,5 @@
 import Snackbar from 'react-native-snackbar';
+import { errorMessage } from '../utils/errors.utils.ts';
 
 export function snackSuccess(text: string): void {
 	Snackbar.show({
@@ -18,7 +19,7 @@ export function snackFail(text: string): void {
 	});
 }
 
-export function snackError(error: { message: string }): void {
+export function snackError(error: unknown): void {
 	console.error(error);
-	snackFail(error.message);
+	snackFail(errorMessage(error));
 }

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { AudioFormatType } from './jam';
 import dataService from './data';
 import { TrackEntry } from './types';
-import { TrackPlayer, TrackPlayerTrack, State, useTrackPlayerCurrentTrack } from './player-api';
+import { State, TrackPlayer, TrackPlayerTrack, useTrackPlayerCurrentTrack } from './player-api';
 
 async function buildTrackPlayerTrack(t: TrackEntry): Promise<TrackPlayerTrack> {
 	const headers = dataService.currentUserToken ? { Authorization: `Bearer ${dataService.currentUserToken}` } : undefined;
@@ -29,8 +29,16 @@ async function buildTrackPlayerTrack(t: TrackEntry): Promise<TrackPlayerTrack> {
 }
 
 export const JamPlayer = {
+	shuffleQueueSync(): void {
+		JamPlayer.shuffleQueue().catch(console.error);
+	},
+
 	async shuffleQueue(): Promise<void> {
 		await TrackPlayer.shuffle();
+	},
+
+	clearQueueSync(): void {
+		JamPlayer.clearQueue().catch(console.error);
 	},
 
 	async clearQueue(): Promise<void> {
@@ -71,6 +79,10 @@ export const JamPlayer = {
 		}
 	},
 
+	skipBackwardSync(): void {
+		JamPlayer.skipBackward().catch(console.error);
+	},
+
 	async skipBackward(): Promise<void> {
 		try {
 			await TrackPlayer.seekTo((await TrackPlayer.getPosition()) - 10);
@@ -85,6 +97,10 @@ export const JamPlayer = {
 		} catch (error) {
 			console.error(error);
 		}
+	},
+
+	toggleSync(): void {
+		JamPlayer.toggle().catch(console.error);
 	},
 
 	async toggle(): Promise<void> {
@@ -121,6 +137,10 @@ export const JamPlayer = {
 		}
 	},
 
+	skipForwardSync(): void {
+		JamPlayer.skipForward().catch(console.error);
+	},
+
 	async skipForward(): Promise<void> {
 		try {
 			await TrackPlayer.seekTo((await TrackPlayer.getPosition()) + 10);
@@ -129,12 +149,20 @@ export const JamPlayer = {
 		}
 	},
 
+	skipToNextSync(): void {
+		JamPlayer.skipToNext().catch(console.error);
+	},
+
 	async skipToNext(): Promise<void> {
 		try {
 			await TrackPlayer.skipToNext();
 		} catch (error) {
 			console.error(error);
 		}
+	},
+
+	skipToPreviousSync(): void {
+		JamPlayer.skipToPrevious().catch(console.error);
 	},
 
 	async skipToPrevious(): Promise<void> {
@@ -148,6 +176,10 @@ export const JamPlayer = {
 	async seekPercent(percent: number): Promise<void> {
 		const duration = (await TrackPlayer.getDuration());
 		await TrackPlayer.seekTo(duration * percent);
+	},
+
+	seekPercentSync(percent: number): void {
+		JamPlayer.seekPercent(percent).catch(console.error);
 	},
 
 	async setVolume(number: number): Promise<void> {

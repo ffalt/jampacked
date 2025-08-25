@@ -16,13 +16,13 @@ import { Rating } from '../components/Rating';
 const buildDetails = (albums?: number, tracks?: number, genre?: string): Array<HeaderDetail> => [
 	{ title: 'Albums', value: `${albums}` },
 	{ title: 'Tracks', value: `${tracks}` },
-	{ title: 'Genre', value: genre || '' }
+	{ title: 'Genre', value: genre ?? '' }
 ];
 
 export const ArtistScreen: React.FC<HomeRouteProps<HomeRoute.ARTIST>> = ({ route }) => {
 	const [details, setDetails] = useState<Array<HeaderDetail>>(buildDetails());
 	const [getArtist, { loading, error, artist }] = useLazyArtistQuery();
-	const { id, name } = (route?.params || {});
+	const { id, name } = (route?.params ?? {});
 
 	useEffect(() => {
 		if (id) {

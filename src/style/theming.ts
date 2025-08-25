@@ -300,7 +300,7 @@ export const themeList: Array<{ key: string; label: string }> = [
 
 export interface ThemeSettings {
 	theme: ITheme;
-	setTheme: (themeName: string) => void;
+	setTheme: (themeName: string) => Promise<void>;
 	loadUserTheme: () => Promise<void>;
 }
 
@@ -321,12 +321,13 @@ export const ThemeContext = React.createContext<ThemeSettings>(
 		loadUserTheme: async (): Promise<void> => {
 			// nope
 		},
-		setTheme: (): void => {
+		setTheme: async (): Promise<void> => {
 			// nope
 		}
 	}
 );
 
+// eslint-disable-next-line @typescript-eslint/unbound-method
 const { ThemeProvider: ThemeProviderIntern, useTheme: useThemeIntern } = createTheming(getAutoTheme());
 export const ThemeProvider: React.ComponentType<{ children: React.ReactNode; theme?: ITheme }> = ThemeProviderIntern;
 export const useTheme = useThemeIntern;

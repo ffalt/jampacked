@@ -18,7 +18,7 @@ function transformData(data?: FolderListResultQuery, variables?: FolderListResul
 		items: []
 	};
 	for (const entry of data.folders.items) {
-		const desc = `${titleCase(entry.folderType || '')}`;
+		const desc = `${titleCase(entry.folderType ?? '')}`;
 		result.items.push({
 			id: entry.id,
 			objType: JamObjectType.folder,

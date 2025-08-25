@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
 export const ThemedIcon: React.FC<ThemedIconProps> = React.memo(({ name, size, color, style }) => {
 	const theme = useTheme();
 	return (
-		<FontelloIcon name={name} style={[styles.icon, { color: color || theme.textColor, fontSize: size }, style]} />
+		<FontelloIcon name={name} style={[styles.icon, { color: color ?? theme.textColor, fontSize: size }, style]} />
 	);
 });
 

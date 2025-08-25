@@ -15,7 +15,7 @@ export const GenreAlbumsScreen: React.FC<GenreRouteProps<GenreRoute.ALBUMS>> = (
 	});
 
 	useEffect(() => {
-		if (state && state.id) {
+		if (state?.id) {
 			setView({
 				text: `${state.name}`,
 				subtitle: 'Albums in Genre',

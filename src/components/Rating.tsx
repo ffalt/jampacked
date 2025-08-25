@@ -45,7 +45,7 @@ export const Rating: React.FC<{ id?: string; objType: JamObjectType; style?: Sty
 			if (isUnmountedReference.current) {
 				return;
 			}
-			setRate(rating.rated === undefined ? -1 : rating.rated);
+			setRate(rating.rated ?? -1);
 		}
 	}, [rating, loading]);
 
@@ -58,7 +58,7 @@ export const Rating: React.FC<{ id?: string; objType: JamObjectType; style?: Sty
 						return;
 					}
 					const resultRating = result.data?.rate?.rated;
-					const newRate = resultRating === undefined || resultRating === null ? 0 : resultRating;
+					const newRate = resultRating ?? 0;
 					setRate(newRate);
 					snackSuccess(`Rated with ${newRate}`);
 					dataService.cache.updateHomeData().catch(console.error);

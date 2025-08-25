@@ -1,9 +1,9 @@
 import React, { PropsWithChildren } from 'react';
-import { StyleSheet, View } from 'react-native';
-import FastImage from '@d11/react-native-fast-image';
+import { FlexStyle, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
+import FastImage, { ImageStyle } from '@d11/react-native-fast-image';
 import { useAuth } from '../services/auth';
 
-export const FastImageBackground: React.FC<PropsWithChildren<{ id: string; style?: any; imageStyle?: any }>> = ({ id, children, style, imageStyle }) => {
+export const FastImageBackground: React.FC<PropsWithChildren<{ id: string; style?: StyleProp<ViewStyle> & FlexStyle; imageStyle?: Partial<ImageStyle> }>> = ({ id, children, style, imageStyle }) => {
 	const auth = useAuth();
 
 	const source = React.useMemo(() => auth.imgSource(id, 300), [auth, id]);
@@ -12,12 +12,12 @@ export const FastImageBackground: React.FC<PropsWithChildren<{ id: string; style
 		StyleSheet.absoluteFill,
 		{
 			width: style?.width,
-			height: (style?.height || 1) - 1
+			height: Number(style?.height ?? 1) - 1
 		},
 		imageStyle
 	], [imageStyle, style]);
 
-	const backgroundImage = (id && source && source.uri) && (
+	const backgroundImage = (id && source?.uri) && (
 		<FastImage style={imgStyle} source={source} />
 	);
 

@@ -22,7 +22,7 @@ export const PlayerProgress: React.FC = () => {
 			style={styles.slider}
 			value={progress}
 			step={0.001}
-			onSlidingComplete={JamPlayer.seekPercent}
+			onSlidingComplete={percent => JamPlayer.seekPercentSync(percent)}
 		/>
 	);
 };

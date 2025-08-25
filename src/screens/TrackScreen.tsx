@@ -17,21 +17,21 @@ import { Rating } from '../components/Rating';
 
 const buildDetails = (track?: TrackEntry): Array<HeaderDetail> => [
 	{
-		title: 'Artist', value: track?.artist || '', click: track?.artistID ?
+		title: 'Artist', value: track?.artist ?? '', click: track?.artistID ?
 			() => {
-				NavigationService.navigate(HomeRoute.ARTIST, { id: track?.artistID, name: track?.artist || '' });
+				NavigationService.navigate(HomeRoute.ARTIST, { id: track?.artistID, name: track?.artist ?? '' });
 			} :
 			undefined
 	},
 	{
-		title: 'Album', value: `${track?.album || ''}`, click: track?.artistID ?
+		title: 'Album', value: `${track?.album ?? ''}`, click: track?.artistID ?
 			() => {
-				NavigationService.navigate(HomeRoute.ALBUM, { id: track?.albumID, name: track?.album || '' });
+				NavigationService.navigate(HomeRoute.ALBUM, { id: track?.albumID, name: track?.album ?? '' });
 			} :
 			undefined
 	},
 	{
-		title: 'Genre', value: (track?.genre ? genreDisplay([track.genre]) : '') || ''
+		title: 'Genre', value: (track?.genre ? genreDisplay([track.genre]) : '') ?? ''
 	}
 ];
 

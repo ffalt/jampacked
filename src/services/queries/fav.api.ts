@@ -9,14 +9,16 @@ export type FavResultQueryVariables = Types.Exact<{
 	id: Types.Scalars['ID']['input'];
 }>;
 
-export interface FavResultQuery { state: { id: string; faved?: any | null } }
+export interface FavResultQuery { state: { id: string; faved?: string | null } }
 
 export type SetFavResultMutationVariables = Types.Exact<{
 	id: Types.Scalars['ID']['input'];
 	remove?: Types.InputMaybe<Types.Scalars['Boolean']['input']>;
 }>;
 
-export interface SetFavResultMutation { fav: { id: string; faved?: any | null } }
+export interface SetFavResultMutation {
+	fav: { id: string; faved?: string | null };
+}
 
 export const FavResultDocument = gql`
   query FavResult($id: ID!) {

@@ -23,18 +23,18 @@ const buildDetails = (folder?: Folder): Array<HeaderDetail> => {
 	switch (folder?.type) {
 		case FolderType.artist: {
 			result = [
-				{ title: 'Folders', value: `${folder?.folderCount || ''}` },
-				{ title: 'Tracks', value: `${folder?.trackCount || ''}` },
-				{ title: 'Genre', value: genreDisplay(folder?.genres) || '' }
+				{ title: 'Folders', value: `${folder?.folderCount ?? ''}` },
+				{ title: 'Tracks', value: `${folder?.trackCount ?? ''}` },
+				{ title: 'Genre', value: genreDisplay(folder?.genres) }
 			];
 			break;
 		}
 		case FolderType.multialbum:
 		case FolderType.album: {
 			result = [
-				{ title: 'Artist', value: `${folder?.artist || ''}` },
-				{ title: 'Tracks', value: `${folder?.trackCount || ''}` },
-				{ title: 'Genre', value: genreDisplay(folder?.genres) || '' }
+				{ title: 'Artist', value: `${folder?.artist ?? ''}` },
+				{ title: 'Tracks', value: `${folder?.trackCount ?? ''}` },
+				{ title: 'Genre', value: genreDisplay(folder?.genres) }
 			];
 			break;
 		}

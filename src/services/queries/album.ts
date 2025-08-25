@@ -26,10 +26,10 @@ function transformData(data?: AlbumResultQuery): Album | undefined {
 		id: data.album.id,
 		name: data.album.name,
 		albumType: data.album.albumType,
-		artistName: data.album.artist?.name || '',
-		artistID: data.album.artist?.id || '',
+		artistName: data.album.artist?.name ?? '',
+		artistID: data.album.artist?.id ?? '',
 		trackCount: data.album.tracksCount,
-		genres: (data.album.genres || []).map(g => g.name),
+		genres: (data.album.genres ?? []).map(g => g.name),
 		tracks: data.album.tracks.map(track => transformTrack(track))
 	};
 }

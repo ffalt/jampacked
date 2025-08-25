@@ -33,8 +33,8 @@ function transformData(data?: PodcastResultQuery): Podcast | undefined {
 	}
 	return {
 		...data.podcast,
-		description: data.podcast.description || undefined,
-		episodes: (data.podcast.episodes || []).map(episode => transformPodcastEpisode(data.podcast.name, data.podcast.id, episode))
+		description: data.podcast.description ?? undefined,
+		episodes: (data.podcast.episodes ?? []).map(episode => transformPodcastEpisode(data.podcast.name, data.podcast.id, episode))
 	};
 }
 

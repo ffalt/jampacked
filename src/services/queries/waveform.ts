@@ -7,7 +7,7 @@ import { useLazyQuery } from '@apollo/client/react';
 
 export const transformData =
 	(data?: WaveformResultQuery): Jam.WaveFormData | undefined =>
-		data?.waveform?.json ? JSON.parse(data.waveform.json) : undefined;
+		data?.waveform?.json ? JSON.parse(data.waveform.json) as Jam.WaveFormData : undefined;
 
 function transformVariables(id: string): WaveformResultQueryVariables {
 	return { id };

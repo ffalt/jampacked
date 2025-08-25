@@ -12,7 +12,7 @@ export const transformTrack = (track: TrackResult_track): TrackEntry => ({
 	id: track.id,
 	title: track.tag?.title ?? track.name,
 	artist: track.artist?.name ?? '?',
-	genre: track.genres?.length ? (track.genres || []).map(g => g.name).join(' / ') : undefined,
+	genre: track.genres?.length ? (track.genres ?? []).map(g => g.name).join(' / ') : undefined,
 	album: track.album?.name ?? '?',
 	albumID: track.album?.id,
 	artistID: track.artist?.id,

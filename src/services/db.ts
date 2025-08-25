@@ -108,7 +108,7 @@ export class Database {
 	 * @param values Values to be inserted
 	 * @param where Where statement to know which lines will be updated
 	 */
-	async update(table: string, keys: Array<string>, values: Array<any>, where?: Record<string, any>): Promise<QueryResult> {
+	async update(table: string, keys: Array<string>, values: Array<string | number | Date>, where?: Record<string, string | number | Date>): Promise<QueryResult> {
 		const keysString = keys.map(k => `${k} = ?`).join(', ');
 		const { sql, params } = this.buildWhere(where);
 		const query = `UPDATE ${table}
@@ -132,7 +132,7 @@ export class Database {
 	 * Treats an where object and returns the query with its parameters
 	 * @param where Where statement
 	 */
-	private buildWhere<T>(where?: WhereStatement<T>): WhereStatementResult {
+	private buildWhere<T>(where?: WhereStatement<T>): WhereStatementResult<T> {
 		const values: Array<T> = [];
 		let sql = '';
 		if (where) {
@@ -171,11 +171,7 @@ export class Database {
 				if (parameter instanceof Date) {
 					return parameter.toISOString();
 				} else {
-					try {
-						return JSON.stringify(parameter);
-					} catch {
-						return String(parameter);
-					}
+					return JSON.stringify(parameter);
 				}
 			}
 			default: {
@@ -187,7 +183,7 @@ export class Database {
 
 type WhereStatement<T> = Record<string, T>;
 
-interface WhereStatementResult {
+interface WhereStatementResult<T> {
 	sql: string;
-	params: Array<any>;
+	params: Array<T>;
 }

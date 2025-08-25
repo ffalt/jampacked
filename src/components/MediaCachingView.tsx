@@ -41,7 +41,7 @@ export const MediaCachingView: React.FC = () => {
 						Files:
 						{stat?.files}
 						{' '}
-						{(stat?.files || 0) > 0 ? `(${stat?.humanSize})` : ''}
+						{(stat?.files ?? 0) > 0 ? `(${stat?.humanSize})` : ''}
 					</ThemedText>
 				</View>
 				<View style={styles.button}>

@@ -17,7 +17,7 @@ export class JamConfigurationService implements JamConfiguration {
 	async fromStorage(): Promise<{ user: Jam.SessionUser; auth: Auth } | undefined> {
 		try {
 			const credentials = await SInfo.getItem(STORE_KEY, this.storeConfig);
-			return credentials ? JSON.parse(credentials) : undefined;
+			return credentials ? JSON.parse(credentials) as { user: Jam.SessionUser; auth: Auth } : undefined;
 		} catch {
 			return;
 		}

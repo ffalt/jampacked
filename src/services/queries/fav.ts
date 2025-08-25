@@ -1,5 +1,5 @@
 import type { ErrorLike } from '@apollo/client';
-import { MutationTuple, useLazyQuery, useMutation } from '@apollo/client/react';
+import { useLazyQuery, useMutation } from '@apollo/client/react';
 import { useCallback, useEffect, useState } from 'react';
 import { FavResultDocument, FavResultQuery, FavResultQueryVariables, SetFavResultDocument, SetFavResultMutation, SetFavResultMutationVariables } from './fav.api';
 
@@ -43,5 +43,5 @@ export const useLazyFavQuery = (): [(id: string) => void,
 	];
 };
 
-export const useFavMutation = (): MutationTuple<SetFavResultMutation, SetFavResultMutationVariables> =>
+export const useFavMutation = (): useMutation.ResultTuple<SetFavResultMutation, SetFavResultMutationVariables> =>
 	useMutation<SetFavResultMutation, SetFavResultMutationVariables>(SetFavResultDocument);

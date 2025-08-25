@@ -38,7 +38,7 @@ export const BaseEntryListList: React.FC<{ query: BaseEntryListListQuery }> = ({
 	const [getList, { loading, error, data, queryID }] = query.useList();
 
 	useEffect(() => {
-		setInfo({ icon: query.icon, title: query.text, subtitle: query.subtitle || ListTypeName[query.listType || ''] });
+		setInfo({ icon: query.icon, title: query.text, subtitle: query.subtitle ?? ListTypeName[query.listType ?? ''] });
 		setType(previous => {
 			if (query.genreIDs) {
 				const previous_genres = previous?.genreIDs ? previous.genreIDs.join('/') : '';
@@ -63,7 +63,7 @@ export const BaseEntryListList: React.FC<{ query: BaseEntryListListQuery }> = ({
 
 	useEffect(() => {
 		if (type && (type.listType || (type.genreIDs && type.genreIDs.length > 0))) {
-			getList(type.albumTypes || [], type.listType, type.genreIDs || [], type.seed, amount, type.offset);
+			getList(type.albumTypes ?? [], type.listType, type.genreIDs ?? [], type.seed, amount, type.offset);
 		}
 	}, [type, getList]);
 
@@ -84,7 +84,7 @@ export const BaseEntryListList: React.FC<{ query: BaseEntryListListQuery }> = ({
 		setEntries(undefined);
 		setTotal(0);
 		// TODO: this depends on ordering of graphql variables
-		const id = (queryID || '').slice(0, queryID?.indexOf('skip'));
+		const id = (queryID ?? '').slice(0, queryID?.indexOf('skip'));
 		dataService.cache.removeKeyStartWith(id)
 			.then(() => {
 				setType(previous => {
@@ -98,7 +98,7 @@ export const BaseEntryListList: React.FC<{ query: BaseEntryListListQuery }> = ({
 	const handleLoadMore = useCallback((): void => {
 		if (!loading && entries && total > 0 && total > entries.length) {
 			setType(previous => {
-				const p = previous?.offset || 0;
+				const p = previous?.offset ?? 0;
 				if (p + amount > total) {
 					return previous;
 				}

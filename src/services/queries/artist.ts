@@ -30,7 +30,7 @@ function transformData(data?: ArtistResultQuery): Artist | undefined {
 		return;
 	}
 	const sections: Array<SectionListData<BaseEntry>> = [];
-	for (const album of (data.artist.albums || [])) {
+	for (const album of (data.artist.albums ?? [])) {
 		let section = sections.find(s => s.key === album.albumType);
 		if (!section) {
 			section = {

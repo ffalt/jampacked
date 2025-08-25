@@ -42,7 +42,7 @@ export class JamAuthService {
 				this.user = undefined;
 			}
 		} catch (error: unknown) {
-			throw (error || new Error('Server error'));
+			throw (error ?? new Error('Server error'));
 		}
 	}
 

@@ -17,7 +17,7 @@ export interface PodcastResultQuery {
 		episodes: Array<{
 			id: string;
 			name: string;
-			date: any;
+			date: string;
 			duration?: number | null;
 			tag?: {
 				title?: string | null;

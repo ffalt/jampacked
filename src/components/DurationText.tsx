@@ -7,7 +7,7 @@ export const DurationText: React.FC<{ duration?: number; ms?: boolean; style?: S
 	const [value, setValue] = useState<string>('');
 
 	useEffect(() => {
-		setValue(formatDuration(ms ? (duration || 0) * 1000 : duration));
+		setValue(formatDuration(ms ? (duration ?? 0) * 1000 : duration));
 	}, [duration, ms]);
 
 	return (

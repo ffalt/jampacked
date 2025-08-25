@@ -44,7 +44,7 @@ export class CacheService {
 					key: result.key as string,
 					version: result.version,
 					date: result.date as number,
-					data: JSON.parse(result.data as string)
+					data: JSON.parse(result.data as string) as T
 				};
 			}
 		} catch (error) {

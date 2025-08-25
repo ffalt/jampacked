@@ -15,7 +15,7 @@ export const GenreTracksScreen: React.FC<GenreRouteProps<GenreRoute.TRACKS>> = (
 	});
 
 	useEffect(() => {
-		if (state && state.id) {
+		if (state?.id) {
 			setView({
 				text: `${state.name}`,
 				subtitle: 'Tracks in Genre',

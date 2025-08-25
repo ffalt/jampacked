@@ -4,6 +4,7 @@ import { HttpLink } from '@apollo/client/link/http';
 import { DataService } from './data';
 import { ErrorLink } from '@apollo/client/link/error';
 import { CombinedGraphQLErrors, CombinedProtocolErrors } from '@apollo/client/errors';
+import { errorMessage } from '../utils/errors.utils.ts';
 
 const defaultOptions: ApolloClient.DefaultOptions = {
 	watchQuery: {
@@ -28,38 +29,35 @@ export async function initApolloClient(dataService: DataService): Promise<JamApo
 		credentials: 'include'
 	});
 
-	const authLink = new SetContextLink((previousContext, _) => ({
-		headers: {
+	const authLink = new SetContextLink((previousContext, _) => {
+		const headers = {
 			...previousContext.headers,
 			authorization: dataService.jam.auth?.auth?.token ?
 				`Bearer ${dataService.jam.auth?.auth?.token}` :
-				previousContext.headers.authorization
-		}
-	}));
+				(previousContext.headers as { authorization: string }).authorization
+		} as Record<string, string>;
+		return ({ headers });
+	});
 
 	const errorLink = new ErrorLink(({ error }) => {
 		if (CombinedGraphQLErrors.is(error)) {
 			for (const { message, locations, path } of error.errors) {
-				console.log(`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`);
+				console.log(`[GraphQL error]: Message: ${message}, Locations: ${
+					JSON.stringify(locations)
+				}, Path: ${JSON.stringify(path)}`);
 			}
 		} else if (CombinedProtocolErrors.is(error)) {
 			for (const { message, extensions } of error.errors) {
 				console.log(`[Protocol error]: Message: ${message}, Extensions: ${JSON.stringify(extensions)}`);
 			}
 		} else {
-			console.error(`[Network error]: ${error}`);
+			console.error(`[Network error]: ${errorMessage(error)}`);
 		}
 	});
 
-	const logLink = new ApolloLink((operation: any, forward: any) => {
-		console.log('query', operation.operationName, operation.variables);
-		return forward(operation).map((result: any) => result);
-	});
-
 	const cache = new InMemoryCache({ resultCaching: true });
-
 	const authHttpLink = ApolloLink.from([authLink, httpLink]);
-	const links: Array<ApolloLink> = logging ? [logLink, errorLink, authHttpLink] : [errorLink, authHttpLink];
+	const links: Array<ApolloLink> = logging ? [errorLink, authHttpLink] : [errorLink, authHttpLink];
 
 	client = new ApolloClient({
 		link: ApolloLink.from(links),

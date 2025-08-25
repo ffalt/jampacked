@@ -36,11 +36,11 @@ export class DataService {
 	// auth
 
 	get currentUserName(): string {
-		return (this.jam.auth?.user?.name || '');
+		return (this.jam.auth?.user?.name ?? '');
 	}
 
 	get currentUserID(): string {
-		return (this.jam.auth?.user?.id || '');
+		return (this.jam.auth?.user?.id ?? '');
 	}
 
 	get currentUserToken(): string | undefined {

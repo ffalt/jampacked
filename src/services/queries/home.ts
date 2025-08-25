@@ -58,10 +58,10 @@ function transformData(data?: HomeResultQuery): HomeDataResult | undefined {
 		return;
 	}
 	const homeData: HomeData = {
-		artistsRecent: (data.artistsRecent?.items || []).map(o => ({ ...o, route: HomeRoute.ARTIST })),
-		artistsFaved: (data.artistsFaved?.items || []).map(o => ({ ...o, route: HomeRoute.ARTIST })),
-		albumsFaved: (data.albumsFaved?.items || []).map(o => ({ ...o, route: HomeRoute.ALBUM })),
-		albumsRecent: (data.albumsRecent?.items || []).map(o => ({ ...o, route: HomeRoute.ALBUM }))
+		artistsRecent: (data.artistsRecent?.items ?? []).map(o => ({ ...o, route: HomeRoute.ARTIST })),
+		artistsFaved: (data.artistsFaved?.items ?? []).map(o => ({ ...o, route: HomeRoute.ARTIST })),
+		albumsFaved: (data.albumsFaved?.items ?? []).map(o => ({ ...o, route: HomeRoute.ALBUM })),
+		albumsRecent: (data.albumsRecent?.items ?? []).map(o => ({ ...o, route: HomeRoute.ALBUM }))
 	};
 	const stats: HomeStatsData = [
 		{ link: JamRouteLinks.artists(), value: data.stats.artistTypes.album },

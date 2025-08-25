@@ -50,7 +50,7 @@ const albumTypeInfos: Array<JamAlbumTypeInfo> = [
 ];
 
 export function getAlbumTypeInfos(albumType: AlbumType): JamAlbumTypeInfo {
-	return albumTypeInfos.find(info => info.albumType === albumType) || { title: '[Invalid AlbumType]', icon: 'album', albumType };
+	return albumTypeInfos.find(info => info.albumType === albumType) ?? { title: '[Invalid AlbumType]', icon: 'album', albumType };
 }
 
 export const ListTypeName: Record<string, string> = {
