@@ -3,10 +3,11 @@ import { HomeRoute, HomeRouteProps } from '../navigators/Routing';
 import { useLazyBookmarksQuery } from '../services/queries/bookmarks.ts';
 import { JamPlayer } from '../services/player.ts';
 import { snackError } from '../services/snack.ts';
-import { ObjectHeader, objectHeaderStyles } from '../components/ObjectHeader.tsx';
-import { ClickIcon } from '../components/ClickIcon.tsx';
 import { Tracks } from '../components/Tracks.tsx';
 import { defaultShowArtistTrackDisplay } from '../components/TrackItem.tsx';
+import { PageHeader } from '../components/PageHeader.tsx';
+import { ClickIcon } from '../components/ClickIcon.tsx';
+import { objectHeaderStyles } from '../components/ObjectHeader.tsx';
 
 export const BookmarksScreen: React.FC<HomeRouteProps<HomeRoute.BOOKMARKS>> = () => {
 	const [getBookmarks, { loading, error, called, bookmarks }] = useLazyBookmarksQuery();
@@ -31,16 +32,13 @@ export const BookmarksScreen: React.FC<HomeRouteProps<HomeRoute.BOOKMARKS>> = ()
 	};
 
 	const ListHeaderComponent = (
-		<ObjectHeader
-			id="bookmarks"
+		<PageHeader
 			title="Bookmarks"
-			typeName="Bookmarks"
 			headerTitleCmds={(
-				<>
-					<ClickIcon iconName="play" onPress={playTracks} style={objectHeaderStyles.button} fontSize={objectHeaderStyles.buttonIcon.fontSize} />
-				</>
+				<ClickIcon iconName="play" onPress={playTracks} style={objectHeaderStyles.button} fontSize={objectHeaderStyles.buttonIcon.fontSize} />
 			)}
-		/>
+		>
+		</PageHeader>
 	);
 
 	return (

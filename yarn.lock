@@ -3277,6 +3277,13 @@
   dependencies:
     "@types/react" "*"
 
+"@types/react-native@^0.73.0":
+  version "0.73.0"
+  resolved "https://registry.yarnpkg.com/@types/react-native/-/react-native-0.73.0.tgz#b316be230745779814caa533360262140b0f5984"
+  integrity sha512-6ZRPQrYM72qYKGWidEttRe6M5DZBEV5F+MHMHqd4TTYx0tfkcdrUFGdef6CCxY0jXU7wldvd/zA/b0A/kTeJmA==
+  dependencies:
+    react-native "*"
+
 "@types/react-test-renderer@19.1.0":
   version "19.1.0"
   resolved "https://registry.npmjs.org/@types/react-test-renderer/-/react-test-renderer-19.1.0.tgz"
@@ -3291,10 +3298,10 @@
   dependencies:
     csstype "^3.0.2"
 
-"@types/react@19.1.11":
-  version "19.1.11"
-  resolved "https://registry.yarnpkg.com/@types/react/-/react-19.1.11.tgz#a64d8ec1769fc861d22f54e6e9f360ed67b54dc8"
-  integrity sha512-lr3jdBw/BGj49Eps7EvqlUaoeA0xpj3pc0RoJkHpYaCHkVK7i28dKyImLQb3JVlqs3aYSXf7qYuWOW/fgZnTXQ==
+"@types/react@19.1.1":
+  version "19.1.1"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-19.1.1.tgz#f7f2bb4a0a8d22b9ee4b8f6e27f0c78d76eb7f9b"
+  integrity sha512-ePapxDL7qrgqSF67s0h9m412d9DbXyC1n59O2st+9rjuuamWsZuD2w55rqY12CbzsZ7uVXb5Nw0gEp9Z8MMutQ==
   dependencies:
     csstype "^3.0.2"
 
@@ -9261,6 +9268,11 @@ react-native-is-edge-to-edge@^1.2.1:
   resolved "https://registry.npmjs.org/react-native-is-edge-to-edge/-/react-native-is-edge-to-edge-1.2.1.tgz"
   integrity sha512-FLbPWl/MyYQWz+KwqOZsSyj2JmLKglHatd3xLZWskXOpRaio4LfEDEz8E/A6uD8QoTHW6Aobw1jbEwK7KMgR7Q==
 
+react-native-keychain@^10.0.0:
+  version "10.0.0"
+  resolved "https://registry.yarnpkg.com/react-native-keychain/-/react-native-keychain-10.0.0.tgz#1de6f54d27b2376deaac4d51883c066f53b7be7b"
+  integrity sha512-YzPKSAnSzGEJ12IK6CctNLU79T1W15WDrElRQ+1/FsOazGX9ucFPTQwgYe8Dy8jiSEDJKM4wkVa3g4lD2Z+Pnw==
+
 react-native-nitro-modules@^0.28.1:
   version "0.28.1"
   resolved "https://registry.yarnpkg.com/react-native-nitro-modules/-/react-native-nitro-modules-0.28.1.tgz#888d777c761f2627b943833ab347b912d12f3b21"
@@ -9292,16 +9304,6 @@ react-native-screens@4.15.2:
     react-native-is-edge-to-edge "^1.2.1"
     warn-once "^0.1.0"
 
-react-native-sensitive-info@6.0.0-alpha.9:
-  version "6.0.0-alpha.9"
-  resolved "https://registry.yarnpkg.com/react-native-sensitive-info/-/react-native-sensitive-info-6.0.0-alpha.9.tgz#b488fab715d36efdf80b377a21545cfe888ab8d2"
-  integrity sha512-W2R1gUHgBAmy+wVl0BvA7s01SqqTitnG4Sdj2zmck0OS5a54kq+pTnXRqDljMa2NQs4Mue2IHyvd+Tf0X1ZL6Q==
-
-react-native-snackbar@2.9.0:
-  version "2.9.0"
-  resolved "https://registry.npmjs.org/react-native-snackbar/-/react-native-snackbar-2.9.0.tgz"
-  integrity sha512-6FdTKbFRSeV2Y/NXVupPuDg4uayo3jjUs1u6DPWHLIF7gy8hoaj6YFYW3FT9VbUt3wvwn4hyV54bBuZ1WvmBLg==
-
 react-native-status-bar-height@2.6.0:
   version "2.6.0"
   resolved "https://registry.npmjs.org/react-native-status-bar-height/-/react-native-status-bar-height-2.6.0.tgz"
@@ -9314,11 +9316,18 @@ react-native-tab-view@4.1.3, react-native-tab-view@^4.1.3:
   dependencies:
     use-latest-callback "^0.2.4"
 
+react-native-toastier@^2.0.4:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/react-native-toastier/-/react-native-toastier-2.0.4.tgz#514a026196470daf57b42c2444fb779e7e5038c0"
+  integrity sha512-mpNslhq+eRjvij20a1BldJicHRHL/gWOoLo/mQDR1PXYw/1MnWCPYfdaHKsDED/iUeUqtM+wEJBVZsis/f41rw==
+  dependencies:
+    "@types/react-native" "^0.73.0"
+
 react-native-track-player@ffalt/react-native-track-player:
   version "2.1.4"
   resolved "https://codeload.github.com/ffalt/react-native-track-player/tar.gz/42d01e1bab3ff162d61357922b42fe28fd7d0af4"
 
-react-native@0.81.0:
+react-native@*, react-native@0.81.0:
   version "0.81.0"
   resolved "https://registry.yarnpkg.com/react-native/-/react-native-0.81.0.tgz#ebb645f3fb2fc2ffb222d2f294ca4e81e6568f15"
   integrity sha512-RDWhewHGsAa5uZpwIxnJNiv5tW2y6/DrQUjEBdAHPzGMwuMTshern2s4gZaWYeRU3SQguExVddCjiss9IBhxqA==
@@ -9371,10 +9380,10 @@ react-test-renderer@19.1.1:
     react-is "^19.1.1"
     scheduler "^0.26.0"
 
-react@19.1.1:
-  version "19.1.1"
-  resolved "https://registry.yarnpkg.com/react/-/react-19.1.1.tgz#06d9149ec5e083a67f9a1e39ce97b06a03b644af"
-  integrity sha512-w8nqGImo45dmMIfljjMwOGtbmC/mk4CMYhWIicdSflH91J9TyCyczcPFXJzrZ/ZXcgGRFeP6BU0BEJTw6tZdfQ==
+react@19.1.0:
+  version "19.1.0"
+  resolved "https://registry.yarnpkg.com/react/-/react-19.1.0.tgz#926864b6c48da7627f004795d6cce50e90793b75"
+  integrity sha512-FS+XFBNvn3GTAWq26joslQgWNoFu08F4kl0J4CgdNKADkdSGXQyTCnKteIAJy96Br6YbpEU1LSzV5dYtjMkMDg==
 
 read-package-up@^11.0.0:
   version "11.0.0"

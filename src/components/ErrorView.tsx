@@ -4,6 +4,7 @@ import { snackError } from '../services/snack';
 import { Button, Image, StyleSheet, View } from 'react-native';
 import { IMAGE_ERROR } from '../style/images';
 import { staticTheme } from '../style/theming';
+import { errorMessage } from '../utils/errors.utils.ts';
 
 const styles = StyleSheet.create({
 	container: {
@@ -22,19 +23,11 @@ const styles = StyleSheet.create({
 	}
 });
 
-export const ErrorView: React.FC<{ error: Error; onRetry: () => void }> = ({ error, onRetry }) => {
+export const ErrorView: React.FC<{ error: unknown; onRetry: () => void }> = ({ error, onRetry }) => {
 	const [value, setValue] = useState<string>('');
 
 	useEffect(() => {
-		let text = error.message;
-		// 'Looks like you are not connected to the internet.'
-		// + ' Please check your internet settings.'
-
-		if (text.startsWith('Network error:')) {
-			text = text.slice(14);
-		}
-		setValue(text);
-
+		setValue(errorMessage((error)));
 		snackError(error);
 	}, [error]);
 

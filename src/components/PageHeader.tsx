@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { ThemedText } from './ThemedText';
 import { staticTheme } from '../style/theming';
@@ -30,6 +30,14 @@ const styles = StyleSheet.create({
 	buttonWrapper: {
 		width: 40
 	},
+	headerTitleCmds: {
+		paddingTop: staticTheme.padding,
+		flexDirection: 'row',
+		alignItems: 'center',
+		justifyContent: 'space-between',
+		height: 40,
+		borderRadius: 6
+	},
 	// eslint-disable-next-line react-native/no-unused-styles
 	buttonIcon: {
 		fontSize: staticTheme.fontSizeSmall
@@ -39,9 +47,10 @@ const styles = StyleSheet.create({
 export const PageHeader: React.FC<{
 	title: string;
 	subtitle?: string;
+	headerTitleCmds?: ReactNode | Array<ReactNode>;
 	goLeft?: RouteLink;
 	goRight?: RouteLink;
-}> = ({ title, goLeft, goRight, subtitle }) => {
+}> = ({ title, goLeft, goRight, subtitle, headerTitleCmds }) => {
 	const goLeftButton = goLeft === undefined ?
 		undefined :
 		(
@@ -65,7 +74,7 @@ export const PageHeader: React.FC<{
 		undefined;
 
 	const statusBarHeight = getStatusBarHeight();
-
+	const buttonsView = (headerTitleCmds && (<View style={styles.headerTitleCmds}>{headerTitleCmds}</View>))
 	return (
 		<View style={[styles.ListHeader, { marginTop: statusBarHeight }]}>
 			<View style={styles.buttonWrapper}>
@@ -74,6 +83,7 @@ export const PageHeader: React.FC<{
 			<View style={styles.ListHeaderTitleContainer}>
 				{subtitleView}
 				<ThemedText style={styles.ListHeaderTitle}>{title}</ThemedText>
+				{buttonsView}
 			</View>
 			<View style={styles.buttonWrapper}>
 				{goRightButton}

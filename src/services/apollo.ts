@@ -2,22 +2,21 @@ import { ApolloClient, ApolloLink, InMemoryCache } from '@apollo/client';
 import { SetContextLink } from '@apollo/client/link/context';
 import { HttpLink } from '@apollo/client/link/http';
 import { DataService } from './data';
-import { ErrorLink } from '@apollo/client/link/error';
-import { CombinedGraphQLErrors, CombinedProtocolErrors } from '@apollo/client/errors';
-import { errorMessage } from '../utils/errors.utils.ts';
 
 const defaultOptions: ApolloClient.DefaultOptions = {
 	watchQuery: {
 		fetchPolicy: 'no-cache',
-		errorPolicy: 'ignore'
+		errorPolicy: 'all'
 	},
 	query: {
 		fetchPolicy: 'no-cache',
 		errorPolicy: 'all'
+	},
+	mutate: {
+		fetchPolicy: 'no-cache',
+		errorPolicy: 'all'
 	}
 };
-
-const logging = false;
 
 export type JamApolloClient = ApolloClient;
 
@@ -39,28 +38,10 @@ export async function initApolloClient(dataService: DataService): Promise<JamApo
 		return ({ headers });
 	});
 
-	const errorLink = new ErrorLink(({ error }) => {
-		if (CombinedGraphQLErrors.is(error)) {
-			for (const { message, locations, path } of error.errors) {
-				console.log(`[GraphQL error]: Message: ${message}, Locations: ${
-					JSON.stringify(locations)
-				}, Path: ${JSON.stringify(path)}`);
-			}
-		} else if (CombinedProtocolErrors.is(error)) {
-			for (const { message, extensions } of error.errors) {
-				console.log(`[Protocol error]: Message: ${message}, Extensions: ${JSON.stringify(extensions)}`);
-			}
-		} else {
-			console.error(`[Network error]: ${errorMessage(error)}`);
-		}
-	});
-
 	const cache = new InMemoryCache({ resultCaching: true });
-	const authHttpLink = ApolloLink.from([authLink, httpLink]);
-	const links: Array<ApolloLink> = logging ? [errorLink, authHttpLink] : [errorLink, authHttpLink];
 
 	client = new ApolloClient({
-		link: ApolloLink.from(links),
+		link: ApolloLink.from([authLink, httpLink]),
 		cache,
 		defaultOptions
 	});

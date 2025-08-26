@@ -1,21 +1,19 @@
-import Snackbar from 'react-native-snackbar';
 import { errorMessage } from '../utils/errors.utils.ts';
+import { ToastService } from 'react-native-toastier';
 
 export function snackSuccess(text: string): void {
-	Snackbar.show({
-		text,
-		duration: Snackbar.LENGTH_SHORT,
-		backgroundColor: 'green',
-		textColor: 'white'
+	ToastService.show({
+		message: text,
+		duration: 5000,
+		type: 'success'
 	});
 }
 
 export function snackFail(text: string): void {
-	Snackbar.show({
-		text,
-		duration: Snackbar.LENGTH_LONG,
-		backgroundColor: 'red',
-		textColor: 'white'
+	ToastService.show({
+		message: text,
+		duration: 15_000,
+		type: 'danger'
 	});
 }
 

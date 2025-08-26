@@ -3,14 +3,14 @@ import dataService from './data';
 import { buildCacheID } from './cache-query';
 import { CacheState } from './cache';
 import { DocumentNode } from 'graphql';
-import { ErrorLike, type OperationVariables } from '@apollo/client';
+import { type OperationVariables } from '@apollo/client';
 import { useLazyQuery } from '@apollo/client/react';
 
 export type QueryFunction<TData, TVariables extends OperationVariables> = (variables: TVariables, options?: useLazyQuery.Options<TData, TVariables>, forceRefresh?: boolean) => void;
 
 export interface QueryHookData<TResult> {
 	loading: boolean;
-	error?: ErrorLike;
+	error?: unknown;
 	data?: TResult;
 	called: boolean;
 	queryID?: string;
@@ -39,10 +39,9 @@ export function useCacheOrLazyQuery<TData, TVariables extends OperationVariables
 						if (r) {
 							setResult(r);
 						} else {
-							await q({ variables, ...queryOptions });
+							q({ variables, ...queryOptions }).catch(console.error);
 						}
-					})
-					.catch(console.error);
+					}).catch(console.error);
 			}
 		}
 	}, [query, q]);

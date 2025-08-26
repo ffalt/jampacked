@@ -1,14 +1,11 @@
 import { Auth, Jam, JamConfiguration } from './jam';
-import SInfo from 'react-native-sensitive-info';
+import Keychain from 'react-native-keychain';
+import { STORAGE_TYPE } from 'react-native-keychain/src/enums.ts';
 
-const STORE_KEY = 'credentials';
+const STORE_KEY = 'react-native-keychain';
 
 export class JamConfigurationService implements JamConfiguration {
 	clientName = 'Jam';
-	storeConfig = {
-		sharedPreferencesName: 'jam',
-		keychainService: 'jam'
-	};
 
 	domain(): string {
 		return '';
@@ -16,15 +13,22 @@ export class JamConfigurationService implements JamConfiguration {
 
 	async fromStorage(): Promise<{ user: Jam.SessionUser; auth: Auth } | undefined> {
 		try {
-			const credentials = await SInfo.getItem(STORE_KEY, this.storeConfig);
-			return credentials ? JSON.parse(credentials) as { user: Jam.SessionUser; auth: Auth } : undefined;
+			const data = await Keychain.getGenericPassword({ service: STORE_KEY });
+			if (!data) {
+				return;
+			}
+			return JSON.parse(data.password) as { user: Jam.SessionUser; auth: Auth };
 		} catch {
 			return;
 		}
 	}
 
 	async toStorage(data: { user: Jam.SessionUser; auth: Auth } | undefined): Promise<void> {
-		await (data ? SInfo.setItem(STORE_KEY, JSON.stringify(data), this.storeConfig) : SInfo.deleteItem(STORE_KEY, this.storeConfig));
+		if (data) {
+			await Keychain.setGenericPassword('credentials', JSON.stringify(data), { service: STORE_KEY, storage: STORAGE_TYPE.AES_GCM_NO_AUTH });
+		} else {
+			await Keychain.resetGenericPassword({ service: STORE_KEY });
+		}
 	}
 
 	async userChangeNotify(/* user: Jam.SessionUser | undefined */): Promise<void> {

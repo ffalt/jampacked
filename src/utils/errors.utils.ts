@@ -18,3 +18,23 @@ export function errorMessage(error: unknown): string {
 	}
 	return message;
 }
+
+/*
+
+	const errorLink = new ErrorLink(({ error }) => {
+		if (CombinedGraphQLErrors.is(error)) {
+			for (const { message, locations, path } of error.errors) {
+				console.log(`[GraphQL error]: Message: ${message}, Locations: ${
+					JSON.stringify(locations)
+				}, Path: ${JSON.stringify(path)}`);
+			}
+		} else if (CombinedProtocolErrors.is(error)) {
+			for (const { message, extensions } of error.errors) {
+				console.log(`[Protocol error]: Message: ${message}, Extensions: ${JSON.stringify(extensions)}`);
+			}
+		} else {
+			console.error(`[Network error]: ${errorMessage(error)}`);
+		}
+	});
+
+ */

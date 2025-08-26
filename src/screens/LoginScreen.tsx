@@ -1,13 +1,14 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, KeyboardAvoidingView, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { staticTheme, useTheme } from '../style/theming';
-import { AppStackProps, AppRouting } from '../navigators/Routing';
+import { AppRouting, AppStackProps } from '../navigators/Routing';
 import { LoginButton } from '../components/LoginButton';
 import { ThemedIcon } from '../components/ThemedIcon';
 import { Logo } from '../components/Logo';
 import dataService from '../services/data';
 import { useAuth } from '../services/auth';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
+import { errorMessage } from '../utils/errors.utils.ts';
 
 const styles = StyleSheet.create({
 	container: {
@@ -153,8 +154,8 @@ export const LoginScreen: React.FC<AppStackProps<AppRouting.AUTH>> = () => {
 
 		setError(undefined);
 		setLoading(true);
-		login().catch(error_ => {
-			setError(`${error_}`);
+		login().catch((error_: unknown) => {
+			setError(errorMessage(error_));
 			setLoading(false);
 		});
 	}, [auth, server, name, password]);

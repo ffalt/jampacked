@@ -11,6 +11,7 @@ import { ApolloProvider } from '@apollo/client/react';
 import { JamApolloClient } from './src/services/apollo';
 import { sharedStyles } from './src/style/shared';
 import { setAppAvailable } from './src/services/playback';
+import { ToastProvider } from 'react-native-toastier';
 
 enableScreens();
 
@@ -63,16 +64,18 @@ export const App: React.FC = () => {
 	}
 	return (
 		<GestureHandlerRootView style={sharedStyles.flex}>
-			<ApolloProvider client={client}>
-				<ThemeContext.Provider value={themeSettings}>
-					<ThemeProvider theme={themeSettings.theme}>
-						<StatusBar translucent={true} backgroundColor={themeSettings.theme.statusBar} barStyle={themeSettings.theme.barStyle} />
-						<NavigationContainer theme={themeSettings.theme.navigation} ref={r => NavigationService.setTopLevelNavigator(r)}>
-							<AppNavigator />
-						</NavigationContainer>
-					</ThemeProvider>
-				</ThemeContext.Provider>
-			</ApolloProvider>
+			<ToastProvider>
+				<ApolloProvider client={client}>
+					<ThemeContext.Provider value={themeSettings}>
+						<ThemeProvider theme={themeSettings.theme}>
+							<StatusBar translucent={true} backgroundColor={themeSettings.theme.statusBar} barStyle={themeSettings.theme.barStyle} />
+							<NavigationContainer theme={themeSettings.theme.navigation} ref={r => NavigationService.setTopLevelNavigator(r)}>
+								<AppNavigator />
+							</NavigationContainer>
+						</ThemeProvider>
+					</ThemeContext.Provider>
+				</ApolloProvider>
+			</ToastProvider>
 		</GestureHandlerRootView>
 	);
 };
