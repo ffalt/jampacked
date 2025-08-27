@@ -7,13 +7,13 @@ import { PlaylistQuery } from './queries/playlist';
 import { PodcastEpisodeQuery } from './queries/podcastEpisode';
 import { DownloadRequest, DownloadState, TrackPlayerDownloadManager } from './player.api.ts';
 import { humanFileSize } from '../utils/filesize.utils';
-import { QueryResultRow } from 'react-native-nitro-sqlite';
 import { TrackEntry } from '../types/track.ts';
 import { Document } from '../types/document.ts';
 import { PinCacheStat, PinMedia, PinState } from '../types/pin.ts';
 import dbService from './db.service.ts';
 import jamService from './jam.service.ts';
 import cacheService from './cache.service.ts';
+import { Scalar } from '@op-engineering/op-sqlite';
 
 export class PinService {
 	manager: TrackPlayerDownloadManager = new TrackPlayerDownloadManager();
@@ -53,7 +53,7 @@ export class PinService {
 			}
 			const list: Array<Document<T>> = [];
 			for (let index = 0; index < results.rows.length; index++) {
-				const result = results.rows.item(index);
+				const result = results.rows.at(index);
 				if (result) {
 					list.push(this.rowToObj<T>(result));
 				}
@@ -65,7 +65,7 @@ export class PinService {
 		}
 	}
 
-	private rowToObj<T>(row: QueryResultRow): Document<T> {
+	private rowToObj<T>(row: Record<string, Scalar>): Document<T> {
 		return {
 			key: row['key'] as string,
 			version: row['version'] as number,
@@ -77,7 +77,7 @@ export class PinService {
 	private async getPinDoc<T>(id: string): Promise<Document<T> | undefined> {
 		try {
 			const results = await dbService.query('SELECT * FROM pin WHERE key=?', [id]);
-			const result = results.rows && results.rows.length > 0 ? results.rows.item(0) : undefined;
+			const result = results.rows && results.rows.length > 0 ? results.rows.at(0) : undefined;
 			if (result) {
 				return this.rowToObj<T>(result);
 			}

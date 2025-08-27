@@ -15,7 +15,7 @@ class StorageService {
 
 	async getValue(id: string): Promise<string | undefined> {
 		const results = await dbService.query('SELECT * FROM store WHERE key=?', [id]);
-		const result = results.rows && results.rows.length > 0 ? results.rows.item(0) : undefined;
+		const result = results.rows && results.rows.length > 0 ? results.rows.at(0) : undefined;
 		return result?.['data'] as string | undefined;
 	}
 

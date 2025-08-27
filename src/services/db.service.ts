@@ -1,25 +1,23 @@
-import { NITRO_SQLITE_NULL, type NitroSQLiteConnection, open, type QueryResult, type QueryResultRow, type SQLiteQueryParams, type SQLiteValue } from 'react-native-nitro-sqlite';
-
-// let database: DatabaseService | undefined;
+import { ANDROID_DATABASE_PATH, type DB, IOS_LIBRARY_PATH, open, QueryResult, Scalar } from '@op-engineering/op-sqlite';
+import { Platform } from 'react-native';
 
 class DatabaseService {
-	db?: NitroSQLiteConnection;
+	db?: DB;
 
 	async init() {
 		await this.connect('jam.db');
 	}
 
-	/**
-	 * Start database connection
-	 * Only used in getInstance() method
-	 */
-	async connect(name: string): Promise<NitroSQLiteConnection> {
+	async connect(name: string): Promise<DB> {
 		if (this.db) {
 			return this.db;
 		}
-		this.db = await new Promise<NitroSQLiteConnection>((resolve, reject) => {
+		this.db = await new Promise<DB>((resolve, reject) => {
 			try {
-				const db = open({ name, location: 'Library' });
+				const db = open({
+					name,
+					location: (Platform.OS === 'ios' ? IOS_LIBRARY_PATH : ANDROID_DATABASE_PATH) as string
+				});
 				resolve(db);
 			} catch (error: unknown) {
 				reject(error);
@@ -46,8 +44,8 @@ class DatabaseService {
 		return this.executeQuery(sql, sqlParameters);
 	}
 
-	private async executeQuery(sql: string, para: SQLiteQueryParams): Promise<QueryResult> {
-		return this.db!.executeAsync(sql, para);
+	private async executeQuery(sql: string, para: Array<Scalar>): Promise<QueryResult> {
+		return this.db!.execute(sql, para);
 	}
 
 	/**
@@ -56,14 +54,14 @@ class DatabaseService {
 	 * @param sql Query to be executed
 	 * @param parameters Params that substitutes '?' in the query
 	 */
-	async queryAndGetRows(sql: string, parameters: Array<unknown> = []): Promise<Array<QueryResultRow | undefined>> {
+	async queryAndGetRows(sql: string, parameters: Array<unknown> = []): Promise<Array<Record<string, Scalar> | undefined>> {
 		const result = await this.query(sql, parameters);
 		if (!result?.rows) {
 			return [];
 		}
-		const data: Array<QueryResultRow | undefined> = [];
+		const data: Array<Record<string, Scalar> | undefined> = [];
 		for (let index = 0; index < result.rows.length; index += 1) {
-			data.push(result.rows.item(index));
+			data.push(result.rows.at(index));
 		}
 		return data;
 	}
@@ -140,13 +138,13 @@ class DatabaseService {
 	 * Treat all parameters to be used in queries
 	 * @param parameters Parameters
 	 */
-	private treatParams(parameters: Array<unknown> = []): SQLiteQueryParams {
+	private treatParams(parameters: Array<unknown> = []): Array<Scalar> {
 		return parameters.map(p => this.treatParam(p));
 	}
 
-	private treatParam(parameter: unknown): SQLiteValue {
+	private treatParam(parameter: unknown): Scalar {
 		if (parameter === undefined || parameter === null) {
-			return NITRO_SQLITE_NULL;
+			return null;
 		}
 		switch (typeof parameter) {
 			case 'string': {
