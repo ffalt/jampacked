@@ -1337,10 +1337,10 @@
   resolved "https://registry.npmjs.org/@csstools/css-tokenizer/-/css-tokenizer-3.0.4.tgz"
   integrity sha512-Vd/9EVDiu6PPJt9yAh6roZP6El1xHrdvIVGjyBsHR0RYwNHgL7FJPyIIW4fANJNG6FtyZfvlRPpFI4ZM/lubvw==
 
-"@d11/react-native-fast-image@8.6.12":
-  version "8.6.12"
-  resolved "https://registry.npmjs.org/@d11/react-native-fast-image/-/react-native-fast-image-8.6.12.tgz"
-  integrity sha512-dKrSM42OWpQJ576hRrZVXnr7VONHf1wqTTLiDmGFfpZSfweg9PzzazNyOQRtcF7RXi4+yxYBTZjp8L3DJ7TBAA==
+"@d11/react-native-fast-image@8.11.1":
+  version "8.11.1"
+  resolved "https://registry.yarnpkg.com/@d11/react-native-fast-image/-/react-native-fast-image-8.11.1.tgz#de2b1acdb6e9bdc66a3e2168fb41b2f9de46c231"
+  integrity sha512-KG5Oxs1TWbwMf0ibZwE4EKMSSC0vpBQG6yPAB3WwcYtSzlY4JICjjpXPP+oixwQ/hO/sm6EGBNkVHOlfg4aJ+g==
 
 "@egjs/hammerjs@^2.0.17":
   version "2.0.17"
