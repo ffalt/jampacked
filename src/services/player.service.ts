@@ -1,32 +1,7 @@
-import { useEffect, useState } from 'react';
-import { AudioFormatType } from './jam';
-import dataService from './data';
-import { TrackEntry } from './types';
-import { State, TrackPlayer, TrackPlayerTrack, useTrackPlayerCurrentTrack } from './player-api';
-
-async function buildTrackPlayerTrack(t: TrackEntry): Promise<TrackPlayerTrack> {
-	const headers = dataService.currentUserToken ? { Authorization: `Bearer ${dataService.currentUserToken}` } : undefined;
-	const imageID = t.seriesID ? t.id : (t.albumID ?? t.id);
-	const url = dataService.jam.stream.streamUrl({ id: t.id, format: AudioFormatType.mp3 }, !headers);
-	return {
-		id: t.id,
-		url,
-		title: t.title,
-		artist: t.artist,
-		album: t.album,
-		genre: t.genre,
-		duration: t.durationMS / 1000,
-		artwork: dataService.jam.image.imageUrl({ id: imageID, size: 300 }, !headers),
-		headers
-		// type: TrackType.default;
-		// date: t.tag?.year,
-		// description?: string;
-		// rating?: number | boolean;
-		// userAgent?: string;
-		// contentType?: string;
-		// pitchAlgorithm?: PitchAlgorithm
-	};
-}
+import jamService from './jam.service.ts';
+import { State, TrackPlayer } from './player.api.ts';
+import { TrackEntry } from '../types/track.ts';
+import { buildTrackPlayerTrack } from '../utils/build-track.ts';
 
 export const JamPlayer = {
 	shuffleQueueSync(): void {
@@ -46,7 +21,7 @@ export const JamPlayer = {
 	},
 
 	async addTrackToQueue(track: TrackEntry): Promise<void> {
-		await TrackPlayer.add(await buildTrackPlayerTrack(track));
+		await TrackPlayer.add(await buildTrackPlayerTrack(jamService, track));
 	},
 
 	async removeTrackFromQueue(index: number): Promise<void> {
@@ -54,7 +29,7 @@ export const JamPlayer = {
 	},
 
 	async addTracksToQueue(tracks: Array<TrackEntry>): Promise<void> {
-		await TrackPlayer.add(await Promise.all(tracks.map(async t => buildTrackPlayerTrack(t))));
+		await TrackPlayer.add(await Promise.all(tracks.map(async t => buildTrackPlayerTrack(jamService, t))));
 	},
 
 	async playTrack(track: TrackEntry): Promise<void> {
@@ -64,7 +39,7 @@ export const JamPlayer = {
 	},
 
 	async playTracks(tracks: Array<TrackEntry>): Promise<void> {
-		const entries = await Promise.all(tracks.map(async t => buildTrackPlayerTrack(t)));
+		const entries = await Promise.all(tracks.map(async t => buildTrackPlayerTrack(jamService, t)));
 		await TrackPlayer.stop();
 		await TrackPlayer.reset();
 		await TrackPlayer.add(entries);
@@ -123,7 +98,7 @@ export const JamPlayer = {
 
 	async destroy(): Promise<void> {
 		try {
-			await TrackPlayer.destroy();
+			TrackPlayer.destroy();
 		} catch (error) {
 			console.error(error);
 		}
@@ -187,13 +162,3 @@ export const JamPlayer = {
 	}
 };
 
-export function useCurrentTrackID(): string | undefined {
-	const [trackId, setTrackId] = useState<string | undefined>(undefined);
-	const track = useTrackPlayerCurrentTrack();
-
-	useEffect(() => {
-		setTrackId(track?.id);
-	}, [track]);
-
-	return trackId;
-}

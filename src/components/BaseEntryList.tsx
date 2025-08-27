@@ -5,12 +5,12 @@ import { PageHeader } from './PageHeader';
 import { Separator } from './Separator';
 import { Item } from './Item';
 import { ImageItem } from './ImageItem';
-import { BaseEntry } from '../services/types';
 import { useWindowWidth } from '../utils/dimension.hook';
 import { ListEmpty } from './ListEmpty';
 import { commonItemLayout, defaultKeyExtractor } from '../utils/list.utils';
 import { DefaultFlatList } from './DefaultFlatList.tsx';
 import { RouteLink } from '../navigators/Routes';
+import { BaseEntry } from '../types/base.ts';
 
 const style = StyleSheet.create({
 	row: {

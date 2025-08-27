@@ -1,12 +1,12 @@
 import React, { MutableRefObject, useCallback, useState } from 'react';
 import { DefaultFlatList } from './DefaultFlatList.tsx';
-import { TrackEntry } from '../services/types';
 import { TrackDisplayFunction, TrackItem } from './TrackItem';
 import { ErrorView } from './ErrorView';
 import { FloatingAction } from 'react-native-floating-action';
 import { ActionMenuItem, executeTrackMenuAction, trackMenuIcon, trackMenuMultiSelectActions, trackMenuSingleSelectActions } from './ActionMenuTrack';
-import { JamPlayer } from '../services/player';
+import { JamPlayer } from '../services/player.service.ts';
 import { useTheme } from '../style/theming';
+import { TrackEntry } from '../types/track.ts';
 
 export const Tracks: React.FC<{
 	tracks?: Array<TrackEntry>;

@@ -7,11 +7,11 @@ import { HeaderDetail, ObjectHeader, objectHeaderStyles } from '../components/Ob
 import { genreDisplay } from '../utils/genre.utils';
 import { FavIcon } from '../components/FavIcon';
 import { JamObjectType } from '../services/jam';
-import { BaseEntry } from '../services/types';
 import { useLazyArtistQuery } from '../services/queries/artist';
 import { DefaultSectionList } from '../components/DefaultSectionList.tsx';
 import { sharedStyles } from '../style/shared';
 import { Rating } from '../components/Rating';
+import { BaseEntry } from '../types/base.ts';
 
 const buildDetails = (albums?: number, tracks?: number, genre?: string): Array<HeaderDetail> => [
 	{ title: 'Albums', value: `${albums}` },

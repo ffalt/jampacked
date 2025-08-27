@@ -1,10 +1,10 @@
 import React from 'react';
-import { TrackEntry } from '../services/types';
-import { JamPlayer } from '../services/player';
+import { JamPlayer } from '../services/player.service.ts';
 import { NavigationService } from '../navigators/navigation';
-import { JamObjectType } from '../services/jam';
 import { ThemedIcon } from './ThemedIcon';
 import { IActionProps } from 'react-native-floating-action';
+import { TrackEntry } from '../types/track.ts';
+import { JamObjectType } from '../services/jam';
 
 export interface ActionMenuItem extends IActionProps {
 	position?: number;

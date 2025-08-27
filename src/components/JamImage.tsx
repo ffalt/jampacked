@@ -1,7 +1,7 @@
 import React from 'react';
 import FastImage, { ImageStyle } from '@d11/react-native-fast-image';
 import { StyleProp } from 'react-native';
-import { useAuth } from '../services/auth';
+import { useAuth } from '../services/jam.auth.ts';
 import { staticTheme } from '../style/theming';
 import { ImageFormatType } from '../services/jam';
 

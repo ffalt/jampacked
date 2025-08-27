@@ -1,9 +1,9 @@
 import React, { useCallback } from 'react';
 import { StyleProp, ViewStyle } from 'react-native';
 import { JamObjectType } from '../services/jam';
-import dataService from '../services/data';
-import { usePinState } from '../services/pin-hooks';
+import { usePinState } from '../services/pin.hooks.ts';
 import { ClickIcon } from './ClickIcon';
+import pinService from '../services/pin.service.ts';
 
 export const PinIcon: React.FC<{ id?: string; objType: JamObjectType; style?: StyleProp<ViewStyle>; fontSize?: number }> = ({ id, objType, fontSize, style }) => {
 	const pinned = usePinState(id);
@@ -11,9 +11,9 @@ export const PinIcon: React.FC<{ id?: string; objType: JamObjectType; style?: St
 	const handleTogglePin = useCallback((): void => {
 		if (pinned && id && objType) {
 			if (pinned.pinned) {
-				dataService.pin.unpin(id).catch(console.error);
+				pinService.unpin(id).catch(console.error);
 			} else {
-				dataService.pin.pin(id, objType).catch(console.error);
+				pinService.pin(id, objType).catch(console.error);
 			}
 		}
 	}, [pinned, id, objType]);

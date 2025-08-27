@@ -1,10 +1,11 @@
 import { ListType } from '../jam';
-import { TrackEntryList, useTrackListFunction } from '../types';
 import { DocumentNode } from 'graphql';
 import { transformTrack } from './track';
-import { useCacheOrLazyQuery } from '../cache-hooks';
+import { useCacheOrLazyQuery } from '../cache.hooks.ts';
 import { useCallback } from 'react';
 import { TrackListResultDocument, TrackListResultQuery, TrackListResultQueryVariables } from './trackList.api';
+import { TrackEntryList } from '../../types/track.ts';
+import { useTrackListFunction } from '../../types/use-track-list.ts';
 
 function transformData(data?: TrackListResultQuery, variables?: TrackListResultQueryVariables): TrackEntryList | undefined {
 	if (!data) {

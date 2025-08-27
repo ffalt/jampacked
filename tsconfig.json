@@ -1,9 +1,5 @@
 {
   "extends": "@react-native/typescript-config",
-  "compilerOptions": {
-    "jsx": "react",
-    "skipLibCheck": true
-  },
   "exclude": [
     "node_modules/*",
     "local/",

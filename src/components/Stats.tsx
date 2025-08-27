@@ -1,9 +1,9 @@
 import { StyleSheet, View } from 'react-native';
-import { HomeStatData } from '../services/types';
 import React from 'react';
 import { ThemedText } from './ThemedText';
 import { Stat } from './Stat';
 import { sharedStyles } from '../style/shared';
+import { HomeStatData } from '../types/home-stats.ts';
 
 const styles = StyleSheet.create({
 	homeStatContainer: {

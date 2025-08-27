@@ -1,8 +1,8 @@
 import { StyleSheet, View } from 'react-native';
 import React from 'react';
-import { useCurrentTrackID } from '../services/player';
 import { useTheme } from '../style/theming';
 import { JamImage } from './JamImage';
+import { useCurrentTrackID } from '../services/player.hooks.ts';
 
 const styles = StyleSheet.create({
 	cover: {

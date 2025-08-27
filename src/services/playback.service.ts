@@ -1,7 +1,8 @@
-import dataService from './data';
-import { JamPlayer } from './player';
-import { snackError } from './snack';
-import { TrackPlayer, Event, State } from './player-api';
+import { JamPlayer } from './player.service.ts';
+import { snackError } from '../utils/snack.ts';
+import { Event, State, TrackPlayer } from './player.api.ts';
+import jamService from './jam.service.ts';
+import cacheService from './cache.service.ts';
 
 let hasApp = false;
 let wasPausedByDuck = false;
@@ -14,7 +15,9 @@ export default async function playbackService(): Promise<void> {
 	TrackPlayer.addEventListener(Event.Scrobble, ({ trackIndex }) => {
 		TrackPlayer.getTrack(trackIndex).then(track => {
 			if (track?.id) {
-				dataService.scrobble(track.id).catch(console.error);
+				jamService.nowplaying.scrobble({ id: track?.id }).then(() => {
+					cacheService.updateHomeData().catch(console.error);
+				}).catch(console.error);
 			}
 		}).catch(console.error);
 	});

@@ -3,7 +3,7 @@ import { RefreshControl, ScrollView, View } from 'react-native';
 import { HomeRoute, HomeRouteProps } from '../navigators/Routing';
 import { HeaderDetail, ObjectHeader, objectHeaderStyles } from '../components/ObjectHeader.tsx';
 import { genreDisplay } from '../utils/genre.utils';
-import { JamPlayer } from '../services/player';
+import { JamPlayer } from '../services/player.service.ts';
 import { JamObjectType } from '../services/jam';
 import { FavIcon } from '../components/FavIcon';
 import { Lyrics } from '../components/Lyrics';
@@ -11,9 +11,9 @@ import { useTheme } from '../style/theming';
 import { ErrorView } from '../components/ErrorView';
 import { useLazyTrackQuery } from '../services/queries/track';
 import { ClickIcon } from '../components/ClickIcon';
-import { TrackEntry } from '../services/types';
 import { NavigationService } from '../navigators/navigation';
 import { Rating } from '../components/Rating';
+import { TrackEntry } from '../types/track.ts';
 
 const buildDetails = (track?: TrackEntry): Array<HeaderDetail> => [
 	{

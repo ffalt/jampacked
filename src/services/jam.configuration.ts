@@ -4,7 +4,7 @@ import { STORAGE_TYPE } from 'react-native-keychain/src/enums.ts';
 
 const STORE_KEY = 'react-native-keychain';
 
-export class JamConfigurationService implements JamConfiguration {
+export class JamStoredConfiguration implements JamConfiguration {
 	clientName = 'Jam';
 
 	domain(): string {

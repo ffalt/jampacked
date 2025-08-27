@@ -3,11 +3,11 @@ import { RefreshControl, ScrollView } from 'react-native';
 import { Stats } from './Stats';
 import { HomeDataSection } from './HomeDataSection';
 import { useLazyHomeDataQuery } from '../services/queries/home';
-import dataService from '../services/data';
 import { ErrorView } from './ErrorView';
 import { useTheme } from '../style/theming';
 import { HomeUserSection } from './HomeUserSection';
 import { HomeAppSection } from './HomeAppSection';
+import cacheService from '../services/cache.service.ts';
 
 export const HomeMain: React.FC = () => {
 	const theme = useTheme();
@@ -27,10 +27,10 @@ export const HomeMain: React.FC = () => {
 			}
 		};
 
-		dataService.cache.subscribeHomeDataChangeUpdates(update);
+		cacheService.subscribeHomeDataChangeUpdates(update);
 		return (): void => {
 			isSubscribed = false;
-			dataService.cache.unsubscribeHomeDataChangeUpdates(update);
+			cacheService.unsubscribeHomeDataChangeUpdates(update);
 		};
 	}, [getHomeData]);
 

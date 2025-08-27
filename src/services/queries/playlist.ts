@@ -1,11 +1,11 @@
-import { TrackEntry } from '../types';
 import { formatDuration } from '../../utils/duration.utils';
 import { DocumentNode } from 'graphql';
 import { transformTrack } from './track';
 import type { ErrorLike } from '@apollo/client';
-import { useCacheOrLazyQuery } from '../cache-hooks';
+import { useCacheOrLazyQuery } from '../cache.hooks.ts';
 import { useCallback } from 'react';
 import { PlaylistResultDocument, PlaylistResultQuery, PlaylistResultQueryVariables } from './playlist.api';
+import { TrackEntry } from '../../types/track.ts';
 
 export type PlaylistResult_playlist_entries_episode = NonNullable<PlaylistResultQuery>['playlist']['entries'][number]['episode'];
 

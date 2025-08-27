@@ -1,11 +1,12 @@
-import { TrackEntry, UseGetCallFunctionTransform } from '../types';
 import { DocumentNode } from 'graphql';
 import type { ErrorLike } from '@apollo/client';
-import { useCacheOrLazyQuery } from '../cache-hooks';
+import { useCacheOrLazyQuery } from '../cache.hooks.ts';
 import { useCallback } from 'react';
 import { BookmarkResultDocument, BookmarkResultQuery, BookmarkResultQueryVariables } from './bookmarks.api';
 import { transformTrack } from './track.ts';
 import { transformEpisode } from './playlist.ts';
+import { TrackEntry } from '../../types/track.ts';
+import { UseGetCallFunctionTransform } from '../../types/use-get.ts';
 
 export interface Bookmarks {
 	total: number;

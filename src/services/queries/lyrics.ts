@@ -1,6 +1,6 @@
 import { DocumentNode } from 'graphql';
 import type { ErrorLike } from '@apollo/client';
-import { useCacheOrLazyQuery } from '../cache-hooks';
+import { useCacheOrLazyQuery } from '../cache.hooks.ts';
 import { useCallback } from 'react';
 import { TrackLyricsResultDocument, TrackLyricsResultQuery, TrackLyricsResultQueryVariables } from './lyrics.api';
 

@@ -1,19 +1,20 @@
 import React, { useCallback, useState } from 'react';
 import { PageHeader } from '../components/PageHeader';
 import { PinnedMediaItem } from '../components/PinnedMediaItem';
-import { PinMedia, TrackEntry } from '../services/types';
-import { usePinnedMedia } from '../services/pin-hooks';
+import { usePinnedMedia } from '../services/pin.hooks.ts';
 import { DownloadsRoute, DownloadsRouteProps } from '../navigators/Routing';
 import { SectionListData, TouchableOpacity } from 'react-native';
 import { TrackDisplay, TrackItem } from '../components/TrackItem';
 import { DefaultSectionList } from '../components/DefaultSectionList.tsx';
 import { Separator } from '../components/Separator';
-import { downloadStateToString, useTrackPlayerDownloadCached } from '../services/player-api';
-import dataService from '../services/data';
+import { downloadStateToString, useTrackPlayerDownloadCached } from '../services/player.api.ts';
 import { useTheme } from '../style/theming';
+import { TrackEntry } from '../types/track.ts';
+import { PinMedia } from '../types/pin.ts';
+import pinService from '../services/pin.service.ts';
 
 export const PinnedTrackItem: React.FC<{ track: TrackEntry }> = React.memo(({ track }) => {
-	const download = useTrackPlayerDownloadCached(track.id, dataService.pin.manager);
+	const download = useTrackPlayerDownloadCached(track.id, pinService.manager);
 	const trackDisplay = (t: TrackEntry): TrackDisplay => ({
 		column1: t.trackNr,
 		column2title: t.title,

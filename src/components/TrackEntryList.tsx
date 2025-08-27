@@ -1,9 +1,9 @@
 import React from 'react';
 import { PageHeader } from './PageHeader';
-import { TrackEntry } from '../services/types';
 import { Tracks } from './Tracks';
 import { TrackDisplayFunction } from './TrackItem';
 import { RouteLink } from '../navigators/Routes';
+import { TrackEntry } from '../types/track.ts';
 
 export interface TrackEntryListInfo {
 	title: string;

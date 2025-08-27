@@ -1,16 +1,15 @@
 import { useCallback, useEffect, useState } from 'react';
-import dataService from './data';
-import { buildCacheID } from './cache-query';
-import { CacheState } from './cache';
+import { buildCacheID } from '../utils/build-query-cache-id.ts';
+import cacheService, { CacheState } from './cache.service.ts';
 import { DocumentNode } from 'graphql';
-import { type OperationVariables } from '@apollo/client';
+import { ErrorLike, type OperationVariables } from '@apollo/client';
 import { useLazyQuery } from '@apollo/client/react';
 
 export type QueryFunction<TData, TVariables extends OperationVariables> = (variables: TVariables, options?: useLazyQuery.Options<TData, TVariables>, forceRefresh?: boolean) => void;
 
 export interface QueryHookData<TResult> {
 	loading: boolean;
-	error?: unknown;
+	error?: ErrorLike;
 	data?: TResult;
 	called: boolean;
 	queryID?: string;
@@ -34,7 +33,7 @@ export function useCacheOrLazyQuery<TData, TVariables extends OperationVariables
 			if (forceRefresh) {
 				q({ variables, ...queryOptions }).catch(console.error);
 			} else {
-				dataService.cache.getData<TResult>(queryID)
+				cacheService.getData<TResult>(queryID)
 					.then(async r => {
 						if (r) {
 							setResult(r);
@@ -57,7 +56,7 @@ export function useCacheOrLazyQuery<TData, TVariables extends OperationVariables
 			const r = transform(queryData, variables as TVariables);
 			if (id && r) {
 				setResult(r);
-				dataService.cache.setData(id, r).catch(console.error);
+				cacheService.setData(id, r).catch(console.error);
 			}
 		}
 	}, [variables, id, transform, queryData]);
@@ -66,18 +65,18 @@ export function useCacheOrLazyQuery<TData, TVariables extends OperationVariables
 }
 
 export function useCacheManagement(): [fill: () => void, clear: () => void, stop: () => void, state: CacheState] {
-	const [state, setState] = useState<CacheState>(dataService.cache.state);
+	const [state, setState] = useState<CacheState>(cacheService.state);
 
 	const fill = useCallback(() => {
-		dataService.cache.fill().catch(console.error);
+		cacheService.fill().catch(console.error);
 	}, []);
 
 	const clear = useCallback(() => {
-		dataService.cache.clear().catch(console.error);
+		cacheService.clear().catch(console.error);
 	}, []);
 
 	const stop = useCallback(() => {
-		dataService.cache.stop().catch(console.error);
+		cacheService.stop().catch(console.error);
 	}, []);
 
 	useEffect(() => {
@@ -89,10 +88,10 @@ export function useCacheManagement(): [fill: () => void, clear: () => void, stop
 			}
 		};
 
-		dataService.cache.subscribeStateChangeUpdates(update);
+		cacheService.subscribeStateChangeUpdates(update);
 		return (): void => {
 			isSubscribed = false;
-			dataService.cache.unsubscribeStateChangeUpdates(update);
+			cacheService.unsubscribeStateChangeUpdates(update);
 		};
 	}, []);
 

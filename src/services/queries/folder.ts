@@ -1,11 +1,12 @@
 import { FolderType, JamObjectType } from '../jam';
-import { BaseEntry, TrackEntry } from '../types';
 import { DocumentNode } from 'graphql';
 import { transformTrack } from './track';
 import type { ErrorLike } from '@apollo/client';
-import { useCacheOrLazyQuery } from '../cache-hooks';
+import { useCacheOrLazyQuery } from '../cache.hooks.ts';
 import { useCallback } from 'react';
 import { FolderResultDocument, FolderResultQuery, FolderResultQueryVariables } from './folder.api';
+import { TrackEntry } from '../../types/track.ts';
+import { BaseEntry } from '../../types/base.ts';
 
 export interface FolderItem {
 	id: string;

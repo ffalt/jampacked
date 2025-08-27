@@ -1,11 +1,11 @@
-import { TrackEntry } from '../types';
 import { AlbumType } from '../jam';
 import { DocumentNode } from 'graphql';
 import { transformTrack } from './track';
 import type { ErrorLike } from '@apollo/client';
-import { useCacheOrLazyQuery } from '../cache-hooks';
+import { useCacheOrLazyQuery } from '../cache.hooks.ts';
 import { useCallback } from 'react';
 import { AlbumResultDocument, AlbumResultQuery, AlbumResultQueryVariables } from './album.api';
+import { TrackEntry } from '../../types/track.ts';
 
 export interface Album {
 	id: string;

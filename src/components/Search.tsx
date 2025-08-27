@@ -3,10 +3,10 @@ import { JamObjectType } from '../services/jam';
 import { StyleSheet } from 'react-native';
 import { Item } from './Item';
 import { staticTheme } from '../style/theming';
-import { BaseEntry } from '../services/types';
 import { useLazySearchQuery } from '../services/queries/search';
 import { DefaultFlatList } from './DefaultFlatList.tsx';
 import { ClickLabelIcon } from './ClickLabelIcon';
+import { BaseEntry } from '../types/base.ts';
 
 const styles = StyleSheet.create({
 	section: {

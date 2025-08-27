@@ -1,10 +1,10 @@
-import { TrackEntry } from '../types';
 import { DocumentNode } from 'graphql';
 import { ErrorLike } from '@apollo/client';
-import { useCacheOrLazyQuery } from '../cache-hooks';
+import { useCacheOrLazyQuery } from '../cache.hooks.ts';
 import { useCallback } from 'react';
 import { PodcastEpisodeResultDocument, PodcastEpisodeResultQuery, PodcastEpisodeResultQueryVariables } from './podcastEpisode.api';
 import { transformPodcastEpisode } from './podcast';
+import { TrackEntry } from '../../types/track.ts';
 
 export const transformData = (data?: PodcastEpisodeResultQuery): TrackEntry | undefined => {
 	if (!data) {

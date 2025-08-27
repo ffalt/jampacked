@@ -1,4 +1,4 @@
-import { AlbumType } from './jam';
+import { AlbumType } from '../services/jam';
 
 export interface JamAlbumTypeInfo {
 	albumType: AlbumType;

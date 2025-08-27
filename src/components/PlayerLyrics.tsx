@@ -1,6 +1,6 @@
 import React from 'react';
-import { useCurrentTrackID } from '../services/player';
 import { Lyrics } from './Lyrics';
+import { useCurrentTrackID } from '../services/player.hooks.ts';
 
 export const PlayerLyrics: React.FC = () => {
 	const currentTrackID = useCurrentTrackID();

@@ -1,8 +1,8 @@
 import { CommonActions, NavigationContainerRef } from '@react-navigation/core';
 import { JamObjectType } from '../services/jam';
 import { AlbumRoute, AlbumsRoute, ArtistsRoute, FoldersRoute, GenreRoute, GenresRoute, HomeRoute, SeriesRoute, TracksRoute } from './Routing';
-import { Navig, NavigParameters } from '../services/types';
 import { RouteLink } from './Routes';
+import { Navig, NavigParameters } from '../types/navig.ts';
 
 let navigator: NavigationContainerRef<ReactNavigation.RootParamList>;
 

@@ -3,11 +3,11 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { LoadingScreen } from '../screens/LoadingScreen';
 import { AppStackNavigatorParameterList, AppRouting } from './Routing';
 import { LoginScreen } from '../screens/LoginScreen';
-import dataService from '../services/data';
-import { AuthContext, defaultAuth } from '../services/auth';
+import { AuthContext, defaultAuth } from '../services/jam.auth.ts';
 import RNBootSplash from 'react-native-bootsplash';
 import { useThemeContext } from '../style/theming';
 import { ModalNavigator } from './ModalNavigator';
+import jamService from '../services/jam.service';
 
 const Stack = createNativeStackNavigator<AppStackNavigatorParameterList>();
 
@@ -19,13 +19,13 @@ export const AppNavigator: React.FC = () => {
 	const [auth, setAuth] = useState({
 		...defaultAuth,
 		login: async (server: string, name: string, password: string): Promise<void> => {
-			await dataService.jam.auth.login(server, name, password);
+			await jamService.auth.login(server, name, password);
 			await theme.loadUserTheme();
-			setAuth(previous => ({ ...previous, hasUser: dataService.jam.auth.isLoggedIn(), user: dataService.jam.auth.user }));
+			setAuth(previous => ({ ...previous, hasUser: jamService.auth.isLoggedIn(), user: jamService.auth.user }));
 		},
 		logout: async (): Promise<void> => {
 			try {
-				await dataService.jam.auth.logout();
+				await jamService.auth.logout();
 			} catch (error) {
 				console.error(error);
 			}
@@ -36,11 +36,11 @@ export const AppNavigator: React.FC = () => {
 	useEffect(() => {
 		let isSubscribed = true;
 		const check = (): void => {
-			dataService.jam.auth.check()
+			jamService.auth.check()
 				.then(() => {
 					if (isSubscribed) {
 						setIsLoading(false);
-						setAuth(previous => ({ ...previous, hasUser: dataService.jam.auth.isLoggedIn(), user: dataService.jam.auth.user }));
+						setAuth(previous => ({ ...previous, hasUser: jamService.auth.isLoggedIn(), user: jamService.auth.user }));
 					}
 					setIsChecking(false);
 				})

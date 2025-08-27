@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect } from 'react';
 import { HomeRoute, HomeRouteProps } from '../navigators/Routing';
-import { JamPlayer } from '../services/player';
+import { JamPlayer } from '../services/player.service.ts';
 import { ObjectHeader, objectHeaderStyles } from '../components/ObjectHeader.tsx';
 import { JamObjectType } from '../services/jam';
 import { FavIcon } from '../components/FavIcon';
-import { snackError } from '../services/snack';
+import { snackError } from '../utils/snack.ts';
 import { ThemedText } from '../components/ThemedText';
 import { useLazyPlaylistQuery } from '../services/queries/playlist';
 import { Tracks } from '../components/Tracks';

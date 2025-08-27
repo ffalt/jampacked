@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { DimensionValue, StyleSheet, View } from 'react-native';
 import { ThemedText } from './ThemedText';
 import { sharedStyles } from '../style/shared';
-import { Download, downloadStateToString } from '../services/player-api';
-import { usePinnedMediaDownload } from '../services/pin-hooks';
+import { Download, downloadStateToString } from '../services/player.api.ts';
+import { usePinnedMediaDownload } from '../services/pin.hooks.ts';
 import { humanFileSize } from '../utils/filesize.utils';
 import { useTheme } from '../style/theming.ts';
 

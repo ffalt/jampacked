@@ -1,11 +1,11 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { AlbumRoute, AlbumRouteProps, HomeRoute } from '../navigators/Routing';
-import { JamPlayer } from '../services/player';
+import { JamPlayer } from '../services/player.service.ts';
 import { HeaderDetail, ObjectHeader, objectHeaderStyles } from '../components/ObjectHeader.tsx';
 import { genreDisplay } from '../utils/genre.utils';
 import { JamObjectType } from '../services/jam';
 import { FavIcon } from '../components/FavIcon';
-import { snackError } from '../services/snack';
+import { snackError } from '../utils/snack.ts';
 import { NavigationService } from '../navigators/navigation';
 import { useLazyAlbumQuery } from '../services/queries/album';
 import { Tracks } from '../components/Tracks';

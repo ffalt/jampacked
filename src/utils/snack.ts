@@ -1,4 +1,4 @@
-import { errorMessage } from '../utils/errors.utils.ts';
+import { errorMessage } from './errors.utils.ts';
 import { ToastService } from 'react-native-toastier';
 
 export function snackSuccess(text: string): void {

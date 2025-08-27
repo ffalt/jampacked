@@ -1,10 +1,10 @@
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { staticTheme, useTheme } from '../style/theming';
-import { HomeEntry } from '../services/types';
 import React from 'react';
 import { NavigationService } from '../navigators/navigation';
 import { JamImage } from './JamImage';
 import { ThemedText } from './ThemedText';
+import { HomeEntry } from '../types/home.ts';
 
 const styles = StyleSheet.create({
 	HomeSectionEntryText: {

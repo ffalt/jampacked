@@ -74,7 +74,7 @@ export const PageHeader: React.FC<{
 		undefined;
 
 	const statusBarHeight = getStatusBarHeight();
-	const buttonsView = (headerTitleCmds && (<View style={styles.headerTitleCmds}>{headerTitleCmds}</View>))
+	const buttonsView = (headerTitleCmds && (<View style={styles.headerTitleCmds}>{headerTitleCmds}</View>));
 	return (
 		<View style={[styles.ListHeader, { marginTop: statusBarHeight }]}>
 			<View style={styles.buttonWrapper}>

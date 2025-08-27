@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import { ActivityIndicator, Button, StyleSheet, View } from 'react-native';
 import { ThemedText } from './ThemedText';
 import { staticTheme } from '../style/theming';
-import { useCacheManagement } from '../services/cache-hooks';
+import { useCacheManagement } from '../services/cache.hooks.ts';
 
 const styles = StyleSheet.create({
 	container: {

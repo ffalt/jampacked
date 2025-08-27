@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
-import dataService from './data';
-import { ImageFormatType, Jam } from './jam';
+import jamService from './jam.service.ts';
 import FastImage, { Source } from '@d11/react-native-fast-image';
+import { ImageFormatType, Jam } from './jam';
 
 export interface Auth {
 	hasUser: boolean;
@@ -16,15 +16,15 @@ export interface Auth {
 export const defaultAuth: Auth = {
 	hasUser: false,
 	user: undefined,
-	currentUserID: (): string => dataService.currentUserID,
-	currentUserName: (): string => dataService.currentUserName,
+	currentUserID: (): string => jamService.auth?.user?.id ?? '',
+	currentUserName: (): string => jamService.auth?.user?.name ?? '',
 	imgSource: (id: string, size: number, format?: ImageFormatType): Source | undefined => {
-		if (!id || !dataService.jam.auth.isLoggedIn()) {
+		if (!id || !jamService.auth.isLoggedIn()) {
 			return;
 		}
-		const headers = dataService.currentUserToken ? { Authorization: `Bearer ${dataService.currentUserToken}` } : undefined;
+		const headers = jamService.auth?.auth?.token ? { Authorization: `Bearer ${jamService.auth?.auth?.token}` } : undefined;
 		return {
-			uri: dataService.jam.image.imageUrl({ id, size, format }, !headers),
+			uri: jamService.image.imageUrl({ id, size, format }, !headers),
 			headers,
 			priority: FastImage.priority.normal
 		};

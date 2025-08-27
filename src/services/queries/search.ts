@@ -2,7 +2,6 @@ import { DocumentNode } from 'graphql';
 import type { ErrorLike } from '@apollo/client';
 import { JamObjectType } from '../jam';
 import { useCallback, useEffect, useState } from 'react';
-import { SearchResultData } from '../types';
 import {
 	SearchAlbumsResultDocument,
 	SearchAlbumsResultQuery,
@@ -30,6 +29,7 @@ import {
 	SearchTracksResultQueryVariables
 } from './search.api';
 import { useLazyQuery } from '@apollo/client/react';
+import { SearchResultData } from '../../types/search.ts';
 
 interface SearchPage<T> {
 	total: number;

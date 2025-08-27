@@ -5,10 +5,10 @@ import { AppRouting, AppStackProps } from '../navigators/Routing';
 import { LoginButton } from '../components/LoginButton';
 import { ThemedIcon } from '../components/ThemedIcon';
 import { Logo } from '../components/Logo';
-import dataService from '../services/data';
-import { useAuth } from '../services/auth';
+import { useAuth } from '../services/jam.auth.ts';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import { errorMessage } from '../utils/errors.utils.ts';
+import storageService from '../services/storage.service.ts';
 
 const styles = StyleSheet.create({
 	container: {
@@ -119,14 +119,14 @@ export const LoginScreen: React.FC<AppStackProps<AppRouting.AUTH>> = () => {
 
 	useEffect(() => {
 		let isSubscribed = true;
-		dataService.getStored('last:server')
+		storageService.getStored('last:server')
 			.then(result => {
 				if (result && isSubscribed) {
 					setServer(result);
 				}
 			})
 			.catch(console.error);
-		dataService.getStored('last:user')
+		storageService.getStored('last:user')
 			.then(result => {
 				if (result && isSubscribed) {
 					setName(result);
@@ -148,8 +148,8 @@ export const LoginScreen: React.FC<AppStackProps<AppRouting.AUTH>> = () => {
 
 		const login = async (): Promise<void> => {
 			await auth.login(server, name, password);
-			await dataService.setStored('last:user', name);
-			await dataService.setStored('last:server', server);
+			await storageService.setStored('last:user', name);
+			await storageService.setStored('last:server', server);
 		};
 
 		setError(undefined);

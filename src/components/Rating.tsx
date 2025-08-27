@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { JamObjectType } from '../services/jam';
-import { snackSuccess } from '../services/snack';
-import dataService from '../services/data';
+import { snackSuccess } from '../utils/snack.ts';
 import { ClickIcon } from './ClickIcon';
 import { useLazyRateQuery, useRateMutation } from '../services/queries/rate';
 import { staticTheme } from '../style/theming';
+import cacheService from '../services/cache.service.ts';
 
 const styles = StyleSheet.create({
 	view: {
@@ -61,7 +61,7 @@ export const Rating: React.FC<{ id?: string; objType: JamObjectType; style?: Sty
 					const newRate = resultRating ?? 0;
 					setRate(newRate);
 					snackSuccess(`Rated with ${newRate}`);
-					dataService.cache.updateHomeData().catch(console.error);
+					cacheService.updateHomeData().catch(console.error);
 				})
 				.catch(console.error);
 		}

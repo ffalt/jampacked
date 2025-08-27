@@ -1,10 +1,10 @@
 import { JamObjectType } from '../jam';
-import { Index } from '../types';
 import { DocumentNode } from 'graphql';
 import type { ErrorLike } from '@apollo/client';
-import { useCacheOrLazyQuery } from '../cache-hooks';
+import { useCacheOrLazyQuery } from '../cache.hooks.ts';
 import { useCallback } from 'react';
 import { GenreIndexResultDocument, GenreIndexResultQuery } from './genreIndex.api';
+import { Index } from '../../types/indexes.ts';
 
 function transformData(data?: GenreIndexResultQuery): Index | undefined {
 	if (!data) {

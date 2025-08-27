@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect } from 'react';
 import { HomeRoute, HomeRouteProps } from '../navigators/Routing';
 import { useLazyBookmarksQuery } from '../services/queries/bookmarks.ts';
-import { JamPlayer } from '../services/player.ts';
-import { snackError } from '../services/snack.ts';
+import { JamPlayer } from '../services/player.service.ts';
+import { snackError } from '../utils/snack.ts';
 import { Tracks } from '../components/Tracks.tsx';
 import { defaultShowArtistTrackDisplay } from '../components/TrackItem.tsx';
 import { PageHeader } from '../components/PageHeader.tsx';

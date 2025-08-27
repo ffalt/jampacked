@@ -4,8 +4,8 @@ import { ThemedText } from './ThemedText';
 import { staticTheme } from '../style/theming';
 import { JamImage } from './JamImage';
 import { NavigationService } from '../navigators/navigation';
-import { BaseEntry } from '../services/types';
 import { sharedStyles } from '../style/shared';
+import { BaseEntry } from '../types/base.ts';
 
 export const Item: React.FC<{ item: BaseEntry }> = ({ item }) => {
 	const handlePress = useCallback((): void => {

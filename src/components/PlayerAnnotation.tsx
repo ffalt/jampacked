@@ -5,7 +5,7 @@ import { FavIcon } from './FavIcon';
 import { objectHeaderStyles } from './ObjectHeader.tsx';
 import { JamObjectType } from '../services/jam';
 import { Rating } from './Rating';
-import { useTrackPlayerCurrentTrack } from '../services/player-api';
+import { useTrackPlayerCurrentTrack } from '../services/player.api.ts';
 
 const styles = StyleSheet.create({
 	annotation: {

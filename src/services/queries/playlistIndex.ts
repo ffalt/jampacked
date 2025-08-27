@@ -1,10 +1,10 @@
-import { Index } from '../types';
 import { JamObjectType } from '../jam';
 import { DocumentNode } from 'graphql';
 import type { ErrorLike } from '@apollo/client';
-import { useCacheOrLazyQuery } from '../cache-hooks';
+import { useCacheOrLazyQuery } from '../cache.hooks.ts';
 import { useCallback } from 'react';
 import { PlaylistIndexResultDocument, PlaylistIndexResultQuery } from './playlistIndex.api';
+import { Index } from '../../types/indexes.ts';
 
 function transformData(data?: PlaylistIndexResultQuery): Index | undefined {
 	if (!data) {

@@ -1,10 +1,12 @@
 import { AlbumType, JamObjectType, ListType } from '../jam';
-import { BaseEntryList, UseListCallFunctionTransform, useListFunction } from '../types';
 import { titleCase } from '../../utils/format.utils';
 import { DocumentNode } from 'graphql';
-import { useCacheOrLazyQuery } from '../cache-hooks';
+import { useCacheOrLazyQuery } from '../cache.hooks.ts';
 import { useCallback } from 'react';
 import { FolderListResultDocument, FolderListResultQuery, FolderListResultQueryVariables } from './folderList.api';
+import { BaseEntryList } from '../../types/base.ts';
+import { UseListCallFunctionTransform } from '../../types/use-list-transform.ts';
+import { useListFunction } from '../../types/use-list.ts';
 
 function transformData(data?: FolderListResultQuery, variables?: FolderListResultQueryVariables): BaseEntryList | undefined {
 	if (!data) {

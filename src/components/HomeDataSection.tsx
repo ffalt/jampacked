@@ -1,8 +1,8 @@
-import { HomeData } from '../services/types';
 import React from 'react';
 import { HomeSection } from './HomeSection';
 import { AlbumsRoute, ArtistsRoute } from '../navigators/Routing';
 import { AlbumType } from '../services/jam';
+import { HomeData } from '../types/home.ts';
 
 export const HomeDataSection: React.FC<{ homeData?: HomeData }> = React.memo(({ homeData }) => {
 	if (!homeData) {

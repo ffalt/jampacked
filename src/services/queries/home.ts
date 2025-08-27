@@ -1,12 +1,13 @@
-import { HomeData, HomeStatsData } from '../types';
 import { HomeRoute } from '../../navigators/Routing';
 import { AlbumType, ListType } from '../jam';
 import { JamRouteLinks } from '../../navigators/Routes';
 import { DocumentNode } from 'graphql';
 import type { ErrorLike } from '@apollo/client';
-import { useCacheOrLazyQuery } from '../cache-hooks';
+import { useCacheOrLazyQuery } from '../cache.hooks.ts';
 import { useCallback } from 'react';
 import { HomeResultDocument, HomeResultQuery } from './home.api';
+import { HomeData } from '../../types/home.ts';
+import { HomeStatsData } from '../../types/home-stats.ts';
 
 export interface UserDataResult {
 	stats: HomeStatsData;

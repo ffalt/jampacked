@@ -4,7 +4,7 @@ import { sharedStyles } from '../style/shared';
 import { ThemedText } from './ThemedText';
 import { Stat } from './Stat';
 import { JamRouteLinks } from '../navigators/Routes';
-import { usePinnedCount } from '../services/pin-hooks';
+import { usePinnedCount } from '../services/pin.hooks.ts';
 
 const styles = StyleSheet.create({
 	homeStatContainer: {

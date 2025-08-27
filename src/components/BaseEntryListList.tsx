@@ -1,11 +1,12 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { ListTypeName } from '../services/jam-lists';
-import { BaseEntry, useListFunction } from '../services/types';
+import { ListTypeName } from '../utils/jam-lists.ts';
 import { BaseEntryList, BaseEntryListInfo } from './BaseEntryList';
 import { AlbumType, ListType } from '../services/jam';
 import { ErrorView } from './ErrorView';
-import dataService from '../services/data';
 import { RouteLink } from '../navigators/Routes';
+import { BaseEntry } from '../types/base.ts';
+import { useListFunction } from '../types/use-list.ts';
+import cacheService from '../services/cache.service.ts';
 
 export interface BaseEntryListListQuery {
 	icon: string;
@@ -85,7 +86,7 @@ export const BaseEntryListList: React.FC<{ query: BaseEntryListListQuery }> = ({
 		setTotal(0);
 		// TODO: this depends on ordering of graphql variables
 		const id = (queryID ?? '').slice(0, queryID?.indexOf('skip'));
-		dataService.cache.removeKeyStartWith(id)
+		cacheService.removeKeyStartWith(id)
 			.then(() => {
 				setType(previous => {
 					const seed = previous?.listType === ListType.random ? Date.now().toString() : undefined;

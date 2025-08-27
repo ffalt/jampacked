@@ -2,9 +2,9 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { StyleProp, ViewStyle } from 'react-native';
 import { JamObjectType } from '../services/jam';
 import { useFavMutation, useLazyFavQuery } from '../services/queries/fav';
-import { snackSuccess } from '../services/snack';
-import dataService from '../services/data';
+import { snackSuccess } from '../utils/snack.ts';
 import { ClickIcon } from './ClickIcon';
+import cacheService from '../services/cache.service.ts';
 
 export const FavIcon: React.FC<{ id?: string; objType: JamObjectType; style?: StyleProp<ViewStyle>; fontSize?: number }> = ({ id, style, fontSize }) => {
 	const [isFaved, setIsFaved] = useState<boolean>(false);
@@ -48,7 +48,7 @@ export const FavIcon: React.FC<{ id?: string; objType: JamObjectType; style?: St
 					setIsFaved((fav?.timestamp ?? 0) > 0);
 					setFav(fav);
 					snackSuccess(isFaved ? 'Removed from Favorites' : 'Added to Favorites');
-					dataService.cache.updateHomeData().catch(console.error);
+					cacheService.updateHomeData().catch(console.error);
 				})
 				.catch(console.error);
 		}

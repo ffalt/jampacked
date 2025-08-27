@@ -6,10 +6,10 @@ import { ThemedIcon } from './ThemedIcon';
 import { NavigationService } from '../navigators/navigation';
 import { JamImage } from './JamImage';
 import { staticTheme } from '../style/theming';
-import { AutoCompleteData, AutoCompleteDataSection, AutoCompleteEntryData } from '../services/types';
 import { useLazyAutocompleteQuery } from '../services/queries/autocomplete';
 import { sharedStyles } from '../style/shared';
 import { DefaultSectionList } from './DefaultSectionList.tsx';
+import { AutoCompleteData, AutoCompleteDataSection, AutoCompleteEntryData } from '../types/autocomplete.ts';
 
 const styles = StyleSheet.create({
 	list: {

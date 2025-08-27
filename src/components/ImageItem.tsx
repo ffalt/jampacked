@@ -3,8 +3,8 @@ import { StyleSheet, TouchableOpacity } from 'react-native';
 import FastImage from '@d11/react-native-fast-image';
 import { useTheme } from '../style/theming';
 import { NavigationService } from '../navigators/navigation';
-import { BaseEntry } from '../services/types';
-import { useAuth } from '../services/auth';
+import { useAuth } from '../services/jam.auth.ts';
+import { BaseEntry } from '../types/base.ts';
 
 const styles = StyleSheet.create({
 	image: { flex: 1 }

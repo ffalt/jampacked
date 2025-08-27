@@ -4,7 +4,6 @@ import { ThemedText } from '../components/ThemedText';
 import { HomeRoute, HomeRouteProps } from '../navigators/Routing';
 import { Item } from '../components/Item';
 import { HeaderDetail, ObjectHeader, objectHeaderStyles } from '../components/ObjectHeader.tsx';
-import { BaseEntry } from '../services/types';
 import { NavigationService } from '../navigators/navigation';
 import { FavIcon } from '../components/FavIcon';
 import { JamObjectType } from '../services/jam';
@@ -12,6 +11,7 @@ import { useLazySeriesQuery } from '../services/queries/series';
 import { DefaultSectionList } from '../components/DefaultSectionList.tsx';
 import { sharedStyles } from '../style/shared';
 import { Rating } from '../components/Rating';
+import { BaseEntry } from '../types/base.ts';
 
 const buildDetails = (artist?: string, tracks?: number, genre?: string, toArtist?: () => void): Array<HeaderDetail> => [
 	{ title: 'Artist', value: `${artist ?? ''}`, click: artist ? toArtist : undefined },

@@ -1,7 +1,7 @@
 import React, { PropsWithChildren } from 'react';
 import { FlexStyle, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import FastImage, { ImageStyle } from '@d11/react-native-fast-image';
-import { useAuth } from '../services/auth';
+import { useAuth } from '../services/jam.auth.ts';
 
 export const FastImageBackground: React.FC<PropsWithChildren<{ id: string; style?: StyleProp<ViewStyle> & FlexStyle; imageStyle?: Partial<ImageStyle> }>> = ({ id, children, style, imageStyle }) => {
 	const auth = useAuth();

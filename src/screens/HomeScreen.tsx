@@ -5,7 +5,7 @@ import { ThemedText } from '../components/ThemedText';
 import { JamImage } from '../components/JamImage';
 import { staticTheme } from '../style/theming';
 import { Logo } from '../components/Logo';
-import { useAuth } from '../services/auth';
+import { useAuth } from '../services/jam.auth.ts';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import { SearchBar } from '../components/SearchBar';
 import { SearchResults } from '../components/SearchResults';

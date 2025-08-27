@@ -1,10 +1,10 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { JamPlayer } from '../services/player';
+import { JamPlayer } from '../services/player.service.ts';
 import { PlayButton } from './PlayButton';
 import { staticTheme } from '../style/theming';
 import { ClickIcon } from './ClickIcon';
-import { useTrackPlayerHasSiblings } from '../services/player-api';
+import { useTrackPlayerHasSiblings } from '../services/player.api.ts';
 
 const styles = StyleSheet.create({
 	playerControl: {

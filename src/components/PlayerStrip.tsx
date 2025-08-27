@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
-import { JamPlayer } from '../services/player';
-import { useTrackPlayerCurrentTrack, useTrackPlayerHasSiblings } from '../services/player-api';
+import { JamPlayer } from '../services/player.service.ts';
+import { useTrackPlayerCurrentTrack, useTrackPlayerHasSiblings } from '../services/player.api.ts';
 import { JamImage } from './JamImage';
 import { ThemedText } from './ThemedText';
 import { staticTheme, useTheme } from '../style/theming';

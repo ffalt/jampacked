@@ -6,12 +6,12 @@ import { Separator } from './Separator';
 import { AtoZList } from './AtoZList';
 import { Item } from './Item';
 import { ImageItem } from './ImageItem';
-import { Index, IndexEntry } from '../services/types';
 import { useWindowWidth } from '../utils/dimension.hook';
 import { ListEmpty } from './ListEmpty';
 import { defaultKeyExtractor } from '../utils/list.utils';
 import { sharedStyles } from '../style/shared';
 import { RouteLink } from '../navigators/Routes';
+import { Index, IndexEntry } from '../types/indexes.ts';
 
 const styles = StyleSheet.create({
 	row: {

@@ -2,7 +2,7 @@ import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { AlbumsRoute, AlbumsRouteProps } from '../navigators/Routing';
 import { IndexList } from '../components/IndexList';
 import { ErrorView } from '../components/ErrorView';
-import { getAlbumTypeInfos } from '../services/jam-lists';
+import { getAlbumTypeInfos } from '../utils/jam-lists.ts';
 import { AlbumsTabNavigatorContext } from '../navigators/AlbumsNavigatorContext';
 import { useLazyAlbumIndexQuery } from '../services/queries/albumIndex';
 import { ListType } from '../services/jam';

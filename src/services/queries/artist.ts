@@ -1,11 +1,11 @@
 import { AlbumType, JamObjectType } from '../jam';
 import { SectionListData } from 'react-native';
-import { BaseEntry } from '../types';
 import { DocumentNode } from 'graphql';
 import type { ErrorLike } from '@apollo/client';
-import { useCacheOrLazyQuery } from '../cache-hooks';
+import { useCacheOrLazyQuery } from '../cache.hooks.ts';
 import { useCallback } from 'react';
 import { ArtistResultDocument, ArtistResultQuery, ArtistResultQueryVariables } from './artist.api';
+import { BaseEntry } from '../../types/base.ts';
 
 export interface AlbumEntry {
 	id: string;

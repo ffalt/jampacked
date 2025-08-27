@@ -1,20 +1,12 @@
 import { NITRO_SQLITE_NULL, type NitroSQLiteConnection, open, type QueryResult, type QueryResultRow, type SQLiteQueryParams, type SQLiteValue } from 'react-native-nitro-sqlite';
 
-let database: Database | undefined;
+// let database: DatabaseService | undefined;
 
-export class Database {
+class DatabaseService {
 	db?: NitroSQLiteConnection;
 
-	/**
-	 * Start the database and create an instance when necessary
-	 */
-	static async getInstance(): Promise<Database> {
-		if (database) {
-			return database;
-		}
-		database = new Database();
-		await database.connect('jam.db');
-		return database;
+	async init() {
+		await this.connect('jam.db');
 	}
 
 	/**
@@ -42,7 +34,6 @@ export class Database {
 		}
 		this.db.close();
 		this.db = undefined;
-		database = undefined;
 	}
 
 	/**
@@ -187,3 +178,6 @@ interface WhereStatementResult<T> {
 	sql: string;
 	params: Array<T>;
 }
+
+const dbService = new DatabaseService();
+export default dbService;

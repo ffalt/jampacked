@@ -1,5 +1,4 @@
 import { ScrollView, TouchableOpacity } from 'react-native';
-import { HomeEntry, NavigParameters } from '../services/types';
 import React from 'react';
 import { ThemedText } from './ThemedText';
 import { HomeSectionEntry } from './HomeSectionEntry';
@@ -7,6 +6,8 @@ import { NavigationService } from '../navigators/navigation';
 import { ThemedIcon } from './ThemedIcon';
 import { sharedStyles } from '../style/shared';
 import { useTheme } from '../style/theming';
+import { HomeEntry } from '../types/home.ts';
+import { NavigParameters } from '../types/navig.ts';
 
 export const HomeSection: React.FC<{ title: string; section?: Array<HomeEntry>; sectionNavig?: { route: string; params?: NavigParameters } }> = React.memo(({ section, title, sectionNavig }) => {
 	const theme = useTheme();

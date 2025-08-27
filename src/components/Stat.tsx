@@ -1,9 +1,9 @@
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import { staticTheme, useTheme } from '../style/theming';
-import { HomeStatData } from '../services/types';
 import React from 'react';
 import { NavigationService } from '../navigators/navigation';
 import { ThemedText } from './ThemedText';
+import { HomeStatData } from '../types/home-stats.ts';
 
 const styles = StyleSheet.create({
 	homeStat: {

@@ -1,10 +1,10 @@
-import { TrackEntry } from '../types';
 import { formatDuration } from '../../utils/duration.utils';
 import { DocumentNode } from 'graphql';
 import { ErrorLike } from '@apollo/client';
-import { useCacheOrLazyQuery } from '../cache-hooks';
+import { useCacheOrLazyQuery } from '../cache.hooks.ts';
 import { useCallback } from 'react';
 import { TrackResultDocument, TrackResultQuery, TrackResultQueryVariables } from './track.api';
+import { TrackEntry } from '../../types/track.ts';
 
 export type TrackResult_track = NonNullable<TrackResultQuery>['track'];
 

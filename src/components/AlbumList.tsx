@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { BaseEntryListList, BaseEntryListListQuery } from './BaseEntryListList';
 import { AlbumType, ListType } from '../services/jam';
-import { getAlbumTypeInfos } from '../services/jam-lists';
+import { getAlbumTypeInfos } from '../utils/jam-lists.ts';
 import { useLazyAlbumListQuery } from '../services/queries/albumList';
 import { RouteLink } from '../navigators/Routes';
 

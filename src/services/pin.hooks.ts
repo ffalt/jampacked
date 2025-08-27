@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
-import dataService from './data';
-import { PinMedia, PinCacheStat, PinState, TrackEntry } from './types';
-import { Download, useTrackPlayerDownloadCached } from './player-api';
+import { Download, useTrackPlayerDownloadCached } from './player.api.ts';
+import { TrackEntry } from '../types/track.ts';
+import { PinCacheStat, PinMedia, PinState } from '../types/pin.ts';
+import pinService from './pin.service.ts';
 
 export function usePinState(id?: string): PinState | undefined {
 	const [stat, setStat] = useState<PinState | undefined>();
@@ -19,7 +20,7 @@ export function usePinState(id?: string): PinState | undefined {
 			if (!id) {
 				return;
 			}
-			dataService.pin.getPinState(id)
+			pinService.getPinState(id)
 				.then(value => {
 					if (isUnmountedReference.current) {
 						return;
@@ -30,12 +31,12 @@ export function usePinState(id?: string): PinState | undefined {
 		};
 
 		if (id) {
-			dataService.pin.subscribePinChangeUpdates(id, refresh);
+			pinService.subscribePinChangeUpdates(id, refresh);
 			refresh();
 		}
 		return (): void => {
 			if (id) {
-				dataService.pin.unsubscribePinChangeUpdates(id, refresh);
+				pinService.unsubscribePinChangeUpdates(id, refresh);
 			}
 		};
 	}, [id]);
@@ -56,7 +57,7 @@ export function usePinCacheStat(): PinCacheStat | undefined {
 
 	useEffect(() => {
 		const refresh = (): void => {
-			dataService.pin.stat()
+			pinService.stat()
 				.then(s => {
 					if (isUnmountedReference.current) {
 						return;
@@ -66,10 +67,10 @@ export function usePinCacheStat(): PinCacheStat | undefined {
 				.catch(console.error);
 		};
 
-		dataService.pin.subscribeCacheChangeUpdates(refresh);
+		pinService.subscribeCacheChangeUpdates(refresh);
 		refresh();
 		return (): void => {
-			dataService.pin.unsubscribeCacheChangeUpdates(refresh);
+			pinService.unsubscribeCacheChangeUpdates(refresh);
 		};
 	}, []);
 
@@ -93,7 +94,7 @@ export function usePinnedMedia(): { media: Array<PinMedia>; loading: boolean } {
 			if (isUnmountedReference.current) {
 				return;
 			}
-			dataService.pin.getPins()
+			pinService.getPins()
 				.then(pins => {
 					if (isUnmountedReference.current) {
 						return;
@@ -105,9 +106,9 @@ export function usePinnedMedia(): { media: Array<PinMedia>; loading: boolean } {
 		};
 
 		update();
-		dataService.pin.subscribePinsChangeSubscriptions(update);
+		pinService.subscribePinsChangeSubscriptions(update);
 		return (): void => {
-			dataService.pin.unsubscribePinsChangeSubscriptions(update);
+			pinService.unsubscribePinsChangeSubscriptions(update);
 		};
 	}, []);
 
@@ -115,7 +116,7 @@ export function usePinnedMedia(): { media: Array<PinMedia>; loading: boolean } {
 }
 
 export function usePinnedMediaDownload(id: string): { track?: TrackEntry; download?: Download } {
-	const download = useTrackPlayerDownloadCached(id, dataService.pin.manager);
+	const download = useTrackPlayerDownloadCached(id, pinService.manager);
 	const [track, setTrack] = useState<TrackEntry | undefined>(undefined);
 	const isUnmountedReference = useRef(true);
 
@@ -131,7 +132,7 @@ export function usePinnedMediaDownload(id: string): { track?: TrackEntry; downlo
 			if (isUnmountedReference.current) {
 				return;
 			}
-			dataService.pin.getPinnedTrack(id)
+			pinService.getPinnedTrack(id)
 				.then(t => {
 					if (isUnmountedReference.current) {
 						return;
@@ -159,7 +160,7 @@ export function usePinnedCount(): number {
 
 	useEffect(() => {
 		const refresh = (): void => {
-			dataService.pin.getPinCount()
+			pinService.getPinCount()
 				.then(value => {
 					if (isUnmountedReference.current) {
 						return;
@@ -168,10 +169,10 @@ export function usePinnedCount(): number {
 				})
 				.catch(console.error);
 		};
-		dataService.pin.subscribePinsChangeSubscriptions(refresh);
+		pinService.subscribePinsChangeSubscriptions(refresh);
 		refresh();
 		return (): void => {
-			dataService.pin.unsubscribePinsChangeSubscriptions(refresh);
+			pinService.unsubscribePinsChangeSubscriptions(refresh);
 		};
 	}, []);
 

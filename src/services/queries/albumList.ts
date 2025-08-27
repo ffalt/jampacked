@@ -1,9 +1,11 @@
 import { AlbumType, JamObjectType, ListType } from '../jam';
-import { BaseEntryList, UseListCallFunctionTransform, useListFunction } from '../types';
 import { DocumentNode } from 'graphql';
-import { useCacheOrLazyQuery } from '../cache-hooks';
+import { useCacheOrLazyQuery } from '../cache.hooks.ts';
 import { useCallback } from 'react';
 import { AlbumListResultDocument, AlbumListResultQuery, AlbumListResultQueryVariables } from './albumList.api';
+import { BaseEntryList } from '../../types/base.ts';
+import { UseListCallFunctionTransform } from '../../types/use-list-transform.ts';
+import { useListFunction } from '../../types/use-list.ts';
 
 function transformData(data?: AlbumListResultQuery, variables?: AlbumListResultQueryVariables): BaseEntryList | undefined {
 	if (!data) {

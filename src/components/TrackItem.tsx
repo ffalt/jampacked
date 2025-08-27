@@ -2,10 +2,10 @@ import React, { useCallback } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { State, TapGestureHandler, TapGestureHandlerStateChangeEvent } from 'react-native-gesture-handler';
 import { ThemedText } from './ThemedText';
-import { TrackEntry } from '../services/types';
 import { sharedStyles } from '../style/shared';
 import { staticTheme } from '../style/theming';
 import { ThemedCheckbox } from './ThemedCheckbox';
+import { TrackEntry } from '../types/track.ts';
 
 const styles = StyleSheet.create({
 	trackListCheck: {

@@ -3,10 +3,10 @@ import { View } from 'react-native';
 import { staticTheme } from '../style/theming';
 import { ThemedText } from './ThemedText';
 import { JamImage } from './JamImage';
-import { PinMedia } from '../services/types';
 import { sharedStyles } from '../style/shared';
 import { titleCase } from '../utils/format.utils';
 import { PinIcon } from './PinIcon';
+import { PinMedia } from '../types/pin.ts';
 
 export const PinnedMediaItem: React.FC<{ item: PinMedia }> = React.memo(({ item }) => (
 	<View style={sharedStyles.item}>

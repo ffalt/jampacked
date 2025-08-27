@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
-import { useCurrentTrackID } from '../services/player';
 import { WaveformProgress } from './WaveformProgress';
-import { snackError } from '../services/snack';
+import { snackError } from '../utils/snack.ts';
 import { StyleSheet, View } from 'react-native';
 import { useLazyWaveformQuery } from '../services/queries/waveform';
+import { useCurrentTrackID } from '../services/player.hooks.ts';
 
 const styles = StyleSheet.create({
 	container: {

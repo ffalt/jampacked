@@ -1,11 +1,11 @@
-import { Database } from './db';
-import { JamApolloClient } from './apollo';
-import { Document } from './types';
 import FastImage from '@d11/react-native-fast-image';
-import { snackSuccess } from './snack';
+import { snackSuccess } from '../utils/snack.ts';
 import { DocumentNode } from 'graphql';
-import { buildCacheID } from './cache-query';
+import { buildCacheID } from '../utils/build-query-cache-id.ts';
 import { OperationVariables } from '@apollo/client';
+import { Document } from '../types/document.ts';
+import dbService from './db.service.ts';
+import apolloService from './apollo.service.ts';
 
 export interface CacheState {
 	isRunning: boolean;
@@ -23,21 +23,18 @@ export class CacheService {
 		message: ''
 	};
 
-	constructor(private readonly db: Database, private readonly client: JamApolloClient) {
-	}
-
 	async init(): Promise<void> {
 		await this.checkDB();
 	}
 
 	async checkDB(): Promise<void> {
 		const createJamTableScript = 'CREATE TABLE if not exists jam(_id INTEGER PRIMARY KEY AUTOINCREMENT, key TEXT, data TEXT, date integer, version integer)';
-		await this.db.query(createJamTableScript);
+		await dbService.query(createJamTableScript);
 	}
 
 	private async getDoc<T>(id: string): Promise<Document<T> | undefined> {
 		try {
-			const results = await this.db.query('SELECT * FROM jam WHERE key=?', [id]);
+			const results = await dbService.query('SELECT * FROM jam WHERE key=?', [id]);
 			const result = results.rows?.item(0);
 			if (result && result.version === this.version) {
 				return {
@@ -53,12 +50,12 @@ export class CacheService {
 	}
 
 	private async clearDoc(id: string): Promise<void> {
-		await this.db.delete('jam', { key: id });
+		await dbService.delete('jam', { key: id });
 	}
 
 	private async setDoc<T>(id: string, data: T): Promise<void> {
 		await this.clearDoc(id);
-		await this.db.insert('jam', ['data', 'key', 'date', 'version'], [JSON.stringify(data), id, Date.now(), this.version]);
+		await dbService.insert('jam', ['data', 'key', 'date', 'version'], [JSON.stringify(data), id, Date.now(), this.version]);
 	}
 
 	async getData<T>(id: string): Promise<T | undefined> {
@@ -90,12 +87,12 @@ export class CacheService {
 		if (!prefix) {
 			return;
 		}
-		await this.db.query('DELETE FROM jam WHERE key LIKE ?', [`${prefix}%`]);
+		await dbService.query('DELETE FROM jam WHERE key LIKE ?', [`${prefix}%`]);
 	}
 
 	private async dropJamCache(): Promise<void> {
 		const dropTableScript = 'DROP TABLE IF EXISTS jam';
-		await this.db.query(dropTableScript);
+		await dbService.query(dropTableScript);
 		await this.checkDB();
 	}
 
@@ -110,7 +107,7 @@ export class CacheService {
 			if (cache) {
 				return cache;
 			}
-			const result = await this.client.query<TData>({ query, variables });
+			const result = await apolloService.client.query<TData>({ query, variables });
 			return transform(result?.data, variables);
 		}
 	}
@@ -275,3 +272,6 @@ snackSuccess('Cache optimized');
 		this.homeDataSubscriptions = this.homeDataSubscriptions.filter(u => u !== update);
 	}
 }
+
+const cacheService = new CacheService();
+export default cacheService;

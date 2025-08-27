@@ -1,9 +1,9 @@
 import type { ErrorLike } from '@apollo/client';
 import { JamObjectType } from '../jam';
 import { useCallback, useEffect, useState } from 'react';
-import { AutoCompleteData, AutoCompleteDataSection } from '../types';
 import { AutocompleteResultDocument, AutocompleteResultQuery, AutocompleteResultQueryVariables } from './autocomplete.api';
 import { useLazyQuery } from '@apollo/client/react';
+import { AutoCompleteData, AutoCompleteDataSection } from '../../types/autocomplete.ts';
 
 type Autocomplete = Array<AutoCompleteDataSection>;
 

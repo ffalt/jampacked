@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { ThemedText } from './ThemedText';
-import { snackError } from '../services/snack';
+import { snackError } from '../utils/snack.ts';
 import { Button, Image, StyleSheet, View } from 'react-native';
 import { IMAGE_ERROR } from '../style/images';
 import { staticTheme } from '../style/theming';

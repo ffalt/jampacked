@@ -6,22 +6,27 @@ import { StatusBar } from 'react-native';
 import { AppNavigator } from './src/navigators/AppNavigator';
 import { getAutoTheme, getTheme, ThemeContext, ThemeProvider, ThemeSettings } from './src/style/theming';
 import { NavigationService } from './src/navigators/navigation';
-import dataService from './src/services/data';
 import { ApolloProvider } from '@apollo/client/react';
-import { JamApolloClient } from './src/services/apollo';
+import { ApolloClient } from '@apollo/client';
 import { sharedStyles } from './src/style/shared';
-import { setAppAvailable } from './src/services/playback';
+import { setAppAvailable } from './src/services/playback.service.ts';
 import { ToastProvider } from 'react-native-toastier';
+import apolloService from './src/services/apollo.service.ts';
+import jamService from './src/services/jam.service.ts';
+import storageService from './src/services/storage.service.ts';
+import dbService from './src/services/db.service.ts';
+import cacheService from './src/services/cache.service.ts';
+import pinService from './src/services/pin.service.ts';
 
 enableScreens();
 
 export const App: React.FC = () => {
-	const [client, setClient] = useState<JamApolloClient | undefined>();
+	const [client, setClient] = useState<ApolloClient | undefined>();
 	const [themeSettings, setThemeSettings] = useState<ThemeSettings>({
 		theme: getAutoTheme(),
 		loadUserTheme: async (): Promise<void> => {
 			try {
-				const themeName = await dataService.getSetting('theme');
+				const themeName = await storageService.getSetting('theme');
 				const theme = getTheme(themeName);
 				if (theme) {
 					setThemeSettings({ ...themeSettings, theme });
@@ -35,7 +40,7 @@ export const App: React.FC = () => {
 			if (theme) {
 				setThemeSettings({ ...themeSettings, theme });
 				try {
-					await dataService.setSetting('theme', themeName);
+					await storageService.setSetting('theme', themeName);
 				} catch (error) {
 					console.error(error);
 				}
@@ -45,9 +50,14 @@ export const App: React.FC = () => {
 
 	useEffect(() => {
 		const init = async (): Promise<void> => {
-			const c = await dataService.init();
+			await dbService.init();
+			await storageService.init();
+			await jamService.auth.load();
+			await apolloService.init();
+			await cacheService.init();
+			await pinService.init(jamService.currentUserToken);
 			await themeSettings.loadUserTheme();
-			setClient(c);
+			setClient(apolloService.client);
 		};
 
 		init()

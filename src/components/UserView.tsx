@@ -3,7 +3,7 @@ import { staticTheme } from '../style/theming';
 import { Button, StyleSheet, View } from 'react-native';
 import { ThemedIcon } from './ThemedIcon';
 import { ThemedText } from './ThemedText';
-import { useAuth } from '../services/auth';
+import { useAuth } from '../services/jam.auth.ts';
 import { JamImage } from './JamImage';
 
 const styles = StyleSheet.create({

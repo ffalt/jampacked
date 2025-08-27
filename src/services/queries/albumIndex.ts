@@ -1,10 +1,10 @@
 import { AlbumType, JamObjectType } from '../jam';
-import { Index } from '../types';
 import { DocumentNode } from 'graphql';
-import { useCacheOrLazyQuery } from '../cache-hooks';
+import { useCacheOrLazyQuery } from '../cache.hooks.ts';
 import { useCallback } from 'react';
 import { AlbumIndexResultDocument, AlbumIndexResultQuery, AlbumIndexResultQueryVariables } from './albumIndex.api';
 import { ErrorLike } from '@apollo/client';
+import { Index } from '../../types/indexes.ts';
 
 function transformData(data?: AlbumIndexResultQuery): Index | undefined {
 	if (!data) {

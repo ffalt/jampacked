@@ -1,7 +1,7 @@
 import { AlbumType, ListType } from '../services/jam';
 import { AlbumsRoute, ArtistsRoute, BottomTabRoute, FoldersRoute, GenreRoute, HomeRoute, SeriesRoute, TracksRoute } from './Routing';
-import { Navig } from '../services/types';
-import { getAlbumTypeInfos } from '../services/jam-lists';
+import { getAlbumTypeInfos } from '../utils/jam-lists.ts';
+import { Navig } from '../types/navig.ts';
 
 export interface RouteLink {
 	title: string;

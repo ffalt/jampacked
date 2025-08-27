@@ -1,22 +1,22 @@
 import React, { MutableRefObject, useCallback, useEffect, useState } from 'react';
 import { defaultShowArtistTrackDisplay, defaultTrackDisplay, TrackItem } from '../components/TrackItem';
 import { HomeRoute, HomeRouteProps } from '../navigators/Routing';
-import { JamPlayer } from '../services/player';
+import { JamPlayer } from '../services/player.service.ts';
 import { HeaderDetail, ObjectHeader, objectHeaderStyles } from '../components/ObjectHeader.tsx';
 import { genreDisplay } from '../utils/genre.utils';
-import { snackError } from '../services/snack';
+import { snackError } from '../utils/snack.ts';
 import { Item } from '../components/Item';
 import { FolderType, JamObjectType } from '../services/jam';
 import { Folder, FolderItem, useLazyFolderQuery } from '../services/queries/folder';
 import { ErrorView } from '../components/ErrorView';
 import { DefaultFlatList } from '../components/DefaultFlatList.tsx';
 import { MUSICBRAINZ_VARIOUS_ARTISTS_NAME } from './AlbumScreen';
-import { TrackEntry } from '../services/types';
 import { FloatingAction } from 'react-native-floating-action';
 import { ActionMenuItem, executeTrackMenuAction, trackMenuIcon, trackMenuMultiSelectActions, trackMenuSingleSelectActions } from '../components/ActionMenuTrack';
 import { useTheme } from '../style/theming';
 import { ClickIcon } from '../components/ClickIcon';
 import { Rating } from '../components/Rating';
+import { TrackEntry } from '../types/track.ts';
 
 const buildDetails = (folder?: Folder): Array<HeaderDetail> => {
 	let result: Array<HeaderDetail> = [];
