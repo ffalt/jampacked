@@ -1,6 +1,6 @@
 import { JamPlayer } from './player.service.ts';
 import { snackError } from '../utils/snack.ts';
-import { Event, State, TrackPlayer } from './player.api.ts';
+import TrackPlayer, { Event, State } from 'react-native-track-player';
 import jamService from './jam.service.ts';
 import cacheService from './cache.service.ts';
 

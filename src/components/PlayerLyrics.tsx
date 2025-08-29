@@ -1,9 +1,9 @@
 import React from 'react';
 import { Lyrics } from './Lyrics';
-import { useCurrentTrackID } from '../services/player.hooks.ts';
+import { useTrackPlayerCurrentTrackID } from 'react-native-track-player';
 
 export const PlayerLyrics: React.FC = () => {
-	const currentTrackID = useCurrentTrackID();
+	const currentTrackID = useTrackPlayerCurrentTrackID();
 	return (
 		<Lyrics id={currentTrackID} />
 	);

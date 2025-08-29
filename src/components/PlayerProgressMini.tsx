@@ -1,7 +1,7 @@
 import React from 'react';
 import { DimensionValue, StyleSheet, View } from 'react-native';
 import { useTheme } from '../style/theming';
-import { useTrackPlayerProgressPercent } from '../services/player.api.ts';
+import { useTrackPlayerProgressPercent } from 'react-native-track-player';
 
 const styles = StyleSheet.create({
 	miniProgress: {

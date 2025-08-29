@@ -7,8 +7,12 @@ NativeModules.RNSnackbar = {
 	LENGTH_LONG: 0
 };
 
+jest.mock('./src/style/theming.ts');
+jest.mock('./src/services/apollo.service.ts');
+
 jest.mock('react-native-track-player', () => ({
 	__esModule: true,
+	TrackPlayerDownloadManager: jest.fn(() => ({ init: jest.fn() })),
 	default: {
 		addEventListener: () => ({
 			remove: jest.fn()
@@ -64,15 +68,36 @@ jest.mock('react-native-screens', () => {
 	return ({ ...screens, enableScreens: jest.fn() });
 });
 
-jest.mock('react-native-nitro-sqlite', () => ({
-	NITRO_SQLITE_NULL: jest.fn,
-	open: () => ({
-		executeAsync: jest.fn
-	})
-}));
-
 jest.mock('@react-navigation/material-top-tabs', () =>
 	({ createMaterialTopTabNavigator: jest.fn() }));
 
 jest.mock('react-native-pager-view', () =>
 	({ SceneMap: jest.fn(), TabView: jest.fn() }));
+
+jest.mock('@op-engineering/op-sqlite', () => ({
+	open: jest.fn(() => ({
+		execute: jest.fn(async () => Promise.resolve({ rows: { _array: [] }, insertId: 1, rowsAffected: 0 })),
+		transaction: jest.fn((callback: (tx: any) => void) => {
+			const tx = {
+				execute: jest.fn(async () => Promise.resolve({ rows: { _array: [] }, insertId: 1, rowsAffected: 0 })),
+			};
+			// eslint-disable-next-line @typescript-eslint/no-unsafe-return
+			return callback(tx);
+		}),
+		close: jest.fn(async () => Promise.resolve())
+	}))
+}));
+
+jest.mock('react-native-keychain', () => ({
+	STORAGE_TYPE: {
+		FB: 'MOCK_FacebookConceal',
+		AES: 'MOCK_KeystoreAESGCM',
+		AES_GCM: 'MOCK_KeystoreAESCBC',
+		AES_GCM_NO_AUTH: 'MOCK_KeystoreAESGCMNoAuth',
+		RSA: 'MOCK_KeystoreRSAECB',
+		KC: 'MOCK_keychain',
+	},
+	setGenericPassword: jest.fn(),
+	getGenericPassword: jest.fn(),
+	resetGenericPassword: jest.fn()
+}));

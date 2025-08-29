@@ -5,7 +5,7 @@ import { TrackQuery } from './queries/track';
 import { FolderQuery } from './queries/folder';
 import { PlaylistQuery } from './queries/playlist';
 import { PodcastEpisodeQuery } from './queries/podcastEpisode';
-import { DownloadRequest, DownloadState, TrackPlayerDownloadManager } from './player.api.ts';
+import { DownloadRequest, DownloadState, TrackPlayerDownloadManager } from 'react-native-track-player';
 import { humanFileSize } from '../utils/filesize.utils';
 import { TrackEntry } from '../types/track.ts';
 import { Document } from '../types/document.ts';

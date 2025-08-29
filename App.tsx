@@ -57,7 +57,9 @@ export const App: React.FC = () => {
 			await cacheService.init();
 			await pinService.init(jamService.currentUserToken);
 			await themeSettings.loadUserTheme();
-			setClient(apolloService.client);
+			if (apolloService.client) {
+				setClient(apolloService.client);
+			}
 		};
 
 		init()

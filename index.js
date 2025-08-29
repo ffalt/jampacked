@@ -5,7 +5,7 @@ import { name as appName } from "./app.json";
 import playbackService from "./src/services/playback.service";
 import TrackPlayer from "react-native-track-player";
 
-console.reportErrorsAsExceptions = false;
+// console.reportErrorsAsExceptions = false;
 
 AppRegistry.registerComponent(appName, () => App);
 

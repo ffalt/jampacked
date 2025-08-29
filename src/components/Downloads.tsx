@@ -3,7 +3,7 @@ import { PageHeader } from './PageHeader';
 import { ActiveDownloadItem } from './ActiveDownloadItem';
 import { DefaultFlatList } from './DefaultFlatList.tsx';
 import { View } from 'react-native';
-import { TrackPlayer, Download, useTrackPlayerDownloadsPaused } from '../services/player.api.ts';
+import TrackPlayer, { Download, useTrackPlayerDownloadsPaused } from 'react-native-track-player';
 import { ClickLabelIcon } from './ClickLabelIcon';
 import { sharedStyles } from '../style/shared';
 

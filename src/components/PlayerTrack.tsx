@@ -2,7 +2,7 @@ import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import React, { useEffect } from 'react';
 import { ThemedText } from './ThemedText';
 import { staticTheme } from '../style/theming';
-import { useTrackPlayerCurrentTrack } from '../services/player.api.ts';
+import { useTrackPlayerCurrentTrack } from 'react-native-track-player';
 import { NavigationService } from '../navigators/navigation';
 import { HomeRoute } from '../navigators/Routing';
 import { useLazyTrackQuery } from '../services/queries/track';

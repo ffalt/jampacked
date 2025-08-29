@@ -3,7 +3,7 @@ import { WaveformProgress } from './WaveformProgress';
 import { snackError } from '../utils/snack.ts';
 import { StyleSheet, View } from 'react-native';
 import { useLazyWaveformQuery } from '../services/queries/waveform';
-import { useCurrentTrackID } from '../services/player.hooks.ts';
+import { useTrackPlayerCurrentTrackID } from 'react-native-track-player';
 
 const styles = StyleSheet.create({
 	container: {
@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
 });
 
 export const PlayerWaveformProgress: React.FC = () => {
-	const id = useCurrentTrackID();
+	const id = useTrackPlayerCurrentTrackID();
 	const [getWaveform, { error, waveform }] = useLazyWaveformQuery();
 
 	useEffect(() => {

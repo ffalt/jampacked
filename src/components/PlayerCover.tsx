@@ -2,7 +2,7 @@ import { StyleSheet, View } from 'react-native';
 import React from 'react';
 import { useTheme } from '../style/theming';
 import { JamImage } from './JamImage';
-import { useCurrentTrackID } from '../services/player.hooks.ts';
+import { useTrackPlayerCurrentTrackID } from 'react-native-track-player';
 
 const styles = StyleSheet.create({
 	cover: {
@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
 });
 
 export const PlayerCover: React.FC = () => {
-	const id = useCurrentTrackID();
+	const id = useTrackPlayerCurrentTrackID();
 	const theme = useTheme();
 	if (!id) {
 		return <></>;

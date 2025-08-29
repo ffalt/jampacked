@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Download, useTrackPlayerDownloadCached } from './player.api.ts';
+import { Download, useTrackPlayerDownloadCached } from 'react-native-track-player';
 import { TrackEntry } from '../types/track.ts';
 import { PinCacheStat, PinMedia, PinState } from '../types/pin.ts';
 import pinService from './pin.service.ts';

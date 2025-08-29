@@ -18,13 +18,14 @@
     "releaselog": "conventional-changelog -p angular -r 2 -o RELEASELOG.md",
     "logos": "react-native generate-bootsplash src/assets/images/logo.png --background=0b1821 --logo-width=100 --assets-output=assets",
     "clean:yarn": "rm -Rf node_modules && yarn install",
-    "clean:gradle": "cd android && rm -Rf .gradle && rm -Rf app/build && ./gradlew clean",
+    "clean:gradle": "cd android && rm -Rf .gradle && rm -Rf .kotlin && rm -Rf app/build && ./gradlew clean",
     "clean": "yarn clean:yarn && yarn clean:gradle",
-    "reinstall:player": "yarn remove react-native-track-player && yarn add ../react-native-track-player",
+    "reinstall:player": "yarn remove react-native-track-player && yarn add ../react-native-track-player/",
     "codegen": "graphql-codegen --config codegen.ts -v"
   },
   "resolutions": {
-    "tmp": "0.2.5"
+    "tmp": "0.2.5",
+    "@typescript-eslint/utils": "8.41.0"
   },
   "dependencies": {
     "@apollo/client": "4.0.0",
@@ -32,7 +33,7 @@
     "@d11/react-native-fast-image": "8.11.1",
     "@op-engineering/op-sqlite": "15.0.1",
     "@react-native-community/checkbox": "0.5.20",
-    "@react-native-community/slider": "4.5.7",
+    "@react-native-community/slider": "5.0.1",
     "@react-native-masked-view/masked-view": "0.3.2",
     "@react-native-vector-icons/common": "12.3.0",
     "@react-native-vector-icons/fontello": "12.2.0",
@@ -114,7 +115,7 @@
     "lodash.throttle": "4.1.1",
     "prettier": "^3.6.2",
     "prop-types": "15.8.1",
-    "react-test-renderer": "19.1.1",
+    "react-test-renderer": "19.1.0",
     "ts-node": "10.9.2",
     "typescript": "5.9.2",
     "typescript-eslint": "8.40.0"
@@ -123,6 +124,6 @@
     "fontDir": "src/assets/fonts"
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=22"
   }
 }

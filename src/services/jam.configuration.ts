@@ -1,6 +1,5 @@
 import { Auth, Jam, JamConfiguration } from './jam';
-import Keychain from 'react-native-keychain';
-import { STORAGE_TYPE } from 'react-native-keychain/src/enums.ts';
+import Keychain, { STORAGE_TYPE } from 'react-native-keychain';
 
 const STORE_KEY = 'react-native-keychain';
 

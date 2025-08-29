@@ -1,4 +1,4 @@
-import TrackPlayer, { Capability, Download as TrackPlayerDownload, DownloadRequest as TrackPlayerDownloadRequest, DownloadState, Track } from 'react-native-track-player';
+import TrackPlayer, { Capability, DownloadState, Track } from 'react-native-track-player';
 import { Platform } from 'react-native';
 import { IMAGE_LOGO } from '../style/images.ts';
 
@@ -73,24 +73,3 @@ export function downloadStateToString(mode: DownloadState): string {
 }
 
 export type TrackPlayerTrack = Track;
-export type Download = TrackPlayerDownload;
-export type DownloadRequest = TrackPlayerDownloadRequest;
-
-export {
-	DownloadState,
-	Event,
-	State,
-	TrackPlayerDownloadManager,
-	default as TrackPlayer,
-	useTrackPlayerCurrentDownloadsCached,
-	useTrackPlayerCurrentTrack,
-	useTrackPlayerCurrentTrackNr,
-	useTrackPlayerDownloadCached,
-	useTrackPlayerDownloadsCached,
-	useTrackPlayerDownloadsPaused,
-	useTrackPlayerHasSiblings,
-	useTrackPlayerPlaybackStateIsPlaying,
-	useTrackPlayerProgressMS,
-	useTrackPlayerProgressPercent,
-	useTrackPlayerQueue
-} from 'react-native-track-player';

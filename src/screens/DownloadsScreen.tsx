@@ -1,6 +1,6 @@
 import React from 'react';
 import { DownloadsRoute, DownloadsRouteProps } from '../navigators/Routing';
-import { useTrackPlayerDownloadsCached } from '../services/player.api.ts';
+import { useTrackPlayerDownloadsCached } from 'react-native-track-player';
 import { DownloadsPage } from '../components/Downloads';
 import pinService from '../services/pin.service.ts';
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import { JamPlayer } from '../services/player.service.ts';
-import { useTrackPlayerPlaybackStateIsPlaying } from '../services/player.api.ts';
+import { useTrackPlayerPlaybackStateIsPlaying } from 'react-native-track-player';
 import { ClickIcon } from './ClickIcon';
 
 const styles = StyleSheet.create({

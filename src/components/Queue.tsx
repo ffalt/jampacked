@@ -4,7 +4,8 @@ import { JamPlayer } from '../services/player.service.ts';
 import { useTheme } from '../style/theming';
 import { QueueItem } from './QueueItem';
 import { DefaultFlatList } from './DefaultFlatList.tsx';
-import { TrackPlayerTrack, useTrackPlayerCurrentTrackNr, useTrackPlayerQueue } from '../services/player.api.ts';
+import { TrackPlayerTrack } from '../services/player.api.ts';
+import { useTrackPlayerCurrentTrackNr, useTrackPlayerQueue } from 'react-native-track-player';
 import { ClickLabelIcon } from './ClickLabelIcon';
 import { sharedStyles } from '../style/shared';
 

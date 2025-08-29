@@ -4,7 +4,7 @@ import { JamPlayer } from '../services/player.service.ts';
 import { PlayButton } from './PlayButton';
 import { staticTheme } from '../style/theming';
 import { ClickIcon } from './ClickIcon';
-import { useTrackPlayerHasSiblings } from '../services/player.api.ts';
+import { useTrackPlayerHasSiblings } from 'react-native-track-player';
 
 const styles = StyleSheet.create({
 	playerControl: {

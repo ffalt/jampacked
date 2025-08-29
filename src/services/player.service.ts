@@ -1,7 +1,7 @@
 import jamService from './jam.service.ts';
-import { State, TrackPlayer } from './player.api.ts';
-import { TrackEntry } from '../types/track.ts';
 import { buildTrackPlayerTrack } from '../utils/build-track.ts';
+import TrackPlayer, { State } from 'react-native-track-player';
+import { TrackEntry } from '../types/track.ts';
 
 export const JamPlayer = {
 	shuffleQueueSync(): void {
@@ -161,4 +161,3 @@ export const JamPlayer = {
 		await TrackPlayer.setVolume(number);
 	}
 };
-
