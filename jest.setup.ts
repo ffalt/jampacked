@@ -79,9 +79,8 @@ jest.mock('@op-engineering/op-sqlite', () => ({
 		execute: jest.fn(async () => Promise.resolve({ rows: { _array: [] }, insertId: 1, rowsAffected: 0 })),
 		transaction: jest.fn((callback: (tx: any) => void) => {
 			const tx = {
-				execute: jest.fn(async () => Promise.resolve({ rows: { _array: [] }, insertId: 1, rowsAffected: 0 })),
+				execute: jest.fn(async () => Promise.resolve({ rows: { _array: [] }, insertId: 1, rowsAffected: 0 }))
 			};
-			// eslint-disable-next-line @typescript-eslint/no-unsafe-return
 			return callback(tx);
 		}),
 		close: jest.fn(async () => Promise.resolve())
@@ -95,7 +94,7 @@ jest.mock('react-native-keychain', () => ({
 		AES_GCM: 'MOCK_KeystoreAESCBC',
 		AES_GCM_NO_AUTH: 'MOCK_KeystoreAESGCMNoAuth',
 		RSA: 'MOCK_KeystoreRSAECB',
-		KC: 'MOCK_keychain',
+		KC: 'MOCK_keychain'
 	},
 	setGenericPassword: jest.fn(),
 	getGenericPassword: jest.fn(),
