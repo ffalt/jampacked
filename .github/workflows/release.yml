@@ -15,12 +15,12 @@ jobs:
     runs-on: ubuntu-latest
     container: reactnativecommunity/react-native-android
     steps:
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           ref: main
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
       - name: Install Dependencies
         run: yarn install
       - name: Build Changelog
