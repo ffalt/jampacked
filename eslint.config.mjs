@@ -6,7 +6,7 @@ import reactNative from "eslint-plugin-react-native";
 import react from "eslint-plugin-react";
 import unusedImports from "eslint-plugin-unused-imports";
 import stylistic from "@stylistic/eslint-plugin";
-import { configs as reactHooks } from "eslint-plugin-react-hooks";
+import reactHooks from "eslint-plugin-react-hooks";
 import unicorn from "eslint-plugin-unicorn";
 
 const commonRules = {
@@ -143,7 +143,7 @@ export default ts.config(
 			...ts.configs.recommendedTypeChecked,
 			...ts.configs.stylisticTypeChecked,
 			react.configs.flat.recommended,
-			reactHooks["recommended-latest"],
+			reactHooks.configs.flat.recommended,
 			unicorn.configs.recommended,
 			stylistic.configs.recommended
 		],
