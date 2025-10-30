@@ -1,7 +1,26 @@
 # Changelog
 
-All notable changes to this project will be documented in this file.
-See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
+All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
+
+## [0.0.4](https://github.com-ffalt/ffalt/jampacked/compare/v0.0.3...v0.0.4) (2025-10-30)
+
+
+### Features
+
+* **pin:** enable pin/download ([00204b5](https://github.com-ffalt/ffalt/jampacked/commit/00204b5d3fd17a9c9db9add8c6e956b4dae30722))
+* **player:** add rating ([345dc3c](https://github.com-ffalt/ffalt/jampacked/commit/345dc3cd4cca1b8f8da8720dec53d25b8d4a6763))
+* **player:** add rating to folder/series/track/album/artist screens ([5ff3d5e](https://github.com-ffalt/ffalt/jampacked/commit/5ff3d5e56105b4be65202e8e50ca286413cf85c2))
+* **ui:** refinements ([c6a550a](https://github.com-ffalt/ffalt/jampacked/commit/c6a550aea9a61660d78e7db765f31206b36d2da1))
+
+
+### Bug Fixes
+
+* **emitters:** test trackplayer by lovegaoshi ([822ce6d](https://github.com-ffalt/ffalt/jampacked/commit/822ce6dcaedfa940c2c5b65f4b47fb2e567cb841))
+* **emitters:** use EventEmitter ([75987ef](https://github.com-ffalt/ffalt/jampacked/commit/75987ef4eea0ef196796b026b7b11c78d6dba91d))
+* package.json & yarn.lock to reduce vulnerabilities ([83396ac](https://github.com-ffalt/ffalt/jampacked/commit/83396ac44b121be57d56ebcccfdee06fa6d1da5c))
+* package.json & yarn.lock to reduce vulnerabilities ([fdc3d43](https://github.com-ffalt/ffalt/jampacked/commit/fdc3d431ac7e768e5831078a4032f65908fbc614))
+* package.json & yarn.lock to reduce vulnerabilities ([86015bb](https://github.com-ffalt/ffalt/jampacked/commit/86015bb995c6832586f6f7b9b748c5463e539b76))
+* **player:** don't stop playing on app close ([f86a075](https://github.com-ffalt/ffalt/jampacked/commit/f86a07566bffe4e794008be2043b377e87dcdb9c))
 
 ## [0.0.3](https://github.com-ffalt/ffalt/jampacked/compare/v0.0.2...v0.0.3) (2023-01-23)
 
