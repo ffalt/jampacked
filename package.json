@@ -24,7 +24,8 @@
     "codegen": "graphql-codegen --config codegen.ts -v"
   },
   "resolutions": {
-    "tmp": "0.2.5"
+    "tmp": "0.2.5",
+    "@conventional-changelog/git-client": "2.0.0"
   },
   "dependencies": {
     "@apollo/client": "4.0.8",

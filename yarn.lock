@@ -1444,12 +1444,11 @@
     deepmerge "^3.2.0"
     hoist-non-react-statics "^3.3.0"
 
-"@conventional-changelog/git-client@^1.0.0":
-  version "1.0.1"
-  resolved "https://registry.npmjs.org/@conventional-changelog/git-client/-/git-client-1.0.1.tgz"
-  integrity sha512-PJEqBwAleffCMETaVm/fUgHldzBE35JFk3/9LL6NUA5EXa3qednu+UT6M7E5iBu3zIQZCULYIiZ90fBYHt6xUw==
+"@conventional-changelog/git-client@2.0.0", "@conventional-changelog/git-client@^1.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@conventional-changelog/git-client/-/git-client-2.0.0.tgz#5cb8f07c2b1f1697096f82487346fdffb5b9ca9f"
+  integrity sha512-6lD/xsDwx5xQ1dLgL1Ud47MHatuJpwVXbyHWZhlIUqRRTWTp1jRpwdk1roEaf752WA6LAbZY7elVkRQPHofUHA==
   dependencies:
-    "@types/semver" "^7.5.5"
     semver "^7.5.2"
 
 "@cspotcode/source-map-support@^0.8.0":
@@ -3774,11 +3773,6 @@
   integrity sha512-ePapxDL7qrgqSF67s0h9m412d9DbXyC1n59O2st+9rjuuamWsZuD2w55rqY12CbzsZ7uVXb5Nw0gEp9Z8MMutQ==
   dependencies:
     csstype "^3.0.2"
-
-"@types/semver@^7.5.5":
-  version "7.7.0"
-  resolved "https://registry.npmjs.org/@types/semver/-/semver-7.7.0.tgz"
-  integrity sha512-k107IF4+Xr7UHjwDc7Cfd6PRQfbdkiRabXGRjo07b4WyPahFBZCZ1sE+BNxYIJPPg73UkfOsVOLwqVc/6ETrIA==
 
 "@types/stack-utils@^2.0.0", "@types/stack-utils@^2.0.3":
   version "2.0.3"
