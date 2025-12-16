@@ -7,10 +7,13 @@ import { ClickIcon } from './ClickIcon';
 import cacheService from '../services/cache.service.ts';
 
 export const FavIcon: React.FC<{ id?: string; objType: JamObjectType; style?: StyleProp<ViewStyle>; fontSize?: number }> = ({ id, style, fontSize }) => {
-	const [isFaved, setIsFaved] = useState<boolean>(false);
+	// optimistic local state only for immediate UI feedback; null means no override
+	const [optimistic, setOptimistic] = useState<boolean | null>(null);
 	const [getFaved, { faved, loading, setFav }] = useLazyFavQuery();
 	const [toggleFav] = useFavMutation();
 	const isUnmountedReference = useRef(true);
+	const defaultFaved = (faved?.timestamp ?? 0) > 0;
+	const isFaved = optimistic ?? defaultFaved;
 
 	useEffect(() => {
 		isUnmountedReference.current = false;
@@ -25,34 +28,29 @@ export const FavIcon: React.FC<{ id?: string; objType: JamObjectType; style?: St
 		}
 	}, [getFaved, id]);
 
-	useEffect(() => {
-		if (loading) {
-			return;
-		}
-		if (faved) {
-			if (isUnmountedReference.current) {
-				return;
-			}
-			setIsFaved((faved?.timestamp ?? 0) > 0);
-		}
-	}, [faved, loading]);
-
 	const handleToggleFav = useCallback((): void => {
 		if (!loading && id) {
+			// optimistic flip: if no optimistic override, use opposite of defaultFaved
+			setOptimistic(previous => (previous === null ? (defaultFaved ? false : true) : (previous ? false : true)));
 			toggleFav({ variables: { id, remove: isFaved } })
 				.then(result => {
 					if (isUnmountedReference.current) {
 						return;
 					}
 					const fav = { timestamp: result.data?.fav?.faved ? (new Date(result.data.fav.faved)).valueOf() : undefined };
-					setIsFaved((fav?.timestamp ?? 0) > 0);
+					// clear optimistic override and rely on query state (setFav updates query cache)
+					setOptimistic(null);
 					setFav(fav);
 					snackSuccess(isFaved ? 'Removed from Favorites' : 'Added to Favorites');
 					cacheService.updateHomeData().catch(console.error);
 				})
-				.catch(console.error);
+				.catch(error => {
+					// on error, clear optimistic state and log
+					setOptimistic(null);
+					console.error(error);
+				});
 		}
-	}, [loading, id, toggleFav, isFaved, setFav]);
+	}, [loading, id, toggleFav, isFaved, setFav, defaultFaved]);
 
 	const iconName = isFaved ? 'heart-full' : 'heart-empty';
 	return (

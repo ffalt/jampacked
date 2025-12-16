@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import { RefreshControl, ScrollView, View } from 'react-native';
 import { HomeRoute, HomeRouteProps } from '../navigators/Routing';
 import { HeaderDetail, ObjectHeader, objectHeaderStyles } from '../components/ObjectHeader.tsx';
@@ -37,21 +37,15 @@ const buildDetails = (track?: TrackEntry): Array<HeaderDetail> => [
 
 export const TrackScreen: React.FC<HomeRouteProps<HomeRoute.TRACK>> = ({ route }) => {
 	const theme = useTheme();
-	const [details, setDetails] = useState<Array<HeaderDetail>>(buildDetails());
 	const [getTrack, { loading, error, track }] = useLazyTrackQuery();
 	const { id, name } = (route?.params || {});
+	const details = useMemo(() => buildDetails(track), [track]);
 
 	useEffect(() => {
 		if (id) {
 			getTrack(id);
 		}
 	}, [getTrack, id]);
-
-	useEffect(() => {
-		if (track) {
-			setDetails(buildDetails(track));
-		}
-	}, [track]);
 
 	const playTrack = useCallback((): void => {
 		if (track) {

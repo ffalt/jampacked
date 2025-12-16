@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { buildCacheID } from '../utils/build-query-cache-id.ts';
 import cacheService, { CacheState } from './cache.service.ts';
 import { DocumentNode } from 'graphql';
@@ -19,24 +19,23 @@ export function useCacheOrLazyQuery<TData, TVariables extends OperationVariables
 	query: DocumentNode,
 	transform: (d?: TData, variables?: TVariables) => TResult | undefined,
 	options?: useLazyQuery.Options<TData, TVariables>): [QueryFunction<TData, TVariables>, QueryHookData<TResult>] {
-	const [result, setResult] = useState<TResult | undefined>();
+	const [cachedResult, setCachedResult] = useState<TResult | undefined>();
 	const [id, setID] = useState<string | undefined>();
-	const [queryData, setQueryData] = useState<TData>();
 	const [q, { loading, error, data, variables }] = useLazyQuery<TData, TVariables>(query, options);
 
 	const execute = useCallback((variables: TVariables, queryOptions?: useLazyQuery.Options<TData, TVariables>, forceRefresh?: boolean): void => {
 		const queryID = buildCacheID<TVariables>(query, variables);
 		if (queryID) {
 			setID(queryID);
-			setResult(undefined);
-			setQueryData(undefined);
+			// clear previous cached value while query runs
+			setCachedResult(undefined);
 			if (forceRefresh) {
 				q({ variables, ...queryOptions }).catch(console.error);
 			} else {
 				cacheService.getData<TResult>(queryID)
 					.then(async r => {
 						if (r) {
-							setResult(r);
+							setCachedResult(r);
 						} else {
 							q({ variables, ...queryOptions }).catch(console.error);
 						}
@@ -45,23 +44,22 @@ export function useCacheOrLazyQuery<TData, TVariables extends OperationVariables
 		}
 	}, [query, q]);
 
-	useEffect(() => {
-		if (data) {
-			setQueryData(data);
-		}
-	}, [data]);
+	// derive transformed result from network query data
+	const transformed = useMemo(() => {
+		if (!data) return undefined;
+		return transform(data, variables as TVariables);
+	}, [data, variables, transform]);
 
+	// persist transformed result to cache when it becomes available
 	useEffect(() => {
-		if (queryData) {
-			const r = transform(queryData, variables as TVariables);
-			if (id && r) {
-				setResult(r);
-				cacheService.setData(id, r).catch(console.error);
-			}
+		if (id && transformed) {
+			cacheService.setData(id, transformed).catch(console.error);
 		}
-	}, [variables, id, transform, queryData]);
+	}, [id, transformed]);
 
-	return [execute, { loading, error, data: result, called: !!id, queryID: id }];
+	const finalResult = transformed ?? cachedResult;
+
+	return [execute, { loading, error, data: finalResult, called: !!id, queryID: id }];
 }
 
 export function useCacheManagement(): [fill: () => void, clear: () => void, stop: () => void, state: CacheState] {

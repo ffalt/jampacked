@@ -58,7 +58,7 @@ export const TrackItem: React.FC<{
 	setSelected?: (item: TrackEntry) => void;
 	doubleTab?: (item: TrackEntry) => void;
 }> = React.memo(({ track, displayFunc, showCheck, isSelected, setSelected, doubleTab }) => {
-	const doubleTap = React.useRef(React.createRef<TapGestureHandler>().current);
+	const doubleTap = React.useRef<TapGestureHandler | null>(null);
 	const display = displayFunc ? displayFunc(track) : defaultTrackDisplay(track);
 
 	const setItemSelected = useCallback((): void => {

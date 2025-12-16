@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import { SectionListData, View } from 'react-native';
 import { ThemedText } from '../components/ThemedText';
 import { HomeRoute, HomeRouteProps } from '../navigators/Routing';
@@ -20,21 +20,15 @@ const buildDetails = (albums?: number, tracks?: number, genre?: string): Array<H
 ];
 
 export const ArtistScreen: React.FC<HomeRouteProps<HomeRoute.ARTIST>> = ({ route }) => {
-	const [details, setDetails] = useState<Array<HeaderDetail>>(buildDetails());
 	const [getArtist, { loading, error, artist }] = useLazyArtistQuery();
 	const { id, name } = (route?.params ?? {});
+	const details = useMemo(() => artist ? buildDetails(artist.albumsCount, artist.tracksCount, genreDisplay(artist.genres)) : buildDetails(), [artist]);
 
 	useEffect(() => {
 		if (id) {
 			getArtist(id);
 		}
 	}, [getArtist, id]);
-
-	useEffect(() => {
-		if (artist) {
-			setDetails(buildDetails(artist.albumsCount, artist.tracksCount, genreDisplay(artist.genres)));
-		}
-	}, [artist]);
 
 	const ListHeaderComponent = (
 		<ObjectHeader

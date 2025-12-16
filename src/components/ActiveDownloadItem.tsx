@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { DimensionValue, StyleSheet, View } from 'react-native';
 import { ThemedText } from './ThemedText';
 import { sharedStyles } from '../style/shared';
@@ -19,40 +19,25 @@ const styles = StyleSheet.create({
 
 export const ActiveDownloadItem: React.FC<{ item: Download }> = React.memo(({ item }) => {
 	const theme = useTheme();
-	const [state, setState] = useState<{
-		text: string; state: string; bytes: string;
-		percent: number;
-	}>({
-		text: '',
-		state: '',
-		bytes: '',
-		percent: 0
-	});
 	const { download, track } = usePinnedMediaDownload(item.id);
+	const o = download ?? item;
+	const percent = Math.max(o.percentDownloaded || 0, 0);
+	const bytes = `${humanFileSize(o.bytesDownloaded)}`;
+	const text = track ? ([track.album, track.title].join('-')) : 'Loading';
+	const stateString = downloadStateToString(o.state);
 
-	useEffect(() => {
-		const o = download ?? item;
-		const percent = Math.max(o.percentDownloaded || 0, 0);
-		setState({
-			percent,
-			bytes: `${humanFileSize(o.bytesDownloaded)}`,
-			text: track ? ([track.album, track.title].join('-')) : 'Loading',
-			state: downloadStateToString(o.state)
-		});
-	}, [download, item, track]);
-
-	const width: DimensionValue = `${state.percent}%`;
+	const width: DimensionValue = `${percent}%`;
 	return (
 		<View style={sharedStyles.item}>
 			<View style={sharedStyles.itemContent}>
-				<ThemedText style={sharedStyles.itemText} numberOfLines={1}>{state.text}</ThemedText>
+				<ThemedText style={sharedStyles.itemText} numberOfLines={1}>{text}</ThemedText>
 				<View style={[sharedStyles.itemFooter, styles.footer]}>
-					<ThemedText style={sharedStyles.itemFooterText}>{state.state}</ThemedText>
+					<ThemedText style={sharedStyles.itemFooterText}>{stateString}</ThemedText>
 					<ThemedText style={sharedStyles.itemFooterText}>
-						{state.percent.toFixed(2)}
+						{percent.toFixed(2)}
 						%
 					</ThemedText>
-					<ThemedText style={sharedStyles.itemFooterText}>{state.bytes}</ThemedText>
+					<ThemedText style={sharedStyles.itemFooterText}>{bytes}</ThemedText>
 				</View>
 				<View style={[styles.miniProgress, { backgroundColor: theme.separator }]}>
 					<View style={[styles.miniProgress, { width, backgroundColor: theme.progress }]} />

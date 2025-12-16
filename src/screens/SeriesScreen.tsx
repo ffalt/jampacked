@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import { SectionListData, View } from 'react-native';
 import { ThemedText } from '../components/ThemedText';
 import { HomeRoute, HomeRouteProps } from '../navigators/Routing';
@@ -20,7 +20,6 @@ const buildDetails = (artist?: string, tracks?: number, genre?: string, toArtist
 ];
 
 export const SeriesScreen: React.FC<HomeRouteProps<HomeRoute.SERIE>> = ({ route }) => {
-	const [details, setDetails] = useState<Array<HeaderDetail>>(buildDetails());
 	const [getSeries, { loading, error, series }] = useLazySeriesQuery();
 	const { id, name } = (route?.params ?? {});
 
@@ -30,12 +29,13 @@ export const SeriesScreen: React.FC<HomeRouteProps<HomeRoute.SERIE>> = ({ route 
 		}
 	}, [getSeries, id]);
 
-	useEffect(() => {
+	const details = useMemo(() => {
 		if (series) {
-			setDetails(buildDetails(series.artistName, series.tracksCount, 'Audio Series', () => {
+			return buildDetails(series.artistName, series.tracksCount, 'Audio Series', () => {
 				NavigationService.navigate(HomeRoute.ARTIST, { id: series.artistID, name: series.artistName ?? '' });
-			}));
+			});
 		}
+		return buildDetails();
 	}, [series]);
 
 	const reload = useCallback((): void => {

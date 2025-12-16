@@ -3,7 +3,7 @@
 	based on https://github.com/rgovindji/react-native-atoz-list
 
  */
-import React, { MutableRefObject, useCallback, useEffect, useState } from 'react';
+import React, { RefObject, useCallback, useMemo, useState } from 'react';
 import { FlatList, FlatListProps, NativeScrollEvent, NativeSyntheticEvent, StyleSheet, View } from 'react-native';
 import { AtoZPicker } from './AtoZPicker';
 import { commonItemLayout } from '../utils/list.utils';
@@ -23,10 +23,9 @@ const styles = StyleSheet.create({
 });
 
 export const AtoZList: React.FC<AtoZListProps<any>> = <T extends SectionItem, >(props: AtoZListProps<T>) => {
-	const containerReference: MutableRefObject<FlatList<T> | null> = React.useRef<FlatList<T>>(null);
+	const containerReference: RefObject<FlatList<T> | null> = React.useRef<FlatList<T>>(null);
 	const { itemHeight, data, numColumns } = props;
 	const [activeLetter, setActiveLetter] = useState<string | undefined>();
-	const [letters, setLetters] = useState<Array<string>>([]);
 
 	const onTouchLetter = useCallback((letter: string): void => {
 		if (containerReference.current) {
@@ -49,7 +48,7 @@ export const AtoZList: React.FC<AtoZListProps<any>> = <T extends SectionItem, >(
 		}
 	}, [data, itemHeight]);
 
-	useEffect(() => {
+	const letters = useMemo(() => {
 		const list: Array<string> = [];
 		const items = (data ?? []);
 		if (items.length > 20) {
@@ -59,7 +58,7 @@ export const AtoZList: React.FC<AtoZListProps<any>> = <T extends SectionItem, >(
 				}
 			}
 		}
-		setLetters(list);
+		return list;
 	}, [data]);
 
 	return (

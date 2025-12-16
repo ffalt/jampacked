@@ -4,7 +4,7 @@
  	LICENSE: MIT
 
  */
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { StyleProp, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { scaleLinear } from 'd3-scale';
 import { mean } from 'd3-array';
@@ -83,7 +83,8 @@ const WaveformViewBar: React.FC<WaveformViewBarProps> = React.memo((
 		backgroundColor,
 		goToIndex,
 		index
-	}) => {
+	}
+) => {
 	const goTime = useCallback((): void => {
 		goToIndex(index);
 	}, [goToIndex, index]);
@@ -103,7 +104,8 @@ const WaveformView: React.FC<WaveFormViewProps> = React.memo((
 		height,
 		width,
 		setTime
-	}) => {
+	}
+) => {
 	const goToIndex = useCallback((index: number) => {
 		setTime(index / bars.items.length);
 	}, [setTime, bars.items.length]);
@@ -144,32 +146,30 @@ export const SoundCloudWave: React.FC<WaveFormProps> = (
 		colors,
 		waveform,
 		style
-	}) => {
-	const [bars, setBars] = useState<{ items: Array<WaveFormBar> }>({ items: [] });
-
-	useEffect(() => {
-		if (waveform) {
-			let wfHeight = 1;
-			let wfWidth = 1;
-			const wf = WaveformData.create(waveform);
-			wfWidth = waveform.data.length / 2;
-			wfHeight = waveform.sample_rate / 2;
-			const rWidth = (width - 40) || 1;
-			const chunkNr = wfWidth / (rWidth / 3);
-			const chunksHigh = chunk(wf.channel(0).max_array(), chunkNr);
-			const chunksLow = chunk(wf.channel(0).min_array(), chunkNr);
-			const barsHigh = buildBars([0, wfHeight], [0, height / 2], chunksHigh);
-			const barsLow = buildBars([-wfHeight, 0], [height / 2, 0], chunksLow);
-			const items = barsHigh.items.map((high, index) => {
-				const low = barsLow.items[index];
-				return {
-					// high, low,
-					top: (height / 2) - high,
-					height: (high + low)
-				};
-			});
-			setBars({ items });
-		}
+	}
+) => {
+	const bars = useMemo(() => {
+		if (!waveform) return { items: [] } as { items: Array<WaveFormBar> };
+		let wfHeight = 1;
+		let wfWidth = 1;
+		const wf = WaveformData.create(waveform);
+		wfWidth = waveform.data.length / 2;
+		wfHeight = waveform.sample_rate / 2;
+		const rWidth = (width - 40) || 1;
+		const chunkNr = wfWidth / (rWidth / 3);
+		const chunksHigh = chunk(wf.channel(0).max_array(), chunkNr);
+		const chunksLow = chunk(wf.channel(0).min_array(), chunkNr);
+		const barsHigh = buildBars([0, wfHeight], [0, height / 2], chunksHigh);
+		const barsLow = buildBars([-wfHeight, 0], [height / 2, 0], chunksLow);
+		const items = barsHigh.items.map((high, index) => {
+			const low = barsLow.items[index];
+			return {
+				// high, low,
+				top: (height / 2) - high,
+				height: (high + low)
+			};
+		});
+		return { items };
 	}, [waveform, height, width]);
 
 	return (

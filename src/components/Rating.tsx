@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useMemo } from 'react';
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { JamObjectType } from '../services/jam';
 import { snackSuccess } from '../utils/snack.ts';
@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
 });
 
 export const Rating: React.FC<{ id?: string; objType: JamObjectType; style?: StyleProp<ViewStyle>; fontSize?: number }> = ({ id, style, fontSize }) => {
-	const [rate, setRate] = useState<number>(0);
+	const [localRate, setLocalRate] = useState<number | undefined>(undefined);
 	const [getRating, { rating, loading }] = useLazyRateQuery();
 	const [setRatingMutation] = useRateMutation();
 	const isUnmountedReference = useRef(true);
@@ -37,21 +37,16 @@ export const Rating: React.FC<{ id?: string; objType: JamObjectType; style?: Sty
 		}
 	}, [getRating, id]);
 
-	useEffect(() => {
-		if (loading) {
-			return;
-		}
-		if (rating) {
-			if (isUnmountedReference.current) {
-				return;
-			}
-			setRate(rating.rated ?? -1);
-		}
-	}, [rating, loading]);
+	const displayRate = useMemo(() => {
+		if (localRate !== undefined) return localRate;
+		return rating?.rated ?? -1;
+	}, [localRate, rating]);
 
 	const handleRate = (r: number): void => {
 		if (!loading && id) {
-			const destinationRating = r === rate ? r - 1 : r;
+			const destinationRating = r === displayRate ? r - 1 : r;
+			// optimistic local update
+			setLocalRate(destinationRating);
 			setRatingMutation({ variables: { id, rating: destinationRating } })
 				.then(result => {
 					if (isUnmountedReference.current) {
@@ -59,14 +54,19 @@ export const Rating: React.FC<{ id?: string; objType: JamObjectType; style?: Sty
 					}
 					const resultRating = result.data?.rate?.rated;
 					const newRate = resultRating ?? 0;
-					setRate(newRate);
+					setLocalRate(newRate);
 					snackSuccess(`Rated with ${newRate}`);
 					cacheService.updateHomeData().catch(console.error);
 				})
-				.catch(console.error);
+				.catch(error => {
+					// revert optimistic on error
+					setLocalRate(undefined);
+					console.error(error);
+				});
 		}
 	};
 
+	const rate = displayRate;
 	const iconName1 = rate < 1 ? 'star-empty' : 'star-full';
 	const iconName2 = rate < 2 ? 'star-empty' : 'star-full';
 	const iconName3 = rate < 3 ? 'star-empty' : 'star-full';

@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useMemo } from 'react';
 import { AlbumsRoute, AlbumsRouteProps } from '../navigators/Routing';
 import { IndexList } from '../components/IndexList';
 import { ErrorView } from '../components/ErrorView';
@@ -9,16 +9,9 @@ import { ListType } from '../services/jam';
 import { JamRouteLinks } from '../navigators/Routes';
 
 export const AlbumIndexScreen: React.FC<AlbumsRouteProps<AlbumsRoute.INDEX>> = () => {
-	const [title, setTitle] = useState<string>('');
 	const [getIndex, { loading, error, called, index }] = useLazyAlbumIndexQuery();
 	const { albumType } = useContext(AlbumsTabNavigatorContext);
-
-	useEffect(() => {
-		if (albumType) {
-			const type = getAlbumTypeInfos(albumType);
-			setTitle(type.title);
-		}
-	}, [albumType]);
+	const title = useMemo(() => (albumType ? getAlbumTypeInfos(albumType).title : ''), [albumType]);
 
 	useEffect(() => {
 		if (albumType) {

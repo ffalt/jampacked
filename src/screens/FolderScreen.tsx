@@ -1,4 +1,4 @@
-import React, { MutableRefObject, useCallback, useEffect, useState } from 'react';
+import React, { RefObject, useCallback, useEffect, useMemo, useState } from 'react';
 import { defaultShowArtistTrackDisplay, defaultTrackDisplay, TrackItem } from '../components/TrackItem';
 import { HomeRoute, HomeRouteProps } from '../navigators/Routing';
 import { JamPlayer } from '../services/player.service.ts';
@@ -48,10 +48,9 @@ const buildDetails = (folder?: Folder): Array<HeaderDetail> => {
 
 export const FolderScreen: React.FC<HomeRouteProps<HomeRoute.FOLDER>> = ({ route }) => {
 	const theme = useTheme();
-	const [details, setDetails] = useState<Array<HeaderDetail>>(buildDetails());
 	const [getFolder, { loading, error, folder }] = useLazyFolderQuery();
 	const { id, name } = (route?.params || {});
-	const selectActionReference: MutableRefObject<FloatingAction | null> = React.useRef<FloatingAction>(null);
+	const selectActionReference: RefObject<FloatingAction | null> = React.useRef<FloatingAction>(null);
 	const [showCheck, setShowCheck] = useState<boolean>(false);
 	const [selection, setSelection] = useState<Array<TrackEntry>>([]);
 	const [actions, setActions] = useState<Array<ActionMenuItem>>([]);
@@ -71,11 +70,7 @@ export const FolderScreen: React.FC<HomeRouteProps<HomeRoute.FOLDER>> = ({ route
 		}
 	}, [getFolder, id]);
 
-	useEffect(() => {
-		if (folder) {
-			setDetails(buildDetails(folder));
-		}
-	}, [folder]);
+	const details = useMemo(() => buildDetails(folder), [folder]);
 
 	const playTracks = (): void => {
 		if (folder) {

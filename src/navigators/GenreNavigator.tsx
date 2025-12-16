@@ -1,5 +1,5 @@
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import React, { useEffect, useState } from 'react';
+import React, { useMemo } from 'react';
 import { GenreRoute, GenreRouteParameterList, HomeRoute, HomeRouteProps } from './Routing';
 import { GenreArtistsScreen } from '../screens/GenreArtistsScreen';
 import { GenreAlbumsScreen } from '../screens/GenreAlbumsScreen';
@@ -10,11 +10,7 @@ const Tab = createMaterialTopTabNavigator<GenreRouteParameterList>();
 const emptyComponent = (): React.JSX.Element => (<></>);
 
 export const GenreNavigator: React.FC<HomeRouteProps<HomeRoute.GENRE>> = ({ route }) => {
-	const [state, setState] = useState<{ id?: string; name?: string }>({});
-
-	useEffect(() => {
-		setState({ id: route.params?.id, name: route.params?.name });
-	}, [route]);
+	const state = useMemo(() => ({ id: route.params?.id, name: route.params?.name }), [route.params]);
 	return (
 		<GenreTabNavigatorContext.Provider value={state}>
 			<Tab.Navigator

@@ -1,5 +1,5 @@
 import { ActivityIndicator, ScrollView, StyleSheet, View } from 'react-native';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import { staticTheme, useTheme } from '../style/theming';
 import { ThemedText } from './ThemedText';
 import { useLazyTrackLyricsQuery } from '../services/queries/lyrics';
@@ -38,24 +38,24 @@ const styles = StyleSheet.create({
 });
 
 export const Lyrics: React.FC<{ id?: string | null }> = ({ id }) => {
-	const [text, setText] = useState<string>('');
 	const theme = useTheme();
 	const [getLyrics, { lyrics, loading, error }] = useLazyTrackLyricsQuery();
 
 	useEffect(() => {
 		if (id) {
-			setText('');
 			getLyrics(id);
 		}
 	}, [getLyrics, id]);
 
-	useEffect(() => {
+	const displayText = useMemo(() => {
 		if (lyrics) {
-			setText(lyrics.lyrics ?? '[No lyrics available]');
-		} else {
-			setText('');
+			return lyrics.lyrics ?? '[No lyrics available]';
 		}
-	}, [lyrics]);
+		if (!lyrics && !loading && id) {
+			return '';
+		}
+		return '';
+	}, [lyrics, loading, id]);
 
 	const refresh = useCallback((): void => {
 		if (id) {
@@ -66,7 +66,7 @@ export const Lyrics: React.FC<{ id?: string | null }> = ({ id }) => {
 	if (!lyrics) {
 		return (
 			<View key="nolyrics" style={[styles.containerLoading, { borderColor: theme.separator }]}>
-				{id && !error && !loading && <ThemedText style={styles.none}>{text}</ThemedText>}
+				{id && !error && !loading && <ThemedText style={styles.none}>{displayText}</ThemedText>}
 				{loading && (
 					<View>
 						<ActivityIndicator size="small" color={theme.textColor} />
@@ -92,7 +92,7 @@ export const Lyrics: React.FC<{ id?: string | null }> = ({ id }) => {
 	}
 	return (
 		<ScrollView key="lyrics" style={[styles.container, { borderColor: theme.separator }]}>
-			<ThemedText style={styles.lyrics}>{text}</ThemedText>
+			<ThemedText style={styles.lyrics}>{displayText}</ThemedText>
 		</ScrollView>
 	);
 };

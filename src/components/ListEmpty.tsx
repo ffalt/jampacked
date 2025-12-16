@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useMemo } from 'react';
 import { ThemedText } from './ThemedText';
 import { StyleSheet, View } from 'react-native';
 import { useTheme } from '../style/theming';
@@ -17,29 +17,16 @@ const styles = StyleSheet.create({
 });
 
 export const ListEmpty: React.FC<{ list?: Array<any> }> = ({ list }) => {
-	const [text, setText] = useState('');
 	const theme = useTheme();
 
-	useEffect(() => {
-		let isSubscribed = false;
-		let delayDebounceFunction: ReturnType<typeof setTimeout> | undefined;
-		if (list) {
-			setText((list.length > 0 ? '' : 'No entries'));
-		} else {
-			isSubscribed = true;
-			setText('');
-			delayDebounceFunction = setTimeout(() => {
-				if (isSubscribed) {
-					setText('Loading');
-				}
-			}, 700);
+	const text = useMemo(() => {
+		if (list === undefined) {
+			return 'Loading';
 		}
-		return (): void => {
-			if (isSubscribed) {
-				isSubscribed = false;
-				clearTimeout(delayDebounceFunction);
-			}
-		};
+		if (list.length === 0) {
+			return 'No entries';
+		}
+		return '';
 	}, [list]);
 
 	return (

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import { JamObjectType } from '../services/jam';
 import { SectionListData, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { ThemedText } from './ThemedText';
@@ -9,7 +9,7 @@ import { staticTheme } from '../style/theming';
 import { useLazyAutocompleteQuery } from '../services/queries/autocomplete';
 import { sharedStyles } from '../style/shared';
 import { DefaultSectionList } from './DefaultSectionList.tsx';
-import { AutoCompleteData, AutoCompleteDataSection, AutoCompleteEntryData } from '../types/autocomplete.ts';
+import { AutoCompleteDataSection, AutoCompleteEntryData } from '../types/autocomplete.ts';
 
 const styles = StyleSheet.create({
 	list: {
@@ -23,20 +23,14 @@ interface SearchQuickProps {
 }
 
 export const SearchQuick: React.FC<SearchQuickProps> = ({ query, setObjType }) => {
-	const [list, setList] = useState<AutoCompleteData>([]);
 	const [getAutocomplete, { loading, sections, error }] = useLazyAutocompleteQuery();
+	const list = useMemo(() => (!loading && sections) ? sections : [], [loading, sections]);
 
 	useEffect(() => {
 		if (query) {
 			getAutocomplete(query);
 		}
 	}, [getAutocomplete, query]);
-
-	useEffect(() => {
-		if (!loading && sections) {
-			setList(sections);
-		}
-	}, [sections, loading]);
 
 	const reload = useCallback((): void => {
 		if (query) {

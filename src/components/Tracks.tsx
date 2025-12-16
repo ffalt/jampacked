@@ -1,4 +1,4 @@
-import React, { MutableRefObject, useCallback, useState } from 'react';
+import React, { RefObject, useCallback, useState } from 'react';
 import { DefaultFlatList } from './DefaultFlatList.tsx';
 import { TrackDisplayFunction, TrackItem } from './TrackItem';
 import { ErrorView } from './ErrorView';
@@ -18,7 +18,7 @@ export const Tracks: React.FC<{
 	onLoadMore?: () => void;
 }> = ({ tracks, refreshing, displayFunc, onRefresh, onLoadMore, error, ListHeaderComponent }) => {
 	const theme = useTheme();
-	const selectActionReference: MutableRefObject<FloatingAction | null> = React.useRef<FloatingAction>(null);
+	const selectActionReference: RefObject<FloatingAction | null> = React.useRef<FloatingAction>(null);
 	const [showCheck, setShowCheck] = useState<boolean>(false);
 	const [selection, setSelection] = useState<Array<TrackEntry>>([]);
 	const [actions, setActions] = useState<Array<ActionMenuItem>>([]);

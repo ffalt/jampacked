@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import { JamObjectType } from '../services/jam';
 import { StyleSheet } from 'react-native';
 import { Item } from './Item';
@@ -34,33 +34,17 @@ interface SearchProps {
 }
 
 export const Search: React.FC<SearchProps> = ({ objType, query, backToAll }) => {
-	const [q, setQ] = useState<string | undefined>();
-	const [total, setTotal] = useState<number>(0);
-	const [offset, setOffset] = useState<number>(0);
-	const [entries, setEntries] = useState<Array<BaseEntry>>([]);
 	const [getSearch, { loading, error, result }] = useLazySearchQuery(objType);
 	const amount = 20;
+	const entries = useMemo((): Array<BaseEntry> => (result?.entries ?? []), [result]);
+	const total = useMemo(() => result?.total ?? 0, [result]);
 
 	useEffect(() => {
 		if (query) {
-			setEntries([]);
-			setOffset(0);
-			setQ(query);
+			// trigger initial search for first page
+			getSearch(query, amount, 0);
 		}
-	}, [query]);
-
-	useEffect(() => {
-		if (q) {
-			getSearch(q, amount, offset);
-		}
-	}, [getSearch, q, offset]);
-
-	useEffect(() => {
-		if (result?.entries?.length) {
-			setTotal(result.total);
-			setEntries(previous => [...previous, ...result.entries]);
-		}
-	}, [result]);
+	}, [query, getSearch]);
 
 	const handleBack = useCallback((): void => {
 		if (backToAll) {
@@ -69,21 +53,19 @@ export const Search: React.FC<SearchProps> = ({ objType, query, backToAll }) => 
 	}, [backToAll]);
 
 	const handleLoadMore = useCallback((): void => {
-		setOffset(previous => {
-			if (previous + amount > total) {
-				return previous;
+		if (query) {
+			const offset = entries.length;
+			if (offset < (total ?? 0)) {
+				getSearch(query, amount, offset);
 			}
-			return previous + amount;
-		});
-	}, [total]);
+		}
+	}, [entries.length, getSearch, query, total]);
 
 	const reload = useCallback((): void => {
-		if (q) {
-			setEntries([]);
-			setOffset(0);
-			getSearch(q, amount, offset);
+		if (query) {
+			getSearch(query, amount, 0);
 		}
-	}, [q, getSearch, offset]);
+	}, [query, getSearch]);
 
 	const renderItem = useCallback(({ item }: { item: BaseEntry }): React.JSX.Element => (<Item item={item} />), []);
 

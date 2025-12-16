@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useMemo } from 'react';
 import { AlbumRoute, AlbumRouteProps, HomeRoute } from '../navigators/Routing';
 import { JamPlayer } from '../services/player.service.ts';
 import { HeaderDetail, ObjectHeader, objectHeaderStyles } from '../components/ObjectHeader.tsx';
@@ -25,7 +25,6 @@ const buildDetails = (artist?: string, tracks?: number, genre?: string, click?: 
 
 export const AlbumScreen: React.FC<AlbumRouteProps<AlbumRoute.MAIN>> = () => {
 	const state = useContext(AlbumTabNavigatorContext);
-	const [details, setDetails] = useState<Array<HeaderDetail>>(buildDetails());
 	const [getAlbum, { loading, error, album }] = useLazyAlbumQuery();
 	const id = state.id ?? '';
 	const name = state.name ?? '';
@@ -36,14 +35,15 @@ export const AlbumScreen: React.FC<AlbumRouteProps<AlbumRoute.MAIN>> = () => {
 		}
 	}, [id, getAlbum]);
 
-	useEffect(() => {
+	const details = useMemo(() => {
 		if (album) {
-			setDetails(buildDetails(album.artistName, album.trackCount, genreDisplay(album.genres), (): void => {
+			return buildDetails(album.artistName, album.trackCount, genreDisplay(album.genres), (): void => {
 				if (album?.artistID) {
 					NavigationService.navigate(HomeRoute.ARTIST, { id: album.artistID, name: album.artistName ?? '' });
 				}
-			}));
+			});
 		}
+		return buildDetails();
 	}, [album]);
 
 	const reload = useCallback((): void => {
@@ -71,7 +71,9 @@ export const AlbumScreen: React.FC<AlbumRouteProps<AlbumRoute.MAIN>> = () => {
 					<FavIcon style={objectHeaderStyles.button} fontSize={objectHeaderStyles.buttonIcon.fontSize} objType={JamObjectType.album} id={id} />
 				</>
 			)}
-			headerTitleCmdsExtras={<Rating fontSize={objectHeaderStyles.buttonIcon.fontSize} objType={JamObjectType.album} id={id} />}
+			headerTitleCmdsExtras={
+				<Rating fontSize={objectHeaderStyles.buttonIcon.fontSize} objType={JamObjectType.album} id={id} />
+			}
 		/>
 	);
 	return (
