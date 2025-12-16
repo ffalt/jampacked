@@ -24,7 +24,8 @@
     "codegen": "graphql-codegen --config codegen.ts -v"
   },
   "resolutions": {
-    "glob": "10.4.5",
+    "glob": "13.0.0",
+    "js-yaml": "3.14.2",
     "@conventional-changelog/git-client": "2.0.0"
   },
   "dependencies": {
