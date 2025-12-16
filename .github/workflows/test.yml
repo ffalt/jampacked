@@ -45,6 +45,12 @@ jobs:
       - name: Gradle chmod Setup
         run: cd android && chmod +x gradlew
 
+      - name: Decode Keystore
+        env:
+          ENCODED_STRING: ${{ secrets.KEYSTORE }}
+        run: |
+          echo $ENCODED_STRING | base64 -di > android/app/jam_keystore.jks
+
       - name: Build application apks
         run: |
           echo "=== Preparing workspace TMPDIR and limiting Gradle concurrency ==="
@@ -58,12 +64,6 @@ jobs:
           GRADLE_USER_HOME: ${{ github.workspace }}/.gradle
           ANDROID_SDK_ROOT: /usr/local/lib/android/sdk
           TMPDIR: ${{ github.workspace }}/.tmp
-
-      - name: Decode Keystore
-        env:
-          ENCODED_STRING: ${{ secrets.KEYSTORE }}
-        run: |
-          echo $ENCODED_STRING | base64 -di > android/app/jam_keystore.jks
 
       - name: Upload generated
         uses: actions/upload-artifact@v4
