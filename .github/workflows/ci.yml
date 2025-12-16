@@ -11,13 +11,24 @@ permissions:
 jobs:
   test:
     runs-on: ubuntu-latest
-    container: reactnativecommunity/react-native-android
     steps:
       - uses: actions/checkout@v5
+
       - uses: actions/setup-node@v6
         with:
           node-version: 22
+
+      - name: Setup Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: 'temurin'
+          java-version: 17
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
       - name: Install Dependencies
         run: yarn install
+
       - name: Test
         run: yarn run test
