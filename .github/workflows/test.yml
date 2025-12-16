@@ -52,18 +52,11 @@ jobs:
           echo $ENCODED_STRING | base64 -di > android/app/jam_keystore.jks
 
       - name: Build application apks
-        run: |
-          echo "=== Preparing workspace TMPDIR and limiting Gradle concurrency ==="
-          mkdir -p ${{ github.workspace }}/.tmp
-          export TMPDIR=${{ github.workspace }}/.tmp
-          echo "TMPDIR=$TMPDIR"
-          cd android
-          # Use workspace-local GRADLE_USER_HOME, no daemon, limit workers and JVM heap to reduce disk/memory pressure
-          ./gradlew assembleRelease --no-daemon --max-workers=2 -Dorg.gradle.jvmargs="-Xmx1024m -Dfile.encoding=UTF-8" --warning-mode=all
+        run: yarn run android:build:release:apk
         env:
-          GRADLE_USER_HOME: ${{ github.workspace }}/.gradle
-          ANDROID_SDK_ROOT: /usr/local/lib/android/sdk
-          TMPDIR: ${{ github.workspace }}/.tmp
+          SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
+          SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
+          SIGNING_STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
 
       - name: Upload generated
         uses: actions/upload-artifact@v4
