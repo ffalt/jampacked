@@ -22,26 +22,93 @@ jobs:
     container: reactnativecommunity/react-native-android
     steps:
       - uses: actions/checkout@v5
+
       - uses: actions/setup-node@v6
         with:
           node-version: 22
+
+      # Inserted: early diagnostics, safe cleanup, and caches to avoid "No space left on device"
+      - name: Disk diagnostics (before cleanup)
+        run: |
+          echo "=== Disk usage BEFORE cleanup ==="
+          df -h || true
+          echo "=== Top-level /home/runner usage ==="
+          du -sh /home/runner || true
+          echo "=== List offending diag file (if any) ==="
+          ls -la /home/runner/actions-runner/cached/_diag || true
+
+      - name: Attempt to free space (safe cleanup)
+        run: |
+          echo "=== Attempting safe cleanup of known caches and tmp ==="
+          set -e
+          safe_clean() {
+            p="$1"
+            if [ -e "$p" ] && [ -w "$p" ]; then
+              echo "Cleaning $p"
+              rm -rf "${p:?}/"* || true
+            else
+              echo "Skipping $p (absent or not writable)"
+            fi
+          }
+          # Common heavy locations (use absolute paths where possible inside the container)
+          safe_clean "/home/runner/actions-runner/cached/_diag"
+          safe_clean "/home/runner/.gradle/caches"
+          safe_clean "/home/runner/.gradle/wrapper"
+          safe_clean "/home/runner/.npm/_cacache"
+          safe_clean "/home/runner/.cache/yarn"
+          safe_clean "/tmp"
+          safe_clean "/home/runner/_work/_temp" || true
+          sync || true
+
+      - name: Disk diagnostics (after cleanup)
+        run: |
+          echo "=== Disk usage AFTER cleanup ==="
+          df -h || true
+          du -sh /home/runner || true
+
+      - name: Cache Gradle
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: gradle-cache-${{ runner.os }}-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}
+          restore-keys: |
+            gradle-cache-${{ runner.os }}-
+
+      - name: Cache Yarn
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/yarn
+            ~/.yarn/cache
+            node_modules
+          key: yarn-cache-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            yarn-cache-${{ runner.os }}-
+
       - name: Install Dependencies
         run: yarn install
+
       - name: Test
         run: yarn run test
+
       - name: Gradle chmod Setup
         run: cd android && chmod +x gradlew
+
       - name: Decode Keystore
         env:
           ENCODED_STRING: ${{ secrets.KEYSTORE }}
         run: |
           echo $ENCODED_STRING | base64 -di > android/app/jam_keystore.jks
+
       - name: Build application apks
         run: yarn run android:build:release:apk
         env:
           SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
           SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
           SIGNING_STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
+
       - name: Upload generated
         uses: actions/upload-artifact@v4
         with:
