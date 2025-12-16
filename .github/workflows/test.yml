@@ -17,131 +17,24 @@ permissions:
     issues: write
 
 jobs:
-  host-diagnostics:
-    name: Host diagnostics and cleanup
-    runs-on: ubuntu-latest
-    outputs:
-      diag-artifact: diagnostics.txt
-    steps:
-      - name: Deep host diagnostics and safe cleanup
-        id: diag
-        run: |
-          OUT=diagnostics.txt
-          echo "=== START DIAGNOSTICS ===" > $OUT
-          echo "=== date ===" >> $OUT; date >> $OUT
-          echo "=== df -h ===" >> $OUT; df -h >> $OUT 2>&1 || true
-          echo "=== Top / (largest directories) ===" >> $OUT
-          sudo du -shx /* 2>/dev/null | sort -rh | head -n 40 >> $OUT || true
-          echo "=== Top /__w (workspace root) ===" >> $OUT
-          sudo du -shx /__w 2>/dev/null >> $OUT || true
-          sudo du -shx /__w/* 2>/dev/null | sort -rh | head -n 40 >> $OUT || true
-          echo "=== Largest files on root filesystem (>100MB) ===" >> $OUT
-          sudo find / -xdev -type f -size +100M -exec du -h {} + 2>/dev/null | sort -rh | head -n 40 >> $OUT || true
-          echo "=== Deleted but still open files (lsof +L1) ===" >> $OUT
-          sudo lsof -nP +L1 2>/dev/null | head -n 40 >> $OUT || true
-
-          echo "=== Attempting safe cleanup of common locations ===" >> $OUT
-          safe_clean() {
-            p="$1"
-            echo "Checking $p" >> $OUT
-            if [ -e "$p" ] && [ -w "$p" ]; then
-              echo "Cleaning $p" >> $OUT
-              sudo rm -rf "${p:?}/"* || true
-            else
-              echo "Skipping $p (absent or not writable)" >> $OUT
-            fi
-          }
-
-          safe_clean "/tmp"
-          safe_clean "/__w"
-          safe_clean "/var/log"
-          safe_clean "/home/runner/actions-runner/cached/_diag"
-          safe_clean "/home/runner/.gradle/caches"
-          safe_clean "/home/runner/.npm/_cacache"
-          safe_clean "/var/lib/docker" || true
-
-          echo "=== Docker system df ===" >> $OUT
-          sudo docker system df >> $OUT 2>&1 || true
-
-          echo "=== Pruning docker system (will remove unused images/containers/volumes) ===" >> $OUT
-          sudo docker system prune -af --volumes >> $OUT 2>&1 || true
-
-          echo "=== Post-prune docker df ===" >> $OUT
-          sudo docker system df >> $OUT 2>&1 || true
-
-          echo "=== Post-cleanup df -h ===" >> $OUT
-          df -h >> $OUT || true
-          echo "=== Post-cleanup top /__w ===" >> $OUT
-          sudo du -shx /__w 2>/dev/null >> $OUT || true
-          sudo du -shx /__w/* 2>/dev/null | sort -rh | head -n 40 >> $OUT || true
-          echo "=== END DIAGNOSTICS ===" >> $OUT
-          cat $OUT
-      - name: Upload diagnostics artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: host-diagnostics
-          path: diagnostics.txt
-
   test:
-    name: Build and test (host)
+    name: Build
     runs-on: ubuntu-latest
-    needs: host-diagnostics
-    # Removed container so the build runs directly on the runner host
     steps:
       - uses: actions/checkout@v5
+
+      - name: Setup Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: 'temurin'
+          java-version: 17
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
 
       - uses: actions/setup-node@v6
         with:
           node-version: 22
-
-      - name: Workspace cleanup (safe)
-        run: |
-          echo "=== Workspace cleanup ==="
-          set -e
-          safe_clean() {
-            p="$1"
-            if [ -e "$p" ]; then
-              echo "Cleaning $p"
-              rm -rf "${p:?}/"* || true
-            else
-              echo "Skipping $p (absent)"
-            fi
-          }
-          # Use GITHUB_WORKSPACE if set, otherwise fallback to /__w
-          WS="${GITHUB_WORKSPACE:-/__w/$(basename $(pwd))}"
-          echo "GITHUB_WORKSPACE=$WS"
-          safe_clean "$WS/android/app/build"
-          safe_clean "$WS/android/.gradle"
-          safe_clean "$WS/.gradle"
-          safe_clean "$WS/node_modules"
-          safe_clean "$WS/.yarn/cache"
-          safe_clean "$WS/.expo"
-          safe_clean "/__w"
-          safe_clean "/tmp"
-          sync || true
-
-      - name: Cache Gradle
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-            ${{ github.workspace }}/.gradle
-          key: gradle-cache-${{ runner.os }}-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}-${{ hashFiles('**/gradle.properties') }}
-          restore-keys: |
-            gradle-cache-${{ runner.os }}-
-
-      - name: Cache Yarn
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.cache/yarn
-            ~/.yarn/cache
-            node_modules
-            ${{ github.workspace }}/.yarn/cache
-          key: yarn-cache-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            yarn-cache-${{ runner.os }}-
 
       - name: Install Dependencies
         run: yarn install --frozen-lockfile
@@ -152,18 +45,25 @@ jobs:
       - name: Gradle chmod Setup
         run: cd android && chmod +x gradlew
 
+      - name: Build application apks
+        run: |
+          echo "=== Preparing workspace TMPDIR and limiting Gradle concurrency ==="
+          mkdir -p ${{ github.workspace }}/.tmp
+          export TMPDIR=${{ github.workspace }}/.tmp
+          echo "TMPDIR=$TMPDIR"
+          cd android
+          # Use workspace-local GRADLE_USER_HOME, no daemon, limit workers and JVM heap to reduce disk/memory pressure
+          ./gradlew assembleRelease --no-daemon --max-workers=2 -Dorg.gradle.jvmargs="-Xmx1024m -Dfile.encoding=UTF-8" --warning-mode=all
+        env:
+          GRADLE_USER_HOME: ${{ github.workspace }}/.gradle
+          ANDROID_SDK_ROOT: /usr/local/lib/android/sdk
+          TMPDIR: ${{ github.workspace }}/.tmp
+
       - name: Decode Keystore
         env:
           ENCODED_STRING: ${{ secrets.KEYSTORE }}
         run: |
           echo $ENCODED_STRING | base64 -di > android/app/jam_keystore.jks
-
-      - name: Build application apks
-        run: yarn run android:build:release:apk
-        env:
-          SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
-          SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
-          SIGNING_STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
 
       - name: Upload generated
         uses: actions/upload-artifact@v4
