@@ -2,6 +2,7 @@ import jamService from './jam.service.ts';
 import { buildTrackPlayerTrack } from '../utils/build-track.ts';
 import TrackPlayer, { State } from 'react-native-track-player';
 import { TrackEntry } from '../types/track.ts';
+import queueStorageService from './queue-storage.service.ts';
 
 export const JamPlayer = {
 	shuffleQueueSync(): void {
@@ -10,6 +11,7 @@ export const JamPlayer = {
 
 	async shuffleQueue(): Promise<void> {
 		await TrackPlayer.shuffle();
+		await queueStorageService.save();
 	},
 
 	clearQueueSync(): void {
@@ -18,18 +20,22 @@ export const JamPlayer = {
 
 	async clearQueue(): Promise<void> {
 		await TrackPlayer.clear();
+		await queueStorageService.clear();
 	},
 
 	async addTrackToQueue(track: TrackEntry): Promise<void> {
 		await TrackPlayer.add(await buildTrackPlayerTrack(jamService, track));
+		await queueStorageService.save();
 	},
 
 	async removeTrackFromQueue(index: number): Promise<void> {
 		await TrackPlayer.remove(index);
+		await queueStorageService.save();
 	},
 
 	async addTracksToQueue(tracks: Array<TrackEntry>): Promise<void> {
 		await TrackPlayer.add(await Promise.all(tracks.map(async t => buildTrackPlayerTrack(jamService, t))));
+		await queueStorageService.save();
 	},
 
 	async playTrack(track: TrackEntry): Promise<void> {
@@ -43,6 +49,7 @@ export const JamPlayer = {
 		await TrackPlayer.stop();
 		await TrackPlayer.reset();
 		await TrackPlayer.add(entries);
+		await queueStorageService.save();
 		return TrackPlayer.play();
 	},
 
@@ -91,6 +98,7 @@ export const JamPlayer = {
 		try {
 			await TrackPlayer.stop();
 			await TrackPlayer.reset();
+			await queueStorageService.clear();
 		} catch (error) {
 			console.error(error);
 		}

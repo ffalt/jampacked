@@ -3,6 +3,7 @@ import { snackError } from '../utils/snack.ts';
 import TrackPlayer, { Event, State } from 'react-native-track-player';
 import jamService from './jam.service.ts';
 import cacheService from './cache.service.ts';
+import queueStorageService from './queue-storage.service.ts';
 
 let hasApp = false;
 let wasPausedByDuck = false;
@@ -66,5 +67,11 @@ export default async function playbackService(): Promise<void> {
 		if (hasApp) {
 			snackError(error);
 		}
+	});
+	TrackPlayer.addEventListener(Event.PlaybackTrackChanged, () => {
+		queueStorageService.save().catch(console.error);
+	});
+	TrackPlayer.addEventListener(Event.PlaybackQueueEnded, () => {
+		queueStorageService.save().catch(console.error);
 	});
 }

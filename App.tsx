@@ -17,6 +17,7 @@ import storageService from './src/services/storage.service.ts';
 import dbService from './src/services/db.service.ts';
 import cacheService from './src/services/cache.service.ts';
 import pinService from './src/services/pin.service.ts';
+import queueStorageService from './src/services/queue-storage.service.ts';
 
 enableScreens();
 
@@ -57,6 +58,7 @@ export const App: React.FC = () => {
 			await cacheService.init();
 			await pinService.init(jamService.currentUserToken);
 			await themeSettings.loadUserTheme();
+			await queueStorageService.load();
 			if (apolloService.client) {
 				setClient(apolloService.client);
 			}
