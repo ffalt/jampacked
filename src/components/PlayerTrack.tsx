@@ -36,18 +36,21 @@ export const PlayerTrack: React.FC = () => {
 
 	const clickArtist = (): void => {
 		if (track?.artistID) {
+			NavigationService.goBack();
 			NavigationService.navigate(HomeRoute.ARTIST, { id: track?.artistID, name: track?.artist ?? '' });
 		}
 	};
 
 	const clickTitle = (): void => {
 		if (currentTrack?.id) {
+			NavigationService.goBack();
 			NavigationService.navigate(HomeRoute.TRACK, { id: currentTrack.id, name: currentTrack.title ?? '' });
 		}
 	};
 
 	const clickAlbum = (): void => {
 		if (track?.albumID) {
+			NavigationService.goBack();
 			NavigationService.navigate(HomeRoute.ALBUM, { id: track?.albumID, name: track?.album ?? '' });
 		}
 	};

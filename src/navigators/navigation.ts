@@ -1,6 +1,6 @@
 import { CommonActions, NavigationContainerRef } from '@react-navigation/core';
 import { JamObjectType } from '../services/jam';
-import { AlbumRoute, AlbumsRoute, ArtistsRoute, FoldersRoute, GenreRoute, GenresRoute, HomeRoute, SeriesRoute, TracksRoute } from './Routing';
+import { AlbumRoute, AlbumsRoute, ArtistsRoute, BottomTabRoute, FoldersRoute, GenreRoute, GenresRoute, HomeRoute, ModalRouting, SeriesRoute, TracksRoute } from './Routing';
 import { RouteLink } from './Routes';
 import { Navig, NavigParameters } from '../types/navig.ts';
 
@@ -11,15 +11,44 @@ export const NavigationService = {
 		navigator = navigatorReference!;
 	},
 
+	goBack(): void {
+		if (navigator) {
+			navigator.dispatch(CommonActions.goBack());
+		}
+	},
+
 	navigateToChild(parentRouteName: string, routeName: string, defaultRouteName: string, parameters?: NavigParameters): void {
 		if (navigator) {
 			navigator.dispatch(
 				CommonActions.navigate({
-					name: parentRouteName,
+					name: ModalRouting.MAIN,
 					params: {
-						...parameters,
-						screen: routeName === parentRouteName ? defaultRouteName : routeName,
-						params: parameters
+						screen: BottomTabRoute.HOME,
+						params: {
+							screen: parentRouteName,
+							params: {
+								...parameters,
+								screen: routeName === parentRouteName ? defaultRouteName : routeName,
+								params: parameters
+							}
+						}
+					}
+				})
+			);
+		}
+	},
+
+	navigateToHomeScreen(routeName: string, parameters?: NavigParameters): void {
+		if (navigator) {
+			navigator.dispatch(
+				CommonActions.navigate({
+					name: ModalRouting.MAIN,
+					params: {
+						screen: BottomTabRoute.HOME,
+						params: {
+							screen: routeName,
+							params: parameters
+						}
 					}
 				})
 			);
@@ -57,6 +86,10 @@ export const NavigationService = {
 		}
 		if (routeName.startsWith('Genre')) {
 			this.navigateToChild(HomeRoute.GENRE, routeName, GenreRoute.ARTISTS, parameters);
+			return;
+		}
+		if (Object.values(HomeRoute).includes(routeName as HomeRoute)) {
+			this.navigateToHomeScreen(routeName, parameters);
 			return;
 		}
 		if (navigator) {
