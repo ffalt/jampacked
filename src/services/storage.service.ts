@@ -2,7 +2,7 @@ import dbService from './db.service.ts';
 import jamService from './jam.service.ts';
 
 class StorageService {
-	version = 1;
+	version = 2;
 
 	async init(): Promise<void> {
 		await this.checkDB();

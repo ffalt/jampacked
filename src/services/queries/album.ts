@@ -7,6 +7,11 @@ import { useCallback } from 'react';
 import { AlbumResultDocument, AlbumResultQuery, AlbumResultQueryVariables } from './album.api';
 import { TrackEntry } from '../../types/track.ts';
 
+export interface AlbumGenre {
+	id: string;
+	name: string;
+}
+
 export interface Album {
 	id: string;
 	name: string;
@@ -14,7 +19,7 @@ export interface Album {
 	artistName: string;
 	artistID: string;
 	trackCount: number;
-	genres: Array<string>;
+	genres: Array<AlbumGenre>;
 	tracks: Array<TrackEntry>;
 }
 
@@ -29,7 +34,7 @@ function transformData(data?: AlbumResultQuery): Album | undefined {
 		artistName: data.album.artist?.name ?? '',
 		artistID: data.album.artist?.id ?? '',
 		trackCount: data.album.tracksCount,
-		genres: (data.album.genres ?? []).map(g => g.name),
+		genres: (data.album.genres ?? []).map(g => ({ id: g.id, name: g.name })),
 		tracks: data.album.tracks.map(track => transformTrack(track))
 	};
 }

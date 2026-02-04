@@ -15,10 +15,15 @@ export interface AlbumEntry {
 	seriesNr?: string;
 }
 
+export interface ArtistGenre {
+	id: string;
+	name: string;
+}
+
 export interface Artist {
 	id: string;
 	name: string;
-	genres: Array<string>;
+	genres: Array<ArtistGenre>;
 	albumsCount: number;
 	tracksCount: number;
 	albums: Array<AlbumEntry>;
@@ -55,7 +60,7 @@ function transformData(data?: ArtistResultQuery): Artist | undefined {
 	}
 	return {
 		...data.artist,
-		genres: (data.artist.genres ?? []).map(g => g.name),
+		genres: (data.artist.genres ?? []).map(g => ({ id: g.id, name: g.name })),
 		albums: data.artist.albums.map(a => ({
 			...a,
 			year: a.year ?? undefined,

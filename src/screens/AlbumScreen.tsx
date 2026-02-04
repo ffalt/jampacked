@@ -17,10 +17,10 @@ import { Rating } from '../components/Rating';
 
 export const MUSICBRAINZ_VARIOUS_ARTISTS_NAME = 'Various Artists';
 
-const buildDetails = (artist?: string, tracks?: number, genre?: string, click?: () => void): Array<HeaderDetail> => [
-	{ title: 'Artist', value: artist ?? '', click: artist ? click : undefined },
+const buildDetails = (artist?: string, tracks?: number, genre?: string, clickArtist?: () => void, clickGenre?: () => void): Array<HeaderDetail> => [
+	{ title: 'Artist', value: artist ?? '', click: artist ? clickArtist : undefined },
 	{ title: 'Tracks', value: `${tracks ?? ''}` },
-	{ title: 'Genre', value: genre ?? '' }
+	{ title: 'Genre', value: genre ?? '', click: genre ? clickGenre : undefined }
 ];
 
 export const AlbumScreen: React.FC<AlbumRouteProps<AlbumRoute.MAIN>> = () => {
@@ -37,11 +37,19 @@ export const AlbumScreen: React.FC<AlbumRouteProps<AlbumRoute.MAIN>> = () => {
 
 	const details = useMemo(() => {
 		if (album) {
-			return buildDetails(album.artistName, album.trackCount, genreDisplay(album.genres), (): void => {
-				if (album?.artistID) {
-					NavigationService.navigate(HomeRoute.ARTIST, { id: album.artistID, name: album.artistName ?? '' });
+			return buildDetails(album.artistName, album.trackCount, genreDisplay(album.genres),
+				(): void => {
+					if (album?.artistID) {
+						NavigationService.navigate(HomeRoute.ARTIST, { id: album.artistID, name: album.artistName ?? '' });
+					}
+				},
+				(): void => {
+					const genre = album?.genres?.[0];
+					if (genre) {
+						NavigationService.navigate(HomeRoute.GENRE, { id: genre.id, name: genre.name });
+					}
 				}
-			});
+			);
 		}
 		return buildDetails();
 	}, [album]);
@@ -66,13 +74,13 @@ export const AlbumScreen: React.FC<AlbumRouteProps<AlbumRoute.MAIN>> = () => {
 			details={details}
 			headerTitleCmds={(
 				<>
-					<ClickIcon style={objectHeaderStyles.button} fontSize={objectHeaderStyles.buttonIcon.fontSize} iconName="play" onPress={playTracks} />
-					<PinIcon style={objectHeaderStyles.button} fontSize={objectHeaderStyles.buttonIcon.fontSize} objType={JamObjectType.album} id={id} />
-					<FavIcon style={objectHeaderStyles.button} fontSize={objectHeaderStyles.buttonIcon.fontSize} objType={JamObjectType.album} id={id} />
+					<ClickIcon style={objectHeaderStyles.button} fontSize={objectHeaderStyles.buttonIcon.fontSize} iconName="play" onPress={playTracks}/>
+					<PinIcon style={objectHeaderStyles.button} fontSize={objectHeaderStyles.buttonIcon.fontSize} objType={JamObjectType.album} id={id}/>
+					<FavIcon style={objectHeaderStyles.button} fontSize={objectHeaderStyles.buttonIcon.fontSize} objType={JamObjectType.album} id={id}/>
 				</>
 			)}
 			headerTitleCmdsExtras={
-				<Rating fontSize={objectHeaderStyles.buttonIcon.fontSize} objType={JamObjectType.album} id={id} />
+				<Rating fontSize={objectHeaderStyles.buttonIcon.fontSize} objType={JamObjectType.album} id={id}/>
 			}
 		/>
 	);

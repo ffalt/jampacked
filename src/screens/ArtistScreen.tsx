@@ -12,17 +12,27 @@ import { DefaultSectionList } from '../components/DefaultSectionList.tsx';
 import { sharedStyles } from '../style/shared';
 import { Rating } from '../components/Rating';
 import { BaseEntry } from '../types/base.ts';
+import { NavigationService } from '../navigators/navigation.ts';
 
-const buildDetails = (albums?: number, tracks?: number, genre?: string): Array<HeaderDetail> => [
+const buildDetails = (albums?: number, tracks?: number, genre?: string, clickGenre?: () => void): Array<HeaderDetail> => [
 	{ title: 'Albums', value: `${albums}` },
 	{ title: 'Tracks', value: `${tracks}` },
-	{ title: 'Genre', value: genre ?? '' }
+	{ title: 'Genre', value: genre ?? '', click: genre ? clickGenre : undefined }
 ];
 
 export const ArtistScreen: React.FC<HomeRouteProps<HomeRoute.ARTIST>> = ({ route }) => {
 	const [getArtist, { loading, error, artist }] = useLazyArtistQuery();
 	const { id, name } = (route?.params ?? {});
-	const details = useMemo(() => artist ? buildDetails(artist.albumsCount, artist.tracksCount, genreDisplay(artist.genres)) : buildDetails(), [artist]);
+	const details = useMemo(() => artist ?
+		buildDetails(artist.albumsCount, artist.tracksCount, genreDisplay(artist.genres),
+			(): void => {
+				const genre = artist?.genres?.[0];
+				if (genre) {
+					NavigationService.navigate(HomeRoute.GENRE, { id: genre.id, name: genre.name });
+				}
+			}
+		) :
+		buildDetails(), [artist]);
 
 	useEffect(() => {
 		if (id) {
