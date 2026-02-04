@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.0.6](https://github.com-ffalt/ffalt/jampacked/compare/v0.0.5...v0.0.6) (2026-02-04)
+
+
+### Features
+
+* **genre:** implement navigating to genre from Album and Artist ([f2ea833](https://github.com-ffalt/ffalt/jampacked/commit/f2ea833ccde0b9518c3850a102e6e6d3ff50ac41))
+* **navigation:** enhance navigation with goBack functionality and streamline route handling ([6d62d60](https://github.com-ffalt/ffalt/jampacked/commit/6d62d6002cce7aee22abe13ee97658872312150a))
+* **queue:** implement queue storage service for playback state management ([e4102b8](https://github.com-ffalt/ffalt/jampacked/commit/e4102b8008c0376be0ff708ff8546195f5e4ea58))
+
 ## [0.0.5](https://github.com-ffalt/ffalt/jampacked/compare/v0.0.4...v0.0.5) (2025-12-16)
 
 ## [0.0.4](https://github.com-ffalt/ffalt/jampacked/compare/v0.0.3...v0.0.4) (2025-10-30)
