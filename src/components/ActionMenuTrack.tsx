@@ -1,14 +1,7 @@
-import React from 'react';
 import { JamPlayer } from '../services/player.service.ts';
 import { NavigationService } from '../navigators/navigation';
-import { ThemedIcon } from './ThemedIcon';
-import { IActionProps } from 'react-native-floating-action';
 import { TrackEntry } from '../types/track.ts';
 import { JamObjectType } from '../services/jam';
-
-export interface ActionMenuItem extends IActionProps {
-	position?: number;
-}
 
 export const executeTrackMenuAction = async (selection: Array<TrackEntry>, name?: string): Promise<boolean> => {
 	if (selection.length > 0) {
@@ -41,53 +34,3 @@ export const executeTrackMenuAction = async (selection: Array<TrackEntry>, name?
 	}
 	return false;
 };
-
-export const trackMenuIcon: (color: string) => React.JSX.Element = color => <ThemedIcon name="menu" color={color} />;
-
-export const trackMenuMultiSelectActions: (color: string, iconColor: string) => Array<ActionMenuItem> = (color, iconColor) => [
-	{
-		text: 'Clear Selection',
-		color,
-		icon: <ThemedIcon name="minus" color={iconColor} />,
-		name: 'bt_clear',
-		position: 1
-	},
-	{
-		text: 'Add to Queue',
-		color,
-		icon: <ThemedIcon name="list-add" color={iconColor} />,
-		name: 'bt_m_queue',
-		position: 2
-	},
-	{
-		text: 'Play',
-		color,
-		icon: <ThemedIcon name="play" color={iconColor} />,
-		name: 'bt_m_play',
-		position: 3
-	}
-];
-
-export const trackMenuSingleSelectActions: (color: string, iconColor: string) => Array<ActionMenuItem> = (color, iconColor) => [
-	{
-		text: 'Open Profile',
-		color,
-		icon: <ThemedIcon name="track" color={iconColor} />,
-		name: 'bt_s_open',
-		position: 1
-	},
-	{
-		text: 'Add to Queue',
-		color,
-		icon: <ThemedIcon name="list-add" color={iconColor} />,
-		name: 'bt_s_queue',
-		position: 2
-	},
-	{
-		text: 'Play',
-		color,
-		icon: <ThemedIcon name="play" color={iconColor} />,
-		name: 'bt_s_play',
-		position: 3
-	}
-];
