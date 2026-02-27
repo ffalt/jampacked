@@ -1,5 +1,5 @@
 // eslint-disable-next-line unicorn/prefer-module
-const path = require("path");
+const path = require("node:path");
 // eslint-disable-next-line unicorn/prefer-module
 const { getDefaultConfig, mergeConfig } = require("@react-native/metro-config");
 
@@ -15,10 +15,11 @@ const config = {
 		// inside local-path dependencies (e.g. react-native-track-player)
 		blockList: [
 			new RegExp(
-				path.resolve(__dirname, "node_modules/react-native-track-player/node_modules/.*").replace(/[/\\]/g, "[/\\\\]")
-			),
-		],
-	},
+				// eslint-disable-next-line unicorn/prefer-module
+				path.resolve(__dirname, "node_modules/react-native-track-player/node_modules/.*").replace(/[/\\]/g, String.raw`[/\\]`)
+			)
+		]
+	}
 };
 
 // eslint-disable-next-line unicorn/prefer-module

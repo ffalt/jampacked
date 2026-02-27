@@ -138,12 +138,16 @@ export class PinService {
 			id: track.id,
 			url: jamService.stream.streamUrl({ id: track.id, format: AudioFormatType.mp3 }, false)
 		}));
+		console.log('pinObject', { id, objectType, name, trackCount: tracks.length, requests: JSON.stringify(requests) });
 		if (requests.length > 0) {
 			const data: PinMedia = { id, name, objType: objectType, tracks };
 			await this.setPinDoc(id, data);
+			console.log('pinObject: calling download with', requests.length, 'requests');
 			await this.manager.download(requests);
+			console.log('pinObject: download call returned');
 			this.notifyPinChange(id, { active: false, pinned: true });
 		} else {
+			console.log('pinObject: no tracks to download');
 			this.notifyPinChange(id, { active: true, pinned: true });
 		}
 	}
@@ -194,6 +198,7 @@ export class PinService {
 	}
 
 	async pin(id: string, objectType: JamObjectType): Promise<void> {
+		console.log('pin called', { id, objectType });
 		this.notifyPinChange(id, { active: true, pinned: true });
 		switch (objectType) {
 			case JamObjectType.album: {

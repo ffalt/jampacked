@@ -323,6 +323,7 @@ export enum AudioFormatType {
 	flac = 'flac',
 	flv = 'flv',
 	m4a = 'm4a',
+	m4b = 'm4b',
 	mp3 = 'mp3',
 	mp4 = 'mp4',
 	oga = 'oga',

@@ -36,7 +36,7 @@ export class CacheService {
 		try {
 			const results = await dbService.query('SELECT * FROM jam WHERE key=?', [id]);
 			const result = results.rows?.at(0);
-			if (result && result.version === this.version) {
+			if (result?.version === this.version) {
 				return {
 					key: result.key as string,
 					version: result.version,

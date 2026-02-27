@@ -218,6 +218,7 @@ export enum PodcastStatus {
 export enum AudioFormatType {
 	mp3 = 'mp3',
 	m4a = 'm4a',
+	m4b = 'm4b',
 	mp4 = 'mp4',
 	ogg = 'ogg',
 	oga = 'oga',
