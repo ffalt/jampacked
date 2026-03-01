@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.0.7](https://github.com-ffalt/ffalt/jampacked/compare/v0.0.6...v0.0.7) (2026-03-01)
+
+
+### Bug Fixes
+
+* **metro.config:** prevent Metro from resolving nested node_modules in local-path dependencies ([ebe93b5](https://github.com-ffalt/ffalt/jampacked/commit/ebe93b504621eebf93e510362abc508630f986a9))
+* **metro.config:** prevent Metro from resolving nested node_modules in local-path dependencies ([d544bbe](https://github.com-ffalt/ffalt/jampacked/commit/d544bbe5d78148f79bab161da1e55ada541dab3b))
+
 ## [0.0.6](https://github.com-ffalt/ffalt/jampacked/compare/v0.0.5...v0.0.6) (2026-02-04)
 
 
