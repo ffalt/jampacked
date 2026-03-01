@@ -104,8 +104,8 @@
     "eslint-plugin-react": "7.37.5",
     "eslint-plugin-react-hooks": "7.0.1",
     "eslint-plugin-react-native": "5.0.0",
-    "eslint-plugin-unicorn": "62.0.0",
-    "eslint-plugin-unused-imports": "4.3.0",
+    "eslint-plugin-unicorn": "63.0.0",
+    "eslint-plugin-unused-imports": "4.4.1",
     "globals": "17.3.0",
     "graphql-sock": "1.0.1",
     "graphql-tag": "2.12.6",
@@ -118,7 +118,7 @@
     "react-test-renderer": "19.2.3",
     "ts-node": "10.9.2",
     "typescript": "5.9.3",
-    "typescript-eslint": "8.54.0"
+    "typescript-eslint": "8.56.1"
   },
   "reactNativeVectorIcons": {
     "fontDir": "src/assets/fonts"
