@@ -24,6 +24,7 @@
     "codegen": "graphql-codegen --config codegen.ts -v"
   },
   "resolutions": {
+    "minimatch": "10.2.4",
     "glob": "13.0.0",
     "js-yaml": "3.14.2"
   },
