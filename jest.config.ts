@@ -32,7 +32,7 @@ const config: Config = {
 	],
 	coverageReporters: ['html', 'json', 'lcov', 'text'],
 	modulePathIgnorePatterns: ['<rootDir>/dist/'],
-	preset: 'react-native',
+	preset: '@react-native/jest-preset',
 	setupFilesAfterEnv: ['<rootDir>/jest.setup.ts']
 };
 
