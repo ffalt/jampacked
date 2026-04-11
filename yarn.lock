@@ -3381,21 +3381,21 @@
   resolved "https://registry.npmjs.org/@react-native-masked-view/masked-view/-/masked-view-0.3.2.tgz"
   integrity sha512-XwuQoW7/GEgWRMovOQtX3A4PrXhyaZm0lVUiY8qJDvdngjLms9Cpdck6SmGAUNqQwcj2EadHC1HwL0bEyoa/SQ==
 
-"@react-native-vector-icons/common@12.4.1", "@react-native-vector-icons/common@^12.4.1":
-  version "12.4.1"
-  resolved "https://registry.yarnpkg.com/@react-native-vector-icons/common/-/common-12.4.1.tgz#ac83868048a078ccf0a9d94864723432147d1ccd"
-  integrity sha512-itfFrLRSNFgR7mS7C1JVuYs/H0WI2DiIW6JzN3MPzw0m1kycN7GPxWrO4/Je4G1JCW5x4i3lNvPB8259DtWLrQ==
+"@react-native-vector-icons/common@13.0.0", "@react-native-vector-icons/common@^13.0.0":
+  version "13.0.0"
+  resolved "https://registry.yarnpkg.com/@react-native-vector-icons/common/-/common-13.0.0.tgz#d71e50111e6967b9934a4d505fda1eb96a292c90"
+  integrity sha512-FJ0Ql5UTGVtK0ak4vLTxmhFHadb8NmTk4yOWoggh7UvC2pVQNyJK7L9nIZeIZ0IaVJtKfmKXtBWA0nKqqzQ/FQ==
   dependencies:
     find-up "^7.0.0"
     picocolors "^1.1.1"
     plist "^3.1.0"
 
-"@react-native-vector-icons/fontello@12.3.2":
-  version "12.3.2"
-  resolved "https://registry.yarnpkg.com/@react-native-vector-icons/fontello/-/fontello-12.3.2.tgz#289f2a080496f9d549821af06292dade6463b511"
-  integrity sha512-TIcrzM6samDmitNPzysEMC74UVrwQfISjRZVpr5kgsSNOyiHGC1LCCnvYZWCvzQZYCAcWNgctbw7kFnFKvhRaA==
+"@react-native-vector-icons/fontello@13.0.0":
+  version "13.0.0"
+  resolved "https://registry.yarnpkg.com/@react-native-vector-icons/fontello/-/fontello-13.0.0.tgz#45f86c936823af5900a0ba76e65d4a7d64f601a9"
+  integrity sha512-dKQAfpsXhuPiBPFDdrcxWokUK8Z3vfc9I5HSFOD5+6GcNzwEd7piLEx9l2mRLPz8rC1+bEFDHl7Ik/MPMCdu9w==
   dependencies:
-    "@react-native-vector-icons/common" "^12.4.1"
+    "@react-native-vector-icons/common" "^13.0.0"
 
 "@react-native/assets-registry@0.81.0":
   version "0.81.0"
