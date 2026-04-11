@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.0.8](https://github.com-ffalt/ffalt/jampacked/compare/v0.0.7...v0.0.8) (2026-04-11)
+
+
+### Features
+
+* add Gradle wrapper validation workflow ([99179ff](https://github.com-ffalt/ffalt/jampacked/commit/99179ff082cce017bc246f0635aab64426f1f341))
+* add Gradle wrapper validation workflow ([0df568a](https://github.com-ffalt/ffalt/jampacked/commit/0df568a8cece9c8deb6d1e947d5e4d991e7d5f0a))
+* add Gradle wrapper validation workflow ([6d7a7d9](https://github.com-ffalt/ffalt/jampacked/commit/6d7a7d9286938b4ac2f0100894529f4b23e8fd6f))
+
 ## [0.0.7](https://github.com-ffalt/ffalt/jampacked/compare/v0.0.6...v0.0.7) (2026-03-01)
 
 
