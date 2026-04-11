@@ -1,0 +1,52 @@
+diff --git a/node_modules/eslint-plugin-react-native/lib/rules/no-single-element-style-arrays.js b/node_modules/eslint-plugin-react-native/lib/rules/no-single-element-style-arrays.js
+index ce43bc9..faba7ce 100644
+--- a/node_modules/eslint-plugin-react-native/lib/rules/no-single-element-style-arrays.js
++++ b/node_modules/eslint-plugin-react-native/lib/rules/no-single-element-style-arrays.js
+@@ -25,7 +25,7 @@ module.exports = {
+           'Single element style arrays are not necessary and cause unnecessary re-renders',
+         fix(fixer) {
+           const realStyleNode = JSXExpressionNode.value.expression.elements[0];
+-          const styleSource = context.getSourceCode().getText(realStyleNode);
++          const styleSource = (context.sourceCode || context.getSourceCode()).getText(realStyleNode);
+           return fixer.replaceText(JSXExpressionNode.value.expression, styleSource);
+         },
+       });
+diff --git a/node_modules/eslint-plugin-react-native/lib/rules/sort-styles.js b/node_modules/eslint-plugin-react-native/lib/rules/sort-styles.js
+index e2be029..d75d72f 100644
+--- a/node_modules/eslint-plugin-react-native/lib/rules/sort-styles.js
++++ b/node_modules/eslint-plugin-react-native/lib/rules/sort-styles.js
+@@ -30,7 +30,7 @@ function create(context) {
+   const { ignoreStyleProperties } = options;
+   const isValidOrder = order === 'asc' ? (a, b) => a <= b : (a, b) => a >= b;
+ 
+-  const sourceCode = context.getSourceCode();
++  const sourceCode = context.sourceCode || context.getSourceCode();
+ 
+   function sort(array) {
+     return [].concat(array).sort((a, b) => {
+diff --git a/node_modules/eslint-plugin-react-native/lib/rules/split-platform-components.js b/node_modules/eslint-plugin-react-native/lib/rules/split-platform-components.js
+index 31ce486..49d5dec 100644
+--- a/node_modules/eslint-plugin-react-native/lib/rules/split-platform-components.js
++++ b/node_modules/eslint-plugin-react-native/lib/rules/split-platform-components.js
+@@ -71,7 +71,7 @@ function create(context) {
+       }
+     },
+     'Program:exit': function () {
+-      const filename = context.getFilename();
++      const filename = context.filename || context.getFilename();
+       reportErrors(reactComponents, filename);
+     },
+   };
+diff --git a/node_modules/eslint-plugin-react-native/lib/util/Components.js b/node_modules/eslint-plugin-react-native/lib/util/Components.js
+index f744d52..fa04ee6 100644
+--- a/node_modules/eslint-plugin-react-native/lib/util/Components.js
++++ b/node_modules/eslint-plugin-react-native/lib/util/Components.js
+@@ -100,7 +100,7 @@ Components.prototype.length = function () {
+ };
+ 
+ function componentRule(rule, context, _node) {
+-  const sourceCode = context.getSourceCode();
++  const sourceCode = context.sourceCode || context.getSourceCode();
+   const components = new Components();
+ 
+   // Utilities for component detection

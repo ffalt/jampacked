@@ -150,11 +150,9 @@ export const SoundCloudWave: React.FC<WaveFormProps> = (
 ) => {
 	const bars = useMemo(() => {
 		if (!waveform) return { items: [] } as { items: Array<WaveFormBar> };
-		let wfHeight = 1;
-		let wfWidth = 1;
 		const wf = WaveformData.create(waveform);
-		wfWidth = waveform.data.length / 2;
-		wfHeight = waveform.sample_rate / 2;
+		const wfWidth = waveform.data.length / 2;
+		const wfHeight = waveform.sample_rate / 2;
 		const rWidth = (width - 40) || 1;
 		const chunkNr = wfWidth / (rWidth / 3);
 		const chunksHigh = chunk(wf.channel(0).max_array(), chunkNr);

@@ -1,6 +1,5 @@
 import eslint from "@eslint/js";
 import ts from "typescript-eslint";
-import jest from "eslint-plugin-jest";
 import globals from "globals";
 import reactNative from "eslint-plugin-react-native";
 import react from "eslint-plugin-react";
@@ -234,7 +233,6 @@ export default ts.config(
 				...globals.reactNative
 			}
 		},
-		...jest.configs["flat/recommended"],
 		extends: [
 			eslint.configs.recommended,
 			...ts.configs.recommendedTypeChecked,
@@ -246,10 +244,7 @@ export default ts.config(
 			...commonRules,
 			...commonStylisticRules,
 			...commonUnicornRules,
-			...commonTypeScriptRules,
-			...jest.configs["flat/recommended"].rules,
-			"jest/expect-expect": "off",
-			"jest/no-done-callback": "off"
+			...commonTypeScriptRules
 		}
 	},
 	{

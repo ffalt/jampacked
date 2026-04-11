@@ -21,7 +21,8 @@
     "clean:gradle": "cd android && rm -Rf .gradle && rm -Rf .kotlin && rm -Rf app/build && ./gradlew clean",
     "clean": "yarn clean:yarn && yarn clean:gradle",
     "reinstall:player": "yarn remove react-native-track-player && yarn add ../react-native-track-player/",
-    "codegen": "graphql-codegen --config codegen.ts -v"
+    "codegen": "graphql-codegen --config codegen.ts -v",
+    "postinstall": "patch-package"
   },
   "resolutions": {
     "minimatch": "10.2.4",
@@ -71,7 +72,7 @@
     "@babel/preset-react": "7.28.5",
     "@babel/preset-typescript": "7.28.5",
     "@babel/runtime": "7.29.2",
-    "@eslint/js": "9.39.2",
+    "@eslint/js": "10.0.1",
     "@graphql-codegen/cli": "6.2.1",
     "@graphql-codegen/client-preset": "5.2.4",
     "@graphql-codegen/near-operation-file-preset": "5.0.0",
@@ -100,8 +101,7 @@
     "babel-jest": "30.3.0",
     "conventional-changelog": "7.2.0",
     "conventional-changelog-angular": "8.3.1",
-    "eslint": "9.39.2",
-    "eslint-plugin-jest": "29.15.2",
+    "eslint": "10.2.0",
     "eslint-plugin-react": "7.37.5",
     "eslint-plugin-react-hooks": "7.0.1",
     "eslint-plugin-react-native": "5.0.0",
@@ -119,6 +119,7 @@
     "react-test-renderer": "19.2.3",
     "ts-node": "10.9.2",
     "typescript": "5.9.3",
+    "patch-package": "8.0.0",
     "typescript-eslint": "8.58.1"
   },
   "reactNativeVectorIcons": {
