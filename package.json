@@ -25,17 +25,8 @@
     "postinstall": "patch-package"
   },
   "resolutions": {
-    "picomatch": "4.0.4",
-    "minimatch": "10.2.5",
-    "glob": "13.0.0",
-    "@xmldom/xmldom": "0.9.9",
-    "lodash": "4.18.1",
-    "yaml": "2.8.3",
-    "handlebars": "4.7.9",
-    "fast-xml-parser": "5.5.11",
-    "flatted": "3.4.2",
-    "diff": "8.0.4",
-    "js-yaml": "3.14.2"
+    "@xmldom/xmldom": "0.9.10",
+    "fast-xml-parser": "5.7.3"
   },
   "dependencies": {
     "@apollo/client": "4.1.9",
