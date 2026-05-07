@@ -92,13 +92,6 @@ name = "ripgrep"
 mode = "comment"
 
 [[plugin]]
-name = "trivy"
-drivers = [
-    "config",
-    "fs-vuln",
-]
-
-[[plugin]]
 name = "trufflehog"
 
 [[plugin]]
