@@ -18,3 +18,9 @@ updates:
   target-branch: "main"
   cooldown:
     default-days: 7
+- package-ecosystem: "gradle"
+  directory: "/android"
+  schedule:
+    interval: "weekly"
+  cooldown:
+    default-days: 7
