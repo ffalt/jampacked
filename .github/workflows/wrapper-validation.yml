@@ -3,7 +3,8 @@ name: "Validate Gradle Wrapper"
 on:
   push:
   pull_request:
-    branches: [ main ]
+    paths:
+      - "**/gradle/wrapper/**"
   workflow_dispatch:
 
 permissions:
