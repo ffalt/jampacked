@@ -48,7 +48,7 @@
     "d3-array": "3.2.4",
     "d3-scale": "4.0.2",
     "graphql": "16.14.0",
-    "react": "19.2.3",
+    "react": "19.2.5",
     "react-native": "0.85.3",
     "react-native-bootsplash": "7.3.1",
     "react-native-gesture-handler": "2.31.2",
