@@ -3710,21 +3710,21 @@
     use-latest-callback "^0.2.4"
     use-sync-external-store "^1.5.0"
 
-"@react-navigation/elements@^2.9.17":
-  version "2.9.17"
-  resolved "https://registry.yarnpkg.com/@react-navigation/elements/-/elements-2.9.17.tgz#2ad61b9e7b5441ce9ae039b51cfc779515dd3256"
-  integrity sha512-Prax9RDS6l32npcl4PzvL88VoXe9HdtcIUP2+rim3DLVSZceD6oreA+cmPBUjeLFjsnxKlU3pTRby3RpYJ5/xw==
+"@react-navigation/elements@^2.9.17", "@react-navigation/elements@^2.9.18":
+  version "2.9.18"
+  resolved "https://registry.yarnpkg.com/@react-navigation/elements/-/elements-2.9.18.tgz#6197631c44dde42c63b623df4f4d3276611aa1b2"
+  integrity sha512-mKEvDr6CkCVYZSb8W9WubNseihL+1c8M7ktZJCTCbMk8rQgdQfkdRNwpSUQKspdGpUHCb9cyzvaiuzl1NtjVgw==
   dependencies:
     color "^4.2.3"
     use-latest-callback "^0.2.4"
     use-sync-external-store "^1.5.0"
 
-"@react-navigation/material-top-tabs@7.4.26":
-  version "7.4.26"
-  resolved "https://registry.yarnpkg.com/@react-navigation/material-top-tabs/-/material-top-tabs-7.4.26.tgz#de5d73ae4716bee58971ee508c792bbad644da29"
-  integrity sha512-XMjjGB7H5+z0A17kzfLM3um4oAswKQkK3RWlf3lzg/QOQbPXjoN56G1pzssXEuTqtl8HZCoOPvxb1B8CM8kb6g==
+"@react-navigation/material-top-tabs@7.4.27":
+  version "7.4.27"
+  resolved "https://registry.yarnpkg.com/@react-navigation/material-top-tabs/-/material-top-tabs-7.4.27.tgz#0b17a514a1478ace3b7e1e0c051b72967dd99590"
+  integrity sha512-19yy/ZFvb4/vlfCNaZSPUShJrKkiosLyp9b88iK3M+ZoqBmiqN22TpxIydRF5RB+dAXWEtdM8QzPGPz5gK3+Tw==
   dependencies:
-    "@react-navigation/elements" "^2.9.17"
+    "@react-navigation/elements" "^2.9.18"
     color "^4.2.3"
     react-native-tab-view "^4.3.0"
 
