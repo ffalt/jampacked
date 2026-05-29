@@ -414,9 +414,9 @@ export declare namespace Jam {
 		/** ID */
 		id: string;
 		/** Track Id */
-		trackID: string;
+		trackID?: string;
 		/** Episode Id */
-		episodeID: string;
+		episodeID?: string;
 		/**
 		 * Position in Audio
 		 * @TJS-type integer
@@ -595,6 +595,12 @@ export declare namespace Jam {
 		 * @minimum 0
 		 */
 		trackCount?: number;
+		/**
+		 * Number of Tracks in Subtree
+		 * @TJS-type integer
+		 * @minimum 0
+		 */
+		trackInSubtreeCount?: number;
 		/**
 		 * Number of Folders
 		 * @TJS-type integer
@@ -847,6 +853,93 @@ export declare namespace Jam {
 	}
 
 	/*
+	 * Landscape Artist Node
+	 */
+	export interface LandscapeArtistNode {
+		/** ID */
+		id: string;
+		/** Name */
+		name: string;
+		/**
+		 * Album Count
+		 * @TJS-type integer
+		 * @minimum 0
+		 */
+		albumCount: number;
+		/**
+		 * Track Count
+		 * @TJS-type integer
+		 * @minimum 0
+		 */
+		trackCount: number;
+		/** Genre IDs this artist belongs to */
+		genreIDs: Array<string>;
+		/**
+		 * Computed X position (centroid of genre noise coords + jitter)
+		 * @TJS-type integer
+		 */
+		noiseX?: number;
+		/**
+		 * Computed Y position (centroid of genre noise coords + jitter)
+		 * @TJS-type integer
+		 */
+		noiseY?: number;
+	}
+
+	/*
+	 * Music Collection Landscape Data
+	 */
+	export interface LandscapeData {
+		/** All genres as scatter plot nodes */
+		genres: Array<LandscapeGenreNode>;
+		/** All artists as scatter plot dots */
+		artists: Array<LandscapeArtistNode>;
+		/**
+		 * Fraction of genres matched to ENAO coordinate data (0-1)
+		 * @TJS-type integer
+		 */
+		noiseMatchRate: number;
+	}
+
+	/*
+	 * Landscape Genre Node
+	 */
+	export interface LandscapeGenreNode {
+		/** ID */
+		id: string;
+		/** Name */
+		name: string;
+		/**
+		 * Track Count
+		 * @TJS-type integer
+		 * @minimum 0
+		 */
+		trackCount: number;
+		/**
+		 * Artist Count
+		 * @TJS-type integer
+		 * @minimum 0
+		 */
+		artistCount: number;
+		/**
+		 * Album Count
+		 * @TJS-type integer
+		 * @minimum 0
+		 */
+		albumCount: number;
+		/**
+		 * ENAO X coordinate (0=left/organic, 1=right/mechanical)
+		 * @TJS-type integer
+		 */
+		noiseX?: number;
+		/**
+		 * ENAO Y coordinate (0=top/atmospheric, 1=bottom/energetic)
+		 * @TJS-type integer
+		 */
+		noiseY?: number;
+	}
+
+	/*
 	 * Media Base
 	 */
 	export interface MediaBase extends Base {
@@ -892,7 +985,7 @@ export declare namespace Jam {
 		 * Bit Rate
 		 * @TJS-type integer
 		 */
-		bitRate: number;
+		bitRate?: number;
 		/** Media Format */
 		format?: string;
 		/**
@@ -1117,6 +1210,13 @@ export declare namespace Jam {
 	}
 
 	/*
+	 * Media Raw Tag LangText Frame
+	 */
+	export interface MediaTagRawFrameLangText extends MediaTagRawFrame {
+		value: MediaTagRawLangText;
+	}
+
+	/*
 	 * Media Raw Tag Link Frame
 	 */
 	export interface MediaTagRawFrameLink extends MediaTagRawFrame {
@@ -1142,6 +1242,13 @@ export declare namespace Jam {
 	 */
 	export interface MediaTagRawFramePopularimeter extends MediaTagRawFrame {
 		value: MediaTagRawPopularimeter;
+	}
+
+	/*
+	 * Media Raw Tag Priv Frame
+	 */
+	export interface MediaTagRawFramePriv extends MediaTagRawFrame {
+		value: MediaTagRawPriv;
 	}
 
 	/*
@@ -1263,7 +1370,7 @@ export declare namespace Jam {
 		/** Frames */
 		PRI?: Array<MediaTagRawFrameIdBin>;
 		/** Frames */
-		PRIV?: Array<MediaTagRawFrameIdBin>;
+		PRIV?: Array<MediaTagRawFramePriv>;
 		/** Frames */
 		RBUF?: Array<MediaTagRawFrameBin>;
 		/** Frames */
@@ -1283,7 +1390,7 @@ export declare namespace Jam {
 		/** Frames */
 		SIGN?: Array<MediaTagRawFrameBin>;
 		/** Frames */
-		SLT?: Array<MediaTagRawFrameSynchronisedLyricsEvent>;
+		SLT?: Array<MediaTagRawFrameSynchronisedLyrics>;
 		/** Frames */
 		STC?: Array<MediaTagRawFrameBin>;
 		/** Frames */
@@ -1367,7 +1474,7 @@ export declare namespace Jam {
 		/** Frames */
 		TKEY?: Array<MediaTagRawFrameText>;
 		/** Frames */
-		TKWD?: Array<MediaTagRawFrameBin>;
+		TKWD?: Array<MediaTagRawFrameText>;
 		/** Frames */
 		TLA?: Array<MediaTagRawFrameText>;
 		/** Frames */
@@ -1501,7 +1608,7 @@ export declare namespace Jam {
 		/** Frames */
 		ULT?: Array<MediaTagRawFrameLangDescText>;
 		/** Frames */
-		USER?: Array<MediaTagRawFrameBin>;
+		USER?: Array<MediaTagRawFrameLangText>;
 		/** Frames */
 		USLT?: Array<MediaTagRawFrameLangDescText>;
 		/** Frames */
@@ -1539,7 +1646,7 @@ export declare namespace Jam {
 		/** Frames */
 		WXX?: Array<MediaTagRawFrameIdText>;
 		/** Frames */
-		WXXX?: Array<MediaTagRawFrameText>;
+		WXXX?: Array<MediaTagRawFrameIdText>;
 		/** Frames */
 		XDOR?: Array<MediaTagRawFrameText>;
 		/** Frames */
@@ -1604,6 +1711,11 @@ export declare namespace Jam {
 		text: string;
 	}
 
+	export interface MediaTagRawLangText {
+		language: string;
+		text: string;
+	}
+
 	export interface MediaTagRawLink {
 		url: string;
 		id: string;
@@ -1630,6 +1742,15 @@ export declare namespace Jam {
 		rating: number;
 		/** @TJS-type integer */
 		count: number;
+	}
+
+	export interface MediaTagRawPriv {
+		id: string;
+		bin?: string;
+		/** @TJS-type integer */
+		num?: number;
+		guid?: string;
+		text?: string;
 	}
 
 	export interface MediaTagRawReplayGainAdjustment {
@@ -1827,7 +1948,7 @@ export declare namespace Jam {
 		 */
 		entriesCount: number;
 		/** List of Media Base IDs */
-		entriesIDs: Array<string>;
+		entriesIDs?: Array<string>;
 	}
 
 	/*

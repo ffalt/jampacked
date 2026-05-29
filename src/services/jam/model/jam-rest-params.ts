@@ -491,6 +491,8 @@ export declare namespace JamParameters {
 		parentIDs?: Array<string>;
 		/** filter if folder is in folder id (or its child folders) */
 		childOfID?: string;
+		/** filter by folder id and all its sub folders */
+		inSubtreeOfID?: string;
 		/**
 		 * filter by Folder Tree Level
 		 * @TJS-type integer
@@ -918,6 +920,12 @@ export declare namespace JamParameters {
 		 */
 		folderIncChildFolderCount?: boolean;
 		/**
+		 * include child track count on folder subtree(s)
+		 * @TJS-type boolean
+		 * @default false
+		 */
+		folderIncTrackInSubtreeCount?: boolean;
+		/**
 		 * include track count on folder(s)
 		 * @TJS-type boolean
 		 * @default false
@@ -1175,6 +1183,42 @@ export declare namespace JamParameters {
 	}
 
 	export interface IncludesUserParameters {
+	}
+
+	export interface LandscapeParameters {
+		/**
+		 * Ignore genre entries with no ENAO coordinate match
+		 * @TJS-type boolean
+		 */
+		ignoreUnknownGenres?: boolean;
+		/**
+		 * Include only artists that have at least one album
+		 * @TJS-type boolean
+		 */
+		artistsWithAlbumsOnly?: boolean;
+		/**
+		 * Exclude artists that have no computed noise position (all genres unpositioned)
+		 * @TJS-type boolean
+		 */
+		ignoreUnpositionedArtists?: boolean;
+		/**
+		 * Minimum track count for a genre to be included
+		 * @TJS-type integer
+		 * @minimum 0
+		 */
+		minGenreTrackCount?: number;
+		/**
+		 * Minimum artist count for a genre to be included
+		 * @TJS-type integer
+		 * @minimum 0
+		 */
+		minGenreArtistCount?: number;
+		/**
+		 * Minimum track count for an artist to be included
+		 * @TJS-type integer
+		 * @minimum 0
+		 */
+		minArtistTrackCount?: number;
 	}
 
 	export interface LastFMLookupParameters {
@@ -1621,7 +1665,7 @@ export declare namespace JamParameters {
 		 * maximal bitrate if transcoding (in Kbps)
 		 * @TJS-type integer
 		 * @minimum 10
-		 * @maximum 480
+		 * @maximum 320
 		 */
 		maxBitRate?: number;
 		/** format of the audio */
