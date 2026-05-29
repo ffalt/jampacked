@@ -33,7 +33,7 @@
     "@apollo/client": "4.1.9",
     "@callstack/react-theme-provider": "3.0.9",
     "@d11/react-native-fast-image": "8.13.0",
-    "@op-engineering/op-sqlite": "15.2.12",
+    "@op-engineering/op-sqlite": "15.2.14",
     "@react-native-community/checkbox": "0.5.20",
     "@react-native-community/slider": "5.2.0",
     "@react-native-masked-view/masked-view": "0.3.2",
