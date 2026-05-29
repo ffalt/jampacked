@@ -1,10 +1,8 @@
 import React, { PropsWithChildren, ReactElement, useRef } from 'react';
-import { Animated, StyleSheet, View } from 'react-native';
-import { RectButton } from 'react-native-gesture-handler';
-import Swipeable from 'react-native-gesture-handler/Swipeable';
+import { Pressable, StyleSheet } from 'react-native';
+import ReanimatedSwipeable, { SwipeableMethods } from 'react-native-gesture-handler/ReanimatedSwipeable';
+import Animated, { Extrapolation, interpolate, SharedValue, useAnimatedStyle } from 'react-native-reanimated';
 import { useTheme } from '../style/theming';
-
-const AnimatedView = Animated.createAnimatedComponent(View);
 
 const styles = StyleSheet.create({
 	actionIcons: {
@@ -18,43 +16,43 @@ const styles = StyleSheet.create({
 	}
 });
 
-export const SwipeableItem: React.FC<PropsWithChildren<{ buttons: ReactElement }>> = ({ buttons, children }) => {
-	const containerReference = useRef<Swipeable | null>(null);
-	const theme = useTheme();
+interface RightActionsProps {
+	translation: SharedValue<number>;
+	swipeableMethods: SwipeableMethods;
+	buttons: ReactElement;
+	backgroundColor: string;
+}
 
-	const close = (): void => {
-		containerReference?.current?.close();
-	};
-
-	const renderRightActions = (progress: Animated.AnimatedInterpolation<number>, dragX: Animated.AnimatedInterpolation<number>): ReactElement => {
-		const scale = dragX.interpolate({
-			inputRange: [-80, 0],
-			outputRange: [1, 0],
-			extrapolate: 'clamp'
-		});
-		const trans = progress.interpolate({
-			inputRange: [0, 1],
-			outputRange: [0, 0]
-		});
-		return (
-			<RectButton style={[styles.rightAction, { backgroundColor: theme.control }]} onPress={close}>
-				<AnimatedView style={[styles.actionIcons, { transform: [{ scale }] }, { translateX: trans }]}>
-					{buttons}
-				</AnimatedView>
-			</RectButton>
-		);
-	};
+const RightActions: React.FC<RightActionsProps> = ({ translation, swipeableMethods, buttons, backgroundColor }) => {
+	const animatedStyle = useAnimatedStyle(() => ({
+		transform: [{ scale: interpolate(translation.value, [-80, 0], [1, 0], Extrapolation.CLAMP) }]
+	}));
 
 	return (
-		<Swipeable
+		<Pressable style={[styles.rightAction, { backgroundColor }]} onPress={() => swipeableMethods.close()}>
+			<Animated.View style={[styles.actionIcons, animatedStyle]}>
+				{buttons}
+			</Animated.View>
+		</Pressable>
+	);
+};
+
+export const SwipeableItem: React.FC<PropsWithChildren<{ buttons: ReactElement }>> = ({ buttons, children }) => {
+	const containerReference = useRef<SwipeableMethods | null>(null);
+	const theme = useTheme();
+
+	const renderRightActions = (_progress: SharedValue<number>, translation: SharedValue<number>, swipeableMethods: SwipeableMethods): ReactElement =>
+		<RightActions translation={translation} swipeableMethods={swipeableMethods} buttons={buttons} backgroundColor={theme.control} />;
+
+	return (
+		<ReanimatedSwipeable
 			ref={containerReference}
 			friction={2}
 			leftThreshold={80}
 			enableTrackpadTwoFingerGesture
 			rightThreshold={40}
-			// renderLeftActions={this.renderLeftActions}
 			renderRightActions={renderRightActions}>
 			{children}
-		</Swipeable>
+		</ReanimatedSwipeable>
 	);
 };
