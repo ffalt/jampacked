@@ -55,8 +55,66 @@ jest.mock('react-native-track-player', () => ({
 jest.mock('react-native-gesture-handler', () =>
 	({ RNGestureHandlerModule: jest.fn() }));
 
-jest.mock('react-native-gesture-handler/Swipeable', () =>
-	({ RNGestureHandlerModule: jest.fn() }));
+jest.mock('react-native-gesture-handler/ReanimatedSwipeable', () => ({
+	__esModule: true,
+	default: 'ReanimatedSwipeable'
+}));
+
+// eslint-disable-next-line @typescript-eslint/no-require-imports,@typescript-eslint/no-unsafe-return
+jest.mock('react-native-reanimated', () => require('react-native-reanimated/mock'));
+
+jest.mock('react-native-worklets', () => ({
+	// threads
+	runOnUI: jest.fn((worklet: unknown) => worklet),
+	runOnUIAsync: jest.fn((worklet: unknown) => worklet),
+	runOnUISync: jest.fn((worklet: unknown) => worklet),
+	scheduleOnUI: jest.fn(),
+	scheduleOnRN: jest.fn(),
+	runOnJS: jest.fn((worklet: unknown) => worklet),
+	executeOnUIRuntimeSync: jest.fn(),
+	// memory
+	makeShareable: jest.fn((v: unknown) => v),
+	makeShareableCloneRecursive: jest.fn((v: unknown) => v),
+	makeShareableCloneOnUIRecursive: jest.fn((v: unknown) => v),
+	isShareableRef: jest.fn(() => false),
+	callMicrotasks: jest.fn(),
+	shareableMappingCache: new Map(),
+	createSerializable: jest.fn((v: unknown) => v),
+	isSerializableRef: jest.fn(() => false),
+	registerCustomSerializable: jest.fn(),
+	serializableMappingCache: new Map(),
+	createShareable: jest.fn((v: unknown) => v),
+	createSynchronizable: jest.fn((v: unknown) => v),
+	isShareable: jest.fn(() => false),
+	isSynchronizable: jest.fn(() => false),
+	// runtimes
+	createWorkletRuntime: jest.fn(),
+	getUIRuntimeHolder: jest.fn(),
+	getUISchedulerHolder: jest.fn(),
+	runOnRuntime: jest.fn(),
+	runOnRuntimeAsync: jest.fn(),
+	runOnRuntimeAsyncWithId: jest.fn(),
+	runOnRuntimeSync: jest.fn(),
+	runOnRuntimeSyncWithId: jest.fn(),
+	scheduleOnRuntime: jest.fn(),
+	scheduleOnRuntimeWithId: jest.fn(),
+	UIRuntimeId: 0,
+	// runtimeKind
+	getRuntimeKind: jest.fn(),
+	isRNRuntime: jest.fn(() => true),
+	isUIRuntime: jest.fn(() => false),
+	isWorkerRuntime: jest.fn(() => false),
+	isWorkletRuntime: jest.fn(() => false),
+	RuntimeKind: {},
+	// featureFlags
+	getDynamicFeatureFlag: jest.fn(),
+	getStaticFeatureFlag: jest.fn(),
+	setDynamicFeatureFlag: jest.fn(),
+	// misc
+	toggleSlowAnimationsOnUIRuntime: jest.fn(),
+	isWorkletFunction: jest.fn(() => false),
+	WorkletsModule: {}
+}));
 
 jest.mock('react-native-bootsplash', () =>
 	({ RNBootSplash: jest.fn() }));

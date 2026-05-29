@@ -13,6 +13,8 @@ const config: Config = {
 		'react-native' +
 		'|@react-native' +
 		'|react-native-gesture-handler' +
+		'|react-native-reanimated' +
+		'|react-native-worklets' +
 		'|react-native-snackbar' +
 		'|react-native-status-bar-height' +
 		'|react-native-tab-view' +
