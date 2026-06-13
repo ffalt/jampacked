@@ -95,7 +95,7 @@
     "@types/lodash.chunk": "4.2.9",
     "@types/lodash.debounce": "4.0.9",
     "@types/lodash.throttle": "4.1.9",
-    "@types/node": "25.9.1",
+    "@types/node": "25.9.2",
     "@types/react": "19.2.14",
     "@types/react-native-sqlite-storage": "6.0.5",
     "@types/react-native-vector-icons": "6.4.18",
