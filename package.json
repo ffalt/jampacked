@@ -30,7 +30,7 @@
     "jest-environment-node": "30.4.0"
   },
   "dependencies": {
-    "@apollo/client": "4.2.0",
+    "@apollo/client": "4.2.2",
     "@callstack/react-theme-provider": "3.0.9",
     "@d11/react-native-fast-image": "8.13.0",
     "@op-engineering/op-sqlite": "16.2.0",
