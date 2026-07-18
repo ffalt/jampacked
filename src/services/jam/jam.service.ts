@@ -19,7 +19,7 @@ import { JamFolderService } from './services/jam.folder.service';
 import { JamGenreService } from './services/jam.genre.service';
 import { JamImageService } from './services/jam.image.service';
 import { JamLandscapeService } from './services/jam.landscape.service';
-import { JamMetaDataService } from './services/jam.metadata.service';
+import { JamMetadataService } from './services/jam.metadata.service';
 import { JamNowPlayingService } from './services/jam.nowplaying.service';
 import { JamPingService } from './services/jam.ping.service';
 import { JamPlaylistService } from './services/jam.playlist.service';
@@ -53,7 +53,7 @@ export class JamService {
 	genre: JamGenreService;
 	image: JamImageService;
 	landscape: JamLandscapeService;
-	metadata: JamMetaDataService;
+	metadata: JamMetadataService;
 	nowplaying: JamNowPlayingService;
 	ping: JamPingService;
 	playlist: JamPlaylistService;
@@ -86,7 +86,7 @@ export class JamService {
 		this.genre = new JamGenreService(this.base);
 		this.image = new JamImageService(this.base);
 		this.landscape = new JamLandscapeService(this.base);
-		this.metadata = new JamMetaDataService(this.base);
+		this.metadata = new JamMetadataService(this.base);
 		this.nowplaying = new JamNowPlayingService(this.base);
 		this.ping = new JamPingService(this.base);
 		this.playlist = new JamPlaylistService(this.base);

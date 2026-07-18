@@ -24,7 +24,7 @@ export const defaultAuth: Auth = {
 		}
 		const headers = jamService.auth?.auth?.token ? { Authorization: `Bearer ${jamService.auth?.auth?.token}` } : undefined;
 		return {
-			uri: jamService.image.imageUrl({ id, size, format }, !headers),
+			uri: jamService.image.imageUrl({ id, size, format }),
 			headers,
 			priority: FastImage.priority.normal
 		};

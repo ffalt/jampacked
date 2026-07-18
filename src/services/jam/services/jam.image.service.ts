@@ -11,11 +11,11 @@ export class JamImageService {
 	/**
 	 * Image Binary [Album, Artist, Artwork, Episode, Folder, Root, Playlist, Podcast, Radio, Series, Track, User] // Rights needed: stream
 	 */
-	imageUrl(params: JamParameters.ImageParameters, forDom: boolean): string {
+	imageUrl(params: JamParameters.ImageParameters): string {
 		if (!params.id) {
 			return '';
 		}
-		return this.base.buildRequestUrl(`/image/${params.id}${params.size ? `_${params.size}` : ''}${params.format ? `.${params.format}` : ''}`, {}, forDom);
+		return this.base.buildRequestUrl(`/image/${params.id}${params.size ? `_${params.size}` : ''}${params.format ? `.${params.format}` : ''}`, {});
 	}
 
 	/**

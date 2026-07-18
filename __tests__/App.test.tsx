@@ -5,6 +5,6 @@ import { render } from '@testing-library/react-native';
 import { it } from '@jest/globals';
 
 it('renders', async () => {
-	const screen = render(<App />);
+	const screen = await render(<App />);
 	expect(screen.toJSON()).toBeNull();
 });

@@ -1,80 +1,90 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
+/** Internal type. DO NOT USE DIRECTLY. */
+type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
+/** Internal type. DO NOT USE DIRECTLY. */
+export type Incremental<T> =
+	| T |
+	{
+		[P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never;
+	};
 import * as Types from './_types';
 
-import { gql } from '@apollo/client';
-import { useQuery } from '@apollo/client/react';
-export type SearchTracksResultQueryVariables = Types.Exact<{
-	query: Types.Scalars['String']['input'];
-	take?: Types.InputMaybe<Types.Scalars['Int']['input']>;
-	skip?: Types.InputMaybe<Types.Scalars['Int']['input']>;
+import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/core';
+export type FolderType =
+	'album' | 'artist' | 'collection' | 'extras' | 'multialbum' | 'unknown';
+
+export type SearchTracksResultQueryVariables = Exact<{
+	query: string;
+	take?: number | null | undefined;
+	skip?: number | null | undefined;
 }>;
 
 export interface SearchTracksResultQuery {
 	tracks: {
 		total: number;
-		skip?: number | null;
+		skip: number | null;
 		items: Array<{
 			id: string;
 			name: string;
-			tag?: { artist?: string | null } | null;
+			tag: { artist: string | null } | null;
 		}>;
 	};
 }
 
-export type SearchSeriesResultQueryVariables = Types.Exact<{
-	query: Types.Scalars['String']['input'];
-	take?: Types.InputMaybe<Types.Scalars['Int']['input']>;
-	skip?: Types.InputMaybe<Types.Scalars['Int']['input']>;
+export type SearchSeriesResultQueryVariables = Exact<{
+	query: string;
+	take?: number | null | undefined;
+	skip?: number | null | undefined;
 }>;
 
 export interface SearchSeriesResultQuery {
 	serieses: {
 		total: number;
-		skip?: number | null;
+		skip: number | null;
 		items: Array<{ id: string; name: string; albumsCount: number }>;
 	};
 }
 
-export type SearchPodcastsResultQueryVariables = Types.Exact<{
-	query: Types.Scalars['String']['input'];
-	take?: Types.InputMaybe<Types.Scalars['Int']['input']>;
-	skip?: Types.InputMaybe<Types.Scalars['Int']['input']>;
+export type SearchPodcastsResultQueryVariables = Exact<{
+	query: string;
+	take?: number | null | undefined;
+	skip?: number | null | undefined;
 }>;
 
 export interface SearchPodcastsResultQuery {
 	podcasts: {
 		total: number;
-		skip?: number | null;
+		skip: number | null;
 		items: Array<{ id: string; name: string; episodesCount: number }>;
 	};
 }
 
-export type SearchPlaylistsResultQueryVariables = Types.Exact<{
-	query: Types.Scalars['String']['input'];
-	take?: Types.InputMaybe<Types.Scalars['Int']['input']>;
-	skip?: Types.InputMaybe<Types.Scalars['Int']['input']>;
+export type SearchPlaylistsResultQueryVariables = Exact<{
+	query: string;
+	take?: number | null | undefined;
+	skip?: number | null | undefined;
 }>;
 
 export interface SearchPlaylistsResultQuery {
 	playlists: {
 		total: number;
-		skip?: number | null;
+		skip: number | null;
 		items: Array<{ id: string; name: string; entriesCount: number }>;
 	};
 }
 
-export type SearchFoldersResultQueryVariables = Types.Exact<{
-	query: Types.Scalars['String']['input'];
-	take?: Types.InputMaybe<Types.Scalars['Int']['input']>;
-	skip?: Types.InputMaybe<Types.Scalars['Int']['input']>;
+export type SearchFoldersResultQueryVariables = Exact<{
+	query: string;
+	take?: number | null | undefined;
+	skip?: number | null | undefined;
 }>;
 
 export interface SearchFoldersResultQuery {
 	folders: {
 		total: number;
-		skip?: number | null;
+		skip: number | null;
 		items: Array<{
 			id: string;
 			name: string;
@@ -85,187 +95,956 @@ export interface SearchFoldersResultQuery {
 	};
 }
 
-export type SearchEpisodesResultQueryVariables = Types.Exact<{
-	query: Types.Scalars['String']['input'];
-	take?: Types.InputMaybe<Types.Scalars['Int']['input']>;
-	skip?: Types.InputMaybe<Types.Scalars['Int']['input']>;
+export type SearchEpisodesResultQueryVariables = Exact<{
+	query: string;
+	take?: number | null | undefined;
+	skip?: number | null | undefined;
 }>;
 
 export interface SearchEpisodesResultQuery {
 	episodes: {
 		total: number;
-		skip?: number | null;
+		skip: number | null;
 		items: Array<{ id: string; name: string; date: string }>;
 	};
 }
 
-export type SearchArtistsResultQueryVariables = Types.Exact<{
-	query: Types.Scalars['String']['input'];
-	take?: Types.InputMaybe<Types.Scalars['Int']['input']>;
-	skip?: Types.InputMaybe<Types.Scalars['Int']['input']>;
+export type SearchArtistsResultQueryVariables = Exact<{
+	query: string;
+	take?: number | null | undefined;
+	skip?: number | null | undefined;
 }>;
 
 export interface SearchArtistsResultQuery {
 	artists: {
 		total: number;
-		skip?: number | null;
+		skip: number | null;
 		items: Array<{ id: string; name: string; albumsCount: number }>;
 	};
 }
 
-export type SearchAlbumsResultQueryVariables = Types.Exact<{
-	query: Types.Scalars['String']['input'];
-	take?: Types.InputMaybe<Types.Scalars['Int']['input']>;
-	skip?: Types.InputMaybe<Types.Scalars['Int']['input']>;
+export type SearchAlbumsResultQueryVariables = Exact<{
+	query: string;
+	take?: number | null | undefined;
+	skip?: number | null | undefined;
 }>;
 
 export interface SearchAlbumsResultQuery {
 	albums: {
 		total: number;
-		skip?: number | null;
+		skip: number | null;
 		items: Array<{ id: string; name: string; artist: { name: string } }>;
 	};
 }
 
-export const SearchTracksResultDocument = gql`
-  query SearchTracksResult($query: String!, $take: Int, $skip: Int) {
-  	tracks(page: { take: $take, skip: $skip }, filter: { query: $query }) {
-  		total
-  		skip
-  		items {
-  			id
-  			name
-  			tag {
-  				artist
-  			}
-  		}
-  	}
-  }
-`;
-export type SearchTracksResultQueryResult = useQuery.Result<
+export const SearchTracksResultDocument = {
+	kind: 'Document',
+	definitions: [
+		{
+			kind: 'OperationDefinition',
+			operation: 'query',
+			name: { kind: 'Name', value: 'SearchTracksResult' },
+			variableDefinitions: [
+				{
+					kind: 'VariableDefinition',
+					variable: {
+						kind: 'Variable',
+						name: { kind: 'Name', value: 'query' }
+					},
+					type: {
+						kind: 'NonNullType',
+						type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } }
+					}
+				},
+				{
+					kind: 'VariableDefinition',
+					variable: { kind: 'Variable', name: { kind: 'Name', value: 'take' } },
+					type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } }
+				},
+				{
+					kind: 'VariableDefinition',
+					variable: { kind: 'Variable', name: { kind: 'Name', value: 'skip' } },
+					type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } }
+				}
+			],
+			selectionSet: {
+				kind: 'SelectionSet',
+				selections: [
+					{
+						kind: 'Field',
+						name: { kind: 'Name', value: 'tracks' },
+						arguments: [
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'page' },
+								value: {
+									kind: 'ObjectValue',
+									fields: [
+										{
+											kind: 'ObjectField',
+											name: { kind: 'Name', value: 'take' },
+											value: {
+												kind: 'Variable',
+												name: { kind: 'Name', value: 'take' }
+											}
+										},
+										{
+											kind: 'ObjectField',
+											name: { kind: 'Name', value: 'skip' },
+											value: {
+												kind: 'Variable',
+												name: { kind: 'Name', value: 'skip' }
+											}
+										}
+									]
+								}
+							},
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'filter' },
+								value: {
+									kind: 'ObjectValue',
+									fields: [
+										{
+											kind: 'ObjectField',
+											name: { kind: 'Name', value: 'query' },
+											value: {
+												kind: 'Variable',
+												name: { kind: 'Name', value: 'query' }
+											}
+										}
+									]
+								}
+							}
+						],
+						selectionSet: {
+							kind: 'SelectionSet',
+							selections: [
+								{ kind: 'Field', name: { kind: 'Name', value: 'total' } },
+								{ kind: 'Field', name: { kind: 'Name', value: 'skip' } },
+								{
+									kind: 'Field',
+									name: { kind: 'Name', value: 'items' },
+									selectionSet: {
+										kind: 'SelectionSet',
+										selections: [
+											{ kind: 'Field', name: { kind: 'Name', value: 'id' } },
+											{ kind: 'Field', name: { kind: 'Name', value: 'name' } },
+											{
+												kind: 'Field',
+												name: { kind: 'Name', value: 'tag' },
+												selectionSet: {
+													kind: 'SelectionSet',
+													selections: [
+														{
+															kind: 'Field',
+															name: { kind: 'Name', value: 'artist' }
+														}
+													]
+												}
+											}
+										]
+									}
+								}
+							]
+						}
+					}
+				]
+			}
+		}
+	]
+} as unknown as DocumentNode<
 	SearchTracksResultQuery,
 	SearchTracksResultQueryVariables
 >;
-export const SearchSeriesResultDocument = gql`
-  query SearchSeriesResult($query: String!, $take: Int, $skip: Int) {
-  	serieses(page: { take: $take, skip: $skip }, filter: { query: $query }) {
-  		total
-  		skip
-  		items {
-  			id
-  			name
-  			albumsCount
-  		}
-  	}
-  }
-`;
-export type SearchSeriesResultQueryResult = useQuery.Result<
+export const SearchSeriesResultDocument = {
+	kind: 'Document',
+	definitions: [
+		{
+			kind: 'OperationDefinition',
+			operation: 'query',
+			name: { kind: 'Name', value: 'SearchSeriesResult' },
+			variableDefinitions: [
+				{
+					kind: 'VariableDefinition',
+					variable: {
+						kind: 'Variable',
+						name: { kind: 'Name', value: 'query' }
+					},
+					type: {
+						kind: 'NonNullType',
+						type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } }
+					}
+				},
+				{
+					kind: 'VariableDefinition',
+					variable: { kind: 'Variable', name: { kind: 'Name', value: 'take' } },
+					type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } }
+				},
+				{
+					kind: 'VariableDefinition',
+					variable: { kind: 'Variable', name: { kind: 'Name', value: 'skip' } },
+					type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } }
+				}
+			],
+			selectionSet: {
+				kind: 'SelectionSet',
+				selections: [
+					{
+						kind: 'Field',
+						name: { kind: 'Name', value: 'serieses' },
+						arguments: [
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'page' },
+								value: {
+									kind: 'ObjectValue',
+									fields: [
+										{
+											kind: 'ObjectField',
+											name: { kind: 'Name', value: 'take' },
+											value: {
+												kind: 'Variable',
+												name: { kind: 'Name', value: 'take' }
+											}
+										},
+										{
+											kind: 'ObjectField',
+											name: { kind: 'Name', value: 'skip' },
+											value: {
+												kind: 'Variable',
+												name: { kind: 'Name', value: 'skip' }
+											}
+										}
+									]
+								}
+							},
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'filter' },
+								value: {
+									kind: 'ObjectValue',
+									fields: [
+										{
+											kind: 'ObjectField',
+											name: { kind: 'Name', value: 'query' },
+											value: {
+												kind: 'Variable',
+												name: { kind: 'Name', value: 'query' }
+											}
+										}
+									]
+								}
+							}
+						],
+						selectionSet: {
+							kind: 'SelectionSet',
+							selections: [
+								{ kind: 'Field', name: { kind: 'Name', value: 'total' } },
+								{ kind: 'Field', name: { kind: 'Name', value: 'skip' } },
+								{
+									kind: 'Field',
+									name: { kind: 'Name', value: 'items' },
+									selectionSet: {
+										kind: 'SelectionSet',
+										selections: [
+											{ kind: 'Field', name: { kind: 'Name', value: 'id' } },
+											{ kind: 'Field', name: { kind: 'Name', value: 'name' } },
+											{
+												kind: 'Field',
+												name: { kind: 'Name', value: 'albumsCount' }
+											}
+										]
+									}
+								}
+							]
+						}
+					}
+				]
+			}
+		}
+	]
+} as unknown as DocumentNode<
 	SearchSeriesResultQuery,
 	SearchSeriesResultQueryVariables
 >;
-export const SearchPodcastsResultDocument = gql`
-  query SearchPodcastsResult($query: String!, $take: Int, $skip: Int) {
-  	podcasts(page: { take: $take, skip: $skip }, filter: { query: $query }) {
-  		total
-  		skip
-  		items {
-  			id
-  			name
-  			episodesCount
-  		}
-  	}
-  }
-`;
-export type SearchPodcastsResultQueryResult = useQuery.Result<
+export const SearchPodcastsResultDocument = {
+	kind: 'Document',
+	definitions: [
+		{
+			kind: 'OperationDefinition',
+			operation: 'query',
+			name: { kind: 'Name', value: 'SearchPodcastsResult' },
+			variableDefinitions: [
+				{
+					kind: 'VariableDefinition',
+					variable: {
+						kind: 'Variable',
+						name: { kind: 'Name', value: 'query' }
+					},
+					type: {
+						kind: 'NonNullType',
+						type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } }
+					}
+				},
+				{
+					kind: 'VariableDefinition',
+					variable: { kind: 'Variable', name: { kind: 'Name', value: 'take' } },
+					type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } }
+				},
+				{
+					kind: 'VariableDefinition',
+					variable: { kind: 'Variable', name: { kind: 'Name', value: 'skip' } },
+					type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } }
+				}
+			],
+			selectionSet: {
+				kind: 'SelectionSet',
+				selections: [
+					{
+						kind: 'Field',
+						name: { kind: 'Name', value: 'podcasts' },
+						arguments: [
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'page' },
+								value: {
+									kind: 'ObjectValue',
+									fields: [
+										{
+											kind: 'ObjectField',
+											name: { kind: 'Name', value: 'take' },
+											value: {
+												kind: 'Variable',
+												name: { kind: 'Name', value: 'take' }
+											}
+										},
+										{
+											kind: 'ObjectField',
+											name: { kind: 'Name', value: 'skip' },
+											value: {
+												kind: 'Variable',
+												name: { kind: 'Name', value: 'skip' }
+											}
+										}
+									]
+								}
+							},
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'filter' },
+								value: {
+									kind: 'ObjectValue',
+									fields: [
+										{
+											kind: 'ObjectField',
+											name: { kind: 'Name', value: 'query' },
+											value: {
+												kind: 'Variable',
+												name: { kind: 'Name', value: 'query' }
+											}
+										}
+									]
+								}
+							}
+						],
+						selectionSet: {
+							kind: 'SelectionSet',
+							selections: [
+								{ kind: 'Field', name: { kind: 'Name', value: 'total' } },
+								{ kind: 'Field', name: { kind: 'Name', value: 'skip' } },
+								{
+									kind: 'Field',
+									name: { kind: 'Name', value: 'items' },
+									selectionSet: {
+										kind: 'SelectionSet',
+										selections: [
+											{ kind: 'Field', name: { kind: 'Name', value: 'id' } },
+											{ kind: 'Field', name: { kind: 'Name', value: 'name' } },
+											{
+												kind: 'Field',
+												name: { kind: 'Name', value: 'episodesCount' }
+											}
+										]
+									}
+								}
+							]
+						}
+					}
+				]
+			}
+		}
+	]
+} as unknown as DocumentNode<
 	SearchPodcastsResultQuery,
 	SearchPodcastsResultQueryVariables
 >;
-export const SearchPlaylistsResultDocument = gql`
-  query SearchPlaylistsResult($query: String!, $take: Int, $skip: Int) {
-  	playlists(page: { take: $take, skip: $skip }, filter: { query: $query }) {
-  		total
-  		skip
-  		items {
-  			id
-  			name
-  			entriesCount
-  		}
-  	}
-  }
-`;
-export type SearchPlaylistsResultQueryResult = useQuery.Result<
+export const SearchPlaylistsResultDocument = {
+	kind: 'Document',
+	definitions: [
+		{
+			kind: 'OperationDefinition',
+			operation: 'query',
+			name: { kind: 'Name', value: 'SearchPlaylistsResult' },
+			variableDefinitions: [
+				{
+					kind: 'VariableDefinition',
+					variable: {
+						kind: 'Variable',
+						name: { kind: 'Name', value: 'query' }
+					},
+					type: {
+						kind: 'NonNullType',
+						type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } }
+					}
+				},
+				{
+					kind: 'VariableDefinition',
+					variable: { kind: 'Variable', name: { kind: 'Name', value: 'take' } },
+					type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } }
+				},
+				{
+					kind: 'VariableDefinition',
+					variable: { kind: 'Variable', name: { kind: 'Name', value: 'skip' } },
+					type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } }
+				}
+			],
+			selectionSet: {
+				kind: 'SelectionSet',
+				selections: [
+					{
+						kind: 'Field',
+						name: { kind: 'Name', value: 'playlists' },
+						arguments: [
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'page' },
+								value: {
+									kind: 'ObjectValue',
+									fields: [
+										{
+											kind: 'ObjectField',
+											name: { kind: 'Name', value: 'take' },
+											value: {
+												kind: 'Variable',
+												name: { kind: 'Name', value: 'take' }
+											}
+										},
+										{
+											kind: 'ObjectField',
+											name: { kind: 'Name', value: 'skip' },
+											value: {
+												kind: 'Variable',
+												name: { kind: 'Name', value: 'skip' }
+											}
+										}
+									]
+								}
+							},
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'filter' },
+								value: {
+									kind: 'ObjectValue',
+									fields: [
+										{
+											kind: 'ObjectField',
+											name: { kind: 'Name', value: 'query' },
+											value: {
+												kind: 'Variable',
+												name: { kind: 'Name', value: 'query' }
+											}
+										}
+									]
+								}
+							}
+						],
+						selectionSet: {
+							kind: 'SelectionSet',
+							selections: [
+								{ kind: 'Field', name: { kind: 'Name', value: 'total' } },
+								{ kind: 'Field', name: { kind: 'Name', value: 'skip' } },
+								{
+									kind: 'Field',
+									name: { kind: 'Name', value: 'items' },
+									selectionSet: {
+										kind: 'SelectionSet',
+										selections: [
+											{ kind: 'Field', name: { kind: 'Name', value: 'id' } },
+											{ kind: 'Field', name: { kind: 'Name', value: 'name' } },
+											{
+												kind: 'Field',
+												name: { kind: 'Name', value: 'entriesCount' }
+											}
+										]
+									}
+								}
+							]
+						}
+					}
+				]
+			}
+		}
+	]
+} as unknown as DocumentNode<
 	SearchPlaylistsResultQuery,
 	SearchPlaylistsResultQueryVariables
 >;
-export const SearchFoldersResultDocument = gql`
-  query SearchFoldersResult($query: String!, $take: Int, $skip: Int) {
-  	folders(page: { take: $take, skip: $skip }, filter: { query: $query }) {
-  		total
-  		skip
-  		items {
-  			id
-  			name
-  			folderType
-  			childrenCount
-  			tracksCount
-  		}
-  	}
-  }
-`;
-export type SearchFoldersResultQueryResult = useQuery.Result<
+export const SearchFoldersResultDocument = {
+	kind: 'Document',
+	definitions: [
+		{
+			kind: 'OperationDefinition',
+			operation: 'query',
+			name: { kind: 'Name', value: 'SearchFoldersResult' },
+			variableDefinitions: [
+				{
+					kind: 'VariableDefinition',
+					variable: {
+						kind: 'Variable',
+						name: { kind: 'Name', value: 'query' }
+					},
+					type: {
+						kind: 'NonNullType',
+						type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } }
+					}
+				},
+				{
+					kind: 'VariableDefinition',
+					variable: { kind: 'Variable', name: { kind: 'Name', value: 'take' } },
+					type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } }
+				},
+				{
+					kind: 'VariableDefinition',
+					variable: { kind: 'Variable', name: { kind: 'Name', value: 'skip' } },
+					type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } }
+				}
+			],
+			selectionSet: {
+				kind: 'SelectionSet',
+				selections: [
+					{
+						kind: 'Field',
+						name: { kind: 'Name', value: 'folders' },
+						arguments: [
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'page' },
+								value: {
+									kind: 'ObjectValue',
+									fields: [
+										{
+											kind: 'ObjectField',
+											name: { kind: 'Name', value: 'take' },
+											value: {
+												kind: 'Variable',
+												name: { kind: 'Name', value: 'take' }
+											}
+										},
+										{
+											kind: 'ObjectField',
+											name: { kind: 'Name', value: 'skip' },
+											value: {
+												kind: 'Variable',
+												name: { kind: 'Name', value: 'skip' }
+											}
+										}
+									]
+								}
+							},
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'filter' },
+								value: {
+									kind: 'ObjectValue',
+									fields: [
+										{
+											kind: 'ObjectField',
+											name: { kind: 'Name', value: 'query' },
+											value: {
+												kind: 'Variable',
+												name: { kind: 'Name', value: 'query' }
+											}
+										}
+									]
+								}
+							}
+						],
+						selectionSet: {
+							kind: 'SelectionSet',
+							selections: [
+								{ kind: 'Field', name: { kind: 'Name', value: 'total' } },
+								{ kind: 'Field', name: { kind: 'Name', value: 'skip' } },
+								{
+									kind: 'Field',
+									name: { kind: 'Name', value: 'items' },
+									selectionSet: {
+										kind: 'SelectionSet',
+										selections: [
+											{ kind: 'Field', name: { kind: 'Name', value: 'id' } },
+											{ kind: 'Field', name: { kind: 'Name', value: 'name' } },
+											{
+												kind: 'Field',
+												name: { kind: 'Name', value: 'folderType' }
+											},
+											{
+												kind: 'Field',
+												name: { kind: 'Name', value: 'childrenCount' }
+											},
+											{
+												kind: 'Field',
+												name: { kind: 'Name', value: 'tracksCount' }
+											}
+										]
+									}
+								}
+							]
+						}
+					}
+				]
+			}
+		}
+	]
+} as unknown as DocumentNode<
 	SearchFoldersResultQuery,
 	SearchFoldersResultQueryVariables
 >;
-export const SearchEpisodesResultDocument = gql`
-  query SearchEpisodesResult($query: String!, $take: Int, $skip: Int) {
-  	episodes(page: { take: $take, skip: $skip }, filter: { query: $query }) {
-  		total
-  		skip
-  		items {
-  			id
-  			name
-  			date
-  		}
-  	}
-  }
-`;
-export type SearchEpisodesResultQueryResult = useQuery.Result<
+export const SearchEpisodesResultDocument = {
+	kind: 'Document',
+	definitions: [
+		{
+			kind: 'OperationDefinition',
+			operation: 'query',
+			name: { kind: 'Name', value: 'SearchEpisodesResult' },
+			variableDefinitions: [
+				{
+					kind: 'VariableDefinition',
+					variable: {
+						kind: 'Variable',
+						name: { kind: 'Name', value: 'query' }
+					},
+					type: {
+						kind: 'NonNullType',
+						type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } }
+					}
+				},
+				{
+					kind: 'VariableDefinition',
+					variable: { kind: 'Variable', name: { kind: 'Name', value: 'take' } },
+					type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } }
+				},
+				{
+					kind: 'VariableDefinition',
+					variable: { kind: 'Variable', name: { kind: 'Name', value: 'skip' } },
+					type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } }
+				}
+			],
+			selectionSet: {
+				kind: 'SelectionSet',
+				selections: [
+					{
+						kind: 'Field',
+						name: { kind: 'Name', value: 'episodes' },
+						arguments: [
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'page' },
+								value: {
+									kind: 'ObjectValue',
+									fields: [
+										{
+											kind: 'ObjectField',
+											name: { kind: 'Name', value: 'take' },
+											value: {
+												kind: 'Variable',
+												name: { kind: 'Name', value: 'take' }
+											}
+										},
+										{
+											kind: 'ObjectField',
+											name: { kind: 'Name', value: 'skip' },
+											value: {
+												kind: 'Variable',
+												name: { kind: 'Name', value: 'skip' }
+											}
+										}
+									]
+								}
+							},
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'filter' },
+								value: {
+									kind: 'ObjectValue',
+									fields: [
+										{
+											kind: 'ObjectField',
+											name: { kind: 'Name', value: 'query' },
+											value: {
+												kind: 'Variable',
+												name: { kind: 'Name', value: 'query' }
+											}
+										}
+									]
+								}
+							}
+						],
+						selectionSet: {
+							kind: 'SelectionSet',
+							selections: [
+								{ kind: 'Field', name: { kind: 'Name', value: 'total' } },
+								{ kind: 'Field', name: { kind: 'Name', value: 'skip' } },
+								{
+									kind: 'Field',
+									name: { kind: 'Name', value: 'items' },
+									selectionSet: {
+										kind: 'SelectionSet',
+										selections: [
+											{ kind: 'Field', name: { kind: 'Name', value: 'id' } },
+											{ kind: 'Field', name: { kind: 'Name', value: 'name' } },
+											{ kind: 'Field', name: { kind: 'Name', value: 'date' } }
+										]
+									}
+								}
+							]
+						}
+					}
+				]
+			}
+		}
+	]
+} as unknown as DocumentNode<
 	SearchEpisodesResultQuery,
 	SearchEpisodesResultQueryVariables
 >;
-export const SearchArtistsResultDocument = gql`
-  query SearchArtistsResult($query: String!, $take: Int, $skip: Int) {
-  	artists(page: { take: $take, skip: $skip }, filter: { query: $query }) {
-  		total
-  		skip
-  		items {
-  			id
-  			name
-  			albumsCount
-  		}
-  	}
-  }
-`;
-export type SearchArtistsResultQueryResult = useQuery.Result<
+export const SearchArtistsResultDocument = {
+	kind: 'Document',
+	definitions: [
+		{
+			kind: 'OperationDefinition',
+			operation: 'query',
+			name: { kind: 'Name', value: 'SearchArtistsResult' },
+			variableDefinitions: [
+				{
+					kind: 'VariableDefinition',
+					variable: {
+						kind: 'Variable',
+						name: { kind: 'Name', value: 'query' }
+					},
+					type: {
+						kind: 'NonNullType',
+						type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } }
+					}
+				},
+				{
+					kind: 'VariableDefinition',
+					variable: { kind: 'Variable', name: { kind: 'Name', value: 'take' } },
+					type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } }
+				},
+				{
+					kind: 'VariableDefinition',
+					variable: { kind: 'Variable', name: { kind: 'Name', value: 'skip' } },
+					type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } }
+				}
+			],
+			selectionSet: {
+				kind: 'SelectionSet',
+				selections: [
+					{
+						kind: 'Field',
+						name: { kind: 'Name', value: 'artists' },
+						arguments: [
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'page' },
+								value: {
+									kind: 'ObjectValue',
+									fields: [
+										{
+											kind: 'ObjectField',
+											name: { kind: 'Name', value: 'take' },
+											value: {
+												kind: 'Variable',
+												name: { kind: 'Name', value: 'take' }
+											}
+										},
+										{
+											kind: 'ObjectField',
+											name: { kind: 'Name', value: 'skip' },
+											value: {
+												kind: 'Variable',
+												name: { kind: 'Name', value: 'skip' }
+											}
+										}
+									]
+								}
+							},
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'filter' },
+								value: {
+									kind: 'ObjectValue',
+									fields: [
+										{
+											kind: 'ObjectField',
+											name: { kind: 'Name', value: 'query' },
+											value: {
+												kind: 'Variable',
+												name: { kind: 'Name', value: 'query' }
+											}
+										}
+									]
+								}
+							}
+						],
+						selectionSet: {
+							kind: 'SelectionSet',
+							selections: [
+								{ kind: 'Field', name: { kind: 'Name', value: 'total' } },
+								{ kind: 'Field', name: { kind: 'Name', value: 'skip' } },
+								{
+									kind: 'Field',
+									name: { kind: 'Name', value: 'items' },
+									selectionSet: {
+										kind: 'SelectionSet',
+										selections: [
+											{ kind: 'Field', name: { kind: 'Name', value: 'id' } },
+											{ kind: 'Field', name: { kind: 'Name', value: 'name' } },
+											{
+												kind: 'Field',
+												name: { kind: 'Name', value: 'albumsCount' }
+											}
+										]
+									}
+								}
+							]
+						}
+					}
+				]
+			}
+		}
+	]
+} as unknown as DocumentNode<
 	SearchArtistsResultQuery,
 	SearchArtistsResultQueryVariables
 >;
-export const SearchAlbumsResultDocument = gql`
-  query SearchAlbumsResult($query: String!, $take: Int, $skip: Int) {
-  	albums(page: { take: $take, skip: $skip }, filter: { query: $query }) {
-  		total
-  		skip
-  		items {
-  			id
-  			name
-  			artist {
-  				name
-  			}
-  		}
-  	}
-  }
-`;
-export type SearchAlbumsResultQueryResult = useQuery.Result<
+export const SearchAlbumsResultDocument = {
+	kind: 'Document',
+	definitions: [
+		{
+			kind: 'OperationDefinition',
+			operation: 'query',
+			name: { kind: 'Name', value: 'SearchAlbumsResult' },
+			variableDefinitions: [
+				{
+					kind: 'VariableDefinition',
+					variable: {
+						kind: 'Variable',
+						name: { kind: 'Name', value: 'query' }
+					},
+					type: {
+						kind: 'NonNullType',
+						type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } }
+					}
+				},
+				{
+					kind: 'VariableDefinition',
+					variable: { kind: 'Variable', name: { kind: 'Name', value: 'take' } },
+					type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } }
+				},
+				{
+					kind: 'VariableDefinition',
+					variable: { kind: 'Variable', name: { kind: 'Name', value: 'skip' } },
+					type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } }
+				}
+			],
+			selectionSet: {
+				kind: 'SelectionSet',
+				selections: [
+					{
+						kind: 'Field',
+						name: { kind: 'Name', value: 'albums' },
+						arguments: [
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'page' },
+								value: {
+									kind: 'ObjectValue',
+									fields: [
+										{
+											kind: 'ObjectField',
+											name: { kind: 'Name', value: 'take' },
+											value: {
+												kind: 'Variable',
+												name: { kind: 'Name', value: 'take' }
+											}
+										},
+										{
+											kind: 'ObjectField',
+											name: { kind: 'Name', value: 'skip' },
+											value: {
+												kind: 'Variable',
+												name: { kind: 'Name', value: 'skip' }
+											}
+										}
+									]
+								}
+							},
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'filter' },
+								value: {
+									kind: 'ObjectValue',
+									fields: [
+										{
+											kind: 'ObjectField',
+											name: { kind: 'Name', value: 'query' },
+											value: {
+												kind: 'Variable',
+												name: { kind: 'Name', value: 'query' }
+											}
+										}
+									]
+								}
+							}
+						],
+						selectionSet: {
+							kind: 'SelectionSet',
+							selections: [
+								{ kind: 'Field', name: { kind: 'Name', value: 'total' } },
+								{ kind: 'Field', name: { kind: 'Name', value: 'skip' } },
+								{
+									kind: 'Field',
+									name: { kind: 'Name', value: 'items' },
+									selectionSet: {
+										kind: 'SelectionSet',
+										selections: [
+											{ kind: 'Field', name: { kind: 'Name', value: 'id' } },
+											{ kind: 'Field', name: { kind: 'Name', value: 'name' } },
+											{
+												kind: 'Field',
+												name: { kind: 'Name', value: 'artist' },
+												selectionSet: {
+													kind: 'SelectionSet',
+													selections: [
+														{
+															kind: 'Field',
+															name: { kind: 'Name', value: 'name' }
+														}
+													]
+												}
+											}
+										]
+									}
+								}
+							]
+						}
+					}
+				]
+			}
+		}
+	]
+} as unknown as DocumentNode<
 	SearchAlbumsResultQuery,
 	SearchAlbumsResultQueryVariables
 >;

@@ -11,11 +11,11 @@ export class JamStreamService {
 	/**
 	 * Stream a media file in a format [Episode, Track] // Rights needed: stream
 	 */
-	streamUrl(params: JamParameters.StreamStreamParameters, forDom: boolean): string {
+	streamUrl(params: JamParameters.StreamStreamParameters): string {
 		if (!params.id) {
 			return '';
 		}
-		return this.base.buildRequestUrl(`/stream/${params.id}${params.maxBitRate ? `_${params.maxBitRate}` : ''}${params.format ? `.${params.format}` : ''}`, {}, forDom);
+		return this.base.buildRequestUrl(`/stream/${params.id}${params.maxBitRate ? `_${params.maxBitRate}` : ''}${params.format ? `.${params.format}` : ''}`, {});
 	}
 
 	/**

@@ -1,11 +1,17 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import * as Types from './_types';
+/** Internal type. DO NOT USE DIRECTLY. */
+type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
+/** Internal type. DO NOT USE DIRECTLY. */
+export type Incremental<T> =
+	| T |
+	{
+		[P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never;
+	};
 
-import { gql } from '@apollo/client';
-import { useQuery } from '@apollo/client/react';
-export type HomeResultQueryVariables = Types.Exact<{ [key: string]: never }>;
+import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/core';
+export type HomeResultQueryVariables = Exact<{ [key: string]: never }>;
 
 export interface HomeResultQuery {
 	artistsRecent: { items: Array<{ id: string; name: string }> };
@@ -95,140 +101,600 @@ export interface HomeResultQuery {
 	};
 }
 
-export const HomeResultDocument = gql`
-  query HomeResult {
-  	artistsRecent: artists(
-  		list: recent
-  		filter: { albumTypes: [album] }
-  		page: { take: 5 }
-  	) {
-  		items {
-  			id
-  			name
-  		}
-  	}
-  	artistsFaved: artists(
-  		list: faved
-  		filter: { albumTypes: [album] }
-  		page: { take: 5 }
-  	) {
-  		items {
-  			id
-  			name
-  		}
-  	}
-  	albumsRecent: albums(
-  		list: recent
-  		filter: { albumTypes: [album] }
-  		page: { take: 5 }
-  	) {
-  		items {
-  			id
-  			name
-  		}
-  	}
-  	albumsFaved: albums(
-  		list: faved
-  		filter: { albumTypes: [album] }
-  		page: { take: 5 }
-  	) {
-  		items {
-  			id
-  			name
-  		}
-  	}
-  	podcasts(page: { take: 0 }) {
-  		total
-  	}
-  	genres {
-  		total
-  	}
-  	stats {
-  		track
-  		folder
-  		series
-  		artist
-  		artistTypes {
-  			album
-  			compilation
-  			artistCompilation
-  			unknown
-  			live
-  			audiobook
-  			soundtrack
-  			bootleg
-  			ep
-  			single
-  		}
-  		album
-  		albumTypes {
-  			album
-  			compilation
-  			artistCompilation
-  			unknown
-  			live
-  			audiobook
-  			soundtrack
-  			bootleg
-  			ep
-  			single
-  		}
-  	}
-  	currentUser {
-  		stats {
-  			bookmark
-  			playlist
-  			favorite {
-  				album
-  				albumTypes {
-  					album
-  					artistCompilation
-  					audiobook
-  					compilation
-  					series
-  					single
-  					soundtrack
-  					ep
-  					live
-  					bootleg
-  					unknown
-  				}
-  				artist
-  				artistTypes {
-  					album
-  				}
-  				folder
-  				series
-  				track
-  			}
-  			played {
-  				album
-  				albumTypes {
-  					album
-  					artistCompilation
-  					audiobook
-  					compilation
-  					series
-  					single
-  					soundtrack
-  					ep
-  					live
-  					bootleg
-  					unknown
-  				}
-  				artist
-  				artistTypes {
-  					album
-  				}
-  				folder
-  				series
-  				track
-  			}
-  		}
-  	}
-  }
-`;
-export type HomeResultQueryResult = useQuery.Result<
-	HomeResultQuery,
-	HomeResultQueryVariables
->;
+export const HomeResultDocument = {
+	kind: 'Document',
+	definitions: [
+		{
+			kind: 'OperationDefinition',
+			operation: 'query',
+			name: { kind: 'Name', value: 'HomeResult' },
+			selectionSet: {
+				kind: 'SelectionSet',
+				selections: [
+					{
+						kind: 'Field',
+						alias: { kind: 'Name', value: 'artistsRecent' },
+						name: { kind: 'Name', value: 'artists' },
+						arguments: [
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'list' },
+								value: { kind: 'EnumValue', value: 'recent' }
+							},
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'filter' },
+								value: {
+									kind: 'ObjectValue',
+									fields: [
+										{
+											kind: 'ObjectField',
+											name: { kind: 'Name', value: 'albumTypes' },
+											value: {
+												kind: 'ListValue',
+												values: [{ kind: 'EnumValue', value: 'album' }]
+											}
+										}
+									]
+								}
+							},
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'page' },
+								value: {
+									kind: 'ObjectValue',
+									fields: [
+										{
+											kind: 'ObjectField',
+											name: { kind: 'Name', value: 'take' },
+											value: { kind: 'IntValue', value: '5' }
+										}
+									]
+								}
+							}
+						],
+						selectionSet: {
+							kind: 'SelectionSet',
+							selections: [
+								{
+									kind: 'Field',
+									name: { kind: 'Name', value: 'items' },
+									selectionSet: {
+										kind: 'SelectionSet',
+										selections: [
+											{ kind: 'Field', name: { kind: 'Name', value: 'id' } },
+											{ kind: 'Field', name: { kind: 'Name', value: 'name' } }
+										]
+									}
+								}
+							]
+						}
+					},
+					{
+						kind: 'Field',
+						alias: { kind: 'Name', value: 'artistsFaved' },
+						name: { kind: 'Name', value: 'artists' },
+						arguments: [
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'list' },
+								value: { kind: 'EnumValue', value: 'faved' }
+							},
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'filter' },
+								value: {
+									kind: 'ObjectValue',
+									fields: [
+										{
+											kind: 'ObjectField',
+											name: { kind: 'Name', value: 'albumTypes' },
+											value: {
+												kind: 'ListValue',
+												values: [{ kind: 'EnumValue', value: 'album' }]
+											}
+										}
+									]
+								}
+							},
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'page' },
+								value: {
+									kind: 'ObjectValue',
+									fields: [
+										{
+											kind: 'ObjectField',
+											name: { kind: 'Name', value: 'take' },
+											value: { kind: 'IntValue', value: '5' }
+										}
+									]
+								}
+							}
+						],
+						selectionSet: {
+							kind: 'SelectionSet',
+							selections: [
+								{
+									kind: 'Field',
+									name: { kind: 'Name', value: 'items' },
+									selectionSet: {
+										kind: 'SelectionSet',
+										selections: [
+											{ kind: 'Field', name: { kind: 'Name', value: 'id' } },
+											{ kind: 'Field', name: { kind: 'Name', value: 'name' } }
+										]
+									}
+								}
+							]
+						}
+					},
+					{
+						kind: 'Field',
+						alias: { kind: 'Name', value: 'albumsRecent' },
+						name: { kind: 'Name', value: 'albums' },
+						arguments: [
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'list' },
+								value: { kind: 'EnumValue', value: 'recent' }
+							},
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'filter' },
+								value: {
+									kind: 'ObjectValue',
+									fields: [
+										{
+											kind: 'ObjectField',
+											name: { kind: 'Name', value: 'albumTypes' },
+											value: {
+												kind: 'ListValue',
+												values: [{ kind: 'EnumValue', value: 'album' }]
+											}
+										}
+									]
+								}
+							},
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'page' },
+								value: {
+									kind: 'ObjectValue',
+									fields: [
+										{
+											kind: 'ObjectField',
+											name: { kind: 'Name', value: 'take' },
+											value: { kind: 'IntValue', value: '5' }
+										}
+									]
+								}
+							}
+						],
+						selectionSet: {
+							kind: 'SelectionSet',
+							selections: [
+								{
+									kind: 'Field',
+									name: { kind: 'Name', value: 'items' },
+									selectionSet: {
+										kind: 'SelectionSet',
+										selections: [
+											{ kind: 'Field', name: { kind: 'Name', value: 'id' } },
+											{ kind: 'Field', name: { kind: 'Name', value: 'name' } }
+										]
+									}
+								}
+							]
+						}
+					},
+					{
+						kind: 'Field',
+						alias: { kind: 'Name', value: 'albumsFaved' },
+						name: { kind: 'Name', value: 'albums' },
+						arguments: [
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'list' },
+								value: { kind: 'EnumValue', value: 'faved' }
+							},
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'filter' },
+								value: {
+									kind: 'ObjectValue',
+									fields: [
+										{
+											kind: 'ObjectField',
+											name: { kind: 'Name', value: 'albumTypes' },
+											value: {
+												kind: 'ListValue',
+												values: [{ kind: 'EnumValue', value: 'album' }]
+											}
+										}
+									]
+								}
+							},
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'page' },
+								value: {
+									kind: 'ObjectValue',
+									fields: [
+										{
+											kind: 'ObjectField',
+											name: { kind: 'Name', value: 'take' },
+											value: { kind: 'IntValue', value: '5' }
+										}
+									]
+								}
+							}
+						],
+						selectionSet: {
+							kind: 'SelectionSet',
+							selections: [
+								{
+									kind: 'Field',
+									name: { kind: 'Name', value: 'items' },
+									selectionSet: {
+										kind: 'SelectionSet',
+										selections: [
+											{ kind: 'Field', name: { kind: 'Name', value: 'id' } },
+											{ kind: 'Field', name: { kind: 'Name', value: 'name' } }
+										]
+									}
+								}
+							]
+						}
+					},
+					{
+						kind: 'Field',
+						name: { kind: 'Name', value: 'podcasts' },
+						arguments: [
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'page' },
+								value: {
+									kind: 'ObjectValue',
+									fields: [
+										{
+											kind: 'ObjectField',
+											name: { kind: 'Name', value: 'take' },
+											value: { kind: 'IntValue', value: '0' }
+										}
+									]
+								}
+							}
+						],
+						selectionSet: {
+							kind: 'SelectionSet',
+							selections: [
+								{ kind: 'Field', name: { kind: 'Name', value: 'total' } }
+							]
+						}
+					},
+					{
+						kind: 'Field',
+						name: { kind: 'Name', value: 'genres' },
+						selectionSet: {
+							kind: 'SelectionSet',
+							selections: [
+								{ kind: 'Field', name: { kind: 'Name', value: 'total' } }
+							]
+						}
+					},
+					{
+						kind: 'Field',
+						name: { kind: 'Name', value: 'stats' },
+						selectionSet: {
+							kind: 'SelectionSet',
+							selections: [
+								{ kind: 'Field', name: { kind: 'Name', value: 'track' } },
+								{ kind: 'Field', name: { kind: 'Name', value: 'folder' } },
+								{ kind: 'Field', name: { kind: 'Name', value: 'series' } },
+								{ kind: 'Field', name: { kind: 'Name', value: 'artist' } },
+								{
+									kind: 'Field',
+									name: { kind: 'Name', value: 'artistTypes' },
+									selectionSet: {
+										kind: 'SelectionSet',
+										selections: [
+											{ kind: 'Field', name: { kind: 'Name', value: 'album' } },
+											{
+												kind: 'Field',
+												name: { kind: 'Name', value: 'compilation' }
+											},
+											{
+												kind: 'Field',
+												name: { kind: 'Name', value: 'artistCompilation' }
+											},
+											{
+												kind: 'Field',
+												name: { kind: 'Name', value: 'unknown' }
+											},
+											{ kind: 'Field', name: { kind: 'Name', value: 'live' } },
+											{
+												kind: 'Field',
+												name: { kind: 'Name', value: 'audiobook' }
+											},
+											{
+												kind: 'Field',
+												name: { kind: 'Name', value: 'soundtrack' }
+											},
+											{
+												kind: 'Field',
+												name: { kind: 'Name', value: 'bootleg' }
+											},
+											{ kind: 'Field', name: { kind: 'Name', value: 'ep' } },
+											{ kind: 'Field', name: { kind: 'Name', value: 'single' } }
+										]
+									}
+								},
+								{ kind: 'Field', name: { kind: 'Name', value: 'album' } },
+								{
+									kind: 'Field',
+									name: { kind: 'Name', value: 'albumTypes' },
+									selectionSet: {
+										kind: 'SelectionSet',
+										selections: [
+											{ kind: 'Field', name: { kind: 'Name', value: 'album' } },
+											{
+												kind: 'Field',
+												name: { kind: 'Name', value: 'compilation' }
+											},
+											{
+												kind: 'Field',
+												name: { kind: 'Name', value: 'artistCompilation' }
+											},
+											{
+												kind: 'Field',
+												name: { kind: 'Name', value: 'unknown' }
+											},
+											{ kind: 'Field', name: { kind: 'Name', value: 'live' } },
+											{
+												kind: 'Field',
+												name: { kind: 'Name', value: 'audiobook' }
+											},
+											{
+												kind: 'Field',
+												name: { kind: 'Name', value: 'soundtrack' }
+											},
+											{
+												kind: 'Field',
+												name: { kind: 'Name', value: 'bootleg' }
+											},
+											{ kind: 'Field', name: { kind: 'Name', value: 'ep' } },
+											{ kind: 'Field', name: { kind: 'Name', value: 'single' } }
+										]
+									}
+								}
+							]
+						}
+					},
+					{
+						kind: 'Field',
+						name: { kind: 'Name', value: 'currentUser' },
+						selectionSet: {
+							kind: 'SelectionSet',
+							selections: [
+								{
+									kind: 'Field',
+									name: { kind: 'Name', value: 'stats' },
+									selectionSet: {
+										kind: 'SelectionSet',
+										selections: [
+											{
+												kind: 'Field',
+												name: { kind: 'Name', value: 'bookmark' }
+											},
+											{
+												kind: 'Field',
+												name: { kind: 'Name', value: 'playlist' }
+											},
+											{
+												kind: 'Field',
+												name: { kind: 'Name', value: 'favorite' },
+												selectionSet: {
+													kind: 'SelectionSet',
+													selections: [
+														{
+															kind: 'Field',
+															name: { kind: 'Name', value: 'album' }
+														},
+														{
+															kind: 'Field',
+															name: { kind: 'Name', value: 'albumTypes' },
+															selectionSet: {
+																kind: 'SelectionSet',
+																selections: [
+																	{
+																		kind: 'Field',
+																		name: { kind: 'Name', value: 'album' }
+																	},
+																	{
+																		kind: 'Field',
+																		name: {
+																			kind: 'Name',
+																			value: 'artistCompilation'
+																		}
+																	},
+																	{
+																		kind: 'Field',
+																		name: { kind: 'Name', value: 'audiobook' }
+																	},
+																	{
+																		kind: 'Field',
+																		name: { kind: 'Name', value: 'compilation' }
+																	},
+																	{
+																		kind: 'Field',
+																		name: { kind: 'Name', value: 'series' }
+																	},
+																	{
+																		kind: 'Field',
+																		name: { kind: 'Name', value: 'single' }
+																	},
+																	{
+																		kind: 'Field',
+																		name: { kind: 'Name', value: 'soundtrack' }
+																	},
+																	{
+																		kind: 'Field',
+																		name: { kind: 'Name', value: 'ep' }
+																	},
+																	{
+																		kind: 'Field',
+																		name: { kind: 'Name', value: 'live' }
+																	},
+																	{
+																		kind: 'Field',
+																		name: { kind: 'Name', value: 'bootleg' }
+																	},
+																	{
+																		kind: 'Field',
+																		name: { kind: 'Name', value: 'unknown' }
+																	}
+																]
+															}
+														},
+														{
+															kind: 'Field',
+															name: { kind: 'Name', value: 'artist' }
+														},
+														{
+															kind: 'Field',
+															name: { kind: 'Name', value: 'artistTypes' },
+															selectionSet: {
+																kind: 'SelectionSet',
+																selections: [
+																	{
+																		kind: 'Field',
+																		name: { kind: 'Name', value: 'album' }
+																	}
+																]
+															}
+														},
+														{
+															kind: 'Field',
+															name: { kind: 'Name', value: 'folder' }
+														},
+														{
+															kind: 'Field',
+															name: { kind: 'Name', value: 'series' }
+														},
+														{
+															kind: 'Field',
+															name: { kind: 'Name', value: 'track' }
+														}
+													]
+												}
+											},
+											{
+												kind: 'Field',
+												name: { kind: 'Name', value: 'played' },
+												selectionSet: {
+													kind: 'SelectionSet',
+													selections: [
+														{
+															kind: 'Field',
+															name: { kind: 'Name', value: 'album' }
+														},
+														{
+															kind: 'Field',
+															name: { kind: 'Name', value: 'albumTypes' },
+															selectionSet: {
+																kind: 'SelectionSet',
+																selections: [
+																	{
+																		kind: 'Field',
+																		name: { kind: 'Name', value: 'album' }
+																	},
+																	{
+																		kind: 'Field',
+																		name: {
+																			kind: 'Name',
+																			value: 'artistCompilation'
+																		}
+																	},
+																	{
+																		kind: 'Field',
+																		name: { kind: 'Name', value: 'audiobook' }
+																	},
+																	{
+																		kind: 'Field',
+																		name: { kind: 'Name', value: 'compilation' }
+																	},
+																	{
+																		kind: 'Field',
+																		name: { kind: 'Name', value: 'series' }
+																	},
+																	{
+																		kind: 'Field',
+																		name: { kind: 'Name', value: 'single' }
+																	},
+																	{
+																		kind: 'Field',
+																		name: { kind: 'Name', value: 'soundtrack' }
+																	},
+																	{
+																		kind: 'Field',
+																		name: { kind: 'Name', value: 'ep' }
+																	},
+																	{
+																		kind: 'Field',
+																		name: { kind: 'Name', value: 'live' }
+																	},
+																	{
+																		kind: 'Field',
+																		name: { kind: 'Name', value: 'bootleg' }
+																	},
+																	{
+																		kind: 'Field',
+																		name: { kind: 'Name', value: 'unknown' }
+																	}
+																]
+															}
+														},
+														{
+															kind: 'Field',
+															name: { kind: 'Name', value: 'artist' }
+														},
+														{
+															kind: 'Field',
+															name: { kind: 'Name', value: 'artistTypes' },
+															selectionSet: {
+																kind: 'SelectionSet',
+																selections: [
+																	{
+																		kind: 'Field',
+																		name: { kind: 'Name', value: 'album' }
+																	}
+																]
+															}
+														},
+														{
+															kind: 'Field',
+															name: { kind: 'Name', value: 'folder' }
+														},
+														{
+															kind: 'Field',
+															name: { kind: 'Name', value: 'series' }
+														},
+														{
+															kind: 'Field',
+															name: { kind: 'Name', value: 'track' }
+														}
+													]
+												}
+											}
+										]
+									}
+								}
+							]
+						}
+					}
+				]
+			}
+		}
+	]
+} as unknown as DocumentNode<HomeResultQuery, HomeResultQueryVariables>;

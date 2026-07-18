@@ -3,24 +3,6 @@
 
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
-export type Exact<T extends { [key: string]: unknown }> = {
-	[K in keyof T]: T[K];
-};
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
-	[SubKey in K]?: Maybe<T[SubKey]>;
-};
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
-	[SubKey in K]: Maybe<T[SubKey]>;
-};
-export type MakeEmpty<
-	T extends { [key: string]: unknown },
-	K extends keyof T
-> = { [_ in K]?: never };
-export type Incremental<T> =
-	| T |
-	{
-		[P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never;
-	};
 /** All built-in and custom scalars, mapped to their actual values */
 export interface Scalars {
 	ID: { input: string; output: string };
@@ -30,7 +12,7 @@ export interface Scalars {
 	Float: { input: number; output: number };
 	/** A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.This scalar is serialized to a string in ISO 8601 format and parsed from a string in ISO 8601 format. */
 	DateTimeISO: { input: string; output: string };
-	/** The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf). */
+	/** The `JSON` scalar type represents JSON values as specified by [ECMA-404](https://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf). */
 	JSON: { input: unknown; output: unknown };
 }
 
@@ -482,6 +464,7 @@ export interface FolderFilterParametersQL {
 	genreIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
 	genres?: InputMaybe<Array<Scalars['String']['input']>>;
 	ids?: InputMaybe<Array<Scalars['ID']['input']>>;
+	inSubtreeOfID?: InputMaybe<Scalars['ID']['input']>;
 	level?: InputMaybe<Scalars['Int']['input']>;
 	mbAlbumTypes?: InputMaybe<Array<Scalars['String']['input']>>;
 	mbArtistIDs?: InputMaybe<Array<Scalars['String']['input']>>;
@@ -568,6 +551,7 @@ export interface FolderQL {
 	title: Scalars['String']['output'];
 	tracks?: Maybe<Array<TrackQL>>;
 	tracksCount: Scalars['Int']['output'];
+	tracksInSubtreeCount: Scalars['Int']['output'];
 	updatedAt: Scalars['DateTimeISO']['output'];
 	year?: Maybe<Scalars['Int']['output']>;
 }
@@ -649,6 +633,40 @@ export interface GenreQLtracksArgs {
 	filter?: InputMaybe<TrackFilterParametersQL>;
 	order?: InputMaybe<Array<TrackOrderParametersQL>>;
 	page?: InputMaybe<PageParametersQL>;
+}
+
+export interface LandscapeArtistNode {
+	albumCount: Scalars['Int']['output'];
+	/** Genre IDs this artist belongs to */
+	genreIDs: Array<Scalars['ID']['output']>;
+	id: Scalars['ID']['output'];
+	name: Scalars['String']['output'];
+	/** Computed X position (centroid of genre noise coords + jitter) */
+	noiseX?: Maybe<Scalars['Float']['output']>;
+	/** Computed Y position (centroid of genre noise coords + jitter) */
+	noiseY?: Maybe<Scalars['Float']['output']>;
+	trackCount: Scalars['Int']['output'];
+}
+
+export interface LandscapeData {
+	/** All artists as scatter plot dots */
+	artists: Array<LandscapeArtistNode>;
+	/** All genres as scatter plot nodes */
+	genres: Array<LandscapeGenreNode>;
+	/** Fraction of genres matched to ENAO coordinate data (0-1) */
+	noiseMatchRate: Scalars['Float']['output'];
+}
+
+export interface LandscapeGenreNode {
+	albumCount: Scalars['Int']['output'];
+	artistCount: Scalars['Int']['output'];
+	id: Scalars['ID']['output'];
+	name: Scalars['String']['output'];
+	/** ENAO X coordinate (0=left/organic, 1=right/mechanical) */
+	noiseX?: Maybe<Scalars['Float']['output']>;
+	/** ENAO Y coordinate (0=top/atmospheric, 1=bottom/energetic) */
+	noiseY?: Maybe<Scalars['Float']['output']>;
+	trackCount: Scalars['Int']['output'];
 }
 
 /** Type of List Request */
@@ -940,6 +958,8 @@ export interface Query {
 	genreIndex: GenreIndexQL;
 	/** Search Genres */
 	genres: GenrePageQL;
+	/** Get Music Collection Landscape Data for visualization */
+	landscape: LandscapeData;
 	/** Get a List of media [Track, Episode] played currently by Users */
 	nowPlaying: Array<NowPlayingQL>;
 	/** Get a PlayQueue for the calling user */
@@ -1115,6 +1135,15 @@ export interface QuerygenresArgs {
 	order?: InputMaybe<Array<GenreOrderParametersQL>>;
 	page?: InputMaybe<PageParametersQL>;
 	seed?: InputMaybe<Scalars['String']['input']>;
+}
+
+export interface QuerylandscapeArgs {
+	artistsWithAlbumsOnly?: InputMaybe<Scalars['Boolean']['input']>;
+	ignoreUnknownGenres?: InputMaybe<Scalars['Boolean']['input']>;
+	ignoreUnpositionedArtists?: InputMaybe<Scalars['Boolean']['input']>;
+	minArtistTrackCount?: InputMaybe<Scalars['Int']['input']>;
+	minGenreArtistCount?: InputMaybe<Scalars['Int']['input']>;
+	minGenreTrackCount?: InputMaybe<Scalars['Int']['input']>;
 }
 
 export interface QueryplaylistArgs {
@@ -1567,6 +1596,7 @@ export interface TrackFilterParametersQL {
 	genreIDs?: InputMaybe<Array<Scalars['ID']['input']>>;
 	genres?: InputMaybe<Array<Scalars['String']['input']>>;
 	ids?: InputMaybe<Array<Scalars['ID']['input']>>;
+	mbTrackIDs?: InputMaybe<Array<Scalars['String']['input']>>;
 	name?: InputMaybe<Scalars['String']['input']>;
 	query?: InputMaybe<Scalars['String']['input']>;
 	rootIDs?: InputMaybe<Array<Scalars['ID']['input']>>;

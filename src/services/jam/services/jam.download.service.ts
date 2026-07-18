@@ -11,11 +11,11 @@ export class JamDownloadService {
 	/**
 	 * Download Archive Binary [Album, Artist, Artwork, Episode, Folder, Playlist, Podcast, Series, Track] // Rights needed: stream
 	 */
-	downloadUrl(params: JamParameters.DownloadDownloadParameters, forDom: boolean): string {
+	downloadUrl(params: JamParameters.DownloadDownloadParameters): string {
 		if (!params.id) {
 			return '';
 		}
-		return this.base.buildRequestUrl(`/download/${params.id}${params.format ? `.${params.format}` : ''}`, {}, forDom);
+		return this.base.buildRequestUrl(`/download/${params.id}${params.format ? `.${params.format}` : ''}`, {});
 	}
 
 	/**

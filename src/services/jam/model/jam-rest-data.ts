@@ -1830,7 +1830,7 @@ export declare namespace Jam {
 	/*
 	 * Metadata Result
 	 */
-	export interface MetaDataResult {
+	export interface MetadataResult {
 		/** MetaData */
 		data?: unknown;
 	}
@@ -1838,7 +1838,7 @@ export declare namespace Jam {
 	/*
 	 * Metadata TrackLyrics Result
 	 */
-	export interface MetaDataTrackLyricsResult {
+	export interface MetadataTrackLyricsResult {
 		/** MetaData */
 		data?: TrackLyrics;
 	}

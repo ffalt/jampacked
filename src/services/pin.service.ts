@@ -136,7 +136,7 @@ export class PinService {
 	async pinObject(id: string, objectType: JamObjectType, name: string, tracks: Array<TrackEntry>): Promise<void> {
 		const requests: Array<DownloadRequest> = tracks.map(track => ({
 			id: track.id,
-			url: jamService.stream.streamUrl({ id: track.id, format: AudioFormatType.mp3 }, false)
+			url: jamService.stream.streamUrl({ id: track.id, format: AudioFormatType.mp3 })
 		}));
 		console.log('pinObject', { id, objectType, name, trackCount: tracks.length, requests: JSON.stringify(requests) });
 		if (requests.length > 0) {

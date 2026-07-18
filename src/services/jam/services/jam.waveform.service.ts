@@ -26,11 +26,11 @@ export class JamWaveformService {
 	/**
 	 * Get Peaks Waveform Data [Episode, Track] // Rights needed: stream
 	 */
-	waveformUrl(params: JamParameters.WaveformWaveformParameters, forDom: boolean): string {
+	waveformUrl(params: JamParameters.WaveformWaveformParameters): string {
 		if (!params.id) {
 			return '';
 		}
-		return this.base.buildRequestUrl(`/waveform/${params.id}${params.width ? `_${params.width}` : ''}${params.format ? `.${params.format}` : ''}`, {}, forDom);
+		return this.base.buildRequestUrl(`/waveform/${params.id}${params.width ? `_${params.width}` : ''}${params.format ? `.${params.format}` : ''}`, {});
 	}
 
 	/**

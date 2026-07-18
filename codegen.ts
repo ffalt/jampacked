@@ -1,5 +1,14 @@
 import type { CodegenConfig } from '@graphql-codegen/cli';
 
+const header = `// @generated
+// This file was automatically generated and should not be edited.
+`;
+
+const scalars = {
+	DateTimeISO: 'string',
+	JSON: 'unknown'
+};
+
 const config: CodegenConfig = {
 	overwrite: true,
 	schema: 'schema.graphql',
@@ -7,13 +16,12 @@ const config: CodegenConfig = {
 	hooks: {
 		afterOneFileWrite: [
 			'prettier --write',
-			'eslint --fix',
-			'node codegen.hook.mjs'
+			'eslint --fix'
 		]
 	},
 	generates: {
 		'./src/services/queries/_types.ts': {
-			plugins: ['typescript'],
+			plugins: [{ add: { content: header } }, 'typescript'],
 			config: {
 				preResolveTypes: true,
 				namingConvention: 'keep',
@@ -24,17 +32,11 @@ const config: CodegenConfig = {
 				onlyEnums: false,
 				skipTypeNameForRoot: true,
 				nonOptionalTypename: true,
-				withHooks: false,
 				useTypeImports: false,
 				dedupeFragments: false,
-				withResultType: false,
 				skipTypename: true,
 				strictScalars: true,
-				withHOC: false,
-				scalars: {
-					DateTimeISO: 'string',
-					JSON: 'unknown'
-				}
+				scalars
 			}
 		},
 		'./src/': {
@@ -44,14 +46,17 @@ const config: CodegenConfig = {
 				baseTypesPath: './services/queries/_types.ts' // # Points to the base types file
 			},
 			config: {
-				withHooks: false,
+				declarationKind: 'interface',
+				namingConvention: 'keep',
+				preResolveTypes: true,
+				inlineFragmentTypes: 'inline',
+				avoidOptionals: {
+					field: false
+				},
 				skipTypename: true,
-				scalars: {
-					DateTimeISO: 'string',
-					JSON: 'unknown'
-				}
+				scalars
 			},
-			plugins: ['typescript-operations', 'typescript-react-apollo'] // Generates types based on your operations
+			plugins: [{ add: { content: header } }, 'typescript-operations', 'typed-document-node'] // Generates types based on your operations
 		}
 	}
 };

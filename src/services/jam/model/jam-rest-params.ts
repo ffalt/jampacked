@@ -420,6 +420,67 @@ export declare namespace JamParameters {
 		orderBy?: JamEnums.DefaultOrderFields;
 	}
 
+	export interface DiscogsArtistLookupParameters {
+		/**
+		 * Discogs Artist ID
+		 * @TJS-type integer
+		 */
+		id: number;
+	}
+
+	export interface DiscogsArtistSearchParameters {
+		/** Artist Name */
+		query: string;
+	}
+
+	export interface DiscogsImageParameters {
+		/** Discogs Image URL */
+		url: string;
+	}
+
+	export interface DiscogsMasterLookupParameters {
+		/**
+		 * Discogs Master Release ID
+		 * @TJS-type integer
+		 */
+		id: number;
+	}
+
+	export interface DiscogsReleaseLookupParameters {
+		/**
+		 * Discogs Release ID
+		 * @TJS-type integer
+		 */
+		id: number;
+	}
+
+	export interface DiscogsSearchParameters {
+		/** General search query */
+		q?: string;
+		/** Artist Name */
+		artist?: string;
+		/** Release Title */
+		title?: string;
+		/** Release Year */
+		year?: string;
+		/** Release Format (e.g. Vinyl, CD) */
+		format?: string;
+		/** Record Label */
+		label?: string;
+		/** Country of Release */
+		country?: string;
+		/** Catalog Number */
+		catno?: string;
+		/** Barcode */
+		barcode?: string;
+		/** Genre */
+		genre?: string;
+		/** Style */
+		style?: string;
+		/** Track Title */
+		track?: string;
+	}
+
 	export interface DownloadParameters {
 		/**
 		 * format of download stream
@@ -1709,6 +1770,8 @@ export declare namespace JamParameters {
 		folderIDs?: Array<string>;
 		/** filter by Bookmark Ids */
 		bookmarkIDs?: Array<string>;
+		/** filter by MusicBrainz Track Ids */
+		mbTrackIDs?: Array<string>;
 		/**
 		 * filter by since year
 		 * @TJS-type integer
