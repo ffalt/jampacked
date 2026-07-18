@@ -1,9 +1,36 @@
-import { ApolloClient, ApolloLink, InMemoryCache } from '@apollo/client';
+import { ApolloClient, ApolloLink, InMemoryCache, type ErrorPolicy } from '@apollo/client';
 import { SetContextLink } from '@apollo/client/link/context';
 import { HttpLink } from '@apollo/client/link/http';
 import jamService from './jam.service.ts';
 
-const defaultOptions: ApolloClient.DefaultOptions = {
+// Apollo Client 4 requires default options to be declared before they can be set.
+// See https://www.apollographql.com/docs/react/data/typescript#declaring-default-options-for-type-safety
+declare module '@apollo/client' {
+	namespace ApolloClient {
+		namespace DeclareDefaultOptions {
+			interface WatchQuery {
+				errorPolicy: ErrorPolicy;
+			}
+			interface Query {
+				errorPolicy: ErrorPolicy;
+			}
+			interface Mutate {
+				errorPolicy: ErrorPolicy;
+			}
+		}
+	}
+
+	// Opt into the "classic" signature style so hooks and client methods keep
+	// accepting explicit generic arguments (`useLazyQuery<TData, TVariables>`).
+	// Providing global `defaultOptions` would otherwise switch to "modern"
+	// signatures, which forbid manually specified generics and break our
+	// generic query/mutation wrappers.
+	interface TypeOverrides {
+		signatureStyle: 'classic';
+	}
+}
+
+const defaultOptions: ApolloClient.DefaultOptions.Input = {
 	watchQuery: {
 		fetchPolicy: 'no-cache',
 		errorPolicy: 'all'
