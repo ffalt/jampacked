@@ -74,7 +74,7 @@ const commonUnicornRules = {
 	"unicorn/no-null": "off",
 	"unicorn/prefer-string-replace-all": "off",
 	"unicorn/no-useless-undefined": "off",
-	"unicorn/prevent-abbreviations": [
+	"unicorn/name-replacements": [
 		"error",
 		{
 			"replacements": {
@@ -285,7 +285,7 @@ export default ts.config(
 			"complexity": "off",
 			"max-lines": "off",
 			"max-len": "off",
-			"unicorn/prevent-abbreviations": "off",
+			"unicorn/name-replacements": "off",
 			"unused-imports/no-unused-imports": "error",
 			"unused-imports/no-unused-vars": ["error", { vars: "all", varsIgnorePattern: "^_", args: "after-used", argsIgnorePattern: "^_" }]
 		}
@@ -316,7 +316,7 @@ export default ts.config(
 
 			"max-lines": ["error", 2000],
 			"unicorn/explicit-length-check": "off",
-			"unicorn/prevent-abbreviations": "off",
+			"unicorn/name-replacements": "off",
 			"@stylistic/max-statements-per-line": "off",
 			"@typescript-eslint/no-namespace": "off"
 		}
