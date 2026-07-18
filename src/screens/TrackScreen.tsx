@@ -24,7 +24,7 @@ const buildDetails = (track?: TrackEntry): Array<HeaderDetail> => [
 			undefined
 	},
 	{
-		title: 'Album', value: `${track?.album ?? ''}`, click: track?.artistID ?
+		title: 'Album', value: (track?.album ?? ''), click: track?.artistID ?
 			() => {
 				NavigationService.navigate(HomeRoute.ALBUM, { id: track?.albumID, name: track?.album ?? '' });
 			} :
@@ -58,16 +58,16 @@ export const TrackScreen: React.FC<HomeRouteProps<HomeRoute.TRACK>> = ({ route }
 		getTrack(id, true);
 	}, [getTrack, id]);
 
+	if (error) {
+		return (<ErrorView error={error} onRetry={reload} />);
+	}
+
 	const headerTitleCmds = (
 		<>
 			<ClickIcon iconName="play" onPress={playTrack} style={objectHeaderStyles.button} fontSize={objectHeaderStyles.buttonIcon.fontSize} />
 			<FavIcon style={objectHeaderStyles.button} fontSize={objectHeaderStyles.buttonIcon.fontSize} objType={JamObjectType.track} id={id} />
 		</>
 	);
-
-	if (error) {
-		return (<ErrorView error={error} onRetry={reload} />);
-	}
 
 	return (
 		<ScrollView

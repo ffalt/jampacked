@@ -41,8 +41,8 @@ export class PinService {
 	}
 
 	private async checkDB(): Promise<void> {
-		const createPinTableScript = 'CREATE TABLE if not exists pin(_id INTEGER PRIMARY KEY AUTOINCREMENT, key TEXT, data TEXT, date integer, version integer)';
-		await dbService.query(createPinTableScript);
+		const PinTableCreateScript = 'CREATE TABLE if not exists pin(_id INTEGER PRIMARY KEY AUTOINCREMENT, key TEXT, data TEXT, date integer, version integer)';
+		await dbService.query(PinTableCreateScript);
 	}
 
 	private async getPinDocs<T>(): Promise<Array<Document<T>>> {
@@ -109,10 +109,12 @@ export class PinService {
 		let files = 0;
 		const downloads = this.manager.getDownloads();
 		for (const item of downloads) {
-			if (item.state === DownloadState.Completed) {
-				size += Number(item.contentLength);
-				files += 1;
+			if (item.state !== DownloadState.Completed) {
+				continue;
 			}
+
+			size += Number(item.contentLength);
+			files += 1;
 		}
 		return { files, size, humanSize: humanFileSize(size) };
 	}

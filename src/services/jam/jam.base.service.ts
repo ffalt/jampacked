@@ -16,40 +16,38 @@ export class JamBaseService {
 
 	static flattenParams(params: Record<string, unknown>): string {
 		const result: Array<string> = [];
-		for (const key of Object.keys(params)) {
-			const value = params[key];
+		for (const [key, value] of Object.entries(params)) {
 			if (value !== undefined) {
-				switch (typeof value) {
-					case 'number': {
-						result.push(`${key}=${value}`);
-						break;
-					}
-					case 'string': {
-						result.push(`${key}=${encodeURIComponent(value)}`);
-						break;
-					}
-					case 'boolean': {
-						result.push(`${key}=${value ? 'true' : 'false'}`);
-						break;
-					}
-					case 'object': {
-						if (Array.isArray(value)) {
-							for (const v of value) {
-								result.push(`${key}=${encodeURIComponent(v as string)}`);
-							}
-						}
-						break;
-					}
-					default: {
-						break;
-					}
-				}
+				result.push(...this.formatParam(key, value));
 			}
 		}
 		if (result.length > 0) {
-			return `${result.join('&')}`;
+			return result.join('&');
 		}
 		return '';
+	}
+
+	private static formatParam(key: string, value: unknown): Array<string> {
+		switch (typeof value) {
+			case 'number': {
+				return [`${key}=${value}`];
+			}
+			case 'string': {
+				return [`${key}=${encodeURIComponent(value)}`];
+			}
+			case 'boolean': {
+				return [`${key}=${value ? 'true' : 'false'}`];
+			}
+			case 'object': {
+				if (Array.isArray(value)) {
+					return value.map(v => `${key}=${encodeURIComponent(v as string)}`);
+				}
+				return [];
+			}
+			default: {
+				return [];
+			}
+		}
 	}
 
 	buildUrl(view: string, params?: unknown): string {
@@ -108,8 +106,8 @@ export class JamBaseService {
 	async upload<T>(path: string, params: unknown, name: string, file: any, onUploadProgress: (progressEvent: any) => void): Promise<T> {
 		const formData = new FormData();
 		const data = params as Record<string, string>;
-		for (const key of Object.keys(data)) {
-			formData.append(key, data[key]);
+		for (const [key, value] of Object.entries(data)) {
+			formData.append(key, value);
 		}
 		formData.append(name, file);
 		const url = this.buildUrl(path, {});

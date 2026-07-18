@@ -22,7 +22,7 @@ export const ActiveDownloadItem: React.FC<{ item: Download }> = React.memo(({ it
 	const { download, track } = usePinnedMediaDownload(item.id);
 	const o = download ?? item;
 	const percent = Math.max(o.percentDownloaded || 0, 0);
-	const bytes = `${humanFileSize(o.bytesDownloaded)}`;
+	const bytes = humanFileSize(o.bytesDownloaded);
 	const text = track ? ([track.album, track.title].join('-')) : 'Loading';
 	const stateString = downloadStateToString(o.state);
 

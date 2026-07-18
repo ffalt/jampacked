@@ -47,7 +47,7 @@ export const HomeScreen: React.FC<HomeRouteProps<HomeRoute.START>> = () => {
 	const auth = useAuth();
 	const [search, setSearch] = useState<string | undefined>();
 	const statusBarHeight = getStatusBarHeight();
-	const userName = `Welcome, ${auth.currentUserName()}`;
+	const username = `Welcome, ${auth.currentUserName()}`;
 	const userId = auth.currentUserID();
 	const content = search ? (<SearchResults search={search} />) : (<HomeMain />);
 
@@ -56,7 +56,7 @@ export const HomeScreen: React.FC<HomeRouteProps<HomeRoute.START>> = () => {
 			<View style={styles.header}>
 				<View style={styles.userHeader}>
 					<Logo size={staticTheme.userImage} />
-					<ThemedText style={styles.userHeaderText} numberOfLines={2}>{userName}</ThemedText>
+					<ThemedText style={styles.userHeaderText} numberOfLines={2}>{username}</ThemedText>
 					<JamImage id={userId} size={staticTheme.userImage} style={styles.userImage} />
 				</View>
 				<SearchBar searchQueryChange={setSearch} />

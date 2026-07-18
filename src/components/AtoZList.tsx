@@ -28,12 +28,14 @@ export const AtoZList: React.FC<AtoZListProps<any>> = <T extends SectionItem, >(
 	const [activeLetter, setActiveLetter] = useState<string | undefined>();
 
 	const onTouchLetter = useCallback((letter: string): void => {
-		if (containerReference.current) {
-			const index = ((data as Array<T>) ?? []).findIndex(d => d.letter === letter);
-			if (index !== -1) {
-				const scrollIndex = Math.floor(index / (numColumns ?? 1));
-				containerReference.current.scrollToIndex({ index: scrollIndex });
-			}
+		if (!containerReference.current) {
+			return;
+		}
+
+		const index = ((data as Array<T>) ?? []).findIndex(d => d.letter === letter);
+		if (index !== -1) {
+			const scrollIndex = Math.floor(index / (numColumns ?? 1));
+			containerReference.current.scrollToIndex({ index: scrollIndex });
 		}
 	}, [data, numColumns]);
 

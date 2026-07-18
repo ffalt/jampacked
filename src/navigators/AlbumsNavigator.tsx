@@ -1,20 +1,15 @@
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { AlbumIndexScreen } from '../screens/AlbumIndexScreen';
 import { AlbumListAvgHighestScreen, AlbumListFavScreen, AlbumListFrequentScreen, AlbumListHighestScreen, AlbumListRandomScreen, AlbumListRecentScreen } from '../screens/AlbumListScreen';
 import { AlbumsTabNavigatorContext } from './AlbumsNavigatorContext';
 import { AlbumsRoute, AlbumsRouteParameterList, HomeRoute, HomeRouteProps } from './Routing';
-import { AlbumType } from '../services/jam';
 
 const Tab = createMaterialTopTabNavigator<AlbumsRouteParameterList>();
 const emptyComponent = (): React.JSX.Element => (<></>);
 
 export const AlbumsNavigator: React.FC<HomeRouteProps<HomeRoute.ALBUMS>> = ({ route }) => {
-	const [albumType, setAlbumType] = useState<AlbumType | undefined>();
-
-	useEffect(() => {
-		setAlbumType(route.params.albumType);
-	}, [route]);
+	const albumType = route.params.albumType;
 
 	return (
 		<AlbumsTabNavigatorContext.Provider value={{ albumType }}>

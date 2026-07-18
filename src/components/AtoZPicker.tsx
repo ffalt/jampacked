@@ -133,6 +133,10 @@ export const AtoZPicker: React.FC<AtoZPickerProps> = (
 		}
 	}), [start, move, stop]);
 
+	if (letters.length === 0) {
+		return (<></>);
+	}
+
 	const onLayout = (): void => {
 		if (!containerReference.current) {
 			return;
@@ -142,9 +146,6 @@ export const AtoZPicker: React.FC<AtoZPickerProps> = (
 		});
 	};
 	const statusBarHeight = getStatusBarHeight();
-	if (letters.length === 0) {
-		return (<></>);
-	}
 	const letterPicks = letters.map(letter => <AtoZLetter letter={letter} key={letter} active={activeLetter === letter} />);
 	return (
 		<View style={[styles.outerContainer, { backgroundColor: theme.overlay, top: statusBarHeight }]}>

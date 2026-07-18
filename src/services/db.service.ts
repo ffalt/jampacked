@@ -125,8 +125,8 @@ class DatabaseService {
 		const values: Array<T> = [];
 		let sql = '';
 		if (where) {
-			for (const k of Object.keys(where)) {
-				values.push(where[k]);
+			for (const value of Object.values(where)) {
+				values.push(value);
 			}
 			// qlty-ignore: radarlint-js:typescript:S4624 false positive
 			sql = `WHERE ${Object.keys(where).map(k => `${k} = ?`).join(' AND ')}`;
@@ -159,9 +159,8 @@ class DatabaseService {
 			case 'object': {
 				if (parameter instanceof Date) {
 					return parameter.toISOString();
-				} else {
-					return JSON.stringify(parameter);
 				}
+				return JSON.stringify(parameter);
 			}
 			default: {
 				return JSON.stringify(parameter);

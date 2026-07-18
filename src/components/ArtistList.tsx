@@ -1,20 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useMemo } from 'react';
 import { BaseEntryListList, BaseEntryListListQuery } from './BaseEntryListList';
 import { AlbumType, ListType } from '../services/jam';
 import { JamRouteLinks, RouteLink } from '../navigators/Routes';
 import { useLazyArtistListQuery } from '../services/queries/artistList';
 
 export const ArtistList: React.FC<{ query: { listType?: ListType; albumType?: AlbumType; goLeft?: RouteLink; goRight?: RouteLink } }> = ({ query }) => {
-	const [view, setView] = useState<BaseEntryListListQuery>({
-		text: '',
-		icon: 'artist',
-		albumTypes: [],
-		useList: useLazyArtistListQuery
-	});
-
-	useEffect(() => {
+	const view = useMemo<BaseEntryListListQuery>(() => {
 		const info = JamRouteLinks.artists();
-		setView({
+		return {
 			listType: query?.listType,
 			text: info.title,
 			icon: info.icon,
@@ -22,7 +15,7 @@ export const ArtistList: React.FC<{ query: { listType?: ListType; albumType?: Al
 			goRight: query?.goRight,
 			albumTypes: query?.albumType ? [query.albumType] : [],
 			useList: useLazyArtistListQuery
-		});
+		};
 	}, [query]);
 
 	return (<BaseEntryListList query={view} />);

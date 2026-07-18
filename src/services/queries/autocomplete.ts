@@ -12,8 +12,6 @@ interface AutocompleteData {
 	items: Array<{ id: string; name: string }>;
 }
 
-type AutocompleteResult = Record<keyof AutocompleteResultQuery, AutocompleteData>;
-
 function buildSection(key: string, objType: JamObjectType, page: AutocompleteData): AutoCompleteDataSection {
 	return {
 		key,
@@ -38,11 +36,10 @@ function transformData(data?: AutocompleteResultQuery): Autocomplete {
 	if (!data) {
 		return [];
 	}
-	const generic = data as AutocompleteResult;
 	const sections: AutoCompleteData = [];
 	for (const { key, name, objType } of dataTypes) {
-		if (generic[key] && generic[key].items.length > 0) {
-			sections.push(buildSection(name, objType, generic[key]));
+		if (Object.hasOwn(data, key) && data[key].items.length > 0) {
+			sections.push(buildSection(name, objType, data[key]));
 		}
 	}
 	return sections;

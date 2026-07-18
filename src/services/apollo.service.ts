@@ -6,7 +6,9 @@ import jamService from './jam.service.ts';
 // Apollo Client 4 requires default options to be declared before they can be set.
 // See https://www.apollographql.com/docs/react/data/typescript#declaring-default-options-for-type-safety
 declare module '@apollo/client' {
+	// eslint-disable-next-line @typescript-eslint/no-namespace -- augmenting Apollo's nested namespace requires the namespace keyword
 	namespace ApolloClient {
+		// eslint-disable-next-line @typescript-eslint/no-namespace -- augmenting Apollo's nested namespace requires the namespace keyword
 		namespace DeclareDefaultOptions {
 			interface WatchQuery {
 				errorPolicy: ErrorPolicy;

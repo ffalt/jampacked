@@ -53,11 +53,13 @@ export const Search: React.FC<SearchProps> = ({ objType, query, backToAll }) => 
 	}, [backToAll]);
 
 	const handleLoadMore = useCallback((): void => {
-		if (query) {
-			const offset = entries.length;
-			if (offset < (total ?? 0)) {
-				getSearch(query, amount, offset);
-			}
+		if (!query) {
+			return;
+		}
+
+		const offset = entries.length;
+		if (offset < (total ?? 0)) {
+			getSearch(query, amount, offset);
 		}
 	}, [entries.length, getSearch, query, total]);
 

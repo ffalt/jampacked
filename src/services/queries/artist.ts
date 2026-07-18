@@ -35,7 +35,8 @@ function transformData(data?: ArtistResultQuery): Artist | undefined {
 		return;
 	}
 	const sections: Array<SectionListData<BaseEntry>> = [];
-	for (const album of (data.artist.albums ?? [])) {
+	const albums = data.artist.albums ?? [];
+	for (const album of albums) {
 		let section = sections.find(s => s.key === album.albumType);
 		if (!section) {
 			section = {
@@ -49,7 +50,7 @@ function transformData(data?: ArtistResultQuery): Artist | undefined {
 		if (album.seriesNr) {
 			desc = `Episode ${album.seriesNr}`;
 		} else if (album.year) {
-			desc = `${album.year}`;
+			desc = String(album.year);
 		}
 		section.data = [...section.data, {
 			objType: JamObjectType.album,

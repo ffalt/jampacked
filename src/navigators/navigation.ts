@@ -57,39 +57,39 @@ export const NavigationService = {
 
 	navigate(routeName: string, parameters?: NavigParameters): void {
 		if (routeName.startsWith('Artists')) {
-			this.navigateToChild(HomeRoute.ARTISTS, routeName, ArtistsRoute.INDEX, parameters);
+			NavigationService.navigateToChild(HomeRoute.ARTISTS, routeName, ArtistsRoute.INDEX, parameters);
 			return;
 		}
 		if (routeName.startsWith('Albums')) {
-			this.navigateToChild(HomeRoute.ALBUMS, routeName, AlbumsRoute.INDEX, parameters);
+			NavigationService.navigateToChild(HomeRoute.ALBUMS, routeName, AlbumsRoute.INDEX, parameters);
 			return;
 		}
 		if (routeName.startsWith('Album')) {
-			this.navigateToChild(HomeRoute.ALBUM, routeName, AlbumRoute.MAIN, parameters);
+			NavigationService.navigateToChild(HomeRoute.ALBUM, routeName, AlbumRoute.MAIN, parameters);
 			return;
 		}
 		if (routeName.startsWith('Series')) {
-			this.navigateToChild(HomeRoute.SERIES, routeName, SeriesRoute.INDEX, parameters);
+			NavigationService.navigateToChild(HomeRoute.SERIES, routeName, SeriesRoute.INDEX, parameters);
 			return;
 		}
 		if (routeName.startsWith('Folders')) {
-			this.navigateToChild(HomeRoute.FOLDERS, routeName, FoldersRoute.INDEX, parameters);
+			NavigationService.navigateToChild(HomeRoute.FOLDERS, routeName, FoldersRoute.INDEX, parameters);
 			return;
 		}
 		if (routeName.startsWith('Tracks')) {
-			this.navigateToChild(HomeRoute.TRACKS, routeName, TracksRoute.FAV, parameters);
+			NavigationService.navigateToChild(HomeRoute.TRACKS, routeName, TracksRoute.FAV, parameters);
 			return;
 		}
 		if (routeName.startsWith('Genres')) {
-			this.navigateToChild(HomeRoute.GENRES, routeName, GenresRoute.INDEX, parameters);
+			NavigationService.navigateToChild(HomeRoute.GENRES, routeName, GenresRoute.INDEX, parameters);
 			return;
 		}
 		if (routeName.startsWith('Genre')) {
-			this.navigateToChild(HomeRoute.GENRE, routeName, GenreRoute.ARTISTS, parameters);
+			NavigationService.navigateToChild(HomeRoute.GENRE, routeName, GenreRoute.ARTISTS, parameters);
 			return;
 		}
 		if (Object.values(HomeRoute).includes(routeName as HomeRoute)) {
-			this.navigateToHomeScreen(routeName, parameters);
+			NavigationService.navigateToHomeScreen(routeName, parameters);
 			return;
 		}
 		if (navigator) {

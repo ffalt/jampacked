@@ -15,8 +15,8 @@ import { BaseEntry } from '../types/base.ts';
 import { NavigationService } from '../navigators/navigation.ts';
 
 const buildDetails = (albums?: number, tracks?: number, genre?: string, clickGenre?: () => void): Array<HeaderDetail> => [
-	{ title: 'Albums', value: `${albums}` },
-	{ title: 'Tracks', value: `${tracks}` },
+	{ title: 'Albums', value: String(albums) },
+	{ title: 'Tracks', value: String(tracks) },
 	{ title: 'Genre', value: genre ?? '', click: genre ? clickGenre : undefined }
 ];
 

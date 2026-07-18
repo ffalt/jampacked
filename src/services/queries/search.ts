@@ -87,7 +87,7 @@ function transformData(data: SearchQueryResults | undefined, variables: SearchVa
 		return buildPage<SearchPodcastsResult_podcasts_items>(data.podcasts, JamObjectType.podcast, variables.query, o => `Episodes: ${o.episodesCount}`);
 	}
 	if (data.episodes) {
-		return buildPage<SearchEpisodesResult_episodes_items>(data.episodes, JamObjectType.episode, variables.query, o => o.date ? `${o.date.toString()}` : '');
+		return buildPage<SearchEpisodesResult_episodes_items>(data.episodes, JamObjectType.episode, variables.query, o => o.date ?? '');
 	}
 	if (data.playlists) {
 		return buildPage<SearchPlaylistsResult_playlists_items>(data.playlists, JamObjectType.playlist, variables.query, o => `Tracks: ${o.entriesCount}`);

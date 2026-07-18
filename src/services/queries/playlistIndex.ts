@@ -10,17 +10,13 @@ function transformData(data?: PlaylistIndexResultQuery): Index | undefined {
 	if (!data) {
 		return;
 	}
-	const index: Index = [];
-	for (const playlist of data.playlists.items) {
-		index.push({
-			id: playlist.id,
-			objType: JamObjectType.playlist,
-			desc: `Tracks: ${playlist.entriesCount}`,
-			title: playlist.name,
-			letter: playlist.name[0]
-		});
-	}
-	return index;
+	return Array.from(data.playlists.items, playlist => ({
+		id: playlist.id,
+		objType: JamObjectType.playlist,
+		desc: `Tracks: ${playlist.entriesCount}`,
+		title: playlist.name,
+		letter: playlist.name[0]
+	}));
 }
 
 function transformVariables(): void {

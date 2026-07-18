@@ -120,7 +120,8 @@ export const ObjectHeader: React.FC<{
 			);
 		}
 		const result: Array<React.JSX.Element> = [];
-		for (const detail of (details ?? [])) {
+		const list = details ?? [];
+		for (const detail of list) {
 			if (detail.click) {
 				const onClick = (): void => {
 					if (detail.click) {

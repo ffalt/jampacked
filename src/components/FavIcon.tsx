@@ -29,27 +29,29 @@ export const FavIcon: React.FC<{ id?: string; objType: JamObjectType; style?: St
 	}, [getFaved, id]);
 
 	const handleToggleFav = useCallback((): void => {
-		if (!loading && id) {
-			// optimistic flip: if no optimistic override, use opposite of defaultFaved
-			setOptimistic(previous => (previous === null ? (defaultFaved ? false : true) : (previous ? false : true)));
-			toggleFav({ variables: { id, remove: isFaved } })
-				.then(result => {
-					if (isUnmountedReference.current) {
-						return;
-					}
-					const fav = { timestamp: result.data?.fav?.faved ? (new Date(result.data.fav.faved)).valueOf() : undefined };
-					// clear optimistic override and rely on query state (setFav updates query cache)
-					setOptimistic(null);
-					setFav(fav);
-					snackSuccess(isFaved ? 'Removed from Favorites' : 'Added to Favorites');
-					cacheService.updateHomeData().catch(console.error);
-				})
-				.catch(error => {
-					// on error, clear optimistic state and log
-					setOptimistic(null);
-					console.error(error);
-				});
+		if (loading || !id) {
+			return;
 		}
+
+		// optimistic flip: if no optimistic override, use opposite of defaultFaved
+		setOptimistic(previous => (previous === null ? (defaultFaved ? false : true) : (previous ? false : true)));
+		toggleFav({ variables: { id, remove: isFaved } })
+			.then(result => {
+				if (isUnmountedReference.current) {
+					return;
+				}
+				const fav = { timestamp: result.data?.fav?.faved ? (new Date(result.data.fav.faved)).valueOf() : undefined };
+				// clear optimistic override and rely on query state (setFav updates query cache)
+				setOptimistic(null);
+				setFav(fav);
+				snackSuccess(isFaved ? 'Removed from Favorites' : 'Added to Favorites');
+				cacheService.updateHomeData().catch(console.error);
+			})
+			.catch(error => {
+				// on error, clear optimistic state and log
+				setOptimistic(null);
+				console.error(error);
+			});
 	}, [loading, id, toggleFav, isFaved, setFav, defaultFaved]);
 
 	const iconName = isFaved ? 'heart-full' : 'heart-empty';

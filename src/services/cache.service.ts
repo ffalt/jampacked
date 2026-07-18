@@ -28,8 +28,8 @@ export class CacheService {
 	}
 
 	async checkDB(): Promise<void> {
-		const createJamTableScript = 'CREATE TABLE if not exists jam(_id INTEGER PRIMARY KEY AUTOINCREMENT, key TEXT, data TEXT, date integer, version integer)';
-		await dbService.query(createJamTableScript);
+		const JamTableCreateScript = 'CREATE TABLE if not exists jam(_id INTEGER PRIMARY KEY AUTOINCREMENT, key TEXT, data TEXT, date integer, version integer)';
+		await dbService.query(JamTableCreateScript);
 	}
 
 	private async getDoc<T>(id: string): Promise<Document<T> | undefined> {

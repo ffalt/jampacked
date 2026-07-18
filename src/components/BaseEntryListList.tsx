@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { ListTypeName } from '../utils/jam-lists.ts';
 import { BaseEntryList, BaseEntryListInfo } from './BaseEntryList';
 import { AlbumType, ListType } from '../services/jam';
@@ -21,65 +21,45 @@ export interface BaseEntryListListQuery {
 }
 
 export const BaseEntryListList: React.FC<{ query: BaseEntryListListQuery }> = ({ query }) => {
-	const [info, setInfo] = useState<BaseEntryListInfo>({
-		title: '',
-		subtitle: '',
-		icon: ''
-	});
-	const [total, setTotal] = useState<number>(0);
-	const [type, setType] = useState<{
-		listType?: ListType;
-		seed?: string;
-		albumTypes?: Array<AlbumType>;
-		genreIDs?: Array<string>;
-		offset: number;
-	} | undefined>();
-	const [entries, setEntries] = useState<Array<BaseEntry> | undefined>();
 	const amount = 20;
 	const [getList, { loading, error, data, queryID }] = query.useList();
 
-	useEffect(() => {
-		setInfo({ icon: query.icon, title: query.text, subtitle: query.subtitle ?? ListTypeName[query.listType ?? ''] });
-		setType(previous => {
-			if (query.genreIDs) {
-				const previous_genres = previous?.genreIDs ? previous.genreIDs.join('/') : '';
-				const query_genres = query?.genreIDs ? query.genreIDs.join('/') : '';
-				if (previous_genres === query_genres) {
-					return previous;
-				}
-				setTotal(0);
-				setEntries(undefined);
-				return { genreIDs: query.genreIDs, albumTypes: query.albumTypes, offset: 0 };
-			} else {
-				if (previous?.listType === query.listType) {
-					return previous;
-				}
-				setTotal(0);
-				setEntries(undefined);
-				const seed = query.listType === ListType.random ? Date.now().toString() : undefined;
-				return { listType: query.listType, albumTypes: query.albumTypes, genreIDs: query.genreIDs, seed, offset: 0 };
-			}
-		});
-	}, [query]);
+	const info = useMemo<BaseEntryListInfo>(() => ({ icon: query.icon, title: query.text, subtitle: query.subtitle ?? ListTypeName[query.listType ?? ''] }), [query]);
+
+	const buildType = (source: BaseEntryListListQuery): { listType?: ListType; seed?: string; albumTypes?: Array<AlbumType>; genreIDs?: Array<string>; offset: number } => {
+		if (source.genreIDs) {
+			return { genreIDs: source.genreIDs, albumTypes: source.albumTypes, offset: 0 };
+		}
+		const seed = source.listType === ListType.random ? Date.now().toString() : undefined;
+		return { listType: source.listType, albumTypes: source.albumTypes, genreIDs: source.genreIDs, seed, offset: 0 };
+	};
+
+	const queryKey = query.genreIDs ? `g:${query.genreIDs.join('/')}` : `l:${query.listType ?? ''}`;
+	const [type, setType] = useState(() => buildType(query));
+	const [total, setTotal] = useState<number>(0);
+	const [entries, setEntries] = useState<Array<BaseEntry> | undefined>();
+	const [previousKey, setPreviousKey] = useState(queryKey);
+	const [previousData, setPreviousData] = useState(data);
+
+	if (queryKey !== previousKey) {
+		setPreviousKey(queryKey);
+		setTotal(0);
+		setEntries(undefined);
+		setType(buildType(query));
+	}
+
+	if (data && data !== previousData) {
+		setPreviousData(data);
+		const items = data.items;
+		setTotal(data.total);
+		setEntries(previous => (previous ? [...previous, ...items] : items));
+	}
 
 	useEffect(() => {
-		if (type && (type.listType || (type.genreIDs && type.genreIDs.length > 0))) {
+		if (type.listType || (type.genreIDs && type.genreIDs.length > 0)) {
 			getList(type.albumTypes ?? [], type.listType, type.genreIDs ?? [], type.seed, amount, type.offset);
 		}
 	}, [type, getList]);
-
-	useEffect(() => {
-		if (data) {
-			const items = data.items;
-			setTotal(data.total);
-			setEntries(previous => {
-				if (previous) {
-					return [...previous, ...items];
-				}
-				return items;
-			});
-		}
-	}, [data]);
 
 	const reload = useCallback((): void => {
 		setEntries(undefined);

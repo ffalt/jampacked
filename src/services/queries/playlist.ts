@@ -38,7 +38,8 @@ function transformData(data?: PlaylistResultQuery): Playlist | undefined {
 		return;
 	}
 	const tracks: Array<TrackEntry> = [];
-	for (const entry of (data.playlist.entries ?? [])) {
+	const entries = data.playlist.entries ?? [];
+	for (const entry of entries) {
 		const item = entry.track ? transformTrack(entry.track) : transformEpisode(entry.episode);
 		if (item) {
 			tracks.push(item);

@@ -19,7 +19,7 @@ export const MUSICBRAINZ_VARIOUS_ARTISTS_NAME = 'Various Artists';
 
 const buildDetails = (artist?: string, tracks?: number, genre?: string, clickArtist?: () => void, clickGenre?: () => void): Array<HeaderDetail> => [
 	{ title: 'Artist', value: artist ?? '', click: artist ? clickArtist : undefined },
-	{ title: 'Tracks', value: `${tracks ?? ''}` },
+	{ title: 'Tracks', value: String(tracks ?? '') },
 	{ title: 'Genre', value: genre ?? '', click: genre ? clickGenre : undefined }
 ];
 

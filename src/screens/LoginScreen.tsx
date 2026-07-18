@@ -112,7 +112,7 @@ export const LoginScreen: React.FC<AppStackProps<AppRouting.AUTH>> = () => {
 	const [loading, setLoading] = useState<boolean>(false);
 	const [error, setError] = useState<string | undefined>();
 	const auth = useAuth();
-	const userNameReference = useRef<TextInput | null>(null);
+	const usernameReference = useRef<TextInput | null>(null);
 	const passwordReference = useRef<TextInput | null>(null);
 	const theme = useTheme();
 	const statusBarHeight = getStatusBarHeight() + staticTheme.padding;
@@ -161,7 +161,7 @@ export const LoginScreen: React.FC<AppStackProps<AppRouting.AUTH>> = () => {
 	}, [auth, server, name, password]);
 
 	const focusUsername = (): void => {
-		userNameReference.current?.focus();
+		usernameReference.current?.focus();
 	};
 
 	const focusPassword = (): void => {
@@ -224,7 +224,7 @@ export const LoginScreen: React.FC<AppStackProps<AppRouting.AUTH>> = () => {
 								<ThemedIcon name="user" size={styles.inputIcon.fontSize} />
 							</View>
 							<TextInput
-								ref={userNameReference}
+								ref={usernameReference}
 								style={[styles.input, { color: theme.textColor }]}
 								placeholderTextColor={theme.muted}
 								placeholder="User"

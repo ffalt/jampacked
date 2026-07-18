@@ -40,10 +40,12 @@ export const SearchQuick: React.FC<SearchQuickProps> = ({ query, setObjType }) =
 
 	const renderSection = useCallback(({ section }: { section: SectionListData<AutoCompleteEntryData> }): React.JSX.Element => {
 		const setType = (): void => {
-			if (setObjType) {
-				const { objType } = section as AutoCompleteDataSection;
-				setObjType(objType);
+			if (!setObjType) {
+				return;
 			}
+
+			const { objType } = section as AutoCompleteDataSection;
+			setObjType(objType);
 		};
 		return (
 			<TouchableOpacity style={sharedStyles.sectionHeader} onPress={setType}>

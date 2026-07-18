@@ -43,27 +43,29 @@ export const Rating: React.FC<{ id?: string; objType: JamObjectType; style?: Sty
 	}, [localRate, rating]);
 
 	const handleRate = (r: number): void => {
-		if (!loading && id) {
-			const destinationRating = r === displayRate ? r - 1 : r;
-			// optimistic local update
-			setLocalRate(destinationRating);
-			setRatingMutation({ variables: { id, rating: destinationRating } })
-				.then(result => {
-					if (isUnmountedReference.current) {
-						return;
-					}
-					const resultRating = result.data?.rate?.rated;
-					const newRate = resultRating ?? 0;
-					setLocalRate(newRate);
-					snackSuccess(`Rated with ${newRate}`);
-					cacheService.updateHomeData().catch(console.error);
-				})
-				.catch(error => {
-					// revert optimistic on error
-					setLocalRate(undefined);
-					console.error(error);
-				});
+		if (loading || !id) {
+			return;
 		}
+
+		const destinationRating = r === displayRate ? r - 1 : r;
+		// optimistic local update
+		setLocalRate(destinationRating);
+		setRatingMutation({ variables: { id, rating: destinationRating } })
+			.then(result => {
+				if (isUnmountedReference.current) {
+					return;
+				}
+				const resultRating = result.data?.rate?.rated;
+				const newRate = resultRating ?? 0;
+				setLocalRate(newRate);
+				snackSuccess(`Rated with ${newRate}`);
+				cacheService.updateHomeData().catch(console.error);
+			})
+			.catch(error => {
+				// revert optimistic on error
+				setLocalRate(undefined);
+				console.error(error);
+			});
 	};
 
 	const rate = displayRate;

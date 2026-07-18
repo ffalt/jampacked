@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useMemo } from 'react';
 import { useLazyTrackListQuery } from '../services/queries/trackList';
 import { TrackEntryListList, TrackEntryListListQuery } from '../components/TrackEntryListList';
 import { GenreRoute, GenreRouteProps } from '../navigators/Routing';
@@ -7,24 +7,23 @@ import { JamRouteLinks } from '../navigators/Routes';
 
 export const GenreTracksScreen: React.FC<GenreRouteProps<GenreRoute.TRACKS>> = () => {
 	const state = useContext(GenreTabNavigatorContext);
-	const [view, setView] = useState<TrackEntryListListQuery>({
-		text: '',
-		icon: 'track',
-		genreIDs: [],
-		useList: useLazyTrackListQuery
-	});
-
-	useEffect(() => {
-		if (state?.id) {
-			setView({
-				text: `${state.name}`,
-				subtitle: 'Tracks in Genre',
-				genreIDs: [state.id],
+	const view = useMemo<TrackEntryListListQuery>(() => {
+		if (!state?.id) {
+			return {
+				text: '',
 				icon: 'track',
-				useList: useLazyTrackListQuery,
-				goLeft: JamRouteLinks.genrealbums()
-			});
+				genreIDs: [],
+				useList: useLazyTrackListQuery
+			};
 		}
+		return {
+			text: String(state.name),
+			subtitle: 'Tracks in Genre',
+			genreIDs: [state.id],
+			icon: 'track',
+			useList: useLazyTrackListQuery,
+			goLeft: JamRouteLinks.genrealbums()
+		};
 	}, [state]);
 
 	return (<TrackEntryListList query={view} />);

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { ThemedText } from './ThemedText';
 import { snackError } from '../utils/snack.ts';
 import { Button, Image, StyleSheet, View } from 'react-native';
@@ -24,10 +24,9 @@ const styles = StyleSheet.create({
 });
 
 export const ErrorView: React.FC<{ error: unknown; onRetry: () => void }> = ({ error, onRetry }) => {
-	const [value, setValue] = useState<string>('');
+	const value = errorMessage(error);
 
 	useEffect(() => {
-		setValue(errorMessage((error)));
 		snackError(error);
 	}, [error]);
 

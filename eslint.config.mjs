@@ -74,6 +74,12 @@ const commonUnicornRules = {
 	"unicorn/no-null": "off",
 	"unicorn/prefer-string-replace-all": "off",
 	"unicorn/no-useless-undefined": "off",
+	"unicorn/consistent-boolean-name": "off",
+	"unicorn/prefer-await": "off",
+	"unicorn/no-top-level-assignment-in-function": "off",
+	"unicorn/consistent-class-member-order": "off",
+	"unicorn/prefer-iterator-to-array": "off",
+	"unicorn/no-top-level-side-effects": "off",
 	"unicorn/name-replacements": [
 		"error",
 		{
@@ -81,6 +87,7 @@ const commonUnicornRules = {
 				"env": false,
 				"args": false,
 				"props": false,
+				"configuration": false,
 				"db": false,
 				"utils": false
 			}
@@ -199,7 +206,8 @@ export default ts.config(
 			"**/ios/",
 			"**/android/",
 			"**/node_modules/",
-			"**/static/"
+			"**/static/",
+			"src/services/jam/model/**"
 		]
 	},
 	{
@@ -292,7 +300,6 @@ export default ts.config(
 	},
 	{
 		files: [
-			"src/services/jam/model/*.ts",
 			"src/services/jam/**/*.service.ts"
 		],
 		extends: [

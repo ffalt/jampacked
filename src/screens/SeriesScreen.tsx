@@ -14,8 +14,8 @@ import { Rating } from '../components/Rating';
 import { BaseEntry } from '../types/base.ts';
 
 const buildDetails = (artist?: string, tracks?: number, genre?: string, toArtist?: () => void): Array<HeaderDetail> => [
-	{ title: 'Artist', value: `${artist ?? ''}`, click: artist ? toArtist : undefined },
-	{ title: 'Tracks', value: `${tracks ?? ''}` },
+	{ title: 'Artist', value: (artist ?? ''), click: artist ? toArtist : undefined },
+	{ title: 'Tracks', value: String(tracks ?? '') },
 	{ title: 'Genre', value: genre ?? '' }
 ];
 

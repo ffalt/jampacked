@@ -74,7 +74,7 @@ export const TrackItem: React.FC<{
 	}, [setItemSelected]);
 
 	const onDoubleTapped = useCallback((event: TapGestureHandlerStateChangeEvent): void => {
-		if (event.nativeEvent.state === State.ACTIVE && doubleTab) {
+		if (doubleTab && event.nativeEvent.state === State.ACTIVE) {
 			doubleTab(track);
 		}
 	}, [track, doubleTab]);

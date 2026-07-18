@@ -10,17 +10,13 @@ function transformData(data?: PodcastIndexResultQuery): Index | undefined {
 	if (!data) {
 		return;
 	}
-	const index: Index = [];
-	for (const podcast of data.podcasts.items) {
-		index.push({
-			id: podcast.id,
-			objType: JamObjectType.podcast,
-			desc: `Episodes: ${podcast.episodesCount}`,
-			title: podcast.name,
-			letter: podcast.name[0]
-		});
-	}
-	return index;
+	return Array.from(data.podcasts.items, podcast => ({
+		id: podcast.id,
+		objType: JamObjectType.podcast,
+		desc: `Episodes: ${podcast.episodesCount}`,
+		title: podcast.name,
+		letter: podcast.name[0]
+	}));
 }
 
 function transformVariables(): void {

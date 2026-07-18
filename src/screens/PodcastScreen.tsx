@@ -25,6 +25,10 @@ export const PodcastScreen: React.FC<HomeRouteProps<HomeRoute.PODCAST>> = ({ rou
 		getPodcast(id, true);
 	}, [getPodcast, id]);
 
+	if (error) {
+		return (<ErrorView error={error} onRetry={reload} />);
+	}
+
 	const playTracks = (): void => {
 		if (podcast?.episodes) {
 			JamPlayer.playTracks(podcast.episodes)
@@ -48,10 +52,6 @@ export const PodcastScreen: React.FC<HomeRouteProps<HomeRoute.PODCAST>> = ({ rou
 			)}
 		/>
 	);
-
-	if (error) {
-		return (<ErrorView error={error} onRetry={reload} />);
-	}
 
 	return (
 		<Tracks tracks={podcast?.episodes} ListHeaderComponent={ListHeaderComponent} refreshing={loading} onRefresh={reload} />
