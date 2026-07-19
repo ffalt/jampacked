@@ -4,8 +4,11 @@ import { App } from "./App";
 import { name as appName } from "./app.json";
 import playbackService from "./src/services/playback.service";
 import TrackPlayer from "react-native-track-player";
+import { installCrashReporter } from "./src/services/crash-reporter.service";
 
 // console.reportErrorsAsExceptions = false;
+
+installCrashReporter();
 
 AppRegistry.registerComponent(appName, () => App);
 

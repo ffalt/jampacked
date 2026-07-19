@@ -114,6 +114,14 @@
   "reactNativeVectorIcons": {
     "fontDir": "src/assets/fonts"
   },
+  "codegenConfig": {
+    "name": "AppSpecs",
+    "type": "modules",
+    "jsSrcsDir": "specs",
+    "android": {
+      "javaPackageName": "org.ffalt.jam.specs"
+    }
+  },
   "engines": {
     "node": ">= 26"
   }
