@@ -20,17 +20,14 @@ export const NavigationService = {
 	navigateToChild(parentRouteName: string, routeName: string, defaultRouteName: string, parameters?: NavigParameters): void {
 		if (navigator) {
 			navigator.dispatch(
-				CommonActions.navigate({
-					name: ModalRouting.MAIN,
+				CommonActions.navigate(ModalRouting.MAIN, {
+					screen: BottomTabRoute.HOME,
 					params: {
-						screen: BottomTabRoute.HOME,
+						screen: parentRouteName,
 						params: {
-							screen: parentRouteName,
-							params: {
-								...parameters,
-								screen: routeName === parentRouteName ? defaultRouteName : routeName,
-								params: parameters
-							}
+							...parameters,
+							screen: routeName === parentRouteName ? defaultRouteName : routeName,
+							params: parameters
 						}
 					}
 				})
@@ -41,14 +38,11 @@ export const NavigationService = {
 	navigateToHomeScreen(routeName: string, parameters?: NavigParameters): void {
 		if (navigator) {
 			navigator.dispatch(
-				CommonActions.navigate({
-					name: ModalRouting.MAIN,
+				CommonActions.navigate(ModalRouting.MAIN, {
+					screen: BottomTabRoute.HOME,
 					params: {
-						screen: BottomTabRoute.HOME,
-						params: {
-							screen: routeName,
-							params: parameters
-						}
+						screen: routeName,
+						params: parameters
 					}
 				})
 			);
@@ -94,7 +88,7 @@ export const NavigationService = {
 		}
 		if (navigator) {
 			navigator.dispatch(
-				CommonActions.navigate({ name: routeName, params: parameters })
+				CommonActions.navigate(routeName, parameters)
 			);
 		}
 	},
