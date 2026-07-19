@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.0.11](https://github.com-ffalt/ffalt/jampacked/compare/v0.0.10...v0.0.11) (2026-07-19)
+
+### Features
+
+* **app:** add a (local-only) crash reporter ([2c36d50](https://github.com-ffalt/ffalt/jampacked/commit/2c36d50bac735f014d749678efa1690ec5202254))
 ## [0.0.10](https://github.com-ffalt/ffalt/jampacked/compare/v0.0.9...v0.0.10) (2026-07-18)
 ## [0.0.9](https://github.com-ffalt/ffalt/jampacked/compare/v0.0.8...v0.0.9) (2026-05-07)
 
