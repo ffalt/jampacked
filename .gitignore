@@ -85,6 +85,7 @@ local
 
 # testing
 /coverage
+__snapshots__
 
 # Yarn
 .yarn/*

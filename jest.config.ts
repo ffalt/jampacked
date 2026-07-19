@@ -34,6 +34,7 @@ const config: Config = {
 	],
 	coverageReporters: ['html', 'json', 'lcov', 'text'],
 	modulePathIgnorePatterns: ['<rootDir>/dist/'],
+	testPathIgnorePatterns: ['/node_modules/', '<rootDir>/__tests__/mocks/', '<rootDir>/__tests__/helpers/'],
 	preset: '@react-native/jest-preset',
 	setupFilesAfterEnv: ['<rootDir>/jest.setup.ts']
 };

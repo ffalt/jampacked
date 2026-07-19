@@ -80,6 +80,7 @@ const commonUnicornRules = {
 	"unicorn/consistent-class-member-order": "off",
 	"unicorn/prefer-iterator-to-array": "off",
 	"unicorn/no-top-level-side-effects": "off",
+	"unicorn/no-incorrect-template-string-interpolation": "off",
 	"unicorn/name-replacements": [
 		"error",
 		{
@@ -252,7 +253,9 @@ export default ts.config(
 			...commonRules,
 			...commonStylisticRules,
 			...commonUnicornRules,
-			...commonTypeScriptRules
+			...commonTypeScriptRules,
+			"@typescript-eslint/no-unsafe-return": "off",
+			"@typescript-eslint/unbound-method": "off"
 		}
 	},
 	{
@@ -300,7 +303,8 @@ export default ts.config(
 	},
 	{
 		files: [
-			"src/services/jam/**/*.service.ts"
+			"src/services/jam/**/*.service.ts",
+			"src/services/jam/model/**"
 		],
 		extends: [
 			eslint.configs.recommended,

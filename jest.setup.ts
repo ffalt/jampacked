@@ -1,5 +1,15 @@
 import { NativeModules } from 'react-native';
 
+// Silence the deprecation warning emitted by @react-navigation/stack when it
+// accesses the (deprecated) InteractionManager from react-native at require time.
+const originalWarn = console.warn.bind(console);
+console.warn = (...args: Array<unknown>): void => {
+	if (typeof args[0] === 'string' && args[0].includes('InteractionManager has been deprecated')) {
+		return;
+	}
+	originalWarn(...args);
+};
+
 jest.mock('./node_modules/react-native/Libraries/EventEmitter/NativeEventEmitter.js');
 
 // react-native-snackbar
