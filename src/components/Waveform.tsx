@@ -164,7 +164,6 @@ export const SoundCloudWave: React.FC<WaveFormProps> = (
 		const items = barsHigh.items.map((high, index) => {
 			const low = barsLow.items[index];
 			return {
-				// high, low,
 				top: (height / 2) - high,
 				height: (high + low)
 			};

@@ -7,7 +7,6 @@ import { ClickIcon } from './ClickIcon';
 import cacheService from '../services/cache.service.ts';
 
 export const FavIcon: React.FC<{ id?: string; objType: JamObjectType; style?: StyleProp<ViewStyle>; fontSize?: number }> = ({ id, style, fontSize }) => {
-	// optimistic local state only for immediate UI feedback; null means no override
 	const [optimistic, setOptimistic] = useState<boolean | null>(null);
 	const [getFaved, { faved, loading, setFav }] = useLazyFavQuery();
 	const [toggleFav] = useFavMutation();
@@ -32,23 +31,19 @@ export const FavIcon: React.FC<{ id?: string; objType: JamObjectType; style?: St
 		if (loading || !id) {
 			return;
 		}
-
-		// optimistic flip: if no optimistic override, use opposite of defaultFaved
-		setOptimistic(previous => (previous === null ? (defaultFaved ? false : true) : (previous ? false : true)));
+		setOptimistic(previous => (previous === null ? (!defaultFaved) : (!previous)));
 		toggleFav({ variables: { id, remove: isFaved } })
 			.then(result => {
 				if (isUnmountedReference.current) {
 					return;
 				}
 				const fav = { timestamp: result.data?.fav?.faved ? (new Date(result.data.fav.faved)).valueOf() : undefined };
-				// clear optimistic override and rely on query state (setFav updates query cache)
 				setOptimistic(null);
 				setFav(fav);
 				snackSuccess(isFaved ? 'Removed from Favorites' : 'Added to Favorites');
 				cacheService.updateHomeData().catch(console.error);
 			})
 			.catch(error => {
-				// on error, clear optimistic state and log
 				setOptimistic(null);
 				console.error(error);
 			});

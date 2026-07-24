@@ -1,9 +1,10 @@
 import 'react-native';
 import React from 'react';
-import { describe, it, expect, beforeEach } from '@jest/globals';
+import { describe, it, expect } from '@jest/globals';
 import { CachingView } from '../../../src/components/CachingView';
 import { render, fireEvent } from '@testing-library/react-native';
 import { hasNodeOfType } from '../../helpers/tree';
+import { useCacheManagement } from '../../../src/services/cache.hooks';
 
 interface CacheState {
 	isRunning: boolean;
@@ -16,18 +17,12 @@ const mockClear = jest.fn();
 const mockStop = jest.fn();
 let mockState: CacheState;
 
-jest.mock('../../../src/style/theming', () => ({
-	useTheme: () => ({ textColor: '#000000' }),
-	staticTheme: { marginSmall: 4, paddingSmall: 4 }
-}));
+jest.mock('../../../src/services/cache.hooks.ts', () => require('../../../__mocks__/services/cache.hooks.ts'));
 
-jest.mock('../../../src/services/cache.hooks.ts', () => ({
-	useCacheManagement: (): [() => void, () => void, () => void, CacheState] => [mockFill, mockClear, mockStop, mockState]
-}));
+jest.mocked(useCacheManagement).mockImplementation((() => [mockFill, mockClear, mockStop, mockState]) as never);
 
 describe('CachingView', () => {
 	beforeEach(() => {
-		jest.clearAllMocks();
 		mockState = { isRunning: false, isStopped: false, message: '' };
 	});
 

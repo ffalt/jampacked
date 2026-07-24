@@ -1,9 +1,14 @@
 import 'react-native';
 import React from 'react';
-import { describe, it, expect, beforeEach } from '@jest/globals';
+import { describe, it, expect } from '@jest/globals';
 import { MediaCachingView } from '../../../src/components/MediaCachingView';
 import { render, fireEvent, waitFor } from '@testing-library/react-native';
 import { hasNodeOfType } from '../../helpers/tree';
+import { usePinCacheStat } from '../../../src/services/pin.hooks';
+import pinService from '../../../src/services/pin.service';
+
+jest.mock('../../../src/services/pin.hooks.ts', () => require('../../../__mocks__/services/pin.hooks.ts'));
+jest.mock('../../../src/services/pin.service.ts', () => require('../../../__mocks__/services/pin.service.ts'));
 
 interface PinCacheStat {
 	files: number;
@@ -12,25 +17,13 @@ interface PinCacheStat {
 }
 
 let mockStat: PinCacheStat | undefined;
-const mockClearPins = jest.fn(async (): Promise<void> => undefined);
 
-jest.mock('../../../src/style/theming', () => ({
-	useTheme: () => ({ textColor: '#000000' }),
-	staticTheme: { marginSmall: 4, paddingSmall: 4 }
-}));
+jest.mocked(usePinCacheStat).mockImplementation(() => mockStat);
 
-jest.mock('../../../src/services/pin.hooks.ts', () => ({
-	usePinCacheStat: (): PinCacheStat | undefined => mockStat
-}));
-
-jest.mock('../../../src/services/pin.service.ts', () => ({
-	__esModule: true,
-	default: { clearPins: async (): Promise<void> => mockClearPins() }
-}));
+const mockClearPins = jest.mocked(pinService.clearPins);
 
 describe('MediaCachingView', () => {
 	beforeEach(() => {
-		jest.clearAllMocks();
 		mockStat = { files: 5, size: 2048, humanSize: '2 MB' };
 		mockClearPins.mockResolvedValue(undefined);
 	});
@@ -74,7 +67,6 @@ describe('MediaCachingView', () => {
 		});
 
 		it('should show the spinner and removing message while clearing', async () => {
-			// keep the clear operation pending so the running state stays visible
 			mockClearPins.mockReturnValue(new Promise<void>(() => undefined));
 			const screen = await render(<MediaCachingView />);
 

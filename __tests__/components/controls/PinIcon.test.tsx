@@ -1,38 +1,20 @@
 import React from 'react';
-import { describe, it, expect, beforeEach, afterEach } from '@jest/globals';
+import { describe, it, expect } from '@jest/globals';
 import { ViewStyle } from 'react-native';
 import { PinIcon } from '../../../src/components/PinIcon';
 import { render } from '@testing-library/react-native';
 import { JamObjectType } from '../../../src/services/jam';
 
-jest.mock('../../../src/services/pin.service.ts', () => ({
-	__esModule: true,
-	default: {
-		pin: jest.fn(),
-		unpin: jest.fn()
-	}
-}));
+jest.mock('../../../src/services/pin.service.ts', () => require('../../../__mocks__/services/pin.service.ts'));
 
-jest.mock('../../../src/services/pin.hooks.ts', () => ({
-	usePinState: jest.fn()
-}));
+jest.mock('../../../src/services/pin.hooks.ts', () => require('../../../__mocks__/services/pin.hooks.ts'));
 
-jest.mock('../../../src/components/ClickIcon.tsx', () => ({
-	ClickIcon: jest.fn(() => null)
-}));
+jest.mock('../../../src/components/ClickIcon.tsx', () => require('../../../__mocks__/components/ClickIcon.tsx'));
 
-import { usePinState } from '../../../src/services/pin.hooks.ts';
-import pinService from '../../../src/services/pin.service.ts';
+import { usePinState } from '../../../src/services/pin.hooks';
+import pinService from '../../../src/services/pin.service';
 
 describe('PinIcon', () => {
-	beforeEach(() => {
-		jest.clearAllMocks();
-	});
-
-	afterEach(() => {
-		jest.clearAllMocks();
-	});
-
 	describe('rendering', () => {
 		it('should render with pin-outline icon when not pinned', async () => {
 			(usePinState as jest.Mock).mockReturnValue({
@@ -103,7 +85,6 @@ describe('PinIcon', () => {
 
 			await render(<PinIcon objType={JamObjectType.track} />);
 
-			// usePinState is still called, just with undefined
 			expect(usePinState).toHaveBeenCalled();
 		});
 

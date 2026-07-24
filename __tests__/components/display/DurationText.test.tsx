@@ -4,10 +4,6 @@ import { StyleSheet } from 'react-native';
 import { DurationText } from '../../../src/components/DurationText';
 import { render } from '@testing-library/react-native';
 
-jest.mock('../../../src/style/theming', () => ({
-	useTheme: () => ({ textColor: '#111111' })
-}));
-
 const styles = StyleSheet.create({
 	custom: { opacity: 0.5 }
 });
@@ -25,13 +21,11 @@ describe('DurationText', () => {
 		});
 
 		it('should format an hour-scale duration as H:MM:SS', async () => {
-			// 3_665_000ms = 1h 1m 5s
 			const screen = await render(<DurationText duration={3_665_000} />);
 			expect(screen.getByText('1:01:05')).toBeTruthy();
 		});
 
 		it('should format a day-scale duration with a day prefix', async () => {
-			// 90_065_000ms = 1d 1h 1m 5s
 			const screen = await render(<DurationText duration={90_065_000} />);
 			expect(screen.getByText('1d 01:01:05')).toBeTruthy();
 		});
@@ -49,7 +43,6 @@ describe('DurationText', () => {
 		});
 
 		it('should show 00:00 for an undefined duration when ms is true', async () => {
-			// ms=true always multiplies duration (defaulting to 0) before formatting
 			const screen = await render(<DurationText ms />);
 			expect(screen.getByText('00:00')).toBeTruthy();
 		});

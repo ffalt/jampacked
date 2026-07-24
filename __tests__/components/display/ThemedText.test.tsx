@@ -3,10 +3,9 @@ import { describe, it, expect } from '@jest/globals';
 import { StyleSheet } from 'react-native';
 import { ThemedText } from '../../../src/components/ThemedText';
 import { render } from '@testing-library/react-native';
+import { getTheme } from '../../../src/style/theming';
 
-jest.mock('../../../src/style/theming', () => ({
-	useTheme: () => ({ textColor: '#111111' })
-}));
+const theme = getTheme('light');
 
 const styles = StyleSheet.create({
 	sized: { fontSize: 20 },
@@ -36,14 +35,14 @@ describe('ThemedText', () => {
 		it('should inherit the theme text color by default', async () => {
 			const screen = await render(<ThemedText>Themed</ThemedText>);
 			const style = StyleSheet.flatten(screen.getByText('Themed').props.style) as { color?: string };
-			expect(style.color).toBe('#111111');
+			expect(style.color).toBe(theme.textColor);
 		});
 
 		it('should apply a custom style in addition to the theme color', async () => {
 			const screen = await render(<ThemedText style={styles.sized}>Sized</ThemedText>);
 			const style = StyleSheet.flatten(screen.getByText('Sized').props.style) as { color?: string; fontSize?: number };
 			expect(style.fontSize).toBe(20);
-			expect(style.color).toBe('#111111');
+			expect(style.color).toBe(theme.textColor);
 		});
 
 		it('should let a custom style override the theme color', async () => {

@@ -11,6 +11,7 @@
     "start": "react-native start",
     "lint": "eslint .",
     "test": "jest",
+    "test:coverage": "jest --coverage",
     "check": "qlty check --all",
     "release": "npx commit-and-tag-version",
     "changelog:start": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0",

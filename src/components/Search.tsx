@@ -41,7 +41,6 @@ export const Search: React.FC<SearchProps> = ({ objType, query, backToAll }) => 
 
 	useEffect(() => {
 		if (query) {
-			// trigger initial search for first page
 			getSearch(query, amount, 0);
 		}
 	}, [query, getSearch]);

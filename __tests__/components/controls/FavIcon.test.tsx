@@ -1,57 +1,23 @@
 import React from 'react';
-import { describe, it, expect, beforeEach, afterEach } from '@jest/globals';
+import { describe, it, expect } from '@jest/globals';
 import { FavIcon } from '../../../src/components/FavIcon';
 import { render } from '@testing-library/react-native';
 
-jest.mock('../../../src/services/queries/fav.ts', () => ({
-	useLazyFavQuery: jest.fn(),
-	useFavMutation: jest.fn(() => [
-		jest.fn().mockResolvedValue({
-			data: {
-				fav: {
-					faved: new Date().toISOString()
-				}
-			}
-		}),
-		{
-			loading: false,
-			error: undefined,
-			data: undefined
-		}
-	])
-}));
+jest.mock('../../../src/services/queries/fav.ts');
 
-jest.mock('../../../src/utils/snack.ts', () => ({
-	snackSuccess: jest.fn(),
-	snackError: jest.fn()
-}));
+jest.mock('../../../src/utils/snack.ts', () => require('../../../__mocks__/utils/snack.ts'));
 
-jest.mock('../../../src/services/cache.service.ts', () => ({
-	__esModule: true,
-	default: {
-		updateHomeData: jest.fn()
-	}
-}));
+jest.mock('../../../src/services/cache.service.ts', () => require('../../../__mocks__/services/cache.service.ts'));
 
-jest.mock('../../../src/components/ClickIcon.tsx', () => ({
-	ClickIcon: jest.fn(() => null)
-}));
+jest.mock('../../../src/components/ClickIcon.tsx', () => require('../../../__mocks__/components/ClickIcon.tsx'));
 
 import { useLazyFavQuery, useFavMutation } from '../../../src/services/queries/fav';
-import { snackSuccess } from '../../../src/utils/snack.ts';
-import cacheService from '../../../src/services/cache.service.ts';
+import { snackSuccess } from '../../../src/utils/snack';
+import cacheService from '../../../src/services/cache.service';
 import { JamObjectType } from '../../../src/services/jam';
 import { StyleProp, ViewStyle } from 'react-native';
 
 describe('FavIcon', () => {
-	beforeEach(() => {
-		jest.clearAllMocks();
-	});
-
-	afterEach(() => {
-		jest.clearAllMocks();
-	});
-
 	describe('rendering', () => {
 		it('should render with heart-empty icon when not favorited', async () => {
 			(useLazyFavQuery as jest.Mock).mockReturnValue([
@@ -63,7 +29,7 @@ describe('FavIcon', () => {
 					called: true,
 					setFav: jest.fn()
 				}
-			]);
+			] as never);
 
 			const screen = await render(
 				<FavIcon id="test-id" objType={JamObjectType.track} />
@@ -81,7 +47,7 @@ describe('FavIcon', () => {
 					called: true,
 					setFav: jest.fn()
 				}
-			]);
+			] as never);
 
 			const screen = await render(
 				<FavIcon id="test-id" objType={JamObjectType.track} />
@@ -99,7 +65,7 @@ describe('FavIcon', () => {
 					called: false,
 					setFav: jest.fn()
 				}
-			]);
+			] as never);
 
 			const screen = await render(
 				<FavIcon id="test-id" objType={JamObjectType.track} />
@@ -117,7 +83,7 @@ describe('FavIcon', () => {
 					called: false,
 					setFav: jest.fn()
 				}
-			]);
+			] as never);
 
 			const screen = await render(
 				<FavIcon objType={JamObjectType.track} />
@@ -135,7 +101,7 @@ describe('FavIcon', () => {
 					called: true,
 					setFav: jest.fn()
 				}
-			]);
+			] as never);
 
 			const customStyle = { color: 'red' } as StyleProp<ViewStyle>;
 			const screen = await render(
@@ -157,11 +123,10 @@ describe('FavIcon', () => {
 					called: false,
 					setFav: jest.fn()
 				}
-			]);
+			] as never);
 
 			await render(<FavIcon id="test-id" objType={JamObjectType.artist} />);
 
-			// GetFaved should be called
 			expect(mockGetFaved).toHaveBeenCalled();
 		});
 
@@ -176,11 +141,10 @@ describe('FavIcon', () => {
 					called: false,
 					setFav: jest.fn()
 				}
-			]);
+			] as never);
 
 			await render(<FavIcon objType={JamObjectType.track} />);
 
-			// GetFaved should not be called
 			expect(mockGetFaved).not.toHaveBeenCalled();
 		});
 
@@ -194,7 +158,7 @@ describe('FavIcon', () => {
 					called: true,
 					setFav: jest.fn()
 				}
-			]);
+			] as never);
 
 			const screen = await render(
 				<FavIcon id="test-id" objType={JamObjectType.track} />
@@ -212,7 +176,7 @@ describe('FavIcon', () => {
 					called: false,
 					setFav: jest.fn()
 				}
-			]);
+			] as never);
 
 			const screen = await render(
 				<FavIcon objType={JamObjectType.track} />
@@ -232,7 +196,7 @@ describe('FavIcon', () => {
 					called: true,
 					setFav: jest.fn()
 				}
-			]);
+			] as never);
 
 			const screen = await render(
 				<FavIcon id="test-id" objType={JamObjectType.track} />
@@ -250,7 +214,7 @@ describe('FavIcon', () => {
 					called: true,
 					setFav: jest.fn()
 				}
-			]);
+			] as never);
 
 			const screen = await render(
 				<FavIcon id="test-id" objType={JamObjectType.track} />
@@ -268,7 +232,7 @@ describe('FavIcon', () => {
 					called: true,
 					setFav: jest.fn()
 				}
-			]);
+			] as never);
 
 			const objectTypes = ['track', 'album', 'artist', 'playlist'];
 
@@ -291,7 +255,7 @@ describe('FavIcon', () => {
 					called: false,
 					setFav: jest.fn()
 				}
-			]);
+			] as never);
 
 			const { rerender } = await render(
 				<FavIcon id="test-id-1" objType={JamObjectType.track} />
@@ -300,7 +264,6 @@ describe('FavIcon', () => {
 			await rerender(<FavIcon id="test-id-2" objType={JamObjectType.track} />);
 			await rerender(<FavIcon id="test-id-3" objType={JamObjectType.track} />);
 
-			// Verify component handled re-renders
 			expect(mockGetFaved).toHaveBeenCalled();
 		});
 	});

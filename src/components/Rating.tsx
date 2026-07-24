@@ -48,7 +48,6 @@ export const Rating: React.FC<{ id?: string; objType: JamObjectType; style?: Sty
 		}
 
 		const destinationRating = r === displayRate ? r - 1 : r;
-		// optimistic local update
 		setLocalRate(destinationRating);
 		setRatingMutation({ variables: { id, rating: destinationRating } })
 			.then(result => {
@@ -62,7 +61,6 @@ export const Rating: React.FC<{ id?: string; objType: JamObjectType; style?: Sty
 				cacheService.updateHomeData().catch(console.error);
 			})
 			.catch(error => {
-				// revert optimistic on error
 				setLocalRate(undefined);
 				console.error(error);
 			});

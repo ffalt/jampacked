@@ -3,13 +3,9 @@ import { describe, it, expect } from '@jest/globals';
 import { StyleSheet } from 'react-native';
 import { ListEmpty } from '../../../src/components/ListEmpty';
 import { render } from '@testing-library/react-native';
+import { getTheme } from '../../../src/style/theming';
 
-jest.mock('../../../src/style/theming', () => ({
-	useTheme: () => ({
-		muted: '#808080',
-		textColor: '#000000'
-	})
-}));
+const theme = getTheme('light');
 
 describe('ListEmpty', () => {
 	describe('rendering', () => {
@@ -42,7 +38,7 @@ describe('ListEmpty', () => {
 		it('should apply the muted theme color to the text', async () => {
 			const screen = await render(<ListEmpty list={[]} />);
 			const style = StyleSheet.flatten(screen.getByText('No entries').props.style) as { color?: string };
-			expect(style.color).toBe('#808080');
+			expect(style.color).toBe(theme.muted);
 		});
 	});
 });

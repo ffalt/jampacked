@@ -1,28 +1,16 @@
 import 'react-native';
 import React from 'react';
-import { describe, it, expect, beforeEach } from '@jest/globals';
+import { describe, it, expect } from '@jest/globals';
 import { ErrorView } from '../../../src/components/ErrorView';
-import { errorMessage } from '../../../src/utils/errors.utils.ts';
+import { errorMessage } from '../../../src/utils/errors.utils';
 import { render, fireEvent } from '@testing-library/react-native';
 import { hasNodeOfType } from '../../helpers/tree';
 
-jest.mock('../../../src/style/theming', () => ({
-	useTheme: () => ({ textColor: '#000000' }),
-	staticTheme: { margin: 10, paddingLarge: 16 }
-}));
+jest.mock('../../../src/utils/snack.ts', () => require('../../../__mocks__/utils/snack.ts'));
 
-jest.mock('../../../src/utils/snack.ts', () => ({
-	snackError: jest.fn(),
-	snackSuccess: jest.fn()
-}));
-
-import { snackError } from '../../../src/utils/snack.ts';
+import { snackError } from '../../../src/utils/snack';
 
 describe('ErrorView', () => {
-	beforeEach(() => {
-		jest.clearAllMocks();
-	});
-
 	describe('rendering', () => {
 		it('should display the error message', async () => {
 			const screen = await render(<ErrorView error="Something went wrong" onRetry={jest.fn()} />);

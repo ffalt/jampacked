@@ -1,45 +1,15 @@
 import 'react-native';
 import React from 'react';
-import { describe, it, expect, beforeEach, afterEach } from '@jest/globals';
+import { describe, it, expect } from '@jest/globals';
 import { PlayButton } from '../../../src/components/PlayButton';
 import { render } from '@testing-library/react-native';
 
-jest.mock('../../../src/services/player.service.ts', () => ({
-	JamPlayer: {
-		toggleSync: jest.fn(),
-		toggle: jest.fn(),
-		play: jest.fn(),
-		pause: jest.fn()
-	}
-}));
-
-jest.mock('react-native-track-player', () => ({
-	useTrackPlayerPlaybackStateIsPlaying: jest.fn()
-}));
-
-jest.mock('../../../src/style/theming', () => ({
-	useTheme: () => ({
-		colors: {
-			primary: '#007AFF',
-			text: '#000000',
-			surface: '#FFFFFF'
-		},
-		muted: '#999999'
-	})
-}));
+jest.mock('../../../src/services/player.service.ts', () => require('../../../__mocks__/services/player.service.ts'));
 
 import { useTrackPlayerPlaybackStateIsPlaying } from 'react-native-track-player';
-import { JamPlayer } from '../../../src/services/player.service.ts';
+import { JamPlayer } from '../../../src/services/player.service';
 
 describe('PlayButton', () => {
-	beforeEach(() => {
-		jest.clearAllMocks();
-	});
-
-	afterEach(() => {
-		jest.clearAllMocks();
-	});
-
 	describe('rendering', () => {
 		it('should render when not playing', async () => {
 			(useTrackPlayerPlaybackStateIsPlaying as jest.Mock).mockReturnValue(

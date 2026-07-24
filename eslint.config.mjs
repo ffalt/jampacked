@@ -144,7 +144,7 @@ const commonTypeScriptRules = {
 export default ts.config(
 	{
 		files: ["**/*.{ts,tsx}"],
-		ignores: ["__tests__/", "src/services/queries/*.ts"],
+		ignores: ["__tests__/", "__mocks__", "src/services/queries/*.ts"],
 		extends: [
 			eslint.configs.recommended,
 			...ts.configs.recommendedTypeChecked,
@@ -229,7 +229,7 @@ export default ts.config(
 		}
 	},
 	{
-		files: ["__tests__/**"],
+		files: ["__tests__/**", "__mocks__/**"],
 		languageOptions: {
 			parserOptions: {
 				project: ["tsconfig.json"],
@@ -254,8 +254,11 @@ export default ts.config(
 			...commonStylisticRules,
 			...commonUnicornRules,
 			...commonTypeScriptRules,
+			"unicorn/prefer-module": "off",
 			"@typescript-eslint/no-unsafe-return": "off",
-			"@typescript-eslint/unbound-method": "off"
+			"@typescript-eslint/unbound-method": "off",
+			"@typescript-eslint/no-require-imports": "off",
+			"@typescript-eslint/no-var-requires": "off"
 		}
 	},
 	{

@@ -3,10 +3,9 @@ import { describe, it, expect } from '@jest/globals';
 import { StyleSheet } from 'react-native';
 import { ThemedIcon } from '../../../src/components/ThemedIcon';
 import { render } from '@testing-library/react-native';
+import { getTheme } from '../../../src/style/theming';
 
-jest.mock('../../../src/style/theming', () => ({
-	useTheme: () => ({ textColor: '#111111' })
-}));
+const theme = getTheme('light');
 
 const styles = StyleSheet.create({
 	custom: { fontSize: 40 }
@@ -30,7 +29,7 @@ describe('ThemedIcon', () => {
 		it('should use the theme text color by default', async () => {
 			const screen = await render(<ThemedIcon name="play" />);
 			const style = StyleSheet.flatten(screen.root?.props.style) as { color?: string };
-			expect(style.color).toBe('#111111');
+			expect(style.color).toBe(theme.textColor);
 		});
 
 		it('should use a custom color over the theme color', async () => {

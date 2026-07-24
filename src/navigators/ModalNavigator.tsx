@@ -34,17 +34,19 @@ export const ModalNavigator: React.FC = () => {
 
 		return (): void => {
 			isSubscribed = false;
-			subscription.remove(); // Linking.removeEventListener('url', handleUrl);
+			subscription.remove();
 		};
 	}, []);
 
 	return (
-		<Stack.Navigator screenOptions={{
-			headerShown: false,
-			gestureEnabled: true,
-			gestureDirection: 'vertical',
-			presentation: 'modal'
-		}}>
+		<Stack.Navigator
+			screenOptions={{
+				headerShown: false,
+				gestureEnabled: true,
+				gestureDirection: 'vertical',
+				presentation: 'modal'
+			}}
+		>
 			<Stack.Screen name={ModalRouting.MAIN} component={BottomTabNavigator} />
 			<Stack.Screen name={ModalRouting.PLAYER} component={PlayerScreen} options={{ gestureEnabled: true }} />
 		</Stack.Navigator>

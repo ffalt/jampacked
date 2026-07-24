@@ -1,44 +1,23 @@
 import React from 'react';
-import { describe, it, expect, beforeEach, afterEach } from '@jest/globals';
+import { describe, it, expect } from '@jest/globals';
 import { ViewStyle } from 'react-native';
 import { Rating } from '../../../src/components/Rating';
 import { render } from '@testing-library/react-native';
 import { JamObjectType } from '../../../src/services/jam';
 
-jest.mock('../../../src/services/queries/rate.ts', () => ({
-	useLazyRateQuery: jest.fn(),
-	useRateMutation: jest.fn()
-}));
+jest.mock('../../../src/services/queries/rate.ts');
 
-jest.mock('../../../src/utils/snack.ts', () => ({
-	snackSuccess: jest.fn(),
-	snackError: jest.fn()
-}));
+jest.mock('../../../src/utils/snack.ts', () => require('../../../__mocks__/utils/snack.ts'));
 
-jest.mock('../../../src/services/cache.service.ts', () => ({
-	__esModule: true,
-	default: {
-		updateHomeData: jest.fn()
-	}
-}));
+jest.mock('../../../src/services/cache.service.ts', () => require('../../../__mocks__/services/cache.service.ts'));
 
-jest.mock('../../../src/components/ClickIcon.tsx', () => ({
-	ClickIcon: jest.fn(() => null)
-}));
+jest.mock('../../../src/components/ClickIcon.tsx', () => require('../../../__mocks__/components/ClickIcon.tsx'));
 
 import { useLazyRateQuery, useRateMutation } from '../../../src/services/queries/rate';
-import { snackSuccess } from '../../../src/utils/snack.ts';
-import cacheService from '../../../src/services/cache.service.ts';
+import { snackSuccess } from '../../../src/utils/snack';
+import cacheService from '../../../src/services/cache.service';
 
 describe('Rating', () => {
-	beforeEach(() => {
-		jest.clearAllMocks();
-	});
-
-	afterEach(() => {
-		jest.clearAllMocks();
-	});
-
 	describe('rendering', () => {
 		it('should render 5 stars', async () => {
 			(useLazyRateQuery as jest.Mock).mockReturnValue([
@@ -47,8 +26,8 @@ describe('Rating', () => {
 					rating: { rated: 0 },
 					loading: false
 				}
-			]);
-			(useRateMutation as jest.Mock).mockReturnValue([jest.fn()]);
+			] as never);
+			(useRateMutation as jest.Mock).mockReturnValue([jest.fn()] as never);
 
 			const screen = await render(
 				<Rating id="test-id" objType={JamObjectType.track} />
@@ -63,8 +42,8 @@ describe('Rating', () => {
 					rating: { rated: 3 },
 					loading: false
 				}
-			]);
-			(useRateMutation as jest.Mock).mockReturnValue([jest.fn()]);
+			] as never);
+			(useRateMutation as jest.Mock).mockReturnValue([jest.fn()] as never);
 
 			const screen = await render(
 				<Rating id="test-id" objType={JamObjectType.track} />
@@ -79,8 +58,8 @@ describe('Rating', () => {
 					rating: { rated: 0 },
 					loading: false
 				}
-			]);
-			(useRateMutation as jest.Mock).mockReturnValue([jest.fn()]);
+			] as never);
+			(useRateMutation as jest.Mock).mockReturnValue([jest.fn()] as never);
 
 			const screen = await render(
 				<Rating id="test-id" objType={JamObjectType.track} />
@@ -95,8 +74,8 @@ describe('Rating', () => {
 					rating: { rated: 5 },
 					loading: false
 				}
-			]);
-			(useRateMutation as jest.Mock).mockReturnValue([jest.fn()]);
+			] as never);
+			(useRateMutation as jest.Mock).mockReturnValue([jest.fn()] as never);
 
 			const screen = await render(
 				<Rating id="test-id" objType={JamObjectType.track} />
@@ -111,8 +90,8 @@ describe('Rating', () => {
 					rating: undefined,
 					loading: false
 				}
-			]);
-			(useRateMutation as jest.Mock).mockReturnValue([jest.fn()]);
+			] as never);
+			(useRateMutation as jest.Mock).mockReturnValue([jest.fn()] as never);
 
 			const screen = await render(
 				<Rating objType={JamObjectType.track} />
@@ -127,8 +106,8 @@ describe('Rating', () => {
 					rating: { rated: 0 },
 					loading: false
 				}
-			]);
-			(useRateMutation as jest.Mock).mockReturnValue([jest.fn()]);
+			] as never);
+			(useRateMutation as jest.Mock).mockReturnValue([jest.fn()] as never);
 
 			const customStyle: ViewStyle = { opacity: 0.8 };
 			const screen = await render(
@@ -147,8 +126,8 @@ describe('Rating', () => {
 					rating: { rated: 0 },
 					loading: false
 				}
-			]);
-			(useRateMutation as jest.Mock).mockReturnValue([jest.fn()]);
+			] as never);
+			(useRateMutation as jest.Mock).mockReturnValue([jest.fn()] as never);
 
 			await render(<Rating id="test-id" objType={JamObjectType.track} />);
 
@@ -163,12 +142,11 @@ describe('Rating', () => {
 					rating: undefined,
 					loading: false
 				}
-			]);
-			(useRateMutation as jest.Mock).mockReturnValue([jest.fn()]);
+			] as never);
+			(useRateMutation as jest.Mock).mockReturnValue([jest.fn()] as never);
 
 			await render(<Rating objType={JamObjectType.track} />);
 
-			// GetRating should not be called without an id
 			expect(mockGetRating).not.toHaveBeenCalled();
 		});
 
@@ -179,8 +157,8 @@ describe('Rating', () => {
 					rating: { rated: 2 },
 					loading: true
 				}
-			]);
-			(useRateMutation as jest.Mock).mockReturnValue([jest.fn()]);
+			] as never);
+			(useRateMutation as jest.Mock).mockReturnValue([jest.fn()] as never);
 
 			const screen = await render(
 				<Rating id="test-id" objType={JamObjectType.track} />
@@ -195,8 +173,8 @@ describe('Rating', () => {
 					rating: undefined,
 					loading: false
 				}
-			]);
-			(useRateMutation as jest.Mock).mockReturnValue([jest.fn()]);
+			] as never);
+			(useRateMutation as jest.Mock).mockReturnValue([jest.fn()] as never);
 
 			const screen = await render(
 				<Rating objType={JamObjectType.track} />
@@ -213,8 +191,8 @@ describe('Rating', () => {
 					rating: undefined,
 					loading: false
 				}
-			]);
-			(useRateMutation as jest.Mock).mockReturnValue([jest.fn()]);
+			] as never);
+			(useRateMutation as jest.Mock).mockReturnValue([jest.fn()] as never);
 
 			const screen = await render(
 				<Rating id="test-id" objType={JamObjectType.track} />
@@ -229,8 +207,8 @@ describe('Rating', () => {
 					rating: { rated: 0 },
 					loading: false
 				}
-			]);
-			(useRateMutation as jest.Mock).mockReturnValue([jest.fn()]);
+			] as never);
+			(useRateMutation as jest.Mock).mockReturnValue([jest.fn()] as never);
 
 			const screen = await render(
 				<Rating id="test-id" objType={JamObjectType.track} />
@@ -245,8 +223,8 @@ describe('Rating', () => {
 					rating: { rated: 3 },
 					loading: false
 				}
-			]);
-			(useRateMutation as jest.Mock).mockReturnValue([jest.fn()]);
+			] as never);
+			(useRateMutation as jest.Mock).mockReturnValue([jest.fn()] as never);
 
 			const objectTypes = [JamObjectType.track, JamObjectType.album, JamObjectType.artist];
 
@@ -265,8 +243,8 @@ describe('Rating', () => {
 					rating: { rated: 2 },
 					loading: false
 				}
-			]);
-			(useRateMutation as jest.Mock).mockReturnValue([jest.fn()]);
+			] as never);
+			(useRateMutation as jest.Mock).mockReturnValue([jest.fn()] as never);
 
 			const { rerender } = await render(
 				<Rating id="test-id" objType={JamObjectType.track} />
@@ -278,11 +256,10 @@ describe('Rating', () => {
 					rating: { rated: 4 },
 					loading: false
 				}
-			]);
+			] as never);
 
 			await rerender(<Rating id="test-id" objType={JamObjectType.track} />);
 
-			// Rating component re-rendered successfully
 			expect(rerender).toBeDefined();
 		});
 	});

@@ -26,7 +26,6 @@ export const objectHeaderStyles = StyleSheet.create({
 const styles = StyleSheet.create({
 	header: {
 		flexDirection: 'column',
-		// paddingTop: staticTheme.statusBarOffset + staticTheme.padding,
 		height: 320
 	},
 	headerTitleType: {
