@@ -7744,10 +7744,10 @@ react-native-pager-view@8.0.4:
   resolved "https://registry.yarnpkg.com/react-native-pager-view/-/react-native-pager-view-8.0.4.tgz#b5cc01b11cd92273b39b656fc138e0e935d464be"
   integrity sha512-9ASQA/gdQv63pESFbzyODgsY07kZoBjLqBRvZ/HNYn+h29XyOX2BICuvVmhemxw/pz3hKGqGEU31DDhDArwaRg==
 
-react-native-reanimated@4.5.2:
-  version "4.5.2"
-  resolved "https://registry.yarnpkg.com/react-native-reanimated/-/react-native-reanimated-4.5.2.tgz#837555325a65a1e6d68db4b4f77414e59fe8df34"
-  integrity sha512-2XF4a2VyKTy3bxugm9teClxwQ9X4pIkFmoKxIwMQqJdhoFQvjN7In/faKWtjQ8bxTYG+uIJyl6F7oxEwkngjKA==
+react-native-reanimated@4.5.3:
+  version "4.5.3"
+  resolved "https://registry.yarnpkg.com/react-native-reanimated/-/react-native-reanimated-4.5.3.tgz#10ec3f1b2c8d710033d707199cab591a0d410d70"
+  integrity sha512-+owIckpD4sA13XKHaLrr8V1RP4paqoxKvz/jy2wl/ULjMsfcRlfIJdKJxR1kcQr4McBZ6hAoPo01NyLnmy2ycQ==
   dependencies:
     react-native-is-edge-to-edge "^1.3.1"
     semver "^7.7.3"
