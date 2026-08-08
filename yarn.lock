@@ -2459,12 +2459,12 @@
     use-latest-callback "^0.2.4"
     use-sync-external-store "^1.5.0"
 
-"@react-navigation/material-top-tabs@7.6.10":
-  version "7.6.10"
-  resolved "https://registry.yarnpkg.com/@react-navigation/material-top-tabs/-/material-top-tabs-7.6.10.tgz#f9a0a09485ef26dfd19166ebefb536b0b7ed47a2"
-  integrity sha512-V02zFDzn/2vgPZAuDsEUhEgsy/lxTj/9DzaNV8Dfkw153pFH4IukMAuGssOddHqSDN0IW5cL4JEucKkvSElOBA==
+"@react-navigation/material-top-tabs@7.6.13":
+  version "7.6.13"
+  resolved "https://registry.yarnpkg.com/@react-navigation/material-top-tabs/-/material-top-tabs-7.6.13.tgz#d7e0d18b193713ff08f9dd4f3cb76136db5e9f03"
+  integrity sha512-BHWkNmKttW/Jd8zgNY1wtY5HnlxaRt/bY7iDs28fMcHJ0VqoyIsDhdq9Ty8POvL/zhfPLzFVqaf2lobokkvfsQ==
   dependencies:
-    "@react-navigation/elements" "^2.9.33"
+    "@react-navigation/elements" "^2.9.36"
     color "^4.2.3"
     react-native-tab-view "^4.3.2"
 
