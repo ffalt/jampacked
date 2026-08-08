@@ -2037,10 +2037,10 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@op-engineering/op-sqlite@17.1.2":
-  version "17.1.2"
-  resolved "https://registry.yarnpkg.com/@op-engineering/op-sqlite/-/op-sqlite-17.1.2.tgz#7900471b8bfb07edb696365d6875787f29473461"
-  integrity sha512-R1E0MO9dGuOSr5K+Wrwi2k2HrEDbG6iJGwboYl+2hJXpuo01k556GcAj1l7nu4RDPH0wdpM7NL7pieIL5+k3Mw==
+"@op-engineering/op-sqlite@17.1.3":
+  version "17.1.3"
+  resolved "https://registry.yarnpkg.com/@op-engineering/op-sqlite/-/op-sqlite-17.1.3.tgz#042b4aed3f55edba52884bc124a54085adcf411c"
+  integrity sha512-agOXoDc609pYP5lXBXNVpvvw12cQS+EIW7Aa5teXanW1PWgfW2yPy+urJME/xA21QqBg7lDhnX1XxwJSfmwVEQ==
 
 "@pkgjs/parseargs@^0.11.0":
   version "0.11.0"
