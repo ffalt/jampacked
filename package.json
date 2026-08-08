@@ -31,7 +31,7 @@
     "jest-mock": "30.4.1"
   },
   "dependencies": {
-    "@apollo/client": "4.2.8",
+    "@apollo/client": "4.2.9",
     "@callstack/react-theme-provider": "3.0.9",
     "@d11/react-native-fast-image": "8.13.0",
     "@op-engineering/op-sqlite": "17.1.3",
