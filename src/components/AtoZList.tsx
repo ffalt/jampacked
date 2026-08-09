@@ -1,8 +1,4 @@
-/**
-
-	based on https://github.com/rgovindji/react-native-atoz-list
-
- */
+// based on https://github.com/rgovindji/react-native-atoz-list
 import React, { RefObject, useCallback, useMemo, useState } from 'react';
 import { FlatList, FlatListProps, NativeScrollEvent, NativeSyntheticEvent, StyleSheet, View } from 'react-native';
 import { AtoZPicker } from './AtoZPicker';

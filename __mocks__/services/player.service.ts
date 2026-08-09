@@ -1,4 +1,4 @@
-/** Full `JamPlayer` surface so a test never has to enumerate the methods it needs. */
+// Full `JamPlayer` surface so a test never has to enumerate the methods it needs.
 export const JamPlayer = {
 	shuffleQueueSync: jest.fn(),
 	shuffleQueue: jest.fn(async (): Promise<void> => undefined),

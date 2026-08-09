@@ -11,7 +11,7 @@ export function screenProps<P extends object>(_component: React.ComponentType<P>
 	return {} as unknown as P;
 }
 
-/** As `screenProps`, for a screen that reads `route.params`. */
+// As `screenProps`, for a screen that reads `route.params`.
 export function routeProps<P extends object>(_component: React.ComponentType<P>, parameters: unknown): P {
 	return { route: { params: parameters } } as unknown as P;
 }

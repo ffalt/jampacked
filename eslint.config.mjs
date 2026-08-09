@@ -299,6 +299,7 @@ export default ts.config(
 			"complexity": "off",
 			"max-lines": "off",
 			"max-len": "off",
+			"unicorn/single-line-block-comment-style": "off",
 			"unicorn/name-replacements": "off",
 			"unused-imports/no-unused-imports": "error",
 			"unused-imports/no-unused-vars": ["error", { vars: "all", varsIgnorePattern: "^_", args: "after-used", argsIgnorePattern: "^_" }]
