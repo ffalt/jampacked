@@ -27,16 +27,24 @@ describe('ThemedCheckbox', () => {
 	});
 
 	describe('styling', () => {
-		it('should use the theme colors for the checked and unchecked tint', async () => {
+		it('should use the unchecked theme color for the border when unchecked', async () => {
 			const screen = await render(<ThemedCheckbox />);
-			const checkbox = screen.root?.queryAll(node => node.type === 'RNCCheckbox')[0];
-			expect(checkbox?.props.tintColors).toEqual({ true: theme.checkbox.checked, false: theme.checkbox.unchecked });
+			const checkbox = screen.getByRole('checkbox');
+			const style = StyleSheet.flatten(checkbox.props.style) as { borderColor?: string };
+			expect(style.borderColor).toBe(theme.checkbox.unchecked);
+		});
+
+		it('should use the checked theme color for the border when checked', async () => {
+			const screen = await render(<ThemedCheckbox isSelected />);
+			const checkbox = screen.getByRole('checkbox');
+			const style = StyleSheet.flatten(checkbox.props.style) as { borderColor?: string };
+			expect(style.borderColor).toBe(theme.checkbox.checked);
 		});
 
 		it('should merge a custom style onto the checkbox', async () => {
 			const screen = await render(<ThemedCheckbox style={styles.custom} />);
-			const checkbox = screen.root?.queryAll(node => node.type === 'RNCCheckbox')[0];
-			const style = StyleSheet.flatten(checkbox?.props.style) as { margin?: number };
+			const checkbox = screen.getByRole('checkbox');
+			const style = StyleSheet.flatten(checkbox.props.style) as { margin?: number };
 			expect(style.margin).toBe(5);
 		});
 	});

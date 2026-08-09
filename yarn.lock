@@ -2052,11 +2052,6 @@
   resolved "https://registry.yarnpkg.com/@pkgr/core/-/core-0.3.6.tgz#3569708bd4be4d8870ba32bf1c456dac81600d97"
   integrity sha512-SEeaJLb3qBNF/OaXnaR1NmmBbFYk1zC0ZH/52fATcRPLFg/p791YrcyFFy44Bo9sLaGuSuLp5Q6axbb/O+v/RA==
 
-"@react-native-community/checkbox@0.6.0":
-  version "0.6.0"
-  resolved "https://registry.yarnpkg.com/@react-native-community/checkbox/-/checkbox-0.6.0.tgz#7039df87fcec54f05a0fb81b7f4a1bab895b33fd"
-  integrity sha512-648VcbI7hvBN7eNuQSIFHAwdGWgS9LRe6EKK2U8c+ynczLE4Oj5ydXVPwG+712BoyUH5xtyBYBFQkdFkes6jtA==
-
 "@react-native-community/cli-clean@20.2.0":
   version "20.2.0"
   resolved "https://registry.yarnpkg.com/@react-native-community/cli-clean/-/cli-clean-20.2.0.tgz#6869513f657df5879069c26bcdc0e8d0161f6627"
