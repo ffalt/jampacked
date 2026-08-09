@@ -7,7 +7,7 @@ import type * as JamEnums from './jam-enums';
 export declare namespace JamParameters {
 
 	export interface AcousticBrainzLookupParameters {
-		/** MusicBrainz ID */
+		// MusicBrainz ID
 		mbID: string;
 		/**
 		 * Page parameter if more than one acousticbrainz info is available
@@ -18,7 +18,7 @@ export declare namespace JamParameters {
 	}
 
 	export interface AcoustidLookupParameters {
-		/** Track ID */
+		// Track ID
 		trackID: string;
 		/**
 		 * Lookup Includes (comma-separated AcoustId includes)
@@ -28,13 +28,13 @@ export declare namespace JamParameters {
 	}
 
 	export interface AdminSettings {
-		/** Admin Chat Settings */
+		// Admin Chat Settings
 		chat: AdminSettingsChat;
-		/** Admin Index Settings */
+		// Admin Index Settings
 		index: AdminSettingsIndex;
-		/** Admin Library Settings */
+		// Admin Library Settings
 		library: AdminSettingsLibrary;
-		/** Admin External Services Settings */
+		// Admin External Services Settings
 		externalServices: AdminSettingsExternal;
 	}
 
@@ -45,7 +45,7 @@ export declare namespace JamParameters {
 		 * @minimum 0
 		 */
 		maxMessages: number;
-		/** Maximum Age of Chat Messages to keep */
+		// Maximum Age of Chat Messages to keep
 		maxAge: AdminSettingsChatMaxAge;
 	}
 
@@ -56,7 +56,7 @@ export declare namespace JamParameters {
 		 * @minimum 0
 		 */
 		value: number;
-		/** Unit of Maximum Age */
+		// Unit of Maximum Age
 		unit: string;
 	}
 
@@ -69,7 +69,7 @@ export declare namespace JamParameters {
 	}
 
 	export interface AdminSettingsIndex {
-		/** List of ignored Articles */
+		// List of ignored Articles
 		ignoreArticles: Array<string>;
 	}
 
@@ -85,37 +85,37 @@ export declare namespace JamParameters {
 	}
 
 	export interface AlbumFilterParameters {
-		/** filter by Search Query */
+		// filter by Search Query
 		query?: string;
-		/** filter by Album Name */
+		// filter by Album Name
 		name?: string;
-		/** filter by Album Slug */
+		// filter by Album Slug
 		slug?: string;
-		/** filter by Artist Name */
+		// filter by Artist Name
 		artist?: string;
-		/** filter by Album Ids */
+		// filter by Album Ids
 		ids?: Array<string>;
-		/** filter by Root Ids */
+		// filter by Root Ids
 		rootIDs?: Array<string>;
-		/** filter by Artist Ids */
+		// filter by Artist Ids
 		artistIDs?: Array<string>;
-		/** filter by Track Ids */
+		// filter by Track Ids
 		trackIDs?: Array<string>;
-		/** filter by Folder Ids */
+		// filter by Folder Ids
 		folderIDs?: Array<string>;
-		/** filter by Series Ids */
+		// filter by Series Ids
 		seriesIDs?: Array<string>;
-		/** filter by Album Types */
+		// filter by Album Types
 		albumTypes?: Array<JamEnums.AlbumType>;
-		/** filter by MusicBrainz Release Ids */
+		// filter by MusicBrainz Release Ids
 		mbReleaseIDs?: Array<string>;
-		/** filter by MusicBrainz Artist Ids */
+		// filter by MusicBrainz Artist Ids
 		mbArtistIDs?: Array<string>;
-		/** exclude by MusicBrainz Artist Id */
+		// exclude by MusicBrainz Artist Id
 		notMbArtistID?: string;
-		/** filter by Genres */
+		// filter by Genres
 		genres?: Array<string>;
-		/** filter by Genre Ids */
+		// filter by Genre Ids
 		genreIDs?: Array<string>;
 		/**
 		 * filter by Creation timestamp
@@ -138,40 +138,40 @@ export declare namespace JamParameters {
 	}
 
 	export interface AlbumOrderParameters extends OrderByParameters {
-		/** order by field */
+		// order by field
 		orderBy?: JamEnums.AlbumOrderFields;
 	}
 
 	export interface ArtistFilterParameters {
-		/** filter by Search Query */
+		// filter by Search Query
 		query?: string;
-		/** filter by Artist Name */
+		// filter by Artist Name
 		name?: string;
-		/** filter by Artist Slug */
+		// filter by Artist Slug
 		slug?: string;
-		/** filter by Artist Ids */
+		// filter by Artist Ids
 		ids?: Array<string>;
-		/** filter by Root Ids */
+		// filter by Root Ids
 		rootIDs?: Array<string>;
-		/** filter by Album Ids */
+		// filter by Album Ids
 		albumIDs?: Array<string>;
-		/** filter by Track Ids */
+		// filter by Track Ids
 		trackIDs?: Array<string>;
-		/** filter by Album Track Ids */
+		// filter by Album Track Ids
 		albumTrackIDs?: Array<string>;
-		/** filter by Series Ids */
+		// filter by Series Ids
 		seriesIDs?: Array<string>;
-		/** filter by Folder Ids */
+		// filter by Folder Ids
 		folderIDs?: Array<string>;
-		/** filter by Genres */
+		// filter by Genres
 		genres?: Array<string>;
-		/** filter by Genre Ids */
+		// filter by Genre Ids
 		genreIDs?: Array<string>;
-		/** filter by Album Types */
+		// filter by Album Types
 		albumTypes?: Array<JamEnums.AlbumType>;
-		/** filter by MusicBrainz Artist Ids */
+		// filter by MusicBrainz Artist Ids
 		mbArtistIDs?: Array<string>;
-		/** exclude by MusicBrainz Artist Id */
+		// exclude by MusicBrainz Artist Id
 		notMbArtistID?: string;
 		/**
 		 * filter by Creation timestamp
@@ -182,24 +182,24 @@ export declare namespace JamParameters {
 	}
 
 	export interface ArtistOrderParameters extends OrderByParameters {
-		/** order by field */
+		// order by field
 		orderBy?: JamEnums.ArtistOrderFields;
 	}
 
 	export interface ArtworkFilterParameters {
-		/** filter by Search Query */
+		// filter by Search Query
 		query?: string;
-		/** filter by Artist Name */
+		// filter by Artist Name
 		name?: string;
-		/** filter by Artwork Ids */
+		// filter by Artwork Ids
 		ids?: Array<string>;
-		/** filter by Artwork Image Formats */
+		// filter by Artwork Image Formats
 		formats?: Array<string>;
-		/** filter by Folder Ids */
+		// filter by Folder Ids
 		folderIDs?: Array<string>;
-		/** filter if artwork is in folder id (or its child folders) */
+		// filter if artwork is in folder id (or its child folders)
 		childOfID?: string;
-		/** filter by Artwork Image Types */
+		// filter by Artwork Image Types
 		types?: Array<JamEnums.ArtworkImageType>;
 		/**
 		 * filter by Creation timestamp
@@ -246,14 +246,14 @@ export declare namespace JamParameters {
 	}
 
 	export interface ArtworkNewParameters extends ArtworkNewUploadParameters {
-		/** URL of an image */
+		// URL of an image
 		url: string;
 	}
 
 	export interface ArtworkNewUploadParameters {
-		/** Folder Id */
+		// Folder Id
 		folderID: string;
-		/** Types of the image */
+		// Types of the image
 		types: Array<JamEnums.ArtworkImageType>;
 	}
 
@@ -261,14 +261,14 @@ export declare namespace JamParameters {
 	}
 
 	export interface ArtworkRenameParameters {
-		/** Artwork Id */
+		// Artwork Id
 		id: string;
-		/** New Image Filename */
+		// New Image Filename
 		newName: string;
 	}
 
 	export interface AutoCompleteFilterParameters {
-		/** query to complete */
+		// query to complete
 		query: string;
 		/**
 		 * amount of track names to complete
@@ -329,7 +329,7 @@ export declare namespace JamParameters {
 	}
 
 	export interface BookmarkCreateParameters {
-		/** a track or episode id */
+		// a track or episode id
 		mediaID: string;
 		/**
 		 * the position of the bookmark (in ms)
@@ -337,20 +337,20 @@ export declare namespace JamParameters {
 		 * @minimum 0
 		 */
 		position: number;
-		/** a comment */
+		// a comment
 		comment: string;
 	}
 
 	export interface BookmarkFilterParameters {
-		/** filter by Search Query */
+		// filter by Search Query
 		query?: string;
-		/** filter by Comment */
+		// filter by Comment
 		comment?: string;
-		/** filter by Bookmark Ids */
+		// filter by Bookmark Ids
 		ids?: Array<string>;
-		/** filter by Track Ids */
+		// filter by Track Ids
 		trackIDs?: Array<string>;
-		/** filter by Episode Ids */
+		// filter by Episode Ids
 		episodeIDs?: Array<string>;
 		/**
 		 * filter by Creation timestamp
@@ -358,17 +358,17 @@ export declare namespace JamParameters {
 		 * @minimum 0
 		 */
 		since?: number;
-		/** filter by User Ids */
+		// filter by User Ids
 		userIDs?: Array<string>;
 	}
 
 	export interface BookmarkOrderParameters extends OrderByParameters {
-		/** order by field */
+		// order by field
 		orderBy?: JamEnums.BookmarkOrderFields;
 	}
 
 	export interface ChatCreateParameters {
-		/** Chat message */
+		// Chat message
 		message: string;
 	}
 
@@ -390,23 +390,23 @@ export declare namespace JamParameters {
 	}
 
 	export interface CoverArtArchiveImageParameters {
-		/** Coverart URL */
+		// Coverart URL
 		url: string;
 	}
 
 	export interface CoverArtArchiveLookupParameters {
-		/** MusicBrainz ID */
+		// MusicBrainz ID
 		mbID: string;
-		/** Lookup by CoverArtArchive MusicBrainz Type */
+		// Lookup by CoverArtArchive MusicBrainz Type
 		type: JamEnums.CoverArtArchiveLookupType;
 	}
 
 	export interface CredentialsParameters {
-		/** User password */
+		// User password
 		password: string;
-		/** User name */
+		// User name
 		username: string;
-		/** User client */
+		// User client
 		client: string;
 		/**
 		 * Generate JSON Web Token
@@ -416,7 +416,7 @@ export declare namespace JamParameters {
 	}
 
 	export interface DefaultOrderParameters extends OrderByParameters {
-		/** order by field */
+		// order by field
 		orderBy?: JamEnums.DefaultOrderFields;
 	}
 
@@ -429,12 +429,12 @@ export declare namespace JamParameters {
 	}
 
 	export interface DiscogsArtistSearchParameters {
-		/** Artist Name */
+		// Artist Name
 		query: string;
 	}
 
 	export interface DiscogsImageParameters {
-		/** Discogs Image URL */
+		// Discogs Image URL
 		url: string;
 	}
 
@@ -455,29 +455,29 @@ export declare namespace JamParameters {
 	}
 
 	export interface DiscogsSearchParameters {
-		/** General search query */
+		// General search query
 		q?: string;
-		/** Artist Name */
+		// Artist Name
 		artist?: string;
-		/** Release Title */
+		// Release Title
 		title?: string;
-		/** Release Year */
+		// Release Year
 		year?: string;
-		/** Release Format (e.g. Vinyl, CD) */
+		// Release Format (e.g. Vinyl, CD)
 		format?: string;
-		/** Record Label */
+		// Record Label
 		label?: string;
-		/** Country of Release */
+		// Country of Release
 		country?: string;
-		/** Catalog Number */
+		// Catalog Number
 		catno?: string;
-		/** Barcode */
+		// Barcode
 		barcode?: string;
-		/** Genre */
+		// Genre
 		genre?: string;
-		/** Style */
+		// Style
 		style?: string;
-		/** Track Title */
+		// Track Title
 		track?: string;
 	}
 
@@ -490,13 +490,13 @@ export declare namespace JamParameters {
 	}
 
 	export interface EpisodeFilterParameters {
-		/** filter by Search Query */
+		// filter by Search Query
 		query?: string;
-		/** filter by Name */
+		// filter by Name
 		name?: string;
-		/** filter by Episode Ids */
+		// filter by Episode Ids
 		ids?: Array<string>;
-		/** filter by Podcast Ids */
+		// filter by Podcast Ids
 		podcastIDs?: Array<string>;
 		/**
 		 * filter by Creation timestamp
@@ -504,21 +504,21 @@ export declare namespace JamParameters {
 		 * @minimum 0
 		 */
 		since?: number;
-		/** filter by Authors */
+		// filter by Authors
 		authors?: Array<string>;
-		/** filter by GUIDs */
+		// filter by GUIDs
 		guids?: Array<string>;
-		/** filter by Podcast Status */
+		// filter by Podcast Status
 		statuses?: Array<JamEnums.PodcastStatus>;
 	}
 
 	export interface EpisodeOrderParameters extends OrderByParameters {
-		/** order by field */
+		// order by field
 		orderBy?: JamEnums.EpisodeOrderFields;
 	}
 
 	export interface FavParameters {
-		/** ID */
+		// ID
 		id: string;
 		/**
 		 * add or remove the item fav
@@ -529,18 +529,18 @@ export declare namespace JamParameters {
 	}
 
 	export interface FolderCreateParameters {
-		/** Parent Folder Id */
+		// Parent Folder Id
 		id: string;
-		/** New Folder Name */
+		// New Folder Name
 		name: string;
 	}
 
 	export interface FolderFilterParameters {
-		/** filter by Search Query */
+		// filter by Search Query
 		query?: string;
-		/** filter by Name */
+		// filter by Name
 		name?: string;
-		/** filter by Folder Ids */
+		// filter by Folder Ids
 		ids?: Array<string>;
 		/**
 		 * filter by Creation timestamp
@@ -548,11 +548,11 @@ export declare namespace JamParameters {
 		 * @minimum 0
 		 */
 		since?: number;
-		/** filter by Folder Parent Ids */
+		// filter by Folder Parent Ids
 		parentIDs?: Array<string>;
-		/** filter if folder is in folder id (or its child folders) */
+		// filter if folder is in folder id (or its child folders)
 		childOfID?: string;
-		/** filter by folder id and all its sub folders */
+		// filter by folder id and all its sub folders
 		inSubtreeOfID?: string;
 		/**
 		 * filter by Folder Tree Level
@@ -560,19 +560,19 @@ export declare namespace JamParameters {
 		 * @minimum 0
 		 */
 		level?: number;
-		/** filter by Album Types */
+		// filter by Album Types
 		albumTypes?: Array<JamEnums.AlbumType>;
-		/** filter by Folder Types */
+		// filter by Folder Types
 		folderTypes?: Array<JamEnums.FolderType>;
-		/** filter by Genres */
+		// filter by Genres
 		genres?: Array<string>;
-		/** filter by Album Name */
+		// filter by Album Name
 		album?: Array<string>;
-		/** filter by Artist Name */
+		// filter by Artist Name
 		artist?: Array<string>;
-		/** filter by Artist Sort Name */
+		// filter by Artist Sort Name
 		artistSort?: Array<string>;
-		/** filter by Title */
+		// filter by Title
 		title?: Array<string>;
 		/**
 		 * filter by since year
@@ -586,57 +586,57 @@ export declare namespace JamParameters {
 		 * @minimum 0
 		 */
 		toYear?: number;
-		/** filter by MusicBrainz Release Ids */
+		// filter by MusicBrainz Release Ids
 		mbReleaseIDs?: Array<string>;
-		/** filter by MusicBrainz Release Group Ids */
+		// filter by MusicBrainz Release Group Ids
 		mbReleaseGroupIDs?: Array<string>;
-		/** filter by MusicBrainz Album Type */
+		// filter by MusicBrainz Album Type
 		mbAlbumTypes?: Array<string>;
-		/** filter by MusicBrainz Artist Ids */
+		// filter by MusicBrainz Artist Ids
 		mbArtistIDs?: Array<string>;
-		/** filter by Artwork Ids */
+		// filter by Artwork Ids
 		artworksIDs?: Array<string>;
-		/** filter by Root Ids */
+		// filter by Root Ids
 		rootIDs?: Array<string>;
-		/** filter by Track Ids */
+		// filter by Track Ids
 		trackIDs?: Array<string>;
-		/** filter by Album Ids */
+		// filter by Album Ids
 		albumIDs?: Array<string>;
-		/** filter by Artist Ids */
+		// filter by Artist Ids
 		artistIDs?: Array<string>;
-		/** filter by Series Ids */
+		// filter by Series Ids
 		seriesIDs?: Array<string>;
-		/** filter by Genre Ids */
+		// filter by Genre Ids
 		genreIDs?: Array<string>;
 	}
 
 	export interface FolderMoveParameters {
-		/** Folder Ids */
+		// Folder Ids
 		ids: Array<string>;
-		/** Destination Parent Folder Id */
+		// Destination Parent Folder Id
 		newParentID: string;
 	}
 
 	export interface FolderOrderParameters extends OrderByParameters {
-		/** order by field */
+		// order by field
 		orderBy?: JamEnums.FolderOrderFields;
 	}
 
 	export interface FolderRenameParameters {
-		/** Folder Id */
+		// Folder Id
 		id: string;
-		/** New Folder Name */
+		// New Folder Name
 		name: string;
 	}
 
 	export interface GenreFilterParameters {
-		/** filter by Search Query */
+		// filter by Search Query
 		query?: string;
-		/** filter by Genre Name */
+		// filter by Genre Name
 		name?: string;
-		/** filter by Genre Ids */
+		// filter by Genre Ids
 		ids?: Array<string>;
-		/** filter by Track Ids */
+		// filter by Track Ids
 		trackIDs?: Array<string>;
 		/**
 		 * filter by Creation timestamp
@@ -647,19 +647,19 @@ export declare namespace JamParameters {
 	}
 
 	export interface GenreOrderParameters extends OrderByParameters {
-		/** order by field */
+		// order by field
 		orderBy?: JamEnums.GenreOrderFields;
 	}
 
 	export interface ImageFormatParameters {
-		/** format of the image */
+		// format of the image
 		format?: JamEnums.ImageFormatType;
 	}
 
 	export interface ImageParameters extends ImageSizeParameters {
-		/** Object Id */
+		// Object Id
 		id: string;
-		/** format of the image */
+		// format of the image
 		format?: JamEnums.ImageFormatType;
 	}
 
@@ -1283,25 +1283,25 @@ export declare namespace JamParameters {
 	}
 
 	export interface LastFMLookupParameters {
-		/** MusicBrainz ID */
+		// MusicBrainz ID
 		mbID: string;
-		/** lookup by lastfm type */
+		// lookup by lastfm type
 		type: JamEnums.LastFMLookupType;
 	}
 
 	export interface ListParameters {
-		/** filter by special list */
+		// filter by special list
 		list?: JamEnums.ListType;
-		/** seed for random list */
+		// seed for random list
 		seed?: string;
 	}
 
 	export interface LrclibSearchParameters {
-		/** Song Title */
+		// Song Title
 		title: string;
-		/** Song Artist */
+		// Song Artist
 		artist: string;
-		/** Song Album */
+		// Song Album
 		album: string;
 		/**
 		 * Song Duration in seconds
@@ -1311,9 +1311,9 @@ export declare namespace JamParameters {
 	}
 
 	export interface LyricsOVHSearchParameters {
-		/** Song Title */
+		// Song Title
 		title: string;
-		/** Song Artist */
+		// Song Artist
 		artist: string;
 	}
 
@@ -1332,29 +1332,29 @@ export declare namespace JamParameters {
 		 * @TJS-type integer
 		 */
 		version: number;
-		/** Tag Frames */
+		// Tag Frames
 		frames: unknown;
 	}
 
 	export interface MusicBrainzLookupParameters {
-		/** MusicBrainz ID */
+		// MusicBrainz ID
 		mbID: string;
-		/** MusicBrainz Lookup Type */
+		// MusicBrainz Lookup Type
 		type: JamEnums.MusicBrainzLookupType;
-		/** Lookup Includes (comma-separated MusicBrainz includes https://musicbrainz.org/doc/Development/XML_Web_Service/Version_2#Lookups ) */
+		// Lookup Includes (comma-separated MusicBrainz includes https://musicbrainz.org/doc/Development/XML_Web_Service/Version_2#Lookups )
 		inc?: string;
 	}
 
 	export interface MusicBrainzSearchParameters {
-		/** MusicBrainz Search Type */
+		// MusicBrainz Search Type
 		type: JamEnums.MusicBrainzSearchType;
-		/** Search by Recording Name */
+		// Search by Recording Name
 		recording?: string;
-		/** Search by Releasegroup Name */
+		// Search by Releasegroup Name
 		releasegroup?: string;
-		/** Search by Release Name */
+		// Search by Release Name
 		release?: string;
-		/** Search by Artist Name */
+		// Search by Artist Name
 		artist?: string;
 		/**
 		 * Search by Number of Release Tracks
@@ -1389,23 +1389,23 @@ export declare namespace JamParameters {
 	}
 
 	export interface PlaylistEntryFilterParameters {
-		/** filter by Playlist Ids */
+		// filter by Playlist Ids
 		playlistIDs?: Array<string>;
 	}
 
 	export interface PlaylistEntryOrderParameters extends OrderByParameters {
-		/** order by field */
+		// order by field
 		orderBy?: JamEnums.PlaylistEntryOrderFields;
 	}
 
 	export interface PlaylistFilterParameters {
-		/** filter by Search Query */
+		// filter by Search Query
 		query?: string;
-		/** filter by Name */
+		// filter by Name
 		name?: string;
-		/** filter by Comment */
+		// filter by Comment
 		comment?: string;
-		/** filter by Playlist Ids */
+		// filter by Playlist Ids
 		ids?: Array<string>;
 		/**
 		 * filter by Creation timestamp
@@ -1413,7 +1413,7 @@ export declare namespace JamParameters {
 		 * @minimum 0
 		 */
 		since?: number;
-		/** filter by User Ids */
+		// filter by User Ids
 		userIDs?: Array<string>;
 		/**
 		 * filter by isPublic Flag
@@ -1435,16 +1435,16 @@ export declare namespace JamParameters {
 	}
 
 	export interface PlaylistMutateParameters {
-		/** Playlist Name */
+		// Playlist Name
 		name?: string;
-		/** Comment */
+		// Comment
 		comment?: string;
 		/**
 		 * Playlist is public?
 		 * @TJS-type boolean
 		 */
 		isPublic?: boolean;
-		/** Track/Episode IDs of the playlist, may include duplicates */
+		// Track/Episode IDs of the playlist, may include duplicates
 		mediaIDs?: Array<string>;
 	}
 
@@ -1452,9 +1452,9 @@ export declare namespace JamParameters {
 	}
 
 	export interface PlayQueueSetParameters {
-		/** Media Ids of the play queue */
+		// Media Ids of the play queue
 		mediaIDs?: Array<string>;
-		/** Current Media Id */
+		// Current Media Id
 		currentID?: string;
 		/**
 		 * Position in Current Media
@@ -1465,28 +1465,28 @@ export declare namespace JamParameters {
 	}
 
 	export interface PodcastCreateParameters {
-		/** Podcast Feed URL */
+		// Podcast Feed URL
 		url: string;
 	}
 
 	export interface PodcastDiscoverByTagParameters {
-		/** Search Podcast by Tag */
+		// Search Podcast by Tag
 		tag: string;
 	}
 
 	export interface PodcastDiscoverParameters {
-		/** Search Podcast by Name */
+		// Search Podcast by Name
 		query: string;
 	}
 
 	export interface PodcastFilterParameters {
-		/** filter by Search Query */
+		// filter by Search Query
 		query?: string;
-		/** filter by Name */
+		// filter by Name
 		name?: string;
-		/** filter by Podcast Ids */
+		// filter by Podcast Ids
 		ids?: Array<string>;
-		/** filter by Episode Ids */
+		// filter by Episode Ids
 		episodeIDs?: Array<string>;
 		/**
 		 * filter by Creation timestamp
@@ -1494,9 +1494,9 @@ export declare namespace JamParameters {
 		 * @minimum 0
 		 */
 		since?: number;
-		/** filter by URL */
+		// filter by URL
 		url?: string;
-		/** filter by Podcast Status */
+		// filter by Podcast Status
 		statuses?: Array<JamEnums.PodcastStatus>;
 		/**
 		 * filter by since Last Check timestamp
@@ -1510,38 +1510,38 @@ export declare namespace JamParameters {
 		 * @minimum 0
 		 */
 		lastCheckTo?: number;
-		/** filter by Title */
+		// filter by Title
 		title?: string;
-		/** filter by Author */
+		// filter by Author
 		author?: string;
-		/** filter by Title */
+		// filter by Title
 		description?: string;
-		/** filter by Title */
+		// filter by Title
 		generator?: string;
-		/** filter by Podcast Category */
+		// filter by Podcast Category
 		categories?: Array<string>;
 	}
 
 	export interface PodcastOrderParameters extends OrderByParameters {
-		/** order by field */
+		// order by field
 		orderBy?: JamEnums.PodcastOrderFields;
 	}
 
 	export interface PodcastRefreshParameters {
-		/** Podcast ID to refresh (empty for refreshing all) */
+		// Podcast ID to refresh (empty for refreshing all)
 		id?: string;
 	}
 
 	export interface RadioFilterParameters {
-		/** filter by Search Query */
+		// filter by Search Query
 		query?: string;
-		/** filter by Name */
+		// filter by Name
 		name?: string;
-		/** filter by Radio Ids */
+		// filter by Radio Ids
 		ids?: Array<string>;
-		/** filter by URL */
+		// filter by URL
 		url?: string;
-		/** filter by Homepage URL */
+		// filter by Homepage URL
 		homepage?: string;
 		/**
 		 * filter by Creation timestamp
@@ -1557,11 +1557,11 @@ export declare namespace JamParameters {
 	}
 
 	export interface RadioMutateParameters {
-		/** Radio Name */
+		// Radio Name
 		name: string;
-		/** URL */
+		// URL
 		url: string;
-		/** Homepage */
+		// Homepage
 		homepage?: string;
 		/**
 		 * Disabled
@@ -1574,7 +1574,7 @@ export declare namespace JamParameters {
 	}
 
 	export interface RateParameters {
-		/** ID */
+		// ID
 		id: string;
 		/**
 		 * Rating
@@ -1586,18 +1586,18 @@ export declare namespace JamParameters {
 	}
 
 	export interface RawTagUpdateParameters {
-		/** Track Id */
+		// Track Id
 		id: string;
-		/** Raw tag to store in the track (e.g. id3v2/vorbis) */
+		// Raw tag to store in the track (e.g. id3v2/vorbis)
 		tag: unknown;
 	}
 
 	export interface RootFilterParameters {
-		/** filter by Search Query */
+		// filter by Search Query
 		query?: string;
-		/** filter by Artist Name */
+		// filter by Artist Name
 		name?: string;
-		/** filter by Root Ids */
+		// filter by Root Ids
 		ids?: Array<string>;
 		/**
 		 * filter by Creation timestamp
@@ -1605,26 +1605,26 @@ export declare namespace JamParameters {
 		 * @minimum 0
 		 */
 		since?: number;
-		/** filter by Scan Strategy */
+		// filter by Scan Strategy
 		strategies?: Array<JamEnums.RootScanStrategy>;
-		/** filter by Track Ids */
+		// filter by Track Ids
 		trackIDs?: Array<string>;
-		/** filter by Folder Ids */
+		// filter by Folder Ids
 		folderIDs?: Array<string>;
-		/** filter by Album Ids */
+		// filter by Album Ids
 		albumIDs?: Array<string>;
-		/** filter by Artist Ids */
+		// filter by Artist Ids
 		artistIDs?: Array<string>;
-		/** filter by Series Ids */
+		// filter by Series Ids
 		seriesIDs?: Array<string>;
 	}
 
 	export interface RootMutateParameters {
-		/** Root Name */
+		// Root Name
 		name: string;
-		/** Absolute Path for Root  */
+		// Absolute Path for Root 
 		path: string;
-		/** Scan Strategy */
+		// Scan Strategy
 		strategy: JamEnums.RootScanStrategy;
 	}
 
@@ -1632,18 +1632,18 @@ export declare namespace JamParameters {
 	}
 
 	export interface RootRefreshParameters {
-		/** Root ID to refresh (empty for refreshing all) */
+		// Root ID to refresh (empty for refreshing all)
 		id?: string;
 	}
 
 	export interface SeriesFilterParameters {
-		/** filter by Search Query */
+		// filter by Search Query
 		query?: string;
-		/** filter by Name */
+		// filter by Name
 		name?: string;
-		/** filter by Series Ids */
+		// filter by Series Ids
 		ids?: Array<string>;
-		/** filter by Album Types */
+		// filter by Album Types
 		albumTypes?: Array<JamEnums.AlbumType>;
 		/**
 		 * filter by Creation timestamp
@@ -1651,17 +1651,17 @@ export declare namespace JamParameters {
 		 * @minimum 0
 		 */
 		since?: number;
-		/** filter by Track Ids */
+		// filter by Track Ids
 		trackIDs?: Array<string>;
-		/** filter by Album Ids */
+		// filter by Album Ids
 		albumIDs?: Array<string>;
-		/** filter by Artist Ids */
+		// filter by Artist Ids
 		artistIDs?: Array<string>;
-		/** filter by Root Ids */
+		// filter by Root Ids
 		rootIDs?: Array<string>;
-		/** filter by Folder Ids */
+		// filter by Folder Ids
 		folderIDs?: Array<string>;
-		/** filter by Genre Ids */
+		// filter by Genre Ids
 		genreIDs?: Array<string>;
 	}
 
@@ -1675,9 +1675,9 @@ export declare namespace JamParameters {
 		 * @minimum 0
 		 */
 		since?: number;
-		/** filter by client name */
+		// filter by client name
 		client?: string;
-		/** filter by client name */
+		// filter by client name
 		agent?: string;
 		/**
 		 * filter by since expiry date
@@ -1691,24 +1691,24 @@ export declare namespace JamParameters {
 		 * @minimum 0
 		 */
 		expiresTo?: number;
-		/** filter by session mode */
+		// filter by session mode
 		mode?: JamEnums.SessionMode;
-		/** filter by User Ids */
+		// filter by User Ids
 		userIDs?: Array<string>;
 	}
 
 	export interface SessionOrderParameters extends OrderByParameters {
-		/** order by field */
+		// order by field
 		orderBy?: JamEnums.SessionOrderFields;
 	}
 
 	export interface StatesParameters {
-		/** IDs */
+		// IDs
 		ids: Array<string>;
 	}
 
 	export interface StatsFilter {
-		/** filter stats by Root Id */
+		// filter stats by Root Id
 		rootID?: string;
 	}
 
@@ -1729,26 +1729,26 @@ export declare namespace JamParameters {
 		 * @maximum 320
 		 */
 		maxBitRate?: number;
-		/** format of the audio */
+		// format of the audio
 		format?: JamEnums.AudioFormatType;
 	}
 
 	export interface TrackFilterParameters {
-		/** filter by Search Query */
+		// filter by Search Query
 		query?: string;
-		/** filter by Track Title */
+		// filter by Track Title
 		name?: string;
-		/** filter by Track Ids */
+		// filter by Track Ids
 		ids?: Array<string>;
-		/** filter if track is in folder id (or its child folders) */
+		// filter if track is in folder id (or its child folders)
 		childOfID?: string;
-		/** filter by artist name */
+		// filter by artist name
 		artist?: string;
-		/** filter by album name */
+		// filter by album name
 		album?: string;
-		/** filter by genres */
+		// filter by genres
 		genres?: Array<string>;
-		/** filter by Genre Ids */
+		// filter by Genre Ids
 		genreIDs?: Array<string>;
 		/**
 		 * filter by Creation timestamp
@@ -1756,21 +1756,21 @@ export declare namespace JamParameters {
 		 * @minimum 0
 		 */
 		since?: number;
-		/** filter by Series Ids */
+		// filter by Series Ids
 		seriesIDs?: Array<string>;
-		/** filter by Album Ids */
+		// filter by Album Ids
 		albumIDs?: Array<string>;
-		/** filter by Artist Ids */
+		// filter by Artist Ids
 		artistIDs?: Array<string>;
-		/** filter by Album Artist Ids */
+		// filter by Album Artist Ids
 		albumArtistIDs?: Array<string>;
-		/** filter by Root Ids */
+		// filter by Root Ids
 		rootIDs?: Array<string>;
-		/** filter by Folder Ids */
+		// filter by Folder Ids
 		folderIDs?: Array<string>;
-		/** filter by Bookmark Ids */
+		// filter by Bookmark Ids
 		bookmarkIDs?: Array<string>;
-		/** filter by MusicBrainz Track Ids */
+		// filter by MusicBrainz Track Ids
 		mbTrackIDs?: Array<string>;
 		/**
 		 * filter by since year
@@ -1787,44 +1787,44 @@ export declare namespace JamParameters {
 	}
 
 	export interface TrackFixParameters {
-		/** Track Id */
+		// Track Id
 		id: string;
-		/** Which issue to fix with the track */
+		// Which issue to fix with the track
 		fixID: JamEnums.TrackHealthID;
 	}
 
 	export interface TrackMoveParameters {
-		/** Track Ids */
+		// Track Ids
 		ids: Array<string>;
-		/** ID of the destination folder */
+		// ID of the destination folder
 		folderID: string;
 	}
 
 	export interface TrackOrderParameters extends OrderByParameters {
-		/** order by field */
+		// order by field
 		orderBy?: JamEnums.TrackOrderFields;
 	}
 
 	export interface TrackRenameParameters {
-		/** Track Id */
+		// Track Id
 		id: string;
-		/** New track file name */
+		// New track file name
 		name: string;
 	}
 
 	export interface UserEmailUpdateParameters {
-		/** Password of calling user (or admin) is required to change the email */
+		// Password of calling user (or admin) is required to change the email
 		password: string;
-		/** New email */
+		// New email
 		email: string;
 	}
 
 	export interface UserFilterParameters {
-		/** filter by Search Query */
+		// filter by Search Query
 		query?: string;
-		/** filter by User name */
+		// filter by User name
 		name?: string;
-		/** filter by User Ids */
+		// filter by User Ids
 		ids?: Array<string>;
 		/**
 		 * filter by Creation timestamp
@@ -1832,23 +1832,23 @@ export declare namespace JamParameters {
 		 * @minimum 0
 		 */
 		since?: number;
-		/** filter by User email */
+		// filter by User email
 		email?: string;
-		/** filter by User roles */
+		// filter by User roles
 		roles?: Array<JamEnums.UserRole>;
 	}
 
 	export interface UserGenerateImageParameters {
-		/** Random Seed String */
+		// Random Seed String
 		seed?: string;
 	}
 
 	export interface UserMutateParameters {
-		/** Password of calling admin user is required to create an user. this is NOT the user password! */
+		// Password of calling admin user is required to create an user. this is NOT the user password!
 		password: string;
-		/** User Name */
+		// User Name
 		name: string;
-		/** User Email */
+		// User Email
 		email: string;
 		/**
 		 * User has admin rights?
@@ -1880,19 +1880,19 @@ export declare namespace JamParameters {
 	}
 
 	export interface UserPasswordUpdateParameters {
-		/** Password of calling user (or admin) is required to change the password */
+		// Password of calling user (or admin) is required to change the password
 		password: string;
-		/** New Password */
+		// New Password
 		newPassword: string;
 	}
 
 	export interface UserSubsonicTokenGenerateParameters {
-		/** Password of calling user (or admin) is required to generate/update the Subsonic token */
+		// Password of calling user (or admin) is required to generate/update the Subsonic token
 		password: string;
 	}
 
 	export interface WaveformParameters {
-		/** format of the waveform */
+		// format of the waveform
 		format?: JamEnums.WaveformFormatType;
 		/**
 		 * Width of svg
@@ -1904,7 +1904,7 @@ export declare namespace JamParameters {
 	}
 
 	export interface WaveformSVGParameters {
-		/** Object Id */
+		// Object Id
 		id: string;
 		/**
 		 * Width of svg
@@ -1916,12 +1916,12 @@ export declare namespace JamParameters {
 	}
 
 	export interface WikidataLookupParameters {
-		/** WikiData ID */
+		// WikiData ID
 		wikiDataID: string;
 	}
 
 	export interface WikidataSummaryParameters {
-		/** WikiData ID */
+		// WikiData ID
 		wikiDataID: string;
 		/**
 		 * Wikipedia Language
@@ -1931,7 +1931,7 @@ export declare namespace JamParameters {
 	}
 
 	export interface WikipediaSummaryParameters {
-		/** MusicBrainz ID */
+		// MusicBrainz ID
 		title: string;
 		/**
 		 * Wikipedia Language

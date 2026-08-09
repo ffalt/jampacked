@@ -10,14 +10,14 @@ export declare namespace Jam {
 	 * Admin Change Queue Info
 	 */
 	export interface AdminChangeQueueInfo {
-		/** Queue ID */
+		// Queue ID
 		id: string;
 		/**
 		 * Waiting Position
 		 * @TJS-type integer
 		 */
 		position?: number;
-		/** Error (if any) */
+		// Error (if any)
 		error?: string;
 		/**
 		 * Changes Completed Timestamp
@@ -30,13 +30,13 @@ export declare namespace Jam {
 	 * Admin Settings
 	 */
 	export interface AdminSettings {
-		/** Admin Chat Settings */
+		// Admin Chat Settings
 		chat: AdminSettingsChat;
-		/** Admin Index Settings */
+		// Admin Index Settings
 		index: AdminSettingsIndex;
-		/** Admin Library Settings */
+		// Admin Library Settings
 		library: AdminSettingsLibrary;
-		/** Admin External Services Settings */
+		// Admin External Services Settings
 		externalServices: AdminSettingsExternal;
 	}
 
@@ -50,7 +50,7 @@ export declare namespace Jam {
 		 * @minimum 0
 		 */
 		maxMessages: number;
-		/** Maximum Age of Chat Messages to keep */
+		// Maximum Age of Chat Messages to keep
 		maxAge: AdminSettingsChatMaxAge;
 	}
 
@@ -64,7 +64,7 @@ export declare namespace Jam {
 		 * @minimum 0
 		 */
 		value: number;
-		/** Unit of Maximum Age */
+		// Unit of Maximum Age
 		unit: string;
 	}
 
@@ -83,7 +83,7 @@ export declare namespace Jam {
 	 * Admin Index Settings
 	 */
 	export interface AdminSettingsIndex {
-		/** List of ignored Articles */
+		// List of ignored Articles
 		ignoreArticles: Array<string>;
 	}
 
@@ -102,9 +102,9 @@ export declare namespace Jam {
 	 * Album with tracks
 	 */
 	export interface Album extends AlbumBase {
-		/** List of Tracks */
+		// List of Tracks
 		tracks?: Array<TrackBase>;
-		/** Album Artist */
+		// Album Artist
 		artist?: ArtistBase;
 	}
 
@@ -112,16 +112,16 @@ export declare namespace Jam {
 	 * Album
 	 */
 	export interface AlbumBase extends Base {
-		/** Album Type */
+		// Album Type
 		albumType: JamEnums.AlbumType;
 		/**
 		 * Album Play Duration
 		 * @TJS-type integer
 		 */
 		duration: number;
-		/** Album Artist Id */
+		// Album Artist Id
 		artistID: string;
-		/** Album Artist */
+		// Album Artist
 		artistName: string;
 		/**
 		 * Number of Tracks
@@ -129,26 +129,26 @@ export declare namespace Jam {
 		 * @minimum 0
 		 */
 		trackCount?: number;
-		/** List of Track Ids */
+		// List of Track Ids
 		trackIDs?: Array<string>;
-		/** Genres */
+		// Genres
 		genres?: Array<GenreBase>;
 		/**
 		 * Album Release Year
 		 * @TJS-type integer
 		 */
 		year?: number;
-		/** MusicBrainz Artist Id */
+		// MusicBrainz Artist Id
 		mbArtistID?: string;
-		/** MusicBrainz Release Id */
+		// MusicBrainz Release Id
 		mbReleaseID?: string;
-		/** Series Name */
+		// Series Name
 		series?: string;
-		/** Series Id */
+		// Series Id
 		seriesID?: string;
-		/** Series Nr */
+		// Series Nr
 		seriesNr?: string;
-		/** Metadata for the Album (via External Service) */
+		// Metadata for the Album (via External Service)
 		info?: ExtendedInfo;
 	}
 
@@ -161,7 +161,7 @@ export declare namespace Jam {
 		 * @TJS-type integer
 		 */
 		lastModified: number;
-		/** Album Index Groups */
+		// Album Index Groups
 		groups: Array<AlbumIndexGroup>;
 	}
 
@@ -169,13 +169,13 @@ export declare namespace Jam {
 	 * Album Index Entry
 	 */
 	export interface AlbumIndexEntry {
-		/** ID */
+		// ID
 		id: string;
-		/** Name */
+		// Name
 		name: string;
-		/** Artist */
+		// Artist
 		artist: string;
-		/** Artist Id */
+		// Artist Id
 		artistID: string;
 		/**
 		 * Track Count
@@ -189,7 +189,7 @@ export declare namespace Jam {
 	 * Album Index Group
 	 */
 	export interface AlbumIndexGroup {
-		/** Index Group Name */
+		// Index Group Name
 		name: string;
 		items: Array<AlbumIndexEntry>;
 	}
@@ -198,7 +198,7 @@ export declare namespace Jam {
 	 * Album Page
 	 */
 	export interface AlbumPage extends Page {
-		/** List of Albums */
+		// List of Albums
 		items: Array<Album>;
 	}
 
@@ -206,13 +206,13 @@ export declare namespace Jam {
 	 * Artist with Albums,...
 	 */
 	export interface Artist extends ArtistBase {
-		/** List of similar Artists (via External Service) */
+		// List of similar Artists (via External Service)
 		similar?: Array<ArtistBase>;
-		/** List of Series */
+		// List of Series
 		series?: Array<SeriesBase>;
-		/** List of Albums */
+		// List of Albums
 		albums?: Array<AlbumBase>;
-		/** List of Tracks */
+		// List of Tracks
 		tracks?: Array<TrackBase>;
 	}
 
@@ -220,11 +220,11 @@ export declare namespace Jam {
 	 * Artist
 	 */
 	export interface ArtistBase extends Base {
-		/** List of Album Type */
+		// List of Album Type
 		albumTypes: Array<JamEnums.AlbumType>;
-		/** Genres */
+		// Genres
 		genres?: Array<GenreBase>;
-		/** MusicBrainz Artist Id */
+		// MusicBrainz Artist Id
 		mbArtistID?: string;
 		/**
 		 * Number of Albums
@@ -232,7 +232,7 @@ export declare namespace Jam {
 		 * @minimum 0
 		 */
 		albumCount?: number;
-		/** List of Album Ids */
+		// List of Album Ids
 		albumIDs?: Array<string>;
 		/**
 		 * Number of Series
@@ -240,7 +240,7 @@ export declare namespace Jam {
 		 * @minimum 0
 		 */
 		seriesCount?: number;
-		/** List of Series Ids */
+		// List of Series Ids
 		seriesIDs?: Array<string>;
 		/**
 		 * Number of Tracks
@@ -248,9 +248,9 @@ export declare namespace Jam {
 		 * @minimum 0
 		 */
 		trackCount?: number;
-		/** List of Track Ids */
+		// List of Track Ids
 		trackIDs?: Array<string>;
-		/** Metadata for the Artist (via External Service) */
+		// Metadata for the Artist (via External Service)
 		info?: ExtendedInfo;
 	}
 
@@ -263,7 +263,7 @@ export declare namespace Jam {
 		 * @TJS-type integer
 		 */
 		lastModified: number;
-		/** Artist Index Groups */
+		// Artist Index Groups
 		groups: Array<ArtistIndexGroup>;
 	}
 
@@ -271,9 +271,9 @@ export declare namespace Jam {
 	 * Artist Index Entry
 	 */
 	export interface ArtistIndexEntry {
-		/** ID */
+		// ID
 		id: string;
-		/** Name */
+		// Name
 		name: string;
 		/**
 		 * Album Count
@@ -293,7 +293,7 @@ export declare namespace Jam {
 	 * Artist Index Group
 	 */
 	export interface ArtistIndexGroup {
-		/** Artist Group Name */
+		// Artist Group Name
 		name: string;
 		items: Array<ArtistIndexEntry>;
 	}
@@ -302,7 +302,7 @@ export declare namespace Jam {
 	 * Artist Page
 	 */
 	export interface ArtistPage extends Page {
-		/** List of Artists */
+		// List of Artists
 		items: Array<Artist>;
 	}
 
@@ -310,7 +310,7 @@ export declare namespace Jam {
 	 * Artwork with Folder
 	 */
 	export interface Artwork extends ArtworkBase {
-		/** Artwork Folder */
+		// Artwork Folder
 		folder?: FolderBase;
 	}
 
@@ -318,7 +318,7 @@ export declare namespace Jam {
 	 * Artwork
 	 */
 	export interface ArtworkBase extends Base {
-		/** Artwork Image Type */
+		// Artwork Image Type
 		types: Array<JamEnums.ArtworkImageType>;
 		/**
 		 * Image Height
@@ -332,7 +332,7 @@ export declare namespace Jam {
 		 * @minimum 0
 		 */
 		width?: number;
-		/** Image Format */
+		// Image Format
 		format?: string;
 		/**
 		 * File Size
@@ -346,7 +346,7 @@ export declare namespace Jam {
 	 * Artwork Page
 	 */
 	export interface ArtworkPage extends Page {
-		/** List of Artworks */
+		// List of Artworks
 		items: Array<Artwork>;
 	}
 
@@ -354,21 +354,21 @@ export declare namespace Jam {
 	 * AutoComplete
 	 */
 	export interface AutoComplete {
-		/** Autocomplete Tracks */
+		// Autocomplete Tracks
 		tracks?: Array<AutoCompleteEntry>;
-		/** Autocomplete Artists */
+		// Autocomplete Artists
 		artists?: Array<AutoCompleteEntry>;
-		/** Autocomplete Albums */
+		// Autocomplete Albums
 		albums?: Array<AutoCompleteEntry>;
-		/** Autocomplete Folder */
+		// Autocomplete Folder
 		folders?: Array<AutoCompleteEntry>;
-		/** Autocomplete Playlist */
+		// Autocomplete Playlist
 		playlists?: Array<AutoCompleteEntry>;
-		/** Autocomplete Podcasts */
+		// Autocomplete Podcasts
 		podcasts?: Array<AutoCompleteEntry>;
-		/** Autocomplete Episode */
+		// Autocomplete Episode
 		episodes?: Array<AutoCompleteEntry>;
-		/** Autocomplete Series */
+		// Autocomplete Series
 		series?: Array<AutoCompleteEntry>;
 	}
 
@@ -376,18 +376,18 @@ export declare namespace Jam {
 	 * AutoComplete Entry
 	 */
 	export interface AutoCompleteEntry {
-		/** ID */
+		// ID
 		id: string;
-		/** Name */
+		// Name
 		name: string;
 	}
 
 	export interface Base {
-		/** ID */
+		// ID
 		id: string;
-		/** Name */
+		// Name
 		name: string;
-		/** User State Info */
+		// User State Info
 		state?: State;
 		/**
 		 * Created Timestamp
@@ -401,9 +401,9 @@ export declare namespace Jam {
 	 * Bookmark
 	 */
 	export interface Bookmark extends BookmarkBase {
-		/** The bookmarked Track */
+		// The bookmarked Track
 		track?: TrackBase;
-		/** The bookmarked Episode */
+		// The bookmarked Episode
 		episode?: EpisodeBase;
 	}
 
@@ -411,18 +411,18 @@ export declare namespace Jam {
 	 * Bookmark Base
 	 */
 	export interface BookmarkBase {
-		/** ID */
+		// ID
 		id: string;
-		/** Track Id */
+		// Track Id
 		trackID?: string;
-		/** Episode Id */
+		// Episode Id
 		episodeID?: string;
 		/**
 		 * Position in Audio
 		 * @TJS-type integer
 		 */
 		position: number;
-		/** Comment */
+		// Comment
 		comment: string;
 		/**
 		 * Created Timestamp
@@ -442,7 +442,7 @@ export declare namespace Jam {
 	 * Bookmark Page
 	 */
 	export interface BookmarkPage extends Page {
-		/** List of Bookmark */
+		// List of Bookmark
 		items: Array<Bookmark>;
 	}
 
@@ -450,9 +450,9 @@ export declare namespace Jam {
 	 * Chat
 	 */
 	export interface Chat {
-		/** User Name */
+		// User Name
 		userName: string;
-		/** User Id */
+		// User Id
 		userID: string;
 		/**
 		 * Created Timestamp
@@ -460,7 +460,7 @@ export declare namespace Jam {
 		 * @minimum 0
 		 */
 		created: number;
-		/** Chat Message */
+		// Chat Message
 		message: string;
 	}
 
@@ -468,7 +468,7 @@ export declare namespace Jam {
 	 * Episode
 	 */
 	export interface Episode extends EpisodeBase {
-		/** Podcast */
+		// Podcast
 		podcast?: PodcastBase;
 	}
 
@@ -476,11 +476,11 @@ export declare namespace Jam {
 	 * Episode
 	 */
 	export interface EpisodeBase extends MediaBase {
-		/** Podcast Id */
+		// Podcast Id
 		podcastID: string;
-		/** Podcast Name */
+		// Podcast Name
 		podcastName: string;
-		/** Episode Status */
+		// Episode Status
 		status: JamEnums.PodcastStatus;
 		/**
 		 * Published Timestamp
@@ -488,19 +488,19 @@ export declare namespace Jam {
 		 * @minimum 0
 		 */
 		date: number;
-		/** Episode Summary */
+		// Episode Summary
 		summary?: string;
-		/** Episode GUID */
+		// Episode GUID
 		guid?: string;
-		/** Episode Author */
+		// Episode Author
 		author?: string;
-		/** Episode Link */
+		// Episode Link
 		link?: string;
-		/** Episode File Link */
+		// Episode File Link
 		url?: string;
-		/** Episode Download Error (if any) */
+		// Episode Download Error (if any)
 		error?: string;
-		/** Episode Chapters */
+		// Episode Chapters
 		chapters?: Array<EpisodeChapter>;
 	}
 
@@ -514,7 +514,7 @@ export declare namespace Jam {
 		 * @minimum 0
 		 */
 		start: number;
-		/** Chapter Title */
+		// Chapter Title
 		title: string;
 	}
 
@@ -522,7 +522,7 @@ export declare namespace Jam {
 	 * Episodes Page
 	 */
 	export interface EpisodePage extends Page {
-		/** List of Episodes */
+		// List of Episodes
 		items: Array<Episode>;
 	}
 
@@ -530,9 +530,9 @@ export declare namespace Jam {
 	 * Episode Status Data
 	 */
 	export interface EpisodeUpdateStatus {
-		/** Episode Status */
+		// Episode Status
 		status: JamEnums.PodcastStatus;
-		/** Episode Download Error (if any) */
+		// Episode Download Error (if any)
 		error?: string;
 	}
 
@@ -540,15 +540,15 @@ export declare namespace Jam {
 	 * Track/Folder/Artist/Album Info Data
 	 */
 	export interface ExtendedInfo {
-		/** Description */
+		// Description
 		description: string;
-		/** Source of the Description */
+		// Source of the Description
 		source: string;
-		/** License of the Description */
+		// License of the Description
 		license: string;
-		/** Url of the Description */
+		// Url of the Description
 		url: string;
-		/** Url of the License */
+		// Url of the License
 		licenseUrl: string;
 	}
 
@@ -556,7 +556,7 @@ export declare namespace Jam {
 	 * Extended Info Result
 	 */
 	export interface ExtendedInfoResult {
-		/** Extended Info */
+		// Extended Info
 		info?: ExtendedInfo;
 	}
 
@@ -564,13 +564,13 @@ export declare namespace Jam {
 	 * Folder with tracks
 	 */
 	export interface Folder extends FolderBase {
-		/** List of Tracks */
+		// List of Tracks
 		tracks?: Array<TrackBase>;
-		/** List of Folders */
+		// List of Folders
 		folders?: Array<FolderBase>;
-		/** List of Artwork Images */
+		// List of Artwork Images
 		artworks?: Array<Artwork>;
-		/** List of similar Folders (via Exteernal Service) */
+		// List of similar Folders (via Exteernal Service)
 		similar?: Array<FolderBase>;
 	}
 
@@ -578,16 +578,16 @@ export declare namespace Jam {
 	 * Folder
 	 */
 	export interface FolderBase extends Base {
-		/** Title */
+		// Title
 		title?: string;
-		/** Album Type */
+		// Album Type
 		type: JamEnums.FolderType;
 		/**
 		 * Level in Root
 		 * @TJS-type integer
 		 */
 		level: number;
-		/** Parent Folder Id */
+		// Parent Folder Id
 		parentID?: string;
 		/**
 		 * Number of Tracks
@@ -613,19 +613,19 @@ export declare namespace Jam {
 		 * @minimum 0
 		 */
 		artworkCount?: number;
-		/** Genres */
+		// Genres
 		genres?: Array<GenreBase>;
-		/** Folder Meta Information */
+		// Folder Meta Information
 		tag?: FolderTag;
-		/** List of Track Ids */
+		// List of Track Ids
 		trackIDs?: Array<string>;
-		/** List of Folder Ids */
+		// List of Folder Ids
 		folderIDs?: Array<string>;
-		/** List of Artwork Ids */
+		// List of Artwork Ids
 		artworkIDs?: Array<string>;
-		/** Metadata for the Folder (via External Service) */
+		// Metadata for the Folder (via External Service)
 		info?: ExtendedInfo;
-		/** List of Parent Folders up to Root */
+		// List of Parent Folders up to Root
 		parents?: Array<FolderParent>;
 	}
 
@@ -633,9 +633,9 @@ export declare namespace Jam {
 	 * Folder Health
 	 */
 	export interface FolderHealth {
-		/** Folder */
+		// Folder
 		folder: Folder;
-		/** List of Health Hints */
+		// List of Health Hints
 		health: Array<FolderHealthHint>;
 	}
 
@@ -643,7 +643,7 @@ export declare namespace Jam {
 	 * Folder Health Hint
 	 */
 	export interface FolderHealthHint extends HealthHint {
-		/** Folder Health Hint ID */
+		// Folder Health Hint ID
 		id: JamEnums.FolderHealthID;
 	}
 
@@ -656,7 +656,7 @@ export declare namespace Jam {
 		 * @TJS-type integer
 		 */
 		lastModified: number;
-		/** Folder Index Groups */
+		// Folder Index Groups
 		groups: Array<FolderIndexGroup>;
 	}
 
@@ -664,9 +664,9 @@ export declare namespace Jam {
 	 * Folder Index Entry
 	 */
 	export interface FolderIndexEntry {
-		/** ID */
+		// ID
 		id: string;
-		/** Name */
+		// Name
 		name: string;
 		/**
 		 * Track Count
@@ -680,7 +680,7 @@ export declare namespace Jam {
 	 * Folder Index Group
 	 */
 	export interface FolderIndexGroup {
-		/** Folder Group Name */
+		// Folder Group Name
 		name: string;
 		items: Array<FolderIndexEntry>;
 	}
@@ -689,7 +689,7 @@ export declare namespace Jam {
 	 * Folder Page
 	 */
 	export interface FolderPage extends Page {
-		/** List of Folders */
+		// List of Folders
 		items: Array<Folder>;
 	}
 
@@ -697,9 +697,9 @@ export declare namespace Jam {
 	 * Folder Parent Information
 	 */
 	export interface FolderParent {
-		/** ID */
+		// ID
 		id: string;
-		/** Name */
+		// Name
 		name: string;
 	}
 
@@ -707,26 +707,26 @@ export declare namespace Jam {
 	 * Folder Meta Information
 	 */
 	export interface FolderTag {
-		/** Album Name */
+		// Album Name
 		album?: string;
-		/** Album Type */
+		// Album Type
 		albumType?: JamEnums.AlbumType;
-		/** Artist Name */
+		// Artist Name
 		artist?: string;
-		/** Artist Sort Name */
+		// Artist Sort Name
 		artistSort?: string;
-		/** Genres */
+		// Genres
 		genres?: Array<string>;
 		/**
 		 * Year
 		 * @TJS-type integer
 		 */
 		year?: number;
-		/** MusicBrainz Artist Id */
+		// MusicBrainz Artist Id
 		mbArtistID?: string;
-		/** MusicBrainz Release Id */
+		// MusicBrainz Release Id
 		mbReleaseID?: string;
-		/** MusicBrainz Release Group Id */
+		// MusicBrainz Release Group Id
 		mbReleaseGroupID?: string;
 	}
 
@@ -775,7 +775,7 @@ export declare namespace Jam {
 		 * @TJS-type integer
 		 */
 		lastModified: number;
-		/** Genre Index Groups */
+		// Genre Index Groups
 		groups: Array<GenreIndexGroup>;
 	}
 
@@ -783,9 +783,9 @@ export declare namespace Jam {
 	 * Genre Index Entry
 	 */
 	export interface GenreIndexEntry {
-		/** ID */
+		// ID
 		id: string;
-		/** Name */
+		// Name
 		name: string;
 		/**
 		 * Track Count
@@ -817,7 +817,7 @@ export declare namespace Jam {
 	 * Genre Index Group
 	 */
 	export interface GenreIndexGroup {
-		/** Genre Group Name */
+		// Genre Group Name
 		name: string;
 		items: Array<GenreIndexEntry>;
 	}
@@ -826,7 +826,7 @@ export declare namespace Jam {
 	 * Genre Page
 	 */
 	export interface GenrePage extends Page {
-		/** List of Genre */
+		// List of Genre
 		items: Array<Genre>;
 	}
 
@@ -834,9 +834,9 @@ export declare namespace Jam {
 	 * Health Hint
 	 */
 	export interface HealthHint {
-		/** Health Hint Name */
+		// Health Hint Name
 		name: string;
-		/** List of Health Hints */
+		// List of Health Hints
 		details?: Array<HealthHintDetail>;
 	}
 
@@ -844,11 +844,11 @@ export declare namespace Jam {
 	 * Health Hint Detail
 	 */
 	export interface HealthHintDetail {
-		/** Hint Description */
+		// Hint Description
 		reason: string;
-		/** Expected Value */
+		// Expected Value
 		expected?: string;
-		/** Actual Value */
+		// Actual Value
 		actual?: string;
 	}
 
@@ -856,9 +856,9 @@ export declare namespace Jam {
 	 * Landscape Artist Node
 	 */
 	export interface LandscapeArtistNode {
-		/** ID */
+		// ID
 		id: string;
-		/** Name */
+		// Name
 		name: string;
 		/**
 		 * Album Count
@@ -872,7 +872,7 @@ export declare namespace Jam {
 		 * @minimum 0
 		 */
 		trackCount: number;
-		/** Genre IDs this artist belongs to */
+		// Genre IDs this artist belongs to
 		genreIDs: Array<string>;
 		/**
 		 * Computed X position (centroid of genre noise coords + jitter)
@@ -890,9 +890,9 @@ export declare namespace Jam {
 	 * Music Collection Landscape Data
 	 */
 	export interface LandscapeData {
-		/** All genres as scatter plot nodes */
+		// All genres as scatter plot nodes
 		genres: Array<LandscapeGenreNode>;
-		/** All artists as scatter plot dots */
+		// All artists as scatter plot dots
 		artists: Array<LandscapeArtistNode>;
 		/**
 		 * Fraction of genres matched to ENAO coordinate data (0-1)
@@ -905,9 +905,9 @@ export declare namespace Jam {
 	 * Landscape Genre Node
 	 */
 	export interface LandscapeGenreNode {
-		/** ID */
+		// ID
 		id: string;
-		/** Name */
+		// Name
 		name: string;
 		/**
 		 * Track Count
@@ -943,7 +943,7 @@ export declare namespace Jam {
 	 * Media Base
 	 */
 	export interface MediaBase extends Base {
-		/** Media Base Object Type */
+		// Media Base Object Type
 		objType: JamEnums.JamObjectType;
 		/**
 		 * Duration of Track
@@ -951,21 +951,21 @@ export declare namespace Jam {
 		 * @minimum 0
 		 */
 		duration: number;
-		/** Tag Meta Information */
+		// Tag Meta Information
 		tag?: MediaTag;
-		/** Tag Raw Frames */
+		// Tag Raw Frames
 		tagRaw?: MediaTagRaw;
-		/** Media Information */
+		// Media Information
 		media?: MediaInfo;
-		/** Artist Id */
+		// Artist Id
 		artistID?: string;
-		/** Album Artist Id */
+		// Album Artist Id
 		albumArtistID?: string;
-		/** Album Id */
+		// Album Id
 		albumID?: string;
-		/** Series Id */
+		// Series Id
 		seriesID?: string;
-		/** Genres */
+		// Genres
 		genres?: Array<GenreBase>;
 	}
 
@@ -973,7 +973,7 @@ export declare namespace Jam {
 	 * Media Raw Tag
 	 */
 	export interface MediaIDTagRaw extends MediaTagRaw {
-		/** Media File ID (Track/Episode) */
+		// Media File ID (Track/Episode)
 		id: string;
 	}
 
@@ -986,7 +986,7 @@ export declare namespace Jam {
 		 * @TJS-type integer
 		 */
 		bitRate?: number;
-		/** Media Format */
+		// Media Format
 		format?: string;
 		/**
 		 * Media Channels
@@ -1014,13 +1014,13 @@ export declare namespace Jam {
 	 * Media Tag Data
 	 */
 	export interface MediaTag {
-		/** Title */
+		// Title
 		title?: string;
-		/** Album Name */
+		// Album Name
 		album?: string;
-		/** Artist Name */
+		// Artist Name
 		artist?: string;
-		/** Genres */
+		// Genres
 		genres?: Array<string>;
 		/**
 		 * Year
@@ -1042,19 +1042,19 @@ export declare namespace Jam {
 		 * @TJS-type integer
 		 */
 		discTotal?: number;
-		/** MusicBrainz Track Id */
+		// MusicBrainz Track Id
 		mbTrackID?: string;
-		/** MusicBrainz Recording Id */
+		// MusicBrainz Recording Id
 		mbRecordingID?: string;
-		/** MusicBrainz Release Track Id */
+		// MusicBrainz Release Track Id
 		mbReleaseTrackID?: string;
-		/** MusicBrainz Release Group Id */
+		// MusicBrainz Release Group Id
 		mbReleaseGroupID?: string;
-		/** MusicBrainz Release Id */
+		// MusicBrainz Release Id
 		mbReleaseID?: string;
-		/** MusicBrainz Artist Id */
+		// MusicBrainz Artist Id
 		mbArtistID?: string;
-		/** MusicBrainz Album Artist Id */
+		// MusicBrainz Album Artist Id
 		mbAlbumArtistID?: string;
 	}
 
@@ -1067,15 +1067,15 @@ export declare namespace Jam {
 		 * @TJS-type integer
 		 */
 		version: number;
-		/** Tag Frames */
+		// Tag Frames
 		frames: MediaTagRawFrames;
 	}
 
 	export interface MediaTagRawAudioEncryption {
 		id: string;
-		/** @TJS-type integer */
+		// @TJS-type integer
 		previewStart: number;
-		/** @TJS-type integer */
+		// @TJS-type integer
 		previewLength: number;
 		bin: string;
 	}
@@ -1085,41 +1085,41 @@ export declare namespace Jam {
 	}
 
 	export interface MediaTagRawBool {
-		/** @TJS-type boolean */
+		// @TJS-type boolean
 		bool: boolean;
 	}
 
 	export interface MediaTagRawChapter {
 		id: string;
-		/** @TJS-type integer */
+		// @TJS-type integer
 		start: number;
-		/** @TJS-type integer */
+		// @TJS-type integer
 		end: number;
-		/** @TJS-type integer */
+		// @TJS-type integer
 		offset: number;
-		/** @TJS-type integer */
+		// @TJS-type integer
 		offsetEnd: number;
 	}
 
 	export interface MediaTagRawChapterToc {
 		id: string;
-		/** @TJS-type boolean */
+		// @TJS-type boolean
 		ordered: boolean;
-		/** @TJS-type boolean */
+		// @TJS-type boolean
 		topLevel: boolean;
 		children: Array<string>;
 	}
 
 	export interface MediaTagRawEventTimingCodes {
-		/** @TJS-type integer */
+		// @TJS-type integer
 		format: number;
 		events: Array<MediaTagRawFrameEventTimingCodesEvent>;
 	}
 
 	export interface MediaTagRawEventTimingCodesEvent {
-		/** @TJS-type integer */
+		// @TJS-type integer
 		type: number;
-		/** @TJS-type integer */
+		// @TJS-type integer
 		timestamp: number;
 	}
 
@@ -1283,379 +1283,379 @@ export declare namespace Jam {
 	 * Media Raw Tag Frames
 	 */
 	export interface MediaTagRawFrames {
-		/** Frames */
+		// Frames
 		AENC?: Array<MediaTagRawFrameAudioEncryption>;
-		/** Frames */
+		// Frames
 		APIC?: Array<MediaTagRawFramePic>;
-		/** Frames */
+		// Frames
 		ASPI?: Array<MediaTagRawFrameBin>;
-		/** Frames */
+		// Frames
 		BUF?: Array<MediaTagRawFrameBin>;
-		/** Frames */
+		// Frames
 		CDM?: Array<MediaTagRawFrameBin>;
-		/** Frames */
+		// Frames
 		CHAP?: Array<MediaTagRawFrameChapter>;
-		/** Frames */
+		// Frames
 		CM1?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		CNT?: Array<MediaTagRawFrameNumber>;
-		/** Frames */
+		// Frames
 		COM?: Array<MediaTagRawFrameLangDescText>;
-		/** Frames */
+		// Frames
 		COMM?: Array<MediaTagRawFrameLangDescText>;
-		/** Frames */
+		// Frames
 		COMR?: Array<MediaTagRawFrameBin>;
-		/** Frames */
+		// Frames
 		CRA?: Array<MediaTagRawFrameAudioEncryption>;
-		/** Frames */
+		// Frames
 		CRM?: Array<MediaTagRawFrameBin>;
-		/** Frames */
+		// Frames
 		CTOC?: Array<MediaTagRawFrameChapterToc>;
-		/** Frames */
+		// Frames
 		ENCR?: Array<MediaTagRawFrameBin>;
-		/** Frames */
+		// Frames
 		EQU?: Array<MediaTagRawFrameBin>;
-		/** Frames */
+		// Frames
 		EQUA?: Array<MediaTagRawFrameBin>;
-		/** Frames */
+		// Frames
 		ETC?: Array<MediaTagRawFrameEventTimingCodes>;
-		/** Frames */
+		// Frames
 		ETCO?: Array<MediaTagRawFrameEventTimingCodes>;
-		/** Frames */
+		// Frames
 		GEO?: Array<MediaTagRawFrameGEOB>;
-		/** Frames */
+		// Frames
 		GEOB?: Array<MediaTagRawFrameGEOB>;
-		/** Frames */
+		// Frames
 		GRID?: Array<MediaTagRawFrameBin>;
-		/** Frames */
+		// Frames
 		GRP1?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		IPL?: Array<MediaTagRawFrameTextList>;
-		/** Frames */
+		// Frames
 		IPLS?: Array<MediaTagRawFrameTextList>;
-		/** Frames */
+		// Frames
 		LINK?: Array<MediaTagRawFrameLink>;
-		/** Frames */
+		// Frames
 		LNK?: Array<MediaTagRawFrameLink>;
-		/** Frames */
+		// Frames
 		MCDI?: Array<MediaTagRawFrameBin>;
-		/** Frames */
+		// Frames
 		MLL?: Array<MediaTagRawFrameBin>;
-		/** Frames */
+		// Frames
 		MLLT?: Array<MediaTagRawFrameBin>;
-		/** Frames */
+		// Frames
 		MVNM?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		MVIN?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		NCO?: Array<MediaTagRawFrameBin>;
-		/** Frames */
+		// Frames
 		NCON?: Array<MediaTagRawFrameBin>;
-		/** Frames */
+		// Frames
 		OWNE?: Array<MediaTagRawFrameBin>;
-		/** Frames */
+		// Frames
 		PCNT?: Array<MediaTagRawFrameNumber>;
-		/** Frames */
+		// Frames
 		PCS?: Array<MediaTagRawFrameNumber>;
-		/** Frames */
+		// Frames
 		PCST?: Array<MediaTagRawFrameNumber>;
-		/** Frames */
+		// Frames
 		PIC?: Array<MediaTagRawFramePic>;
-		/** Frames */
+		// Frames
 		POP?: Array<MediaTagRawFramePopularimeter>;
-		/** Frames */
+		// Frames
 		POPM?: Array<MediaTagRawFramePopularimeter>;
-		/** Frames */
+		// Frames
 		POSS?: Array<MediaTagRawFrameBin>;
-		/** Frames */
+		// Frames
 		PRI?: Array<MediaTagRawFrameIdBin>;
-		/** Frames */
+		// Frames
 		PRIV?: Array<MediaTagRawFramePriv>;
-		/** Frames */
+		// Frames
 		RBUF?: Array<MediaTagRawFrameBin>;
-		/** Frames */
+		// Frames
 		REV?: Array<MediaTagRawFrameBin>;
-		/** Frames */
+		// Frames
 		RGAD?: Array<MediaTagRawFrameReplayGainAdjustment>;
-		/** Frames */
+		// Frames
 		RVA?: Array<MediaTagRawFrameRVA>;
-		/** Frames */
+		// Frames
 		RVA2?: Array<MediaTagRawFrameRVA2>;
-		/** Frames */
+		// Frames
 		RVAD?: Array<MediaTagRawFrameRVA>;
-		/** Frames */
+		// Frames
 		RVRB?: Array<MediaTagRawFrameBin>;
-		/** Frames */
+		// Frames
 		SEEK?: Array<MediaTagRawFrameBin>;
-		/** Frames */
+		// Frames
 		SIGN?: Array<MediaTagRawFrameBin>;
-		/** Frames */
+		// Frames
 		SLT?: Array<MediaTagRawFrameSynchronisedLyrics>;
-		/** Frames */
+		// Frames
 		STC?: Array<MediaTagRawFrameBin>;
-		/** Frames */
+		// Frames
 		SYLT?: Array<MediaTagRawFrameSynchronisedLyrics>;
-		/** Frames */
+		// Frames
 		SYTC?: Array<MediaTagRawFrameBin>;
-		/** Frames */
+		// Frames
 		TAL?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TALB?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TBP?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TBPM?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TCM?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TCMP?: Array<MediaTagRawFrameBool>;
-		/** Frames */
+		// Frames
 		TCO?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TCOM?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TCON?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TCOP?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TCP?: Array<MediaTagRawFrameBool>;
-		/** Frames */
+		// Frames
 		TCR?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TDA?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TDAT?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TDES?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TDLY?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TDOR?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TDR?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TDEN?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TDRC?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TDRL?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TDS?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TDTG?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TDY?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TEN?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TENC?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TEXT?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TFLT?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TGID?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TID?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TIM?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TIME?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TIPL?: Array<MediaTagRawFrameTextList>;
-		/** Frames */
+		// Frames
 		TIT1?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TIT2?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TIT3?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TKE?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TKEY?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TKWD?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TLA?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TLAN?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TLE?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TLEN?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TMCL?: Array<MediaTagRawFrameTextList>;
-		/** Frames */
+		// Frames
 		TMED?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TMOO?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TMT?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TOA?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TOAL?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TOF?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TOFN?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TOL?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TOLY?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TOPE?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TOR?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TORY?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TOT?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TOWN?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TP1?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TP2?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TP3?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TP4?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TPA?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TPB?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TPE1?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TPE2?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TPE3?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TPE4?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TPOS?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TPRO?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TPUB?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TRC?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TRCK?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TRD?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TRDA?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TRK?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TRSN?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TRSO?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TS2?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TSA?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TSC?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TSI?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TSIZ?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TSO2?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TSOA?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TSOC?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TSOP?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TSOT?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TSST?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TSP?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TSRC?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TSS?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TSSE?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TST?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TT1?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TT2?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TT3?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TXT?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TXX?: Array<MediaTagRawFrameIdText>;
-		/** Frames */
+		// Frames
 		TXXX?: Array<MediaTagRawFrameIdText>;
-		/** Frames */
+		// Frames
 		TYE?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		TYER?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		UFI?: Array<MediaTagRawFrameIdText>;
-		/** Frames */
+		// Frames
 		UFID?: Array<MediaTagRawFrameIdText>;
-		/** Frames */
+		// Frames
 		ULT?: Array<MediaTagRawFrameLangDescText>;
-		/** Frames */
+		// Frames
 		USER?: Array<MediaTagRawFrameLangText>;
-		/** Frames */
+		// Frames
 		USLT?: Array<MediaTagRawFrameLangDescText>;
-		/** Frames */
+		// Frames
 		WAF?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		WAR?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		WAS?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		WCM?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		WCOM?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		WCOP?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		WCP?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		WFD?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		WFED?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		WOAF?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		WOAR?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		WOAS?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		WORS?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		WPAY?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		WPB?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		WPUB?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		WXX?: Array<MediaTagRawFrameIdText>;
-		/** Frames */
+		// Frames
 		WXXX?: Array<MediaTagRawFrameIdText>;
-		/** Frames */
+		// Frames
 		XDOR?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		XHD3?: Array<MediaTagRawFrameBin>;
-		/** Frames */
+		// Frames
 		XSOA?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		XSOP?: Array<MediaTagRawFrameText>;
-		/** Frames */
+		// Frames
 		XSOT?: Array<MediaTagRawFrameText>;
 	}
 
@@ -1677,7 +1677,7 @@ export declare namespace Jam {
 	 * Media Raw Tag Text Frame
 	 */
 	export interface MediaTagRawFrameText extends MediaTagRawFrame {
-		/** Text content */
+		// Text content
 		value: MediaTagRawText;
 	}
 
@@ -1723,13 +1723,13 @@ export declare namespace Jam {
 	}
 
 	export interface MediaTagRawNumber {
-		/** @TJS-type integer */
+		// @TJS-type integer
 		num: number;
 	}
 
 	export interface MediaTagRawPic {
 		description: string;
-		/** @TJS-type integer */
+		// @TJS-type integer
 		pictureType: number;
 		url?: string;
 		bin?: string;
@@ -1738,54 +1738,54 @@ export declare namespace Jam {
 
 	export interface MediaTagRawPopularimeter {
 		email: string;
-		/** @TJS-type integer */
+		// @TJS-type integer
 		rating: number;
-		/** @TJS-type integer */
+		// @TJS-type integer
 		count: number;
 	}
 
 	export interface MediaTagRawPriv {
 		id: string;
 		bin?: string;
-		/** @TJS-type integer */
+		// @TJS-type integer
 		num?: number;
 		guid?: string;
 		text?: string;
 	}
 
 	export interface MediaTagRawReplayGainAdjustment {
-		/** @TJS-type integer */
+		// @TJS-type integer
 		peak: number;
-		/** @TJS-type integer */
+		// @TJS-type integer
 		radioAdjustment: number;
-		/** @TJS-type integer */
+		// @TJS-type integer
 		audiophileAdjustment: number;
 	}
 
 	export interface MediaTagRawRVA {
-		/** @TJS-type integer */
+		// @TJS-type integer
 		right: number;
-		/** @TJS-type integer */
+		// @TJS-type integer
 		left: number;
-		/** @TJS-type integer */
+		// @TJS-type integer
 		peakRight?: number;
-		/** @TJS-type integer */
+		// @TJS-type integer
 		peakLeft?: number;
-		/** @TJS-type integer */
+		// @TJS-type integer
 		rightBack?: number;
-		/** @TJS-type integer */
+		// @TJS-type integer
 		leftBack?: number;
-		/** @TJS-type integer */
+		// @TJS-type integer
 		peakRightBack?: number;
-		/** @TJS-type integer */
+		// @TJS-type integer
 		peakLeftBack?: number;
-		/** @TJS-type integer */
+		// @TJS-type integer
 		center?: number;
-		/** @TJS-type integer */
+		// @TJS-type integer
 		peakCenter?: number;
-		/** @TJS-type integer */
+		// @TJS-type integer
 		bass?: number;
-		/** @TJS-type integer */
+		// @TJS-type integer
 		peakBass?: number;
 	}
 
@@ -1795,27 +1795,27 @@ export declare namespace Jam {
 	}
 
 	export interface MediaTagRawRVA2Channel {
-		/** @TJS-type integer */
+		// @TJS-type integer
 		type: number;
-		/** @TJS-type integer */
+		// @TJS-type integer
 		adjustment: number;
-		/** @TJS-type integer */
+		// @TJS-type integer
 		peak?: number;
 	}
 
 	export interface MediaTagRawSynchronisedLyrics {
 		id: string;
 		language: string;
-		/** @TJS-type integer */
+		// @TJS-type integer
 		timestampFormat: number;
-		/** @TJS-type integer */
+		// @TJS-type integer
 		contentType: number;
 		events: Array<MediaTagRawFrameSynchronisedLyricsEvent>;
 	}
 
 	export interface MediaTagRawSynchronisedLyricsEvent {
 		text: string;
-		/** @TJS-type integer */
+		// @TJS-type integer
 		timestamp: number;
 	}
 
@@ -1831,7 +1831,7 @@ export declare namespace Jam {
 	 * Metadata Result
 	 */
 	export interface MetadataResult {
-		/** MetaData */
+		// MetaData
 		data?: unknown;
 	}
 
@@ -1839,7 +1839,7 @@ export declare namespace Jam {
 	 * Metadata TrackLyrics Result
 	 */
 	export interface MetadataTrackLyricsResult {
-		/** MetaData */
+		// MetaData
 		data?: TrackLyrics;
 	}
 
@@ -1847,22 +1847,22 @@ export declare namespace Jam {
 	 * Now Playing Data
 	 */
 	export interface NowPlaying {
-		/** User Name */
+		// User Name
 		userName: string;
-		/** User Id */
+		// User Id
 		userID: string;
 		/**
 		 * Minutes ago
 		 * @TJS-type integer
 		 */
 		minutesAgo: number;
-		/** The played track */
+		// The played track
 		track?: TrackBase;
-		/** The played track id */
+		// The played track id
 		trackID?: string;
-		/** The played episode */
+		// The played episode
 		episode?: EpisodeBase;
-		/** The played episode id */
+		// The played episode id
 		episodeID?: string;
 	}
 
@@ -1870,7 +1870,7 @@ export declare namespace Jam {
 	 * Now Playing Page
 	 */
 	export interface NowPlayingPage extends Page {
-		/** List of Now Playing Data */
+		// List of Now Playing Data
 		items: Array<NowPlaying>;
 	}
 
@@ -1896,7 +1896,7 @@ export declare namespace Jam {
 	}
 
 	export interface Ping {
-		/** Jam Api Version */
+		// Jam Api Version
 		version: string;
 	}
 
@@ -1904,7 +1904,7 @@ export declare namespace Jam {
 	 * Playlist
 	 */
 	export interface Playlist extends PlaylistBase {
-		/** List of Media Base Entries */
+		// List of Media Base Entries
 		entries?: Array<MediaBase>;
 	}
 
@@ -1912,16 +1912,16 @@ export declare namespace Jam {
 	 * Playlist
 	 */
 	export interface PlaylistBase extends Base {
-		/** Owner User Id */
+		// Owner User Id
 		userID: string;
-		/** Owner User Name */
+		// Owner User Name
 		userName: string;
 		/**
 		 * Playlist is public?
 		 * @TJS-type boolean
 		 */
 		isPublic: boolean;
-		/** Comment */
+		// Comment
 		comment?: string;
 		/**
 		 * Playlist Created Timestamp
@@ -1947,7 +1947,7 @@ export declare namespace Jam {
 		 * @minimum 0
 		 */
 		entriesCount: number;
-		/** List of Media Base IDs */
+		// List of Media Base IDs
 		entriesIDs?: Array<string>;
 	}
 
@@ -1955,7 +1955,7 @@ export declare namespace Jam {
 	 * Playlist Entry Page
 	 */
 	export interface PlaylistEntryPage extends Page {
-		/** List of Playlist Entries */
+		// List of Playlist Entries
 		items: Array<MediaBase>;
 	}
 
@@ -1968,7 +1968,7 @@ export declare namespace Jam {
 		 * @TJS-type integer
 		 */
 		lastModified: number;
-		/** Playlist Index Groups */
+		// Playlist Index Groups
 		groups: Array<PlaylistIndexGroup>;
 	}
 
@@ -1976,9 +1976,9 @@ export declare namespace Jam {
 	 * Playlist Index Entry
 	 */
 	export interface PlaylistIndexEntry {
-		/** ID */
+		// ID
 		id: string;
-		/** Name */
+		// Name
 		name: string;
 		/**
 		 * Entry Count
@@ -1992,7 +1992,7 @@ export declare namespace Jam {
 	 * Playlist Index Group
 	 */
 	export interface PlaylistIndexGroup {
-		/** Playlist Group Name */
+		// Playlist Group Name
 		name: string;
 		items: Array<PlaylistIndexEntry>;
 	}
@@ -2001,7 +2001,7 @@ export declare namespace Jam {
 	 * Album Playlist
 	 */
 	export interface PlaylistPage extends Page {
-		/** List of Playlists */
+		// List of Playlists
 		items: Array<Playlist>;
 	}
 
@@ -2009,7 +2009,7 @@ export declare namespace Jam {
 	 * PlayQueue
 	 */
 	export interface PlayQueue extends PlayQueueBase {
-		/** List of Media Entries */
+		// List of Media Entries
 		entries?: Array<MediaBase>;
 	}
 
@@ -2017,9 +2017,9 @@ export declare namespace Jam {
 	 * PlayQueue
 	 */
 	export interface PlayQueueBase {
-		/** User Name */
+		// User Name
 		userName: string;
-		/** User Id */
+		// User Id
 		userID: string;
 		/**
 		 * Number of Entries
@@ -2027,7 +2027,7 @@ export declare namespace Jam {
 		 * @minimum 0
 		 */
 		entriesCount: number;
-		/** List of Media IDs */
+		// List of Media IDs
 		entriesIDs?: Array<string>;
 		/**
 		 * Current Entry Index in PlayQueue
@@ -2053,7 +2053,7 @@ export declare namespace Jam {
 		 * @minimum 0
 		 */
 		changed: number;
-		/** Last Changed by Client */
+		// Last Changed by Client
 		changedBy: string;
 	}
 
@@ -2061,7 +2061,7 @@ export declare namespace Jam {
 	 * Podcast
 	 */
 	export interface Podcast extends PodcastBase {
-		/** List of Episodes */
+		// List of Episodes
 		episodes?: Array<EpisodeBase>;
 	}
 
@@ -2069,20 +2069,20 @@ export declare namespace Jam {
 	 * Podcast Base
 	 */
 	export interface PodcastBase extends Base {
-		/** Podcast Feed URL */
+		// Podcast Feed URL
 		url: string;
-		/** Podcast Status */
+		// Podcast Status
 		status: JamEnums.PodcastStatus;
 		/**
 		 * Last Check Timestamp
 		 * @TJS-type integer
 		 */
 		lastCheck?: number;
-		/** Podcast Download Error (if any) */
+		// Podcast Download Error (if any)
 		error?: string;
-		/** Podcast Summary */
+		// Podcast Summary
 		description?: string;
-		/** List of Episode Ids */
+		// List of Episode Ids
 		episodeIDs?: Array<string>;
 		/**
 		 * Number of Episode
@@ -2100,9 +2100,9 @@ export declare namespace Jam {
 		title: string;
 		author: string;
 		description: string;
-		/** @TJS-type integer */
+		// @TJS-type integer
 		subscribers: number;
-		/** @TJS-type integer */
+		// @TJS-type integer
 		subscribers_last_week: number;
 		logo_url: string;
 		scaled_logo_url: string;
@@ -2114,7 +2114,7 @@ export declare namespace Jam {
 	 * Podcast Discover Page
 	 */
 	export interface PodcastDiscoverPage extends Page {
-		/** List of Podcasts */
+		// List of Podcasts
 		items: Array<PodcastDiscover>;
 	}
 
@@ -2124,7 +2124,7 @@ export declare namespace Jam {
 	export interface PodcastDiscoverTag {
 		title: string;
 		tag: string;
-		/** @TJS-type integer */
+		// @TJS-type integer
 		usage: number;
 	}
 
@@ -2132,7 +2132,7 @@ export declare namespace Jam {
 	 * Podcast Discover Tags Page
 	 */
 	export interface PodcastDiscoverTagPage extends Page {
-		/** List of Podcast Tags */
+		// List of Podcast Tags
 		items: Array<PodcastDiscoverTag>;
 	}
 
@@ -2145,7 +2145,7 @@ export declare namespace Jam {
 		 * @TJS-type integer
 		 */
 		lastModified: number;
-		/** Podcast Index Groups */
+		// Podcast Index Groups
 		groups: Array<PodcastIndexGroup>;
 	}
 
@@ -2153,9 +2153,9 @@ export declare namespace Jam {
 	 * Podcast Index Entry
 	 */
 	export interface PodcastIndexEntry {
-		/** ID */
+		// ID
 		id: string;
-		/** Name */
+		// Name
 		name: string;
 		/**
 		 * Episode Count
@@ -2169,7 +2169,7 @@ export declare namespace Jam {
 	 * Podcast Index Group
 	 */
 	export interface PodcastIndexGroup {
-		/** Podcast Group Name */
+		// Podcast Group Name
 		name: string;
 		items: Array<PodcastIndexEntry>;
 	}
@@ -2178,7 +2178,7 @@ export declare namespace Jam {
 	 * Podcast Page
 	 */
 	export interface PodcastPage extends Page {
-		/** List of Podcasts */
+		// List of Podcasts
 		items: Array<Podcast>;
 	}
 
@@ -2186,9 +2186,9 @@ export declare namespace Jam {
 	 * Podcast Status Data
 	 */
 	export interface PodcastUpdateStatus {
-		/** Podcast Status */
+		// Podcast Status
 		status: JamEnums.PodcastStatus;
-		/** Feed Download Error (if any) */
+		// Feed Download Error (if any)
 		error?: string;
 		/**
 		 * Last Check Timestamp
@@ -2201,9 +2201,9 @@ export declare namespace Jam {
 	 * Radio
 	 */
 	export interface Radio extends Base {
-		/** URL */
+		// URL
 		url: string;
-		/** Homepage */
+		// Homepage
 		homepage: string;
 		/**
 		 * Changed Timestamp
@@ -2226,7 +2226,7 @@ export declare namespace Jam {
 		 * @TJS-type integer
 		 */
 		lastModified: number;
-		/** Radio Index Groups */
+		// Radio Index Groups
 		groups: Array<RadioIndexGroup>;
 	}
 
@@ -2234,11 +2234,11 @@ export declare namespace Jam {
 	 * Radio Index Entry
 	 */
 	export interface RadioIndexEntry {
-		/** ID */
+		// ID
 		id: string;
-		/** Name */
+		// Name
 		name: string;
-		/** URL */
+		// URL
 		url: string;
 	}
 
@@ -2246,7 +2246,7 @@ export declare namespace Jam {
 	 * Radio Index Group
 	 */
 	export interface RadioIndexGroup {
-		/** Radio Group Name */
+		// Radio Group Name
 		name: string;
 		items: Array<RadioIndexEntry>;
 	}
@@ -2255,7 +2255,7 @@ export declare namespace Jam {
 	 * Radio Page
 	 */
 	export interface RadioPage extends Page {
-		/** List of Radio */
+		// List of Radio
 		items: Array<Radio>;
 	}
 
@@ -2263,11 +2263,11 @@ export declare namespace Jam {
 	 * Root Data
 	 */
 	export interface Root extends Base {
-		/** Root Path */
+		// Root Path
 		path: string;
-		/** Root Update Status */
+		// Root Update Status
 		status: RootUpdateStatus;
-		/** Root Scan Strategy */
+		// Root Scan Strategy
 		strategy: JamEnums.RootScanStrategy;
 	}
 
@@ -2275,7 +2275,7 @@ export declare namespace Jam {
 	 * Roots Page
 	 */
 	export interface RootPage extends Page {
-		/** List of Roots */
+		// List of Roots
 		items: Array<Root>;
 	}
 
@@ -2288,7 +2288,7 @@ export declare namespace Jam {
 		 * @TJS-type integer
 		 */
 		lastScan: number;
-		/** Last Error (if any) */
+		// Last Error (if any)
 		error?: string;
 		/**
 		 * Is currently scanning?
@@ -2301,9 +2301,9 @@ export declare namespace Jam {
 	 * Series with Albums & Tracks
 	 */
 	export interface Series extends SeriesBase {
-		/** List of Tracks */
+		// List of Tracks
 		tracks?: Array<TrackBase>;
-		/** List of Albums */
+		// List of Albums
 		albums?: Array<AlbumBase>;
 	}
 
@@ -2311,9 +2311,9 @@ export declare namespace Jam {
 	 * Series
 	 */
 	export interface SeriesBase extends Base {
-		/** Series Artist Name */
+		// Series Artist Name
 		artist: string;
-		/** Series Artist Id */
+		// Series Artist Id
 		artistID: string;
 		/**
 		 * Album Count
@@ -2327,13 +2327,13 @@ export declare namespace Jam {
 		 * @minimum 0
 		 */
 		trackCount?: number;
-		/** Album Types */
+		// Album Types
 		albumTypes: Array<JamEnums.AlbumType>;
-		/** Track Ids */
+		// Track Ids
 		trackIDs?: Array<string>;
-		/** Album Ids */
+		// Album Ids
 		albumIDs?: Array<string>;
-		/** Metadata for the Series (via External Service) */
+		// Metadata for the Series (via External Service)
 		info?: ExtendedInfo;
 	}
 
@@ -2346,7 +2346,7 @@ export declare namespace Jam {
 		 * @TJS-type integer
 		 */
 		lastModified: number;
-		/** Series Index Groups */
+		// Series Index Groups
 		groups: Array<SeriesIndexGroup>;
 	}
 
@@ -2354,9 +2354,9 @@ export declare namespace Jam {
 	 * Series Index Entry
 	 */
 	export interface SeriesIndexEntry {
-		/** ID */
+		// ID
 		id: string;
-		/** Name */
+		// Name
 		name: string;
 		/**
 		 * Album Count
@@ -2376,7 +2376,7 @@ export declare namespace Jam {
 	 * Series Index Group
 	 */
 	export interface SeriesIndexGroup {
-		/** Series Group Name */
+		// Series Group Name
 		name: string;
 		items: Array<SeriesIndexEntry>;
 	}
@@ -2385,7 +2385,7 @@ export declare namespace Jam {
 	 * Series Page
 	 */
 	export interface SeriesPage extends Page {
-		/** List of Series */
+		// List of Series
 		items: Array<Series>;
 	}
 
@@ -2393,22 +2393,22 @@ export declare namespace Jam {
 	 * Session Data
 	 */
 	export interface Session {
-		/** Api Version */
+		// Api Version
 		version: string;
-		/** Allowed Cookie Domains for CORS */
+		// Allowed Cookie Domains for CORS
 		allowedCookieDomains?: Array<string>;
-		/** JSON Web Token */
+		// JSON Web Token
 		jwt?: string;
-		/** User of this session */
+		// User of this session
 		user?: SessionUser;
 	}
 
 	export interface SessionUser {
-		/** User ID */
+		// User ID
 		id: string;
-		/** User Name */
+		// User Name
 		name: string;
-		/** User Roles */
+		// User Roles
 		roles: UserRoles;
 	}
 
@@ -2447,9 +2447,9 @@ export declare namespace Jam {
 	 * User StateInfo Data
 	 */
 	export interface StateInfo {
-		/** ID */
+		// ID
 		id: string;
-		/** State */
+		// State
 		state: State;
 	}
 
@@ -2457,7 +2457,7 @@ export declare namespace Jam {
 	 * User States Data
 	 */
 	export interface States {
-		/** List of State Infos */
+		// List of State Infos
 		states: Array<StateInfo>;
 	}
 
@@ -2465,7 +2465,7 @@ export declare namespace Jam {
 	 * Library Stats
 	 */
 	export interface Stats {
-		/** Root ID */
+		// Root ID
 		rootID?: string;
 		/**
 		 * Number of Tracks
@@ -2491,7 +2491,7 @@ export declare namespace Jam {
 		 * @minimum 0
 		 */
 		artist: number;
-		/** Detailed Artists Stats */
+		// Detailed Artists Stats
 		artistTypes: StatsAlbumTypes;
 		/**
 		 * Number of Albums
@@ -2499,7 +2499,7 @@ export declare namespace Jam {
 		 * @minimum 0
 		 */
 		album: number;
-		/** Detailed Album Stats */
+		// Detailed Album Stats
 		albumTypes: StatsAlbumTypes;
 	}
 
@@ -2576,7 +2576,7 @@ export declare namespace Jam {
 	}
 
 	export interface SubsonicToken {
-		/** Generated Subsonic Token */
+		// Generated Subsonic Token
 		token: string;
 	}
 
@@ -2590,7 +2590,7 @@ export declare namespace Jam {
 	 * Track Base
 	 */
 	export interface TrackBase extends MediaBase {
-		/** Parent Folder Id */
+		// Parent Folder Id
 		parentID: string;
 	}
 
@@ -2598,9 +2598,9 @@ export declare namespace Jam {
 	 * Track Health
 	 */
 	export interface TrackHealth {
-		/** Track */
+		// Track
 		track: TrackBase;
-		/** List of Health Hints */
+		// List of Health Hints
 		health: Array<TrackHealthHint>;
 	}
 
@@ -2608,7 +2608,7 @@ export declare namespace Jam {
 	 * Track Health Hint
 	 */
 	export interface TrackHealthHint extends HealthHint {
-		/** Track Health Hint ID */
+		// Track Health Hint ID
 		id: JamEnums.TrackHealthID;
 	}
 
@@ -2616,13 +2616,13 @@ export declare namespace Jam {
 	 * Track Lyrics (via External Service or Audio Tag)
 	 */
 	export interface TrackLyrics {
-		/** Lyrics */
+		// Lyrics
 		lyrics?: string;
-		/** Synced Lyrics */
+		// Synced Lyrics
 		syncedLyrics?: string;
-		/** Language of the the lyrics */
+		// Language of the the lyrics
 		language?: string;
-		/** Audio Tag or External Service */
+		// Audio Tag or External Service
 		source?: string;
 	}
 
@@ -2630,14 +2630,14 @@ export declare namespace Jam {
 	 * Tracks Page
 	 */
 	export interface TrackPage extends Page {
-		/** List of Tracks */
+		// List of Tracks
 		items: Array<Track>;
 	}
 
 	export interface User extends Base {
-		/** User Email */
+		// User Email
 		email?: string;
-		/** User Roles */
+		// User Roles
 		roles: UserRoles;
 	}
 
@@ -2669,7 +2669,7 @@ export declare namespace Jam {
 		 * @minimum 0
 		 */
 		artist: number;
-		/** Detailed Artists Stats */
+		// Detailed Artists Stats
 		artistTypes: StatsAlbumTypes;
 		/**
 		 * Number of Albums
@@ -2677,7 +2677,7 @@ export declare namespace Jam {
 		 * @minimum 0
 		 */
 		album: number;
-		/** Detailed Album Stats */
+		// Detailed Album Stats
 		albumTypes: StatsAlbumTypes;
 	}
 
@@ -2685,7 +2685,7 @@ export declare namespace Jam {
 	 * Users Page
 	 */
 	export interface UserPage extends Page {
-		/** List of Users */
+		// List of Users
 		items: Array<User>;
 	}
 
@@ -2716,22 +2716,22 @@ export declare namespace Jam {
 	 * User Session
 	 */
 	export interface UserSession {
-		/** ID */
+		// ID
 		id: string;
-		/** Session Client */
+		// Session Client
 		client: string;
 		/**
 		 * Session Expiration
 		 * @TJS-type integer
 		 */
 		expires?: number;
-		/** Session Mode */
+		// Session Mode
 		mode: JamEnums.SessionMode;
-		/** Session Platform */
+		// Session Platform
 		platform?: string;
-		/** Session OS */
+		// Session OS
 		os?: string;
-		/** Session User Agent */
+		// Session User Agent
 		agent: string;
 	}
 
@@ -2751,9 +2751,9 @@ export declare namespace Jam {
 		 * @minimum 0
 		 */
 		bookmark: number;
-		/** Detailed User Favorites Stats */
+		// Detailed User Favorites Stats
 		favorite: UserDetailStats;
-		/** Detailed User Played Stats */
+		// Detailed User Played Stats
 		played: UserDetailStats;
 	}
 
