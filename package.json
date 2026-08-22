@@ -61,7 +61,7 @@
     "react-native-tab-view": "4.3.2",
     "react-native-toastier": "2.0.5",
     "react-native-track-player": "ffalt/react-native-track-player",
-    "react-native-worklets": "0.11.3",
+    "react-native-worklets": "0.11.4",
     "rxjs": "7.8.2",
     "waveform-data": "4.5.2"
   },
