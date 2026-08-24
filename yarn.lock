@@ -668,10 +668,10 @@
     deepmerge "^3.2.0"
     hoist-non-react-statics "^3.3.0"
 
-"@conventional-changelog/git-client@^3.1.0":
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/@conventional-changelog/git-client/-/git-client-3.1.0.tgz#0d89e1d74ecc578ebe1bf46c09488beef41c58e8"
-  integrity sha512-Tqa/gHco2WJWa740NRjOrfKVvzIqxkZpecb8bemaQ8sKM5PXb1UK4uTyTb/1wIqNuOVaDOFxyBdhTIQZn6gdjQ==
+"@conventional-changelog/git-client@^3.1.2":
+  version "3.1.2"
+  resolved "https://registry.yarnpkg.com/@conventional-changelog/git-client/-/git-client-3.1.2.tgz#2298db5ba59a2f8826300bc7ad477169f76f15aa"
+  integrity sha512-jZqwnJwf7nboIlAcw/mkOjVa6DexCcUOgT2oOQgkoi3z9vR8tGFkcMy2BFcYwjhL9sYcDDXkRQDayiDieCoW7A==
   dependencies:
     "@simple-libs/child-process-utils" "^2.0.0"
     "@simple-libs/stream-utils" "^2.0.0"
@@ -681,6 +681,11 @@
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/@conventional-changelog/template/-/template-1.2.1.tgz#8f673635d6ec8289bc5d5a1264629fd1e88b8d4f"
   integrity sha512-TzlTVpKPjaqW6qOYjQcYUDuGsLCNsvFHVBXkYGTAnf5V37jCWrE5haKNXzz0WZUtVHjrpV76L1buANjwXMfT8w==
+
+"@conventional-changelog/template@^1.3.0":
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/@conventional-changelog/template/-/template-1.4.0.tgz#30a8680f2ab8d3a60a08e86bebb33fe8f0f8f100"
+  integrity sha512-aalGyl7dbB5PArRebDIX43ZvBlXrYm9uWzGJ26t+4SzJVPsOuvfILGGbw5X4yX7i50YEmJ8zvbiWnqH/AAnZqg==
 
 "@cspotcode/source-map-support@^0.8.0":
   version "0.8.1"
@@ -4091,28 +4096,29 @@ conventional-changelog-preset-loader@^6.0.1:
   resolved "https://registry.yarnpkg.com/conventional-changelog-preset-loader/-/conventional-changelog-preset-loader-6.0.1.tgz#78399937fb5d497265157242bace9fefb5b36620"
   integrity sha512-GZ8E3RQzXQb3JFy0pKl8oeSf7ENIhvAMvJr+PlWkavZOesLHHdhkfNJ4SvW35eo1Fu2+EyVxWQ1tVvtzAG2iWg==
 
-conventional-changelog-writer@^9.2.0:
-  version "9.2.0"
-  resolved "https://registry.yarnpkg.com/conventional-changelog-writer/-/conventional-changelog-writer-9.2.0.tgz#4a41aac90a732d7f53001e5e3608be4f842b81b4"
-  integrity sha512-eACD5BaAQCYjeI3RExkCZopNaaIuXzCP4kaAb2lEFXcGa/KOuxJfj8v/SnjhvF6377pYn0A2Gji+6GhwUK8rEA==
+conventional-changelog-writer@^9.2.1:
+  version "9.2.1"
+  resolved "https://registry.yarnpkg.com/conventional-changelog-writer/-/conventional-changelog-writer-9.2.1.tgz#d84024ca8e8f25dada9f822aa23e64f71b9a0de5"
+  integrity sha512-StlYSmW3wLedRaqohJMpP3YuWiAqtgD0/cpsai9frdDkXv7rxj0hRbpJrubPYvJxJsjplONsOobEQnPuS9UgCg==
   dependencies:
-    "@conventional-changelog/template" "^1.2.1"
+    "@conventional-changelog/template" "^1.3.0"
     "@simple-libs/stream-utils" "^2.0.0"
     argue-cli "^3.1.0"
     conventional-commits-filter "^6.0.1"
     semver "^7.5.2"
 
-conventional-changelog@8.1.1:
-  version "8.1.1"
-  resolved "https://registry.yarnpkg.com/conventional-changelog/-/conventional-changelog-8.1.1.tgz#3791fcc6c8e80981a8653245d3119c86f9b15ce3"
-  integrity sha512-my0arqBpzr8mg+7RKDGnw8OiDvBr8/QVJIxazYJlIDeKx/2GCBYxZELaDYpbRhM5gNKfZB8h9SHuetrUFxd5HQ==
+conventional-changelog@8.1.3:
+  version "8.1.3"
+  resolved "https://registry.yarnpkg.com/conventional-changelog/-/conventional-changelog-8.1.3.tgz#b730fcf0497864d47c02b5bd7e330c753a476332"
+  integrity sha512-fOMwLCxm46znJKPB08jLxl1FD8SOZOQHktlzCVhvhhVUfq0KgQSryoYXsRRHs1aRlZPR1/QK5wztnY8sBNC2AA==
   dependencies:
-    "@conventional-changelog/git-client" "^3.1.0"
+    "@conventional-changelog/git-client" "^3.1.2"
     "@simple-libs/hosted-git-info" "^2.0.0"
     "@simple-libs/normalize-package-data" "^1.0.0"
     argue-cli "^3.1.0"
     conventional-changelog-preset-loader "^6.0.1"
-    conventional-changelog-writer "^9.2.0"
+    conventional-changelog-writer "^9.2.1"
+    conventional-commits-filter "^6.0.1"
     conventional-commits-parser "^7.1.2"
     fd-package-json "^2.0.0"
 
