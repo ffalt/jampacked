@@ -34,7 +34,7 @@
     "@apollo/client": "4.2.12",
     "@callstack/react-theme-provider": "3.0.9",
     "@d11/react-native-fast-image": "8.13.0",
-    "@op-engineering/op-sqlite": "17.1.5",
+    "@op-engineering/op-sqlite": "17.2.0",
     "@react-native-community/slider": "5.2.0",
     "@react-native-masked-view/masked-view": "0.3.2",
     "@react-native-vector-icons/fontello": "13.2.2",
