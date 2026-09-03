@@ -2214,21 +2214,21 @@
   resolved "https://registry.yarnpkg.com/@react-native-masked-view/masked-view/-/masked-view-0.3.2.tgz#7064533a573e3539ec912f59c1f457371bf49dd9"
   integrity sha512-XwuQoW7/GEgWRMovOQtX3A4PrXhyaZm0lVUiY8qJDvdngjLms9Cpdck6SmGAUNqQwcj2EadHC1HwL0bEyoa/SQ==
 
-"@react-native-vector-icons/common@^13.0.1":
-  version "13.0.1"
-  resolved "https://registry.yarnpkg.com/@react-native-vector-icons/common/-/common-13.0.1.tgz#040b88bde5361a13137e060036ad497503820d50"
-  integrity sha512-UPC6L3tW5rXCjBn4kgw9RPURUILIg8tFpEY2uaYwU8aCjEHkywNCMcAO8+PvMCDkR6aICPeHYA0OXvMgrjsF4g==
+"@react-native-vector-icons/common@^13.0.2":
+  version "13.0.2"
+  resolved "https://registry.yarnpkg.com/@react-native-vector-icons/common/-/common-13.0.2.tgz#7d98b1dd6b378c0deeca7f0bce34f596241e08ea"
+  integrity sha512-gND3YBSB8MDAFJtc8kJs/HW6D9LfAmAhqblWVzqasm5cIVT/gS3+hFim4D85+4dycuskvwvMHhzUA92BiVPKTQ==
   dependencies:
     find-up "^8.0.0"
     picocolors "^1.1.1"
     plist "^3.1.0"
 
-"@react-native-vector-icons/fontello@13.2.2":
-  version "13.2.2"
-  resolved "https://registry.yarnpkg.com/@react-native-vector-icons/fontello/-/fontello-13.2.2.tgz#d0004c85604a34b3ab5dfece196717ca697e8754"
-  integrity sha512-ANjKDaGiPzUS6vuVKpl/xk1FDhX4TTKVweB/hQFEzCRtiVi3BDzZeP4RJrfaRM8Hl8AEHJt5saZKk/XcSTKD4A==
+"@react-native-vector-icons/fontello@13.2.3":
+  version "13.2.3"
+  resolved "https://registry.yarnpkg.com/@react-native-vector-icons/fontello/-/fontello-13.2.3.tgz#2b34cd592b44b79f57600945426c755dca241530"
+  integrity sha512-C23r5OY5gABstpAUmXvRfy6lYjOUrxtBK3dfFJEFFNLkCQsGRjLRvmLw9VnJui+Fgqv0bOsMid9flvgcns3PCQ==
   dependencies:
-    "@react-native-vector-icons/common" "^13.0.1"
+    "@react-native-vector-icons/common" "^13.0.2"
 
 "@react-native/assets-registry@0.86.0":
   version "0.86.0"
