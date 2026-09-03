@@ -99,7 +99,7 @@
     "eslint-plugin-react-native": "5.0.0",
     "eslint-plugin-unicorn": "73.0.0",
     "eslint-plugin-unused-imports": "4.4.1",
-    "globals": "17.9.0",
+    "globals": "17.11.0",
     "graphql-tag": "2.12.7",
     "jest": "30.4.2",
     "lodash.chunk": "4.2.0",
