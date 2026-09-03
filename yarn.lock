@@ -2473,13 +2473,13 @@
   resolved "https://registry.yarnpkg.com/@react-native/gradle-plugin/-/gradle-plugin-0.86.2.tgz#75229b451ec8936919ffd3bbf45be70874e4b408"
   integrity sha512-2F6x14NcHMpVmfTTFKfMkpV5dZedZrLiv6PE+c3vgnesV2bjleUBydr4U+NI8VkI7OwW71L0A5qQ76I9LCrfoQ==
 
-"@react-native/jest-preset@0.86.2":
-  version "0.86.2"
-  resolved "https://registry.yarnpkg.com/@react-native/jest-preset/-/jest-preset-0.86.2.tgz#11857e29d578a4f32bcf6a28fa3df32a25c3300d"
-  integrity sha512-wneoqwKWdv6wIcWotVgp6NMlMWcJDjxDnp7fVYym2Pn6JLgAKgkbmuHGmxW0cLCGoa9wtcO680uciv+Kzx0G7w==
+"@react-native/jest-preset@0.87.0":
+  version "0.87.0"
+  resolved "https://registry.yarnpkg.com/@react-native/jest-preset/-/jest-preset-0.87.0.tgz#8ba984899e5b10a1a2775c52f340d71acfca5837"
+  integrity sha512-aNK/CXEfOIQPIobwywB0SmtsaTANV1ONXZmRx/glwdHeFfudDvoHbYNudKAwH1d/HBzfXZONCJXuc0UtRca60w==
   dependencies:
     "@jest/create-cache-key-function" "^29.7.0"
-    "@react-native/js-polyfills" "0.86.2"
+    "@react-native/js-polyfills" "0.87.0"
     babel-jest "^29.7.0"
     jest-environment-node "^29.7.0"
     regenerator-runtime "^0.13.2"
