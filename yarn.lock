@@ -2499,10 +2499,10 @@
     color "^4.2.3"
     sf-symbols-typescript "^2.1.0"
 
-"@react-navigation/core@7.21.12", "@react-navigation/core@^7.21.12":
-  version "7.21.12"
-  resolved "https://registry.yarnpkg.com/@react-navigation/core/-/core-7.21.12.tgz#79ad9aa6bd07951eb0ad467a5d90166ce0da9e93"
-  integrity sha512-FopGMGy5df+IMqUYg9w7ygwK0oP4RaQbMnpb7VFP30+vZdd8MqsAGc+bZZwdiVSnzK9hzhgJtZV9XF0ZFlUYOQ==
+"@react-navigation/core@7.21.13", "@react-navigation/core@^7.21.12":
+  version "7.21.13"
+  resolved "https://registry.yarnpkg.com/@react-navigation/core/-/core-7.21.13.tgz#30948e4f3ba00a8bf9e9f10ec6dee972d42530f8"
+  integrity sha512-d1syMXra7RlJjGsjsIxEA14F6U+awFtQJeOfDc+V7x3y1mPqYQVTYnqnt3PR+fBBouUKaKsgKZsSR3MP5919Xg==
   dependencies:
     "@react-navigation/routers" "^7.6.4"
     escape-string-regexp "^4.0.0"
