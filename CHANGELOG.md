@@ -2,11 +2,6 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
-## [0.0.15](https://github.com-ffalt/ffalt/jampacked/compare/v0.0.12...v0.0.15) (2026-09-04)
-
-### Bug Fixes
-
-* **client:** use a axios timeout ([e3b224f](https://github.com-ffalt/ffalt/jampacked/commit/e3b224f2f038adf0bc65804ad5f7dba0fe73ffd2))
 ## [0.0.12](https://github.com-ffalt/ffalt/jampacked/compare/v0.0.11...v0.0.12) (2026-08-09)
 ## [0.0.11](https://github.com-ffalt/ffalt/jampacked/compare/v0.0.10...v0.0.11) (2026-07-19)
 
