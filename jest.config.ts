@@ -30,6 +30,7 @@ const config: Config = {
 		'|d3-time-format' +
 		'|internmap' +
 		'|react-native-fs' +
+		'|decode-uri-component' +
 		'|@react-navigation)/)'
 	],
 	coverageReporters: ['html', 'json', 'lcov', 'text'],
