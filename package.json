@@ -27,6 +27,7 @@
   },
   "resolutions": {
     "uuid": "11.1.1",
+    "babel-plugin-istanbul": "8.0.0",
     "jest-environment-node": "30.4.1",
     "jest-mock": "30.4.1"
   },
