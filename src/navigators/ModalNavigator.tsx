@@ -12,7 +12,7 @@ export const ModalNavigator: React.FC = () => {
 	useEffect(() => {
 		let isSubscribed = true;
 
-		const handleUrl = (data?: { url: string | null }): void => {
+		const handleUrl = (data?: { url?: string | null }): void => {
 			if (data?.url === 'trackplayer://notification.click') {
 				NavigationService.navigate(ModalRouting.PLAYER);
 			}

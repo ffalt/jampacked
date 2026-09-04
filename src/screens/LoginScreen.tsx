@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { ActivityIndicator, KeyboardAvoidingView, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { ActivityIndicator, KeyboardAvoidingView, ScrollView, StyleSheet, Text, TextInput, type TextInputInstance, View } from 'react-native';
 import { staticTheme, useTheme } from '../style/theming';
 import { AppRouting, AppStackProps } from '../navigators/Routing';
 import { LoginButton } from '../components/LoginButton';
@@ -7,6 +7,7 @@ import { ThemedIcon } from '../components/ThemedIcon';
 import { Logo } from '../components/Logo';
 import { useAuth } from '../services/jam.auth.ts';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { errorMessage } from '../utils/errors.utils.ts';
 import storageService from '../services/storage.service.ts';
 
@@ -112,10 +113,11 @@ export const LoginScreen: React.FC<AppStackProps<AppRouting.AUTH>> = () => {
 	const [loading, setLoading] = useState<boolean>(false);
 	const [error, setError] = useState<string | undefined>();
 	const auth = useAuth();
-	const usernameReference = useRef<TextInput | null>(null);
-	const passwordReference = useRef<TextInput | null>(null);
+	const usernameReference = useRef<TextInputInstance | null>(null);
+	const passwordReference = useRef<TextInputInstance | null>(null);
 	const theme = useTheme();
 	const statusBarHeight = getStatusBarHeight() + staticTheme.padding;
+	const insets = useSafeAreaInsets();
 
 	useEffect(() => {
 		let isSubscribed = true;
@@ -192,7 +194,7 @@ export const LoginScreen: React.FC<AppStackProps<AppRouting.AUTH>> = () => {
 
 	return (
 		<ScrollView contentContainerStyle={styles.scrollContainer}>
-			<View style={[styles.container, { paddingTop: statusBarHeight }]}>
+			<View style={[styles.container, { paddingTop: statusBarHeight, paddingBottom: staticTheme.padding + insets.bottom }]}>
 				<View style={styles.headline}>
 					<Logo size={140} />
 				</View>

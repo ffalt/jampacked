@@ -1,11 +1,10 @@
 import { AlbumType, JamObjectType } from '../jam';
-import { SectionListData } from 'react-native';
 import { DocumentNode } from 'graphql';
 import { ErrorLike } from '@apollo/client';
 import { useCacheOrLazyQuery } from '../cache.hooks.ts';
 import { useCallback } from 'react';
 import { SeriesResultDocument, SeriesResultQuery, SeriesResultQueryVariables } from './series.api';
-import { BaseEntry } from '../../types/base.ts';
+import { BaseEntrySection } from '../../types/base.ts';
 
 export interface AlbumEntry {
 	id: string;
@@ -22,14 +21,14 @@ export interface Series {
 	artistName?: string;
 	tracksCount: number;
 	albums: Array<AlbumEntry>;
-	sections: Array<SectionListData<BaseEntry>>;
+	sections: Array<BaseEntrySection>;
 }
 
 function transformData(data?: SeriesResultQuery): Series | undefined {
 	if (!data) {
 		return;
 	}
-	const sections: Array<SectionListData<BaseEntry>> = [];
+	const sections: Array<BaseEntrySection> = [];
 	const albums = data.series.albums ?? [];
 	for (const album of albums) {
 		let section = sections.find(s => s.key === album.albumType);

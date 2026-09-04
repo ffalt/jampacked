@@ -14,6 +14,9 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'center'
 	},
+	playIconOffset: {
+		paddingLeft: 3
+	},
 	// eslint-disable-next-line react-native/no-unused-styles
 	playButtonIcon: {
 		color: '#000000',
@@ -29,7 +32,7 @@ export const PlayButton: React.FC = () => {
 		<ClickIcon
 			iconName={icon}
 			onPress={() => JamPlayer.toggleSync()}
-			style={styles.playButton}
+			style={[styles.playButton, isPlaying ? undefined : styles.playIconOffset]}
 			color={styles.playButtonIcon.color}
 			fontSize={styles.playButtonIcon.fontSize}
 		/>

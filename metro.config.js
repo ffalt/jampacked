@@ -13,14 +13,7 @@ const defaultConfig = getDefaultConfig(__dirname);
  * @type {import("@react-native/metro-config").MetroConfig}
  */
 const config = {
-	transformer: {
-		assetRegistryPath: "react-native/Libraries/Image/AssetRegistry"
-	},
 	resolver: {
-		extraNodeModules: {
-			// eslint-disable-next-line unicorn/prefer-module
-			"react-native/asset-registry": require.resolve("react-native/Libraries/Image/AssetRegistry")
-		},
 		blockList: [
 			// Prevent Metro from resolving packages from nested node_modules
 			// inside local-path dependencies (e.g. react-native-track-player)

@@ -4,7 +4,7 @@ import { HomeStackNavigator } from './HomeStackNavigator';
 import { SettingsScreen } from '../screens/SettingsScreen';
 import { BottomTabNavigatorParameterList, BottomTabRoute, ModalRouting, ModalStackProps } from './Routing';
 import { getTabBarIcon } from '../components/ThemedIcon';
-import { JamTabBar } from './JamTabBar';
+import { jamTabBarStyle, JamTabBar, JamTabBarBackground } from './JamTabBar';
 import { QueueScreen } from '../screens/QueueScreen';
 
 const BottomTabs = createBottomTabNavigator<BottomTabNavigatorParameterList>();
@@ -13,7 +13,9 @@ export const BottomTabNavigator: React.FC<ModalStackProps<ModalRouting.MAIN>> = 
 	<BottomTabs.Navigator
 		screenOptions={{
 			headerShown: false,
-			tabBarShowLabel: false
+			tabBarShowLabel: false,
+			tabBarBackground: (): React.JSX.Element => (<JamTabBarBackground />),
+			tabBarStyle: jamTabBarStyle
 		}}
 		tabBar={JamTabBar}>
 		<BottomTabs.Screen

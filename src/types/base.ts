@@ -1,3 +1,4 @@
+import { SectionBase } from 'react-native';
 import { JamObjectType, ListType } from '../services/jam';
 
 export interface BaseEntry {
@@ -13,4 +14,8 @@ export interface BaseEntryList {
 	total: number;
 	skip?: number;
 	take?: number;
+}
+
+export interface BaseEntrySection extends SectionBase<BaseEntry> {
+	title: string;
 }

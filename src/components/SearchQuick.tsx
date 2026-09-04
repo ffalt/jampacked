@@ -39,18 +39,18 @@ export const SearchQuick: React.FC<SearchQuickProps> = ({ query, setObjType }) =
 	}, [getAutocomplete, query]);
 
 	const renderSection = useCallback(({ section }: { section: SectionListData<AutoCompleteEntryData> }): React.JSX.Element => {
+		const { objType, key, data } = section as AutoCompleteDataSection;
 		const setType = (): void => {
 			if (!setObjType) {
 				return;
 			}
 
-			const { objType } = section as AutoCompleteDataSection;
 			setObjType(objType);
 		};
 		return (
 			<TouchableOpacity style={sharedStyles.sectionHeader} onPress={setType}>
-				<ThemedText style={sharedStyles.sectionHeaderText}>{section.key}</ThemedText>
-				{(section.data.length >= 5) && <ThemedIcon style={sharedStyles.sectionHeaderIcon} name="right-open" />}
+				<ThemedText style={sharedStyles.sectionHeaderText}>{key}</ThemedText>
+				{(data.length >= 5) && <ThemedIcon style={sharedStyles.sectionHeaderIcon} name="right-open" />}
 			</TouchableOpacity>
 		);
 	}, [setObjType]);

@@ -23,6 +23,11 @@ jest.mock('./src/services/apollo.service.ts');
 
 // react-native-track-player is mocked by <rootDir>/__mocks__/react-native-track-player.ts
 
+jest.mock('react-native-safe-area-context', () => ({
+	...jest.requireActual<object>('react-native-safe-area-context'),
+	useSafeAreaInsets: (): { top: number; right: number; bottom: number; left: number } => ({ top: 0, right: 0, bottom: 0, left: 0 })
+}));
+
 jest.mock('react-native-gesture-handler', () =>
 	({ RNGestureHandlerModule: jest.fn() }));
 

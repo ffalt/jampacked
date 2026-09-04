@@ -51,6 +51,7 @@ export interface ITheme {
 	overlay: string;
 	overlayText: string;
 	overlayTextActive: string;
+	coverBorder: string;
 	navigation: ReactNavigation.Theme;
 	waveform: {
 		active: string;
@@ -80,7 +81,7 @@ const light: ITheme = {
 	muted: '#202020',
 	background: '#ffffff',
 	itemBackground: '#f3f3f3',
-	overlayGradient: ['rgba(255, 255, 255, 0.7)', '#ffffff'],
+	overlayGradient: ['rgba(255, 255, 255, 0.82)', 'rgba(255, 255, 255, 0.92)'],
 	gradient: ['#cfcfcf', '#e9e9e9', '#ffffff'],
 	separator: '#a3a3a3',
 	activeBackgroundColor: '#dff8ff',
@@ -93,10 +94,11 @@ const light: ITheme = {
 	warning: '#db3334',
 	refreshCtrlBackground: 'rgba(255,255,255,0.8)',
 	refreshCtrlColors: ['#00a9e0', '#309712'],
-	overlay: 'rgba(255,255,255,0.3)',
+	overlay: 'rgba(0,0,0,0.07)',
 	overlayText: '#000000',
 	overlayTextActive: '#062456',
-	statusBar: 'rgba(255,255,255,0.7)',
+	coverBorder: 'rgba(0, 0, 0, 0.22)',
+	statusBar: 'rgba(255,255,255,0.45)',
 	navigation: {
 		dark: false,
 		fonts: {
@@ -149,7 +151,7 @@ const dark: ITheme = {
 	muted: '#808080',
 	background: '#0b1821',
 	itemBackground: '#090a12',
-	overlayGradient: ['rgba(0, 0, 0, 0.6)', 'rgba(0, 0, 0, 0.8)', '#0b1821'],
+	overlayGradient: ['rgba(0, 0, 0, 0.75)', 'rgba(0, 0, 0, 0.82)', 'rgba(11, 24, 33, 0.88)'],
 	gradient: ['#000000', '#081318', '#0b1821'],
 	activeBackgroundColor: '#053e62',
 	separator: '#0b2932',
@@ -162,10 +164,11 @@ const dark: ITheme = {
 	warning: '#e60010',
 	refreshCtrlBackground: 'rgba(0,0,0,0.2)',
 	refreshCtrlColors: ['#00a9e0', '#309712'],
-	overlay: 'rgba(0,0,0,0.5)',
+	overlay: 'rgba(255,255,255,0.09)',
 	overlayText: '#ffffff',
 	overlayTextActive: '#93aed0',
-	statusBar: 'rgba(0,0,0,0.5)',
+	coverBorder: 'rgba(255, 255, 255, 0.22)',
+	statusBar: 'rgba(0,0,0,0.3)',
 	checkbox: {
 		checked: '#ffffff',
 		unchecked: '#0b2932'
@@ -221,7 +224,7 @@ const black: ITheme = {
 	muted: '#808080',
 	background: '#000000',
 	itemBackground: '#090a12',
-	overlayGradient: ['rgba(0, 0, 0, 0.6)', 'rgba(0, 0, 0, 0.8)', '#000000'],
+	overlayGradient: ['rgba(0, 0, 0, 0.75)', 'rgba(0, 0, 0, 0.82)', 'rgba(0, 0, 0, 0.88)'],
 	gradient: ['#0a0c15', '#000000'],
 	activeBackgroundColor: '#053e62',
 	separator: '#0b2932',
@@ -234,10 +237,11 @@ const black: ITheme = {
 	warning: '#e60010',
 	refreshCtrlBackground: 'rgba(0,0,0,0.2)',
 	refreshCtrlColors: ['#00a9e0', '#309712'],
-	overlay: 'rgba(0,0,0,0.5)',
+	overlay: 'rgba(255,255,255,0.09)',
 	overlayText: '#ffffff',
 	overlayTextActive: '#87a7d6',
-	statusBar: 'rgba(0,0,0,0.5)',
+	coverBorder: 'rgba(255, 255, 255, 0.22)',
+	statusBar: 'rgba(0,0,0,0.3)',
 	navigation: {
 		dark: true,
 		fonts: {

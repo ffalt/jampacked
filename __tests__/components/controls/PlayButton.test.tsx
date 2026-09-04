@@ -71,6 +71,7 @@ describe('PlayButton', () => {
 				      "height": 50,
 				      "justifyContent": "center",
 				      "opacity": 1,
+				      "paddingLeft": 3,
 				      "width": 50,
 				    }
 				  }

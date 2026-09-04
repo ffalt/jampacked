@@ -39,6 +39,10 @@ const styles = StyleSheet.create({
 		justifyContent: 'space-between',
 		paddingHorizontal: staticTheme.padding
 	},
+	cover: {
+		borderRadius: 6,
+		borderWidth: 1
+	},
 	headerTitleCmdsExtra: {
 		flexDirection: 'row',
 		paddingTop: staticTheme.padding
@@ -156,7 +160,7 @@ export const ObjectHeader: React.FC<{
 	return (
 		<FastImageBackground id={id} style={[styles.header, { paddingTop: statusBarHeight }]}>
 			<View style={styles.headerTop}>
-				<JamImage id={id} size={173} requestSize={staticTheme.cover} />
+				<JamImage id={id} size={173} requestSize={staticTheme.cover} style={[styles.cover, { borderColor: theme.coverBorder }]} />
 				<View style={styles.headerTitleContainer}>
 					<ThemedText style={[styles.headerTitleType, { color: theme.muted }]}>{typeName}</ThemedText>
 					<ThemedText numberOfLines={2} style={styles.headerTitle}>{title}</ThemedText>

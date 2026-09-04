@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { enableScreens } from 'react-native-screens';
-import { StatusBar } from 'react-native';
+import { StatusBar, StyleSheet, View } from 'react-native';
+import { getStatusBarHeight } from 'react-native-status-bar-height';
 import { AppNavigator } from './src/navigators/AppNavigator';
 import { getAutoTheme, getTheme, ThemeContext, ThemeProvider, ThemeSettings } from './src/style/theming';
 import { NavigationService } from './src/navigators/navigation';
@@ -20,6 +21,15 @@ import pinService from './src/services/pin.service.ts';
 import queueStorageService from './src/services/queue-storage.service.ts';
 
 enableScreens();
+
+const styles = StyleSheet.create({
+	statusBarTint: {
+		position: 'absolute',
+		top: 0,
+		left: 0,
+		right: 0
+	}
+});
 
 export const App: React.FC = () => {
 	const [client, setClient] = useState<ApolloClient | undefined>();
@@ -82,10 +92,11 @@ export const App: React.FC = () => {
 				<ApolloProvider client={client}>
 					<ThemeContext.Provider value={themeSettings}>
 						<ThemeProvider theme={themeSettings.theme}>
-							<StatusBar translucent={true} backgroundColor={themeSettings.theme.statusBar} barStyle={themeSettings.theme.barStyle} />
+							<StatusBar barStyle={themeSettings.theme.barStyle} />
 							<NavigationContainer theme={themeSettings.theme.navigation} ref={r => NavigationService.setTopLevelNavigator(r)}>
 								<AppNavigator />
 							</NavigationContainer>
+							<View pointerEvents="none" style={[styles.statusBarTint, { height: getStatusBarHeight(), backgroundColor: themeSettings.theme.statusBar }]} />
 						</ThemeProvider>
 					</ThemeContext.Provider>
 				</ApolloProvider>

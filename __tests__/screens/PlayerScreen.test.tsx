@@ -1,6 +1,6 @@
 import 'react-native';
 import React from 'react';
-import { describe, it, expect } from '@jest/globals';
+import { describe, it, expect, beforeEach } from '@jest/globals';
 import { render } from '@testing-library/react-native';
 import { staticTheme } from '../../src/style/theming';
 
@@ -11,6 +11,13 @@ import { PlayerProgress } from '../../src/components/PlayerProgress';
 import { PlayerTime } from '../../src/components/PlayerTime';
 import { PlayerControl } from '../../src/components/PlayerControl';
 import { PlayerAnnotation } from '../../src/components/PlayerAnnotation';
+
+const mockInsets = { top: 0, right: 0, bottom: 0, left: 0 };
+
+jest.mock('react-native-safe-area-context', () => ({
+	...jest.requireActual<object>('react-native-safe-area-context'),
+	useSafeAreaInsets: (): { top: number; right: number; bottom: number; left: number } => mockInsets
+}));
 
 jest.mock('../../src/components/PlayerTabs', () => require('../../__mocks__/components/PlayerTabs.tsx'));
 jest.mock('../../src/components/PlayerTrack', () => require('../../__mocks__/components/PlayerTrack.tsx'));
@@ -42,6 +49,10 @@ function loadScreen(os: 'ios' | 'android'): { Screen: React.FC; flatten: (style:
 }
 
 describe('PlayerScreen', () => {
+	beforeEach(() => {
+		mockInsets.bottom = 0;
+	});
+
 	it('renders the player sub-components (Tabs, Track, Waveform, Progress, Time, Control, Annotation)', async () => {
 		const { Screen } = loadScreen('ios');
 		await render(<Screen />);
@@ -65,6 +76,14 @@ describe('PlayerScreen', () => {
 		const androidScreen = await render(<android.Screen />);
 		const androidStyle = android.flatten(androidScreen.toJSON()?.props.style);
 		expect(androidStyle.paddingTop).toBe(0);
-		expect(androidStyle.paddingBottom).toBe(staticTheme.paddingLarge);
+		expect(androidStyle.paddingBottom).toBe(staticTheme.paddingSmall);
+	});
+
+	it('keeps the controls clear of the system navigation bar', async () => {
+		mockInsets.bottom = 48;
+		const android = loadScreen('android');
+		const screen = await render(<android.Screen />);
+		const style = android.flatten(screen.toJSON()?.props.style);
+		expect(style.paddingBottom).toBe(staticTheme.paddingSmall + 48);
 	});
 });

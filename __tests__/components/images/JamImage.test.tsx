@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { type ImageStyle, StyleProp, StyleSheet } from 'react-native';
 import { describe, it, expect } from '@jest/globals';
 import { render } from '@testing-library/react-native';
 import { JamImage } from '../../../src/components/JamImage';
@@ -20,7 +20,7 @@ const mockFastImage = jest.mocked(FastImage);
 
 interface FastImageProps {
 	source?: { uri: string };
-	style?: unknown;
+	style?: StyleProp<ImageStyle>;
 }
 
 describe('JamImage', () => {

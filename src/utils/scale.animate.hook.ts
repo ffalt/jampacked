@@ -15,7 +15,7 @@ export const useScaleAnimate = (inverted = false, avoidFirst = true): Animated.A
 			Animated.timing(scaleValue, {
 				toValue: inverted ? 1 : 0,
 				duration: 200,
-				easing: Easing.bounce,
+				easing: (value: number): number => Easing.bounce(value),
 				useNativeDriver: true
 			}).start();
 		}

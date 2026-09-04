@@ -37,11 +37,11 @@ export const DefaultSectionList = <ItemT extends { id: string }, SectionT>(
 			style={style}
 			sections={sections ?? []}
 			extraData={extraData}
-			ListHeaderComponent={ListHeaderComponent}
+			ListHeaderComponent={ListHeaderComponent ?? undefined}
 			ListEmptyComponent={<ListEmpty list={sections} />}
 			renderSectionHeader={renderSectionHeader}
-			ItemSeparatorComponent={ItemSeparatorComponent || (ItemSeparatorComponent === null) ? ItemSeparatorComponent : Separator}
-			SectionSeparatorComponent={SectionSeparatorComponent || (SectionSeparatorComponent === null) ? SectionSeparatorComponent : Separator}
+			ItemSeparatorComponent={(ItemSeparatorComponent || (ItemSeparatorComponent === null) ? ItemSeparatorComponent : Separator) ?? undefined}
+			SectionSeparatorComponent={(SectionSeparatorComponent || (SectionSeparatorComponent === null) ? SectionSeparatorComponent : Separator) ?? undefined}
 			keyExtractor={defaultKeyExtractor}
 			renderItem={renderItem}
 			refreshControl={(

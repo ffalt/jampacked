@@ -1,5 +1,6 @@
 import React from 'react';
 import { Platform, StyleSheet, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { PlayerProgress } from '../components/PlayerProgress';
 import { PlayerTime } from '../components/PlayerTime';
 import { PlayerControl } from '../components/PlayerControl';
@@ -10,22 +11,26 @@ import { ModalRouting, ModalStackProps } from '../navigators/Routing';
 import { PlayerWaveformProgress } from '../components/PlayerWaveformProgress';
 import { PlayerAnnotation } from '../components/PlayerAnnotation';
 
+const paddingBottom = Platform.OS === 'ios' ? staticTheme.paddingLarge * 2 : staticTheme.paddingSmall;
+
 const styles = StyleSheet.create({
 	player: {
 		flex: 1,
-		paddingTop: Platform.OS === 'ios' ? staticTheme.paddingLarge : 0,
-		paddingBottom: Platform.OS === 'ios' ? staticTheme.paddingLarge * 2 : staticTheme.paddingLarge
+		paddingTop: Platform.OS === 'ios' ? staticTheme.paddingLarge : 0
 	}
 });
 
-export const PlayerScreen: React.FC<ModalStackProps<ModalRouting.PLAYER>> = () => (
-	<View style={styles.player}>
-		<PlayerTabs />
-		<PlayerTrack />
-		<PlayerWaveformProgress />
-		<PlayerProgress />
-		<PlayerTime />
-		<PlayerAnnotation />
-		<PlayerControl />
-	</View>
-);
+export const PlayerScreen: React.FC<ModalStackProps<ModalRouting.PLAYER>> = () => {
+	const insets = useSafeAreaInsets();
+	return (
+		<View style={[styles.player, { paddingBottom: paddingBottom + insets.bottom }]}>
+			<PlayerTabs />
+			<PlayerTrack />
+			<PlayerWaveformProgress />
+			<PlayerProgress />
+			<PlayerTime />
+			<PlayerAnnotation />
+			<PlayerControl />
+		</View>
+	);
+};

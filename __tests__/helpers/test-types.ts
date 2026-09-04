@@ -1,3 +1,5 @@
+import type { StyleProp, ViewStyle } from 'react-native';
+
 export interface IndexState {
 	loading: boolean;
 	error?: Error;
@@ -20,6 +22,6 @@ export interface ErrorViewProps {
 export interface ClickIconProps {
 	iconName: string;
 	disabled?: boolean;
-	style?: unknown;
+	style?: StyleProp<ViewStyle>;
 	onPress: () => void;
 }

@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react';
-import { PanResponder, StyleSheet, Text, View } from 'react-native';
+import { PanResponder, StyleSheet, Text, View, type ViewInstance } from 'react-native';
 import { AtoZLetter } from './AtoZLetter';
 import { useTheme } from '../style/theming';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
@@ -73,7 +73,7 @@ export const AtoZPicker: React.FC<AtoZPickerProps> = (
 		letters, activeLetter, onTouchStart, onTouchEnd, onTouchLetter
 	}) => {
 	const theme = useTheme();
-	const containerReference = useRef<View | null>(null);
+	const containerReference = useRef<ViewInstance | null>(null);
 	const [containerState, setContainerState] = useState<{ absContainerTop: number; containerHeight: number }>({ absContainerTop: 0, containerHeight: 0 });
 	const [current, setCurrent] = useState<{ letter: string; yPosition: number }>();
 
