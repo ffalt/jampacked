@@ -1,5 +1,8 @@
+import axios from 'axios';
 import { JamStoredConfiguration } from './jam.configuration.ts';
 import { JamService as BaseJamService } from './jam';
+
+axios.defaults.timeout = 10_000;
 
 export class JamService extends BaseJamService {
 	get currentUserName(): string {
