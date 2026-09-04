@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { ActivityIndicator, KeyboardAvoidingView, ScrollView, StyleSheet, Text, TextInput, type TextInputInstance, View } from 'react-native';
+import { ActivityIndicator, StyleSheet, Text, TextInput, type TextInputInstance, View } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 import { staticTheme, useTheme } from '../style/theming';
 import { AppRouting, AppStackProps } from '../navigators/Routing';
 import { LoginButton } from '../components/LoginButton';
@@ -16,10 +17,10 @@ const styles = StyleSheet.create({
 		padding: staticTheme.padding,
 		flexDirection: 'column',
 		justifyContent: 'space-between',
-		flex: 1
+		flexGrow: 1
 	},
 	scrollContainer: {
-		flex: 1
+		flexGrow: 1
 	},
 	headline: {
 		alignItems: 'center'
@@ -27,8 +28,7 @@ const styles = StyleSheet.create({
 	content: {
 		paddingRight: staticTheme.paddingLarge,
 		paddingLeft: staticTheme.paddingLarge,
-		justifyContent: 'center',
-		flex: 1
+		justifyContent: 'center'
 	},
 	inputIconWrapper: {
 		textAlign: 'center',
@@ -58,7 +58,6 @@ const styles = StyleSheet.create({
 		borderBottomWidth: 1
 	},
 	loginBlock: {
-		flex: 1,
 		margin: staticTheme.marginLarge,
 		justifyContent: 'center',
 		minHeight: 200
@@ -193,13 +192,13 @@ export const LoginScreen: React.FC<AppStackProps<AppRouting.AUTH>> = () => {
 	);
 
 	return (
-		<ScrollView contentContainerStyle={styles.scrollContainer}>
+		<KeyboardAwareScrollView contentContainerStyle={styles.scrollContainer} mode="layout" bottomOffset={staticTheme.paddingLarge} keyboardShouldPersistTaps="handled" keyboardDismissMode="interactive">
 			<View style={[styles.container, { paddingTop: statusBarHeight, paddingBottom: staticTheme.padding + insets.bottom }]}>
 				<View style={styles.headline}>
 					<Logo size={140} />
 				</View>
 				<View style={styles.loginBlock}>
-					<KeyboardAvoidingView style={styles.content}>
+					<View style={styles.content}>
 						<View style={[styles.inputGroup, { borderColor: theme.textColor }]}>
 							<View style={styles.inputIconWrapper}>
 								<ThemedIcon name="notes-beamed" size={styles.inputIcon.fontSize} />
@@ -264,7 +263,7 @@ export const LoginScreen: React.FC<AppStackProps<AppRouting.AUTH>> = () => {
 								autoCapitalize="none"
 							/>
 						</View>
-					</KeyboardAvoidingView>
+					</View>
 				</View>
 				<View style={styles.buttons}>
 					{errorView}
@@ -273,6 +272,6 @@ export const LoginScreen: React.FC<AppStackProps<AppRouting.AUTH>> = () => {
 					</LoginButton>
 				</View>
 			</View>
-		</ScrollView>
+		</KeyboardAwareScrollView>
 	);
 };

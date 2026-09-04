@@ -15,6 +15,7 @@ const config: Config = {
 		'|react-native-gesture-handler' +
 		'|react-native-reanimated' +
 		'|react-native-worklets' +
+		'|react-native-keyboard-controller' +
 		'|react-native-snackbar' +
 		'|react-native-status-bar-height' +
 		'|react-native-tab-view' +

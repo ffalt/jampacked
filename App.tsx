@@ -12,6 +12,7 @@ import { ApolloClient } from '@apollo/client';
 import { sharedStyles } from './src/style/shared';
 import { setAppAvailable } from './src/services/playback.service.ts';
 import { ToastProvider } from 'react-native-toastier';
+import { KeyboardProvider } from 'react-native-keyboard-controller';
 import apolloService from './src/services/apollo.service.ts';
 import jamService from './src/services/jam.service.ts';
 import storageService from './src/services/storage.service.ts';
@@ -88,19 +89,21 @@ export const App: React.FC = () => {
 	}
 	return (
 		<GestureHandlerRootView style={sharedStyles.flex}>
-			<ToastProvider>
-				<ApolloProvider client={client}>
-					<ThemeContext.Provider value={themeSettings}>
-						<ThemeProvider theme={themeSettings.theme}>
-							<StatusBar barStyle={themeSettings.theme.barStyle} />
-							<NavigationContainer theme={themeSettings.theme.navigation} ref={r => NavigationService.setTopLevelNavigator(r)}>
-								<AppNavigator />
-							</NavigationContainer>
-							<View pointerEvents="none" style={[styles.statusBarTint, { height: getStatusBarHeight(), backgroundColor: themeSettings.theme.statusBar }]} />
-						</ThemeProvider>
-					</ThemeContext.Provider>
-				</ApolloProvider>
-			</ToastProvider>
+			<KeyboardProvider>
+				<ToastProvider>
+					<ApolloProvider client={client}>
+						<ThemeContext.Provider value={themeSettings}>
+							<ThemeProvider theme={themeSettings.theme}>
+								<StatusBar barStyle={themeSettings.theme.barStyle} />
+								<NavigationContainer theme={themeSettings.theme.navigation} ref={r => NavigationService.setTopLevelNavigator(r)}>
+									<AppNavigator />
+								</NavigationContainer>
+								<View pointerEvents="none" style={[styles.statusBarTint, { height: getStatusBarHeight(), backgroundColor: themeSettings.theme.statusBar }]} />
+							</ThemeProvider>
+						</ThemeContext.Provider>
+					</ApolloProvider>
+				</ToastProvider>
+			</KeyboardProvider>
 		</GestureHandlerRootView>
 	);
 };

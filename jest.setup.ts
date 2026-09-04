@@ -46,6 +46,9 @@ jest.mock('react-native-reanimated/src/css/native/proxy', () => ({
 // eslint-disable-next-line @typescript-eslint/no-require-imports,@typescript-eslint/no-unsafe-return
 jest.mock('react-native-reanimated', () => require('react-native-reanimated/mock'));
 
+// eslint-disable-next-line @typescript-eslint/no-require-imports,@typescript-eslint/no-unsafe-return
+jest.mock('react-native-keyboard-controller', () => require('react-native-keyboard-controller/jest'));
+
 jest.mock('react-native-worklets', () => ({
 	// threads
 	runOnUI: jest.fn((worklet: unknown) => worklet),
