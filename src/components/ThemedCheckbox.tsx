@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
 		borderWidth: 2,
 		borderRadius: 3,
 		alignItems: 'center',
-		justifyContent: 'center',
+		justifyContent: 'center'
 	},
 	checkmark: {
 		width: 10,
@@ -17,8 +17,8 @@ const styles = StyleSheet.create({
 		borderLeftWidth: 2,
 		borderBottomWidth: 2,
 		marginTop: -2,
-		transform: [{ rotate: '-45deg' }],
-	},
+		transform: [{ rotate: '-45deg' }]
+	}
 });
 
 export const ThemedCheckbox: React.FC<{ isSelected?: boolean; style?: StyleProp<ViewStyle> }> = ({ style, isSelected }) => {

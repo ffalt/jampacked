@@ -3,6 +3,7 @@ const path = require("node:path");
 // eslint-disable-next-line unicorn/prefer-module
 const { getDefaultConfig, mergeConfig } = require("@react-native/metro-config");
 
+// eslint-disable-next-line unicorn/prefer-module
 const defaultConfig = getDefaultConfig(__dirname);
 
 /**

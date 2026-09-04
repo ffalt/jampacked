@@ -31,6 +31,13 @@ jest.mock('react-native-gesture-handler/ReanimatedSwipeable', () => ({
 	default: 'ReanimatedSwipeable'
 }));
 
+// react-native-reanimated 4.6.0 calls setCSSEventHandler() while initializing at import time, but under
+// Jest the module resolves to JSReanimated, whose setCSSEventHandler throws. Stub out that one function.
+jest.mock('react-native-reanimated/src/css/native/proxy', () => ({
+	...jest.requireActual<object>('react-native-reanimated/src/css/native/proxy'),
+	setCSSEventHandler: jest.fn()
+}));
+
 // eslint-disable-next-line @typescript-eslint/no-require-imports,@typescript-eslint/no-unsafe-return
 jest.mock('react-native-reanimated', () => require('react-native-reanimated/mock'));
 
