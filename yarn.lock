@@ -8316,10 +8316,10 @@ react-native-track-player@ffalt/react-native-track-player:
   version "2.1.4"
   resolved "https://codeload.github.com/ffalt/react-native-track-player/tar.gz/60464e1e7b760cb36d96d3467b29fbbb0caa82b2"
 
-react-native-worklets@0.12.1:
-  version "0.12.1"
-  resolved "https://registry.yarnpkg.com/react-native-worklets/-/react-native-worklets-0.12.1.tgz#2a6956bfd6549e02462b94ef401ae8a1bae153a7"
-  integrity sha512-/u7B+Akrox32IQUi6+0OHwWAfBC/A5LVdt000RL8OKB4L1pHTvIDwVyMP6Nw7ybuuoQYS8PLlpmxTE1Ce7TqWg==
+react-native-worklets@0.12.2:
+  version "0.12.2"
+  resolved "https://registry.yarnpkg.com/react-native-worklets/-/react-native-worklets-0.12.2.tgz#3a8646dd77778ac9acf01c3b71198b409a89cb95"
+  integrity sha512-TB6Aze0WJg/U0XOu4Zfx/yV8i5i7C/lbMymUXPbq1izDy2nuzZ9ujQAMwAHM2Ygyhzi8sdRk/7FukuTTfuil9A==
   dependencies:
     "@babel/generator" "^7.27.1"
     "@babel/plugin-transform-arrow-functions" "^7.27.1"
