@@ -107,7 +107,7 @@
     "eslint-plugin-unused-imports": "4.4.1",
     "globals": "17.12.0",
     "graphql-tag": "2.12.7",
-    "jest": "30.5.1",
+    "jest": "30.5.2",
     "lodash.chunk": "4.2.0",
     "lodash.throttle": "4.1.1",
     "patch-package": "8.0.1",
