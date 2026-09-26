@@ -2146,10 +2146,10 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@op-engineering/op-sqlite@18.1.4":
-  version "18.1.4"
-  resolved "https://registry.yarnpkg.com/@op-engineering/op-sqlite/-/op-sqlite-18.1.4.tgz#21c1fd90b24b0deb8108c5d72f1b7fde93fa2bdc"
-  integrity sha512-8gjHXMyigCSDy/xdn46SQdnOW9pgJuTyrxqZj9ro75Lkp6dg+xs8wzyO+QH+khTWkY6TSofP3NcttJ1uiLdUFA==
+"@op-engineering/op-sqlite@18.2.1":
+  version "18.2.1"
+  resolved "https://registry.yarnpkg.com/@op-engineering/op-sqlite/-/op-sqlite-18.2.1.tgz#7fcec899021413f7773282c254bb071f14d45dfc"
+  integrity sha512-atVOtXyFzO0e454eVS27AMwRs515URCKrkvLLG+mGKcyiF5UPfC53oukpNp2UmVzlLebyTEXNkTYs6n0dVGd0g==
 
 "@parcel/watcher-android-arm64@2.6.0":
   version "2.6.0"
