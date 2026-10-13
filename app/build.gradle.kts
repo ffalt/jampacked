@@ -40,7 +40,7 @@ android {
         create("release") {
             keyAlias = System.getenv("SIGNING_KEY_ALIAS")
             keyPassword = System.getenv("SIGNING_KEY_PASSWORD")
-            storeFile = file("starfield_keystore.jks")
+            storeFile = file("jam_keystore.jks")
             storePassword = System.getenv("SIGNING_STORE_PASSWORD")
         }
     }
