@@ -1,3 +1,0 @@
- - **localization** replace hardcoded strings with string resources
- - **AtoZPicker** better letter selection and bubble size
- - **navigation** add transitions and settings
