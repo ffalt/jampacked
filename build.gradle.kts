@@ -132,15 +132,87 @@ fun findPreviousReleaseTag(version: String): String {
 
 tasks.register("gitReleaseNotesTask") {
     description = "Generate release notes for the current version based on git commits since the previous release tag."
-    doLast {
-        val version = project.version.toString()
-        val previousTag = findPreviousReleaseTag(version)
-        println("Generating Release notes for $version compared to $previousTag")
+    val releaseVersion = project.version.toString()
+    val repositoryDirectory = rootDir
 
-        val commits = collectCommits(previousTag, version)
-        rootDir.resolve("RELEASE_NOTES.md").writeText(
-            commitSections(commits, "##", true) +
-                "## Full Changelog\n\nhttps://github.com/ffalt/starfield/compare/$previousTag...$version\n",
+    doLast {
+        fun gitOutput(command: List<String>): String {
+            val process =
+                ProcessBuilder(command)
+                    .directory(repositoryDirectory)
+                    .redirectErrorStream(true)
+                    .start()
+            val output = process.inputStream.bufferedReader().use { it.readText() }
+            val exitCode = process.waitFor()
+            if (exitCode != 0) {
+                throw GradleException("Command failed: ${command.joinToString(" ")}\n$output")
+            }
+            return output
+        }
+
+        fun calculateVersionCodeForTask(version: String): Int {
+            val parts = version.removePrefix("v").split('.')
+            val (major, minor, patch, build) =
+                (0..3).map { parts.getOrNull(it)?.toIntOrNull() ?: 0 }
+            return (major * 1000 * 1000 * 1000) + (minor * 1000 * 1000) + (patch * 1000) + build
+        }
+
+        val currentVersionCode = calculateVersionCodeForTask(releaseVersion)
+        val previousTag =
+            gitOutput(listOf("git", "tag", "--list", "v*"))
+                .lineSequence()
+                .map(String::trim)
+                .filter { Regex("v\\d+(\\.\\d+)*").matches(it) }
+                .filter { calculateVersionCodeForTask(it) < currentVersionCode }
+                .maxByOrNull(::calculateVersionCodeForTask)
+                ?: throw GradleException(
+                    "No release tag below $releaseVersion found. Cannot determine the changelog range.",
+                )
+
+        // The release tag only exists once the release is tagged, so fall back to HEAD before that.
+        val toRevision =
+            listOf(releaseVersion, "v${releaseVersion.removePrefix("v")}", "HEAD").first { revision ->
+                runCatching { gitOutput(listOf("git", "rev-parse", "--verify", "--quiet", "$revision^{commit}")) }.isSuccess
+            }
+        println("Generating Release notes for $releaseVersion ($toRevision) compared to $previousTag")
+
+        val pattern = Regex("^(feat|fix)(?:\\(([^)]*)\\))?!?:\\s*(.+)$")
+        val commits =
+            gitOutput(
+                listOf("git", "log", "--no-merges", "--format=%H%x09%s", "$previousTag..$toRevision"),
+            ).lineSequence()
+                .map(String::trim)
+                .filter(String::isNotEmpty)
+                .mapNotNull { line ->
+                    val (hash, subject) =
+                        line.split('\t', limit = 2).takeIf { it.size == 2 } ?: return@mapNotNull null
+                    val match = pattern.matchEntire(subject) ?: return@mapNotNull null
+                    ReleaseCommit(
+                        type = match.groupValues[1],
+                        scope = match.groupValues[2].ifEmpty { null },
+                        description = match.groupValues[3].trim(),
+                        hash = hash,
+                    )
+                }.toList()
+
+        val sections =
+            buildString {
+                listOf("feat" to "Features", "fix" to "Bug Fixes").forEach { (type, title) ->
+                    val selected = commits.filter { it.type == type }
+                    if (selected.isNotEmpty()) {
+                        append("## $title\n\n")
+                        selected.forEach { commit ->
+                            val scope = commit.scope?.let { "**$it** " }.orEmpty()
+                            append(" - $scope${commit.description} ([${commit.hash.take(15)}]")
+                                .append("(https://github.com/ffalt/starfield/commit/${commit.hash}))\n")
+                        }
+                        append('\n')
+                    }
+                }
+            }
+        repositoryDirectory.resolve("RELEASE_NOTES.md").writeText(
+            sections +
+                "## Full Changelog\n\nhttps://github.com/ffalt/starfield/compare/$previousTag...$releaseVersion\n",
         )
     }
 }
