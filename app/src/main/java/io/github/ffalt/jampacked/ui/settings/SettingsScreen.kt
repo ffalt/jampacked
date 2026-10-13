@@ -69,7 +69,6 @@ fun SettingsScreen(
         PageHeader(title = stringResource(R.string.settings))
 
         Column(modifier = Modifier.padding(JamDimens.padding)) {
-
             SectionHeader(stringResource(R.string.user_section))
             Row(
                 modifier =

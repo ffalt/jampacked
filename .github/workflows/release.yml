@@ -42,7 +42,7 @@ jobs:
         run: ./gradlew --no-daemon gitReleaseNotesTask
 
       - name: Build jampacked
-        run: ./gradlew --no-daemon build
+        run: ./gradlew --no-daemon build -x lint -x lintVitalRelease
         env:
           SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
           SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}

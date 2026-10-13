@@ -1,10 +1,10 @@
 package io.github.ffalt.jampacked.ui.browse
 
 import android.content.Context
-import dagger.hilt.android.qualifiers.ApplicationContext
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.toRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import io.github.ffalt.jampacked.data.repo.AlbumRepository
 import io.github.ffalt.jampacked.data.repo.BrowseIndexGroup
 import io.github.ffalt.jampacked.data.repo.BrowsePage

@@ -10,8 +10,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import io.github.ffalt.jampacked.data.JamSession
 import io.github.ffalt.jampacked.R
+import io.github.ffalt.jampacked.data.JamSession
 import io.github.ffalt.jampacked.ui.components.ErrorView
 import io.github.ffalt.jampacked.ui.components.HeaderDetail
 import io.github.ffalt.jampacked.ui.components.ObjectHeader

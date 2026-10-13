@@ -12,9 +12,9 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
+import io.github.ffalt.jampacked.R
 import io.github.ffalt.jampacked.data.JamSession
 import io.github.ffalt.jampacked.data.repo.BrowseEntry
-import io.github.ffalt.jampacked.R
 import io.github.ffalt.jampacked.ui.components.GoLeftIcon
 import io.github.ffalt.jampacked.ui.components.GoRightIcon
 import io.github.ffalt.jampacked.ui.components.IndexGroup

@@ -33,7 +33,6 @@ subprojects {
                 abortOnError = false
                 checkDependencies = true
                 checkReleaseBuilds = true
-                lintConfig = file("lint.xml")
                 baseline = file("lint-baseline.xml")
             }
         }

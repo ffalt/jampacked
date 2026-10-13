@@ -18,8 +18,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import io.github.ffalt.jampacked.data.TrackEntry
 import io.github.ffalt.jampacked.R
+import io.github.ffalt.jampacked.data.TrackEntry
 import io.github.ffalt.jampacked.ui.components.ClickIcon
 import io.github.ffalt.jampacked.ui.components.ClickLabelIcon
 import io.github.ffalt.jampacked.ui.components.DurationText
