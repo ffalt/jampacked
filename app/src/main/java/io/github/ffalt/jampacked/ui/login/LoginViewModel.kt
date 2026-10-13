@@ -1,9 +1,12 @@
 package io.github.ffalt.jampacked.ui.login
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import io.github.ffalt.jampacked.BuildConfig
+import io.github.ffalt.jampacked.R
 import io.github.ffalt.jampacked.data.auth.AuthRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -23,7 +26,8 @@ data class LoginUiState(
 class LoginViewModel
     @Inject
     constructor(
-        private val auth: AuthRepository
+        private val auth: AuthRepository,
+        @ApplicationContext private val context: Context
     ) : ViewModel() {
         private val uiState = MutableStateFlow(LoginUiState())
         val state: StateFlow<LoginUiState> = uiState.asStateFlow()
@@ -50,7 +54,10 @@ class LoginViewModel
                     .onSuccess { uiState.value = uiState.value.copy(busy = false) }
                     .onFailure { error ->
                         uiState.value =
-                            uiState.value.copy(busy = false, error = error.message ?: "Login failed")
+                            uiState.value.copy(
+                                busy = false,
+                                error = error.message ?: context.getString(R.string.login_failed)
+                            )
                     }
             }
         }

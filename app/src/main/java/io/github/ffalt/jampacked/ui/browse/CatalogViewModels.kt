@@ -1,8 +1,11 @@
 package io.github.ffalt.jampacked.ui.browse
 
+import android.content.Context
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.toRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
+import io.github.ffalt.jampacked.R
 import io.github.ffalt.jampacked.data.repo.BrowseIndexGroup
 import io.github.ffalt.jampacked.data.repo.BrowsePage
 import io.github.ffalt.jampacked.data.repo.CatalogRepository
@@ -14,12 +17,13 @@ import javax.inject.Inject
 class GenreListViewModel
     @Inject
     constructor(
-        private val repository: CatalogRepository
-    ) : BrowseListViewModel() {
+        private val repository: CatalogRepository,
+        @ApplicationContext context: Context
+    ) : BrowseListViewModel(context) {
         override val isIndexMode: Boolean = true
 
         init {
-            uiState.update { it.copy(title = "Genres") }
+            uiState.update { it.copy(title = context.getString(R.string.genres)) }
             load()
         }
 
@@ -37,14 +41,15 @@ class SeriesListViewModel
     @Inject
     constructor(
         private val repository: CatalogRepository,
-        savedStateHandle: SavedStateHandle
-    ) : BrowseListViewModel() {
+        savedStateHandle: SavedStateHandle,
+        @ApplicationContext context: Context
+    ) : BrowseListViewModel(context) {
         private val route: Route.SeriesList = savedStateHandle.toRoute<Route.SeriesList>()
 
         override val isIndexMode: Boolean = route.listType == null
 
         init {
-            uiState.update { it.copy(title = "Series", listType = route.listType) }
+            uiState.update { it.copy(title = context.getString(R.string.series), listType = route.listType) }
             load()
         }
 
@@ -61,12 +66,13 @@ class SeriesListViewModel
 class PlaylistListViewModel
     @Inject
     constructor(
-        private val repository: CatalogRepository
-    ) : BrowseListViewModel() {
+        private val repository: CatalogRepository,
+        @ApplicationContext context: Context
+    ) : BrowseListViewModel(context) {
         override val isIndexMode: Boolean = false
 
         init {
-            uiState.update { it.copy(title = "Playlists") }
+            uiState.update { it.copy(title = context.getString(R.string.playlists)) }
             load()
         }
 
@@ -88,12 +94,13 @@ class PlaylistListViewModel
 class PodcastListViewModel
     @Inject
     constructor(
-        private val repository: CatalogRepository
-    ) : BrowseListViewModel() {
+        private val repository: CatalogRepository,
+        @ApplicationContext context: Context
+    ) : BrowseListViewModel(context) {
         override val isIndexMode: Boolean = false
 
         init {
-            uiState.update { it.copy(title = "Podcasts") }
+            uiState.update { it.copy(title = context.getString(R.string.podcasts)) }
             load()
         }
 

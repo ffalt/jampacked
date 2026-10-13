@@ -86,7 +86,7 @@ fun LoginScreen(
                 modifier = Modifier.padding(top = JamDimens.margin)
             )
             ThemedText(
-                text = "Sign in to your Jam server",
+                text = stringResource(R.string.sign_in_to_server),
                 color = colors.muted,
                 fontSize = JamDimens.fontSizeSmall,
                 modifier = Modifier.padding(top = JamDimens.paddingSmall)
@@ -102,7 +102,7 @@ fun LoginScreen(
                 LoginField(
                     value = state.server,
                     onValueChange = viewModel::onServer,
-                    label = "Server",
+                    label = stringResource(R.string.server),
                     keyboardOptions =
                         KeyboardOptions(
                             keyboardType = KeyboardType.Uri,
@@ -112,13 +112,13 @@ fun LoginScreen(
                 LoginField(
                     value = state.username,
                     onValueChange = viewModel::onUsername,
-                    label = "User",
+                    label = stringResource(R.string.user),
                     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
                 )
                 LoginField(
                     value = state.password,
                     onValueChange = viewModel::onPassword,
-                    label = "Password",
+                    label = stringResource(R.string.password),
                     visualTransformation = PasswordVisualTransformation(),
                     keyboardOptions =
                         KeyboardOptions(
@@ -212,7 +212,7 @@ private fun LoginButton(
             )
         } else {
             ThemedText(
-                text = "LOGIN",
+                text = stringResource(R.string.login).uppercase(),
                 color = Color.White,
                 fontWeight = FontWeight.Medium,
                 letterSpacing = 1.sp

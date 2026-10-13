@@ -27,6 +27,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.res.stringResource
+import io.github.ffalt.jampacked.R
 import io.github.ffalt.jampacked.ui.icons.JamIcon
 import io.github.ffalt.jampacked.ui.theme.JamDimens
 import io.github.ffalt.jampacked.ui.theme.JamStyles
@@ -76,8 +78,8 @@ fun ListEmpty(
 ) {
     val text =
         when {
-            items == null -> "Loading"
-            items.isEmpty() -> "No entries"
+            items == null -> stringResource(R.string.loading)
+            items.isEmpty() -> stringResource(R.string.no_entries)
             else -> return
         }
     Column(
@@ -121,7 +123,7 @@ fun ErrorView(
                     .background(colors.itemBackground)
                     .padding(horizontal = JamDimens.paddingLarge, vertical = JamDimens.padding)
         ) {
-            ThemedText("Retry", color = colors.activeTintColor)
+            ThemedText(stringResource(R.string.retry), color = colors.activeTintColor)
         }
     }
 }

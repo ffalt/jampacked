@@ -41,12 +41,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import io.github.ffalt.jampacked.data.JamSession
 import io.github.ffalt.jampacked.data.TrackEntry
 import io.github.ffalt.jampacked.data.repo.Lyrics
+import io.github.ffalt.jampacked.R
 import io.github.ffalt.jampacked.player.RepeatMode
 import io.github.ffalt.jampacked.ui.components.ClickIcon
 import io.github.ffalt.jampacked.ui.components.ClickLabelIcon
@@ -298,7 +301,7 @@ private fun PlayerTopBar(
             ) {
                 if (!album.isNullOrEmpty()) {
                     ThemedText(
-                        text = "PLAYING FROM ALBUM",
+                        text = stringResource(R.string.playing_from_album).uppercase(),
                         color = colors.muted,
                         fontSize = JamDimens.fontSizeTiny,
                         letterSpacing = 1.sp
@@ -409,7 +412,7 @@ private fun QueueBar(
             verticalAlignment = Alignment.CenterVertically
         ) {
             ThemedText(
-                text = if (queueSize == 1) "Up next · 1 track" else "Up next · $queueSize tracks",
+                text = pluralStringResource(R.plurals.queue_tracks_count, queueSize, queueSize),
                 color = colors.muted,
                 fontSize = JamDimens.fontSizeSmall
             )
@@ -471,7 +474,7 @@ private fun TrackSheet(
                 .padding(bottom = SHEET_BOTTOM)
     ) {
         ThemedText(
-            text = "RATING",
+            text = stringResource(R.string.rating).uppercase(),
             color = colors.muted,
             fontSize = JamDimens.fontSizeTiny,
             letterSpacing = 1.sp,
@@ -485,7 +488,7 @@ private fun TrackSheet(
 
         ClickLabelIcon(
             iconName = "track",
-            label = "Go to track",
+            label = stringResource(R.string.go_to_track),
             onClick = { onNavigate(Route.Track(track.id, track.title)) },
             size = JamDimens.iconLarge,
             modifier = SHEET_ROW
@@ -493,7 +496,7 @@ private fun TrackSheet(
         track.albumID?.let { id ->
             ClickLabelIcon(
                 iconName = "album",
-                label = "Go to album",
+                label = stringResource(R.string.go_to_album),
                 onClick = { onNavigate(Route.Album(id, track.album)) },
                 size = JamDimens.iconLarge,
                 modifier = SHEET_ROW
@@ -502,7 +505,7 @@ private fun TrackSheet(
         track.artistID?.let { id ->
             ClickLabelIcon(
                 iconName = "artist",
-                label = "Go to artist",
+                label = stringResource(R.string.go_to_artist),
                 onClick = { onNavigate(Route.Artist(id, track.artist)) },
                 size = JamDimens.iconLarge,
                 modifier = SHEET_ROW

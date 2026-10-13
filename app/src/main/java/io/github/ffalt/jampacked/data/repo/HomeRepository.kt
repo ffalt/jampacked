@@ -60,32 +60,32 @@ class HomeRepository
 
             val library =
                 listOf(
-                    HomeStat("Artists", "artist", stats.artistTypes.album, "artists"),
-                    HomeStat("Albums", "album", stats.albumTypes.album, "albums:album"),
+                    HomeStat("artists", "artist", stats.artistTypes.album, "artists"),
+                    HomeStat("albums", "album", stats.albumTypes.album, "albums:album"),
                     HomeStat(
-                        "Compilations",
+                        "compilations",
                         "compilation",
                         stats.albumTypes.compilation,
                         "albums:compilation"
                     ),
-                    HomeStat("Series", "series", stats.series, "series"),
-                    HomeStat("Audiobooks", "audiobook", stats.albumTypes.audiobook, "albums:audiobook"),
-                    HomeStat("Soundtracks", "soundtrack", stats.albumTypes.soundtrack, "albums:soundtrack"),
-                    HomeStat("Live", "live", stats.albumTypes.live, "albums:live"),
-                    HomeStat("Bootlegs", "bootleg", stats.albumTypes.bootleg, "albums:bootleg"),
-                    HomeStat("EPs", "ep", stats.albumTypes.ep, "albums:ep"),
-                    HomeStat("Singles", "single", stats.albumTypes.single, "albums:single"),
-                    HomeStat("Folders", "folder", stats.folder, "folders"),
-                    HomeStat("Tracks", "track", stats.track, "tracks"),
-                    HomeStat("Genres", "genre", data.genres.total, "genres"),
-                    HomeStat("Podcasts", "podcast", data.podcasts.total, "podcasts")
+                    HomeStat("series", "series", stats.series, "series"),
+                    HomeStat("audiobooks", "audiobook", stats.albumTypes.audiobook, "albums:audiobook"),
+                    HomeStat("soundtracks", "soundtrack", stats.albumTypes.soundtrack, "albums:soundtrack"),
+                    HomeStat("live", "live", stats.albumTypes.live, "albums:live"),
+                    HomeStat("bootlegs", "bootleg", stats.albumTypes.bootleg, "albums:bootleg"),
+                    HomeStat("eps", "ep", stats.albumTypes.ep, "albums:ep"),
+                    HomeStat("singles", "single", stats.albumTypes.single, "albums:single"),
+                    HomeStat("folders", "folder", stats.folder, "folders"),
+                    HomeStat("tracks", "track", stats.track, "tracks"),
+                    HomeStat("genres", "genre", data.genres.total, "genres"),
+                    HomeStat("podcasts", "podcast", data.podcasts.total, "podcasts")
                 ).filter { it.value > 0 }
 
             val user = data.currentUser.stats
             val collections =
                 listOf(
-                    HomeStat("Bookmarks", "bookmark", user.bookmark, "bookmarks"),
-                    HomeStat("Playlists", "playlist", user.playlist, "playlists")
+                    HomeStat("bookmarks", "bookmark", user.bookmark, "bookmarks"),
+                    HomeStat("playlists", "playlist", user.playlist, "playlists")
                 ).filter { it.value > 0 }
 
             return HomeData(
@@ -122,11 +122,11 @@ class HomeRepository
             listType: String
         ): List<HomeStat> =
             listOf(
-                HomeStat("Artists", "artist", artists, "artists:$listType"),
-                HomeStat("Albums", "album", albums, "albums:album:$listType"),
-                HomeStat("Series", "series", series, "series:$listType"),
-                HomeStat("Folders", "folder", folders, "folders:$listType"),
-                HomeStat("Tracks", "track", tracks, "tracks:$listType")
+                HomeStat("artists", "artist", artists, "artists:$listType"),
+                HomeStat("albums", "album", albums, "albums:album:$listType"),
+                HomeStat("series", "series", series, "series:$listType"),
+                HomeStat("folders", "folder", folders, "folders:$listType"),
+                HomeStat("tracks", "track", tracks, "tracks:$listType")
             ).filter { it.value > 0 }
 
         private companion object {

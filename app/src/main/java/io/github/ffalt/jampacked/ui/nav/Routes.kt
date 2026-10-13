@@ -1,5 +1,7 @@
 package io.github.ffalt.jampacked.ui.nav
 
+import androidx.annotation.StringRes
+import io.github.ffalt.jampacked.R
 import kotlinx.serialization.Serializable
 
 sealed interface Route {
@@ -131,20 +133,21 @@ object GenreTab {
 
     val order = listOf(ARTISTS, ALBUMS, TRACKS)
 
-    fun subtitle(tab: String): String =
+    @StringRes
+    fun subtitleRes(tab: String): Int =
         when (tab) {
-            ALBUMS -> "Albums in Genre"
-            TRACKS -> "Tracks in Genre"
-            else -> "Artists in Genre"
+            ALBUMS -> R.string.genre_albums
+            TRACKS -> R.string.genre_tracks
+            else -> R.string.genre_artists
         }
 }
 
 enum class TabRoute(
-    val label: String,
+    @StringRes val labelRes: Int,
     val icon: String,
     val route: Route
 ) {
-    HOME("Home", "home", Route.Home),
-    QUEUE("Queue", "queue", Route.Queue),
-    SETTINGS("Settings", "settings", Route.Settings)
+    HOME(R.string.home, "home", Route.Home),
+    QUEUE(R.string.queue, "queue", Route.Queue),
+    SETTINGS(R.string.settings, "settings", Route.Settings)
 }

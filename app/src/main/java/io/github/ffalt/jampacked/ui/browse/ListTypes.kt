@@ -1,13 +1,17 @@
 package io.github.ffalt.jampacked.ui.browse
 
-fun listTypeName(listType: String?): String? =
+import androidx.annotation.StringRes
+import io.github.ffalt.jampacked.R
+
+@StringRes
+fun listTypeName(listType: String?): Int? =
     when (listType) {
-        "random" -> "Random"
-        "faved" -> "Favorite"
-        "highest" -> "Top Rated"
-        "avghighest" -> "Avg. Top Rated"
-        "frequent" -> "Most Played"
-        "recent" -> "Recently Played"
+        "random" -> R.string.random
+        "faved" -> R.string.favorite
+        "highest" -> R.string.top_rated
+        "avghighest" -> R.string.average_top_rated
+        "frequent" -> R.string.most_played
+        "recent" -> R.string.recently_played
         else -> null
     }
 

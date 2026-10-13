@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -22,7 +23,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
 import io.github.ffalt.jampacked.data.TrackEntry
+import io.github.ffalt.jampacked.R
 import io.github.ffalt.jampacked.ui.icons.JamIcon
 import io.github.ffalt.jampacked.ui.theme.JamDimens
 import io.github.ffalt.jampacked.ui.theme.LocalJamColors
@@ -33,28 +37,28 @@ import kotlin.time.Duration.Companion.milliseconds
 data class SelectionAction(
     val name: String,
     val icon: String,
-    val label: String
+    @StringRes val labelRes: Int
 )
 
 private val multiSelectActions =
     listOf(
-        SelectionAction("bt_m_play", "play", "Play selected tracks"),
-        SelectionAction("bt_m_queue", "list-add", "Add to queue"),
-        SelectionAction("bt_clear", "minus", "Clear selection")
+        SelectionAction("bt_m_play", "play", R.string.play_selected_tracks),
+        SelectionAction("bt_m_queue", "list-add", R.string.add_selected_tracks_to_queue),
+        SelectionAction("bt_clear", "minus", R.string.clear_selection)
     )
 
 private val singleSelectActions =
     listOf(
-        SelectionAction("bt_s_play", "play", "Play track"),
-        SelectionAction("bt_s_queue", "list-add", "Add to queue"),
-        SelectionAction("bt_s_open", "track", "Open track details")
+        SelectionAction("bt_s_play", "play", R.string.play_track),
+        SelectionAction("bt_s_queue", "list-add", R.string.add_selected_tracks_to_queue),
+        SelectionAction("bt_s_open", "track", R.string.open_track_details)
     )
 
 class TrackSelectionState {
     var selection by mutableStateOf<List<TrackEntry>>(emptyList())
         private set
 
-    var tooltip by mutableStateOf<String?>(null)
+    var tooltip by mutableStateOf<Int?>(null)
         internal set
 
     internal var tooltipToken by mutableIntStateOf(0)
@@ -69,13 +73,7 @@ class TrackSelectionState {
                 else -> multiSelectActions
             }
 
-    val summary: String?
-        get() {
-            if (selection.isEmpty()) return null
-            val total = selection.sumOf { it.durationMS }
-            val noun = if (selection.size == 1) "track" else "tracks"
-            return "${selection.size} $noun · ${formatDuration(total)}"
-        }
+    val summaryDuration: Long get() = selection.sumOf { it.durationMS }
 
     fun isSelected(track: TrackEntry): Boolean = selection.any { it.id == track.id }
 
@@ -92,8 +90,8 @@ class TrackSelectionState {
         selection = emptyList()
     }
 
-    fun showTooltip(label: String) {
-        tooltip = label
+    fun showTooltip(@StringRes labelRes: Int) {
+        tooltip = labelRes
         tooltipToken++
     }
 }
@@ -117,7 +115,14 @@ fun TrackSelectionBar(
     onAction: (SelectionAction) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val summary = state.summary ?: return
+    if (state.selection.isEmpty()) return
+    val summary =
+        pluralStringResource(
+            R.plurals.selection_summary,
+            state.selection.size,
+            state.selection.size,
+            formatDuration(state.summaryDuration)
+        )
     val colors = LocalJamColors.current
 
     Column(
@@ -140,7 +145,7 @@ fun TrackSelectionBar(
             )
         }
 
-        state.tooltip?.let { label ->
+        state.tooltip?.let { labelRes ->
             Box(
                 modifier =
                     Modifier
@@ -149,7 +154,7 @@ fun TrackSelectionBar(
                         .padding(horizontal = JamDimens.padding, vertical = JamDimens.paddingSmall)
             ) {
                 ThemedText(
-                    text = label,
+                    text = stringResource(labelRes),
                     color = colors.floatingColor,
                     fontSize = JamDimens.fontSizeSmall
                 )
@@ -170,7 +175,7 @@ fun TrackSelectionBar(
                             .widthIn(min = 56.dp)
                             .combinedClickable(
                                 onClick = { onAction(action) },
-                                onLongClick = { state.showTooltip(action.label) }
+                                onLongClick = { state.showTooltip(action.labelRes) }
                             ).padding(
                                 horizontal = JamDimens.paddingLarge + 5.dp,
                                 vertical = JamDimens.paddingLarge

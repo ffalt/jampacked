@@ -9,8 +9,10 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.sp
 import io.github.ffalt.jampacked.data.repo.Lyrics
+import io.github.ffalt.jampacked.R
 import io.github.ffalt.jampacked.ui.components.ThemedText
 import io.github.ffalt.jampacked.ui.theme.JamDimens
 import io.github.ffalt.jampacked.ui.theme.LocalJamColors
@@ -35,7 +37,7 @@ fun LyricsView(
             }
 
             lyrics == null -> {
-                ThemedText("No lyrics", color = colors.muted)
+                ThemedText(stringResource(R.string.no_lyrics), color = colors.muted)
             }
 
             else -> {

@@ -1,10 +1,13 @@
 package io.github.ffalt.jampacked.ui.browse
 
+import android.content.Context
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
+import io.github.ffalt.jampacked.R
 import io.github.ffalt.jampacked.data.TrackEntry
 import io.github.ffalt.jampacked.data.repo.CatalogRepository
 import io.github.ffalt.jampacked.data.repo.PlaylistDetail
@@ -30,7 +33,8 @@ class SeriesViewModel
     @Inject
     constructor(
         private val repository: CatalogRepository,
-        savedStateHandle: SavedStateHandle
+        savedStateHandle: SavedStateHandle,
+        @ApplicationContext private val context: Context
     ) : ViewModel() {
         private val route: Route.Series = savedStateHandle.toRoute<Route.Series>()
         private val uiState = MutableStateFlow(SeriesUiState())
@@ -50,7 +54,7 @@ class SeriesViewModel
                         uiState.update {
                             it.copy(
                                 loading = false,
-                                error = e.message ?: "Could not load"
+                                error = e.message ?: context.getString(R.string.could_not_load)
                             )
                         }
                     }
@@ -69,7 +73,8 @@ data class TrackCollectionUiState(
 )
 
 abstract class TrackCollectionViewModel(
-    protected val player: PlayerRepository
+    protected val player: PlayerRepository,
+    protected val context: Context
 ) : ViewModel() {
     protected val uiState = MutableStateFlow(TrackCollectionUiState())
     val state: StateFlow<TrackCollectionUiState> = uiState.asStateFlow()
@@ -90,7 +95,9 @@ abstract class TrackCollectionViewModel(
     }
 
     protected fun fail(error: Throwable) {
-        uiState.update { it.copy(loading = false, error = error.message ?: "Could not load") }
+        uiState.update {
+            it.copy(loading = false, error = error.message ?: context.getString(R.string.could_not_load))
+        }
     }
 }
 
@@ -100,8 +107,9 @@ class PlaylistViewModel
     constructor(
         private val repository: CatalogRepository,
         player: PlayerRepository,
-        savedStateHandle: SavedStateHandle
-    ) : TrackCollectionViewModel(player) {
+        savedStateHandle: SavedStateHandle,
+        @ApplicationContext context: Context
+    ) : TrackCollectionViewModel(player, context) {
         private val route: Route.Playlist = savedStateHandle.toRoute<Route.Playlist>()
 
         init {
@@ -136,8 +144,9 @@ class PodcastViewModel
     constructor(
         private val repository: CatalogRepository,
         player: PlayerRepository,
-        savedStateHandle: SavedStateHandle
-    ) : TrackCollectionViewModel(player) {
+        savedStateHandle: SavedStateHandle,
+        @ApplicationContext context: Context
+    ) : TrackCollectionViewModel(player, context) {
         private val route: Route.Podcast = savedStateHandle.toRoute<Route.Podcast>()
 
         init {

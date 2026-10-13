@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.ffalt.jampacked.data.JamSession
@@ -38,7 +39,7 @@ fun GenreScreen(
     val header: @Composable () -> Unit = {
         PageHeader(
             title = genreName,
-            subtitle = GenreTab.subtitle(tab),
+            subtitle = stringResource(GenreTab.subtitleRes(tab)),
             leading = {
                 GenreTab.order.getOrNull(index - 1)?.let { previous ->
                     GoLeftIcon(onClick = { onNavigate(Route.Genre(genreId, genreName, previous)) })

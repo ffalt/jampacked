@@ -1,7 +1,10 @@
 package io.github.ffalt.jampacked.ui.browse
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.qualifiers.ApplicationContext
+import io.github.ffalt.jampacked.R
 import io.github.ffalt.jampacked.data.repo.BrowseEntry
 import io.github.ffalt.jampacked.data.repo.BrowseIndexGroup
 import io.github.ffalt.jampacked.data.repo.BrowsePage
@@ -23,7 +26,9 @@ data class BrowseListUiState(
     val hasMore: Boolean = false
 )
 
-abstract class BrowseListViewModel : ViewModel() {
+abstract class BrowseListViewModel(
+    @ApplicationContext protected val context: Context
+) : ViewModel() {
     protected val uiState = MutableStateFlow(BrowseListUiState())
     val state: StateFlow<BrowseListUiState> = uiState.asStateFlow()
 
@@ -85,7 +90,9 @@ abstract class BrowseListViewModel : ViewModel() {
     }
 
     private fun fail(error: Throwable) {
-        uiState.update { it.copy(loading = false, error = error.message ?: "Could not load") }
+        uiState.update {
+            it.copy(loading = false, error = error.message ?: context.getString(R.string.could_not_load))
+        }
     }
 
     protected companion object {

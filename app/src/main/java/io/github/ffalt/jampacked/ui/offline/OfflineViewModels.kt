@@ -1,5 +1,6 @@
 package io.github.ffalt.jampacked.ui.offline
 
+import android.content.Context
 import androidx.annotation.OptIn
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -7,11 +8,13 @@ import androidx.lifecycle.viewModelScope
 import androidx.media3.common.util.UnstableApi
 import androidx.navigation.toRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import io.github.ffalt.jampacked.data.DownloadInfo
 import io.github.ffalt.jampacked.data.PinMedia
 import io.github.ffalt.jampacked.data.PinRepository
 import io.github.ffalt.jampacked.data.TrackEntry
 import io.github.ffalt.jampacked.data.repo.BookmarkRepository
+import io.github.ffalt.jampacked.R
 import io.github.ffalt.jampacked.player.PlayerRepository
 import io.github.ffalt.jampacked.ui.nav.Route
 import kotlinx.coroutines.delay
@@ -170,7 +173,8 @@ class BookmarksViewModel
     @Inject
     constructor(
         private val repository: BookmarkRepository,
-        private val player: PlayerRepository
+        private val player: PlayerRepository,
+        @ApplicationContext private val context: Context
     ) : ViewModel() {
         private val uiState = MutableStateFlow(BookmarksUiState())
         val state: StateFlow<BookmarksUiState> = uiState.asStateFlow()
@@ -190,7 +194,7 @@ class BookmarksViewModel
                         uiState.update {
                             it.copy(
                                 loading = false,
-                                error = e.message ?: "Could not load bookmarks"
+                                error = e.message ?: context.getString(R.string.could_not_load_bookmarks)
                             )
                         }
                     }

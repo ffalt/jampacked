@@ -28,6 +28,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.res.stringResource
+import io.github.ffalt.jampacked.R
 import io.github.ffalt.jampacked.data.JamSession
 import io.github.ffalt.jampacked.ui.theme.JamDimens
 import io.github.ffalt.jampacked.ui.theme.LocalJamColors
@@ -161,7 +163,7 @@ private fun HeaderSheet(
                     .padding(bottom = SHEET_BOTTOM)
         ) {
             ThemedText(
-                text = "RATING",
+                text = stringResource(R.string.rating).uppercase(),
                 color = colors.muted,
                 fontSize = JamDimens.fontSizeTiny,
                 letterSpacing = 1.sp
@@ -180,7 +182,7 @@ private fun HeaderSheet(
             FavIcon(
                 id = id,
                 size = JamDimens.iconLarge,
-                label = "Favorite",
+                label = stringResource(R.string.favorite_action),
                 modifier = HEADER_SHEET_ROW
             )
             actions?.invoke()

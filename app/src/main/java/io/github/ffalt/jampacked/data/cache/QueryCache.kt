@@ -86,7 +86,8 @@ class QueryCache
             }
 
         companion object {
-            const val CURRENT_VERSION = 2
+            // HomeStat now stores a localization key instead of a display title.
+            const val CURRENT_VERSION = 3
 
             fun cacheKey(
                 operationName: String,

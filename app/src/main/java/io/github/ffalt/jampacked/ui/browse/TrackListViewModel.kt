@@ -1,10 +1,13 @@
 package io.github.ffalt.jampacked.ui.browse
 
+import android.content.Context
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
+import io.github.ffalt.jampacked.R
 import io.github.ffalt.jampacked.data.TrackEntry
 import io.github.ffalt.jampacked.data.repo.FolderRepository
 import io.github.ffalt.jampacked.player.PlayerRepository
@@ -19,7 +22,7 @@ import javax.inject.Inject
 data class TrackListUiState(
     val loading: Boolean = true,
     val error: String? = null,
-    val title: String = "Tracks",
+    val title: String = "",
     val tracks: List<TrackEntry>? = null,
     val total: Int = 0,
     val listType: String? = null,
@@ -32,13 +35,14 @@ class TrackListViewModel
     constructor(
         private val repository: FolderRepository,
         private val player: PlayerRepository,
-        savedStateHandle: SavedStateHandle
+        savedStateHandle: SavedStateHandle,
+        @ApplicationContext private val context: Context
     ) : ViewModel() {
         private val route: Route.TrackList = savedStateHandle.toRoute<Route.TrackList>()
 
         private val uiState =
             MutableStateFlow(
-                TrackListUiState(title = "Tracks", listType = route.listType)
+                TrackListUiState(title = context.getString(R.string.tracks), listType = route.listType)
             )
         val state: StateFlow<TrackListUiState> = uiState.asStateFlow()
 
@@ -58,7 +62,7 @@ class TrackListViewModel
                         uiState.update {
                             it.copy(
                                 loading = false,
-                                error = error.message ?: "Could not load tracks"
+                                error = error.message ?: context.getString(R.string.could_not_load_tracks)
                             )
                         }
                     }

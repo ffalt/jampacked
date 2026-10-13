@@ -19,6 +19,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hasRoute
@@ -104,7 +105,8 @@ fun AppScaffold(
                             JamIcon(
                                 name = entry.icon,
                                 color = if (selected) colors.navPrimary else colors.inactiveTintColor,
-                                size = if (selected) 26.dp else 22.dp
+                                size = if (selected) 26.dp else 22.dp,
+                                contentDescription = stringResource(entry.labelRes)
                             )
                         }
                     }

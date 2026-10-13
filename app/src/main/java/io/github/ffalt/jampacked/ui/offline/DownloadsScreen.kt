@@ -15,9 +15,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import io.github.ffalt.jampacked.R
 import io.github.ffalt.jampacked.ui.components.ClickLabelIcon
 import io.github.ffalt.jampacked.ui.components.ListEmpty
 import io.github.ffalt.jampacked.ui.components.PageHeader
@@ -47,8 +49,8 @@ fun DownloadsScreen(
                 .swipeBetweenPages(onPrevious = onPrevious, onNext = onNext)
     ) {
         PageHeader(
-            title = if (viewModel.active) "Active Downloads" else "All Downloads",
-            subtitle = "Pinned Media"
+            title = stringResource(if (viewModel.active) R.string.active_downloads else R.string.all_downloads),
+            subtitle = stringResource(R.string.pinned_media)
         )
 
         Separator()
@@ -62,7 +64,10 @@ fun DownloadsScreen(
         ) {
             ClickLabelIcon(
                 iconName = if (state.paused) "play" else "pause",
-                label = if (state.paused) "Resume Downloads" else "Pause Downloads",
+                label =
+                    stringResource(
+                        if (state.paused) R.string.resume_downloads else R.string.pause_downloads
+                    ),
                 onClick = viewModel::togglePaused,
                 modifier = Modifier.weight(1f)
             )
@@ -87,7 +92,7 @@ fun DownloadsScreen(
                     verticalArrangement = Arrangement.Center
                 ) {
                     ThemedText(
-                        text = row.track?.let { "${it.album}-${it.title}" } ?: "Loading",
+                        text = row.track?.let { "${it.album}-${it.title}" } ?: stringResource(R.string.loading),
                         maxLines = 1
                     )
                     Row(

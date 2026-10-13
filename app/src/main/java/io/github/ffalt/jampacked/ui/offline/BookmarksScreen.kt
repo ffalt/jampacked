@@ -6,8 +6,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import io.github.ffalt.jampacked.R
 import io.github.ffalt.jampacked.ui.components.ClickIcon
 import io.github.ffalt.jampacked.ui.components.JamList
 import io.github.ffalt.jampacked.ui.components.PageHeader
@@ -35,8 +38,13 @@ fun BookmarksScreen(
             key = { index, track -> "$index-${track.id}" },
             header = {
                 PageHeader(
-                    title = "Bookmarks",
-                    subtitle = if (state.tracks.isNotEmpty()) "${state.tracks.size} entries" else null,
+                    title = stringResource(R.string.bookmarks),
+                    subtitle =
+                        if (state.tracks.isNotEmpty()) {
+                            pluralStringResource(R.plurals.entries_count, state.tracks.size, state.tracks.size)
+                        } else {
+                            null
+                        },
                     trailing = {
                         if (state.tracks.isNotEmpty()) {
                             ClickIcon(

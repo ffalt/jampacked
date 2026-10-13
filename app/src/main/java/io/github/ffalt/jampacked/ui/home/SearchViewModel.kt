@@ -1,8 +1,11 @@
 package io.github.ffalt.jampacked.ui.home
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
+import io.github.ffalt.jampacked.R
 import io.github.ffalt.jampacked.data.repo.SearchHit
 import io.github.ffalt.jampacked.data.repo.SearchRepository
 import io.github.ffalt.jampacked.data.repo.SearchResults
@@ -35,7 +38,8 @@ data class SearchUiState(
 class SearchViewModel
     @Inject
     constructor(
-        private val repository: SearchRepository
+        private val repository: SearchRepository,
+        @ApplicationContext private val context: Context
     ) : ViewModel() {
         private val uiState = MutableStateFlow(SearchUiState())
         val state: StateFlow<SearchUiState> = uiState.asStateFlow()
@@ -63,7 +67,10 @@ class SearchViewModel
                             uiState.update { it.copy(searching = false, results = results) }
                         }.onFailure { error ->
                             uiState.update {
-                                it.copy(searching = false, error = error.message ?: "Search failed")
+                                it.copy(
+                                    searching = false,
+                                    error = error.message ?: context.getString(R.string.search_failed)
+                                )
                             }
                         }
                 }
@@ -112,7 +119,7 @@ class SearchViewModel
                         uiState.update {
                             it.copy(
                                 kindLoading = false,
-                                error = error.message ?: "Search failed"
+                                error = error.message ?: context.getString(R.string.search_failed)
                             )
                         }
                     }

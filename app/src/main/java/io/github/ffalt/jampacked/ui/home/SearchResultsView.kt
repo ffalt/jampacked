@@ -20,6 +20,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import io.github.ffalt.jampacked.R
 import io.github.ffalt.jampacked.data.JamSession
 import io.github.ffalt.jampacked.data.repo.SearchHit
 import io.github.ffalt.jampacked.data.repo.SearchRepository
@@ -38,12 +40,12 @@ import io.github.ffalt.jampacked.ui.theme.LocalJamColors
 
 private val sectionTitles =
     mapOf(
-        "artist" to "Artists",
-        "album" to "Albums",
-        "track" to "Tracks",
-        "folder" to "Folders",
-        "series" to "Series",
-        "playlist" to "Playlists"
+        "artist" to R.string.artists,
+        "album" to R.string.albums,
+        "track" to R.string.tracks,
+        "folder" to R.string.folders,
+        "series" to R.string.series,
+        "playlist" to R.string.playlists
     )
 
 @Composable
@@ -80,25 +82,38 @@ fun SearchResultsView(
         return
     }
 
+    val artistTitle = stringResource(R.string.artists)
+    val albumTitle = stringResource(R.string.albums)
+    val trackTitle = stringResource(R.string.tracks)
+    val folderTitle = stringResource(R.string.folders)
+    val seriesTitle = stringResource(R.string.series)
+    val playlistTitle = stringResource(R.string.playlists)
     LazyColumn(modifier = modifier.fillMaxSize()) {
-        quickSection("artist", state.results.artists, session, onNavigate, onOpenKind)
-        quickSection("album", state.results.albums, session, onNavigate, onOpenKind)
-        quickSection("track", state.results.tracks, session, onNavigate, onOpenKind)
-        quickSection("folder", state.results.folders, session, onNavigate, onOpenKind)
-        quickSection("series", state.results.series, session, onNavigate, onOpenKind)
-        quickSection("playlist", state.results.playlists, session, onNavigate, onOpenKind)
+        quickSection("artist", artistTitle, state.results.artists, session, onNavigate, onOpenKind)
+        quickSection("album", albumTitle, state.results.albums, session, onNavigate, onOpenKind)
+        quickSection("track", trackTitle, state.results.tracks, session, onNavigate, onOpenKind)
+        quickSection("folder", folderTitle, state.results.folders, session, onNavigate, onOpenKind)
+        quickSection("series", seriesTitle, state.results.series, session, onNavigate, onOpenKind)
+        quickSection(
+            "playlist",
+            playlistTitle,
+            state.results.playlists,
+            session,
+            onNavigate,
+            onOpenKind
+        )
     }
 }
 
 private fun LazyListScope.quickSection(
     kind: String,
+    title: String,
     hits: List<SearchHit>,
     session: JamSession,
     onNavigate: (Route) -> Unit,
     onOpenKind: (String) -> Unit
 ) {
     if (hits.isEmpty()) return
-    val title = sectionTitles[kind] ?: kind
     item(key = "header-$kind") {
         SectionHeader(
             title = title,
@@ -171,7 +186,7 @@ private fun KindResults(
         ) {
             JamIcon("left-open", LocalJamColors.current.textColor, size = JamDimens.iconLarge)
             ThemedText(
-                text = (sectionTitles[kind] ?: kind),
+                text = sectionTitles[kind]?.let { stringResource(it) } ?: kind,
                 fontSize = JamDimens.fontSizeLarge,
                 fontWeight = androidx.compose.ui.text.font.FontWeight.Bold,
                 modifier = Modifier.padding(start = JamDimens.padding)

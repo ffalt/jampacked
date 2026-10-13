@@ -13,10 +13,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import io.github.ffalt.jampacked.R
 import io.github.ffalt.jampacked.data.JamSession
 import io.github.ffalt.jampacked.ui.components.JamThumb
 import io.github.ffalt.jampacked.ui.components.ListEmpty
@@ -47,7 +49,7 @@ fun PinnedMediaScreen(
                 .fillMaxSize()
                 .swipeBetweenPages(onPrevious = null, onNext = onNext)
     ) {
-        PageHeader(title = "Media", subtitle = "Pinned")
+        PageHeader(title = stringResource(R.string.media), subtitle = stringResource(R.string.pinned))
 
         if (state.media.isEmpty()) {
             ListEmpty(items = if (state.loading) null else emptyList<String>())
@@ -92,7 +94,7 @@ fun PinnedMediaScreen(
                                     fontSize = JamDimens.fontSizeSmall
                                 )
                                 ThemedText(
-                                    text = "Tracks:${pin.tracks.size}",
+                                    text = stringResource(R.string.tracks_count_label, pin.tracks.size),
                                     color = footer,
                                     fontSize = JamDimens.fontSizeSmall
                                 )
@@ -118,7 +120,10 @@ fun PinnedMediaScreen(
                         val download = state.downloads[track.id]
                         Column {
                             TrackItem(
-                                track = track.copy(artist = download?.state ?: "Not downloaded"),
+                                track =
+                                    track.copy(
+                                        artist = download?.state ?: stringResource(R.string.not_downloaded)
+                                    ),
                                 onClick = { viewModel.playTracks(pin.tracks.drop(index)) }
                             )
                             Separator()

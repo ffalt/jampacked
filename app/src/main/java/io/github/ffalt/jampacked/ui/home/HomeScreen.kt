@@ -23,6 +23,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.annotation.StringRes
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
@@ -30,8 +31,10 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import io.github.ffalt.jampacked.R
 import io.github.ffalt.jampacked.data.JamSession
 import io.github.ffalt.jampacked.data.repo.HomeEntry
 import io.github.ffalt.jampacked.data.repo.HomeStat
@@ -93,7 +96,7 @@ fun HomeScreen(
                 Logo(size = JamDimens.userImage)
 
                 ThemedText(
-                    text = "Welcome, ${state.userName}",
+                    text = stringResource(R.string.welcome_user, state.userName),
                     fontSize = JamDimens.fontSizeLarge,
                     maxLines = 2,
                     textAlign = TextAlign.Center,
@@ -132,42 +135,42 @@ fun HomeScreen(
                 return@Column
             }
 
-            StatGrid("Library", state.data.library, onNavigate)
+            StatGrid(stringResource(R.string.library), state.data.library, onNavigate)
             HomeSection(
-                "Recently Played Albums",
+                stringResource(R.string.recently_played_albums),
                 state.data.sections.albumsRecent,
                 session,
                 onNavigate,
                 Route.AlbumList(albumType = "album", listType = "recent")
             )
             HomeSection(
-                "Recently Played Artists",
+                stringResource(R.string.recently_played_artists),
                 state.data.sections.artistsRecent,
                 session,
                 onNavigate,
                 Route.ArtistList(listType = "recent")
             )
             HomeSection(
-                "Favorite Albums",
+                stringResource(R.string.favorite_albums),
                 state.data.sections.albumsFaved,
                 session,
                 onNavigate,
                 Route.AlbumList(albumType = "album", listType = "faved")
             )
             HomeSection(
-                "Favorite Artists",
+                stringResource(R.string.favorite_artists),
                 state.data.sections.artistsFaved,
                 session,
                 onNavigate,
                 Route.ArtistList(listType = "faved")
             )
-            StatGrid("Collections", state.data.collections, onNavigate)
-            StatGrid("Favorites", state.data.favorites, onNavigate)
-            StatGrid("Played", state.data.played, onNavigate)
+            StatGrid(stringResource(R.string.collections), state.data.collections, onNavigate)
+            StatGrid(stringResource(R.string.favorites), state.data.favorites, onNavigate)
+            StatGrid(stringResource(R.string.played), state.data.played, onNavigate)
 
             StatGrid(
-                label = "Pinned",
-                stats = listOf(HomeStat("Media", "pin", state.pinnedCount, "pinned")),
+                label = stringResource(R.string.pinned),
+                stats = listOf(HomeStat("media", "pin", state.pinnedCount, "pinned")),
                 onNavigate = onNavigate
             )
         }
@@ -192,7 +195,7 @@ private fun StatGrid(
         ) {
             row.forEach { stat ->
                 Stat(
-                    entry = StatEntry(stat.title, stat.value),
+                    entry = StatEntry(stringResource(homeStatTitleRes(stat.titleKey)), stat.value),
                     onClick = { routeForKey(stat.routeKey)?.let(onNavigate) },
                     modifier = Modifier.weight(1f)
                 )
@@ -287,7 +290,7 @@ private fun SearchBar(
                     .padding(top = 10.dp, end = 10.dp, bottom = 10.dp),
             decorationBox = { inner ->
                 if (query.isEmpty()) {
-                    ThemedText("Search", color = colors.muted)
+                    ThemedText(stringResource(R.string.search), color = colors.muted)
                 }
                 inner()
             }
@@ -296,4 +299,28 @@ private fun SearchBar(
             ClickIcon("cancel", onClick = onClear, size = 22.dp)
         }
     }
+
 }
+
+@StringRes
+private fun homeStatTitleRes(titleKey: String): Int =
+    when (titleKey) {
+        "artists" -> R.string.library_stat_artists
+        "albums" -> R.string.library_stat_albums
+        "compilations" -> R.string.library_stat_compilations
+        "series" -> R.string.library_stat_series
+        "audiobooks" -> R.string.library_stat_audiobooks
+        "soundtracks" -> R.string.library_stat_soundtracks
+        "live" -> R.string.library_stat_live
+        "bootlegs" -> R.string.library_stat_bootlegs
+        "eps" -> R.string.library_stat_eps
+        "singles" -> R.string.library_stat_singles
+        "folders" -> R.string.library_stat_folders
+        "tracks" -> R.string.library_stat_tracks
+        "genres" -> R.string.library_stat_genres
+        "podcasts" -> R.string.library_stat_podcasts
+        "bookmarks" -> R.string.library_stat_bookmarks
+        "playlists" -> R.string.library_stat_playlists
+        "media" -> R.string.media
+        else -> error("Unknown home stat key: $titleKey")
+    }

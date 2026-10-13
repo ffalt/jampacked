@@ -3,6 +3,8 @@ package io.github.ffalt.jampacked.ui.nav
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import io.github.ffalt.jampacked.R
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
@@ -138,7 +140,9 @@ fun JamNavHost(
                 onNavigate = { target -> navController.navigate(target) }
             )
         }
-        composable<Route.Episode> { NotYetScreen("Episode", it.toRoute<Route.Episode>().name) }
+        composable<Route.Episode> {
+            NotYetScreen(stringResource(R.string.episode), it.toRoute<Route.Episode>().name)
+        }
         composable<Route.Series> {
             SeriesScreen(
                 session = session,

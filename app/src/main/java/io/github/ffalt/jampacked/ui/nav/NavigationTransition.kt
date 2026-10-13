@@ -1,5 +1,6 @@
 package io.github.ffalt.jampacked.ui.nav
 
+import androidx.annotation.StringRes
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.core.tween
@@ -9,15 +10,16 @@ import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
+import io.github.ffalt.jampacked.R
 
 enum class NavigationTransition(
-    val label: String
+    @StringRes val labelRes: Int
 ) {
-    CLASSIC_SLIDE("Classic slide"),
-    SHARED_AXIS("Shared-axis slide"),
-    PREDICTIVE_BACK_ZOOM("Predictive-back zoom"),
-    FADE_THROUGH("Fade-through"),
-    MINIMAL_CROSSFADE("Minimal crossfade");
+    CLASSIC_SLIDE(R.string.transition_classic_slide),
+    SHARED_AXIS(R.string.transition_shared_axis),
+    PREDICTIVE_BACK_ZOOM(R.string.transition_predictive_back_zoom),
+    FADE_THROUGH(R.string.transition_fade_through),
+    MINIMAL_CROSSFADE(R.string.transition_minimal_crossfade);
 
     fun enter(): EnterTransition =
         when (this) {

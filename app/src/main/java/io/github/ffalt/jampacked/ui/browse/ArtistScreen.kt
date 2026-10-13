@@ -7,8 +7,10 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import io.github.ffalt.jampacked.R
 import io.github.ffalt.jampacked.data.JamSession
 import io.github.ffalt.jampacked.ui.components.ErrorView
 import io.github.ffalt.jampacked.ui.components.HeaderDetail
@@ -50,14 +52,14 @@ fun ArtistScreen(
                     session = session,
                     id = artist.id,
                     title = artist.name.ifEmpty { artistName },
-                    typeName = "artist",
+                    typeName = stringResource(R.string.artist_detail),
                     details =
                         listOfNotNull(
-                            HeaderDetail("Albums", artist.albumCount.toString()),
-                            HeaderDetail("Tracks", artist.trackCount.toString()),
+                            HeaderDetail(stringResource(R.string.albums_detail), artist.albumCount.toString()),
+                            HeaderDetail(stringResource(R.string.tracks_detail), artist.trackCount.toString()),
                             artist.genres.firstOrNull()?.let { genre ->
                                 HeaderDetail(
-                                    "Genre",
+                                    stringResource(R.string.genre_detail),
                                     genre,
                                     artist.genreId?.let { id ->
                                         {

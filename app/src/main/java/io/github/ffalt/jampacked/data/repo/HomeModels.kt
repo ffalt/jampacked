@@ -11,7 +11,7 @@ data class HomeEntry(
 
 @Serializable
 data class HomeStat(
-    val title: String,
+    val titleKey: String,
     val icon: String,
     val value: Int,
     val routeKey: String

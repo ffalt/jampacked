@@ -16,8 +16,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import io.github.ffalt.jampacked.data.TrackEntry
+import io.github.ffalt.jampacked.R
 import io.github.ffalt.jampacked.ui.components.ClickIcon
 import io.github.ffalt.jampacked.ui.components.ClickLabelIcon
 import io.github.ffalt.jampacked.ui.components.DurationText
@@ -39,19 +41,23 @@ import io.github.ffalt.jampacked.ui.theme.JamTheme
 import io.github.ffalt.jampacked.ui.theme.JamThemeName
 import io.github.ffalt.jampacked.ui.theme.LocalJamColors
 
-private val sampleTrack =
-    TrackEntry(
-        id = "t1",
-        title = "Cloudbusting",
-        artist = "Kate Bush",
-        album = "Hounds Of Love",
-        durationMS = 348_000,
-        trackNr = "3"
-    )
-
 @Composable
 fun GalleryScreen(modifier: Modifier = Modifier) {
     val colors = LocalJamColors.current
+    val sampleTitle = stringResource(R.string.cloudbusting)
+    val sampleArtist = stringResource(R.string.kate_bush)
+    val sampleAlbum = stringResource(R.string.hounds_of_love)
+    val sampleTrack =
+        remember(sampleTitle, sampleArtist, sampleAlbum) {
+            TrackEntry(
+                id = "t1",
+                title = sampleTitle,
+                artist = sampleArtist,
+                album = sampleAlbum,
+                durationMS = 348_000,
+                trackNr = "3"
+            )
+        }
     var checked by remember { mutableStateOf(true) }
     var radio by remember { mutableStateOf("dark") }
     var selected by remember { mutableStateOf(false) }
@@ -64,18 +70,18 @@ fun GalleryScreen(modifier: Modifier = Modifier) {
                 .verticalScroll(rememberScrollState())
                 .padding(JamDimens.padding)
     ) {
-        SectionHeader("Text")
-        ThemedText("ThemedText default")
-        ThemedText("muted", color = colors.muted, fontSize = JamDimens.fontSizeSmall)
-        ThemedText("warning", color = colors.warning)
-        ThemedText("active", color = colors.activeTintColor)
+        SectionHeader(stringResource(R.string.text_section))
+        ThemedText(stringResource(R.string.themed_text_default))
+        ThemedText(stringResource(R.string.muted), color = colors.muted, fontSize = JamDimens.fontSizeSmall)
+        ThemedText(stringResource(R.string.warning), color = colors.warning)
+        ThemedText(stringResource(R.string.active), color = colors.activeTintColor)
         DurationText(durationMs = 348_000)
         DurationText(durationMs = 3_725_000)
 
-        SectionHeader("Separator")
+        SectionHeader(stringResource(R.string.separator))
         Separator()
 
-        SectionHeader("Icons")
+        SectionHeader(stringResource(R.string.icons))
         Row(verticalAlignment = Alignment.CenterVertically) {
             ClickIcon("play", onClick = {}, size = JamDimens.iconLarge)
             ClickIcon("pause", onClick = {}, size = JamDimens.iconLarge)
@@ -84,32 +90,32 @@ fun GalleryScreen(modifier: Modifier = Modifier) {
             ClickIcon("trash", onClick = {}, muted = true, size = JamDimens.iconLarge)
             ClickIcon("download", onClick = {}, enabled = false, size = JamDimens.iconLarge)
         }
-        ClickLabelIcon("queue", "Add to queue", onClick = {})
+        ClickLabelIcon("queue", stringResource(R.string.add_to_queue), onClick = {})
 
-        SectionHeader("Checkbox")
+        SectionHeader(stringResource(R.string.checkbox))
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(JamDimens.padding)
         ) {
             ThemedCheckbox(checked = checked)
             ThemedCheckbox(checked = !checked)
-            ClickLabelIcon("checkmark", "toggle", onClick = { checked = !checked })
+            ClickLabelIcon("checkmark", stringResource(R.string.toggle), onClick = { checked = !checked })
         }
 
-        SectionHeader("Radio buttons")
+        SectionHeader(stringResource(R.string.radio_buttons))
         RadioButtons(
             options =
                 listOf(
-                    RadioEntry("auto", "System Theme"),
-                    RadioEntry("light", "Light"),
-                    RadioEntry("dark", "Dark"),
-                    RadioEntry("black", "Black")
+                    RadioEntry("auto", stringResource(R.string.system_theme)),
+                    RadioEntry("light", stringResource(R.string.light_theme)),
+                    RadioEntry("dark", stringResource(R.string.dark_theme)),
+                    RadioEntry("black", stringResource(R.string.black_theme))
                 ),
             value = radio,
             onChange = { radio = it }
         )
 
-        SectionHeader("Track items")
+        SectionHeader(stringResource(R.string.track_items))
         TrackItem(track = sampleTrack, onClick = {})
         Separator()
         TrackItem(track = sampleTrack, isCurrent = true, onClick = {})
@@ -121,29 +127,29 @@ fun GalleryScreen(modifier: Modifier = Modifier) {
             onClick = { selected = !selected }
         )
 
-        SectionHeader("Stats")
+        SectionHeader(stringResource(R.string.stats))
         Row(horizontalArrangement = Arrangement.spacedBy(JamDimens.paddingSmall)) {
-            Stat(StatEntry("Artists", 42), onClick = {})
-            Stat(StatEntry("Albums", 128), onClick = {})
-            Stat(StatEntry("Tracks", 529), onClick = {})
+            Stat(StatEntry(stringResource(R.string.artists), 42), onClick = {})
+            Stat(StatEntry(stringResource(R.string.albums), 128), onClick = {})
+            Stat(StatEntry(stringResource(R.string.tracks), 529), onClick = {})
         }
 
-        SectionHeader("Page header")
+        SectionHeader(stringResource(R.string.page_header))
         PageHeader(
-            title = "Hounds Of Love",
-            subtitle = "Kate Bush",
+            title = stringResource(R.string.hounds_of_love),
+            subtitle = stringResource(R.string.kate_bush),
             trailing = { ClickIcon("play", onClick = {}, size = JamDimens.iconLarge) }
         )
 
-        SectionHeader("Header details")
+        SectionHeader(stringResource(R.string.header_details))
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             listOf(
-                HeaderDetail("Tracks", "12"),
-                HeaderDetail("Genre", "Art Rock"),
-                HeaderDetail("Year", "1985")
+                HeaderDetail(stringResource(R.string.tracks_detail), "12"),
+                HeaderDetail(stringResource(R.string.genre_detail), stringResource(R.string.art_rock)),
+                HeaderDetail(stringResource(R.string.year_detail), "1985")
             ).forEach {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     ThemedText(it.value)
@@ -152,12 +158,12 @@ fun GalleryScreen(modifier: Modifier = Modifier) {
             }
         }
 
-        SectionHeader("Empty states")
+        SectionHeader(stringResource(R.string.empty_states))
         ListEmpty(items = null)
         ListEmpty(items = emptyList<String>())
 
-        SectionHeader("Error view")
-        ErrorView(message = "Could not reach server", onRetry = {})
+        SectionHeader(stringResource(R.string.error_view))
+        ErrorView(message = stringResource(R.string.could_not_reach_server), onRetry = {})
     }
 }
 

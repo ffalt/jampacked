@@ -1,10 +1,13 @@
 package io.github.ffalt.jampacked.ui.track
 
+import android.content.Context
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
+import io.github.ffalt.jampacked.R
 import io.github.ffalt.jampacked.data.TrackEntry
 import io.github.ffalt.jampacked.data.repo.Lyrics
 import io.github.ffalt.jampacked.data.repo.TrackExtrasRepository
@@ -32,7 +35,8 @@ class TrackViewModel
         private val repository: TrackRepository,
         private val extras: TrackExtrasRepository,
         private val player: PlayerRepository,
-        savedStateHandle: SavedStateHandle
+        savedStateHandle: SavedStateHandle,
+        @ApplicationContext private val context: Context
     ) : ViewModel() {
         private val route: Route.Track = savedStateHandle.toRoute<Route.Track>()
 
@@ -63,7 +67,9 @@ class TrackViewModel
                     .track(id)
                     .onSuccess { track -> uiState.update { it.copy(track = track, error = null) } }
                     .onFailure { error ->
-                        uiState.update { it.copy(error = error.message ?: "Could not load track") }
+                        uiState.update {
+                            it.copy(error = error.message ?: context.getString(R.string.could_not_load_track))
+                        }
                     }
             }
         }

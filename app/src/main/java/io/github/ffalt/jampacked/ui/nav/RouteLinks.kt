@@ -1,5 +1,8 @@
 package io.github.ffalt.jampacked.ui.nav
 
+import androidx.annotation.StringRes
+import io.github.ffalt.jampacked.R
+
 fun routeForKey(key: String): Route? {
     val parts = key.split(":")
     val listType = parts.getOrNull(2) ?: parts.getOrNull(1)?.takeIf { parts[0] != "albums" }
@@ -71,16 +74,17 @@ fun routeForObject(
         else -> null
     }
 
-fun albumTypeLabel(albumType: String): String =
+@StringRes
+fun albumTypeLabelRes(albumType: String): Int? =
     when (albumType) {
-        "album" -> "Albums"
-        "compilation" -> "Compilations"
-        "audiobook" -> "Audiobooks"
-        "soundtrack" -> "Soundtracks"
-        "live" -> "Live Albums"
-        "bootleg" -> "Bootlegs"
-        "ep" -> "EPs"
-        "single" -> "Singles"
-        "series" -> "Series"
-        else -> albumType.replaceFirstChar { it.uppercase() }
+        "album" -> R.string.albums
+        "compilation" -> R.string.compilations
+        "audiobook" -> R.string.audiobooks
+        "soundtrack" -> R.string.soundtracks
+        "live" -> R.string.live_albums
+        "bootleg" -> R.string.bootlegs
+        "ep" -> R.string.eps
+        "single" -> R.string.singles
+        "series" -> R.string.series
+        else -> null
     }

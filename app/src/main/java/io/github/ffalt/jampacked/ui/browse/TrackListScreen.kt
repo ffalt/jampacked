@@ -11,8 +11,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import io.github.ffalt.jampacked.R
 import io.github.ffalt.jampacked.ui.components.GoLeftIcon
 import io.github.ffalt.jampacked.ui.components.GoRightIcon
 import io.github.ffalt.jampacked.ui.components.JamList
@@ -58,8 +61,10 @@ fun TrackListScreen(
                 PageHeader(
                     title = state.title,
                     subtitle =
-                        listTypeName(state.listType)
-                            ?: state.total.takeIf { it > 0 }?.let { "$it tracks" },
+                        listTypeName(state.listType)?.let { stringResource(it) }
+                            ?: state.total.takeIf { it > 0 }?.let {
+                                pluralStringResource(R.plurals.tracks_count, it, it)
+                            },
                     leading = {
                         siblingListType(trackListTypes, state.listType, -1)?.let { previous ->
                             GoLeftIcon(onClick = { onNavigate(Route.TrackList(previous)) })

@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.stringResource
+import io.github.ffalt.jampacked.R
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -147,7 +149,10 @@ fun PinIcon(
     if (labeled) {
         ClickLabelIcon(
             iconName = iconName,
-            label = if (pinned) "Remove download" else "Download",
+            label =
+                stringResource(
+                    if (pinned) R.string.remove_download else R.string.download
+                ),
             onClick = toggle,
             modifier = modifier,
             size = size,

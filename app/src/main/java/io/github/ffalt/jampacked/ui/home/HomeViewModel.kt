@@ -1,10 +1,13 @@
 package io.github.ffalt.jampacked.ui.home
 
+import android.content.Context
 import androidx.annotation.OptIn
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.media3.common.util.UnstableApi
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
+import io.github.ffalt.jampacked.R
 import io.github.ffalt.jampacked.data.PinRepository
 import io.github.ffalt.jampacked.data.auth.AuthRepository
 import io.github.ffalt.jampacked.data.cache.Resource
@@ -34,7 +37,8 @@ class HomeViewModel
     constructor(
         private val home: HomeRepository,
         private val auth: AuthRepository,
-        private val pins: PinRepository
+        private val pins: PinRepository,
+        @ApplicationContext private val context: Context
     ) : ViewModel() {
         private val uiState = MutableStateFlow(HomeUiState())
         val state: StateFlow<HomeUiState> = uiState.asStateFlow()
@@ -66,7 +70,10 @@ class HomeViewModel
 
                         is Resource.Failure -> {
                             uiState.update {
-                                it.copy(loading = false, error = resource.error.message ?: "Failed to load")
+                                it.copy(
+                                    loading = false,
+                                    error = resource.error.message ?: context.getString(R.string.failed_to_load)
+                                )
                             }
                         }
                     }

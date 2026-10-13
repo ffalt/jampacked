@@ -10,8 +10,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
 import io.github.ffalt.jampacked.data.JamSession
 import io.github.ffalt.jampacked.data.repo.BrowseEntry
+import io.github.ffalt.jampacked.R
 import io.github.ffalt.jampacked.ui.components.GoLeftIcon
 import io.github.ffalt.jampacked.ui.components.GoRightIcon
 import io.github.ffalt.jampacked.ui.components.IndexGroup
@@ -44,8 +47,10 @@ fun BrowseListScreen(
         PageHeader(
             title = state.title,
             subtitle =
-                listTypeName(state.listType)
-                    ?: state.total.takeIf { it > 0 }?.let { "$it entries" },
+                listTypeName(state.listType)?.let { stringResource(it) }
+                    ?: state.total.takeIf { it > 0 }?.let {
+                        pluralStringResource(R.plurals.entries_count, it, it)
+                    },
             leading = { if (previous) GoLeftIcon(onClick = { goTo(-1) }) },
             trailing = { if (next) GoRightIcon(onClick = { goTo(1) }) }
         )

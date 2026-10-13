@@ -18,9 +18,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
+import androidx.compose.ui.res.pluralStringResource
 import io.github.ffalt.jampacked.data.JamSession
 import io.github.ffalt.jampacked.data.TrackEntry
 import io.github.ffalt.jampacked.player.PlayerState
+import io.github.ffalt.jampacked.R
 import io.github.ffalt.jampacked.ui.components.ClickLabelIcon
 import io.github.ffalt.jampacked.ui.components.ListEmpty
 import io.github.ffalt.jampacked.ui.components.Separator
@@ -110,7 +112,7 @@ private fun QueueSummary(
         ThemedText(
             text =
                 buildString {
-                    append(if (queue.size == 1) "1 track" else "${queue.size} tracks")
+                    append(pluralStringResource(R.plurals.queue_summary, queue.size, queue.size))
                     if (total > 0) append(" · ${formatDuration(total)}")
                 },
             color = colors.muted,
@@ -118,10 +120,14 @@ private fun QueueSummary(
             maxLines = 1
         )
         Row(verticalAlignment = Alignment.CenterVertically) {
-            ClickLabelIcon(iconName = "shuffle", label = "Shuffle", onClick = onShuffle)
+            ClickLabelIcon(
+                iconName = "shuffle",
+                label = androidx.compose.ui.res.stringResource(R.string.shuffle),
+                onClick = onShuffle
+            )
             ClickLabelIcon(
                 iconName = "trash",
-                label = "Clear",
+                label = androidx.compose.ui.res.stringResource(R.string.clear),
                 onClick = onClear,
                 modifier = Modifier.padding(start = JamDimens.padding)
             )

@@ -1,10 +1,13 @@
 package io.github.ffalt.jampacked.ui.browse
 
+import android.content.Context
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
+import io.github.ffalt.jampacked.R
 import io.github.ffalt.jampacked.data.repo.AlbumDetail
 import io.github.ffalt.jampacked.data.repo.AlbumRepository
 import io.github.ffalt.jampacked.player.PlayerRepository
@@ -28,7 +31,8 @@ class AlbumViewModel
     constructor(
         private val repository: AlbumRepository,
         private val player: PlayerRepository,
-        savedStateHandle: SavedStateHandle
+        savedStateHandle: SavedStateHandle,
+        @ApplicationContext private val context: Context
     ) : ViewModel() {
         private val route: Route.Album = savedStateHandle.toRoute<Route.Album>()
 
@@ -50,7 +54,7 @@ class AlbumViewModel
                         uiState.update {
                             it.copy(
                                 loading = false,
-                                error = error.message ?: "Could not load album"
+                                error = error.message ?: context.getString(R.string.could_not_load_album)
                             )
                         }
                     }

@@ -9,8 +9,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import io.github.ffalt.jampacked.R
 import io.github.ffalt.jampacked.data.JamSession
 import io.github.ffalt.jampacked.ui.components.ErrorView
 import io.github.ffalt.jampacked.ui.components.HEADER_SHEET_ROW
@@ -67,19 +69,21 @@ fun FolderScreen(
                         session = session,
                         id = folder.id,
                         title = folder.title.ifEmpty { folderName },
-                        typeName = folder.folderType ?: "folder",
+                        typeName = folder.folderType ?: stringResource(R.string.folder_type),
                         details =
                             listOfNotNull(
                                 folder.artist
                                     ?.takeIf { it.isNotEmpty() }
-                                    ?.let { HeaderDetail("Artist", it) },
+                                    ?.let { HeaderDetail(stringResource(R.string.artist_detail), it) },
                                 folder.folderCount
                                     .takeIf { it > 0 }
-                                    ?.let { HeaderDetail("Folders", it.toString()) },
+                                    ?.let { HeaderDetail(stringResource(R.string.folders_detail), it.toString()) },
                                 folder.trackCount
                                     .takeIf { it > 0 }
-                                    ?.let { HeaderDetail("Tracks", it.toString()) },
-                                folder.genres.firstOrNull()?.let { HeaderDetail("Genre", it) }
+                                    ?.let { HeaderDetail(stringResource(R.string.tracks_detail), it.toString()) },
+                                folder.genres.firstOrNull()?.let {
+                                    HeaderDetail(stringResource(R.string.genre_detail), it)
+                                }
                             ),
                         onPlay = viewModel::playAll.takeIf { folder.tracks.isNotEmpty() },
                         sheetActions = {

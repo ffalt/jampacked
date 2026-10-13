@@ -7,9 +7,11 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.ffalt.jampacked.data.JamSession
+import io.github.ffalt.jampacked.R
 import io.github.ffalt.jampacked.ui.components.ErrorView
 import io.github.ffalt.jampacked.ui.components.HeaderDetail
 import io.github.ffalt.jampacked.ui.components.ObjectHeader
@@ -44,24 +46,26 @@ fun TrackScreen(
             session = session,
             id = track.albumID ?: track.id,
             title = track.title.ifEmpty { trackName },
-            typeName = "track",
+            typeName = stringResource(R.string.track_type),
             details =
                 listOfNotNull(
                     track.artist.takeIf { it.isNotEmpty() }?.let { artist ->
                         HeaderDetail(
-                            "Artist",
+                            stringResource(R.string.artist_detail),
                             artist,
                             track.artistID?.let { id -> { onNavigate(Route.Artist(id, artist)) } }
                         )
                     },
                     track.album.takeIf { it.isNotEmpty() }?.let { album ->
                         HeaderDetail(
-                            "Album",
+                            stringResource(R.string.album_detail),
                             album,
                             track.albumID?.let { id -> { onNavigate(Route.Album(id, album)) } }
                         )
                     },
-                    track.genre?.takeIf { it.isNotEmpty() }?.let { HeaderDetail("Genre", it) }
+                    track.genre?.takeIf { it.isNotEmpty() }?.let {
+                        HeaderDetail(stringResource(R.string.genre_detail), it)
+                    }
                 ),
             onPlay = viewModel::play,
         )

@@ -1,10 +1,13 @@
 package io.github.ffalt.jampacked.ui.browse
 
+import android.content.Context
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
+import io.github.ffalt.jampacked.R
 import io.github.ffalt.jampacked.data.repo.ArtistDetail
 import io.github.ffalt.jampacked.data.repo.ArtistRepository
 import io.github.ffalt.jampacked.ui.nav.Route
@@ -26,7 +29,8 @@ class ArtistViewModel
     @Inject
     constructor(
         private val repository: ArtistRepository,
-        savedStateHandle: SavedStateHandle
+        savedStateHandle: SavedStateHandle,
+        @ApplicationContext private val context: Context
     ) : ViewModel() {
         private val route: Route.Artist = savedStateHandle.toRoute<Route.Artist>()
 
@@ -47,7 +51,7 @@ class ArtistViewModel
                         uiState.update {
                             it.copy(
                                 loading = false,
-                                error = error.message ?: "Could not load artist"
+                                error = error.message ?: context.getString(R.string.could_not_load_artist)
                             )
                         }
                     }

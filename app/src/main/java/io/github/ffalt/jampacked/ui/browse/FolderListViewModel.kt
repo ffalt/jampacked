@@ -1,8 +1,11 @@
 package io.github.ffalt.jampacked.ui.browse
 
+import android.content.Context
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.toRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
+import io.github.ffalt.jampacked.R
 import io.github.ffalt.jampacked.data.repo.BrowseIndexGroup
 import io.github.ffalt.jampacked.data.repo.BrowsePage
 import io.github.ffalt.jampacked.data.repo.FolderRepository
@@ -15,15 +18,16 @@ class FolderListViewModel
     @Inject
     constructor(
         private val repository: FolderRepository,
-        savedStateHandle: SavedStateHandle
-    ) : BrowseListViewModel() {
+        savedStateHandle: SavedStateHandle,
+        @ApplicationContext context: Context
+    ) : BrowseListViewModel(context) {
         private val route: Route.FolderList = savedStateHandle.toRoute<Route.FolderList>()
 
         override val isIndexMode: Boolean = route.listType == null
 
         init {
             uiState.update {
-                it.copy(title = "Folders", listType = route.listType)
+                it.copy(title = context.getString(R.string.folders), listType = route.listType)
             }
             load()
         }

@@ -12,10 +12,12 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.ffalt.jampacked.BuildConfig
+import io.github.ffalt.jampacked.R
 import io.github.ffalt.jampacked.data.JamSession
 import io.github.ffalt.jampacked.ui.components.JamImage
 import io.github.ffalt.jampacked.ui.components.PageHeader
@@ -33,19 +35,6 @@ import io.github.ffalt.jampacked.ui.theme.JamThemeName
 import io.github.ffalt.jampacked.ui.theme.LocalJamColors
 import io.github.ffalt.jampacked.util.humanFileSize
 
-private val themeOptions =
-    listOf(
-        RadioEntry(JamThemeName.AUTO.name, "System Theme"),
-        RadioEntry(JamThemeName.LIGHT.name, "Light"),
-        RadioEntry(JamThemeName.DARK.name, "Dark"),
-        RadioEntry(JamThemeName.BLACK.name, "Black")
-    )
-
-private val navigationTransitionOptions =
-    NavigationTransition.entries.map { transition ->
-        RadioEntry(transition.name, transition.label)
-    }
-
 @Composable
 fun SettingsScreen(
     session: JamSession,
@@ -57,6 +46,17 @@ fun SettingsScreen(
 ) {
     val current by viewModel.theme.collectAsStateWithLifecycle()
     val cache by viewModel.cacheStats.collectAsStateWithLifecycle()
+    val themeOptions =
+        listOf(
+            RadioEntry(JamThemeName.AUTO.name, stringResource(R.string.system_theme)),
+            RadioEntry(JamThemeName.LIGHT.name, stringResource(R.string.light_theme)),
+            RadioEntry(JamThemeName.DARK.name, stringResource(R.string.dark_theme)),
+            RadioEntry(JamThemeName.BLACK.name, stringResource(R.string.black_theme))
+        )
+    val navigationTransitionOptions =
+        NavigationTransition.entries.map { transition ->
+            RadioEntry(transition.name, stringResource(transition.labelRes))
+        }
 
     LaunchedEffect(Unit) { viewModel.refreshCacheStats() }
 
@@ -66,11 +66,11 @@ fun SettingsScreen(
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
     ) {
-        PageHeader(title = "Settings")
+        PageHeader(title = stringResource(R.string.settings))
 
         Column(modifier = Modifier.padding(JamDimens.padding)) {
 
-            SectionHeader("User")
+            SectionHeader(stringResource(R.string.user_section))
             Row(
                 modifier =
                     Modifier
@@ -86,22 +86,22 @@ fun SettingsScreen(
                 Column(modifier = Modifier.weight(1f)) {
                     ThemedText(viewModel.userName)
                     val roles = viewModel.roles
-                    if (roles.stream) UserPermission("Stream Audio")
-                    if (roles.podcast) UserPermission("Manage Podcasts")
-                    if (roles.upload) UserPermission("Upload Audio")
-                    if (roles.admin) UserPermission("Server Administration")
+                    if (roles.stream) UserPermission(stringResource(R.string.stream_audio))
+                    if (roles.podcast) UserPermission(stringResource(R.string.manage_podcasts))
+                    if (roles.upload) UserPermission(stringResource(R.string.upload_audio))
+                    if (roles.admin) UserPermission(stringResource(R.string.server_administration))
                 }
-                ThemedButton("Logout", onClick = viewModel::logout)
+                ThemedButton(stringResource(R.string.logout), onClick = viewModel::logout)
             }
 
-            SectionHeader("Theme")
+            SectionHeader(stringResource(R.string.theme))
             RadioButtons(
                 options = themeOptions,
                 value = current.name,
                 onChange = { key -> viewModel.setTheme(JamThemeName.valueOf(key)) }
             )
 
-            SectionHeader("Screen Transitions")
+            SectionHeader(stringResource(R.string.screen_transitions))
             RadioButtons(
                 options = navigationTransitionOptions,
                 value = navigationTransition.name,
@@ -112,23 +112,23 @@ fun SettingsScreen(
                 }
             )
 
-            SectionHeader("Cache")
+            SectionHeader(stringResource(R.string.cache))
             SettingRow(
-                text = "Data & Image Cache",
-                action = { ThemedButton("Clear", onClick = viewModel::clearCache) }
+                text = stringResource(R.string.data_image_cache),
+                action = { ThemedButton(stringResource(R.string.clear), onClick = viewModel::clearCache) }
             )
 
-            SectionHeader("Pinned Offline Tracks")
+            SectionHeader(stringResource(R.string.pinned_offline_tracks))
             SettingRow(
                 text =
-                    "Files:${cache.downloadedFiles}" +
+                    stringResource(R.string.files_count, cache.downloadedFiles) +
                         if (cache.downloadedFiles > 0) " (${humanFileSize(cache.downloadedBytes)})" else "",
-                action = { ThemedButton("Clear", onClick = viewModel::clearDownloads) }
+                action = { ThemedButton(stringResource(R.string.clear), onClick = viewModel::clearDownloads) }
             )
 
             if (BuildConfig.DEBUG) {
-                SectionHeader("Debug")
-                ThemedButton("Component gallery", onClick = { onNavigate(Route.Gallery) })
+                SectionHeader(stringResource(R.string.debug))
+                ThemedButton(stringResource(R.string.component_gallery), onClick = { onNavigate(Route.Gallery) })
             }
         }
     }
