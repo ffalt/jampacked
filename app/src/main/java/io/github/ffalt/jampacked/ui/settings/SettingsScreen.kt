@@ -69,37 +69,6 @@ fun SettingsScreen(
         PageHeader(title = "Settings")
 
         Column(modifier = Modifier.padding(JamDimens.padding)) {
-            SectionHeader("Cache")
-            SettingRow(
-                text = "Data & Image Cache",
-                action = { ThemedButton("Clear", onClick = viewModel::clearCache) }
-            )
-
-            SectionHeader("Pinned Offline Tracks")
-            SettingRow(
-                text =
-                    "Files:${cache.downloadedFiles}" +
-                        if (cache.downloadedFiles > 0) " (${humanFileSize(cache.downloadedBytes)})" else "",
-                action = { ThemedButton("Clear", onClick = viewModel::clearDownloads) }
-            )
-
-            SectionHeader("Theme")
-            RadioButtons(
-                options = themeOptions,
-                value = current.name,
-                onChange = { key -> viewModel.setTheme(JamThemeName.valueOf(key)) }
-            )
-
-            SectionHeader("Screen Transitions")
-            RadioButtons(
-                options = navigationTransitionOptions,
-                value = navigationTransition.name,
-                onChange = { key ->
-                    NavigationTransition.entries
-                        .first { it.name == key }
-                        .let(onNavigationTransitionChange)
-                }
-            )
 
             SectionHeader("User")
             Row(
@@ -124,6 +93,38 @@ fun SettingsScreen(
                 }
                 ThemedButton("Logout", onClick = viewModel::logout)
             }
+
+            SectionHeader("Theme")
+            RadioButtons(
+                options = themeOptions,
+                value = current.name,
+                onChange = { key -> viewModel.setTheme(JamThemeName.valueOf(key)) }
+            )
+
+            SectionHeader("Screen Transitions")
+            RadioButtons(
+                options = navigationTransitionOptions,
+                value = navigationTransition.name,
+                onChange = { key ->
+                    NavigationTransition.entries
+                        .first { it.name == key }
+                        .let(onNavigationTransitionChange)
+                }
+            )
+
+            SectionHeader("Cache")
+            SettingRow(
+                text = "Data & Image Cache",
+                action = { ThemedButton("Clear", onClick = viewModel::clearCache) }
+            )
+
+            SectionHeader("Pinned Offline Tracks")
+            SettingRow(
+                text =
+                    "Files:${cache.downloadedFiles}" +
+                        if (cache.downloadedFiles > 0) " (${humanFileSize(cache.downloadedBytes)})" else "",
+                action = { ThemedButton("Clear", onClick = viewModel::clearDownloads) }
+            )
 
             if (BuildConfig.DEBUG) {
                 SectionHeader("Debug")
