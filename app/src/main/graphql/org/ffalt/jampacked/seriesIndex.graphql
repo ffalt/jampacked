@@ -1,0 +1,12 @@
+query SeriesIndexResult {
+    seriesIndex {
+        groups {
+            name
+            items {
+                id
+                name
+                albumsCount
+            }
+        }
+    }
+}

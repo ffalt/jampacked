@@ -1,0 +1,9 @@
+query TrackLyricsResult($id: ID!) {
+    track(id:$id) {
+        id
+        lyrics {
+            lyrics
+            source
+        }
+    }
+}

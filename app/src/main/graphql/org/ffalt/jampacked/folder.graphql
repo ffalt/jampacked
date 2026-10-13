@@ -1,0 +1,45 @@
+query FolderResult($id: ID!) {
+    folder(id:$id) {
+        id
+        title
+        childrenCount
+        tracksCount
+        folderType
+        artist
+        genres {
+            id
+            name
+        }
+        children {
+            id
+            title
+            folderType
+        }
+        tracks {
+            id
+            name
+            album {
+                id
+                name
+            }
+            artist {
+                id
+                name
+            }
+            series {
+                id
+                name
+            }
+            genres {
+                id
+                name
+            }
+            tag {
+                mediaDuration
+                title
+                disc
+                trackNr
+            }
+        }
+    }
+}

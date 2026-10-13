@@ -1,0 +1,23 @@
+Your music, your server, wherever you go.
+
+JamPacked is an Android music player for JamServe. Connect to your own server to browse, play and take your music library offline. JamPacked is a client - it does not host or scan your music.
+
+FIND YOUR MUSIC
+Browse artists, albums, folders, genres, series, playlists and podcasts. Search your library, jump through long lists with the A-to-Z index, or explore favourites, recent, frequent and top-rated selections.
+
+PLAY YOUR WAY
+Play tracks or build a queue from your library. Shuffle, clear or edit the queue, and keep playback close with the mini player. Open the full player for album artwork, lyrics and a waveform you can scrub through.
+
+MAKE YOUR LIBRARY YOURS
+Favourite and rate albums, artists and tracks, and save bookmarks. Listening activity is scrobbled to your server, keeping your history with your own library.
+
+TAKE MUSIC OFFLINE
+Pin albums, folders, series or individual tracks for download. Pinned music is available to play without a network connection. Track active downloads and pause them from the downloads screen.
+
+CHOOSE YOUR LOOK
+Use the system theme, light, dark or true black for OLED screens.
+
+REQUIREMENTS
+A running JamServe server and an account on it are required. JamPacked connects to your server and does not include or provide music.
+
+No ads or subscription. Your library stays on your server.

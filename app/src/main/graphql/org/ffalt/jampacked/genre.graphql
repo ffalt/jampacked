@@ -1,0 +1,6 @@
+query GenreResult($id: ID!) {
+    genre(id:$id) {
+        id
+        name
+    }
+}

@@ -1,0 +1,14 @@
+query FolderIndexResult($level: Int) {
+    folderIndex(filter: {level: $level}) {
+        groups {
+            name
+            items {
+                id
+                name
+                tracksCount
+                folderType
+                childrenCount
+            }
+        }
+    }
+}

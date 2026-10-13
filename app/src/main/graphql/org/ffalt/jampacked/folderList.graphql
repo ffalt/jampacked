@@ -1,0 +1,14 @@
+    query FolderListResult($listType: ListType, $seed: String, $albumTypes: [AlbumType!], $genreIDs: [ID!], $take: Int!, $skip: Int!) {
+        folders(list: $listType, seed: $seed, filter: {albumTypes: $albumTypes, genreIDs: $genreIDs}, page: {take: $take, skip: $skip}) {
+            total
+            skip
+            take
+            items {
+                id
+                name
+                folderType
+                tracksCount
+                childrenCount
+            }
+        }
+    }

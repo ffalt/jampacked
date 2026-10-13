@@ -1,0 +1,101 @@
+query SearchTracksResult($query: String!, $take: Int, $skip: Int) {
+    tracks(page:{take: $take, skip: $skip}, filter:{query:$query}) {
+        total
+        skip
+        items {
+            id
+            name
+            tag {
+                artist
+            }
+        }
+    }
+}
+
+query SearchSeriesResult($query: String!, $take: Int, $skip: Int) {
+    serieses(page:{take: $take, skip: $skip},filter:{query:$query}) {
+        total
+        skip
+        items {
+            id
+            name
+            albumsCount
+        }
+    }
+}
+
+query SearchPodcastsResult($query: String!, $take: Int, $skip: Int) {
+    podcasts(page:{take: $take, skip: $skip}, filter:{query:$query}) {
+        total
+        skip
+        items {
+            id
+            name
+            episodesCount
+        }
+    }
+}
+
+query SearchPlaylistsResult($query: String!, $take: Int, $skip: Int) {
+    playlists(page:{take: $take, skip: $skip}, filter:{query:$query}) {
+        total
+        skip
+        items {
+            id
+            name
+            entriesCount
+        }
+    }
+}
+
+query SearchFoldersResult($query: String!, $take: Int, $skip: Int) {
+    folders(page:{take: $take, skip: $skip}, filter:{query:$query}) {
+        total
+        skip
+        items {
+            id
+            name
+            folderType
+            childrenCount
+            tracksCount
+        }
+    }
+}
+
+query SearchEpisodesResult($query: String!, $take: Int, $skip: Int) {
+    episodes(page:{take: $take, skip: $skip}, filter:{query:$query}) {
+        total
+        skip
+        items {
+            id
+            name
+            date
+        }
+    }
+}
+
+query SearchArtistsResult($query: String!, $take: Int, $skip: Int) {
+    artists(page:{take: $take, skip: $skip}, filter:{query:$query}) {
+        total
+        skip
+        items {
+            id
+            name
+            albumsCount
+        }
+    }
+}
+
+query SearchAlbumsResult($query: String!, $take: Int, $skip: Int) {
+    albums(page:{take: $take, skip: $skip}, filter:{query:$query}) {
+        total
+        skip
+        items {
+            id
+            name
+            artist {
+                name
+            }
+        }
+    }
+}

@@ -1,0 +1,9 @@
+query PlaylistIndexResult {
+    playlists {
+        items {
+            id
+            name
+            entriesCount
+        }
+    }
+}
