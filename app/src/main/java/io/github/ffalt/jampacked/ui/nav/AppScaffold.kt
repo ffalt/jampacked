@@ -40,7 +40,9 @@ fun AppScaffold(
     session: JamSession,
     modifier: Modifier = Modifier,
     openPlayerRequests: Flow<Unit> = emptyFlow(),
-    navController: NavHostController = rememberNavController()
+    navController: NavHostController = rememberNavController(),
+    navigationTransition: NavigationTransition = DEFAULT_NAVIGATION_TRANSITION,
+    onNavigationTransitionChange: (NavigationTransition) -> Unit = {}
 ) {
     val colors = LocalJamColors.current
     val backStackEntry by navController.currentBackStackEntryAsState()
@@ -113,6 +115,8 @@ fun AppScaffold(
         JamNavHost(
             navController = navController,
             session = session,
+            navigationTransition = navigationTransition,
+            onNavigationTransitionChange = onNavigationTransitionChange,
             modifier = Modifier.padding(inner)
         )
     }

@@ -43,12 +43,20 @@ import io.github.ffalt.jampacked.ui.track.TrackScreen
 fun JamNavHost(
     navController: NavHostController,
     session: JamSession,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    navigationTransition: NavigationTransition = DEFAULT_NAVIGATION_TRANSITION,
+    onNavigationTransitionChange: (NavigationTransition) -> Unit = {}
 ) {
     NavHost(
         navController = navController,
         startDestination = Route.Home,
-        modifier = modifier
+        modifier = modifier,
+        enterTransition = { navigationTransition.enter() },
+        exitTransition = { navigationTransition.exit() },
+        popEnterTransition = { navigationTransition.popEnter() },
+        popExitTransition = { navigationTransition.popExit() },
+        predictivePopEnterTransition = { _ -> navigationTransition.popEnter() },
+        predictivePopExitTransition = { _ -> navigationTransition.popExit() }
     ) {
         composable<Route.Home> {
             HomeScreen(
@@ -67,7 +75,9 @@ fun JamNavHost(
         composable<Route.Settings> {
             SettingsScreen(
                 session = session,
-                onNavigate = { target -> navController.navigate(target) }
+                onNavigate = { target -> navController.navigate(target) },
+                navigationTransition = navigationTransition,
+                onNavigationTransitionChange = onNavigationTransitionChange
             )
         }
         composable<Route.Gallery> { GalleryScreen() }

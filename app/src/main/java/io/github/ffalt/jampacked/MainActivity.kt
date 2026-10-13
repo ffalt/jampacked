@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -19,6 +20,7 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
+import io.github.ffalt.jampacked.data.NavigationTransitionRepository
 import io.github.ffalt.jampacked.data.ThemeRepository
 import io.github.ffalt.jampacked.data.auth.AuthRepository
 import io.github.ffalt.jampacked.data.auth.AuthState
@@ -29,6 +31,7 @@ import io.github.ffalt.jampacked.ui.components.Logo
 import io.github.ffalt.jampacked.ui.login.LoginScreen
 import io.github.ffalt.jampacked.ui.nav.AppScaffold
 import io.github.ffalt.jampacked.ui.nav.DeepLinks
+import io.github.ffalt.jampacked.ui.nav.NavigationTransition
 import io.github.ffalt.jampacked.ui.theme.JamTheme
 import io.github.ffalt.jampacked.ui.theme.LocalJamColors
 import kotlinx.coroutines.channels.Channel
@@ -44,6 +47,9 @@ class MainActivity : ComponentActivity() {
 
     @Inject
     lateinit var themes: ThemeRepository
+
+    @Inject
+    lateinit var navigationTransitions: NavigationTransitionRepository
 
     @Inject
     lateinit var search: SearchRepository
@@ -113,6 +119,7 @@ class MainActivity : ComponentActivity() {
     @Composable
     private fun Root(modifier: Modifier = Modifier) {
         val state by auth.state.collectAsStateWithLifecycle()
+        val navigationTransition by navigationTransitions.transition.collectAsStateWithLifecycle()
         when (val current = state) {
             AuthState.Unknown -> {
                 Box(
@@ -126,9 +133,16 @@ class MainActivity : ComponentActivity() {
             }
 
             is AuthState.LoggedIn -> {
+                LaunchedEffect(current.session.userId) {
+                    navigationTransitions.load()
+                }
                 AppScaffold(
                     session = current.session,
                     openPlayerRequests = openPlayer.receiveAsFlow(),
+                    navigationTransition = navigationTransition,
+                    onNavigationTransitionChange = { transition ->
+                        lifecycleScope.launch { navigationTransitions.set(transition) }
+                    },
                     modifier = modifier
                 )
             }

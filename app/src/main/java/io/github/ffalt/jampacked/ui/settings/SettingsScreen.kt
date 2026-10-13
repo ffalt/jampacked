@@ -25,6 +25,8 @@ import io.github.ffalt.jampacked.ui.components.SectionHeader
 import io.github.ffalt.jampacked.ui.components.ThemedButton
 import io.github.ffalt.jampacked.ui.components.ThemedText
 import io.github.ffalt.jampacked.ui.icons.JamIcon
+import io.github.ffalt.jampacked.ui.nav.DEFAULT_NAVIGATION_TRANSITION
+import io.github.ffalt.jampacked.ui.nav.NavigationTransition
 import io.github.ffalt.jampacked.ui.nav.Route
 import io.github.ffalt.jampacked.ui.theme.JamDimens
 import io.github.ffalt.jampacked.ui.theme.JamThemeName
@@ -39,12 +41,19 @@ private val themeOptions =
         RadioEntry(JamThemeName.BLACK.name, "Black")
     )
 
+private val navigationTransitionOptions =
+    NavigationTransition.entries.map { transition ->
+        RadioEntry(transition.name, transition.label)
+    }
+
 @Composable
 fun SettingsScreen(
     session: JamSession,
     modifier: Modifier = Modifier,
     onNavigate: (Route) -> Unit = {},
-    viewModel: SettingsViewModel = hiltViewModel()
+    viewModel: SettingsViewModel = hiltViewModel(),
+    navigationTransition: NavigationTransition = DEFAULT_NAVIGATION_TRANSITION,
+    onNavigationTransitionChange: (NavigationTransition) -> Unit = {}
 ) {
     val current by viewModel.theme.collectAsStateWithLifecycle()
     val cache by viewModel.cacheStats.collectAsStateWithLifecycle()
@@ -79,6 +88,17 @@ fun SettingsScreen(
                 options = themeOptions,
                 value = current.name,
                 onChange = { key -> viewModel.setTheme(JamThemeName.valueOf(key)) }
+            )
+
+            SectionHeader("Screen Transitions")
+            RadioButtons(
+                options = navigationTransitionOptions,
+                value = navigationTransition.name,
+                onChange = { key ->
+                    NavigationTransition.entries
+                        .first { it.name == key }
+                        .let(onNavigationTransitionChange)
+                }
             )
 
             SectionHeader("User")
