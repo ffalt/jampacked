@@ -5,16 +5,18 @@ import androidx.core.net.toUri
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
 import io.github.ffalt.jampacked.data.JamSession
+import io.github.ffalt.jampacked.data.StreamRequest
 import io.github.ffalt.jampacked.data.TrackEntry
 
 fun TrackEntry.toMediaItem(
     session: JamSession,
-    format: String = "mp3"
+    request: StreamRequest = StreamRequest()
 ): MediaItem =
     MediaItem
         .Builder()
         .setMediaId(id)
-        .setUri(session.streamUrl(id, format))
+        .setUri(session.streamUrl(id, request))
+        .setCustomCacheKey(session.cacheKey(id))
         .setMediaMetadata(
             MediaMetadata
                 .Builder()
@@ -31,6 +33,7 @@ fun TrackEntry.toMediaItem(
                         putString(EXTRA_ARTIST_ID, artistID)
                         putString(EXTRA_SERIES_ID, seriesID)
                         putString(EXTRA_PODCAST_ID, podcastID)
+                        putString(EXTRA_MEDIA_FORMAT, mediaFormat)
                     }
                 ).build()
         ).build()
@@ -48,7 +51,8 @@ fun MediaItem.toTrackEntry(): TrackEntry {
         albumID = extras?.getString(EXTRA_ALBUM_ID),
         artistID = extras?.getString(EXTRA_ARTIST_ID),
         seriesID = extras?.getString(EXTRA_SERIES_ID),
-        podcastID = extras?.getString(EXTRA_PODCAST_ID)
+        podcastID = extras?.getString(EXTRA_PODCAST_ID),
+        mediaFormat = extras?.getString(EXTRA_MEDIA_FORMAT)
     )
 }
 
@@ -58,3 +62,4 @@ private const val EXTRA_ALBUM_ID = "jam.albumID"
 private const val EXTRA_ARTIST_ID = "jam.artistID"
 private const val EXTRA_SERIES_ID = "jam.seriesID"
 private const val EXTRA_PODCAST_ID = "jam.podcastID"
+private const val EXTRA_MEDIA_FORMAT = "jam.mediaFormat"

@@ -18,12 +18,15 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.ffalt.jampacked.BuildConfig
 import io.github.ffalt.jampacked.R
+import io.github.ffalt.jampacked.data.BitrateCap
 import io.github.ffalt.jampacked.data.JamSession
+import io.github.ffalt.jampacked.data.StreamFormat
+import io.github.ffalt.jampacked.data.StreamOptions
 import io.github.ffalt.jampacked.ui.components.JamImage
 import io.github.ffalt.jampacked.ui.components.PageHeader
-import io.github.ffalt.jampacked.ui.components.RadioButtons
 import io.github.ffalt.jampacked.ui.components.RadioEntry
 import io.github.ffalt.jampacked.ui.components.SectionHeader
+import io.github.ffalt.jampacked.ui.components.SettingSelect
 import io.github.ffalt.jampacked.ui.components.ThemedButton
 import io.github.ffalt.jampacked.ui.components.ThemedText
 import io.github.ffalt.jampacked.ui.icons.JamIcon
@@ -46,6 +49,7 @@ fun SettingsScreen(
 ) {
     val current by viewModel.theme.collectAsStateWithLifecycle()
     val cache by viewModel.cacheStats.collectAsStateWithLifecycle()
+    val streams by viewModel.streamSettings.collectAsStateWithLifecycle()
     val themeOptions =
         listOf(
             RadioEntry(JamThemeName.AUTO.name, stringResource(R.string.system_theme)),
@@ -93,15 +97,15 @@ fun SettingsScreen(
                 ThemedButton(stringResource(R.string.logout), onClick = viewModel::logout)
             }
 
-            SectionHeader(stringResource(R.string.theme))
-            RadioButtons(
+            SectionHeader(stringResource(R.string.appearance))
+            SettingSelect(
+                label = stringResource(R.string.theme),
                 options = themeOptions,
                 value = current.name,
                 onChange = { key -> viewModel.setTheme(JamThemeName.valueOf(key)) }
             )
-
-            SectionHeader(stringResource(R.string.screen_transitions))
-            RadioButtons(
+            SettingSelect(
+                label = stringResource(R.string.screen_transitions),
                 options = navigationTransitionOptions,
                 value = navigationTransition.name,
                 onChange = { key ->
@@ -110,6 +114,22 @@ fun SettingsScreen(
                         .let(onNavigationTransitionChange)
                 }
             )
+
+            SectionHeader(stringResource(R.string.streaming_quality))
+            QualityOptions(
+                options = streams.streaming,
+                onChange = viewModel::setStreaming
+            )
+            QualityHint(
+                stringResource(R.string.playable_formats, viewModel.playableFormats)
+            )
+
+            SectionHeader(stringResource(R.string.download_quality))
+            QualityOptions(
+                options = streams.downloads,
+                onChange = viewModel::setDownloads
+            )
+            QualityHint(stringResource(R.string.download_quality_hint))
 
             SectionHeader(stringResource(R.string.cache))
             SettingRow(
@@ -131,6 +151,48 @@ fun SettingsScreen(
             }
         }
     }
+}
+
+@Composable
+private fun QualityHint(text: String) {
+    ThemedText(
+        text = text,
+        color = LocalJamColors.current.muted,
+        fontSize = JamDimens.fontSizeSmall,
+        modifier = Modifier.padding(start = JamDimens.paddingSmall, top = JamDimens.paddingSmall)
+    )
+}
+
+@Composable
+private fun QualityOptions(
+    options: StreamOptions,
+    onChange: (StreamOptions) -> Unit
+) {
+    val formatEntries =
+        listOf(
+            RadioEntry(StreamFormat.MP3.name, stringResource(R.string.format_mp3)),
+            RadioEntry(StreamFormat.ORIGINAL.name, stringResource(R.string.format_original))
+        )
+    SettingSelect(
+        label = stringResource(R.string.format),
+        options = formatEntries,
+        value = options.format.name,
+        onChange = { key -> onChange(options.copy(format = StreamFormat.valueOf(key))) }
+    )
+
+    val capEntries =
+        BitrateCap.entries.map { cap ->
+            val label =
+                cap.kbps?.let { stringResource(R.string.bitrate_kbps, it) }
+                    ?: stringResource(R.string.bitrate_uncapped)
+            RadioEntry(cap.name, label)
+        }
+    SettingSelect(
+        label = stringResource(R.string.bitrate_cap),
+        options = capEntries,
+        value = options.cap.name,
+        onChange = { key -> onChange(options.copy(cap = BitrateCap.valueOf(key))) }
+    )
 }
 
 @Composable

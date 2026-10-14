@@ -134,7 +134,8 @@ class AlbumRepository
                                 genre = track.genres.firstOrNull()?.name,
                                 albumID = track.album?.id,
                                 artistID = track.artist?.id,
-                                seriesID = track.series?.id
+                                seriesID = track.series?.id,
+                                mediaFormat = track.tag?.mediaFormat?.rawValue
                             )
                         }
                 ).also { cache.write(key, it, serializer<AlbumDetail>()) }

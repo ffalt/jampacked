@@ -53,7 +53,8 @@ class PinRepository
         private val dao: PinDao,
         private val json: Json,
         private val auth: AuthRepository,
-        private val downloads: Downloads
+        private val downloads: Downloads,
+        private val streamSettings: StreamSettingsRepository
     ) {
         private val changes = MutableStateFlow(0)
 
@@ -86,9 +87,13 @@ class PinRepository
             )
             dao.insertTracks(tracks.map { PinTrackRow(pinKey = pinKey, trackId = it.id) })
 
+            val requestAtPinTime = streamSettings::downloadRequestFor
             tracks.forEach { track ->
                 val request =
-                    DownloadRequest.Builder(track.id, session.streamUrl(track.id).toUri()).build()
+                    DownloadRequest
+                        .Builder(track.id, session.streamUrl(track.id, requestAtPinTime(track.mediaFormat)).toUri())
+                        .setCustomCacheKey(session.cacheKey(track.id))
+                        .build()
                 DownloadService.sendAddDownload(
                     context,
                     JamDownloadService::class.java,

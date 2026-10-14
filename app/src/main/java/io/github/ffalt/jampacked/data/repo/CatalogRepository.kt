@@ -231,7 +231,8 @@ class CatalogRepository
                                                 .orEmpty(),
                                         albumID = track.album?.id,
                                         artistID = track.artist?.id,
-                                        seriesID = track.series?.id
+                                        seriesID = track.series?.id,
+                                        mediaFormat = track.tag?.mediaFormat?.rawValue
                                     )
                                 } ?: entry.episode?.let { episode ->
                                     TrackEntry(
@@ -240,7 +241,8 @@ class CatalogRepository
                                         artist = episode.tag?.artist.orEmpty(),
                                         album = episode.tag?.album.orEmpty(),
                                         durationMS = (episode.tag?.mediaDuration ?: 0.0).toLong(),
-                                        podcastID = episode.podcast.id
+                                        podcastID = episode.podcast.id,
+                                        mediaFormat = episode.tag?.mediaFormat?.rawValue
                                     )
                                 }
                             }
@@ -290,7 +292,8 @@ class CatalogRepository
                                     title = episode.tag?.title ?: episode.name,
                                     artist = episode.tag?.artist.orEmpty(),
                                     durationMS = (episode.duration ?: 0.0).toLong(),
-                                    podcastID = podcast.id
+                                    podcastID = podcast.id,
+                                    mediaFormat = episode.tag?.mediaFormat?.rawValue
                                 )
                             }
                     )

@@ -49,7 +49,8 @@ class BookmarkRepository
                                     .orEmpty(),
                             albumID = track.album?.id,
                             artistID = track.artist?.id,
-                            seriesID = track.series?.id
+                            seriesID = track.series?.id,
+                            mediaFormat = track.tag?.mediaFormat?.rawValue
                         )
                     } ?: bookmark.episode?.let { episode ->
                         TrackEntry(
@@ -58,7 +59,8 @@ class BookmarkRepository
                             artist = episode.tag?.artist.orEmpty(),
                             album = episode.tag?.album.orEmpty(),
                             durationMS = (episode.tag?.mediaDuration ?: 0.0).toLong(),
-                            podcastID = episode.podcast.id
+                            podcastID = episode.podcast.id,
+                            mediaFormat = episode.tag?.mediaFormat?.rawValue
                         )
                     }
                 }

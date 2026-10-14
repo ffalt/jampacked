@@ -8,6 +8,7 @@ query PodcastEpisodeResult($id: ID!) {
             title
             artist
             genres
+            mediaFormat
         }
         podcast {
             id

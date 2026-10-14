@@ -86,8 +86,8 @@ class QueryCache
             }
 
         companion object {
-            // HomeStat now stores a localization key instead of a display title.
-            const val CURRENT_VERSION = 3
+            // TrackEntry gained mediaFormat; older rows decode null and fall back to mp3.
+            const val CURRENT_VERSION = 4
 
             fun cacheKey(
                 operationName: String,

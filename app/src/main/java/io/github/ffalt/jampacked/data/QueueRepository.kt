@@ -22,6 +22,7 @@ class QueueRepository
     @Inject
     constructor(
         private val settings: SettingsRepository,
+        private val streamSettings: StreamSettingsRepository,
         private val json: Json
     ) {
         suspend fun save(player: Player) {
@@ -62,7 +63,7 @@ class QueueRepository
             val index = stored.currentIndex.takeIf { it in stored.tracks.indices } ?: 0
             withContext(Dispatchers.Main.immediate) {
                 player.setMediaItems(
-                    stored.tracks.map { it.toMediaItem(session) },
+                    stored.tracks.map { it.toMediaItem(session, streamSettings.streamRequestFor(it.mediaFormat)) },
                     index,
                     stored.position
                 )

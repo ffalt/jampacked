@@ -24,6 +24,7 @@ query TrackListResult($listType: ListType, $genreIDs: [ID!], $seed: String, $tak
             }
             tag {
                 mediaDuration
+                mediaFormat
                 title
                 disc
                 trackNr

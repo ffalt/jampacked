@@ -21,6 +21,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import io.github.ffalt.jampacked.data.NavigationTransitionRepository
+import io.github.ffalt.jampacked.data.StreamSettingsRepository
 import io.github.ffalt.jampacked.data.ThemeRepository
 import io.github.ffalt.jampacked.data.auth.AuthRepository
 import io.github.ffalt.jampacked.data.auth.AuthState
@@ -50,6 +51,9 @@ class MainActivity : ComponentActivity() {
 
     @Inject
     lateinit var navigationTransitions: NavigationTransitionRepository
+
+    @Inject
+    lateinit var streamSettings: StreamSettingsRepository
 
     @Inject
     lateinit var search: SearchRepository
@@ -135,6 +139,7 @@ class MainActivity : ComponentActivity() {
             is AuthState.LoggedIn -> {
                 LaunchedEffect(current.session.userId) {
                     navigationTransitions.load()
+                    streamSettings.load()
                 }
                 AppScaffold(
                     session = current.session,

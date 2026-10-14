@@ -7,6 +7,9 @@ import androidx.media3.common.util.UnstableApi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.ffalt.jampacked.data.ApolloProvider
 import io.github.ffalt.jampacked.data.PinRepository
+import io.github.ffalt.jampacked.data.StreamOptions
+import io.github.ffalt.jampacked.data.StreamSettings
+import io.github.ffalt.jampacked.data.StreamSettingsRepository
 import io.github.ffalt.jampacked.data.ThemeRepository
 import io.github.ffalt.jampacked.data.UserRoles
 import io.github.ffalt.jampacked.data.auth.AuthRepository
@@ -33,9 +36,12 @@ class SettingsViewModel
         private val auth: AuthRepository,
         private val cache: QueryCache,
         private val apollo: ApolloProvider,
-        private val pins: PinRepository
+        private val pins: PinRepository,
+        private val streams: StreamSettingsRepository
     ) : ViewModel() {
         val theme: StateFlow<JamThemeName> = themes.theme
+        val playableFormats: String get() = streams.playableFormats.sorted().joinToString { it.uppercase() }
+        val streamSettings: StateFlow<StreamSettings> = streams.state
         val userName: String get() = auth.session?.userName.orEmpty()
         val userId: String get() = auth.session?.userId.orEmpty()
         val roles: UserRoles get() = auth.session?.roles ?: UserRoles()
@@ -62,6 +68,14 @@ class SettingsViewModel
 
         fun setTheme(name: JamThemeName) {
             viewModelScope.launch { themes.set(name) }
+        }
+
+        fun setStreaming(options: StreamOptions) {
+            viewModelScope.launch { streams.setStreaming(options) }
+        }
+
+        fun setDownloads(options: StreamOptions) {
+            viewModelScope.launch { streams.setDownloads(options) }
         }
 
         fun clearCache() {

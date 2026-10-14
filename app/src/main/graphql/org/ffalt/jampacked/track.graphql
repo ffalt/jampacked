@@ -20,6 +20,7 @@ query TrackResult($id: ID!) {
         }
         tag {
             mediaDuration
+            mediaFormat
             title
             disc
             trackNr

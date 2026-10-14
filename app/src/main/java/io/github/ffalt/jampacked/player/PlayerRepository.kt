@@ -12,6 +12,7 @@ import com.google.common.util.concurrent.MoreExecutors
 import dagger.hilt.android.qualifiers.ApplicationContext
 import io.github.ffalt.jampacked.data.JamSession
 import io.github.ffalt.jampacked.data.QueueRepository
+import io.github.ffalt.jampacked.data.StreamSettingsRepository
 import io.github.ffalt.jampacked.data.TrackEntry
 import io.github.ffalt.jampacked.data.auth.AuthRepository
 import kotlinx.coroutines.CompletableDeferred
@@ -47,7 +48,8 @@ class PlayerRepository
     constructor(
         @ApplicationContext private val context: Context,
         private val auth: AuthRepository,
-        private val queueRepo: QueueRepository
+        private val queueRepo: QueueRepository,
+        private val streamSettings: StreamSettingsRepository
     ) {
         private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
         private val uiState = MutableStateFlow(PlayerState())
@@ -157,7 +159,7 @@ class PlayerRepository
         fun playTracks(tracks: List<TrackEntry>) {
             val c = controller ?: return
             val s = session() ?: return
-            c.setMediaItems(tracks.map { it.toMediaItem(s) })
+            c.setMediaItems(tracks.map { it.toMediaItem(s, streamSettings.streamRequestFor(it.mediaFormat)) })
             c.prepare()
             c.play()
         }
@@ -173,7 +175,7 @@ class PlayerRepository
         fun addTracksToQueue(tracks: List<TrackEntry>) {
             val c = controller ?: return
             val s = session() ?: return
-            c.addMediaItems(tracks.map { it.toMediaItem(s) })
+            c.addMediaItems(tracks.map { it.toMediaItem(s, streamSettings.streamRequestFor(it.mediaFormat)) })
             if (c.playbackState == Player.STATE_IDLE) c.prepare()
         }
 

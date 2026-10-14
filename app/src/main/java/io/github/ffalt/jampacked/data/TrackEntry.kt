@@ -14,7 +14,8 @@ data class TrackEntry(
     val albumID: String? = null,
     val artistID: String? = null,
     val seriesID: String? = null,
-    val podcastID: String? = null
+    val podcastID: String? = null,
+    val mediaFormat: String? = null
 ) {
     val artworkId: String get() = if (seriesID != null) id else (albumID ?: id)
 }

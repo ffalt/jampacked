@@ -12,6 +12,7 @@ query PodcastResult($id: ID!) {
                 title
                 artist
                 genres
+                mediaFormat
             }
         }
     }

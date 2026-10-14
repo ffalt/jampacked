@@ -28,8 +28,13 @@ data class JamSession(
 
     fun streamUrl(
         id: String,
-        format: String? = "mp3"
-    ): String = "$apiPrefix/stream/$id" + (format?.let { ".$it" } ?: "")
+        request: StreamRequest = StreamRequest()
+    ): String =
+        "$apiPrefix/stream/$id" +
+            (request.maxBitRate?.let { "_$it" } ?: "") +
+            ".${request.extension}"
+
+    fun cacheKey(id: String): String = "$apiPrefix/stream/$id.$MP3_EXTENSION"
 
     val graphqlUrl: String get() = "$server/graphql"
 

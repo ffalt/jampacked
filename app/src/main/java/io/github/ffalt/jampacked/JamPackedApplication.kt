@@ -6,6 +6,7 @@ import coil3.PlatformContext
 import coil3.SingletonImageLoader
 import coil3.network.okhttp.OkHttpNetworkFetcherFactory
 import dagger.hilt.android.HiltAndroidApp
+import io.github.ffalt.jampacked.data.StreamSettingsRepository
 import io.github.ffalt.jampacked.data.ThemeRepository
 import io.github.ffalt.jampacked.data.auth.AuthRepository
 import io.github.ffalt.jampacked.util.CrashLog
@@ -27,6 +28,9 @@ class JamPackedApplication :
     lateinit var themes: ThemeRepository
 
     @Inject
+    lateinit var streamSettings: StreamSettingsRepository
+
+    @Inject
     lateinit var httpClient: OkHttpClient
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
@@ -38,6 +42,7 @@ class JamPackedApplication :
         scope.launch {
             auth.load()
             themes.load()
+            streamSettings.load()
             auth.check()
         }
     }

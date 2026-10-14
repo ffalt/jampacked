@@ -87,8 +87,7 @@ fun HomeScreen(
             modifier =
                 Modifier
                     .fillMaxSize()
-                    // a weighted child measures to nothing in a scrollable column, so the
-                    // loading state drops the scroll to keep the indicator centred
+                    // weight measures to nothing inside verticalScroll, so the loader drops it
                     .then(if (loadingLibrary) Modifier else Modifier.verticalScroll(scrollState))
         ) {
             Row(

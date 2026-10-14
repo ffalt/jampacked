@@ -36,6 +36,7 @@ query FolderResult($id: ID!) {
             }
             tag {
                 mediaDuration
+                mediaFormat
                 title
                 disc
                 trackNr

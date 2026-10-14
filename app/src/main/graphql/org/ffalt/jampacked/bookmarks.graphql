@@ -27,6 +27,7 @@ query BookmarkResult($take: Int!, $skip: Int!, $ids: [ID!], $trackIDs:[ID!], $ep
                 }
                 tag {
                     mediaDuration
+                    mediaFormat
                     title
                     disc
                     trackNr
@@ -40,6 +41,7 @@ query BookmarkResult($take: Int!, $skip: Int!, $ids: [ID!], $trackIDs:[ID!], $ep
                 }
                 tag {
                     mediaDuration
+                    mediaFormat
                     title
                     artist
                     genres

@@ -4,6 +4,7 @@ import androidx.core.net.toUri
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
 import io.github.ffalt.jampacked.data.JamSession
+import io.github.ffalt.jampacked.data.StreamSettingsRepository
 import io.github.ffalt.jampacked.data.TrackEntry
 import io.github.ffalt.jampacked.data.auth.AuthRepository
 import io.github.ffalt.jampacked.data.repo.AlbumRepository
@@ -26,7 +27,8 @@ class LibraryTree
         private val albums: AlbumRepository,
         private val artists: ArtistRepository,
         private val catalog: CatalogRepository,
-        private val tracks: TrackRepository
+        private val tracks: TrackRepository,
+        private val streamSettings: StreamSettingsRepository
     ) {
         val isLoggedIn: Boolean get() = auth.session != null
 
@@ -112,7 +114,7 @@ class LibraryTree
                 }
 
                 else -> {
-                    trackList(parentId)?.drop(skip)?.take(pageSize)?.map { it.toMediaItem(session) }
+                    trackList(parentId)?.drop(skip)?.take(pageSize)?.map { it.asMediaItem(session) }
                 }
             }
         }
@@ -121,15 +123,18 @@ class LibraryTree
             val session = auth.session ?: return null
             if (mediaId == ROOT) return root()
             if (mediaId.contains(':')) return null
-            return tracks.track(mediaId).getOrNull()?.toMediaItem(session)
+            return tracks.track(mediaId).getOrNull()?.asMediaItem(session)
         }
 
         /** Turns what a browser asked to play into playable items: a track, or every track of a container. */
         suspend fun resolve(mediaId: String): List<MediaItem> {
             val session = auth.session ?: return emptyList()
-            trackList(mediaId)?.let { list -> return list.map { it.toMediaItem(session) } }
-            return listOfNotNull(tracks.track(mediaId).getOrNull()?.toMediaItem(session))
+            trackList(mediaId)?.let { list -> return list.map { it.asMediaItem(session) } }
+            return listOfNotNull(tracks.track(mediaId).getOrNull()?.asMediaItem(session))
         }
+
+        private fun TrackEntry.asMediaItem(session: JamSession): MediaItem =
+            toMediaItem(session, streamSettings.streamRequestFor(mediaFormat))
 
         private suspend fun trackList(id: String): List<TrackEntry>? =
             when {

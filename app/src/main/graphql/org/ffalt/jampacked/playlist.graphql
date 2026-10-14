@@ -25,6 +25,7 @@ query PlaylistResult($id: ID!) {
                 }
                 tag {
                     mediaDuration
+                    mediaFormat
                     title
                     disc
                     trackNr
@@ -38,6 +39,7 @@ query PlaylistResult($id: ID!) {
                 }
                 tag {
                     mediaDuration
+                    mediaFormat
                     title
                     artist
                     genres
