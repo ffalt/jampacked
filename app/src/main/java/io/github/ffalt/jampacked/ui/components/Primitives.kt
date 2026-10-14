@@ -253,6 +253,26 @@ data class RadioEntry(
 )
 
 @Composable
+fun SettingToggle(
+    label: String,
+    checked: Boolean,
+    onChange: (Boolean) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .clickable { onChange(!checked) }
+                .padding(horizontal = JamDimens.paddingSmall, vertical = JamDimens.padding),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        ThemedText(text = label, modifier = Modifier.weight(1f))
+        ThemedCheckbox(checked = checked)
+    }
+}
+
+@Composable
 fun SettingSelect(
     label: String,
     options: List<RadioEntry>,

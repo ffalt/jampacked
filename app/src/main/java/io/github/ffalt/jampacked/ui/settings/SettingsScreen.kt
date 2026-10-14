@@ -27,6 +27,7 @@ import io.github.ffalt.jampacked.ui.components.PageHeader
 import io.github.ffalt.jampacked.ui.components.RadioEntry
 import io.github.ffalt.jampacked.ui.components.SectionHeader
 import io.github.ffalt.jampacked.ui.components.SettingSelect
+import io.github.ffalt.jampacked.ui.components.SettingToggle
 import io.github.ffalt.jampacked.ui.components.ThemedButton
 import io.github.ffalt.jampacked.ui.components.ThemedText
 import io.github.ffalt.jampacked.ui.icons.JamIcon
@@ -50,6 +51,7 @@ fun SettingsScreen(
     val current by viewModel.theme.collectAsStateWithLifecycle()
     val cache by viewModel.cacheStats.collectAsStateWithLifecycle()
     val streams by viewModel.streamSettings.collectAsStateWithLifecycle()
+    val unmeteredOnly by viewModel.unmeteredOnly.collectAsStateWithLifecycle()
     val themeOptions =
         listOf(
             RadioEntry(JamThemeName.AUTO.name, stringResource(R.string.system_theme)),
@@ -138,6 +140,11 @@ fun SettingsScreen(
             )
 
             SectionHeader(stringResource(R.string.pinned_offline_tracks))
+            SettingToggle(
+                label = stringResource(R.string.downloads_unmetered_only),
+                checked = unmeteredOnly,
+                onChange = viewModel::setUnmeteredOnly
+            )
             SettingRow(
                 text =
                     stringResource(R.string.files_count, cache.downloadedFiles) +

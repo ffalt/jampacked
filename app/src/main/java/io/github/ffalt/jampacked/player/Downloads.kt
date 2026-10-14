@@ -13,6 +13,7 @@ import androidx.media3.datasource.cache.SimpleCache
 import androidx.media3.datasource.okhttp.OkHttpDataSource
 import androidx.media3.exoplayer.offline.DownloadManager
 import androidx.media3.exoplayer.offline.DownloadNotificationHelper
+import androidx.media3.exoplayer.scheduler.Requirements
 import dagger.hilt.android.qualifiers.ApplicationContext
 import okhttp3.OkHttpClient
 import java.io.File
@@ -59,6 +60,11 @@ class Downloads
             DownloadNotificationHelper(context, DOWNLOAD_CHANNEL_ID)
         }
 
+        fun setUnmeteredOnly(unmeteredOnly: Boolean) {
+            downloadManager.requirements =
+                if (unmeteredOnly) UNMETERED_REQUIREMENTS else DownloadManager.DEFAULT_REQUIREMENTS
+        }
+
         // Cover art sits behind the same Authorization header as the stream, so it needs the OkHttp client.
         fun artworkDataSourceFactory(): DataSource.Factory = httpDataSourceFactory
 
@@ -72,6 +78,7 @@ class Downloads
 
         companion object {
             const val DOWNLOAD_CHANNEL_ID = "jam_downloads"
+            private val UNMETERED_REQUIREMENTS = Requirements(Requirements.NETWORK_UNMETERED)
             private const val DOWNLOAD_CONTENT_DIRECTORY = "downloads"
             private const val DOWNLOAD_THREADS = 6
         }

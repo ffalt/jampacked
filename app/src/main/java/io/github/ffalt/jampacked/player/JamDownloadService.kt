@@ -6,11 +6,13 @@ import androidx.media3.exoplayer.offline.Download
 import androidx.media3.exoplayer.offline.DownloadManager
 import androidx.media3.exoplayer.offline.DownloadService
 import androidx.media3.exoplayer.scheduler.Scheduler
+import androidx.media3.exoplayer.workmanager.WorkManagerScheduler
 import dagger.hilt.android.AndroidEntryPoint
 import io.github.ffalt.jampacked.R
 import javax.inject.Inject
 
 private const val FOREGROUND_NOTIFICATION_ID = 2001
+private const val DOWNLOAD_WORK_NAME = "jam_downloads"
 
 @UnstableApi
 @AndroidEntryPoint
@@ -27,7 +29,7 @@ class JamDownloadService :
 
     override fun getDownloadManager(): DownloadManager = downloads.downloadManager
 
-    override fun getScheduler(): Scheduler? = null
+    override fun getScheduler(): Scheduler = WorkManagerScheduler(this, DOWNLOAD_WORK_NAME)
 
     override fun getForegroundNotification(
         downloads: List<Download>,

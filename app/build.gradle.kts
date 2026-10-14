@@ -100,6 +100,7 @@ dependencies {
     implementation(libs.media3.exoplayer)
     implementation(libs.media3.session)
     implementation(libs.media3.datasource.okhttp)
+    implementation(libs.media3.exoplayer.workmanager)
 
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)

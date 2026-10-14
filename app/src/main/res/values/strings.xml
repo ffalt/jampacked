@@ -73,6 +73,7 @@
     <string name="streaming_quality">Streaming Quality</string>
     <string name="download_quality">Download Quality</string>
     <string name="playable_formats">This device plays: %1$s</string>
+    <string name="downloads_unmetered_only">Only download on Wi-Fi</string>
     <string name="download_quality_hint">Applies to new pins. Media already downloaded keeps the quality it was pinned at.</string>
     <string name="appearance">Appearance</string>
     <string name="format">Format</string>

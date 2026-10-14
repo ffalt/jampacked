@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.media3.common.util.UnstableApi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.ffalt.jampacked.data.ApolloProvider
+import io.github.ffalt.jampacked.data.DownloadRulesRepository
 import io.github.ffalt.jampacked.data.PinRepository
 import io.github.ffalt.jampacked.data.StreamOptions
 import io.github.ffalt.jampacked.data.StreamSettings
@@ -37,11 +38,13 @@ class SettingsViewModel
         private val cache: QueryCache,
         private val apollo: ApolloProvider,
         private val pins: PinRepository,
-        private val streams: StreamSettingsRepository
+        private val streams: StreamSettingsRepository,
+        private val downloadRules: DownloadRulesRepository
     ) : ViewModel() {
         val theme: StateFlow<JamThemeName> = themes.theme
         val playableFormats: String get() = streams.playableFormats.sorted().joinToString { it.uppercase() }
         val streamSettings: StateFlow<StreamSettings> = streams.state
+        val unmeteredOnly: StateFlow<Boolean> = downloadRules.unmeteredOnly
         val userName: String get() = auth.session?.userName.orEmpty()
         val userId: String get() = auth.session?.userId.orEmpty()
         val roles: UserRoles get() = auth.session?.roles ?: UserRoles()
@@ -68,6 +71,10 @@ class SettingsViewModel
 
         fun setTheme(name: JamThemeName) {
             viewModelScope.launch { themes.set(name) }
+        }
+
+        fun setUnmeteredOnly(enabled: Boolean) {
+            viewModelScope.launch { downloadRules.set(enabled) }
         }
 
         fun setStreaming(options: StreamOptions) {

@@ -20,6 +20,7 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
+import io.github.ffalt.jampacked.data.DownloadRulesRepository
 import io.github.ffalt.jampacked.data.NavigationTransitionRepository
 import io.github.ffalt.jampacked.data.StreamSettingsRepository
 import io.github.ffalt.jampacked.data.ThemeRepository
@@ -54,6 +55,9 @@ class MainActivity : ComponentActivity() {
 
     @Inject
     lateinit var streamSettings: StreamSettingsRepository
+
+    @Inject
+    lateinit var downloadRules: DownloadRulesRepository
 
     @Inject
     lateinit var search: SearchRepository
@@ -140,6 +144,7 @@ class MainActivity : ComponentActivity() {
                 LaunchedEffect(current.session.userId) {
                     navigationTransitions.load()
                     streamSettings.load()
+                    downloadRules.load()
                 }
                 AppScaffold(
                     session = current.session,
