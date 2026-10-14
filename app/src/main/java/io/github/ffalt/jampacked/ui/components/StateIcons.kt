@@ -135,7 +135,7 @@ fun PinIcon(
 
     LaunchedEffect(id) { pinned = viewModel.isPinned(id) }
 
-    val iconName = if (pinned) "pin" else "download"
+    val iconName = if (pinned) "pin" else "pin-outline"
     val toggle = {
         if (!busy) {
             busy = true
@@ -151,7 +151,7 @@ fun PinIcon(
             iconName = iconName,
             label =
                 stringResource(
-                    if (pinned) R.string.remove_download else R.string.download
+                    if (pinned) R.string.unpin_action else R.string.pin_action
                 ),
             onClick = toggle,
             modifier = modifier,

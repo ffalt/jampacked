@@ -2,8 +2,6 @@ package io.github.ffalt.jampacked.ui.track
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -14,10 +12,10 @@ import io.github.ffalt.jampacked.R
 import io.github.ffalt.jampacked.data.JamSession
 import io.github.ffalt.jampacked.ui.components.ErrorView
 import io.github.ffalt.jampacked.ui.components.HeaderDetail
+import io.github.ffalt.jampacked.ui.components.LoadingView
 import io.github.ffalt.jampacked.ui.components.ObjectHeader
 import io.github.ffalt.jampacked.ui.nav.Route
 import io.github.ffalt.jampacked.ui.player.LyricsView
-import io.github.ffalt.jampacked.ui.theme.JamDimens
 
 @Composable
 fun TrackScreen(
@@ -38,7 +36,7 @@ fun TrackScreen(
     Column(modifier = modifier.fillMaxSize()) {
         val track = state.track
         if (track == null) {
-            CircularProgressIndicator(modifier = Modifier.padding(JamDimens.padding))
+            LoadingView(modifier = Modifier.fillMaxSize())
             return@Column
         }
 

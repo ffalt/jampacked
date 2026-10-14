@@ -67,8 +67,8 @@
     <string name="retry">Retry</string>
     <string name="no_entries">No entries</string>
     <string name="favorite_action">Favorite</string>
-    <string name="download">Download</string>
-    <string name="remove_download">Remove download</string>
+    <string name="pin_action">Pin</string>
+    <string name="unpin_action">Unpin</string>
     <string name="add_to_queue">Add to queue</string>
     <string name="toggle">Toggle</string>
     <string name="system_theme">System Theme</string>

@@ -22,6 +22,7 @@ import io.github.ffalt.jampacked.R
 import io.github.ffalt.jampacked.data.JamSession
 import io.github.ffalt.jampacked.ui.components.JamThumb
 import io.github.ffalt.jampacked.ui.components.ListEmpty
+import io.github.ffalt.jampacked.ui.components.LoadingView
 import io.github.ffalt.jampacked.ui.components.PageHeader
 import io.github.ffalt.jampacked.ui.components.PinIcon
 import io.github.ffalt.jampacked.ui.components.Separator
@@ -52,7 +53,11 @@ fun PinnedMediaScreen(
         PageHeader(title = stringResource(R.string.media), subtitle = stringResource(R.string.pinned))
 
         if (state.media.isEmpty()) {
-            ListEmpty(items = if (state.loading) null else emptyList<String>())
+            if (state.loading) {
+                LoadingView(modifier = Modifier.weight(1f))
+            } else {
+                ListEmpty(items = emptyList<String>())
+            }
             return@Column
         }
 

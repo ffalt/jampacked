@@ -2,8 +2,6 @@ package io.github.ffalt.jampacked.ui.browse
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -16,10 +14,10 @@ import io.github.ffalt.jampacked.ui.components.ErrorView
 import io.github.ffalt.jampacked.ui.components.HeaderDetail
 import io.github.ffalt.jampacked.ui.components.JamItem
 import io.github.ffalt.jampacked.ui.components.JamList
+import io.github.ffalt.jampacked.ui.components.LoadingView
 import io.github.ffalt.jampacked.ui.components.ObjectHeader
 import io.github.ffalt.jampacked.ui.components.SectionHeader
 import io.github.ffalt.jampacked.ui.nav.Route
-import io.github.ffalt.jampacked.ui.theme.JamDimens
 
 @Composable
 fun SeriesScreen(
@@ -39,7 +37,7 @@ fun SeriesScreen(
     Column(modifier = modifier.fillMaxSize()) {
         val series = state.series
         if (series == null) {
-            CircularProgressIndicator(modifier = Modifier.padding(JamDimens.padding))
+            LoadingView(modifier = Modifier.fillMaxSize())
             return@Column
         }
 

@@ -45,6 +45,7 @@ class HomeViewModel
 
         init {
             load(forceRefresh = false)
+            observePinCount()
         }
 
         fun load(forceRefresh: Boolean) {
@@ -79,14 +80,15 @@ class HomeViewModel
                     }
                 }
             }
-            refreshPinCount()
         }
 
         @OptIn(UnstableApi::class)
-        private fun refreshPinCount() {
+        private fun observePinCount() {
             viewModelScope.launch {
-                val count = pins.count()
-                uiState.update { it.copy(pinnedCount = count) }
+                pins.pinChanges.collect {
+                    val count = pins.count()
+                    uiState.update { it.copy(pinnedCount = count) }
+                }
             }
         }
     }

@@ -1,5 +1,6 @@
 package io.github.ffalt.jampacked.ui.components
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
@@ -26,6 +27,14 @@ fun <T> JamList(
         return
     }
 
+    if (items == null) {
+        Column(modifier = modifier.fillMaxSize()) {
+            header?.invoke()
+            LoadingView(modifier = Modifier.weight(1f))
+        }
+        return
+    }
+
     PullToRefreshBox(
         isRefreshing = loading,
         onRefresh = onReload,
@@ -34,7 +43,7 @@ fun <T> JamList(
         LazyColumn(state = state, modifier = Modifier.fillMaxSize()) {
             header?.let { item { it() } }
 
-            if (items.isNullOrEmpty()) {
+            if (items.isEmpty()) {
                 item { ListEmpty(items) }
                 return@LazyColumn
             }

@@ -15,6 +15,8 @@ import io.github.ffalt.jampacked.player.Downloads
 import io.github.ffalt.jampacked.player.JamDownloadService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
@@ -54,6 +56,9 @@ class PinRepository
         private val downloads: Downloads
     ) {
         private val changes = MutableStateFlow(0)
+
+        /** Bumped on every pin, unpin and clear, so screens showing a pin count can follow along. */
+        val pinChanges: StateFlow<Int> = changes.asStateFlow()
 
         private fun key(id: String) = "pin_$id"
 

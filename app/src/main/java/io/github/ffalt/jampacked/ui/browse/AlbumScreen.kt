@@ -3,8 +3,6 @@ package io.github.ffalt.jampacked.ui.browse
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -18,6 +16,7 @@ import io.github.ffalt.jampacked.ui.components.ErrorView
 import io.github.ffalt.jampacked.ui.components.HEADER_SHEET_ROW
 import io.github.ffalt.jampacked.ui.components.HeaderDetail
 import io.github.ffalt.jampacked.ui.components.JamList
+import io.github.ffalt.jampacked.ui.components.LoadingView
 import io.github.ffalt.jampacked.ui.components.ObjectHeader
 import io.github.ffalt.jampacked.ui.components.PinIcon
 import io.github.ffalt.jampacked.ui.components.SelectableTrackItem
@@ -46,7 +45,7 @@ fun AlbumScreen(
         Column(modifier = Modifier.fillMaxSize()) {
             val album = state.album
             if (album == null) {
-                CircularProgressIndicator(modifier = Modifier.padding(JamDimens.padding))
+                LoadingView(modifier = Modifier.fillMaxSize())
                 return@Column
             }
 

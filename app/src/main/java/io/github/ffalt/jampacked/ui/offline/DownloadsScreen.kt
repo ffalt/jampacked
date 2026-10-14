@@ -22,6 +22,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.ffalt.jampacked.R
 import io.github.ffalt.jampacked.ui.components.ClickLabelIcon
 import io.github.ffalt.jampacked.ui.components.ListEmpty
+import io.github.ffalt.jampacked.ui.components.LoadingView
 import io.github.ffalt.jampacked.ui.components.PageHeader
 import io.github.ffalt.jampacked.ui.components.Separator
 import io.github.ffalt.jampacked.ui.components.ThemedText
@@ -75,7 +76,11 @@ fun DownloadsScreen(
         Separator()
 
         if (state.downloads.isEmpty()) {
-            ListEmpty(items = if (state.loading) null else emptyList<String>())
+            if (state.loading) {
+                LoadingView(modifier = Modifier.weight(1f))
+            } else {
+                ListEmpty(items = emptyList<String>())
+            }
             return@Column
         }
 

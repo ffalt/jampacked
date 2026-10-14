@@ -42,6 +42,7 @@ import io.github.ffalt.jampacked.ui.components.ClickIcon
 import io.github.ffalt.jampacked.ui.components.ErrorView
 import io.github.ffalt.jampacked.ui.components.ImageItem
 import io.github.ffalt.jampacked.ui.components.JamImage
+import io.github.ffalt.jampacked.ui.components.LoadingView
 import io.github.ffalt.jampacked.ui.components.Logo
 import io.github.ffalt.jampacked.ui.components.SectionHeader
 import io.github.ffalt.jampacked.ui.components.Stat
@@ -74,8 +75,11 @@ fun HomeScreen(
         return
     }
 
+    val loadingLibrary = state.loading && state.data.library.isEmpty() && !search.active
+    val scrollState = rememberScrollState()
+
     PullToRefreshBox(
-        isRefreshing = state.loading,
+        isRefreshing = state.loading && !loadingLibrary,
         onRefresh = { viewModel.load(forceRefresh = true) },
         modifier = modifier.fillMaxSize()
     ) {
@@ -83,7 +87,9 @@ fun HomeScreen(
             modifier =
                 Modifier
                     .fillMaxSize()
-                    .verticalScroll(rememberScrollState())
+                    // a weighted child measures to nothing in a scrollable column, so the
+                    // loading state drops the scroll to keep the indicator centred
+                    .then(if (loadingLibrary) Modifier else Modifier.verticalScroll(scrollState))
         ) {
             Row(
                 modifier =
@@ -132,6 +138,11 @@ fun HomeScreen(
                             .fillMaxWidth()
                             .height(600.dp)
                 )
+                return@Column
+            }
+
+            if (loadingLibrary) {
+                LoadingView(modifier = Modifier.weight(1f))
                 return@Column
             }
 

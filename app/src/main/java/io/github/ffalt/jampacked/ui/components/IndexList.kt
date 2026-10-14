@@ -1,6 +1,7 @@
 package io.github.ffalt.jampacked.ui.components
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -35,6 +36,14 @@ fun <T> IndexList(
         return
     }
 
+    if (groups == null) {
+        Column(modifier = modifier.fillMaxSize()) {
+            header?.invoke()
+            LoadingView(modifier = Modifier.weight(1f))
+        }
+        return
+    }
+
     val state = rememberLazyListState()
     val scope = rememberCoroutineScope()
     var activeLetter by remember { mutableStateOf<String?>(null) }
@@ -43,7 +52,7 @@ fun <T> IndexList(
         remember(groups, header) {
             buildMap {
                 var position = if (header != null) 1 else 0
-                groups?.forEach { group ->
+                groups.forEach { group ->
                     put(group.letter, position)
                     position += group.items.size
                 }
@@ -55,7 +64,7 @@ fun <T> IndexList(
             LazyColumn(state = state, modifier = Modifier.fillMaxSize()) {
                 header?.let { item { it() } }
 
-                if (groups.isNullOrEmpty()) {
+                if (groups.isEmpty()) {
                     item { ListEmpty(groups) }
                     return@LazyColumn
                 }
@@ -77,7 +86,7 @@ fun <T> IndexList(
             }
         }
 
-        if (!groups.isNullOrEmpty()) {
+        if (groups.isNotEmpty()) {
             AtoZPicker(
                 letters = groups.map { it.letter },
                 activeLetter = activeLetter,

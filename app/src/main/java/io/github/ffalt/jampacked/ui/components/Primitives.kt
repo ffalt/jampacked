@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -72,16 +73,29 @@ fun Separator(modifier: Modifier = Modifier) {
 }
 
 @Composable
+fun LoadingView(modifier: Modifier = Modifier) {
+    val colors = LocalJamColors.current
+    Column(
+        modifier = modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        CircularProgressIndicator(color = colors.activeTintColor)
+        ThemedText(
+            text = stringResource(R.string.loading),
+            color = colors.muted,
+            letterSpacing = 2.sp,
+            modifier = Modifier.padding(top = JamDimens.paddingLarge)
+        )
+    }
+}
+
+@Composable
 fun ListEmpty(
-    items: List<*>?,
+    items: List<*>,
     modifier: Modifier = Modifier
 ) {
-    val text =
-        when {
-            items == null -> stringResource(R.string.loading)
-            items.isEmpty() -> stringResource(R.string.no_entries)
-            else -> return
-        }
+    if (items.isNotEmpty()) return
     Column(
         modifier =
             modifier
@@ -90,7 +104,11 @@ fun ListEmpty(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        ThemedText(text, color = LocalJamColors.current.muted, letterSpacing = 2.sp)
+        ThemedText(
+            text = stringResource(R.string.no_entries),
+            color = LocalJamColors.current.muted,
+            letterSpacing = 2.sp
+        )
     }
 }
 

@@ -26,6 +26,7 @@ import io.github.ffalt.jampacked.ui.components.DurationText
 import io.github.ffalt.jampacked.ui.components.ErrorView
 import io.github.ffalt.jampacked.ui.components.HeaderDetail
 import io.github.ffalt.jampacked.ui.components.ListEmpty
+import io.github.ffalt.jampacked.ui.components.LoadingView
 import io.github.ffalt.jampacked.ui.components.PageHeader
 import io.github.ffalt.jampacked.ui.components.RadioButtons
 import io.github.ffalt.jampacked.ui.components.RadioEntry
@@ -159,7 +160,7 @@ fun GalleryScreen(modifier: Modifier = Modifier) {
         }
 
         SectionHeader(stringResource(R.string.empty_states))
-        ListEmpty(items = null)
+        LoadingView()
         ListEmpty(items = emptyList<String>())
 
         SectionHeader(stringResource(R.string.error_view))

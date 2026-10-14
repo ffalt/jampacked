@@ -11,7 +11,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
@@ -28,6 +27,7 @@ import io.github.ffalt.jampacked.data.repo.SearchRepository
 import io.github.ffalt.jampacked.ui.components.JamImage
 import io.github.ffalt.jampacked.ui.components.JamItem
 import io.github.ffalt.jampacked.ui.components.ListEmpty
+import io.github.ffalt.jampacked.ui.components.LoadingView
 import io.github.ffalt.jampacked.ui.components.SectionHeader
 import io.github.ffalt.jampacked.ui.components.Separator
 import io.github.ffalt.jampacked.ui.components.ThemedText
@@ -74,7 +74,7 @@ fun SearchResultsView(
     }
 
     if (state.searching && state.results.isEmpty) {
-        CircularProgressIndicator(modifier = modifier)
+        LoadingView(modifier = modifier)
         return
     }
     if (state.results.isEmpty) {
@@ -194,7 +194,7 @@ private fun KindResults(
         }
 
         if (hits.isEmpty() && loading) {
-            CircularProgressIndicator(modifier = Modifier.padding(JamDimens.padding))
+            LoadingView(modifier = Modifier.weight(1f))
             return@Column
         }
 
