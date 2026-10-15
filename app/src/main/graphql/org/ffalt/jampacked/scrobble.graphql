@@ -1,0 +1,6 @@
+mutation ScrobbleResult($id: ID!) {
+    scrobble(id: $id) {
+        time
+        userID
+    }
+}
