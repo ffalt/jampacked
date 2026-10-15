@@ -1,5 +1,5 @@
-query SeriesListResult($listType: ListType, $seed: String, $albumTypes: [AlbumType!], $genreIDs: [ID!] $take: Int!, $skip: Int!) {
-    serieses(list: $listType, seed: $seed, filter: {albumTypes: $albumTypes, genreIDs: $genreIDs}, page: {take: $take, skip: $skip}) {
+query SeriesListResult($listType: ListType, $seed: String, $albumTypes: [AlbumType!], $genreIDs: [ID!], $order: [SeriesOrderParametersQL!], $take: Int!, $skip: Int!) {
+    serieses(list: $listType, seed: $seed, filter: {albumTypes: $albumTypes, genreIDs: $genreIDs}, order: $order, page: {take: $take, skip: $skip}) {
         total
         skip
         take

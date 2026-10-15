@@ -2,7 +2,6 @@ package io.github.ffalt.jampacked.data.auth
 
 import io.github.ffalt.jampacked.data.JamApi
 import io.github.ffalt.jampacked.data.JamSession
-import io.github.ffalt.jampacked.data.SessionUser
 import io.github.ffalt.jampacked.data.UserRoles
 import io.mockk.coEvery
 import io.mockk.mockk
@@ -13,6 +12,12 @@ import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
+
+class FakeCurrentUserSource : CurrentUserSource {
+    var next: CurrentUser = CurrentUser.Unreachable(IllegalStateException("not set"))
+
+    override suspend fun fetch(): CurrentUser = next
+}
 
 class FakeAuthStore : AuthStore {
     var stored: JamSession? = null
@@ -31,6 +36,7 @@ class FakeAuthStore : AuthStore {
 class AuthRepositoryTest {
     private lateinit var api: JamApi
     private lateinit var store: FakeAuthStore
+    private lateinit var currentUser: FakeCurrentUserSource
     private lateinit var repo: AuthRepository
 
     private val roles = UserRoles(stream = true, admin = true)
@@ -44,13 +50,12 @@ class AuthRepositoryTest {
             roles = roles
         )
 
-    private val sessionUser = SessionUser(id = "u1", name = "admin", roles = roles)
-
     @Before
     fun setUp() {
         api = mockk()
         store = FakeAuthStore()
-        repo = AuthRepository(api, store)
+        currentUser = FakeCurrentUserSource()
+        repo = AuthRepository(api, store, currentUser)
     }
 
     @Test
@@ -125,7 +130,7 @@ class AuthRepositoryTest {
         runTest {
             store.stored = session
             repo.load()
-            coEvery { api.session(any(), any()) } returns Result.success(null)
+            currentUser.next = CurrentUser.TokenRejected
 
             repo.check()
 
@@ -138,7 +143,7 @@ class AuthRepositoryTest {
         runTest {
             store.stored = session
             repo.load()
-            coEvery { api.session(any(), any()) } returns Result.success(sessionUser)
+            currentUser.next = CurrentUser.Known(roles)
 
             repo.check()
 
@@ -150,7 +155,7 @@ class AuthRepositoryTest {
         runTest {
             store.stored = session
             repo.load()
-            coEvery { api.session(any(), any()) } returns Result.failure(java.io.IOException("offline"))
+            currentUser.next = CurrentUser.Unreachable(java.io.IOException("offline"))
 
             val result = repo.check()
 
@@ -177,7 +182,7 @@ class AuthRepositoryTest {
         runTest {
             store.stored = session.copy(roles = UserRoles())
             repo.load()
-            coEvery { api.session(any(), any()) } returns Result.success(sessionUser)
+            currentUser.next = CurrentUser.Known(roles)
 
             repo.check()
 

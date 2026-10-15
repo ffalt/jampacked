@@ -7,7 +7,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,6 +37,12 @@ fun TrackListScreen(
     val state by viewModel.state.collectAsStateWithLifecycle()
     val listState = rememberLazyListState()
     val selection = rememberTrackSelection()
+    var sortSheetOpen by rememberSaveable { mutableStateOf(false) }
+
+    val trackCount =
+        state.total.takeIf { it > 0 }?.let {
+            pluralStringResource(R.plurals.tracks_count, it, it)
+        }
 
     val nearEnd by remember {
         derivedStateOf {
@@ -61,10 +70,11 @@ fun TrackListScreen(
                 PageHeader(
                     title = state.title,
                     subtitle =
-                        listTypeName(state.listType)?.let { stringResource(it) }
-                            ?: state.total.takeIf { it > 0 }?.let {
-                                pluralStringResource(R.plurals.tracks_count, it, it)
-                            },
+                        state.sortKind?.let { sortSubtitle(it, state.sort, trackCount) }
+                            ?: listTypeName(state.listType)?.let { stringResource(it) }
+                            ?: trackCount,
+                    subtitleIcon = state.sortKind?.let { sortIconName(state.sort) },
+                    onSubtitleClick = state.sortKind?.let { { sortSheetOpen = true } },
                     leading = {
                         siblingListType(trackListTypes, state.listType, -1)?.let { previous ->
                             GoLeftIcon(onClick = { onNavigate(Route.TrackList(previous)) })
@@ -85,6 +95,15 @@ fun TrackListScreen(
             state = selection,
             modifier = Modifier.align(Alignment.BottomEnd),
             onOpenTrack = { onNavigate(Route.Track(it.id, it.title)) }
+        )
+    }
+
+    state.sortKind?.takeIf { sortSheetOpen }?.let { kind ->
+        BrowseSortSheet(
+            kind = kind,
+            sort = state.sort,
+            onChange = viewModel::setSort,
+            onDismiss = { sortSheetOpen = false }
         )
     }
 }

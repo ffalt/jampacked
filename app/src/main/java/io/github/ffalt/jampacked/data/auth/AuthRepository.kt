@@ -23,7 +23,8 @@ class AuthRepository
     @Inject
     constructor(
         private val api: JamApi,
-        private val store: AuthStore
+        private val store: AuthStore,
+        private val currentUser: CurrentUserSource
     ) {
         private val uiState = MutableStateFlow<AuthState>(AuthState.Unknown)
         val state: StateFlow<AuthState> = uiState.asStateFlow()
@@ -47,19 +48,25 @@ class AuthRepository
 
         suspend fun check(): Result<Unit> {
             val current = session ?: return Result.success(Unit)
-            return api.session(current.server, current.token).fold(
-                onSuccess = { user ->
-                    if (user == null) {
-                        logout()
-                    } else if (user.roles != current.roles) {
-                        val refreshed = current.copy(roles = user.roles)
+            return when (val result = currentUser.fetch()) {
+                is CurrentUser.TokenRejected -> {
+                    logout()
+                    Result.success(Unit)
+                }
+
+                is CurrentUser.Unreachable -> {
+                    Result.failure(result.error)
+                }
+
+                is CurrentUser.Known -> {
+                    if (result.roles != current.roles) {
+                        val refreshed = current.copy(roles = result.roles)
                         store.save(refreshed)
                         uiState.value = AuthState.LoggedIn(refreshed)
                     }
                     Result.success(Unit)
-                },
-                onFailure = { Result.failure(it) }
-            )
+                }
+            }
         }
 
         fun logout() {

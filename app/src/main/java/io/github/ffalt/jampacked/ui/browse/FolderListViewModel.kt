@@ -6,6 +6,7 @@ import androidx.navigation.toRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import io.github.ffalt.jampacked.R
+import io.github.ffalt.jampacked.data.BrowseSortRepository
 import io.github.ffalt.jampacked.data.repo.BrowseIndexGroup
 import io.github.ffalt.jampacked.data.repo.BrowsePage
 import io.github.ffalt.jampacked.data.repo.FolderRepository
@@ -19,11 +20,15 @@ class FolderListViewModel
     constructor(
         private val repository: FolderRepository,
         savedStateHandle: SavedStateHandle,
+        sorts: BrowseSortRepository,
         @ApplicationContext context: Context
-    ) : BrowseListViewModel(context) {
+    ) : BrowseListViewModel(context, sorts) {
         private val route: Route.FolderList = savedStateHandle.toRoute<Route.FolderList>()
 
-        override val isIndexMode: Boolean = route.listType == null
+        override val hasIndex: Boolean = route.listType == null
+
+        override val sorting: BrowseSorting? =
+            BrowseSorting(BrowseSortKind.FOLDER, "folder").takeIf { route.listType == null }
 
         init {
             uiState.update {
@@ -38,5 +43,5 @@ class FolderListViewModel
         override suspend fun loadPage(
             skip: Int,
             take: Int
-        ): Result<BrowsePage> = repository.list(route.listType, skip, take)
+        ): Result<BrowsePage> = repository.list(route.listType, skip, take, querySort)
     }

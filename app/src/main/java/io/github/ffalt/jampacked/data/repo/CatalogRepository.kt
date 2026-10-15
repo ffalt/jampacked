@@ -134,7 +134,8 @@ class CatalogRepository
         suspend fun seriesList(
             listType: String?,
             skip: Int,
-            take: Int
+            take: Int,
+            sort: BrowseSort = BrowseSort()
         ): Result<BrowsePage> =
             runCatching {
                 val response =
@@ -146,6 +147,7 @@ class CatalogRepository
                                 seed = null,
                                 albumTypes = null,
                                 genreIDs = null,
+                                order = sort.seriesOrder(),
                                 take = take,
                                 skip = skip
                             )
@@ -186,7 +188,8 @@ class CatalogRepository
                                 id = album.id,
                                 title = album.name,
                                 description = albumEntryDescription(album.seriesNr, album.year),
-                                kind = "album"
+                                kind = "album",
+                                year = album.year
                             )
                         }
                     val seriesAlbumTypes = seriesAlbums.map { it.albumType.rawValue }

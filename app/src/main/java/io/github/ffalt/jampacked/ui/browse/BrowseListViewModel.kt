@@ -5,9 +5,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.qualifiers.ApplicationContext
 import io.github.ffalt.jampacked.R
+import io.github.ffalt.jampacked.data.BrowseSortRepository
 import io.github.ffalt.jampacked.data.repo.BrowseEntry
 import io.github.ffalt.jampacked.data.repo.BrowseIndexGroup
 import io.github.ffalt.jampacked.data.repo.BrowsePage
+import io.github.ffalt.jampacked.data.repo.BrowseSort
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -23,14 +25,39 @@ data class BrowseListUiState(
     val total: Int = 0,
     val listType: String? = null,
     val loadingMore: Boolean = false,
-    val hasMore: Boolean = false
+    val hasMore: Boolean = false,
+    val sortKind: BrowseSortKind? = null,
+    val sort: BrowseSort = BrowseSort()
+)
+
+data class BrowseSorting(
+    val kind: BrowseSortKind,
+    val key: String
 )
 
 abstract class BrowseListViewModel(
-    @ApplicationContext protected val context: Context
+    @ApplicationContext protected val context: Context,
+    private val sorts: BrowseSortRepository
 ) : ViewModel() {
     protected val uiState = MutableStateFlow(BrowseListUiState())
     val state: StateFlow<BrowseListUiState> = uiState.asStateFlow()
+
+    private var sort: BrowseSort = BrowseSort()
+
+    private var sortRestored = false
+
+    /**
+     * A filter drops a list that would have shown the A to Z index into the paged query, where the
+     * index's own ordering has to be asked for by name or the rows come back in the server's order
+     * under a label that says otherwise.
+     */
+    protected val querySort: BrowseSort
+        get() =
+            if (hasIndex && sort.orderBy == BrowseSort.DEFAULT_FIELD) {
+                sort.copy(orderBy = BrowseSort.NAME_FIELD)
+            } else {
+                sort
+            }
 
     protected abstract suspend fun loadIndex(forceRefresh: Boolean): Result<List<BrowseIndexGroup>>
 
@@ -39,18 +66,23 @@ abstract class BrowseListViewModel(
         take: Int
     ): Result<BrowsePage>
 
-    protected abstract val isIndexMode: Boolean
+    protected abstract val hasIndex: Boolean
+
+    protected open val sorting: BrowseSorting? = null
 
     fun load(forceRefresh: Boolean = false) {
         uiState.update { it.copy(loading = true, error = null) }
         viewModelScope.launch {
-            if (isIndexMode) {
+            restoreSort()
+            if (hasIndex && sort.isDefault) {
                 loadIndex(forceRefresh)
                     .onSuccess { groups ->
                         uiState.update {
                             it.copy(
                                 loading = false,
                                 groups = groups,
+                                items = null,
+                                hasMore = false,
                                 total = groups.sumOf { group -> group.items.size }
                             )
                         }
@@ -61,6 +93,7 @@ abstract class BrowseListViewModel(
                         uiState.update {
                             it.copy(
                                 loading = false,
+                                groups = null,
                                 items = page.items,
                                 total = page.total,
                                 hasMore = page.hasMore
@@ -69,6 +102,30 @@ abstract class BrowseListViewModel(
                     }.onFailure { error -> fail(error) }
             }
         }
+    }
+
+    fun setSort(value: BrowseSort) {
+        sort = value
+        val toIndex = hasIndex && value.isDefault
+        uiState.update {
+            it.copy(
+                sort = value,
+                groups = it.groups.takeIf { _ -> toIndex },
+                items = it.items.takeIf { _ -> !toIndex },
+                hasMore = false
+            )
+        }
+        val key = sorting?.key
+        if (key != null) viewModelScope.launch { sorts.save(key, value) }
+        load()
+    }
+
+    private suspend fun restoreSort() {
+        if (sortRestored) return
+        sortRestored = true
+        val sorting = sorting ?: return
+        sort = sorts.load(sorting.key)
+        uiState.update { it.copy(sortKind = sorting.kind, sort = sort) }
     }
 
     fun loadMore() {

@@ -4,6 +4,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
@@ -11,6 +14,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.ffalt.jampacked.R
 import io.github.ffalt.jampacked.data.JamSession
 import io.github.ffalt.jampacked.ui.components.ErrorView
+import io.github.ffalt.jampacked.ui.components.HeaderAction
 import io.github.ffalt.jampacked.ui.components.HeaderDetail
 import io.github.ffalt.jampacked.ui.components.JamItem
 import io.github.ffalt.jampacked.ui.components.JamList
@@ -40,8 +44,12 @@ fun ArtistScreen(
             return@Column
         }
 
+        var sort by rememberSaveable(stateSaver = detailSortSaver) { mutableStateOf(DetailSort()) }
+        var sheetOpen by rememberSaveable { mutableStateOf(false) }
+        val sections = detailSections(artist.sections, sort)
+
         JamList(
-            items = browseRows(artist.sections, headings = true),
+            items = browseRows(sections, headings = sort.keepsSections && sections.size > 1),
             onReload = { viewModel.load(true) },
             loading = state.loading,
             key = { index, row -> if (row is BrowseSectionRow.Album) row.entry.id else "h-$index" },
@@ -72,12 +80,19 @@ fun ArtistScreen(
                                 )
                             }
                         ),
+                    customDetails = {
+                        HeaderAction(
+                            iconName = detailSortIcon(sort),
+                            label = detailSortLabel(sort),
+                            onClick = { sheetOpen = true }
+                        )
+                    }
                 )
             }
         ) { _, row ->
             when (row) {
                 is BrowseSectionRow.Heading -> {
-                    SectionHeader(row.title)
+                    SectionHeader(albumTypeLabel(row.title))
                 }
 
                 is BrowseSectionRow.Album -> {
@@ -90,6 +105,15 @@ fun ArtistScreen(
                     )
                 }
             }
+        }
+
+        if (sheetOpen) {
+            DetailSortSheet(
+                sections = artist.sections,
+                sort = sort,
+                onChange = { sort = it },
+                onDismiss = { sheetOpen = false }
+            )
         }
     }
 }

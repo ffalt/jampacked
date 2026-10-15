@@ -7,6 +7,8 @@ import io.github.ffalt.jampacked.graphql.FolderIndexResultQuery
 import io.github.ffalt.jampacked.graphql.FolderListResultQuery
 import io.github.ffalt.jampacked.graphql.FolderResultQuery
 import io.github.ffalt.jampacked.graphql.TrackListResultQuery
+import io.github.ffalt.jampacked.graphql.type.FolderFilterParametersQL
+import io.github.ffalt.jampacked.graphql.type.TrackFilterParametersQL
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.serializer
 import javax.inject.Inject
@@ -59,7 +61,8 @@ class FolderRepository
         suspend fun list(
             listType: String?,
             skip: Int,
-            take: Int
+            take: Int,
+            sort: BrowseSort = BrowseSort()
         ): Result<BrowsePage> =
             runCatching {
                 val response =
@@ -69,8 +72,12 @@ class FolderRepository
                             FolderListResultQuery(
                                 listType = listType?.toListType(),
                                 seed = null,
-                                albumTypes = null,
-                                genreIDs = null,
+                                filter =
+                                    FolderFilterParametersQL(
+                                        fromYear = sort.fromYear.optional(),
+                                        toYear = sort.toYear.optional()
+                                    ),
+                                order = sort.folderOrder(),
                                 take = take,
                                 skip = skip
                             )
@@ -159,7 +166,8 @@ class FolderRepository
             listType: String?,
             skip: Int,
             take: Int,
-            genreId: String? = null
+            genreId: String? = null,
+            sort: BrowseSort = BrowseSort()
         ): Result<Pair<List<TrackEntry>, Int>> =
             runCatching {
                 val response =
@@ -168,8 +176,14 @@ class FolderRepository
                         .query(
                             TrackListResultQuery(
                                 listType = listType?.toListType(),
-                                genreIDs = genreId?.let { listOf(it) },
                                 seed = null,
+                                filter =
+                                    TrackFilterParametersQL(
+                                        genreIDs = genreId?.let { listOf(it) }.optional(),
+                                        fromYear = sort.fromYear.optional(),
+                                        toYear = sort.toYear.optional()
+                                    ),
+                                order = sort.trackOrder(),
                                 take = take,
                                 skip = skip
                             )

@@ -1,0 +1,7 @@
+query CurrentUserResult {
+    currentUser {
+        id
+        name
+        roles
+    }
+}

@@ -5,6 +5,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.toRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import io.github.ffalt.jampacked.data.BrowseSortRepository
 import io.github.ffalt.jampacked.data.repo.AlbumRepository
 import io.github.ffalt.jampacked.data.repo.BrowseIndexGroup
 import io.github.ffalt.jampacked.data.repo.BrowsePage
@@ -19,11 +20,15 @@ class AlbumListViewModel
     constructor(
         private val repository: AlbumRepository,
         savedStateHandle: SavedStateHandle,
+        sorts: BrowseSortRepository,
         @ApplicationContext appContext: Context
-    ) : BrowseListViewModel(appContext) {
+    ) : BrowseListViewModel(appContext, sorts) {
         private val route: Route.AlbumList = savedStateHandle.toRoute<Route.AlbumList>()
 
-        override val isIndexMode: Boolean = route.listType == null
+        override val hasIndex: Boolean = route.listType == null
+
+        override val sorting: BrowseSorting? =
+            BrowseSorting(BrowseSortKind.ALBUM, "album:${route.albumType}").takeIf { route.listType == null }
 
         init {
             uiState.update { it.copy(title = titleFor(route), listType = route.listType) }
@@ -36,7 +41,7 @@ class AlbumListViewModel
         override suspend fun loadPage(
             skip: Int,
             take: Int
-        ): Result<BrowsePage> = repository.list(route.albumType, route.listType, skip, take)
+        ): Result<BrowsePage> = repository.list(route.albumType, route.listType, skip, take, sort = querySort)
 
         private fun titleFor(route: Route.AlbumList): String =
             albumTypeLabelRes(route.albumType)?.let(context::getString)

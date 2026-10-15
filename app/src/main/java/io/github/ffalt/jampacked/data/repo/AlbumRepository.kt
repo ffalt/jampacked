@@ -6,6 +6,7 @@ import io.github.ffalt.jampacked.data.cache.QueryCache
 import io.github.ffalt.jampacked.graphql.AlbumIndexResultQuery
 import io.github.ffalt.jampacked.graphql.AlbumListResultQuery
 import io.github.ffalt.jampacked.graphql.AlbumResultQuery
+import io.github.ffalt.jampacked.graphql.type.AlbumFilterParametersQL
 import io.github.ffalt.jampacked.graphql.type.AlbumType
 import io.github.ffalt.jampacked.graphql.type.ListType
 import kotlinx.serialization.serializer
@@ -54,7 +55,8 @@ class AlbumRepository
             listType: String?,
             skip: Int,
             take: Int,
-            genreId: String? = null
+            genreId: String? = null,
+            sort: BrowseSort = BrowseSort()
         ): Result<BrowsePage> =
             runCatching {
                 val response =
@@ -64,8 +66,14 @@ class AlbumRepository
                             AlbumListResultQuery(
                                 listType = listType?.toListType(),
                                 seed = null,
-                                albumTypes = albumType?.let { listOf(it.toAlbumType()) },
-                                genreIDs = genreId?.let { listOf(it) },
+                                filter =
+                                    AlbumFilterParametersQL(
+                                        albumTypes = albumType?.let { listOf(it.toAlbumType()) }.optional(),
+                                        genreIDs = genreId?.let { listOf(it) }.optional(),
+                                        fromYear = sort.fromYear.optional(),
+                                        toYear = sort.toYear.optional()
+                                    ),
+                                order = sort.albumOrder(),
                                 take = take,
                                 skip = skip
                             )

@@ -6,6 +6,7 @@ import androidx.navigation.toRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import io.github.ffalt.jampacked.R
+import io.github.ffalt.jampacked.data.BrowseSortRepository
 import io.github.ffalt.jampacked.data.repo.ArtistRepository
 import io.github.ffalt.jampacked.data.repo.BrowseIndexGroup
 import io.github.ffalt.jampacked.data.repo.BrowsePage
@@ -19,11 +20,15 @@ class ArtistListViewModel
     constructor(
         private val repository: ArtistRepository,
         savedStateHandle: SavedStateHandle,
+        sorts: BrowseSortRepository,
         @ApplicationContext context: Context
-    ) : BrowseListViewModel(context) {
+    ) : BrowseListViewModel(context, sorts) {
         private val route: Route.ArtistList = savedStateHandle.toRoute<Route.ArtistList>()
 
-        override val isIndexMode: Boolean = route.listType == null
+        override val hasIndex: Boolean = route.listType == null
+
+        override val sorting: BrowseSorting? =
+            BrowseSorting(BrowseSortKind.ARTIST, "artist").takeIf { route.listType == null }
 
         init {
             uiState.update {
@@ -38,5 +43,5 @@ class ArtistListViewModel
         override suspend fun loadPage(
             skip: Int,
             take: Int
-        ): Result<BrowsePage> = repository.list(route.listType, skip, take)
+        ): Result<BrowsePage> = repository.list(route.listType, skip, take, sort = querySort)
     }

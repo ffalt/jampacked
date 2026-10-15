@@ -6,6 +6,7 @@ import androidx.navigation.toRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import io.github.ffalt.jampacked.R
+import io.github.ffalt.jampacked.data.BrowseSortRepository
 import io.github.ffalt.jampacked.data.repo.BrowseIndexGroup
 import io.github.ffalt.jampacked.data.repo.BrowsePage
 import io.github.ffalt.jampacked.data.repo.CatalogRepository
@@ -18,9 +19,10 @@ class GenreListViewModel
     @Inject
     constructor(
         private val repository: CatalogRepository,
+        sorts: BrowseSortRepository,
         @ApplicationContext context: Context
-    ) : BrowseListViewModel(context) {
-        override val isIndexMode: Boolean = true
+    ) : BrowseListViewModel(context, sorts) {
+        override val hasIndex: Boolean = true
 
         init {
             uiState.update { it.copy(title = context.getString(R.string.genres)) }
@@ -42,11 +44,15 @@ class SeriesListViewModel
     constructor(
         private val repository: CatalogRepository,
         savedStateHandle: SavedStateHandle,
+        sorts: BrowseSortRepository,
         @ApplicationContext context: Context
-    ) : BrowseListViewModel(context) {
+    ) : BrowseListViewModel(context, sorts) {
         private val route: Route.SeriesList = savedStateHandle.toRoute<Route.SeriesList>()
 
-        override val isIndexMode: Boolean = route.listType == null
+        override val hasIndex: Boolean = route.listType == null
+
+        override val sorting: BrowseSorting? =
+            BrowseSorting(BrowseSortKind.SERIES, "series").takeIf { route.listType == null }
 
         init {
             uiState.update { it.copy(title = context.getString(R.string.series), listType = route.listType) }
@@ -59,7 +65,7 @@ class SeriesListViewModel
         override suspend fun loadPage(
             skip: Int,
             take: Int
-        ): Result<BrowsePage> = repository.seriesList(route.listType, skip, take)
+        ): Result<BrowsePage> = repository.seriesList(route.listType, skip, take, querySort)
     }
 
 @HiltViewModel
@@ -67,9 +73,10 @@ class PlaylistListViewModel
     @Inject
     constructor(
         private val repository: CatalogRepository,
+        sorts: BrowseSortRepository,
         @ApplicationContext context: Context
-    ) : BrowseListViewModel(context) {
-        override val isIndexMode: Boolean = false
+    ) : BrowseListViewModel(context, sorts) {
+        override val hasIndex: Boolean = false
 
         init {
             uiState.update { it.copy(title = context.getString(R.string.playlists)) }
@@ -95,9 +102,10 @@ class PodcastListViewModel
     @Inject
     constructor(
         private val repository: CatalogRepository,
+        sorts: BrowseSortRepository,
         @ApplicationContext context: Context
-    ) : BrowseListViewModel(context) {
-        override val isIndexMode: Boolean = false
+    ) : BrowseListViewModel(context, sorts) {
+        override val hasIndex: Boolean = false
 
         init {
             uiState.update { it.copy(title = context.getString(R.string.podcasts)) }

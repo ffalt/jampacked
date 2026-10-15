@@ -44,7 +44,8 @@ class ArtistRepository
             skip: Int,
             take: Int,
             genreId: String? = null,
-            albumType: String? = "album"
+            albumType: String? = "album",
+            sort: BrowseSort = BrowseSort()
         ): Result<BrowsePage> =
             runCatching {
                 val response =
@@ -56,6 +57,7 @@ class ArtistRepository
                                 seed = null,
                                 albumTypes = albumType?.let { listOf(it.toAlbumType()) },
                                 genreIDs = genreId?.let { listOf(it) },
+                                order = sort.artistOrder(),
                                 take = take,
                                 skip = skip
                             )
@@ -102,7 +104,8 @@ class ArtistRepository
                             id = album.id,
                             title = album.name,
                             description = albumEntryDescription(album.seriesNr, album.year),
-                            kind = "album"
+                            kind = "album",
+                            year = album.year
                         )
                     }
                 val albumTypes = albums.map { it.albumType.rawValue }

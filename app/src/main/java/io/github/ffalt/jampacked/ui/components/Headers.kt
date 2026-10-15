@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.github.ffalt.jampacked.R
 import io.github.ffalt.jampacked.data.JamSession
+import io.github.ffalt.jampacked.ui.icons.JamIcon
 import io.github.ffalt.jampacked.ui.theme.JamDimens
 import io.github.ffalt.jampacked.ui.theme.LocalJamColors
 
@@ -118,7 +119,15 @@ fun ObjectHeader(
                     HeaderDetails(details)
                 }
                 customDetails?.let {
-                    Box(modifier = Modifier.padding(top = JamDimens.paddingSmall)) { it() }
+                    // The extra end padding puts this on the same edge as the overflow glyph
+                    // above it, which the Row's trimmed gutter has already accounted for.
+                    Box(
+                        modifier =
+                            Modifier
+                                .fillMaxWidth()
+                                .padding(top = JamDimens.paddingSmall, end = JamDimens.paddingSmall),
+                        contentAlignment = Alignment.CenterEnd
+                    ) { it() }
                 }
 
                 // Every control is the same glyph in the same box; only the tint says which one
@@ -197,32 +206,59 @@ private fun HeaderSheet(
 @Composable
 private fun HeaderDetails(details: List<HeaderDetail>) {
     val colors = LocalJamColors.current
+    // The facts are spaced apart rather than punctuated: any separator between them strands a
+    // glyph at the start or the end of a line as soon as the column is too narrow to hold them.
     FlowRow(
         modifier = Modifier.padding(top = JamDimens.paddingSmall),
-        verticalArrangement = Arrangement.Center
+        horizontalArrangement = Arrangement.spacedBy(JamDimens.paddingLarge),
+        verticalArrangement = Arrangement.spacedBy(JamDimens.paddingSmall)
     ) {
-        details.forEachIndexed { index, detail ->
-            // The separator travels with the fact that follows it, so a wrapped line never ends
-            // on a dangling dot.
-            Row {
-                if (index > 0) {
-                    ThemedText(
-                        text = DETAIL_SEPARATOR,
-                        color = colors.muted,
-                        fontSize = JamDimens.fontSizeSmall
-                    )
-                }
-                ThemedText(
-                    text = detail.inline(),
-                    color = if (detail.onClick != null) colors.textColor else colors.muted,
-                    fontSize = JamDimens.fontSizeSmall,
-                    maxLines = 1,
-                    modifier = detail.onClick?.let { Modifier.clickable(onClick = it) } ?: Modifier
-                )
-            }
+        details.forEach { detail ->
+            ThemedText(
+                text = detail.inline(),
+                color = if (detail.onClick != null) colors.textColor else colors.muted,
+                fontSize = JamDimens.fontSizeSmall,
+                maxLines = 1,
+                modifier = detail.onClick?.let { Modifier.clickable(onClick = it) } ?: Modifier
+            )
         }
     }
 }
+
+/**
+ * A control in the header has to look like one: the facts above it are muted text too, so only the
+ * outline says this line can be tapped.
+ */
+@Composable
+fun HeaderAction(
+    iconName: String,
+    label: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val colors = LocalJamColors.current
+    val shape = RoundedCornerShape(ACTION_CORNER)
+    Row(
+        modifier =
+            modifier
+                .clip(shape)
+                .border(1.dp, colors.coverBorder, shape)
+                .clickable(onClick = onClick)
+                .padding(horizontal = JamDimens.padding, vertical = JamDimens.paddingSmall),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        JamIcon(iconName, colors.muted, size = JamDimens.iconSmall)
+        ThemedText(
+            text = label,
+            color = colors.muted,
+            fontSize = JamDimens.fontSizeSmall,
+            maxLines = 1,
+            modifier = Modifier.padding(start = JamDimens.paddingSmall)
+        )
+    }
+}
+
+private val ACTION_CORNER = 14.dp
 
 private fun HeaderDetail.inline(): String {
     val isCount = value.isNotEmpty() && value.all { it.isDigit() } && title.endsWith("s")
@@ -240,7 +276,6 @@ val HEADER_SHEET_ROW: Modifier =
 private val SHEET_ICON = 26.dp
 private val SHEET_BOTTOM = 30.dp
 
-private const val DETAIL_SEPARATOR = "  ·  "
 private val TITLE_LINE_HEIGHT = 28.sp
 
 private val COVER_SIZE = 150.dp
@@ -250,6 +285,8 @@ fun PageHeader(
     title: String,
     modifier: Modifier = Modifier,
     subtitle: String? = null,
+    subtitleIcon: String? = null,
+    onSubtitleClick: (() -> Unit)? = null,
     leading: @Composable (() -> Unit)? = null,
     trailing: @Composable (() -> Unit)? = null
 ) {
@@ -270,7 +307,11 @@ fun PageHeader(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             subtitle?.let {
-                ThemedText(it, color = colors.muted, fontSize = JamDimens.fontSize, maxLines = 1)
+                PageSubtitle(
+                    text = it,
+                    iconName = subtitleIcon,
+                    onClick = onSubtitleClick
+                )
             }
             ThemedText(title, fontSize = JamDimens.fontSizeHuge, maxLines = 1)
         }
@@ -279,6 +320,31 @@ fun PageHeader(
         }
     }
 }
+
+@Composable
+private fun PageSubtitle(
+    text: String,
+    iconName: String?,
+    onClick: (() -> Unit)?
+) {
+    val colors = LocalJamColors.current
+    Row(
+        modifier =
+            Modifier
+                .clip(RoundedCornerShape(4.dp))
+                .then(onClick?.let { Modifier.clickable(onClick = it) } ?: Modifier)
+                .padding(horizontal = JamDimens.paddingSmall, vertical = SUBTITLE_PADDING),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        iconName?.let {
+            JamIcon(it, colors.muted, size = JamDimens.iconSmall)
+            Spacer(modifier = Modifier.width(JamDimens.paddingSmall))
+        }
+        ThemedText(text, color = colors.muted, fontSize = JamDimens.fontSize, maxLines = 1)
+    }
+}
+
+private val SUBTITLE_PADDING = 4.dp
 
 data class StatEntry(
     val title: String,

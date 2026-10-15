@@ -172,6 +172,7 @@ fun JamNavHost(
                 onReload = { viewModel.load(true) },
                 onLoadMore = viewModel::loadMore,
                 onNavigate = { target -> navController.navigateSibling<Route.AlbumList>(target) },
+                onSort = viewModel::setSort,
                 siblingRoute = { listType -> Route.AlbumList(route.albumType, listType) }
             )
         }
@@ -184,6 +185,7 @@ fun JamNavHost(
                 onReload = { viewModel.load(true) },
                 onLoadMore = viewModel::loadMore,
                 onNavigate = { target -> navController.navigateSibling<Route.ArtistList>(target) },
+                onSort = viewModel::setSort,
                 siblingRoute = { listType -> Route.ArtistList(listType) }
             )
         }
@@ -201,6 +203,7 @@ fun JamNavHost(
                 onReload = { viewModel.load(true) },
                 onLoadMore = viewModel::loadMore,
                 onNavigate = { target -> navController.navigateSibling<Route.FolderList>(target) },
+                onSort = viewModel::setSort,
                 siblingRoute = { listType -> Route.FolderList(listType) }
             )
         }
@@ -213,6 +216,7 @@ fun JamNavHost(
                 onReload = { viewModel.load(true) },
                 onLoadMore = viewModel::loadMore,
                 onNavigate = { target -> navController.navigateSibling<Route.SeriesList>(target) },
+                onSort = viewModel::setSort,
                 siblingRoute = { listType -> Route.SeriesList(listType) }
             )
         }

@@ -8,7 +8,8 @@ data class BrowseEntry(
     val id: String,
     val title: String,
     val description: String = "",
-    val kind: String
+    val kind: String,
+    val year: Int? = null
 )
 
 @Serializable

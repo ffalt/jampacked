@@ -1,5 +1,5 @@
-query TrackListResult($listType: ListType, $genreIDs: [ID!], $seed: String, $take: Int!, $skip: Int!) {
-    tracks(list: $listType, filter: {genreIDs: $genreIDs}, seed: $seed, page: {take: $take, skip: $skip}) {
+query TrackListResult($listType: ListType, $seed: String, $filter: TrackFilterParametersQL, $order: [TrackOrderParametersQL!], $take: Int!, $skip: Int!) {
+    tracks(list: $listType, filter: $filter, order: $order, seed: $seed, page: {take: $take, skip: $skip}) {
         total
         skip
         take

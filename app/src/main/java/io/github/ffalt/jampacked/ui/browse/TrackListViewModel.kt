@@ -8,7 +8,9 @@ import androidx.navigation.toRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import io.github.ffalt.jampacked.R
+import io.github.ffalt.jampacked.data.BrowseSortRepository
 import io.github.ffalt.jampacked.data.TrackEntry
+import io.github.ffalt.jampacked.data.repo.BrowseSort
 import io.github.ffalt.jampacked.data.repo.FolderRepository
 import io.github.ffalt.jampacked.player.PlayerRepository
 import io.github.ffalt.jampacked.ui.nav.Route
@@ -26,7 +28,9 @@ data class TrackListUiState(
     val tracks: List<TrackEntry>? = null,
     val total: Int = 0,
     val listType: String? = null,
-    val loadingMore: Boolean = false
+    val loadingMore: Boolean = false,
+    val sortKind: BrowseSortKind? = null,
+    val sort: BrowseSort = BrowseSort()
 )
 
 @HiltViewModel
@@ -35,10 +39,17 @@ class TrackListViewModel
     constructor(
         private val repository: FolderRepository,
         private val player: PlayerRepository,
+        private val sorts: BrowseSortRepository,
         savedStateHandle: SavedStateHandle,
         @ApplicationContext private val context: Context
     ) : ViewModel() {
         private val route: Route.TrackList = savedStateHandle.toRoute<Route.TrackList>()
+
+        private val sortable: Boolean = route.listType == null
+
+        private var sort: BrowseSort = BrowseSort()
+
+        private var sortRestored = false
 
         private val uiState =
             MutableStateFlow(
@@ -51,11 +62,19 @@ class TrackListViewModel
             load(false)
         }
 
+        fun setSort(value: BrowseSort) {
+            sort = value
+            uiState.update { it.copy(sort = value) }
+            viewModelScope.launch { sorts.save(SORT_KEY, value) }
+            load(false)
+        }
+
         fun load(forceRefresh: Boolean) {
             uiState.update { it.copy(loading = true, error = null) }
             viewModelScope.launch {
+                restoreSort()
                 repository
-                    .trackList(route.listType, 0, PAGE_SIZE)
+                    .trackList(route.listType, 0, PAGE_SIZE, sort = sort)
                     .onSuccess { (items, total) ->
                         uiState.update { it.copy(loading = false, tracks = items, total = total) }
                     }.onFailure { error ->
@@ -76,7 +95,7 @@ class TrackListViewModel
             uiState.update { it.copy(loadingMore = true) }
             viewModelScope.launch {
                 repository
-                    .trackList(route.listType, loaded.size, PAGE_SIZE)
+                    .trackList(route.listType, loaded.size, PAGE_SIZE, sort = sort)
                     .onSuccess { (items, total) ->
                         uiState.update {
                             it.copy(
@@ -96,7 +115,15 @@ class TrackListViewModel
             player.skipToTrack(index)
         }
 
+        private suspend fun restoreSort() {
+            if (sortRestored || !sortable) return
+            sortRestored = true
+            sort = sorts.load(SORT_KEY)
+            uiState.update { it.copy(sortKind = BrowseSortKind.TRACK, sort = sort) }
+        }
+
         private companion object {
             const val PAGE_SIZE = 50
+            const val SORT_KEY = "track"
         }
     }

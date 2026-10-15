@@ -44,28 +44,6 @@ class JamApi
     ) {
         private val json = Json { ignoreUnknownKeys = true }
 
-        suspend fun session(
-            server: String,
-            token: String
-        ): Result<SessionUser?> =
-            withContext(Dispatchers.IO) {
-                runCatching {
-                    val request =
-                        Request
-                            .Builder()
-                            .url("$server${JamSession.API}/session")
-                            .header("Authorization", "Bearer $token")
-                            .get()
-                            .build()
-                    http.newCall(request).execute().use { response ->
-                        if (response.code == 401) return@use null
-                        if (!response.isSuccessful) error("HTTP ${response.code}")
-                        val text = response.body.string().orEmpty()
-                        json.decodeFromString<SessionResponse>(text).user
-                    }
-                }
-            }
-
         suspend fun login(
             server: String,
             username: String,
