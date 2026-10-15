@@ -1,0 +1,6 @@
+ - **lists** add sorting
+ - **podcast-episode** add the podcast episode screen with retrieval and infos
+ - **scrobble** use the graphql mutation instead of the REST api
+ - **pin** implement optional wifi-only download
+ - **stream** allow specifing the format and bitrate cap
+ - **ui** unify loading indicator, reword download to pin/unpin
