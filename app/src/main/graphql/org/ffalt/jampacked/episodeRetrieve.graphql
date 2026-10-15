@@ -1,0 +1,13 @@
+mutation EpisodeRetrieveResult($id: ID!) {
+    episodeRetrieve(id: $id) {
+        id
+        status
+    }
+}
+
+query EpisodeStatusResult($id: ID!) {
+    episode(id:$id) {
+        id
+        status
+    }
+}

@@ -3,9 +3,12 @@ package io.github.ffalt.jampacked.data.repo
 import io.github.ffalt.jampacked.data.ApolloProvider
 import io.github.ffalt.jampacked.data.TrackEntry
 import io.github.ffalt.jampacked.data.cache.QueryCache
+import io.github.ffalt.jampacked.graphql.EpisodeRetrieveResultMutation
+import io.github.ffalt.jampacked.graphql.EpisodeStatusResultQuery
 import io.github.ffalt.jampacked.graphql.GenreIndexResultQuery
 import io.github.ffalt.jampacked.graphql.PlaylistIndexResultQuery
 import io.github.ffalt.jampacked.graphql.PlaylistResultQuery
+import io.github.ffalt.jampacked.graphql.PodcastEpisodeResultQuery
 import io.github.ffalt.jampacked.graphql.PodcastIndexResultQuery
 import io.github.ffalt.jampacked.graphql.PodcastResultQuery
 import io.github.ffalt.jampacked.graphql.SeriesIndexResultQuery
@@ -40,7 +43,26 @@ data class PodcastDetail(
     val id: String,
     val name: String,
     val description: String?,
+    val author: String? = null,
+    val language: String? = null,
+    val categories: List<String> = emptyList(),
+    val episodesCount: Int = 0,
+    val lastCheck: String? = null,
+    val status: String? = null,
+    val errorMessage: String? = null,
     val episodes: List<TrackEntry> = emptyList()
+)
+
+@Serializable
+data class EpisodeDetail(
+    val id: String,
+    val name: String,
+    val summary: String?,
+    val date: String?,
+    val podcastId: String,
+    val podcastName: String,
+    val status: String? = null,
+    val track: TrackEntry
 )
 
 @Singleton
@@ -285,6 +307,13 @@ class CatalogRepository
                         id = podcast.id,
                         name = podcast.name,
                         description = podcast.description,
+                        author = podcast.author,
+                        language = podcast.language,
+                        categories = podcast.categories,
+                        episodesCount = podcast.episodesCount,
+                        lastCheck = podcast.lastCheck,
+                        status = podcast.status.rawValue,
+                        errorMessage = podcast.errorMessage,
                         episodes =
                             podcast.episodes.orEmpty().map { episode ->
                                 TrackEntry(
@@ -298,6 +327,65 @@ class CatalogRepository
                             }
                     )
                 }
+            }
+
+        suspend fun episode(
+            id: String,
+            forceRefresh: Boolean = false
+        ): Result<EpisodeDetail> =
+            runCatching {
+                cached("PodcastEpisodeResult", forceRefresh, id) {
+                    val episode =
+                        apollo
+                            .client()
+                            .query(PodcastEpisodeResultQuery(id))
+                            .execute()
+                            .data
+                            ?.episode
+                            ?: throw IllegalStateException("Episode not found")
+                    EpisodeDetail(
+                        id = episode.id,
+                        name = episode.tag?.title ?: episode.name,
+                        summary = episode.summary,
+                        date = episode.date,
+                        podcastId = episode.podcast.id,
+                        podcastName = episode.podcast.name,
+                        status = episode.status.rawValue,
+                        track =
+                            TrackEntry(
+                                id = episode.id,
+                                title = episode.tag?.title ?: episode.name,
+                                artist = episode.tag?.artist.orEmpty(),
+                                album = episode.podcast.name,
+                                durationMS = (episode.duration ?: 0).toLong(),
+                                podcastID = episode.podcast.id,
+                                mediaFormat = episode.tag?.mediaFormat?.rawValue
+                            )
+                    )
+                }
+            }
+
+        suspend fun retrieveEpisode(id: String): Result<String?> =
+            runCatching {
+                val status =
+                    apollo
+                        .client()
+                        .mutation(EpisodeRetrieveResultMutation(id))
+                        .execute()
+                        .dataOrThrow()
+                        .episodeRetrieve.status
+                cache.remove(QueryCache.cacheKey("PodcastEpisodeResult", id))
+                status.rawValue
+            }
+
+        suspend fun episodeStatus(id: String): Result<String?> =
+            runCatching {
+                apollo
+                    .client()
+                    .query(EpisodeStatusResultQuery(id))
+                    .execute()
+                    .dataOrThrow()
+                    .episode.status.rawValue
             }
 
         private suspend inline fun <reified T> cached(

@@ -3,6 +3,13 @@ query PodcastResult($id: ID!) {
         id
         name
         description
+        author
+        language
+        categories
+        episodesCount
+        lastCheck
+        status
+        errorMessage
         episodes {
             id
             name

@@ -66,29 +66,6 @@ class JamApi
                 }
             }
 
-        suspend fun scrobble(
-            server: String,
-            token: String,
-            trackId: String
-        ): Result<Unit> =
-            withContext(Dispatchers.IO) {
-                runCatching {
-                    val request =
-                        Request
-                            .Builder()
-                            .url("$server${JamSession.API}/nowPlaying/scrobble")
-                            .header("Authorization", "Bearer $token")
-                            .post(
-                                json
-                                    .encodeToString(mapOf("id" to trackId))
-                                    .toRequestBody("application/json".toMediaType())
-                            ).build()
-                    http.newCall(request).execute().use { response ->
-                        if (!response.isSuccessful) error("scrobble failed: HTTP ${response.code}")
-                    }
-                }
-            }
-
         suspend fun login(
             server: String,
             username: String,

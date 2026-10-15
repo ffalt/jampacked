@@ -322,22 +322,3 @@ fun GoLeftIcon(onClick: () -> Unit) {
 fun GoRightIcon(onClick: () -> Unit) {
     ClickIcon("right-open", onClick = onClick, size = JamDimens.iconSmall, muted = true)
 }
-
-@Composable
-fun ObjectHeaderPanel(
-    text: String,
-    modifier: Modifier = Modifier
-) {
-    if (text.isBlank()) return
-    ThemedText(
-        text = text,
-        textAlign = TextAlign.Center,
-        maxLines = PANEL_MAX_LINES,
-        modifier =
-            modifier.padding(
-                horizontal = JamDimens.paddingSmall + JamDimens.marginLarge
-            )
-    )
-}
-
-private const val PANEL_MAX_LINES = 5

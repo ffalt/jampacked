@@ -10,6 +10,7 @@ import androidx.media3.session.MediaController
 import androidx.media3.session.SessionToken
 import com.google.common.util.concurrent.MoreExecutors
 import dagger.hilt.android.qualifiers.ApplicationContext
+import io.github.ffalt.jampacked.data.EpisodeProgressRepository
 import io.github.ffalt.jampacked.data.JamSession
 import io.github.ffalt.jampacked.data.QueueRepository
 import io.github.ffalt.jampacked.data.StreamSettingsRepository
@@ -49,7 +50,8 @@ class PlayerRepository
         @ApplicationContext private val context: Context,
         private val auth: AuthRepository,
         private val queueRepo: QueueRepository,
-        private val streamSettings: StreamSettingsRepository
+        private val streamSettings: StreamSettingsRepository,
+        private val episodeProgress: EpisodeProgressRepository
     ) {
         private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
         private val uiState = MutableStateFlow(PlayerState())
@@ -159,16 +161,24 @@ class PlayerRepository
         fun playTracks(tracks: List<TrackEntry>) {
             val c = controller ?: return
             val s = session() ?: return
-            c.setMediaItems(tracks.map { it.toMediaItem(s, streamSettings.streamRequestFor(it.mediaFormat)) })
-            c.prepare()
-            c.play()
+            val items = tracks.map { it.toMediaItem(s, streamSettings.streamRequestFor(it.mediaFormat)) }
+            scope.launch {
+                val resumeAt = episodeProgress.resumePositionOf(tracks.firstOrNull())
+                c.setMediaItems(items, 0, resumeAt)
+                c.prepare()
+                c.play()
+            }
         }
 
         fun playTrack(track: TrackEntry) {
             val c = controller ?: return
             val index =
                 (0 until c.mediaItemCount).firstOrNull { c.getMediaItemAt(it).mediaId == track.id }
-            if (index != null) c.seekTo(index, 0) else playTracks(listOf(track))
+            if (index == null) {
+                playTracks(listOf(track))
+                return
+            }
+            c.seekTo(index, 0)
             c.play()
         }
 

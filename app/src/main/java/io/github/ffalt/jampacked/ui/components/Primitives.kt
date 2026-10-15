@@ -21,6 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -251,6 +252,32 @@ data class RadioEntry(
     val key: String,
     val label: String
 )
+
+@Composable
+fun CollapsibleSection(
+    title: String,
+    modifier: Modifier = Modifier,
+    initiallyExpanded: Boolean = false,
+    content: @Composable () -> Unit
+) {
+    val colors = LocalJamColors.current
+    var expanded by rememberSaveable { mutableStateOf(initiallyExpanded) }
+
+    Column(modifier = modifier.fillMaxWidth()) {
+        SectionHeader(
+            title = title,
+            modifier = Modifier.clickable { expanded = !expanded },
+            trailing = {
+                JamIcon(
+                    name = if (expanded) "up-open" else "down-open",
+                    color = colors.muted,
+                    size = JamDimens.iconSmall
+                )
+            }
+        )
+        if (expanded) content()
+    }
+}
 
 @Composable
 fun SettingToggle(

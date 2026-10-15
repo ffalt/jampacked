@@ -62,10 +62,16 @@ class SeriesViewModel
         }
     }
 
+data class CollectionFact(
+    val label: String,
+    val value: String
+)
+
 data class TrackCollectionUiState(
     val loading: Boolean = true,
     val title: String = "",
     val subtitle: String? = null,
+    val facts: List<CollectionFact> = emptyList(),
     val id: String = "",
     val objType: String = "",
     val tracks: List<TrackEntry> = emptyList(),
@@ -167,6 +173,7 @@ class PodcastViewModel
                                 objType = "podcast",
                                 title = podcast.name,
                                 subtitle = podcast.description,
+                                facts = podcastFacts(podcast),
                                 tracks = podcast.episodes
                             )
                         }
@@ -174,3 +181,22 @@ class PodcastViewModel
             }
         }
     }
+
+private fun podcastFacts(podcast: PodcastDetail): List<CollectionFact> =
+    buildList {
+        podcast.author?.takeIf { it.isNotBlank() }?.let { add(CollectionFact("author", it)) }
+        podcast.categories
+            .takeIf { it.isNotEmpty() }
+            ?.let { add(CollectionFact("categories", it.joinToString())) }
+        podcast.language?.takeIf { it.isNotBlank() }?.let { add(CollectionFact("language", it)) }
+        if (podcast.episodesCount > 0) add(CollectionFact("episodes", podcast.episodesCount.toString()))
+        podcast.lastCheck
+            ?.take(ISO_DATE_LENGTH)
+            ?.takeIf { it.isNotBlank() && !it.startsWith(NEVER_CHECKED_YEAR) }
+            ?.let { add(CollectionFact("last_check", it)) }
+        podcast.status?.takeIf { it.isNotBlank() }?.let { add(CollectionFact("status", it)) }
+        podcast.errorMessage?.takeIf { it.isNotBlank() }?.let { add(CollectionFact("error", it)) }
+    }
+
+private const val ISO_DATE_LENGTH = 10
+private const val NEVER_CHECKED_YEAR = "1970"

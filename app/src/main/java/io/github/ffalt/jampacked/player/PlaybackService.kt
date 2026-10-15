@@ -28,6 +28,7 @@ import com.google.common.util.concurrent.ListenableFuture
 import com.google.common.util.concurrent.SettableFuture
 import dagger.hilt.android.AndroidEntryPoint
 import io.github.ffalt.jampacked.MainActivity
+import io.github.ffalt.jampacked.data.EpisodeProgressRepository
 import io.github.ffalt.jampacked.data.NowPlayingRepository
 import io.github.ffalt.jampacked.data.QueueRepository
 import io.github.ffalt.jampacked.data.state.ObjectStateRepository
@@ -52,6 +53,9 @@ class PlaybackService : MediaLibraryService() {
     lateinit var queue: QueueRepository
 
     @Inject
+    lateinit var episodeProgress: EpisodeProgressRepository
+
+    @Inject
     lateinit var tree: LibraryTree
 
     @Inject
@@ -64,6 +68,7 @@ class PlaybackService : MediaLibraryService() {
     private val handler = Handler(Looper.getMainLooper())
 
     private lateinit var scrobbler: Scrobbler
+    private var ticksSinceEpisodeSave = 0
     private val scrobbleTick =
         object : Runnable {
             override fun run() {
@@ -74,6 +79,10 @@ class PlaybackService : MediaLibraryService() {
                         currentIndex = player.currentMediaItemIndex,
                         durationMs = player.duration.takeIf { it != C.TIME_UNSET } ?: 0L
                     )
+                    if (player.isPlaying && ++ticksSinceEpisodeSave >= EPISODE_SAVE_TICKS) {
+                        ticksSinceEpisodeSave = 0
+                        saveEpisodePosition()
+                    }
                 }
                 handler.postDelayed(this, Scrobbler.TICK_MS)
             }
@@ -122,11 +131,17 @@ class PlaybackService : MediaLibraryService() {
                 }
 
                 override fun onPlaybackStateChanged(state: Int) {
-                    if (state == Player.STATE_ENDED) saveQueue()
+                    if (state == Player.STATE_ENDED) {
+                        saveQueue()
+                        saveEpisodePosition()
+                    }
                 }
 
                 override fun onIsPlayingChanged(isPlaying: Boolean) {
-                    if (!isPlaying) saveQueue()
+                    if (!isPlaying) {
+                        saveQueue()
+                        saveEpisodePosition()
+                    }
                 }
             }
         )
@@ -155,6 +170,15 @@ class PlaybackService : MediaLibraryService() {
     private fun saveQueue() {
         val player = session?.player ?: return
         scope.launch { queue.save(player) }
+    }
+
+    private fun saveEpisodePosition() {
+        val player = session?.player ?: return
+        val item = player.currentMediaItem ?: return
+        if (item.toTrackEntry().podcastID == null) return
+        val position = player.currentPosition.coerceAtLeast(0)
+        val duration = player.duration.takeIf { it != C.TIME_UNSET } ?: 0L
+        scope.launch { episodeProgress.remember(item.mediaId, position, duration) }
     }
 
     override fun onGetSession(controllerInfo: MediaSession.ControllerInfo): MediaLibrarySession? = session
@@ -301,6 +325,7 @@ class PlaybackService : MediaLibraryService() {
     }
 
     private companion object {
+        private const val EPISODE_SAVE_TICKS = 10
         const val FAVOURITE_ACTION = "io.github.ffalt.jampacked.FAVOURITE"
         val FAVOURITE_COMMAND = SessionCommand(FAVOURITE_ACTION, Bundle.EMPTY)
     }

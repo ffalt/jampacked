@@ -4,6 +4,8 @@ query PodcastEpisodeResult($id: ID!) {
         name
         date
         duration
+        summary
+        status
         tag {
             title
             artist

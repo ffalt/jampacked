@@ -3,7 +3,6 @@ package io.github.ffalt.jampacked.ui.nav
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
@@ -11,13 +10,13 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
-import io.github.ffalt.jampacked.R
 import io.github.ffalt.jampacked.data.JamSession
 import io.github.ffalt.jampacked.ui.browse.AlbumListViewModel
 import io.github.ffalt.jampacked.ui.browse.AlbumScreen
 import io.github.ffalt.jampacked.ui.browse.ArtistListViewModel
 import io.github.ffalt.jampacked.ui.browse.ArtistScreen
 import io.github.ffalt.jampacked.ui.browse.BrowseListScreen
+import io.github.ffalt.jampacked.ui.browse.EpisodeScreen
 import io.github.ffalt.jampacked.ui.browse.FolderListViewModel
 import io.github.ffalt.jampacked.ui.browse.FolderScreen
 import io.github.ffalt.jampacked.ui.browse.GenreListViewModel
@@ -35,7 +34,6 @@ import io.github.ffalt.jampacked.ui.home.HomeScreen
 import io.github.ffalt.jampacked.ui.offline.BookmarksScreen
 import io.github.ffalt.jampacked.ui.offline.DownloadsScreen
 import io.github.ffalt.jampacked.ui.offline.PinnedMediaScreen
-import io.github.ffalt.jampacked.ui.placeholder.NotYetScreen
 import io.github.ffalt.jampacked.ui.player.PlayerScreen
 import io.github.ffalt.jampacked.ui.player.QueueScreen
 import io.github.ffalt.jampacked.ui.settings.SettingsScreen
@@ -141,7 +139,11 @@ fun JamNavHost(
             )
         }
         composable<Route.Episode> {
-            NotYetScreen(stringResource(R.string.episode), it.toRoute<Route.Episode>().name)
+            EpisodeScreen(
+                session = session,
+                episodeName = it.toRoute<Route.Episode>().name,
+                onNavigate = { target -> navController.navigate(target) }
+            )
         }
         composable<Route.Series> {
             SeriesScreen(

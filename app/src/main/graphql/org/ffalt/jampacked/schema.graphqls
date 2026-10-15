@@ -1543,4 +1543,7 @@ type Mutation {
   fav(remove: Boolean, id: ID!): StateQL!
   rate(rating: Int!, id: ID!): StateQL!
   scrobble(id: ID!): NowPlayingQL!
+
+  """Retrieve a Podcast Episode Media File"""
+  episodeRetrieve(id: ID!): EpisodeQL!
 }
