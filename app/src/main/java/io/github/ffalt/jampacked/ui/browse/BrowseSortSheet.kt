@@ -28,6 +28,24 @@ data class SortGroup(
     val onChange: (String) -> Unit
 )
 
+@Composable
+fun SortGroups(
+    groups: List<SortGroup>,
+    modifier: Modifier = Modifier
+) {
+    Column(modifier) {
+        groups.forEachIndexed { index, group ->
+            if (index > 0) Separator()
+            SectionHeader(title = group.title)
+            RadioButtons(
+                options = group.options,
+                value = group.value,
+                onChange = group.onChange
+            )
+        }
+    }
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SortSheet(
@@ -37,24 +55,15 @@ fun SortSheet(
     val colors = LocalJamColors.current
 
     ModalBottomSheet(onDismissRequest = onDismiss, containerColor = colors.background) {
-        Column(
+        SortGroups(
+            groups = groups,
             modifier =
                 Modifier
                     .fillMaxWidth()
                     .verticalScroll(rememberScrollState())
                     .padding(horizontal = JamDimens.paddingLarge)
                     .padding(bottom = SHEET_BOTTOM)
-        ) {
-            groups.forEachIndexed { index, group ->
-                if (index > 0) Separator()
-                SectionHeader(title = group.title)
-                RadioButtons(
-                    options = group.options,
-                    value = group.value,
-                    onChange = group.onChange
-                )
-            }
-        }
+        )
     }
 }
 

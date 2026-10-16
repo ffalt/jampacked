@@ -13,7 +13,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.runtime.Composable
@@ -119,15 +121,7 @@ fun ObjectHeader(
                     HeaderDetails(details)
                 }
                 customDetails?.let {
-                    // The extra end padding puts this on the same edge as the overflow glyph
-                    // above it, which the Row's trimmed gutter has already accounted for.
-                    Box(
-                        modifier =
-                            Modifier
-                                .fillMaxWidth()
-                                .padding(top = JamDimens.paddingSmall, end = JamDimens.paddingSmall),
-                        contentAlignment = Alignment.CenterEnd
-                    ) { it() }
+                    Box(modifier = Modifier.padding(top = JamDimens.paddingSmall)) { it() }
                 }
 
                 // Every control is the same glyph in the same box; only the tint says which one
@@ -168,6 +162,7 @@ private fun HeaderSheet(
             modifier =
                 Modifier
                     .fillMaxWidth()
+                    .verticalScroll(rememberScrollState())
                     .padding(horizontal = JamDimens.paddingLarge)
                     .padding(bottom = SHEET_BOTTOM)
         ) {
@@ -224,41 +219,6 @@ private fun HeaderDetails(details: List<HeaderDetail>) {
         }
     }
 }
-
-/**
- * A control in the header has to look like one: the facts above it are muted text too, so only the
- * outline says this line can be tapped.
- */
-@Composable
-fun HeaderAction(
-    iconName: String,
-    label: String,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    val colors = LocalJamColors.current
-    val shape = RoundedCornerShape(ACTION_CORNER)
-    Row(
-        modifier =
-            modifier
-                .clip(shape)
-                .border(1.dp, colors.coverBorder, shape)
-                .clickable(onClick = onClick)
-                .padding(horizontal = JamDimens.padding, vertical = JamDimens.paddingSmall),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        JamIcon(iconName, colors.muted, size = JamDimens.iconSmall)
-        ThemedText(
-            text = label,
-            color = colors.muted,
-            fontSize = JamDimens.fontSizeSmall,
-            maxLines = 1,
-            modifier = Modifier.padding(start = JamDimens.paddingSmall)
-        )
-    }
-}
-
-private val ACTION_CORNER = 14.dp
 
 private fun HeaderDetail.inline(): String {
     val isCount = value.isNotEmpty() && value.all { it.isDigit() } && title.endsWith("s")

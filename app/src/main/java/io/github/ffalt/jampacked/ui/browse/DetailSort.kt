@@ -1,5 +1,6 @@
 package io.github.ffalt.jampacked.ui.browse
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.listSaver
@@ -8,6 +9,7 @@ import io.github.ffalt.jampacked.R
 import io.github.ffalt.jampacked.data.repo.BrowseSection
 import io.github.ffalt.jampacked.data.repo.BrowseSort
 import io.github.ffalt.jampacked.ui.components.RadioEntry
+import io.github.ffalt.jampacked.ui.components.Separator
 
 data class DetailSort(
     val orderBy: String = BrowseSort.DEFAULT_FIELD,
@@ -56,73 +58,47 @@ fun detailSections(
     return listOf(BrowseSection("", if (sort.descending) sorted.asReversed() else sorted))
 }
 
+/** Rides along in the header's overflow sheet, below the rating and the favourite toggle. */
 @Composable
-fun DetailSortSheet(
+fun DetailSortActions(
     sections: List<BrowseSection>,
     sort: DetailSort,
-    onChange: (DetailSort) -> Unit,
-    onDismiss: () -> Unit
+    onChange: (DetailSort) -> Unit
 ) {
-    SortSheet(
-        onDismiss = onDismiss,
-        groups =
-            buildList {
-                add(
-                    SortGroup(
-                        title = stringResource(R.string.sort_by),
-                        options =
-                            listOf(
-                                RadioEntry(BrowseSort.DEFAULT_FIELD, stringResource(R.string.sort_default)),
-                                RadioEntry(DETAIL_NAME_FIELD, stringResource(R.string.sort_name)),
-                                RadioEntry(DETAIL_YEAR_FIELD, stringResource(R.string.sort_year))
-                            ),
-                        value = sort.orderBy,
-                        onChange = { onChange(sort.copy(orderBy = it)) }
-                    )
-                )
-                if (sort.orderBy != BrowseSort.DEFAULT_FIELD) {
-                    add(directionGroup(sort.descending) { onChange(sort.copy(descending = it)) })
-                }
-                if (sections.size > 1) {
+    Column {
+        Separator()
+        SortGroups(
+            groups =
+                buildList {
                     add(
                         SortGroup(
-                            title = stringResource(R.string.sort_type_filter),
+                            title = stringResource(R.string.sort_by),
                             options =
-                                listOf(RadioEntry(ALL_TYPES, stringResource(R.string.filter_all))) +
-                                    sections.map { RadioEntry(it.title, albumTypeLabel(it.title)) },
-                            value = sort.albumType ?: ALL_TYPES,
-                            onChange = { onChange(sort.copy(albumType = it.takeIf { key -> key != ALL_TYPES })) }
+                                listOf(
+                                    RadioEntry(BrowseSort.DEFAULT_FIELD, stringResource(R.string.sort_default)),
+                                    RadioEntry(DETAIL_NAME_FIELD, stringResource(R.string.sort_name)),
+                                    RadioEntry(DETAIL_YEAR_FIELD, stringResource(R.string.sort_year))
+                                ),
+                            value = sort.orderBy,
+                            onChange = { onChange(sort.copy(orderBy = it)) }
                         )
                     )
+                    if (sort.orderBy != BrowseSort.DEFAULT_FIELD) {
+                        add(directionGroup(sort.descending) { onChange(sort.copy(descending = it)) })
+                    }
+                    if (sections.size > 1) {
+                        add(
+                            SortGroup(
+                                title = stringResource(R.string.sort_type_filter),
+                                options =
+                                    listOf(RadioEntry(ALL_TYPES, stringResource(R.string.filter_all))) +
+                                        sections.map { RadioEntry(it.title, albumTypeLabel(it.title)) },
+                                value = sort.albumType ?: ALL_TYPES,
+                                onChange = { onChange(sort.copy(albumType = it.takeIf { key -> key != ALL_TYPES })) }
+                            )
+                        )
+                    }
                 }
-            }
-    )
-}
-
-@Composable
-fun detailSortLabel(sort: DetailSort): String {
-    if (sort.isDefault) return stringResource(R.string.sort_action)
-    val parts =
-        listOfNotNull(
-            detailFieldLabel(sort.orderBy),
-            sort.albumType?.let { albumTypeLabel(it) }
         )
-    return parts.joinToString(DETAIL_SEPARATOR)
+    }
 }
-
-fun detailSortIcon(sort: DetailSort): String =
-    when {
-        sort.orderBy == BrowseSort.DEFAULT_FIELD -> "view-lines"
-        sort.descending -> "down-dir"
-        else -> "up-dir"
-    }
-
-@Composable
-private fun detailFieldLabel(orderBy: String): String? =
-    when (orderBy) {
-        DETAIL_NAME_FIELD -> stringResource(R.string.sort_name)
-        DETAIL_YEAR_FIELD -> stringResource(R.string.sort_year)
-        else -> null
-    }
-
-private const val DETAIL_SEPARATOR = "  ·  "

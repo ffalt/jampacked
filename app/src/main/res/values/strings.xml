@@ -68,7 +68,6 @@
     <string name="cancel">Cancel</string>
     <string name="no_entries">No entries</string>
     <string name="filter_all">All</string>
-    <string name="sort_action">Sort</string>
     <string name="sort_type_filter">Type</string>
     <string name="sort_by">Sort by</string>
     <string name="sort_direction">Direction</string>

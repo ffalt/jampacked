@@ -14,7 +14,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.ffalt.jampacked.R
 import io.github.ffalt.jampacked.data.JamSession
 import io.github.ffalt.jampacked.ui.components.ErrorView
-import io.github.ffalt.jampacked.ui.components.HeaderAction
 import io.github.ffalt.jampacked.ui.components.HeaderDetail
 import io.github.ffalt.jampacked.ui.components.JamItem
 import io.github.ffalt.jampacked.ui.components.JamList
@@ -46,7 +45,6 @@ fun SeriesScreen(
         }
 
         var sort by rememberSaveable(stateSaver = detailSortSaver) { mutableStateOf(DetailSort()) }
-        var sheetOpen by rememberSaveable { mutableStateOf(false) }
         val sections = detailSections(series.sections, sort)
 
         JamList(
@@ -81,11 +79,11 @@ fun SeriesScreen(
                             HeaderDetail(stringResource(R.string.albums_detail), series.albums.size.toString()),
                             HeaderDetail(stringResource(R.string.tracks_detail), series.trackCount.toString())
                         ),
-                    customDetails = {
-                        HeaderAction(
-                            iconName = detailSortIcon(sort),
-                            label = detailSortLabel(sort),
-                            onClick = { sheetOpen = true }
+                    sheetActions = {
+                        DetailSortActions(
+                            sections = series.sections,
+                            sort = sort,
+                            onChange = { sort = it }
                         )
                     }
                 )
@@ -106,15 +104,6 @@ fun SeriesScreen(
                     )
                 }
             }
-        }
-
-        if (sheetOpen) {
-            DetailSortSheet(
-                sections = series.sections,
-                sort = sort,
-                onChange = { sort = it },
-                onDismiss = { sheetOpen = false }
-            )
         }
     }
 }
