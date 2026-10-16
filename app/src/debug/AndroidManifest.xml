@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!--
-      API 37 gates traffic to directly-connected subnets behind this permission and drops
-      blocked packets silently, so the emulator's host alias 10.0.2.2 times out instead of
-      refusing. Debug only - pairs with the cleartext exemption in res/xml.
-    -->
     <uses-permission android:name="android.permission.ACCESS_LOCAL_NETWORK" />
 
 </manifest>

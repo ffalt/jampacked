@@ -86,9 +86,6 @@ class QueryCache
             }
 
         companion object {
-            // TrackEntry gained mediaFormat; older rows decode null and fall back to mp3.
-            // PodcastDetail gained the feed facts the about section shows.
-            // BrowseEntry gained year, which the artist and series pages sort by.
             const val CURRENT_VERSION = 6
 
             fun cacheKey(
