@@ -1,0 +1,2 @@
+ - **sheet** implement long press
+ - **sort** refactor sorting actions

@@ -1,3 +1,10 @@
+## [v0.0.4](https://github.com/ffalt/starfield/compare/v0.0.3...v0.0.4) (2026-10-17)
+
+### Features
+
+ - **sheet** implement long press ([09141bd7e409606](https://github.com/ffalt/starfield/commit/09141bd7e40960604d6baa8030d8c15ee2af8ca7))
+ - **sort** refactor sorting actions ([816782cfdc3d9f9](https://github.com/ffalt/starfield/commit/816782cfdc3d9f92d9420ffe8fefd10d2d23ebf6))
+
 ## [v0.0.3](https://github.com/ffalt/starfield/compare/v0.0.2...v0.0.3) (2026-10-15)
 
 ### Features
