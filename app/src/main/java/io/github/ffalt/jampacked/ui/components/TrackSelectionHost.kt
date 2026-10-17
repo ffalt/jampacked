@@ -46,7 +46,8 @@ fun SelectableTrackItem(
                 onDoubleClick = {
                     viewModel.playTrack(track)
                     state.clear()
-                }
+                },
+                onLongClick = { state.showSheet(track) }
             )
     )
 }
@@ -74,4 +75,15 @@ fun TrackSelectionOverlay(
             if (clear) state.clear()
         }
     )
+
+    state.sheetTrack?.let { track ->
+        TrackSheet(
+            track = track,
+            onOpen = {
+                state.hideSheet()
+                onOpenTrack(track)
+            },
+            onDismiss = { state.hideSheet() }
+        )
+    }
 }

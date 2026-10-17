@@ -19,7 +19,11 @@ import io.github.ffalt.jampacked.ui.components.JamItem
 import io.github.ffalt.jampacked.ui.components.JamList
 import io.github.ffalt.jampacked.ui.components.LoadingView
 import io.github.ffalt.jampacked.ui.components.ObjectHeader
+import io.github.ffalt.jampacked.ui.components.ObjectSheetHost
 import io.github.ffalt.jampacked.ui.components.SectionHeader
+import io.github.ffalt.jampacked.ui.components.asSheetObject
+import io.github.ffalt.jampacked.ui.components.longPress
+import io.github.ffalt.jampacked.ui.components.rememberObjectSheet
 import io.github.ffalt.jampacked.ui.nav.Route
 
 @Composable
@@ -31,6 +35,7 @@ fun SeriesScreen(
     viewModel: SeriesViewModel = hiltViewModel()
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val sheet = rememberObjectSheet()
 
     if (state.error != null) {
         ErrorView(state.error!!, onRetry = { viewModel.load(true) }, modifier = modifier)
@@ -100,10 +105,15 @@ fun SeriesScreen(
                         id = row.entry.id,
                         title = row.entry.title,
                         description = row.entry.description,
-                        onClick = { onNavigate(Route.Album(row.entry.id, row.entry.title)) }
+                        onClick = { onNavigate(Route.Album(row.entry.id, row.entry.title)) },
+                        onLongClick = sheet.longPress(row.entry.asSheetObject())
                     )
                 }
             }
+        }
+
+        ObjectSheetHost(state = sheet) { target ->
+            onNavigate(Route.Album(target.id, target.title))
         }
     }
 }

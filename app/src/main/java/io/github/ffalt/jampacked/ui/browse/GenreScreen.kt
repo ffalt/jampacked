@@ -14,9 +14,13 @@ import io.github.ffalt.jampacked.ui.components.GoLeftIcon
 import io.github.ffalt.jampacked.ui.components.GoRightIcon
 import io.github.ffalt.jampacked.ui.components.JamItem
 import io.github.ffalt.jampacked.ui.components.JamList
+import io.github.ffalt.jampacked.ui.components.ObjectSheetHost
 import io.github.ffalt.jampacked.ui.components.PageHeader
 import io.github.ffalt.jampacked.ui.components.SelectableTrackItem
 import io.github.ffalt.jampacked.ui.components.TrackSelectionOverlay
+import io.github.ffalt.jampacked.ui.components.asSheetObject
+import io.github.ffalt.jampacked.ui.components.longPress
+import io.github.ffalt.jampacked.ui.components.rememberObjectSheet
 import io.github.ffalt.jampacked.ui.components.rememberTrackSelection
 import io.github.ffalt.jampacked.ui.nav.GenreTab
 import io.github.ffalt.jampacked.ui.nav.Route
@@ -33,6 +37,7 @@ fun GenreScreen(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val selection = rememberTrackSelection()
+    val sheet = rememberObjectSheet()
     val tab = viewModel.tab
 
     val index = GenreTab.order.indexOf(tab).coerceAtLeast(0)
@@ -86,8 +91,13 @@ fun GenreScreen(
                     id = entry.id,
                     title = entry.title,
                     description = entry.description,
-                    onClick = { routeForObject(objType, entry.id, entry.title)?.let(onNavigate) }
+                    onClick = { routeForObject(objType, entry.id, entry.title)?.let(onNavigate) },
+                    onLongClick = sheet.longPress(entry.asSheetObject(objType))
                 )
+            }
+
+            ObjectSheetHost(state = sheet) { target ->
+                routeForObject(target.objType, target.id, target.title)?.let(onNavigate)
             }
         }
     }

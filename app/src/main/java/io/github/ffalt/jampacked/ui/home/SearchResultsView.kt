@@ -1,6 +1,7 @@
 package io.github.ffalt.jampacked.ui.home
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -28,9 +29,13 @@ import io.github.ffalt.jampacked.ui.components.JamImage
 import io.github.ffalt.jampacked.ui.components.JamItem
 import io.github.ffalt.jampacked.ui.components.ListEmpty
 import io.github.ffalt.jampacked.ui.components.LoadingView
+import io.github.ffalt.jampacked.ui.components.ObjectSheetHost
 import io.github.ffalt.jampacked.ui.components.SectionHeader
 import io.github.ffalt.jampacked.ui.components.Separator
+import io.github.ffalt.jampacked.ui.components.SheetObject
 import io.github.ffalt.jampacked.ui.components.ThemedText
+import io.github.ffalt.jampacked.ui.components.longPress
+import io.github.ffalt.jampacked.ui.components.rememberObjectSheet
 import io.github.ffalt.jampacked.ui.icons.JamIcon
 import io.github.ffalt.jampacked.ui.nav.Route
 import io.github.ffalt.jampacked.ui.nav.routeForObject
@@ -88,19 +93,27 @@ fun SearchResultsView(
     val folderTitle = stringResource(R.string.folders)
     val seriesTitle = stringResource(R.string.series)
     val playlistTitle = stringResource(R.string.playlists)
+    val sheet = rememberObjectSheet()
+    val onLongPress: (SearchHit) -> (() -> Unit)? = { hit -> sheet.longPress(hit.asSheetObject()) }
+
+    ObjectSheetHost(state = sheet) { target ->
+        routeForObject(target.objType, target.id, target.title)?.let(onNavigate)
+    }
+
     LazyColumn(modifier = modifier.fillMaxSize()) {
-        quickSection("artist", artistTitle, state.results.artists, session, onNavigate, onOpenKind)
-        quickSection("album", albumTitle, state.results.albums, session, onNavigate, onOpenKind)
-        quickSection("track", trackTitle, state.results.tracks, session, onNavigate, onOpenKind)
-        quickSection("folder", folderTitle, state.results.folders, session, onNavigate, onOpenKind)
-        quickSection("series", seriesTitle, state.results.series, session, onNavigate, onOpenKind)
+        quickSection("artist", artistTitle, state.results.artists, session, onNavigate, onOpenKind, onLongPress)
+        quickSection("album", albumTitle, state.results.albums, session, onNavigate, onOpenKind, onLongPress)
+        quickSection("track", trackTitle, state.results.tracks, session, onNavigate, onOpenKind, onLongPress)
+        quickSection("folder", folderTitle, state.results.folders, session, onNavigate, onOpenKind, onLongPress)
+        quickSection("series", seriesTitle, state.results.series, session, onNavigate, onOpenKind, onLongPress)
         quickSection(
             "playlist",
             playlistTitle,
             state.results.playlists,
             session,
             onNavigate,
-            onOpenKind
+            onOpenKind,
+            onLongPress
         )
     }
 }
@@ -111,7 +124,8 @@ private fun LazyListScope.quickSection(
     hits: List<SearchHit>,
     session: JamSession,
     onNavigate: (Route) -> Unit,
-    onOpenKind: (String) -> Unit
+    onOpenKind: (String) -> Unit,
+    onLongPress: (SearchHit) -> (() -> Unit)?
 ) {
     if (hits.isEmpty()) return
     item(key = "header-$kind") {
@@ -133,8 +147,10 @@ private fun LazyListScope.quickSection(
                 Modifier
                     .fillMaxWidth()
                     .height(JamStyles.itemHeight)
-                    .clickable { routeForObject(hit.kind, hit.id, hit.name)?.let(onNavigate) }
-                    .padding(horizontal = JamDimens.padding),
+                    .combinedClickable(
+                        onClick = { routeForObject(hit.kind, hit.id, hit.name)?.let(onNavigate) },
+                        onLongClick = onLongPress(hit)
+                    ).padding(horizontal = JamDimens.padding),
             verticalAlignment = Alignment.CenterVertically
         ) {
             JamImage(
@@ -160,6 +176,7 @@ private fun KindResults(
     onLoadMore: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val sheet = rememberObjectSheet()
     val listState = rememberLazyListState()
     val nearEnd by remember {
         derivedStateOf {
@@ -198,6 +215,10 @@ private fun KindResults(
             return@Column
         }
 
+        ObjectSheetHost(state = sheet) { target ->
+            routeForObject(target.objType, target.id, target.title)?.let(onNavigate)
+        }
+
         LazyColumn(state = listState, modifier = Modifier.fillMaxSize()) {
             items(hits, key = { "$kind-${it.id}" }) { hit ->
                 JamItem(
@@ -205,10 +226,13 @@ private fun KindResults(
                     id = hit.id,
                     title = hit.name,
                     description = hit.detail,
-                    onClick = { routeForObject(hit.kind, hit.id, hit.name)?.let(onNavigate) }
+                    onClick = { routeForObject(hit.kind, hit.id, hit.name)?.let(onNavigate) },
+                    onLongClick = sheet.longPress(hit.asSheetObject())
                 )
                 Separator()
             }
         }
     }
 }
+
+private fun SearchHit.asSheetObject(): SheetObject = SheetObject(kind, id, name, detail)

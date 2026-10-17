@@ -61,6 +61,9 @@ class TrackSelectionState {
     var tooltip by mutableStateOf<Int?>(null)
         internal set
 
+    var sheetTrack by mutableStateOf<TrackEntry?>(null)
+        private set
+
     internal var tooltipToken by mutableIntStateOf(0)
 
     val showCheck: Boolean get() = selection.isNotEmpty()
@@ -88,6 +91,14 @@ class TrackSelectionState {
 
     fun clear() {
         selection = emptyList()
+    }
+
+    fun showSheet(track: TrackEntry) {
+        sheetTrack = track
+    }
+
+    fun hideSheet() {
+        sheetTrack = null
     }
 
     fun showTooltip(

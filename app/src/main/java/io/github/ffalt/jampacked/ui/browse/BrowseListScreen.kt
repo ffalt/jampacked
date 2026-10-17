@@ -25,7 +25,11 @@ import io.github.ffalt.jampacked.ui.components.IndexGroup
 import io.github.ffalt.jampacked.ui.components.IndexList
 import io.github.ffalt.jampacked.ui.components.JamItem
 import io.github.ffalt.jampacked.ui.components.JamList
+import io.github.ffalt.jampacked.ui.components.ObjectSheetHost
 import io.github.ffalt.jampacked.ui.components.PageHeader
+import io.github.ffalt.jampacked.ui.components.asSheetObject
+import io.github.ffalt.jampacked.ui.components.longPress
+import io.github.ffalt.jampacked.ui.components.rememberObjectSheet
 import io.github.ffalt.jampacked.ui.components.swipeBetweenPages
 import io.github.ffalt.jampacked.ui.nav.Route
 import io.github.ffalt.jampacked.ui.nav.routeForObject
@@ -82,6 +86,12 @@ fun BrowseListScreen(
         routeForObject(entry.kind, entry.id, entry.title)?.let(onNavigate)
     }
 
+    val sheet = rememberObjectSheet()
+
+    ObjectSheetHost(state = sheet) { target ->
+        routeForObject(target.objType, target.id, target.title)?.let(onNavigate)
+    }
+
     Column(
         modifier =
             modifier
@@ -104,7 +114,8 @@ fun BrowseListScreen(
                     id = entry.id,
                     title = entry.title,
                     description = entry.description,
-                    onClick = { openEntry(entry) }
+                    onClick = { openEntry(entry) },
+                    onLongClick = sheet.longPress(entry.asSheetObject())
                 )
             }
             return@Column
@@ -139,7 +150,8 @@ fun BrowseListScreen(
                 id = entry.id,
                 title = entry.title,
                 description = entry.description,
-                onClick = { openEntry(entry) }
+                onClick = { openEntry(entry) },
+                onLongClick = sheet.longPress(entry.asSheetObject())
             )
         }
     }

@@ -14,3 +14,4 @@ RELEASELOG.md
 jam_keystore.*
 /local/
 /.kotlin/
+/schema.graphql

@@ -1,6 +1,7 @@
 package io.github.ffalt.jampacked.ui.components
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -31,16 +32,31 @@ fun JamItem(
     modifier: Modifier = Modifier,
     description: String? = null,
     onClick: (() -> Unit)? = null,
+    onLongClick: (() -> Unit)? = null,
     trailing: @Composable (() -> Unit)? = null
 ) {
     val colors = LocalJamColors.current
+    val gestures =
+        when {
+            onLongClick != null -> {
+                Modifier.combinedClickable(onClick = onClick ?: {}, onLongClick = onLongClick)
+            }
+
+            onClick != null -> {
+                Modifier.clickable(onClick = onClick)
+            }
+
+            else -> {
+                Modifier
+            }
+        }
     Row(
         modifier =
             modifier
                 .fillMaxWidth()
                 .height(JamStyles.itemHeight)
                 .clipToBounds()
-                .then(if (onClick != null) Modifier.clickable(onClick = onClick) else Modifier)
+                .then(gestures)
                 .padding(horizontal = JamDimens.padding),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -73,8 +89,7 @@ fun TrackItem(
     isCurrent: Boolean = false,
     showArtist: Boolean = true,
     showTrackNr: Boolean = true,
-    onClick: (() -> Unit)? = null,
-    onLongClick: (() -> Unit)? = null
+    onClick: (() -> Unit)? = null
 ) {
     val colors = LocalJamColors.current
     Row(

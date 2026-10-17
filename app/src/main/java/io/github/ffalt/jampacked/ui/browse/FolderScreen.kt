@@ -19,9 +19,13 @@ import io.github.ffalt.jampacked.ui.components.JamItem
 import io.github.ffalt.jampacked.ui.components.JamList
 import io.github.ffalt.jampacked.ui.components.LoadingView
 import io.github.ffalt.jampacked.ui.components.ObjectHeader
+import io.github.ffalt.jampacked.ui.components.ObjectSheetHost
 import io.github.ffalt.jampacked.ui.components.PinIcon
 import io.github.ffalt.jampacked.ui.components.SelectableTrackItem
 import io.github.ffalt.jampacked.ui.components.TrackSelectionOverlay
+import io.github.ffalt.jampacked.ui.components.asSheetObject
+import io.github.ffalt.jampacked.ui.components.longPress
+import io.github.ffalt.jampacked.ui.components.rememberObjectSheet
 import io.github.ffalt.jampacked.ui.components.rememberTrackSelection
 import io.github.ffalt.jampacked.ui.nav.Route
 import io.github.ffalt.jampacked.ui.theme.JamDimens
@@ -36,6 +40,7 @@ fun FolderScreen(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val selection = rememberTrackSelection()
+    val sheet = rememberObjectSheet()
 
     if (state.error != null) {
         ErrorView(state.error!!, onRetry = { viewModel.load(true) }, modifier = modifier)
@@ -108,7 +113,8 @@ fun FolderScreen(
                             id = item.id,
                             title = item.title,
                             description = item.description,
-                            onClick = { onNavigate(Route.Folder(item.id, item.title)) }
+                            onClick = { onNavigate(Route.Folder(item.id, item.title)) },
+                            onLongClick = sheet.longPress(item.asSheetObject("folder"))
                         )
                     }
 
@@ -128,5 +134,9 @@ fun FolderScreen(
             modifier = Modifier.align(Alignment.BottomEnd),
             onOpenTrack = { onNavigate(Route.Track(it.id, it.title)) }
         )
+
+        ObjectSheetHost(state = sheet) { target ->
+            onNavigate(Route.Folder(target.id, target.title))
+        }
     }
 }
