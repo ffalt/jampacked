@@ -1,5 +1,7 @@
 import com.android.build.api.dsl.ApplicationExtension
 import org.jlleitschuh.gradle.ktlint.KtlintExtension
+import java.io.StringReader
+import java.util.Properties
 
 plugins {
     alias(libs.plugins.android.application) apply false
@@ -11,8 +13,19 @@ plugins {
     alias(libs.plugins.ktlint)
 }
 
+val ktlintRules =
+    providers
+        .fileContents(layout.projectDirectory.file("ktlint.properties"))
+        .asText
+        .map { text ->
+            val properties = Properties()
+            properties.load(StringReader(text))
+            properties.entries.associate { (key, value) -> key.toString() to value.toString() }
+        }
+
 configure<KtlintExtension> {
     version.set("1.8.0")
+    additionalEditorconfig.set(ktlintRules)
 }
 
 subprojects {
@@ -20,6 +33,7 @@ subprojects {
         extensions.configure<KtlintExtension> {
             version.set("1.8.0")
             baseline.set(rootProject.file("app/ktlint-baseline.xml"))
+            additionalEditorconfig.set(ktlintRules)
         }
     }
 

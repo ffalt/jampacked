@@ -33,7 +33,6 @@ import io.github.ffalt.jampacked.ui.components.Logo
 import io.github.ffalt.jampacked.ui.login.LoginScreen
 import io.github.ffalt.jampacked.ui.nav.AppScaffold
 import io.github.ffalt.jampacked.ui.nav.DeepLinks
-import io.github.ffalt.jampacked.ui.nav.NavigationTransition
 import io.github.ffalt.jampacked.ui.theme.JamTheme
 import io.github.ffalt.jampacked.ui.theme.LocalJamColors
 import kotlinx.coroutines.channels.Channel
