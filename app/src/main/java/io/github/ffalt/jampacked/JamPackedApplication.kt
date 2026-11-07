@@ -1,6 +1,8 @@
 package io.github.ffalt.jampacked
 
 import android.app.Application
+import androidx.annotation.OptIn
+import androidx.media3.common.util.UnstableApi
 import coil3.ImageLoader
 import coil3.PlatformContext
 import coil3.SingletonImageLoader
@@ -18,6 +20,7 @@ import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
 import javax.inject.Inject
 
+@UnstableApi
 @HiltAndroidApp
 class JamPackedApplication :
     Application(),
@@ -31,6 +34,7 @@ class JamPackedApplication :
     @Inject
     lateinit var streamSettings: StreamSettingsRepository
 
+    @OptIn(UnstableApi::class)
     @Inject
     lateinit var downloadRules: DownloadRulesRepository
 
@@ -39,6 +43,7 @@ class JamPackedApplication :
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
 
+    @OptIn(UnstableApi::class)
     override fun onCreate() {
         super.onCreate()
         CrashLog.install(this)

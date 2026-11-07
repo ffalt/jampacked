@@ -73,7 +73,8 @@ class SettingsViewModel
             viewModelScope.launch { themes.set(name) }
         }
 
-        fun setUnmeteredOnly(enabled: Boolean) {
+    @OptIn(UnstableApi::class)
+    fun setUnmeteredOnly(enabled: Boolean) {
             viewModelScope.launch { downloadRules.set(enabled) }
         }
 

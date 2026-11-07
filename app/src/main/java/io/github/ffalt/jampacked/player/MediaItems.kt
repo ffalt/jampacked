@@ -1,13 +1,16 @@
 package io.github.ffalt.jampacked.player
 
 import android.os.Bundle
+import androidx.annotation.OptIn
 import androidx.core.net.toUri
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
+import androidx.media3.common.util.UnstableApi
 import io.github.ffalt.jampacked.data.JamSession
 import io.github.ffalt.jampacked.data.StreamRequest
 import io.github.ffalt.jampacked.data.TrackEntry
 
+@OptIn(UnstableApi::class)
 fun TrackEntry.toMediaItem(
     session: JamSession,
     request: StreamRequest = StreamRequest()

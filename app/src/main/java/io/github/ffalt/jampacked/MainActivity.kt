@@ -7,6 +7,7 @@ import android.provider.MediaStore
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.OptIn
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
@@ -19,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.media3.common.util.UnstableApi
 import dagger.hilt.android.AndroidEntryPoint
 import io.github.ffalt.jampacked.data.DownloadRulesRepository
 import io.github.ffalt.jampacked.data.NavigationTransitionRepository
@@ -41,6 +43,7 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@UnstableApi
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     @Inject
@@ -55,6 +58,7 @@ class MainActivity : ComponentActivity() {
     @Inject
     lateinit var streamSettings: StreamSettingsRepository
 
+    @OptIn(UnstableApi::class)
     @Inject
     lateinit var downloadRules: DownloadRulesRepository
 

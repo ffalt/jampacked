@@ -80,7 +80,7 @@ data class TrackCollectionUiState(
 
 abstract class TrackCollectionViewModel(
     protected val player: PlayerRepository,
-    protected val context: Context
+    @ApplicationContext protected val context: Context
 ) : ViewModel() {
     protected val uiState = MutableStateFlow(TrackCollectionUiState())
     val state: StateFlow<TrackCollectionUiState> = uiState.asStateFlow()
