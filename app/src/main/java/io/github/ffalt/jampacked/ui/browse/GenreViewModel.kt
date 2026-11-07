@@ -34,7 +34,7 @@ class GenreViewModel
         private val albums: AlbumRepository,
         private val artists: ArtistRepository,
         private val folders: FolderRepository,
-        private val player: PlayerRepository,
+        player: PlayerRepository,
         savedStateHandle: SavedStateHandle
     ) : ViewModel() {
         private val route: Route.Genre = savedStateHandle.toRoute<Route.Genre>()

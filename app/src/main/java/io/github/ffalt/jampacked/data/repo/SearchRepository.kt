@@ -106,7 +106,7 @@ class SearchRepository
                                 it
                                     ?.items
                                     .orEmpty()
-                                    .map { a -> SearchHit(a.id, a.name, a.artist.name.orEmpty(), kind) },
+                                    .map { a -> SearchHit(a.id, a.name, a.artist.name, kind) },
                                 it?.total ?: 0
                             )
                         }

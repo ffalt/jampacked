@@ -158,9 +158,9 @@ internal fun BrowseYearRange.key(): String = "${fromYear ?: ""}-${toYear ?: ""}"
 
 @Composable
 private fun BrowseYearRange.label(): String =
-    when {
-        fromYear == null && toYear == null -> stringResource(R.string.sort_year_any)
-        fromYear == null -> stringResource(R.string.sort_year_before, OLDEST_DECADE)
+    when (fromYear) {
+        null if toYear == null -> stringResource(R.string.sort_year_any)
+        null -> stringResource(R.string.sort_year_before, OLDEST_DECADE)
         else -> stringResource(R.string.sort_decade, fromYear)
     }
 

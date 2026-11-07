@@ -20,12 +20,12 @@ class BrowseSortTest {
 
     @Test
     fun `nothing stored means the default sort`() {
-        assertEquals(BrowseSort(), BrowseSort.parse(null))
+        assertEquals(BrowseSort.parse(null), BrowseSort())
     }
 
     @Test
     fun `a value from an older format falls back to the default sort`() {
-        assertEquals(BrowseSort(), BrowseSort.parse("year|true"))
+        assertEquals(BrowseSort.parse("year|true"), BrowseSort())
     }
 
     @Test

@@ -12,6 +12,7 @@ import io.github.ffalt.jampacked.data.cache.CacheStore
 import io.github.ffalt.jampacked.data.cache.RoomCacheStore
 import javax.inject.Singleton
 
+@Suppress("unused")
 @Module
 @InstallIn(SingletonComponent::class)
 abstract class BindsModule {

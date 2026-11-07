@@ -43,6 +43,7 @@ data class PlayerState(
 
 enum class RepeatMode { OFF, ALL, ONE }
 
+@Suppress("Unused")
 @Singleton
 class PlayerRepository
     @Inject

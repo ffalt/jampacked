@@ -38,8 +38,8 @@ class TrackListViewModel
     @Inject
     constructor(
         private val repository: FolderRepository,
-        private val player: PlayerRepository,
         private val sorts: BrowseSortRepository,
+        player: PlayerRepository,
         savedStateHandle: SavedStateHandle,
         @ApplicationContext private val context: Context
     ) : ViewModel() {
@@ -106,13 +106,6 @@ class TrackListViewModel
                         }
                     }.onFailure { uiState.update { it.copy(loadingMore = false) } }
             }
-        }
-
-        fun playFrom(index: Int) {
-            val tracks = uiState.value.tracks ?: return
-            if (index !in tracks.indices) return
-            player.playTracks(tracks)
-            player.skipToTrack(index)
         }
 
         private suspend fun restoreSort() {

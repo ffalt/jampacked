@@ -21,6 +21,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.time.Duration.Companion.milliseconds
 
 const val EPISODE_STATUS_COMPLETED = "completed"
 const val EPISODE_STATUS_DOWNLOADING = "downloading"
@@ -106,7 +107,7 @@ class EpisodeViewModel
             pollJob =
                 viewModelScope.launch {
                     repeat(MAX_STATUS_POLLS) {
-                        delay(STATUS_POLL_MS)
+                        delay(STATUS_POLL_MS.milliseconds)
                         val status = repository.episodeStatus(route.id).getOrNull() ?: return@launch
                         if (status != EPISODE_STATUS_DOWNLOADING) {
                             uiState.update { it.copy(status = status) }

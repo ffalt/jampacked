@@ -181,7 +181,7 @@ class CatalogRepository
                             ?.series
                             ?: throw IllegalStateException("Series not found")
 
-                    val seriesAlbums = series.albums.orEmpty()
+                    val seriesAlbums = series.albums
                     val seriesAlbumEntries =
                         seriesAlbums.map { album ->
                             BrowseEntry(
@@ -241,7 +241,7 @@ class CatalogRepository
                         name = playlist.name,
                         comment = playlist.comment,
                         tracks =
-                            playlist.entries.orEmpty().mapNotNull { entry ->
+                            playlist.entries.mapNotNull { entry ->
                                 entry.track?.let { track ->
                                     TrackEntry(
                                         id = track.id,
@@ -318,7 +318,7 @@ class CatalogRepository
                         status = podcast.status.rawValue,
                         errorMessage = podcast.errorMessage,
                         episodes =
-                            podcast.episodes.orEmpty().map { episode ->
+                            podcast.episodes.map { episode ->
                                 TrackEntry(
                                     id = episode.id,
                                     title = episode.tag?.title ?: episode.name,

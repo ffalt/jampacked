@@ -97,7 +97,7 @@ class ArtistRepository
                         ?.artist
                         ?: throw IllegalStateException("Artist not found")
 
-                val albums = artist.albums.orEmpty()
+                val albums = artist.albums
                 val albumEntries =
                     albums.map { album ->
                         BrowseEntry(
@@ -115,10 +115,9 @@ class ArtistRepository
                     name = artist.name,
                     albumCount = artist.albumsCount,
                     trackCount = artist.tracksCount,
-                    genres = artist.genres.orEmpty().map { it.name },
+                    genres = artist.genres.map { it.name },
                     genreId =
                         artist.genres
-                            .orEmpty()
                             .firstOrNull()
                             ?.id,
                     albums = albumEntries,

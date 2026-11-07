@@ -93,13 +93,6 @@ abstract class TrackCollectionViewModel(
             ?.let(player::playTracks)
     }
 
-    fun playFrom(index: Int) {
-        val tracks = uiState.value.tracks
-        if (index !in tracks.indices) return
-        player.playTracks(tracks)
-        player.skipToTrack(index)
-    }
-
     protected fun fail(error: Throwable) {
         uiState.update {
             it.copy(loading = false, error = error.message ?: context.getString(R.string.could_not_load))

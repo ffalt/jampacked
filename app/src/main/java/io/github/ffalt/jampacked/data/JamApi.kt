@@ -64,7 +64,7 @@ class JamApi
                         .build()
 
                 http.newCall(request).execute().use { response ->
-                    val text = response.body.string().orEmpty()
+                    val text = response.body.string()
                     if (!response.isSuccessful) {
                         error("Login failed (HTTP ${response.code}): ${text.take(200)}")
                     }

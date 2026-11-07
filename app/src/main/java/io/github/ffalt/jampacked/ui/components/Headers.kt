@@ -249,8 +249,6 @@ fun PageHeader(
     leading: @Composable (() -> Unit)? = null,
     trailing: @Composable (() -> Unit)? = null
 ) {
-    val colors = LocalJamColors.current
-
     Row(
         modifier =
             modifier

@@ -88,14 +88,6 @@ class PinnedMediaViewModel
             }
         }
 
-        @OptIn(UnstableApi::class)
-        fun unpin(pinId: String) {
-            viewModelScope.launch {
-                pins.unpin(pinId)
-                load()
-            }
-        }
-
         fun playTracks(tracks: List<TrackEntry>) {
             if (tracks.isNotEmpty()) player.playTracks(tracks)
         }
@@ -205,12 +197,5 @@ class BookmarksViewModel
             uiState.value.tracks
                 .takeIf { it.isNotEmpty() }
                 ?.let(player::playTracks)
-        }
-
-        fun playFrom(index: Int) {
-            val tracks = uiState.value.tracks
-            if (index !in tracks.indices) return
-            player.playTracks(tracks)
-            player.skipToTrack(index)
         }
     }

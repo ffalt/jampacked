@@ -43,7 +43,7 @@ class AlbumRepository
                             letter = group.name,
                             items =
                                 group.items.map {
-                                    BrowseEntry(it.id, it.name, it.artist.name.orEmpty(), "album")
+                                    BrowseEntry(it.id, it.name, it.artist.name, "album")
                                 }
                         )
                     }
@@ -84,7 +84,7 @@ class AlbumRepository
                 BrowsePage(
                     items =
                         albums.items.map {
-                            BrowseEntry(it.id, it.name, it.artist.name.orEmpty(), "album")
+                            BrowseEntry(it.id, it.name, it.artist.name, "album")
                         },
                     total = albums.total,
                     skip = albums.skip ?: skip,
@@ -117,17 +117,16 @@ class AlbumRepository
                     id = album.id,
                     name = album.name,
                     albumType = album.albumType.rawValue,
-                    artist = album.artist.name.orEmpty(),
+                    artist = album.artist.name,
                     artistId = album.artist.id,
                     trackCount = album.tracksCount,
-                    genres = album.genres.orEmpty().map { it.name },
+                    genres = album.genres.map { it.name },
                     genreId =
                         album.genres
-                            .orEmpty()
                             .firstOrNull()
                             ?.id,
                     tracks =
-                        album.tracks.orEmpty().map { track ->
+                        album.tracks.map { track ->
                             TrackEntry(
                                 id = track.id,
                                 title = track.tag?.title ?: track.name,

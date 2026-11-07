@@ -33,26 +33,20 @@ class HomeRepository
                 transform(data)
             }
 
-        suspend fun invalidate() = cache.remove(QueryCache.cacheKey(OPERATION))
-
         private fun transform(data: HomeResultQuery.Data): HomeData {
             val sections =
                 HomeSections(
                     albumsRecent =
                         data.albumsRecent.items
-                            .orEmpty()
                             .map { HomeEntry(it.id, it.name, ALBUM) },
                     artistsRecent =
                         data.artistsRecent.items
-                            .orEmpty()
                             .map { HomeEntry(it.id, it.name, ARTIST) },
                     albumsFaved =
                         data.albumsFaved.items
-                            .orEmpty()
                             .map { HomeEntry(it.id, it.name, ALBUM) },
                     artistsFaved =
                         data.artistsFaved.items
-                            .orEmpty()
                             .map { HomeEntry(it.id, it.name, ARTIST) }
                 )
 

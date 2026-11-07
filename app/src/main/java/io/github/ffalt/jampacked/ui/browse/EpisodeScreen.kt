@@ -65,9 +65,8 @@ fun EpisodeScreen(
                 listOfNotNull(
                     HeaderDetail(
                         stringResource(R.string.podcast_detail),
-                        episode.podcastName,
-                        { onNavigate(Route.Podcast(episode.podcastId, episode.podcastName)) }
-                    ),
+                        episode.podcastName
+                    ) { onNavigate(Route.Podcast(episode.podcastId, episode.podcastName)) },
                     episode.date?.take(DATE_LENGTH)?.takeIf { it.isNotEmpty() }?.let {
                         HeaderDetail(stringResource(R.string.date_detail), it)
                     },

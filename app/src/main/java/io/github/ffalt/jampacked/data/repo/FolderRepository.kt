@@ -124,18 +124,18 @@ class FolderRepository
 
                 FolderDetail(
                     id = folder.id,
-                    title = folder.title.orEmpty(),
+                    title = folder.title,
                     folderType = folder.folderType.rawValue,
                     artist = folder.artist,
                     folderCount = folder.childrenCount,
                     trackCount = folder.tracksCount,
-                    genres = folder.genres.orEmpty().map { it.name },
+                    genres = folder.genres.map { it.name },
                     children =
-                        folder.children.orEmpty().map {
+                        folder.children.map {
                             BrowseEntry(
                                 it.id,
-                                it.title.orEmpty(),
-                                it.folderType.rawValue.orEmpty(),
+                                it.title,
+                                it.folderType.rawValue,
                                 "folder"
                             )
                         },
