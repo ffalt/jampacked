@@ -47,10 +47,6 @@ On first launch, enter your server URL, your username and your password. The
 session is stored encrypted on the device, and the app keeps working offline
 once it holds a token.
 
-> Releases are not published yet. Until then, build it yourself with the
-> commands below, or take the signed APK from the build artifacts of the latest
-> tagged CI run.
-
 ## Build it yourself
 
 ```bash
