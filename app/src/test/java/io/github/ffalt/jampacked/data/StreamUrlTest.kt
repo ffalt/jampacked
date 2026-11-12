@@ -33,7 +33,7 @@ class StreamUrlTest {
     }
 
     @Test
-    fun `mp3 transcodes whatever the source format is`() {
+    fun `mp3 transcode whatever the source format is`() {
         val options = StreamOptions(format = StreamFormat.MP3)
         assertEquals("$streamBase.mp3", url(options, mediaFormat = "flac"))
     }

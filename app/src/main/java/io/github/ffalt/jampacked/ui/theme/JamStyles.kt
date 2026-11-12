@@ -10,5 +10,5 @@ object JamStyles {
     val sectionHeaderLetterSpacing: TextUnit = 2.sp
     val sectionHeaderFontSize: TextUnit = JamDimens.fontSizeSmall
     val separatorHeight: Dp = 1.dp
-    const val footerAlpha: Float = 0.8f
+    const val FOOTER_ALPHA: Float = 0.8f
 }

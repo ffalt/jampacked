@@ -13,7 +13,7 @@
  - **podcast-episode** add the podcast episode screen with retrieval and infos ([52835dc4ca21501](https://github.com/ffalt/starfield/commit/52835dc4ca21501eb63f53bbbf82fbad8c8eda6c))
  - **scrobble** use the graphql mutation instead of the REST api ([6e82065cb85f2b6](https://github.com/ffalt/starfield/commit/6e82065cb85f2b6af58b48e4bdfeb9b74cf06072))
  - **pin** implement optional wifi-only download ([176244a70b3b20c](https://github.com/ffalt/starfield/commit/176244a70b3b20ca796f2464f3df35cb23ce88a7))
- - **stream** allow specifing the format and bitrate cap ([8b4398e0388f741](https://github.com/ffalt/starfield/commit/8b4398e0388f741e3e2a2e178218ca4202be44d9))
+ - **stream** allow specifying the format and bitrate cap ([8b4398e0388f741](https://github.com/ffalt/starfield/commit/8b4398e0388f741e3e2a2e178218ca4202be44d9))
 
 ### Bug Fixes
 

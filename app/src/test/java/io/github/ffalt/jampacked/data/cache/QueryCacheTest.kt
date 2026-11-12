@@ -114,7 +114,7 @@ class QueryCacheTest {
         }
 
     @Test
-    fun `undeserializable payload counts as a miss rather than throwing`() =
+    fun `un-deserializable payload counts as a miss rather than throwing`() =
         runTest {
             store.put(
                 CachedDocument("k", "this is not json", 1L, QueryCache.CURRENT_VERSION)

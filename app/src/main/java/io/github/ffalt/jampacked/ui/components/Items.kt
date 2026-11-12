@@ -69,7 +69,7 @@ fun JamItem(
             if (!description.isNullOrEmpty()) {
                 ThemedText(
                     description,
-                    color = colors.textColor.copy(alpha = JamStyles.footerAlpha),
+                    color = colors.textColor.copy(alpha = JamStyles.FOOTER_ALPHA),
                     fontSize = JamDimens.fontSizeSmall,
                     maxLines = 1,
                     lineHeight = DESCRIPTION_LINE_HEIGHT
@@ -128,7 +128,7 @@ fun TrackItem(
             if (showArtist && track.artist.isNotEmpty()) {
                 ThemedText(
                     text = track.artist,
-                    color = colors.textColor.copy(alpha = JamStyles.footerAlpha),
+                    color = colors.textColor.copy(alpha = JamStyles.FOOTER_ALPHA),
                     fontSize = JamDimens.fontSizeSmall,
                     maxLines = 1
                 )

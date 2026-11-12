@@ -92,7 +92,7 @@ fun PinnedMediaScreen(
                                 modifier = Modifier.fillMaxWidth(),
                                 horizontalArrangement = Arrangement.SpaceBetween
                             ) {
-                                val footer = colors.textColor.copy(alpha = JamStyles.footerAlpha)
+                                val footer = colors.textColor.copy(alpha = JamStyles.FOOTER_ALPHA)
                                 ThemedText(
                                     text = pin.objType.replaceFirstChar { c -> c.titlecase(Locale.ROOT) },
                                     color = footer,

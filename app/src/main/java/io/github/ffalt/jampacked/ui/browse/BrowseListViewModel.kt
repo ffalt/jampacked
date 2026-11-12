@@ -46,11 +46,6 @@ abstract class BrowseListViewModel(
 
     private var sortRestored = false
 
-    /**
-     * A filter drops a list that would have shown the A to Z index into the paged query, where the
-     * index's own ordering has to be asked for by name or the rows come back in the server's order
-     * under a label that says otherwise.
-     */
     protected val querySort: BrowseSort
         get() =
             if (hasIndex && sort.orderBy == BrowseSort.DEFAULT_FIELD) {

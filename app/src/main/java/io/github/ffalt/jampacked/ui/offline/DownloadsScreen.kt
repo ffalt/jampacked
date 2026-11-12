@@ -107,7 +107,7 @@ fun DownloadsScreen(
                                 .padding(bottom = FOOTER_GAP),
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        val footer = colors.textColor.copy(alpha = JamStyles.footerAlpha)
+                        val footer = colors.textColor.copy(alpha = JamStyles.FOOTER_ALPHA)
                         ThemedText(info.state, color = footer, fontSize = JamDimens.fontSizeSmall)
                         ThemedText(
                             text = String.format(Locale.ROOT, "%.2f%%", percent),
