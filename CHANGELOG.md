@@ -1,3 +1,10 @@
+## [v0.0.5](https://github.com/ffalt/starfield/compare/v0.0.4...v0.0.5) (2026-11-12)
+
+### Features
+
+ - **screens** use tabler icons on home screen, better design for home, settings and list headers ([386c8c2653791e5](https://github.com/ffalt/starfield/commit/386c8c2653791e52afb5ba099db0c3af59d326ff))
+ - **android** request local network access for nas hosted jamserve ([b831f44880a0f71](https://github.com/ffalt/starfield/commit/b831f44880a0f71bb78eb4a35556685d6c9183ac))
+
 ## [v0.0.4](https://github.com/ffalt/starfield/compare/v0.0.3...v0.0.4) (2026-10-17)
 
 ### Features

@@ -1,0 +1,2 @@
+ - **screens** use tabler icons on home screen, better design for home, settings and list headers
+ - **android** request local network access for nas hosted jamserve
