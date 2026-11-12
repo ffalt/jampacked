@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    jam icon: right-bold
+    Source set: Entypo (config.json src: "entypo")
+    License: SIL Open Font License (https://scripts.sil.org/OFL)
+      Copyright (C) 2012 by Daniel Bruce - https://www.entypo.com
+    Converted from https://github.com/ffalt/jamberry/blob/main/src/app/lib/core/components/icons/icon-right-bold.component.html
+-->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="24dp"
     android:height="24dp"

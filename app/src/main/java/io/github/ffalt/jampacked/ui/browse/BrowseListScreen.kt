@@ -68,8 +68,10 @@ fun BrowseListScreen(
                     ?: entryCount,
             subtitleIcon = state.sortKind?.let { sortIconName(state.sort) },
             onSubtitleClick = state.sortKind?.let { { sortSheetOpen = true } },
-            leading = { if (previous) GoLeftIcon(onClick = { goTo(-1) }) },
-            trailing = { if (next) GoRightIcon(onClick = { goTo(1) }) }
+            controls = {
+                if (previous) GoLeftIcon(onClick = { goTo(-1) })
+                if (next) GoRightIcon(onClick = { goTo(1) })
+            }
         )
     }
 

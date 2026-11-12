@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    Tabler Icons "folder", MIT License
+    https://github.com/tabler/tabler-icons/blob/main/icons/outline/folder.svg
+-->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="24dp"
     android:height="24dp"
-    android:viewportWidth="1000"
-    android:viewportHeight="1000">
+    android:viewportWidth="24"
+    android:viewportHeight="24">
     <path
-        android:fillColor="#FFFFFFFF"
-        android:pathData="M 929,339 v 393 q 0,51,-37,88 t -88,37 h -679 q -51,0,-88,-37 t -37,-88 v -536 q 0,-51,37,-88 t 88,-37 h 179 q 51,0,88,37 t 37,88 v 18 h 375 q 51,0,88,37 t 37,88 z" />
+        android:pathData="M5 4h4l3 3h7a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-11a2 2 0 0 1 2 -2"
+        android:strokeColor="#FFFFFFFF"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
 </vector>

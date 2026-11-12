@@ -438,8 +438,8 @@ fun ThemedButton(
     Box(
         modifier =
             modifier
-                .clip(RoundedCornerShape(2.dp))
-                .background(BUTTON_BACKGROUND)
+                .clip(RoundedCornerShape(BUTTON_RADIUS))
+                .background(LocalJamColors.current.navPrimary)
                 .clickable(onClick = onClick)
                 .padding(horizontal = JamDimens.padding, vertical = JamDimens.paddingSmall),
         contentAlignment = Alignment.Center
@@ -454,4 +454,4 @@ fun ThemedButton(
     }
 }
 
-private val BUTTON_BACKGROUND = Color(0xFF2196F3)
+private val BUTTON_RADIUS = 4.dp

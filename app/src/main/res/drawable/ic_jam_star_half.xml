@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    jam icon: star-half
+    Source set: Font Awesome (config.json src: "fontawesome")
+    License: SIL Open Font License
+      Copyright (C) 2016 by Dave Gandy - https://fortawesome.github.com/Font-Awesome/
+    Converted from https://github.com/ffalt/jamberry/blob/main/src/app/lib/core/components/icons/icon-star-half.component.html
+-->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="24dp"
     android:height="24dp"

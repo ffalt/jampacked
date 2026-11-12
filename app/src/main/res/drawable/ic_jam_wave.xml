@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    jam icon: wave
+    Source: custom icon (config.json src: "custom_icons")
+    License / attribution:
+      Endless Icons - https://endlessicons.com/free-icons/sound-wave-icon/
+      https://endlessicons.com/terms-of-use/
+    Converted from https://github.com/ffalt/jamberry/blob/main/src/app/lib/core/components/icons/icon-wave.component.html
+-->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="24dp"
     android:height="24dp"

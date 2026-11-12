@@ -45,7 +45,7 @@ fun BookmarksScreen(
                         } else {
                             null
                         },
-                    trailing = {
+                    controls = {
                         if (state.tracks.isNotEmpty()) {
                             ClickIcon(
                                 "play",

@@ -44,6 +44,7 @@ object JamIcons {
             "folder-open" to R.drawable.ic_jam_folder_open,
             "forward" to R.drawable.ic_jam_forward,
             "genre" to R.drawable.ic_jam_genre,
+            "grip-vertical" to R.drawable.ic_jam_grip_vertical,
             "hash" to R.drawable.ic_jam_hash,
             "headphones" to R.drawable.ic_jam_headphones,
             "health" to R.drawable.ic_jam_health,

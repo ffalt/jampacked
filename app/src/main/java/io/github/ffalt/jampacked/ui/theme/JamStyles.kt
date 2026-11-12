@@ -11,4 +11,5 @@ object JamStyles {
     val sectionHeaderFontSize: TextUnit = JamDimens.fontSizeSmall
     val separatorHeight: Dp = 1.dp
     const val FOOTER_ALPHA: Float = 0.8f
+    const val ICON_ALPHA: Float = 0.55f
 }

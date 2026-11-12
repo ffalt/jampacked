@@ -45,12 +45,10 @@ fun GenreScreen(
         PageHeader(
             title = genreName,
             subtitle = stringResource(GenreTab.subtitleRes(tab)),
-            leading = {
+            controls = {
                 GenreTab.order.getOrNull(index - 1)?.let { previous ->
                     GoLeftIcon(onClick = { onNavigate(Route.Genre(genreId, genreName, previous)) })
                 }
-            },
-            trailing = {
                 GenreTab.order.getOrNull(index + 1)?.let { next ->
                     GoRightIcon(onClick = { onNavigate(Route.Genre(genreId, genreName, next)) })
                 }

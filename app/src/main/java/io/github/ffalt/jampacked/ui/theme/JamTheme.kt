@@ -64,7 +64,6 @@ object JamDimens {
     val marginLarge: Dp = 15.dp
     val margin: Dp = 10.dp
     val marginSmall: Dp = 5.dp
-    val pageHeaderHeight: Dp = 80.dp
     val userImage: Dp = 40.dp
     val thumb: Dp = 46.dp
     val thumbMedium: Dp = 80.dp

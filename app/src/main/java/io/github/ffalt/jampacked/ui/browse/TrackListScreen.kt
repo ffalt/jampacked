@@ -75,12 +75,10 @@ fun TrackListScreen(
                             ?: trackCount,
                     subtitleIcon = state.sortKind?.let { sortIconName(state.sort) },
                     onSubtitleClick = state.sortKind?.let { { sortSheetOpen = true } },
-                    leading = {
+                    controls = {
                         siblingListType(trackListTypes, state.listType, -1)?.let { previous ->
                             GoLeftIcon(onClick = { onNavigate(Route.TrackList(previous)) })
                         }
-                    },
-                    trailing = {
                         siblingListType(trackListTypes, state.listType, 1)?.let { next ->
                             GoRightIcon(onClick = { onNavigate(Route.TrackList(next)) })
                         }

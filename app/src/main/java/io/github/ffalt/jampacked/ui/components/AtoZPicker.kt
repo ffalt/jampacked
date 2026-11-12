@@ -45,14 +45,13 @@ fun AtoZPicker(
 ) {
     if (letters.isEmpty()) return
     val colors = LocalJamColors.current
-    var trackTop by remember { mutableFloatStateOf(0f) }
     var slotPx by remember { mutableFloatStateOf(0f) }
     var bubble by remember { mutableStateOf<String?>(null) }
     var pickToken by remember { mutableIntStateOf(0) }
 
     fun pick(y: Float) {
         if (slotPx <= 0f) return
-        val index = ((y - trackTop) / slotPx).toInt().coerceIn(0, letters.lastIndex)
+        val index = (y / slotPx).toInt().coerceIn(0, letters.lastIndex)
         val letter = letters[index]
         bubble = letter
         pickToken++
@@ -71,15 +70,7 @@ fun AtoZPicker(
             modifier =
                 Modifier
                     .fillMaxHeight()
-                    .width(STRIP_WIDTH)
-                    .background(colors.overlay)
-                    .pointerInput(letters) {
-                        detectTapGestures(onPress = { offset -> pick(offset.y) })
-                    }.pointerInput(letters) {
-                        detectDragGestures(
-                            onDragStart = { offset -> pick(offset.y) }
-                        ) { change, _ -> pick(change.position.y) }
-                    },
+                    .width(STRIP_WIDTH),
             contentAlignment = Alignment.Center
         ) {
             val density = LocalDensity.current
@@ -90,9 +81,22 @@ fun AtoZPicker(
             val activeIndex = letters.indexOf(activeLetter)
             SideEffect {
                 slotPx = with(density) { slot.toPx() }
-                trackTop = with(density) { (maxHeight - slot * letters.size).toPx() } / 2f
             }
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            // Only the letters themselves take the touches. A strip spanning the whole list would
+            // also cover the header above it, where the page controls sit.
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier =
+                    Modifier
+                        .background(colors.overlay)
+                        .pointerInput(letters) {
+                            detectTapGestures(onPress = { offset -> pick(offset.y) })
+                        }.pointerInput(letters) {
+                            detectDragGestures(
+                                onDragStart = { offset -> pick(offset.y) }
+                            ) { change, _ -> pick(change.position.y) }
+                        }
+            ) {
                 letters.forEachIndexed { index, letter ->
                     Box(
                         modifier = Modifier.height(slot).fillMaxWidth(),

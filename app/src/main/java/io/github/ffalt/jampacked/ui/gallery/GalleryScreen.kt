@@ -139,7 +139,7 @@ fun GalleryScreen(modifier: Modifier = Modifier) {
         PageHeader(
             title = stringResource(R.string.hounds_of_love),
             subtitle = stringResource(R.string.kate_bush),
-            trailing = { ClickIcon("play", onClick = {}, size = JamDimens.iconLarge) }
+            controls = { ClickIcon("play", onClick = {}, size = JamDimens.iconLarge) }
         )
 
         SectionHeader(stringResource(R.string.header_details))

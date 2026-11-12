@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -88,13 +89,8 @@ fun QueueItem(
                 Modifier
                     .fillMaxWidth()
                     .height(JamStyles.itemHeight)
-                    .background(
-                        when {
-                            dragging -> colors.control
-                            active -> colors.activeBackgroundColor
-                            else -> colors.background
-                        }
-                    ).clickable(onClick = onPlay)
+                    .background(if (dragging) colors.control else colors.background)
+                    .clickable(onClick = onPlay)
                     .clipToBounds(),
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -105,6 +101,31 @@ fun QueueItem(
                         .fillMaxHeight()
                         .background(if (active) colors.navPrimary else colors.background)
             )
+
+            // The grip sits where a list is dragged from, on the leading edge, so the trailing
+            // edge is free for what the row says rather than for what can be done to it.
+            Box(
+                modifier =
+                    Modifier
+                        .size(HANDLE_WIDTH, JamStyles.itemHeight)
+                        .pointerInput(Unit) {
+                            detectVerticalDragGestures(
+                                onDragStart = { onDragStart(currentIndex) },
+                                onDragEnd = onDragEnd,
+                                onDragCancel = onDragEnd
+                            ) { change, amount ->
+                                change.consume()
+                                onDrag(amount)
+                            }
+                        },
+                contentAlignment = Alignment.Center
+            ) {
+                JamIcon(
+                    name = "grip-vertical",
+                    color = colors.textColor.copy(alpha = JamStyles.ICON_ALPHA),
+                    size = JamDimens.iconLarge
+                )
+            }
 
             // A queue holding a single album would repeat the same cover down the whole list,
             // which says nothing - there the position in the queue is the useful thing to show.
@@ -140,6 +161,8 @@ fun QueueItem(
             Column(modifier = Modifier.weight(1f)) {
                 ThemedText(
                     text = track.title,
+                    color = if (active) colors.navPrimary else colors.textColor,
+                    fontWeight = if (active) FontWeight.Bold else null,
                     maxLines = 1,
                     lineHeight = TITLE_LINE_HEIGHT
                 )
@@ -158,34 +181,19 @@ fun QueueItem(
                 color = colors.muted,
                 textAlign = TextAlign.End,
                 maxLines = 1,
-                modifier = Modifier.padding(start = JamDimens.paddingSmall)
-            )
-
-            Box(
                 modifier =
-                    Modifier
-                        .size(HANDLE_WIDTH, JamStyles.itemHeight)
-                        .pointerInput(Unit) {
-                            detectVerticalDragGestures(
-                                onDragStart = { onDragStart(currentIndex) },
-                                onDragEnd = onDragEnd,
-                                onDragCancel = onDragEnd
-                            ) { change, amount ->
-                                change.consume()
-                                onDrag(amount)
-                            }
-                        },
-                contentAlignment = Alignment.Center
-            ) {
-                JamIcon("menu", colors.muted, size = JamDimens.iconLarge)
-            }
+                    Modifier.padding(
+                        start = JamDimens.paddingSmall,
+                        end = JamDimens.padding
+                    )
+            )
         }
     }
 }
 
 private val MARKER_WIDTH = 3.dp
 private val POSITION_COLUMN = 44.dp
-private val HANDLE_WIDTH = 44.dp
+private val HANDLE_WIDTH = 36.dp
 private val THUMB_RADIUS = 4.dp
 private val TITLE_LINE_HEIGHT = 18.sp
 private val ARTIST_LINE_HEIGHT = 15.sp

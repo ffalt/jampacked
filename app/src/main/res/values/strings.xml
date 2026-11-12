@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">JamPacked</string>
     <string name="download_channel_name">Downloads</string>
-    <string name="welcome_user">Welcome, %1$s</string>
+    <string name="welcome_back">Welcome back</string>
     <string name="library">Library</string>
     <string name="recently_played_albums">Recently Played Albums</string>
     <string name="recently_played_artists">Recently Played Artists</string>
@@ -117,7 +117,6 @@
     <string name="dark_theme">Dark</string>
     <string name="black_theme">Black</string>
     <string name="logout">Logout</string>
-    <string name="user_section">User</string>
     <string name="stream_audio">Stream Audio</string>
     <string name="manage_podcasts">Manage Podcasts</string>
     <string name="upload_audio">Upload Audio</string>

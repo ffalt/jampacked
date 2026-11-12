@@ -10,7 +10,7 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.ffalt.jampacked.R
 import io.github.ffalt.jampacked.data.JamSession
-import io.github.ffalt.jampacked.ui.components.PageHeader
+import io.github.ffalt.jampacked.ui.components.ScreenTitle
 
 @Composable
 fun QueueScreen(
@@ -21,7 +21,7 @@ fun QueueScreen(
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     Column(modifier = modifier.fillMaxSize()) {
-        PageHeader(title = stringResource(R.string.queue))
+        ScreenTitle(stringResource(R.string.queue))
         PlayerQueue(
             modifier = Modifier.fillMaxSize(),
             session = session,

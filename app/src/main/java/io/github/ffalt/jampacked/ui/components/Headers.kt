@@ -8,9 +8,11 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
@@ -34,6 +36,7 @@ import io.github.ffalt.jampacked.R
 import io.github.ffalt.jampacked.data.JamSession
 import io.github.ffalt.jampacked.ui.icons.JamIcon
 import io.github.ffalt.jampacked.ui.theme.JamDimens
+import io.github.ffalt.jampacked.ui.theme.JamStyles
 import io.github.ffalt.jampacked.ui.theme.LocalJamColors
 
 data class HeaderDetail(
@@ -239,6 +242,10 @@ private val TITLE_LINE_HEIGHT = 28.sp
 
 private val COVER_SIZE = 150.dp
 
+/**
+ * A screen inside the tabs is titled the way the tab roots are, in the text column rather than
+ * centred, with whatever walks or acts on the page gathered at the trailing edge.
+ */
 @Composable
 fun PageHeader(
     title: String,
@@ -246,35 +253,39 @@ fun PageHeader(
     subtitle: String? = null,
     subtitleIcon: String? = null,
     onSubtitleClick: (() -> Unit)? = null,
-    leading: @Composable (() -> Unit)? = null,
-    trailing: @Composable (() -> Unit)? = null
+    controls: @Composable (RowScope.() -> Unit)? = null
 ) {
     Row(
         modifier =
             modifier
                 .fillMaxWidth()
-                .height(JamDimens.pageHeaderHeight),
+                .padding(
+                    start = JamDimens.padding,
+                    end = JamDimens.paddingSmall,
+                    top = SCREEN_TITLE_TOP,
+                    bottom = JamDimens.padding
+                ),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Box(modifier = Modifier.width(40.dp), contentAlignment = Alignment.Center) {
-            leading?.invoke()
-        }
-        Column(
-            modifier = Modifier.weight(1f),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
+        Column(modifier = Modifier.weight(1f)) {
+            ThemedText(
+                text = title,
+                fontSize = JamDimens.fontSizeHuge,
+                fontWeight = FontWeight.Bold,
+                maxLines = 1
+            )
             subtitle?.let {
                 PageSubtitle(
                     text = it,
                     iconName = subtitleIcon,
-                    onClick = onSubtitleClick
+                    onClick = onSubtitleClick,
+                    // The subtitle carries its own padding so a tap target surrounds it; pulling
+                    // that back lines its text up with the title above.
+                    modifier = Modifier.offset(x = -JamDimens.paddingSmall)
                 )
             }
-            ThemedText(title, fontSize = JamDimens.fontSizeHuge, maxLines = 1)
         }
-        Box(modifier = Modifier.width(40.dp), contentAlignment = Alignment.Center) {
-            trailing?.invoke()
-        }
+        controls?.invoke(this)
     }
 }
 
@@ -282,12 +293,13 @@ fun PageHeader(
 private fun PageSubtitle(
     text: String,
     iconName: String?,
-    onClick: (() -> Unit)?
+    onClick: (() -> Unit)?,
+    modifier: Modifier = Modifier
 ) {
     val colors = LocalJamColors.current
     Row(
         modifier =
-            Modifier
+            modifier
                 .clip(RoundedCornerShape(4.dp))
                 .then(onClick?.let { Modifier.clickable(onClick = it) } ?: Modifier)
                 .padding(horizontal = JamDimens.paddingSmall, vertical = SUBTITLE_PADDING),
@@ -312,7 +324,8 @@ data class StatEntry(
 fun Stat(
     entry: StatEntry,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    iconName: String? = null
 ) {
     val colors = LocalJamColors.current
 
@@ -320,28 +333,96 @@ fun Stat(
         modifier =
             modifier
                 .padding(JamDimens.paddingSmall)
-                .clip(RoundedCornerShape(4.dp))
+                .clip(RoundedCornerShape(STAT_RADIUS))
                 .background(colors.itemBackground)
                 .clickable(onClick = onClick)
-                .padding(JamDimens.padding),
+                .padding(vertical = JamDimens.paddingLarge, horizontal = JamDimens.paddingSmall),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
+        iconName?.let {
+            JamIcon(it, colors.textColor.copy(alpha = JamStyles.ICON_ALPHA), size = JamDimens.iconBig)
+            Spacer(modifier = Modifier.height(JamDimens.marginSmall))
+        }
         ThemedText(
             entry.value.toString(),
             fontSize = JamDimens.fontSizeLarge,
-            fontWeight = FontWeight.Bold
+            fontWeight = FontWeight.Bold,
+            maxLines = 1
         )
-        ThemedText(entry.title, fontSize = JamDimens.fontSizeSmall, maxLines = 1)
+        ThemedText(
+            entry.title,
+            color = colors.muted,
+            fontSize = JamDimens.fontSizeSmall,
+            maxLines = 1
+        )
+    }
+}
+
+private val STAT_RADIUS = 12.dp
+
+/** The tab roots open with their name in the text column rather than centred over the content. */
+@Composable
+fun ScreenTitle(
+    title: String,
+    modifier: Modifier = Modifier
+) {
+    ThemedText(
+        text = title,
+        fontSize = JamDimens.fontSizeHuge,
+        fontWeight = FontWeight.Bold,
+        maxLines = 1,
+        modifier =
+            modifier.padding(
+                start = JamDimens.padding,
+                end = JamDimens.padding,
+                top = SCREEN_TITLE_TOP,
+                bottom = JamDimens.paddingSmall
+            )
+    )
+}
+
+private val SCREEN_TITLE_TOP = 24.dp
+
+/**
+ * The tab roots title their groups in sentence case at reading size. The small letterspaced caps
+ * of [SectionHeader] stay for the groups inside a list, where a title that size would compete with
+ * the rows.
+ */
+@Composable
+fun GroupHeader(
+    title: String,
+    modifier: Modifier = Modifier,
+    onClick: (() -> Unit)? = null
+) {
+    val colors = LocalJamColors.current
+    Row(
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .then(onClick?.let { Modifier.clickable(onClick = it) } ?: Modifier)
+                .padding(horizontal = JamDimens.padding, vertical = JamDimens.paddingLarge),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        ThemedText(
+            text = title,
+            fontSize = JamDimens.fontSizeLarge,
+            fontWeight = FontWeight.Bold,
+            maxLines = 1,
+            modifier = Modifier.weight(1f)
+        )
+        onClick?.let {
+            JamIcon("right-open", colors.muted, size = JamDimens.iconSmall)
+        }
     }
 }
 
 @Composable
 fun GoLeftIcon(onClick: () -> Unit) {
-    ClickIcon("left-open", onClick = onClick, size = JamDimens.iconSmall, muted = true)
+    ClickIcon("left-open", onClick = onClick, size = JamDimens.iconLarge, muted = true)
 }
 
 @Composable
 fun GoRightIcon(onClick: () -> Unit) {
-    ClickIcon("right-open", onClick = onClick, size = JamDimens.iconSmall, muted = true)
+    ClickIcon("right-open", onClick = onClick, size = JamDimens.iconLarge, muted = true)
 }

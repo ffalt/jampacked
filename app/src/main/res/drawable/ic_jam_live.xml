@@ -1,10 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    Tabler Icons "building-stadium", MIT License
+    https://github.com/tabler/tabler-icons/blob/main/icons/outline/building-stadium.svg
+-->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="24dp"
     android:height="24dp"
-    android:viewportWidth="1000"
-    android:viewportHeight="1000">
+    android:viewportWidth="24"
+    android:viewportHeight="24">
     <path
-        android:fillColor="#FFFFFFFF"
-        android:pathData="M 500,680 m -70,0 a 70,70 0 1,1 140,0 a 70,70 0 1,1 -140,0 M 330,510 a 240,240 0 0,1 340,0 M 190,370 a 440,440 0 0,1 620,0" />
+        android:pathData="M4 12a8 2 0 1 0 16 0a8 2 0 1 0 -16 0"
+        android:strokeColor="#FFFFFFFF"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+    <path
+        android:pathData="M4 12v7c0 .94 2.51 1.785 6 2v-3h4v3c3.435 -.225 6 -1.07 6 -2v-7"
+        android:strokeColor="#FFFFFFFF"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+    <path
+        android:pathData="M15 6h4v-3h-4v7"
+        android:strokeColor="#FFFFFFFF"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+    <path
+        android:pathData="M7 6h4v-3h-4v7"
+        android:strokeColor="#FFFFFFFF"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
 </vector>

@@ -1,33 +1,41 @@
 package io.github.ffalt.jampacked.ui.player
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.withFrameNanos
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import io.github.ffalt.jampacked.R
 import io.github.ffalt.jampacked.data.JamSession
 import io.github.ffalt.jampacked.data.TrackEntry
 import io.github.ffalt.jampacked.player.PlayerState
-import io.github.ffalt.jampacked.ui.components.ClickLabelIcon
-import io.github.ffalt.jampacked.ui.components.ListEmpty
 import io.github.ffalt.jampacked.ui.components.Separator
 import io.github.ffalt.jampacked.ui.components.ThemedText
+import io.github.ffalt.jampacked.ui.icons.JamIcon
 import io.github.ffalt.jampacked.ui.theme.JamDimens
+import io.github.ffalt.jampacked.ui.theme.JamStyles
 import io.github.ffalt.jampacked.ui.theme.LocalJamColors
 import io.github.ffalt.jampacked.util.formatDuration
 
@@ -43,7 +51,7 @@ fun PlayerQueue(
     modifier: Modifier = Modifier
 ) {
     if (state.queue.isEmpty()) {
-        ListEmpty(items = emptyList<String>(), modifier = modifier)
+        QueueEmpty(modifier = modifier)
         return
     }
 
@@ -104,10 +112,8 @@ private fun QueueSummary(
         modifier =
             Modifier
                 .fillMaxWidth()
-                .height(SUMMARY_HEIGHT)
-                .padding(horizontal = JamDimens.padding),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween
+                .padding(horizontal = JamDimens.padding, vertical = JamDimens.paddingSmall),
+        verticalAlignment = Alignment.CenterVertically
     ) {
         ThemedText(
             text =
@@ -117,25 +123,63 @@ private fun QueueSummary(
                 },
             color = colors.muted,
             fontSize = JamDimens.fontSizeSmall,
-            maxLines = 1
+            maxLines = 1,
+            modifier = Modifier.weight(1f)
         )
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            ClickLabelIcon(
-                iconName = "shuffle",
-                label =
-                    androidx.compose.ui.res
-                        .stringResource(R.string.shuffle),
-                onClick = onShuffle
-            )
-            ClickLabelIcon(
-                iconName = "trash",
-                label =
-                    androidx.compose.ui.res
-                        .stringResource(R.string.clear),
-                onClick = onClear,
-                modifier = Modifier.padding(start = JamDimens.padding)
-            )
-        }
+        QueueAction("shuffle", stringResource(R.string.shuffle), onShuffle)
+        Spacer(modifier = Modifier.width(JamDimens.marginSmall))
+        QueueAction("trash", stringResource(R.string.clear), onClear)
+    }
+}
+
+@Composable
+private fun QueueAction(
+    iconName: String,
+    label: String,
+    onClick: () -> Unit
+) {
+    val colors = LocalJamColors.current
+    Row(
+        modifier =
+            Modifier
+                .clip(RoundedCornerShape(percent = 50))
+                .background(colors.itemBackground)
+                .clickable(onClick = onClick)
+                .padding(horizontal = JamDimens.padding, vertical = JamDimens.paddingSmall),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        JamIcon(
+            name = iconName,
+            color = colors.textColor.copy(alpha = JamStyles.ICON_ALPHA),
+            size = JamDimens.icon
+        )
+        ThemedText(
+            text = label,
+            fontSize = JamDimens.fontSizeSmall,
+            maxLines = 1,
+            modifier = Modifier.padding(start = JamDimens.marginSmall)
+        )
+    }
+}
+
+@Composable
+private fun QueueEmpty(modifier: Modifier = Modifier) {
+    val colors = LocalJamColors.current
+    Column(
+        modifier =
+            modifier
+                .fillMaxSize()
+                .padding(top = EMPTY_TOP),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Top
+    ) {
+        JamIcon("queue", colors.textColor.copy(alpha = JamStyles.ICON_ALPHA), size = EMPTY_ICON)
+        ThemedText(
+            text = stringResource(R.string.no_entries),
+            color = colors.muted,
+            letterSpacing = EMPTY_LETTER_SPACING,
+            modifier = Modifier.padding(top = JamDimens.paddingLarge)
+        )
     }
 }
 
@@ -149,4 +193,6 @@ private fun queueKeys(queue: List<TrackEntry>): List<String> {
     }
 }
 
-private val SUMMARY_HEIGHT = 44.dp
+private val EMPTY_TOP = 80.dp
+private val EMPTY_ICON = 48.dp
+private val EMPTY_LETTER_SPACING = 2.sp
