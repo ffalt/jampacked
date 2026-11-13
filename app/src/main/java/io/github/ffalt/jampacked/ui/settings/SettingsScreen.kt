@@ -135,8 +135,13 @@ fun SettingsScreen(
 
         SettingsGroup(stringResource(R.string.cache)) {
             SettingRow(
-                text = stringResource(R.string.data_image_cache),
-                action = { ThemedButton(stringResource(R.string.clear), onClick = viewModel::clearCache) }
+                text = stringResource(R.string.data_cache),
+                action = { ThemedButton(stringResource(R.string.clear), onClick = viewModel::clearDataCache) }
+            )
+            GroupDivider()
+            SettingRow(
+                text = stringResource(R.string.image_cache),
+                action = { ThemedButton(stringResource(R.string.clear), onClick = viewModel::clearImageCache) }
             )
         }
 

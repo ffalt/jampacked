@@ -124,7 +124,8 @@
     <string name="theme">Theme</string>
     <string name="screen_transitions">Screen Transitions</string>
     <string name="cache">Cache</string>
-    <string name="data_image_cache">Data &amp; Image Cache</string>
+    <string name="data_cache">Data cache</string>
+    <string name="image_cache">Image cache</string>
     <string name="files_count">Files: %1$d</string>
     <string name="debug">Debug</string>
     <string name="component_gallery">Component gallery</string>

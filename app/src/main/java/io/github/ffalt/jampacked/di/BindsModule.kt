@@ -9,6 +9,8 @@ import io.github.ffalt.jampacked.data.auth.AuthStore
 import io.github.ffalt.jampacked.data.auth.CurrentUserSource
 import io.github.ffalt.jampacked.data.auth.EncryptedAuthStore
 import io.github.ffalt.jampacked.data.cache.CacheStore
+import io.github.ffalt.jampacked.data.cache.CoilImageCache
+import io.github.ffalt.jampacked.data.cache.ImageCache
 import io.github.ffalt.jampacked.data.cache.RoomCacheStore
 import javax.inject.Singleton
 
@@ -19,6 +21,10 @@ abstract class BindsModule {
     @Binds
     @Singleton
     abstract fun cacheStore(impl: RoomCacheStore): CacheStore
+
+    @Binds
+    @Singleton
+    abstract fun imageCache(impl: CoilImageCache): ImageCache
 
     @Binds
     @Singleton

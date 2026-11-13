@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -28,9 +29,11 @@ import io.github.ffalt.jampacked.data.StreamSettingsRepository
 import io.github.ffalt.jampacked.data.ThemeRepository
 import io.github.ffalt.jampacked.data.auth.AuthRepository
 import io.github.ffalt.jampacked.data.auth.AuthState
+import io.github.ffalt.jampacked.data.cache.ImageCache
 import io.github.ffalt.jampacked.data.repo.SearchRepository
 import io.github.ffalt.jampacked.data.repo.TrackRepository
 import io.github.ffalt.jampacked.player.PlayerRepository
+import io.github.ffalt.jampacked.ui.components.LocalImageCacheEpoch
 import io.github.ffalt.jampacked.ui.components.Logo
 import io.github.ffalt.jampacked.ui.login.LoginScreen
 import io.github.ffalt.jampacked.ui.nav.AppScaffold
@@ -51,6 +54,9 @@ class MainActivity : ComponentActivity() {
 
     @Inject
     lateinit var themes: ThemeRepository
+
+    @Inject
+    lateinit var imageCache: ImageCache
 
     @Inject
     lateinit var navigationTransitions: NavigationTransitionRepository
@@ -80,11 +86,14 @@ class MainActivity : ComponentActivity() {
         if (savedInstanceState == null) handleDeepLink(intent)
         setContent {
             val themeName by themes.theme.collectAsStateWithLifecycle()
-            JamTheme(themeName = themeName) {
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = LocalJamColors.current.background
-                ) { Root() }
+            val imageEpoch by imageCache.epoch.collectAsStateWithLifecycle()
+            CompositionLocalProvider(LocalImageCacheEpoch provides imageEpoch) {
+                JamTheme(themeName = themeName) {
+                    Surface(
+                        modifier = Modifier.fillMaxSize(),
+                        color = LocalJamColors.current.background
+                    ) { Root() }
+                }
             }
         }
     }

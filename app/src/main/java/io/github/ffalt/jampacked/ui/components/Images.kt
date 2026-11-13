@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.key
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.layout.ContentScale
@@ -13,6 +15,8 @@ import coil3.compose.AsyncImage
 import io.github.ffalt.jampacked.data.JamSession
 import io.github.ffalt.jampacked.ui.theme.JamDimens
 import io.github.ffalt.jampacked.ui.theme.LocalJamColors
+
+val LocalImageCacheEpoch = staticCompositionLocalOf { 0L }
 
 @Composable
 fun JamImage(
@@ -24,12 +28,15 @@ fun JamImage(
     format: String = "webp"
 ) {
     if (id.isEmpty()) return
-    AsyncImage(
-        model = session.imageUrl(id, size = requestSize, format = format),
-        contentDescription = null,
-        contentScale = ContentScale.Fit,
-        modifier = modifier.size(size)
-    )
+    val epoch = LocalImageCacheEpoch.current
+    key(epoch) {
+        AsyncImage(
+            model = session.imageUrl(id, size = requestSize, format = format),
+            contentDescription = null,
+            contentScale = ContentScale.Fit,
+            modifier = modifier.size(size)
+        )
+    }
 }
 
 @Composable
@@ -41,13 +48,16 @@ fun ImageItem(
     requestSize: Int = 300
 ) {
     if (id.isEmpty()) return
+    val epoch = LocalImageCacheEpoch.current
     Box(modifier = modifier.size(size)) {
-        AsyncImage(
-            model = session.imageUrl(id, size = requestSize),
-            contentDescription = null,
-            contentScale = ContentScale.Fit,
-            modifier = Modifier.fillMaxSize()
-        )
+        key(epoch) {
+            AsyncImage(
+                model = session.imageUrl(id, size = requestSize),
+                contentDescription = null,
+                contentScale = ContentScale.Fit,
+                modifier = Modifier.fillMaxSize()
+            )
+        }
     }
 }
 
@@ -68,14 +78,17 @@ fun JamBackgroundImage(
     content: @Composable () -> Unit
 ) {
     val colors = LocalJamColors.current
+    val epoch = LocalImageCacheEpoch.current
     Box(modifier = modifier) {
         if (id.isNotEmpty()) {
-            AsyncImage(
-                model = session.imageUrl(id, size = 300),
-                contentDescription = null,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier.matchParentSize()
-            )
+            key(epoch) {
+                AsyncImage(
+                    model = session.imageUrl(id, size = 300),
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.matchParentSize()
+                )
+            }
             Box(
                 modifier =
                     Modifier

@@ -14,6 +14,7 @@ import io.github.ffalt.jampacked.data.StreamSettingsRepository
 import io.github.ffalt.jampacked.data.ThemeRepository
 import io.github.ffalt.jampacked.data.UserRoles
 import io.github.ffalt.jampacked.data.auth.AuthRepository
+import io.github.ffalt.jampacked.data.cache.ImageCache
 import io.github.ffalt.jampacked.data.cache.QueryCache
 import io.github.ffalt.jampacked.ui.theme.JamThemeName
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -36,6 +37,7 @@ class SettingsViewModel
         private val themes: ThemeRepository,
         private val auth: AuthRepository,
         private val cache: QueryCache,
+        private val imageCache: ImageCache,
         private val apollo: ApolloProvider,
         private val pins: PinRepository,
         private val streams: StreamSettingsRepository,
@@ -86,9 +88,16 @@ class SettingsViewModel
             viewModelScope.launch { streams.setDownloads(options) }
         }
 
-        fun clearCache() {
+        fun clearDataCache() {
             viewModelScope.launch {
                 cache.clear()
+                refreshCacheStats()
+            }
+        }
+
+        fun clearImageCache() {
+            viewModelScope.launch {
+                imageCache.clear()
                 refreshCacheStats()
             }
         }

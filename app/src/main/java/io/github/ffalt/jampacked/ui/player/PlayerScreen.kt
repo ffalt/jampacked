@@ -27,6 +27,7 @@ import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -53,6 +54,7 @@ import io.github.ffalt.jampacked.data.repo.Lyrics
 import io.github.ffalt.jampacked.player.RepeatMode
 import io.github.ffalt.jampacked.ui.components.ClickIcon
 import io.github.ffalt.jampacked.ui.components.ClickLabelIcon
+import io.github.ffalt.jampacked.ui.components.LocalImageCacheEpoch
 import io.github.ffalt.jampacked.ui.components.DurationText
 import io.github.ffalt.jampacked.ui.components.FavIcon
 import io.github.ffalt.jampacked.ui.components.Rating
@@ -360,17 +362,19 @@ private fun PlayerFace(
             if (lyricsShown) {
                 LyricsView(lyrics = lyrics, loading = lyricsLoading)
             } else if (trackId != null) {
-                AsyncImage(
-                    model = session.imageUrl(trackId, size = 600),
-                    contentDescription = null,
-                    contentScale = ContentScale.Fit,
-                    modifier =
-                        Modifier
-                            .fillMaxSize()
-                            .aspectRatio(1f)
-                            .clip(RoundedCornerShape(COVER_RADIUS))
-                            .border(1.dp, colors.coverBorder, RoundedCornerShape(COVER_RADIUS))
-                )
+                key(LocalImageCacheEpoch.current) {
+                    AsyncImage(
+                        model = session.imageUrl(trackId, size = 600),
+                        contentDescription = null,
+                        contentScale = ContentScale.Fit,
+                        modifier =
+                            Modifier
+                                .fillMaxSize()
+                                .aspectRatio(1f)
+                                .clip(RoundedCornerShape(COVER_RADIUS))
+                                .border(1.dp, colors.coverBorder, RoundedCornerShape(COVER_RADIUS))
+                    )
+                }
             }
         }
     }
