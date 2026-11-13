@@ -8,6 +8,7 @@ import androidx.navigation.toRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import io.github.ffalt.jampacked.R
+import io.github.ffalt.jampacked.data.cache.ImageCache
 import io.github.ffalt.jampacked.data.repo.ArtistDetail
 import io.github.ffalt.jampacked.data.repo.ArtistRepository
 import io.github.ffalt.jampacked.ui.nav.Route
@@ -29,6 +30,7 @@ class ArtistViewModel
     @Inject
     constructor(
         private val repository: ArtistRepository,
+        private val imageCache: ImageCache,
         savedStateHandle: SavedStateHandle,
         @ApplicationContext private val context: Context
     ) : ViewModel() {
@@ -42,6 +44,7 @@ class ArtistViewModel
         }
 
         fun load(forceRefresh: Boolean) {
+            if (forceRefresh) imageCache.refresh(route.id)
             uiState.update { it.copy(loading = true, error = null) }
             viewModelScope.launch {
                 repository

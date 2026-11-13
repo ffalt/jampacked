@@ -16,7 +16,7 @@ import io.github.ffalt.jampacked.data.JamSession
 import io.github.ffalt.jampacked.ui.theme.JamDimens
 import io.github.ffalt.jampacked.ui.theme.LocalJamColors
 
-val LocalImageCacheEpoch = staticCompositionLocalOf { 0L }
+val LocalImageCacheEpochs = staticCompositionLocalOf { emptyMap<String, Long>() }
 
 @Composable
 fun JamImage(
@@ -28,8 +28,8 @@ fun JamImage(
     format: String = "webp"
 ) {
     if (id.isEmpty()) return
-    val epoch = LocalImageCacheEpoch.current
-    key(epoch) {
+    val epochs = LocalImageCacheEpochs.current
+    key(id, epochs[id] ?: 0L) {
         AsyncImage(
             model = session.imageUrl(id, size = requestSize, format = format),
             contentDescription = null,
@@ -48,9 +48,9 @@ fun ImageItem(
     requestSize: Int = 300
 ) {
     if (id.isEmpty()) return
-    val epoch = LocalImageCacheEpoch.current
+    val epochs = LocalImageCacheEpochs.current
     Box(modifier = modifier.size(size)) {
-        key(epoch) {
+        key(id, epochs[id] ?: 0L) {
             AsyncImage(
                 model = session.imageUrl(id, size = requestSize),
                 contentDescription = null,
@@ -78,10 +78,10 @@ fun JamBackgroundImage(
     content: @Composable () -> Unit
 ) {
     val colors = LocalJamColors.current
-    val epoch = LocalImageCacheEpoch.current
+    val epochs = LocalImageCacheEpochs.current
     Box(modifier = modifier) {
         if (id.isNotEmpty()) {
-            key(epoch) {
+            key(id, epochs[id] ?: 0L) {
                 AsyncImage(
                     model = session.imageUrl(id, size = 300),
                     contentDescription = null,

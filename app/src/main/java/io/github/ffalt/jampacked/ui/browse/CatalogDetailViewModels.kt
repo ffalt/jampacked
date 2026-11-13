@@ -9,6 +9,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import io.github.ffalt.jampacked.R
 import io.github.ffalt.jampacked.data.TrackEntry
+import io.github.ffalt.jampacked.data.cache.ImageCache
 import io.github.ffalt.jampacked.data.repo.CatalogRepository
 import io.github.ffalt.jampacked.data.repo.PlaylistDetail
 import io.github.ffalt.jampacked.data.repo.PodcastDetail
@@ -33,6 +34,7 @@ class SeriesViewModel
     @Inject
     constructor(
         private val repository: CatalogRepository,
+        private val imageCache: ImageCache,
         savedStateHandle: SavedStateHandle,
         @ApplicationContext private val context: Context
     ) : ViewModel() {
@@ -45,6 +47,7 @@ class SeriesViewModel
         }
 
         fun load(forceRefresh: Boolean) {
+            if (forceRefresh) imageCache.refresh(route.id)
             uiState.update { it.copy(loading = true, error = null) }
             viewModelScope.launch {
                 repository
@@ -80,6 +83,7 @@ data class TrackCollectionUiState(
 
 abstract class TrackCollectionViewModel(
     protected val player: PlayerRepository,
+    protected val imageCache: ImageCache,
     @ApplicationContext protected val context: Context
 ) : ViewModel() {
     protected val uiState = MutableStateFlow(TrackCollectionUiState())
@@ -106,9 +110,10 @@ class PlaylistViewModel
     constructor(
         private val repository: CatalogRepository,
         player: PlayerRepository,
+        imageCache: ImageCache,
         savedStateHandle: SavedStateHandle,
         @ApplicationContext context: Context
-    ) : TrackCollectionViewModel(player, context) {
+    ) : TrackCollectionViewModel(player, imageCache, context) {
         private val route: Route.Playlist = savedStateHandle.toRoute<Route.Playlist>()
 
         init {
@@ -117,6 +122,7 @@ class PlaylistViewModel
         }
 
         override fun load(forceRefresh: Boolean) {
+            if (forceRefresh) imageCache.refresh(route.id)
             uiState.update { it.copy(loading = true, error = null) }
             viewModelScope.launch {
                 repository
@@ -143,9 +149,10 @@ class PodcastViewModel
     constructor(
         private val repository: CatalogRepository,
         player: PlayerRepository,
+        imageCache: ImageCache,
         savedStateHandle: SavedStateHandle,
         @ApplicationContext context: Context
-    ) : TrackCollectionViewModel(player, context) {
+    ) : TrackCollectionViewModel(player, imageCache, context) {
         private val route: Route.Podcast = savedStateHandle.toRoute<Route.Podcast>()
 
         init {
@@ -154,6 +161,7 @@ class PodcastViewModel
         }
 
         override fun load(forceRefresh: Boolean) {
+            if (forceRefresh) imageCache.refresh(route.id)
             uiState.update { it.copy(loading = true, error = null) }
             viewModelScope.launch {
                 repository

@@ -33,7 +33,7 @@ import io.github.ffalt.jampacked.data.cache.ImageCache
 import io.github.ffalt.jampacked.data.repo.SearchRepository
 import io.github.ffalt.jampacked.data.repo.TrackRepository
 import io.github.ffalt.jampacked.player.PlayerRepository
-import io.github.ffalt.jampacked.ui.components.LocalImageCacheEpoch
+import io.github.ffalt.jampacked.ui.components.LocalImageCacheEpochs
 import io.github.ffalt.jampacked.ui.components.Logo
 import io.github.ffalt.jampacked.ui.login.LoginScreen
 import io.github.ffalt.jampacked.ui.nav.AppScaffold
@@ -86,8 +86,8 @@ class MainActivity : ComponentActivity() {
         if (savedInstanceState == null) handleDeepLink(intent)
         setContent {
             val themeName by themes.theme.collectAsStateWithLifecycle()
-            val imageEpoch by imageCache.epoch.collectAsStateWithLifecycle()
-            CompositionLocalProvider(LocalImageCacheEpoch provides imageEpoch) {
+            val imageEpochs by imageCache.epochs.collectAsStateWithLifecycle()
+            CompositionLocalProvider(LocalImageCacheEpochs provides imageEpochs) {
                 JamTheme(themeName = themeName) {
                     Surface(
                         modifier = Modifier.fillMaxSize(),

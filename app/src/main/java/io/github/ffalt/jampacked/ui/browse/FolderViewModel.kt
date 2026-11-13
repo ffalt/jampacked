@@ -8,6 +8,7 @@ import androidx.navigation.toRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import io.github.ffalt.jampacked.R
+import io.github.ffalt.jampacked.data.cache.ImageCache
 import io.github.ffalt.jampacked.data.repo.FolderDetail
 import io.github.ffalt.jampacked.data.repo.FolderRepository
 import io.github.ffalt.jampacked.player.PlayerRepository
@@ -31,6 +32,7 @@ class FolderViewModel
     constructor(
         private val repository: FolderRepository,
         private val player: PlayerRepository,
+        private val imageCache: ImageCache,
         savedStateHandle: SavedStateHandle,
         @ApplicationContext private val context: Context
     ) : ViewModel() {
@@ -45,6 +47,7 @@ class FolderViewModel
         }
 
         fun load(forceRefresh: Boolean) {
+            if (forceRefresh) imageCache.refresh(route.id)
             uiState.update { it.copy(loading = true, error = null) }
             viewModelScope.launch {
                 repository

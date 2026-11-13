@@ -12,8 +12,9 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 interface ImageCache {
-    val epoch: StateFlow<Long>
+    val epochs: StateFlow<Map<String, Long>>
     suspend fun clear()
+    fun refresh(id: String)
 }
 
 @Singleton
@@ -22,8 +23,8 @@ class CoilImageCache
     constructor(
         @ApplicationContext private val context: Context
     ) : ImageCache {
-    private val _epoch = MutableStateFlow(0L)
-    override val epoch: StateFlow<Long> = _epoch.asStateFlow()
+    private val _epochs = MutableStateFlow<Map<String, Long>>(emptyMap())
+    override val epochs: StateFlow<Map<String, Long>> = _epochs.asStateFlow()
 
     override suspend fun clear() {
         withContext(Dispatchers.IO) {
@@ -39,7 +40,12 @@ class CoilImageCache
                 context.externalCacheDir?.resolve("image_cache")?.deleteRecursively()
                 context.externalCacheDir?.resolve("coil_cache")?.deleteRecursively()
             }
-            _epoch.value = System.currentTimeMillis()
+            _epochs.value = emptyMap()
         }
+    }
+
+    override fun refresh(id: String) {
+        val ts = System.currentTimeMillis()
+        _epochs.value = _epochs.value.toMutableMap().also { it[id] = ts }
     }
 }
