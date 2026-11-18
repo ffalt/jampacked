@@ -108,6 +108,7 @@ fun PlayerScreen(
             showLyrics = showLyrics,
             lyrics = extras.lyrics,
             lyricsLoading = extras.lyricsLoading,
+            positionMs = state.positionMs,
             onToggleFace = { showLyrics = !showLyrics },
             onPrevious = viewModel::previous,
             onNext = viewModel::next,
@@ -327,6 +328,7 @@ private fun PlayerFace(
     showLyrics: Boolean,
     lyrics: Lyrics?,
     lyricsLoading: Boolean,
+    positionMs: Long,
     onToggleFace: () -> Unit,
     onPrevious: () -> Unit,
     onNext: () -> Unit,
@@ -360,7 +362,7 @@ private fun PlayerFace(
     ) {
         Crossfade(targetState = showLyrics, label = "player-face") { lyricsShown ->
             if (lyricsShown) {
-                LyricsView(lyrics = lyrics, loading = lyricsLoading)
+                LyricsView(lyrics = lyrics, loading = lyricsLoading, positionMs = positionMs)
             } else if (trackId != null) {
                 val epochs = LocalImageCacheEpochs.current
                 key(trackId, epochs[trackId] ?: 0L) {

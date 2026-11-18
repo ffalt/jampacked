@@ -16,6 +16,15 @@ data class Lyrics(
     val source: String?
 )
 
+internal fun lyricsText(
+    lyrics: String?,
+    syncedLyrics: String?,
+    source: String?
+): Lyrics? {
+    val text = syncedLyrics?.takeIf { it.isNotBlank() } ?: lyrics?.takeIf { it.isNotBlank() }
+    return text?.let { Lyrics(it, source) }
+}
+
 @Singleton
 class TrackExtrasRepository
     @Inject
@@ -26,12 +35,12 @@ class TrackExtrasRepository
     ) {
         suspend fun lyrics(trackId: String): Result<Lyrics?> =
             runCatching {
-                val key = QueryCache.cacheKey("TrackLyricsResult", trackId)
+                val key = QueryCache.cacheKey("TrackLyricsSyncedResult", trackId)
                 cache.read(key, serializer<Lyrics?>())?.let { return@runCatching it }
 
                 val response = apollo.client().query(TrackLyricsResultQuery(trackId)).execute()
                 val raw = response.data?.track?.lyrics
-                val result = raw?.lyrics?.takeIf { it.isNotBlank() }?.let { Lyrics(it, raw.source) }
+                val result = lyricsText(raw?.lyrics, raw?.syncedLyrics, raw?.source)
                 cache.write(key, result, serializer<Lyrics?>())
                 result
             }

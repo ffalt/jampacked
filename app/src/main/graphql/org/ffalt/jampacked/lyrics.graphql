@@ -3,6 +3,7 @@ query TrackLyricsResult($id: ID!) {
         id
         lyrics {
             lyrics
+            syncedLyrics
             source
         }
     }
