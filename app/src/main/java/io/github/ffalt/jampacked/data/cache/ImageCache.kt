@@ -23,29 +23,29 @@ class CoilImageCache
     constructor(
         @ApplicationContext private val context: Context
     ) : ImageCache {
-    private val _epochs = MutableStateFlow<Map<String, Long>>(emptyMap())
-    override val epochs: StateFlow<Map<String, Long>> = _epochs.asStateFlow()
+        private val _epochs = MutableStateFlow<Map<String, Long>>(emptyMap())
+        override val epochs: StateFlow<Map<String, Long>> = _epochs.asStateFlow()
 
-    override suspend fun clear() {
-        withContext(Dispatchers.IO) {
-            runCatching {
-                val imageLoader = SingletonImageLoader.get(context)
-                imageLoader.memoryCache?.clear()
-                imageLoader.diskCache?.clear()
+        override suspend fun clear() {
+            withContext(Dispatchers.IO) {
+                runCatching {
+                    val imageLoader = SingletonImageLoader.get(context)
+                    imageLoader.memoryCache?.clear()
+                    imageLoader.diskCache?.clear()
+                }
+                runCatching {
+                    context.cacheDir.resolve("image_cache").deleteRecursively()
+                    context.cacheDir.resolve("image_cache_v2").deleteRecursively()
+                    context.cacheDir.resolve("coil_cache").deleteRecursively()
+                    context.externalCacheDir?.resolve("image_cache")?.deleteRecursively()
+                    context.externalCacheDir?.resolve("coil_cache")?.deleteRecursively()
+                }
+                _epochs.value = emptyMap()
             }
-            runCatching {
-                context.cacheDir.resolve("image_cache").deleteRecursively()
-                context.cacheDir.resolve("image_cache_v2").deleteRecursively()
-                context.cacheDir.resolve("coil_cache").deleteRecursively()
-                context.externalCacheDir?.resolve("image_cache")?.deleteRecursively()
-                context.externalCacheDir?.resolve("coil_cache")?.deleteRecursively()
-            }
-            _epochs.value = emptyMap()
+        }
+
+        override fun refresh(id: String) {
+            val ts = System.currentTimeMillis()
+            _epochs.value = _epochs.value.toMutableMap().also { it[id] = ts }
         }
     }
-
-    override fun refresh(id: String) {
-        val ts = System.currentTimeMillis()
-        _epochs.value = _epochs.value.toMutableMap().also { it[id] = ts }
-    }
-}
