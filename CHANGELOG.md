@@ -1,11 +1,3 @@
-## [v0.0.6](https://github.com/ffalt/starfield/compare/v0.0.5...v0.0.6) (2026-11-19)
-
-### Features
-
- - **lyrics** add synced lyrics support ([a3db09fff1e6aad](https://github.com/ffalt/starfield/commit/a3db09fff1e6aad9d35e9f53c460d49002614aec))
- - **cache** reload entity image on drag down reload ([fc52bc28a64cd59](https://github.com/ffalt/starfield/commit/fc52bc28a64cd5982ad4ee25c25646338bf5e5f5))
- - **cache** implement clear image cache ([3121f69d68d2e16](https://github.com/ffalt/starfield/commit/3121f69d68d2e16a95f9827b5dca5e67c07b8784))
-
 ## [v0.0.5](https://github.com/ffalt/starfield/compare/v0.0.4...v0.0.5) (2026-11-12)
 
 ### Features

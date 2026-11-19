@@ -1,3 +1,0 @@
- - **lyrics** add synced lyrics support
- - **cache** reload entity image on drag down reload
- - **cache** implement clear image cache
