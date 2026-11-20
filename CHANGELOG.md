@@ -1,3 +1,11 @@
+## [v0.0.7](https://github.com/ffalt/starfield/compare/v0.0.6...v0.0.7) (2026-11-20)
+
+### Features
+
+ - **build** update compileSdk to 37.2 ([4bdbc216b57d38b](https://github.com/ffalt/starfield/commit/4bdbc216b57d38b6109f5d0108d76ae48bcf3def))
+ - **login** update login fields with state management and secure input ([bef348387cfcb56](https://github.com/ffalt/starfield/commit/bef348387cfcb560627637cd5826bf2437d0e72e))
+ - **lyrics** refactor handling to support synchronized lines ([c72e6f861b1fad4](https://github.com/ffalt/starfield/commit/c72e6f861b1fad43b3c88b8c218d628c36cbfa75))
+
 ## [v0.0.6](https://github.com/ffalt/starfield/compare/v0.0.5...v0.0.6) (2026-11-19)
 
 ### Features

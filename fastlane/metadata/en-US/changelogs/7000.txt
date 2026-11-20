@@ -1,0 +1,3 @@
+ - **build** update compileSdk to 37.2
+ - **login** update login fields with state management and secure input
+ - **lyrics** refactor handling to support synchronized lines
