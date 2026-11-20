@@ -25,6 +25,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
+import androidx.compose.material3.rememberSliderState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
@@ -542,7 +543,6 @@ private fun TrackLine(
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun PlayerSeekBar(
     progress: Float,
@@ -560,8 +560,13 @@ private fun PlayerSeekBar(
         )
     val value = if (dragging >= 0f) dragging else progress
 
+    val sliderState = rememberSliderState(value = value)
+    if (dragging < 0f) {
+        sliderState.value = progress
+    }
+
     Slider(
-        value = value,
+        state = sliderState,
         onValueChange = { dragging = it },
         onValueChangeFinished = {
             if (dragging >= 0f) {
@@ -571,7 +576,7 @@ private fun PlayerSeekBar(
         },
         enabled = enabled,
         colors = sliderColors,
-        thumb = {
+        thumb = { _ ->
             Box(
                 modifier =
                     Modifier

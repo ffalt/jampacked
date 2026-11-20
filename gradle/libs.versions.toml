@@ -1,15 +1,15 @@
 [versions]
-agp = "9.5.1"
+agp = "9.5.2"
 kotlin = "2.4.21"
 ksp = "2.3.13"
 hilt = "2.60.1"
 apollo = "5.2.0"
 ktlintGradle = "14.2.0"
 coil = "3.6.3"
-composeBom = "2026.09.00"
+composeBom = "2026.11.01"
 androidxCore = "1.19.1"
 androidxActivity = "1.13.0"
-androidxLifecycle = "2.11.0"
+androidxLifecycle = "2.11.1"
 androidxNavigation = "2.10.2"
 media3 = "1.11.1"
 room = "2.8.5"
@@ -19,7 +19,7 @@ okhttp = "5.5.1"
 junit = "4.13.2"
 coroutinesTest = "1.11.0"
 mockk = "1.14.12"
-kotlinxSerialization = "1.12.0"
+kotlinxSerialization = "1.13.0"
 
 [libraries]
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidxCore" }

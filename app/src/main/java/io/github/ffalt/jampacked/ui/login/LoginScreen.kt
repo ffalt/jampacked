@@ -15,16 +15,24 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.input.KeyboardActionHandler
+import androidx.compose.foundation.text.input.TextFieldLineLimits
+import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LocalTextStyle
+import androidx.compose.material3.OutlinedSecureTextField
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -35,8 +43,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
@@ -47,6 +53,7 @@ import io.github.ffalt.jampacked.ui.components.ThemedText
 import io.github.ffalt.jampacked.ui.icons.JamIcon
 import io.github.ffalt.jampacked.ui.theme.JamDimens
 import io.github.ffalt.jampacked.ui.theme.LocalJamColors
+import kotlinx.coroutines.flow.drop
 
 @Composable
 fun LoginScreen(
@@ -56,8 +63,14 @@ fun LoginScreen(
     val state by viewModel.state.collectAsStateWithLifecycle()
     val colors = LocalJamColors.current
     val keyboard = LocalSoftwareKeyboardController.current
+    val serverFieldState = rememberLoginFieldState(state.server, viewModel::onServer)
+    val usernameFieldState = rememberLoginFieldState(state.username, viewModel::onUsername)
+    val passwordFieldState = rememberLoginFieldState(state.password, viewModel::onPassword)
     val submit = {
         keyboard?.hide()
+        viewModel.onServer(serverFieldState.text.toString())
+        viewModel.onUsername(usernameFieldState.text.toString())
+        viewModel.onPassword(passwordFieldState.text.toString())
         viewModel.login()
     }
 
@@ -100,8 +113,7 @@ fun LoginScreen(
                 verticalArrangement = Arrangement.spacedBy(JamDimens.padding)
             ) {
                 LoginField(
-                    value = state.server,
-                    onValueChange = viewModel::onServer,
+                    state = serverFieldState,
                     label = stringResource(R.string.server),
                     keyboardOptions =
                         KeyboardOptions(
@@ -110,22 +122,20 @@ fun LoginScreen(
                         )
                 )
                 LoginField(
-                    value = state.username,
-                    onValueChange = viewModel::onUsername,
+                    state = usernameFieldState,
                     label = stringResource(R.string.user),
                     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
                 )
                 LoginField(
-                    value = state.password,
-                    onValueChange = viewModel::onPassword,
+                    state = passwordFieldState,
                     label = stringResource(R.string.password),
-                    visualTransformation = PasswordVisualTransformation(),
+                    secure = true,
                     keyboardOptions =
                         KeyboardOptions(
                             keyboardType = KeyboardType.Password,
                             imeAction = ImeAction.Done
                         ),
-                    keyboardActions = KeyboardActions(onDone = { submit() })
+                    onKeyboardAction = KeyboardActionHandler { submit() }
                 )
 
                 LoginButton(
@@ -151,40 +161,71 @@ fun LoginScreen(
 }
 
 @Composable
+@OptIn(ExperimentalMaterial3Api::class)
 private fun LoginField(
-    value: String,
-    onValueChange: (String) -> Unit,
+    state: TextFieldState,
     label: String,
     keyboardOptions: KeyboardOptions,
     modifier: Modifier = Modifier,
-    visualTransformation: VisualTransformation = VisualTransformation.None,
-    keyboardActions: KeyboardActions = KeyboardActions.Default
+    secure: Boolean = false,
+    onKeyboardAction: KeyboardActionHandler? = null
 ) {
     val colors = LocalJamColors.current
-    OutlinedTextField(
-        value = value,
-        onValueChange = onValueChange,
-        label = { Text(label, fontSize = JamDimens.fontSizeSmall) },
-        singleLine = true,
-        shape = RoundedCornerShape(CORNER),
-        textStyle = LocalTextStyle.current.copy(fontSize = JamDimens.fontSize),
-        visualTransformation = visualTransformation,
-        keyboardOptions = keyboardOptions,
-        keyboardActions = keyboardActions,
-        colors =
-            OutlinedTextFieldDefaults.colors(
-                focusedTextColor = colors.textColor,
-                unfocusedTextColor = colors.textColor,
-                focusedContainerColor = colors.itemBackground,
-                unfocusedContainerColor = colors.itemBackground,
-                cursorColor = colors.activeTintColor,
-                focusedBorderColor = colors.activeTintColor,
-                unfocusedBorderColor = colors.separator,
-                focusedLabelColor = colors.activeTintColor,
-                unfocusedLabelColor = colors.muted
-            ),
-        modifier = modifier.fillMaxWidth()
-    )
+    val fieldColors =
+        OutlinedTextFieldDefaults.colors(
+            focusedTextColor = colors.textColor,
+            unfocusedTextColor = colors.textColor,
+            focusedContainerColor = colors.itemBackground,
+            unfocusedContainerColor = colors.itemBackground,
+            cursorColor = colors.activeTintColor,
+            focusedBorderColor = colors.activeTintColor,
+            unfocusedBorderColor = colors.separator,
+            focusedLabelColor = colors.activeTintColor,
+            unfocusedLabelColor = colors.muted
+        )
+    val fieldModifier = modifier.fillMaxWidth()
+    val fieldShape = RoundedCornerShape(CORNER)
+    val fieldTextStyle = LocalTextStyle.current.copy(fontSize = JamDimens.fontSize)
+
+    if (secure) {
+        OutlinedSecureTextField(
+            state = state,
+            label = { Text(label, fontSize = JamDimens.fontSizeSmall) },
+            shape = fieldShape,
+            textStyle = fieldTextStyle,
+            keyboardOptions = keyboardOptions,
+            onKeyboardAction = onKeyboardAction,
+            colors = fieldColors,
+            modifier = fieldModifier
+        )
+    } else {
+        OutlinedTextField(
+            state = state,
+            label = { Text(label, fontSize = JamDimens.fontSizeSmall) },
+            lineLimits = TextFieldLineLimits.SingleLine,
+            shape = fieldShape,
+            textStyle = fieldTextStyle,
+            keyboardOptions = keyboardOptions,
+            onKeyboardAction = onKeyboardAction,
+            colors = fieldColors,
+            modifier = fieldModifier
+        )
+    }
+}
+
+@Composable
+private fun rememberLoginFieldState(
+    value: String,
+    onValueChange: (String) -> Unit
+): TextFieldState {
+    val textFieldState = remember { TextFieldState(initialText = value) }
+    val currentOnValueChange = rememberUpdatedState(onValueChange)
+    LaunchedEffect(textFieldState) {
+        snapshotFlow { textFieldState.text.toString() }
+            .drop(1)
+            .collect { currentOnValueChange.value(it) }
+    }
+    return textFieldState
 }
 
 @Composable
