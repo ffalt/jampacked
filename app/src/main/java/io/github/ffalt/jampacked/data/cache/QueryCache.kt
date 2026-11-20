@@ -86,7 +86,7 @@ class QueryCache
             }
 
         companion object {
-            const val CURRENT_VERSION = 6
+            const val CURRENT_VERSION = 7
 
             fun cacheKey(
                 operationName: String,

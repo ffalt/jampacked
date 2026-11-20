@@ -5,20 +5,24 @@ import org.junit.Test
 
 class LyricsTest {
     @Test
-    fun `prefers synchronized lyrics when available`() {
-        val synced = "[00:01.00]First line\n[00:02.00]Second line"
+    fun `prefers an entry with synchronized lines`() {
+        val plain = Lyrics("Plain lyrics", emptyList(), "tag")
+        val synced = Lyrics(null, listOf(LyricsLine(1_000, "First line")), "lrclib")
 
-        assertEquals(Lyrics(synced, "tag"), lyricsText("Plain lyrics", synced, "tag"))
+        assertEquals(synced, selectLyrics(listOf(plain, synced)))
     }
 
     @Test
-    fun `falls back to plain lyrics when synchronized lyrics are missing or blank`() {
-        assertEquals(Lyrics("Plain lyrics", "tag"), lyricsText("Plain lyrics", null, "tag"))
-        assertEquals(Lyrics("Plain lyrics", "tag"), lyricsText("Plain lyrics", "  ", "tag"))
+    fun `falls back to the first entry with plain lyrics`() {
+        val blank = Lyrics("  ", emptyList(), "tag")
+        val plain = Lyrics("Plain lyrics", emptyList(), "lrclib")
+
+        assertEquals(plain, selectLyrics(listOf(blank, plain)))
     }
 
     @Test
-    fun `returns no lyrics when neither version is available`() {
-        assertEquals(null, lyricsText(null, null, null))
+    fun `returns no lyrics when no entry has content`() {
+        assertEquals(null, selectLyrics(emptyList()))
+        assertEquals(null, selectLyrics(listOf(Lyrics(null, emptyList(), "tag"))))
     }
 }

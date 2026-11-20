@@ -11,19 +11,21 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Serializable
+data class LyricsLine(
+    val timeMs: Long,
+    val text: String
+)
+
+@Serializable
 data class Lyrics(
-    val text: String,
+    val text: String?,
+    val lines: List<LyricsLine>,
     val source: String?
 )
 
-internal fun lyricsText(
-    lyrics: String?,
-    syncedLyrics: String?,
-    source: String?
-): Lyrics? {
-    val text = syncedLyrics?.takeIf { it.isNotBlank() } ?: lyrics?.takeIf { it.isNotBlank() }
-    return text?.let { Lyrics(it, source) }
-}
+internal fun selectLyrics(entries: List<Lyrics>): Lyrics? =
+    entries.firstOrNull { it.lines.isNotEmpty() }
+        ?: entries.firstOrNull { !it.text.isNullOrBlank() }
 
 @Singleton
 class TrackExtrasRepository
@@ -39,8 +41,15 @@ class TrackExtrasRepository
                 cache.read(key, serializer<Lyrics?>())?.let { return@runCatching it }
 
                 val response = apollo.client().query(TrackLyricsResultQuery(trackId)).execute()
-                val raw = response.data?.track?.lyrics
-                val result = lyricsText(raw?.lyrics, raw?.syncedLyrics, raw?.source)
+                val entries =
+                    response.data?.track?.lyrics?.entries.orEmpty().map { entry ->
+                        Lyrics(
+                            text = entry.lyrics,
+                            lines = entry.syncedLines.orEmpty().map { LyricsLine(it.timestamp.toLong(), it.text) },
+                            source = entry.source
+                        )
+                    }
+                val result = selectLyrics(entries)
                 cache.write(key, result, serializer<Lyrics?>())
                 result
             }

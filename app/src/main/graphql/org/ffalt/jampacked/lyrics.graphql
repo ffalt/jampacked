@@ -2,9 +2,14 @@ query TrackLyricsResult($id: ID!) {
     track(id:$id) {
         id
         lyrics {
-            lyrics
-            syncedLyrics
-            source
+            entries {
+                lyrics
+                syncedLines {
+                    timestamp
+                    text
+                }
+                source
+            }
         }
     }
 }

@@ -13,7 +13,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -54,8 +53,7 @@ fun LyricsView(
         }
 
         else -> {
-            val timedLyrics = remember(lyrics.text) { parseTimedLyrics(lyrics.text) }
-            if (timedLyrics == null) {
+            if (lyrics.lines.isEmpty()) {
                 Column(
                     modifier =
                         modifier
@@ -63,19 +61,19 @@ fun LyricsView(
                             .verticalScroll(rememberScrollState()),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    ThemedText(lyrics.text, lineHeight = LYRIC_LINE_HEIGHT)
+                    ThemedText(lyrics.text.orEmpty(), lineHeight = LYRIC_LINE_HEIGHT)
                     LyricsSource(lyrics.source)
                 }
             } else {
                 val listState = rememberLazyListState()
                 val activeIndex =
                     if (positionMs != null) {
-                        activeLyricIndex(timedLyrics, positionMs)
+                        activeLyricIndex(lyrics.lines, positionMs)
                     } else {
                         null
                     }
 
-                LaunchedEffect(activeIndex, timedLyrics) {
+                LaunchedEffect(activeIndex, lyrics.lines) {
                     if (activeIndex != null) {
                         listState.animateScrollToItem(
                             activeIndex,
@@ -90,7 +88,7 @@ fun LyricsView(
                     contentPadding = PaddingValues(vertical = JamDimens.paddingLarge),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    itemsIndexed(timedLyrics) { index, line ->
+                    itemsIndexed(lyrics.lines) { index, line ->
                         val active = index == activeIndex
                         ThemedText(
                             text = line.text,

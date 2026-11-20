@@ -3,6 +3,7 @@ package io.github.ffalt.jampacked.ui.components
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -14,6 +15,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 
 data class IndexGroup<T>(
@@ -62,7 +64,14 @@ fun <T> IndexList(
     Box(modifier = modifier.fillMaxSize()) {
         PullToRefreshBox(isRefreshing = loading, onRefresh = onReload) {
             LazyColumn(state = state, modifier = Modifier.fillMaxSize()) {
-                header?.let { item { it() } }
+                // The picker runs the full height, over the header as well, so the header keeps
+                // its trailing edge clear rather than leaving its arrows under the strip.
+                val headerEnd = if (groups.isEmpty()) 0.dp else ATOZ_STRIP_WIDTH
+                header?.let {
+                    item {
+                        Box(modifier = Modifier.padding(end = headerEnd)) { it() }
+                    }
+                }
 
                 if (groups.isEmpty()) {
                     item { ListEmpty(groups) }

@@ -3,10 +3,12 @@ package io.github.ffalt.jampacked.ui.components
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -70,24 +72,22 @@ fun AtoZPicker(
             modifier =
                 Modifier
                     .fillMaxHeight()
-                    .width(STRIP_WIDTH),
-            contentAlignment = Alignment.Center
+                    .width(ATOZ_STRIP_WIDTH)
         ) {
             val density = LocalDensity.current
-            val available = (maxHeight - STRIP_PADDING * 2).coerceAtLeast(0.dp)
-            val slot = minOf(MAX_SLOT, available / letters.size)
+            val slot = maxHeight / letters.size
             // When the slots get too small to read, label only every step-th letter; all stay pickable.
             val step = if (slot >= MIN_LABEL_SLOT) 1 else ceil(MIN_LABEL_SLOT / slot).toInt()
             val activeIndex = letters.indexOf(activeLetter)
             SideEffect {
                 slotPx = with(density) { slot.toPx() }
             }
-            // Only the letters themselves take the touches. A strip spanning the whole list would
-            // also cover the header above it, where the page controls sit.
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,
                 modifier =
                     Modifier
+                        .fillMaxSize()
                         .background(colors.overlay)
                         .pointerInput(letters) {
                             detectTapGestures(onPress = { offset -> pick(offset.y) })
@@ -119,7 +119,7 @@ fun AtoZPicker(
             Box(
                 modifier =
                     Modifier
-                        .padding(end = STRIP_WIDTH + 2.dp)
+                        .padding(end = ATOZ_STRIP_WIDTH + 2.dp)
                         .size(56.dp)
                         .clip(RoundedCornerShape(10.dp))
                         .background(colors.floatingBackground),
@@ -131,8 +131,11 @@ fun AtoZPicker(
     }
 }
 
-private val STRIP_WIDTH = 40.dp
-private val STRIP_PADDING = 8.dp
-private val MAX_SLOT = 18.dp
+/**
+ * The strip runs the full height of the list, over the header as well, so whatever the header
+ * puts at its trailing edge has to keep this much clear of it.
+ */
+val ATOZ_STRIP_WIDTH = 40.dp
+
 private val MIN_LABEL_SLOT = 16.dp
 private const val BUBBLE_HIDE_MS = 700L
