@@ -20,7 +20,11 @@ fun calculateAndroidVersionCode(versionName: String): Int {
 
 android {
     namespace = "io.github.ffalt.jampacked"
-    compileSdk = 37
+    compileSdk {
+        version = release(37) {
+            minorApiLevel = 2
+        }
+    }
 
     defaultConfig {
         applicationId = "io.github.ffalt.jampacked"
